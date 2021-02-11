@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<gui>
+	<win win="1" pos="x92 y0 w1142 h1148">
+		<control h="512" w="883" x="0" y="0" type="Scintilla" file="C:\Users\mmignin\OneDrive - Vitaquest International\VQuest\AhkStudio.ahk" hwnd="2" ra="3" ba="7" last="1"></control>
+		<control h="505" w="259" x="883" y="0" lp="0.773205" type="Project Explorer" hwnd="3" ba="4"></control>
+		<control hwnd="4" type="Code Explorer" h="599" w="259" x="883" y="505" lp="0.773205" tp="0.45735027"></control>
+		<control hwnd="5" type="Tracked Notes" h="88" w="883" x="0" y="1016" tp="0.92014519" ra="4"></control>
+		<control hwnd="6" type="Scintilla" h="385" w="883" x="0" y="631" tp="0.57168784" ra="4" ba="5" file="C:\Users\mmignin\OneDrive - Vitaquest International\VQuest\Functions.ahk"></control>
+		<control hwnd="7" type="Debug" h="119" w="883" x="0" y="512" tp="0.46370236" ra="4" ba="6"></control></win>
+	<win split=".25" win="Tracked_Notes" x="221"></win>
+</gui>

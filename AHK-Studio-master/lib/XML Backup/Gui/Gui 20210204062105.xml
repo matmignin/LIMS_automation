@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+<gui>
+	<win win="1" pos="x92 y0 w1674 h1446">
+		<control h="802" w="1294" x="0" y="0" type="Scintilla" file="C:\Users\mmignin\OneDrive - Vitaquest International\VQuest\AhkStudio.ahk" hwnd="2" ra="3" ba="6" last="1"></control>
+		<control h="641" w="380" x="1294" y="0" lp="0.772999" type="Project Explorer" hwnd="3" ba="4"></control>
+		<control hwnd="4" type="Code Explorer" h="761" w="380" x="1294" y="641" lp="0.772999" tp="0.45720399"></control>
+		<control hwnd="5" type="Tracked Notes" h="112" w="1294" x="0" y="1290" tp="0.92011412" ra="4"></control>
+		<control hwnd="6" type="Scintilla" h="488" w="1294" x="0" y="802" tp="0.57203994" file="C:\Users\mmignin\Documents\Autohotkey\Lib\DebugWindow.AHK" ra="4" ba="5"></control></win>
+	<win split=".25" win="Tracked_Notes" x="324"></win>
+</gui>

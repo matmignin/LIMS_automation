@@ -1,0 +1,44 @@
+Delete space i made from errors::
+	;MouseGetPos, xpos, ypos
+	;loop, %loopCount%
+	;{
+		;ypos:= ypos+26
+		;click
+		;Click 84, 62 ;Click 
+		;sleep 100
+		;send, +{tab 3}^a{backspace}
+		;sleep 50
+		;click 273, 559 ;click okay
+		;winactivate, Composition - \\Remote 
+		;mousemove, xpos, ypos
+		;}
+	;return
+
+
+
+AddAvonTest(){	
+	sendinput, {Click}{click 508, 372}
+	winwaitactive, Delete Tests - \\Remote,,3
+			if errorlevel
+			return
+		else
+	send, {enter}
+	winwaitactive, Select methods tests - \\Remote,,3
+			if errorlevel
+			return
+		else
+	click 841, 656
+	sleep 200
+	if winexist("Information - \\Remote")
+	winactivate, Information - \\Remote
+		send, {enter}
+	return
+	
+	Add_ICP:
+	;sleep 500
+;click 59, 561
+;winwaitactive, Select methods tests - \\Remote,, 4
+;click 229, 68, 2
+;sendinput, ICP-MS{click 505, 336} 
+;return
+	}

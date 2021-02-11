@@ -1,0 +1,9 @@
+﻿<?xml version="1.0"?>
+<gui>
+	<win win="1" pos="x1663 y-782 w1674 h1027">
+		<control h="950" w="1294" x="0" y="0" type="Scintilla" file="C:\Users\mmignin\OneDrive - Vitaquest International\VQuest\RotationsMenu.ahk" hwnd="2" ra="3" ba="5" last="1"></control>
+		<control h="452" w="380" x="1294" y="0" lp="0.772999" type="Project Explorer" hwnd="3" ba="4"></control>
+		<control hwnd="4" type="Code Explorer" h="531" w="380" x="1294" y="452" lp="0.772999" tp="0.45973496"></control>
+		<control hwnd="5" type="Tracked Notes" h="33" w="1294" x="0" y="950" tp="0.96636086" ra="4"></control></win>
+	<win split=".25" win="Tracked_Notes" x="324"></win>
+</gui>

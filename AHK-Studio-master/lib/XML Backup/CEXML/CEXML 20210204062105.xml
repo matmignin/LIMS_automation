@@ -1,0 +1,9 @@
+﻿<?xml version="1.0"?>
+<cexml>
+	<files>
+	</files>
+	<Libraries>
+		<main file="C:\Users\mmignin\Documents\Autohotkey\Lib\DebugWindow.AHK" id="1">
+			<file dir="C:\Users\mmignin\Documents\Autohotkey\Lib" ext="AHK" file="C:\Users\mmignin\Documents\Autohotkey\Lib\DebugWindow.AHK" filename="DebugWindow.AHK" id="2" lang="ahk" lower="c:\users\mmignin\documents\autohotkey\lib\debugwindow.ahk" nne="DebugWindow" type="File" time="20210119075934" encoding="UTF-8"></file></main>
+	</Libraries>
+</cexml>
