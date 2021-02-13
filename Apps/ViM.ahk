@@ -1,8 +1,12 @@
-﻿#If Getkeystate("Capslock","p")
+﻿#IfWinActive,
+return
+#If Getkeystate("Capslock","p")
 1::F1
 2::F2
 3::F3
 `::esc
+/::RightClickText()
+	
 Lctrl::winactivate, ahk_exe AHK-Studio.exe
 j::down
 k::up
@@ -41,9 +45,8 @@ Capslock & space::+^f
 	GetKeyState("Capslock","p")
 	sendinput, {shift up}
 	return
-CapsLock::send, {shift up}{alt up}{ctrl up}{win up}{esc}
 
-#If (A_PriorHotKey = "Capslock & d" AND A_TimeSincePriorHotkey < 2000)
+#If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 2000)
 	d::Send, {home 2}+{end}^x{backspace}{delete}
 	Capslock & d::Sendinput, {home 2}+{end}^x{delete}
 	w::sendinput, {right}^{right}{left}+^{left}{backspace}
@@ -55,7 +58,7 @@ CapsLock::send, {shift up}{alt up}{ctrl up}{win up}{esc}
 	Capslock & 0::sendinput, +{home}^x
 	0::sendinput, +{home}^
 
-#If (A_PriorHotKey = "Capslock & y" AND A_TimeSincePriorHotkey < 2000)
+#If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 2000)
 	d::Send, {home 2}+{end}^c
 	Capslock & d::Sendinput, {home 2}+{end}^c
 	w::sendinput, {right}^{right}{left}+^{left}^c ;{right}
@@ -72,7 +75,7 @@ CapsLock::send, {shift up}{alt up}{ctrl up}{win up}{esc}
 	Capslock & 0::sendinput, +{home}^c
 	0::sendinput, +{home}^c
 
-#If (A_PriorHotKey = "Capslock & g" AND A_TimeSincePriorHotkey < 500)
+#If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
 	Capslock & g::Send, ^{home}
 #if
 
@@ -93,6 +96,7 @@ lalt & space::SendInput ,{U+02713}
 	/::sendinput, !^w
 #if
 
+CapsLock::return ;send, {shift up}{alt up}{ctrl up}{win up}{esc}
 
 
 

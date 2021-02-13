@@ -20,7 +20,6 @@ else if (A_ThisMenuItem = "Canada Heavy Metal")
 else if (A_ThisMenuItem = "Prop65 Heavy Metal")
 	Spec_Tab_HeavymetalsComponents_Prop65()
 return
-return
 
 
 
@@ -34,7 +33,10 @@ WheelLeft::Run, LMS\GUI_SpecTable.ahk
 enter::Click("Save_Spec_Tab_TestDefinitionEditor")
 wheelright::Spec_Tab_TestDefinitionEditor(Description)
 #ifwinactive, Edit sample template - \\Remote
-WheelLeft::sendinput, {tab}{delete 4}%ProductCode%{enter}
+	WheelLeft::sendinput, {tab}{delete 4}%ProductCode%{enter}
+	F15::mymenu()
+#Ifwinactive, Delete Test - \\Remote 
+		F14::Sendinput, {enter}
 #ifwinactive, Select methods tests - \\Remote
 wheelleft::Click("SearchBar_SelectMethodsTests")
 													;	wheelRight::AddAvonTest() ; Click("MoveOverTest_SelectMethodsTests")       ;      method edit      avon
@@ -44,8 +46,12 @@ wheelleft::Click("SearchBar_SelectMethodsTests")
 
 Create_Specification_template: ;{
 		#ifwinactive, ahk_exe WFICA32.EXE
-:*:p\:: ;Physical Spec
-		send,%ProductCode%`, In Process`, Physical{tab 4}^a%ProductCode%{tab 2}
+:*:p\::EditSpecification_Physical()
+EditSpecification_Physical(){
+Global
+winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+		send,%ProductCode%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}P{shift Up}hysical{tab 4}^a%ProductCode%{tab 2}
 		Sleep 200
 		send,{Space}
 		sleep 200
@@ -71,14 +77,19 @@ Create_Specification_template: ;{
 		else
 			sendinput, {tab}{delete 4}%ProductCode%{enter}
 		return
+		}
 :*:cp\::  ;Coated Physical Spec
-		send,%ProductCode%`, Coated`, Physical{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{Return 2}
+		send,%ProductCode%`, {shift down}C{shift Up}oated`, {shift down}P{shift Up}hysical{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{Return 2}
 		winwaitactive, Edit specification, 2
 		sleep 200
 		send,{tab 2}{right} 
 		return
-:*:r\:: ;Retain
-		send,%ProductCode%`, In Process`, Retain{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{Return 2}
+:*:r\::EditSpecification_Retain()
+EditSpecification_Retain(){
+Global
+winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+		send,%ProductCode%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}R{shift Up}etain{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{Return 2}
 		sleep 200
 		send,{tab}{right} 
 		sleep 400
@@ -94,8 +105,9 @@ Create_Specification_template: ;{
 		else
 			sendinput, {tab}{delete 4}%ProductCode%{enter}
 		return
+		}
 	:*:cr\:: ;Coated Retain
-		send,%ProductCode%`, Coated`, Retain{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{Return 2}
+		send,%ProductCode%`, {shift down}C{shift Up}oated`, {shift down}R{shift Up}etain{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{Return 2}
 		sleep 400
 		send,{tab}{right} 
 		sleep 200
@@ -111,8 +123,12 @@ Create_Specification_template: ;{
 		else
 			sendinput, {tab}{delete 4}%ProductCode%{enter}
 		return
-:*:m\:: ;Micro
-		send,%ProductCode%`, Finished`, Micro{tab 4}^a%ProductCode%{tab 2}
+:*:m\::EditSpecification_Micro()
+EditSpecification_Micro(){
+Global
+winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+		send,%ProductCode%`, {shift down}F{shift Up}inished`, {shift down}M{shift Up}icro{tab 4}^a%ProductCode%{tab 2}
 		Sleep 200
 		send,{Space}
 		sleep 200
@@ -133,27 +149,20 @@ Create_Specification_template: ;{
 		else
 			sendinput, {tab}{delete 4}%ProductCode%{enter}
 		return
+		}
 :*:a\:: ;Analytical
+EditSpecification_Analytical() {
+Global
 		If WinActive("Edit sample template - \\Remote")
-			Spec_Tab_EditSampleTemplate_A(ProductCode)
+			Spec_Tab_EditSampleTemplate_A()
 		else If winactive("Edit specification - \\Remote")
 		{		
-			Spec_Tab_EditSpecification_A_A(ProductCode)
-			;winwaitactive, NuGenesis LMS - \\Remote, ,8
-			;if errorlevel
-				;return
-			;else
-			;{
-				;sleep 300
-				;click("AddNewSampleTemplate")
-				;winwaitactive, Edit sample template - \\Remote,, 5
-				;Spec_Tab_EditSampleTemplate_A(ProductCode)
-				;return
-			;}
+			Spec_Tab_EditSpecification_A_A()
 		}
 		return
+		}
 :*:ac\::
-		sendinput, %ProductCode%`, In Process`, Analytical
+		sendinput, %ProductCode%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}A{shift Up}nalytical
 		Sendinput, {tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{enter 2}{tab}{right}
 	return ;}
 	

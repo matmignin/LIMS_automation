@@ -1,6 +1,6 @@
 ﻿AutoTrim,On
 EnvGet, ProductCode, ProductCode
-Excel_ConnectTo(ProductCode)
+Excel_ConnectTo()
 	Name:=[]
 	Position:=[]
 	LabelClaim:=[] 

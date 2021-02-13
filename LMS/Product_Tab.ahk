@@ -5,11 +5,11 @@
 
 #ifwinactive, Edit Formulation - \\Remote  
 	WheelRight::Product_Tab_tabletsizeMenu()
-	wheelleft::
+	wheelleft::sendinput,{tab}%ProductCode%+{tab 7}
 		
 	
 #ifwinactive, Composition - \\Remote   
-	Wheelup::Product_Tab_QuickSelectNextIngredient() 
+	;Wheelup::Product_Tab_QuickSelectNextIngredient() 
 	WheelRight::click("Edit")
 	Wheelleft::run, LMS\GUI_ProductTable.ahk
 	
@@ -19,7 +19,14 @@
 	F13::click("OK_Product_Tab_EditIngredient")
 	Enter::click("OK_Product_Tab_EditIngredient")
 	+Enter::sendinput, {enter}
+
+#Ifwinactive, Select Product - \\Remote ;{    Select Product - \\Remote
+	F14::
+	excel_ConnectTo()
+	sendinput, {click 106, 64}%ProductCode%{enter}{enter}
+	return
 	
+#ifwinactive, ;}
 
 	
 	

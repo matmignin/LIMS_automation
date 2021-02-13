@@ -39,8 +39,9 @@ Main_EditResults()
 ;Spec_Tab_HeavymetalsComponents_prop65()
 ;send, {enter}
 return
-
-
+F14 & Wheelup::click, 544, 41
+F14 & WheelRight::click, 743, 41
+F14 & Wheelleft::Click 354, 44
 
 
 ;Wheelright:: Sendinput, {Click}{click 74, 776}    			; click Enter Results
@@ -50,7 +51,7 @@ Ralt::Click("SearchBar_Batch")     	   	     ; right alt button
 #ifwinactive, Result Entry - \\Remote
 Wheelleft::ChangeTestResults()
 Wheelright::ChangeTestResults("Toggle")
-f14::Click("OK_ResultEntry")
+
 #ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
 wheelright::
 sendinput, {Click, 402, 284}{end}(on sample log){click, 334, 618}

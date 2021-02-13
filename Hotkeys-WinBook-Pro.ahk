@@ -1,5 +1,4 @@
-﻿
-#IfWinActive,
+﻿#IfWinActive,
 Rwin::RAlt
 Ralt::Rwin
 Ralt & Right::sendinput, #{right}
@@ -59,25 +58,24 @@ Rwin::Send_ProductCode() ;right option
 
 
 ;_________________________________________________________________________F14
-	;#If (A_PriorHotKey = "F14" AND A_TimeSincePriorHotkey < 8000)
-		;f14::!Tab
-		;Wheelup::
-		;Wheeldown::sendinput, ^0
-		;Wheelleft::
-		;Wheelright::
+	#If (A_PriorHotKey = "F14" AND A_TimeSincePriorHotkey < 8000)
+		f14::!Tab
+		Wheelup::
+		Wheeldown::sendinput, ^0
+		Wheelleft::
+		Wheelright::
 	#If
 	F14 & WheelRight::#right
+	F14 & Mbutton::#up
 	F14 & WheelLeft::#left
 	F14 & Wheeldown::Wheel_ZoomOut()
 	F14 & wheelup::Wheel_ZoomIn()
 	F14 & Rbutton::CloseWindow()
 	F14 & Lbutton::#down
-	;F14::MouseLocation_Go()
-	;click, %MouseLocationX%, %MouseLocationY%
+	F14::click, %MouseLocationX%, %MouseLocationY%
 
 
 Mbutton & Wheeldown::
-Mbutton & Rbutton::VariableBar_Relocate()
 Mbutton::Mbutton
 
 
@@ -105,7 +103,7 @@ GetMouseLocation() { ;#[Vquest]
 	}
 	MouseClick, Right,,, 1, 0, U ; Release the mouse button.
 		;WinGetTitle, Title, A
-		WinName:=Title
+		windowTitle:=Title
 		MousePosition:=MouselocationX "`, " MouselocationY
 		Store := [mouselocationx, MouseLocationY]
 		
@@ -125,37 +123,33 @@ GetMouseLocation() { ;#[Vquest]
 	    if !GetKeyState("Rbutton", "P")  ; The key has been released, so break out of the loop.
 		   break
 		   MouseGetPos, MouseLocationX, MouseLocationY
-		   WinGetTitle, FullWinTitle, A
+		   WinGetTitle, WinTitle, A
 		Tooltip, %MouseLocationX% `, %MouseLocationy% `n%winTitle%
+
 		; ... insert here any other actions you want repeated.
 	}
 	tooltip,
 	MouseClick, Right,,, 1, 0, U ; Release the mouse button.
-		WinTitle:=strreplace(FullwinTitle, A_space,"_")	
-		WinTitle:=strreplace(winTitle, "(","")	
-		WinTitle:=strsplit(WinTitle,"-","_")
-		WinName:= WinTitle[1]
-		%WinName%:= {X: MouselocationX, Y: MouselocationY, Win: FullWinTitle}
-		;DebugWindow(%WinName%["Win"] "`n" %WinName%["X"] ", " %WinName%["Y"],1,0,10,0,0)
-		
+		WinTitle:=strreplace(winTitle, A_space,"_")	
+		WinTitle:=strSplit(WinTitle,"-","_")
+		WindowTitle:= WinTitle[1]
+		%WindowTitle%:= {X: MouselocationX, Y: MouselocationY, Win: WinTitle[1]}
+		DebugWindow(%WindowTitle%["Win"],1,0,10,0,0)
+		DebugWindow(%WindowTitle%["X"] ", " %WindowTitle%["Y"],0,1,10,0,0)
+	return
 	}
-	
-	
-	MouseLocation_Go(){ 
+	`::mouselocation_get()
+	MouseLocation_Get() { ;#[Vquest]
 		global
 		WinGetTitle, WinTitle, A
 		WinTitle:=strreplace(winTitle, A_space,"_")	
-		WinTitle:=strreplace(winTitle, "(","")	
-		WinTitle:=strsplit(WinTitle,"-","_")
-		WinName:= WinTitle[1]
-		;%WinName%:= {X: MouselocationX, Y: MouselocationY, Win: WinTitle[1]}
-		;%Current_WinName%:= {X: MouselocationX, Y: MouselocationY, Win: FullWinTitle}
-		
-		MouseX:=%WinName%["X"]
-		MouseY:=%WinName%["Y"]
-		Click, %mouseX%, %MouseY%
-		;DebugWindow(%WinName%["Win"],0,1,10,0,0)
-		;DebugWindow(%WinName%["X"] ", " %WinName%["Y"],0,1,10,0,0)
+		WinTitle:=strSplit(WinTitle,"-","_")
+		WindowTitle:= WinTitle[1]
+		%WindowTitle%:= {X: MouselocationX, Y: MouselocationY, Win: WinTitle[1]}
+			msgbox % %Wintitle%["X"] 
+
+		DebugWindow(%WindowTitle%["Win"],1,0,10,0,0)
+		DebugWindow(%WindowTitle%["X"] ", " %WindowTitle%["Y"],0,1,10,0,0)
 	return
 	}
 	

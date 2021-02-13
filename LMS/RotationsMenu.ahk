@@ -1,20 +1,48 @@
 return
+#Ifwinactive, Sign : ;{    Sign :
+	F14::sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
+	#Ifwinexist, Opened Section found - \\Remote 
+		F14::
+		winactivate, Opened Section found - \\Remote
+		Sendinput, {enter}
+		sleep 400
+#Ifwinexist, Release:
+	F14::
+	winactivate, Release:  
+	sendinput, {tab}{enter}
+	sleep 200
+	ifwinactive, Sections Exceeding - \\Remote
+		send, {enter}
+	return	
 #IfWinActive, Select Iterations - \\Remote
 
 EnvGet, ProductCode, ProductCode
-	wheelleft::Rotation_GetTable(ProductCode) ;run, GUI_RotationTable.ahk
-return
+	Mbutton::
+	F14::Rotation_GetTable() ;run, GUI_RotationTable.ahk
+	1::
+	2::
+	3::
+	4::
+	5::
+		Rotation_GetTable(0)
+		WinActivate, Select Iterations - \\Remote
+		sleep 100
+		Rotation_Iterations(A_ThisHotkey,Cycle)
+		;SetKeyDelay 10
+		send,{tab 4}{enter}
+		Return
 
 
 
-Rotation_GetTable(Product_Code){ 
+
+Rotation_GetTable(showTable=1){ 
 	Global
-	Excel_ConnectTo(Product_Code)
+	Excel_ConnectTo()
 	Chemicals:=[]
-	RotationOrder:=[]
-	while (Xl.Range("T" . A_Index+1).Value != "|") {
-		RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
-		Chemicals[A_index]:=Xl.Range("F" . A_Index+1).Text
+	;RotationOrder:=[]
+	while (Xl.Range("K" . A_Index).Value != "|") {
+		;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
+		Chemicals[A_index]:=Xl.Range("P" . A_Index+1).Text
 		Total_rows:=A_index
 		Cycle:=A_Index
 	}	
@@ -23,7 +51,10 @@ Rotation_GetTable(Product_Code){
 		ChemicalRotation:= A_index " `t  " Chemicals[A_index]
 		Menu, RotationMenu, Add, &%ChemicalRotation%, RotationMenuHandler
 	}
+	If (ShowTable=1)
 		Menu, RotationMenu, Show
+	else
+		return
 	Return
 
 }
@@ -33,7 +64,7 @@ RotationMenuHandler:
 	WinActivate, Select Iterations - \\Remote
 	sleep 200
 	Rotation_Iterations(Rotation,Cycle)
-	SetKeyDelay 10
+	SetKeyDelay 5
 	send,{tab 4}{enter}
 return
 

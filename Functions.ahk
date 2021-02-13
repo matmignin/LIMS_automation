@@ -1,6 +1,7 @@
 ﻿VariableBar() { 
 	Global
 	Gui Var:destroy
+
 	EnvGet, Batch, Batch
 	EnvGet, ProductCode, ProductCode
 	Envget, Name, Name
@@ -8,26 +9,39 @@
 	Envget, Lot, Lot
 	Envget, Description, Description
 	Envget, Iteration, Iteration
-	Gui Var:+LastFound +AlwaysOnTop  -Caption  +ToolWindow +E0x20 
+	Menu, Tray, Add, VariableBarScreen, ScreenHandler, +BarBreak
+	GUI, Var:Font, s20 cBlack Bold, Consolas
+	Gui, Var:Add, Edit, r1 h25 x0 y-6 w80 Limit4 WantReturn vProductCode gProductCodeVar, %ProductCode%
+	Gui Var:+LastFound +AlwaysOnTop  -Caption  +ToolWindow ; +E0x20 
+	;Gui, Var:add, Text, h25 x0 y-6  +Left, %ProductCode% 
 	Gui, Var:color, ef6950	 
 	WinSet, Transparent, 200
 	GUI, Var:Font, s20 cBlack Bold, Consolas
-	Gui, Var:Add, Edit, r1 h25 x0 y-6 Limit4 WantReturn vProductCode gProductCodeVar, %ProductCode%
-	;Gui, Var:add, Text, h25 x0 y-3  +Left, %ProductCode% 
 	GUI, Var:Font, s11 cBlack Bold, Consolas
-	Gui, Var:add, Text, h2 x100 y-2 +right, %Batch%
-	Gui, Var:add, Text, h40 x110 y12 +right, %Lot%
-	;Gui, Var:add, Text, h40 x220 y+1 left, %Iteration%
-	GUI, Var:Font, s9 cBlack Bold, Consolas
+	Gui, Var:add, Text, h2 x95 y-2 +left, %Batch%
+	Gui, Var:add, Text, h40 x95 y12 +left, %Lot%
+	GUI, Var:Font, s10 cBlack Bold, Consolas
 	Gui, Var:add, Text, h2 x190 y-2 +right, %Name%
-	;Gui, Var:Add, Edit, r1 h25 x110 y-6 Limit9 WantReturn vBatch gBatchVar, %Batch%
-	;Gui, Var:Add, Edit, r1 h30 x0 y-4 Limit4 WantReturn vProductCode gVariableBar, %ProductCode%
-	Gui, Var:Show, h30 x%VarWindowX% y%VarWindowY% w390  NoActivate
-	;Gui, Var:Show, h30 Y%TopScreen% x%RighterScreen% w290  NoActivate
-	sendinput, {rshift}{Lctrl}{Rctrl}{lalt}{ralt}{lshift}
-	return
-	
+	Gui, Var:add, Text, h40 x200 y12 +right, %Customer%
+	envget, Varbar_X, Varbar_X
+	envget, VarBar_Y, VarBar_Y
+	Try Gui, Var:Show, h30 x%Varbar_X% y%VarBar_Y% w390  NoActivate
+		catch
+			Gui, Var:Show, h30 x1400 y0 w390  NoActivate
+			OnMessage(0x201, "WM_LBUTTONDOWN")
+	sendinput, {shift}{ctrl}{alt}{alt}
+
+return
+
+
+
+
+ScreenHandler:
+VariableBar_Relocate()
+
 	ProductCodeVar:
+	run, LMS\GUI_ProductTable.ahk
+	return
 	Gui, Var:submit,NoHide
 	ProductCode:=ProductCode    
 	EnvSet, ProductCode, %ProductCode%
@@ -39,7 +53,32 @@
 	return
 }
 
+;-------------------------------------------------------------------------------
+WM_LBUTTONDOWN() { ; move window
+;-------------------------------------------------------------------------------
+    PostMessage, 0xA1, 2 ; WM_NCLBUTTONDOWN
+return
+}
 
+VariableBar_Relocate() {
+	global
+	keywait, Rbutton, U
+	;MouseClick, Right,,, 1, 0, U ; Release the mouse button.
+	coordmode, mouse, Screen
+	MouseGetPos, VarBar_X, VarBar_Y
+	sleep 100
+	envset, Varbar_X, %Varbar_X%
+	envset, VarBar_Y, %VarBar_Y%
+	coordmode, mouse, Window
+	VariableBar()
+	return
+	}
+RightClickText(){
+	mousegetpos, mousex, mousey
+	Click, %A_CaretX% %A_caretY%, right
+	mousemove, %mousex%, %mousey%
+	return
+	}
 Click(Link) {
 	global
 	if Link contains Save_Product_Tab_EditProduct 
@@ -68,6 +107,8 @@ Click(Link) {
 		click 45, 65
 	else if Link contains Edit
 		click 84, 65
+	else if Link Contains Add_Formulation
+		Sendinput, {click, 75, 280}
 	else if Link contains AddNewSampleTemplate
 		click 103, 325
 	else if Link contains Orient_Spec_Tab_TestDefinitionEditor
@@ -75,9 +116,13 @@ Click(Link) {
 	else if Link contains Save_Spec_Tab_TestDefinitionEditor 
 		Click 341, 618
 	else if Link contains Select_TestsForRequests
-		sendinput, {Click 500, 340}{click, 845, 658}
+		{
+			sendinput, {Click 500, 340}{click, 845, 658}
+			winwaitactive, Edit request - \\Remote, ,3
+			sendinput, {tab}{enter}
+		}
 	else if Link Contains Products_Tab
-		Sendinput, {click, 550, 35}
+		Sendinput, {click, 550, 35}{tab}%ProductCode%+{Tab 7} ;{click 454, 475, 2}
 	else if Link contains SearchBar_ProductCode
 	{
 		if winactive("Select methods tests - \\Remote")
@@ -126,24 +171,58 @@ Click(Link) {
 		return
 }
 
-Excel_ConnectTo(option=0){
+Excel_ConnectTo(option=1){
 	Global
 	try {
-		XL := ComObjActive("Excel.Application").Sheets(ProductCode)
+		XLBook := ComObjActive("Excel.Application").Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\Mats Workbook.xlsm")
+		;XLBook:=ComObjGet("C:\Users\mmignin\OneDrive - Vitaquest International\Mats Workbook.xlsm")
+		XL:=XLBook.ActiveSheet
 		Visible := True		
 	} Catch  {
-		msgbox, no Excel Sheet found	;if there is no excel sheet found
-		exit	
+		if (option:=0)
+			exit
+		else	
+			msgbox, no Excel Sheet found	;if there is no excel sheet found
+			exit	
 	}
-	Name:=Xl.Range("B2").text
-	Batch:=Xl.Range("B4").text
-	Lot:=Xl.Range("B5").text
-	Customer:=Xl.Range("B3").text
-	ServingSize:=Xl.Range("B6").text
+	XL_ProductCode:=XL.Range("B7").text
+	XL_Name:=Xl.Range("B2").text
+	
+	XL_Batch:=Xl.Range("B4").text
+	XL_Lot:=Xl.Range("B5").text
+	XL_Customer:=Xl.Range("B3").text
+	sleep 200
+	EnvSet, ProductCode, %XL_ProductCode%
+	EnvSet, Name, %XL_Name%
+	EnvSet, Batch, %XL_Batch%
+	EnvSet, Lot, %XL_Lot%
+	EnvSet, Customer, %XL_Customer%
+	Sleep 200
+	VariableBar()
 	return
 }
 
-
+Excel_Set_lot(Product_Code){
+	Global
+	try {
+		XLBook := ComObjActive("Excel.Application").Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\Mats Workbook.xlsm")
+		;XL:=XLBook.Sheets(Product_Code)
+		XL:=XLBook.ActiveSheet
+		;XL_Current := ComObjActive("Excel.Application")
+		Visible := True
+	} Catch  {
+		msgbox, no Excel Sheet found	;if there is no excel sheet found
+		exit	
+	}	
+	;set_lot()
+	Send, ^c
+clipwait, 0.25
+	Xl.Range("B5").text := Clipboard
+	sleep 200
+	;EnvSet, Lot, %Lot%
+	Sleep 200
+	;VariableBar()
+}
 
 Wheel_ZoomOut() {
 	BlockInput, On
@@ -166,7 +245,7 @@ Global
 		Clipboard := Trim((Clipboard, "`r`n"))
 		sendinput, %Clipboard%
 		tooltip, Paste
-		sleep 700
+		sleep 1000
 		tooltip,
 		return
 		
@@ -174,14 +253,14 @@ Global
 	else 
 		sendinput, ^v
 	ToolTip, Paste
-	sleep 100
+	sleep 800
 	tooltip,
 	return
 }
 Wheel_Cut() {
 	global
 	Send, ^x
-	sleep 50
+clipwait, 0.25
 	VariableBar()
 	ToolTip, %clipboard%
 	sleep 800
@@ -191,14 +270,18 @@ Wheel_Cut() {
 Wheel_Copy() {
 	global
 	Send, ^c
-	sleep 50
+clipwait, 0.25
 	VariableBar()
 	ToolTip, %clipboard%
 	sleep 800
 	tooltip,,
 	return
 }
-
+RegisterNewSample() {
+	global
+	winactivate, Register new samples - \\Remote
+	Send, {click 179, 105}{click}%ProductCode%{enter}
+	}
 CloseWindow() {
 
 	If WinActive("ahk_exe WFICA32.EXE")
@@ -325,11 +408,11 @@ Set_ProductCode()
 	PreClip:=Clipboard
 	sleep 200
 	Send, ^c    
-	sleep 200
+clipwait, 0.25
 	Clipboard := StrReplace(Clipboard, "`r`n")
 	sleep 100
 	ProductCode:=Clipboard    
-	sleep 100
+clipwait, 0.25
 	Clipboard:=Preclip
 	EnvSet, ProductCode, %ProductCode%
 	Sleep 200
@@ -346,11 +429,11 @@ Set_Lot()
 	PreClip:=Clipboard
 	sleep 100
 	Sendinput, ^c    
-	sleep 200
+clipwait, 0.25
 	Clipboard := StrReplace(Clipboard, "`r`n")
 	sleep 100
 	Lot:=Clipboard 
-	sleep 100
+clipwait, 0.25
 	Clipboard:=Preclip
 	sleep 100
 	EnvSet, lot, %Lot%
@@ -368,11 +451,11 @@ Set_Batch()
 	PreClip:=Clipboard
 	sleep 100
 	Send, ^c    
-	sleep 200
+clipwait, 0.25
 	Clipboard := StrReplace(Clipboard, "`r`n")
 	sleep 100
 	Batch_Code:=Clipboard
-	sleep 200
+clipwait, 0.25
 	Clipboard:=Preclip
 	sleep 100
 	EnvSet, Batch, %Batch_Code%
@@ -389,11 +472,11 @@ Set_Customer()
 	PreClip:=Clipboard
 	sleep 100
 	Send, ^c    
-	sleep 200
+clipwait, 0.25
 	Clipboard := StrReplace(Clipboard, "`r`n")
 	sleep 100
 	Customer:=Clipboard
-	sleep 100
+clipwait, 0.25
 	Clipboard:=Preclip
 	sleep 100
 	EnvSet, Customer, %Customer%
@@ -410,11 +493,91 @@ Set_Name()
 	PreClip:=Clipboard
 	sleep 100
 	Send, ^c    
-	sleep 200
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+	Send, ^c    
+clipwait, 0.25
 	Clipboard := StrReplace(Clipboard, "`r`n")
 	sleep 100
 	Name:=Clipboard
-	sleep 100
+clipwait, 0.25
 	Clipboard:=Preclip
 	sleep 100
 	EnvSet, Name, %Name%
@@ -432,8 +595,14 @@ Product_Tab_EditProduct(Product_Code) {
 	Sendinput,%ProductCode%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%ProductCode%{tab 2}
 	sleep 200
 	sendinput,%Name%{tab 8}
+	winwaitactive, NuGenesis LMS - \\Remote, , 6
+	Click("Add_Formulation")
+	winactivate,  Edit Formulation - \\Remote
 	return
 }
+	
+
+
 
 Spec_Tab_HeavymetalsComponents_US() {
 	click 125,120 ;click 2nd row
@@ -562,17 +731,17 @@ Global
 }
 
 SaveRestart(){
-	traytip, RESTART,Restart
+	;traytip, RESTART,Restart
 	WinActivate, AHK Studio ahk_exe AHK-Studio.exe
 	WinMenuSelectItem, ahk_class AutoHotkeyGUI ahk_exe AHK-Studio.exe, ,1&, 7& ; run in AHK Stuidio
 	sleep 100
 	reload
 	sleep 800
-	tooltip,
+	;tooltip,
 	return
 }
 SaveRerun(){
-	traytip, Rerun,
+	;traytip, Rerun,
 	sleep 100
 	WinMenuSelectItem, ahk_class AutoHotkeyGUI ahk_exe AHK-Studio.exe, ,4&, 8& ; run in AHK Stuidio
 	sleep 800
@@ -633,13 +802,16 @@ Enter_ProductCode(key){
 	return
 } 
 
-Spec_Tab_EditSampleTemplate_A(Product_code) {
-	sendinput, %Product_Code%`, In Process`, {Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}
+Spec_Tab_EditSampleTemplate_A() {
+global
+	winactivate, Edit sample template - \\Remote
+	sendinput, {click 377, 82}{home}%ProductCode%`, In Process`, {Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}
 	return
 }
 
-Spec_Tab_EditSpecification_A_A(Product_Code){
-	sendinput, %Product_Code%`, In Process`, {Shift down}A{Shift up}nalytical{tab 4}^a%Product_Code%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
+Spec_Tab_EditSpecification_A_A(){
+global
+	sendinput, %Product_Code%`, In Process`, {Shift down}A{Shift up}nalytical{tab 4}^a%ProductCode%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
 	;winwait, NuGenesis LMS - \\Remote, ,8
 	;if errorlevel 
 		;return
@@ -822,12 +994,12 @@ Product_Tab_DropDown_Ingredient()
 	Menu, IngredientMenu, Add, &Ingredient Note 3, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, Inositol, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, &Iron, IngredientMenuHandler
-	Menu, IngredientMenu, Add, Lead, IngredientMenuHandler
+	;Menu, IngredientMenu, Add, Lead, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, &L-Tyrosine, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, &Magnesium, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, Malic Acid, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, &Manganese, IngredientMenuHandler
-	Menu, IngredientMenu, Add, Mercury, IngredientMenuHandler
+	;Menu, IngredientMenu, Add, Mercury, IngredientMenuHandler
 	Menu, IngredientMenu, Add, &Methylsulfonylmethane (MSM), IngredientMenuHandler
 	Menu, IngredientMenu, Add, Molybdenum, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, &Niacin, IngredientMenuHandler
@@ -843,18 +1015,6 @@ Product_Tab_DropDown_Ingredient()
 	Menu, IngredientMenu, Add, Taurine, IngredientMenuHandler
 	;Menu, IngredientMenu, Add, &Thiamin, IngredientMenuHandler
 	Menu, IngredientMenu, Add, Total Probiotic, IngredientMenuHandler
-	
-	;Menu, IngredientMenu, Add, Vitamin, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin &A, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin &B12, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin B&6, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin &C, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin &D, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin &E, IngredientMenuHandler
-	;Menu, VitaminIngredientMenu, Add, Vitamin &K, IngredientMenuHandler
-	;Menu, IngredientMenu, Add, Vitamin, :VitaminIngredientMenu
-	;Menu, IngredientMenu, Add, &Zinc, IngredientMenuHandler
-	
 	Menu, IngredientMenu, Show,
 	return
 	
@@ -1127,6 +1287,7 @@ set_ExcelProductCode(){
 	Global
 	try {
 		XL := ComObjActive("Excel.Application")
+		;XL:=XLBook.ActiveSheet
 		Visible := True		
 	} Catch  ;if there is no excel sheet found
 		return

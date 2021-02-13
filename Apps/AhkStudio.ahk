@@ -32,12 +32,13 @@ Mbutton::^!o
 F14 & Wheeldown::Wheel_ZoomOut()
 F14 & wheelup::Wheel_ZoomIn()
 +enter::SaveRestart() 
-F14::sendinput, +^f
+
 lalt::sendinput, {alt}{alt}
 #ifwinactive,
+Media_Play_Pause::
 f11::SaveRestart()
-Media_Next::ShowMouseLocation()
-F12::ShowMouseLocation()
-Media_Play_Pause::SaveRestart()
+Media_Next::
+F12::
+
 
 F10::Exitapp

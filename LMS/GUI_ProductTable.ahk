@@ -1,69 +1,96 @@
 autotrim,On
 EnvGet, ProductCode, ProductCode
-	Excel_ConnectTo(ProductCode)
+envGet, Varbar_X, Varbar_X
+envGet, VarBar_Y, VarBar_Y
+	Excel_ConnectTo()
 	Name:=[]
 	LabelClaim:=[]
 	Position:=[]
 	LabelName:=[]
-	while (Xl.Range("J" . A_Index+6).Value != "") {
+	Sub_Table_height:=0
+	while (Xl.Range("J" . A_Index+7).Value != "") {
 		Position[A_index]:=		Xl.Range("E" . A_Index+7).Text
 		Name[A_index]:=		Xl.Range("J" . A_Index+7).text
 		LabelClaim[A_index]:=	Xl.Range("K" . A_Index+7).Text
 		LabelName[A_index]:=	Xl.Range("L" . A_Index+7).Text
-		Total_rows:=			A_index 
+		Total_rows:=			A_index +1
 		Table_Height:=			A_index
+	if (Xl.Range("E" . A_Index+7).text = "")
+		Sub_Table_Height:=Sub_Table_Height+1			
 	}
+	Table_Height:=Table_height-Sub_table_Height
 	Gui, IngredientList:Default
 	Gui, IngredientList:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu 
 	GUI, IngredientList:Font, s11 cBlack ;Consolas
-	Gui, IngredientList:Add, ListView, x0 y0 r%Table_height% w500 Grid NoSortHdr checked gIngredientList,  `t%ProductCode%|`t%Name%|`t%Customer%|LabelName	
+	Gui, IngredientList:Add, ListView, x0 y0 r%Table_height% W500 Grid NoSortHdr -hdr checked gIngredientList,  `t |`t|`t|LabelName	
 	loop, %Total_Rows% {
 		if Position[A_index] =""
 			{
-			Table_height:=table_height+1
-			Total_rows:=total_rows-1
+			;Table_height:=table_height
+			Total_rows:=total_rows - 1
 			continue
 			}
 		else	
-			LV_add("",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index])
+			LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index])
 	}
+	Gui, IngredientList:Add, Checkbox, Checked vAutoEnter x20, Auto-Enter Results?
 	LV_ModifyCol(1,50) 
 	LV_ModifyCol(2,250)
 	LV_ModifyCol(3,150)			
 	LV_ModifyCol(4,0)
-	LV_Delete(Table_Height)
+	;LV_delete(Total_rows)
+
 	sleep 100		
-	CoordMode, mouse, Screen
+	CoordMode, mouse, screen
 	MouseGetPos, xPos, yPos	
-	xPos:=xPos + 200
-	ypos:=ypos + 550
+	xPos:=A_ScreenWidth-500
+	ypos:=ypos-300
 	CoordMode, mouse, window
-	Gui, IngredientList:Show, x%xpos% y%ypos% autosize, Ingredients
+	Try 
+		Gui, IngredientList:Show, x%VarBarX% y%VarBarY% autosize, %ProductCode% `t
+	Catch 
+		Gui, IngredientList:Show, x%xpos% y%ypos% autosize, %ProductCode% `t
 	return	
+
 
 
 
 IngredientList:
 if (A_GuiEvent = "DoubleClick")  {
-    LV_GetText(Position, A_EventInfo,1)	
-    LV_GetText(Name, A_EventInfo,2)
-    LV_GetText(LabelClaim, A_EventInfo,3)
-    LV_GetText(LabelName, A_EventInfo,4)
-	sendinput, {space}
+	Current_Row:=A_EventInfo
+	;DebugWindow("AutoEnter : "AutoEnter,0,1,10,0,0)
+	;DebugWindow("Current Row: "Current_Row,0,1,10,0,0)
+	;RowsToLoop:= 1+(AutoEnter*(Total_Rows-Current_Row))
+	;DebugWindow("RowsToLoop: "RowsToLoop,0,1,10,0,0)
+Loop % LV_GetCount() {
+    LV_GetText(Position, Current_row,1)	
+    LV_GetText(Name, Current_row,2)
+    LV_GetText(LabelClaim, Current_row,3)
+    LV_GetText(LabelName, Current_row,4)
+    LV_Modify(Current_row, "Check")
 	Gui, IngredientList:submit,NoHide
 	sleep 200
 	if Winexist("Edit Ingredient - \\Remote")
 		Product_Tab_EditIngredient(LabelName,LabelClaim,Position)
-		else
-	{
+	else
+		{
 		winactivate, Composition - \\Remote
 		click("add_Composition")
 		sleep 200
 		Product_Tab_EditIngredient(LabelName,LabelClaim,Position)
-	}
+		}
+	if (AutoEnter := 1) 
+	{
+		sleep 200
+		send, {Enter}
+		Current_Row:= Current_Row+1
+		sleep 300
+		}
+	If (autoenter := 0)
+		break
+		}			
     return
 }
-	else
 	return
 	
 Product_Tab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
@@ -84,7 +111,7 @@ Product_Tab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position)
 	send,{tab 2}^a
 	send,%Ingredient_Claim%
 	Sleep 400
-;	send,{Enter}
+	
 	;send,^a{delete}{tab 2} ;{enter} 
 	return
 }	
@@ -109,6 +136,11 @@ Global
 		Sendinput, {click 150,73}{tab}{right 23}
 	else if Name Contains Acetyl L-Carnitine HCL 
 		Sendinput, {click 150,73}{tab}{right 6}
+	else if Name Contains Citicoline sodium 
+		{
+		Sendinput, {click 150,73}{tab}
+		Product_Tab_DropDown_Ingredient()
+		}
 	else if Name Contains Caffeine 
 		Sendinput, {click 150,73}{tab}{right 24}
 	else if Name contains Calcium 
@@ -234,20 +266,18 @@ Global
 	else if Name contains Zinc 
 		Sendinput, {click 150,73}{tab}{end} ;{right 274}
 	else {
-		Sendinput, {click 150,73} {tab}
+		Sendinput, {click 150,73}{tab}
 		Product_Tab_DropDown_Ingredient() ;{right 57} ;general ing. A.1
-		}
+		} ;*[Vquest]
 	}	
-	
-	
-	
-	
+
 	
 	
 	
 IngredientListGuiClose:
 ExitApp
-
+breakloop =1
+return
 
 #SingleInstance,Force
 #include Functions.ahk
