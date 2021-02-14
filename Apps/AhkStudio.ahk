@@ -17,10 +17,12 @@ Ralt & left::sendinput, {home}+{Tab}
 Ralt & right::sendinput, {home}{Tab}
 
 RAlt::
-RButton & wheelright::Send, %WindowTitle%
+RButton & wheelright::Sendinput, %WindowTitle%
 Rwin::
-Rbutton & Wheelleft::Send, %mousePosition%
-
+Rbutton & Wheelleft::Sendinput, %MousePosition%
+f13 & Wheelleft::Send_productcode()
+f13 & Wheelright::Set_Batch()
+F13 & Mbutton::send, ifwinactive{space}
 LCtrl & space::^!o
 wheelright::!right
 wheelleft::!left
@@ -32,13 +34,10 @@ Mbutton::^!o
 F14 & Wheeldown::Wheel_ZoomOut()
 F14 & wheelup::Wheel_ZoomIn()
 +enter::SaveRestart() 
-
-lalt::sendinput, {alt}{alt}
+capslock::sendinput, {ESC}
+lalt::sendinput, {alt}{Alt}
+Lshift & enter::sendinput, {end}{enter}{tab}return{enter}{up 2}{end}
+	
+	
 #ifwinactive,
-Media_Play_Pause::
-f11::SaveRestart()
-Media_Next::
-F12::
 
-
-F10::Exitapp

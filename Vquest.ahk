@@ -6,7 +6,7 @@ SetDefaultMouseSpeed, 0
 detecthiddenwindows, on
 SetTitleMatchMode, 2
 ;settitlematchmode, slow
-#MaxHotkeysPerInterval 400
+#MaxHotkeysPerInterval 800
 ;#maxthreadsperhotkey, 1
 setwindelay, 250
 AutoTrim, On
@@ -34,7 +34,7 @@ VariableBar()
 #include LMS\RotationsMenu.ahk
 #include LMS\Samples_Tab.ahk
 #Include LMS\Main.ahk
-#Include Apps\ViM.ahk
+#Include ViM.ahk
 #Include Apps\Browsers.ahk
 #include Apps\Other.ahk
 #include Apps\Outlook.ahk
@@ -45,16 +45,17 @@ VariableBar()
 #Include Functions.ahk
 #Include Hotkeys.ahk
 #Include F14.ahk
+#Include Testing.ahk
 #IfWinActive,
 return
 
 F14::F14()
 
-F14 & Mbutton::ShowMouseLocation()
+F14 & Mbutton::MouseLocation_Show()
 
 
 
-mymenu() { ;#[MyMenu]
+mymenu() {
 	Try {
 		If Winactive("Edit sample template - \\Remote")
 			Menu, myMenu, add, Analytical, myMenuHandler

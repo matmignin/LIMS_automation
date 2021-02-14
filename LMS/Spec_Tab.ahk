@@ -1,4 +1,4 @@
-﻿;#SingleInstance,Force
+﻿
 return
 
 
@@ -35,8 +35,6 @@ wheelright::Spec_Tab_TestDefinitionEditor(Description)
 #ifwinactive, Edit sample template - \\Remote
 	WheelLeft::sendinput, {tab}{delete 4}%ProductCode%{enter}
 	F15::mymenu()
-#Ifwinactive, Delete Test - \\Remote 
-		F14::Sendinput, {enter}
 #ifwinactive, Select methods tests - \\Remote
 wheelleft::Click("SearchBar_SelectMethodsTests")
 													;	wheelRight::AddAvonTest() ; Click("MoveOverTest_SelectMethodsTests")       ;      method edit      avon

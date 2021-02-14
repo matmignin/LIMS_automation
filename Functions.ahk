@@ -292,11 +292,11 @@ CloseWindow() {
 	}
 	else if WinActive("firefox.exe")
 	{
-		send, ^w
+		sendinput, {ctrl down}w{ctrl up}
 		sleep 300
 		return
 	}
-	else if WinActive("ahk_exe explorer.exe")
+	else if WinActive("ahk_exe explorer.exe") && winactive("Inbox - mmignin@vitaquest.com - Outlook")
 	{
 		sendinput, !{F4}
 		sleep 300
@@ -335,6 +335,11 @@ CloseWindow() {
 		return
 	}
 	else
+	Else If 
+	{
+		sendinput, !f4
+	}
+	0
 	return
 	return
 }
@@ -353,6 +358,11 @@ Send_ProductCode()
 		sendinput, ^e%ProductCode%
 		sleep 300
 		send, {enter}
+		return
+	}
+	else If winactive("NuGenesis LMS - \\Remote")
+	{
+		Sendinput, %ProductCode%{enter}
 		return
 	}
 	else If winactive("NuGenesis LMS - \\Remote")
@@ -747,7 +757,7 @@ SaveRerun(){
 	sleep 800
 	return
 }
-ShowMouseLocation(){
+MouseLocation_Show(){
 	global
 	AutoTrim, Off
 	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 250)
@@ -759,9 +769,11 @@ ShowMouseLocation(){
 		WinGetTitle, Title, A
 		windowTitle:=Title
 		MousePosition:=MouselocationX "`, " MouselocationY
-		TrayTip, %CurrentWindow%, %Title% `n Mouse: %MouselocationX% `, %MouselocationY%
+		ToolTip, %CurrentWindow%`, %Title% `n Mouse: %MouselocationX% `, %MouselocationY%
 	}
 	AutoTrim, On
+	sleep 600
+	tooltip
 	return
 }
 ExcelSearch(){
@@ -1320,8 +1332,6 @@ Excel_set_ProductCode_Cell(){
 	VariableBar()
 	return
 }
-test() {
-	msgbox, yo
-}
+
 
 

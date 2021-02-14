@@ -11,16 +11,40 @@ enter::Sendinput, !i
 
 
 #IfWinActive, ahk_exe EXCEL.EXE
-Enter::numpadenter
-Rbutton & Mbutton::
-Excel_set_ProductCode_Cell()
-click("SearchBar_ProductCode")
-return
-mbutton::Excel_set_ProductCode_Cell()
-Return
-F13 & WheelLeft::Set_ProductCode()
-F13 & WheelRight::
-Sendinput, {F2}^a
-sleep 200
-Set_Batch()
-return
+	Enter::numpadenter
+	Rbutton & Mbutton::
+	Excel_set_ProductCode_Cell()
+	click("SearchBar_ProductCode")
+	return
+	mbutton::Excel_set_ProductCode_Cell()
+	Return
+	;F13 & F17::Send_batch()
+	F13 & F16::Send_ProductCode()
+		#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000)
+			f13::wheel_copy() 
+			Wheelup::Set_Lot()
+			Wheeldown::sendinput, #v
+			F16::Set_ProductCode()
+			Wheelleft::Set_ProductCode()
+			F17::Set_Batch()
+			Wheelright::Set_Batch()   
+		#If
+	F16::
+		SetScrollLockState, On
+			SendInput {Left 3} 
+		SetScrollLockState, Off 
+		return
+
+	F17::
+		SetScrollLockState, On 
+			SendInput {Right 3} 
+		SetScrollLockState, Off 
+		return
+
+/*
+	F14::
+	Sendinput, {F2}^a
+	sleep 200
+	Set_Batch()
+	return
+*/

@@ -46,22 +46,14 @@
 	;return
 	wheelright::ShiptoSelect(304, 433)
 	return
-#Ifwinactive, Register new samples - \\Remote 
-		F14::
-		Sendinput, {tab 2}{space}
-		winwaitactive, Error - \\Remote, , 4
-		sendinput, {enter}
 
-			RegisterNewSample()
-		return
-		
 	
-#Ifwinactive, Edit test (Field Configuration: F`, Micro) - \\Remote ;
-	F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-#Ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
-	F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-#Ifwinactive, Edit test (Field Configuration: I`, Physical) - \\Remote
-	F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+;#Ifwinactive, Edit test (Field Configuration: F`, Micro) - \\Remote ;
+	;F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+;#Ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
+	;F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+;#Ifwinactive, Edit test (Field Configuration: I`, Physical) - \\Remote
+	;F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
 
 
 

@@ -1,24 +1,9 @@
 return
-#Ifwinactive, Sign : ;{    Sign :
-	F14::sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
-	#Ifwinexist, Opened Section found - \\Remote 
-		F14::
-		winactivate, Opened Section found - \\Remote
-		Sendinput, {enter}
-		sleep 400
-#Ifwinexist, Release:
-	F14::
-	winactivate, Release:  
-	sendinput, {tab}{enter}
-	sleep 200
-	ifwinactive, Sections Exceeding - \\Remote
-		send, {enter}
-	return	
+
 #IfWinActive, Select Iterations - \\Remote
 
 EnvGet, ProductCode, ProductCode
 	Mbutton::
-	F14::Rotation_GetTable() ;run, GUI_RotationTable.ahk
 	1::
 	2::
 	3::
@@ -40,7 +25,7 @@ Rotation_GetTable(showTable=1){
 	Excel_ConnectTo()
 	Chemicals:=[]
 	;RotationOrder:=[]
-	while (Xl.Range("K" . A_Index).Value != "|") {
+	while (Xl.Range("N" . A_Index).Value != "|") {
 		;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
 		Chemicals[A_index]:=Xl.Range("P" . A_Index+1).Text
 		Total_rows:=A_index

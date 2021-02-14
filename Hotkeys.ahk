@@ -1,5 +1,8 @@
 ﻿
 #IfWinActive,
+;____________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________KEYBOARD_HOTKEYS: 
+;____________________________________________________________________________________________________________________________
 Rwin::RAlt
 Ralt::Rwin
 Ralt & Right::sendinput, #{right}
@@ -12,7 +15,22 @@ lalt::sendinput, {alt}{alt}
 +Rwin::Set_ProductCode()
 Ralt::Send_Batch() ;right comm
 Rwin::Send_ProductCode() ;right option
++F12::reload
+\::sendinput, \  
+F12::Test()
+Media_Play_Pause::
+f11::SaveRestart()
+Media_Next::
+Volume_Up::SaveRestart()
+Volume_down::Test()
 
+			
+F10::Exitapp
+;____________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________MOUSE_HOTKEYS: 
+;____________________________________________________________________________________________________________________________
+
+;_________________________________________________________________________
 ;_________________________________________________________________________RButton
 	Rbutton & Wheelup::wheel_cut()
 	Rbutton & Wheeldown::wheel_paste()
@@ -22,21 +40,26 @@ Rwin::Send_ProductCode() ;right option
 	Rbutton & Mbutton::Esc
 	Rbutton & F13::backspace
 	Rbutton::Rbutton
-
+;_________________________________________________________________________
 ;_________________________________________________________________________F13
 	F13 & LButton::Sendinput, !#{F3} ;screenshot
 	F13 & RButton::^lbutton
-	F13 & MButton::+Lbutton ; sendinput, {F3}
-	F13 & WheelLeft::Set_ProductCode()
-	F13 & WheelRight::Set_Batch()
-	F13 & WheelUp::Set_lot()
+	F13 & MButton::Send_Productcode() ;+Lbutton ; sendinput, {F3}
+	F13 & WheelLeft::Send_ProductCode()
+	F13 & WheelRight::Send_Batch()
+	F13 & WheelUp::Send_lot()
 	F13 & WheelDown::wheel_paste()
+	F13 & F17::Send_batch()
+	F13 & F16::Send_ProductCode()
 	#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000)
 		f13::wheel_copy() 
 		Wheelup::Set_Lot()
 		Wheeldown::sendinput, #v
+		F17::Set_ProductCode()
 		Wheelleft::Set_ProductCode()
+		F16::Set_Batch()
 		Wheelright::Set_Batch() 
+		mbutton::set_ProductCode()
 	#If
 	F13:: 
 		Tooltip, ☩
@@ -44,7 +67,7 @@ Rwin::Send_ProductCode() ;right option
 		tooltip,
 		return
 
-
+;_________________________________________________________________________
 ;_________________________________________________________________________F15
 	#IfWinActive
 	F15 & Wheelup::Send_lot()
@@ -57,38 +80,31 @@ Rwin::Send_ProductCode() ;right option
 	F15::MyMenu()
 
 
-
+;_________________________________________________________________________
 ;_________________________________________________________________________F14
-	;#If (A_PriorHotKey = "F14" AND A_TimeSincePriorHotkey < 8000)
-		;f14::!Tab
-		;Wheelup::
-		;Wheeldown::sendinput, ^0
-		;Wheelleft::
-		;Wheelright::
-	#If
 	F14 & WheelRight::#right
 	F14 & WheelLeft::#left
 	F14 & Wheeldown::Wheel_ZoomOut()
 	F14 & wheelup::Wheel_ZoomIn()
-	F14 & Rbutton::CloseWindow()
-	F14 & Lbutton::#down
+	F14 & Lbutton::CloseWindow()
+	F14 & Rbutton::#down
 	;F14::MouseLocation_Go()
-	;click, %MouseLocationX%, %MouseLocationY%
+;_________________________________________________________________________
+;_________________________________________________________________________MButton
 
 
-Mbutton & Wheeldown::
 Mbutton & Rbutton::VariableBar_Relocate()
 Mbutton::Mbutton
 
 
-F14 & F15::!tab
+F14 & F15::LWin
 F15 & F14::!^tab
 
 #IfWinActive,  
 
-Rbutton & F14::MouseLocation_Set()
+Rbutton & F14::MouseLocation_Show()
 
-GetMouseLocation() { ;#[Vquest]
+MouseLocation_Get() {
 	global
 	MouseGetPos, MouseLocationX, MouseLocationY
 	MouseClick, right,,, 1, 0, D  ; Hold down the left mouse button.
@@ -109,13 +125,13 @@ GetMouseLocation() { ;#[Vquest]
 		MousePosition:=MouselocationX "`, " MouselocationY
 		Store := [mouselocationx, MouseLocationY]
 		
-			DebugWindow(Store[Title],0,0,10,0,0)
+			;DebugWindow(Store[Title],0,0,10,0,0)
 	tooltip,
-	msgbox % Store[1] "`n" Title
+	;msgbox % Store[1] "`n" Title
 	return
 	}
 	
-	MouseLocation_Set() { ;#[Vquest]
+	MouseLocation_Set() {
 	global
 	;MouseGetPos, MouseX, MouseY
 	MouseClick, right,,, 1, 0, D  ; Hold down the left mouse button.

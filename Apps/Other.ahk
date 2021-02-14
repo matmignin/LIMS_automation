@@ -26,6 +26,12 @@ F1::return
 #ifwinactive,
 RAlt & \::Sendinput, mmignin{tab}Kilgore7744
 RWin & \::Sendinput, Kilgore7744
+#!\::
+	sendinput, 4130220009588038
+	trayTip, ,11/21  127
+	return
+
+	
 +!^F2::^Lbutton
 enter::enter
 

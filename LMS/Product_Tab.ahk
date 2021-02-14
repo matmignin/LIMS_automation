@@ -20,12 +20,6 @@
 	Enter::click("OK_Product_Tab_EditIngredient")
 	+Enter::sendinput, {enter}
 
-#Ifwinactive, Select Product - \\Remote ;{    Select Product - \\Remote
-	F14::
-	excel_ConnectTo()
-	sendinput, {click 106, 64}%ProductCode%{enter}{enter}
-	return
-	
 #ifwinactive, ;}
 
 	

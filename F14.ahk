@@ -22,13 +22,62 @@ global
 		winactivate,
 		Click("OK_ResultEntry")
 	}
-	
-	
-	
+	Else If Winexist("Delete Test - \\Remote ")
+	{
+		winactivate,
+		Sendinput, {enter}
+	}
+	Else If Winexist("Select Iterations - \\Remote")
+	{
+		winactivate,
+		Rotation_GetTable()
+	}
+Else If Winexist("Release:")
+{
+	winactivate,
+	sendinput, {tab}{enter}
+		sleep 200
+	ifwinactive, Sections Exceeding - \\Remote
+		send, {enter}
+	return
+}
+Else If Winexist("Opened Section found - \\Remote")
+{
+		winactivate,
+		Sendinput, {enter}
+		sleep 400
+}
+Else If Winexist("Sign :")
+{
+	winactivate,
+	sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
+}
+Else If winactive("Edit test (Field Configuration: F`, Micro) - \\Remote")
+	sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+Else If winactive("Edit test (Field Configuration: I`, Analytical) - \\Remote")
+	sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+Else If winactive("Edit test (Field Configuration: I`, Physical) - \\Remote")
+	sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+
+Else If winactive("Register new samples - \\Remote ")
+{
+		Sendinput, {tab 2}{space}
+		winwaitactive, Error - \\Remote, , 4
+		sendinput, {enter}
+		RegisterNewSample()
+		return
+}
+Else If winactive("Select Product - \\Remote")
+{
+	excel_ConnectTo()
+	sendinput, {click 106, 64}%ProductCode%{enter}{enter}
+	return
+}
+
+
 	
 	else
 		MouseLocation_Go()
 	Return
 	
 }
-
