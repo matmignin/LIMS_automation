@@ -14,11 +14,11 @@ Menu, Results_DefinitionMenu, Show,
 return
 Results_DefinitionMenuHandler:
 if (A_ThisMenuItem = "USP Heavy Metal")
-	Spec_Tab_HeavymetalsComponents_US()
+	HeavymetalsComponentsUS_Spec_Tab()
 else if (A_ThisMenuItem = "Canada Heavy Metal")
-	Spec_Tab_HeavymetalsComponents_Canada()
+	HeavymetalsComponentsCanada_Spec_Tab()
 else if (A_ThisMenuItem = "Prop65 Heavy Metal")
-	Spec_Tab_HeavymetalsComponents_Prop65()
+	HeavymetalsComponentsProp65_Spec_Tab()
 return
 
 
@@ -37,7 +37,6 @@ wheelright::Spec_Tab_TestDefinitionEditor(Description)
 	F15::mymenu()
 #ifwinactive, Select methods tests - \\Remote
 wheelleft::Click("SearchBar_SelectMethodsTests")
-													;	wheelRight::AddAvonTest() ; Click("MoveOverTest_SelectMethodsTests")       ;      method edit      avon
 
 
 

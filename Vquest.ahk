@@ -1,13 +1,14 @@
 ﻿#Persistent 
 #NoEnv
 #SingleInstance,Force
-#HotkeyModifierTimeout 100
+#HotkeyModifierTimeout 800
 SetDefaultMouseSpeed, 0
 detecthiddenwindows, on
 SetTitleMatchMode, 2
-;settitlematchmode, slow
-#MaxHotkeysPerInterval 800
-;#maxthreadsperhotkey, 1
+settitlematchmode, slow
+#MaxHotkeysPerInterval 400
+#maxthreadsperhotkey, 1
+SetKeyDelay, 1,5 
 setwindelay, 250
 AutoTrim, On
 Setnumlockstate Alwayson
@@ -17,8 +18,9 @@ Menu, Tray, Icon, Robot.ico
 rightScreen:=		A_ScreenWidth-1270
 TopScreen:=		0 
 
-SetKeyDelay, 1,5 
 EnvGet, Batch, Batch
+EnvGet, Batch2, Batch2
+EnvGet, Batch3, Batch3
 EnvGet, ProductCode, ProductCode
 Envget, Name, Name
 Envget, Customer, Customer
@@ -26,6 +28,16 @@ Envget, Lot, Lot
 Envget, Description, Description
 Envget, Iteration, Iteration
 ;Excel_ConnectTo(0)
+
+; Create an object (array) to save the selected word (value) 
+; each time you press your key (combination): 
+
+MyArray := []
+Index := 0
+MaxIndex = 12       ; specific amount of words
+
+
+
 
 VariableBar()
 ;sendinput, {Shift}{alt}{alt}{ctrl}{win}
@@ -46,12 +58,24 @@ VariableBar()
 #Include Hotkeys.ahk
 #Include F14.ahk
 #Include Testing.ahk
+
 #IfWinActive,
 return
 
 F14::F14()
 
 F14 & Mbutton::MouseLocation_Show()
+
+
+
+
+
+Rshift & Ralt::Run, testing.ahk
+
+
+
+
+
 
 
 
@@ -78,6 +102,12 @@ mymenu() {
 			Envget, Lot, Lot
 			Envget, Description, Description
 			Envget, Iteration, Iteration
+			Menu, myMenu, Add, Iteration, myMenuHandler
+			loop 7
+				Menu, IterationMenu, Add, %A_Index%, myMenuHandler
+			menu, mymenu, add
+			Menu, myMenu, Add, Iteration, :IterationMenu
+			menu, mymenu, rename, Iteration, Iteration `t &%Iteration%
 			Menu, myMenu, Add, &Product Code`t%ProductCode% , myMenuHandler
 			;menu, mymenu, icon, &Product Code`t%ProductCode%, lib\ProductCode.png,,0 
 			
@@ -96,12 +126,6 @@ mymenu() {
 			Menu, myMenu, Add, &Name `t %Name%, myMenuHandler
 			
 			Menu, myMenu, Add, &Customer `t %Customer%, myMenuHandler
-			menu, mymenu, add
-			Menu, myMenu, Add, Iteration, myMenuHandler
-			loop 7
-				Menu, IterationMenu, Add, %A_Index%, myMenuHandler
-			Menu, myMenu, Add, Iteration, :IterationMenu
-			menu, mymenu, rename, Iteration, Iteration `t &%Iteration%
 			
 		}
 		Else If winactive("NuGenesis LMS - \\Remote") 

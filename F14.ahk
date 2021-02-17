@@ -10,8 +10,31 @@ global
 	}
 	Else If Winexist("Password ahk_class bosa_sdm_XL9") ;excel log password prompt
 	{
-		winactivate, Password ahk_class bosa_sdm_XL9
-		sendinput, lab{enter 2}
+
+		Menu, PasswordMenu, Add, Sample to QC, PasswordMenuHandler
+		Menu, PasswordMenu, Add, SAMPLE LOG, PasswordMenuHandler
+		Menu, PasswordMenu, Add, Visual, PasswordMenuHandler
+		Menu, PasswordMenu, Add, VQ, PasswordMenuHandler
+		Menu, PasswordMenu, Show,return
+		
+		PasswordMenuHandler:
+		if (A_ThisMenuItem = "Sample to QC")
+			sendinput, care{enter}
+		else if (A_ThisMenuItem = "SAMPLE LOG")
+			Sendinput, lab{enter}
+		else if (A_ThisMenuItem = "Visual")
+			Sendinput, open{enter}
+		else if (A_ThisMenuItem = "Visual")
+			Sendinput, ?Kilgore7744{enter}
+		else	
+			return
+		menu, passwordmenu, deleteAll
+		return	
+			
+	
+	
+		;winactivate, Password ahk_class bosa_sdm_XL9
+		;sendinput, lab{enter 2}
 	}
 	Else If Winactive("ahk_exe EXCEL.EXE")
 	{

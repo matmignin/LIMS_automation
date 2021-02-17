@@ -8,8 +8,9 @@ Rbutton::
 	sleep 500
 	suspend, Off
 	return
-	Media_Prev::+^F1
-F3::+^F1 ;search Help
+Media_Prev::+^F1
+F14:: WinMenuSelectItem, ahk_exe AHK-Studio.exe, 2&, 11&, 3& ; sendinput, +^F 				;jump to function
+F3::+^F1 					;search Help
 
 Ralt & up::^+up
 Ralt & down::^+down
@@ -30,7 +31,7 @@ F15 & wheelUP::+^up
 F15 & wheeldown::+^down
 F15 & wheelleft::sendinput, {home}+{tab}
 F15 & wheelright::sendinput, {home}{tab}
-Mbutton::^!o
+;Mbutton::^!o
 F14 & Wheeldown::Wheel_ZoomOut()
 F14 & wheelup::Wheel_ZoomIn()
 +enter::SaveRestart() 

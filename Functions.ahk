@@ -1,8 +1,11 @@
-﻿VariableBar() { 
+﻿
+VariableBar() { 
 	Global
 	Gui Var:destroy
 
 	EnvGet, Batch, Batch
+	EnvGet, Batch2, Batch2
+	EnvGet, Batch3, Batch3   
 	EnvGet, ProductCode, ProductCode
 	Envget, Name, Name
 	Envget, Customer, Customer
@@ -25,33 +28,47 @@
 	Gui, Var:add, Text, h40 x200 y12 +right, %Customer%
 	envget, Varbar_X, Varbar_X
 	envget, VarBar_Y, VarBar_Y
+gui, Var:add, button, x100 y20 w100 h20 g1, %Batch%
+gui, Var:add, button, x150 y20 w100 h20 g2, %Batch2%
+gui, Var:add, button, x200 y20 w100 h20 g3, %Batch3%
+gui, Var:add, button, x250 y20 w100 h20 g4, % BatchArray[0]
 	Try Gui, Var:Show, h30 x%Varbar_X% y%VarBar_Y% w390  NoActivate
 		catch
-			Gui, Var:Show, h30 x1400 y0 w390  NoActivate
+			Gui, Var:Show, h40 x1400 y0 w390  NoActivate
 			OnMessage(0x201, "WM_LBUTTONDOWN")
 	sendinput, {shift}{ctrl}{alt}{alt}
 
 return
 
 
-
-
-ScreenHandler:
-VariableBar_Relocate()
-
-	ProductCodeVar:
-	run, LMS\GUI_ProductTable.ahk
-	return
-	Gui, Var:submit,NoHide
-	ProductCode:=ProductCode    
-	EnvSet, ProductCode, %ProductCode%
-	return
-	BatchVar:
-	Gui, Var:submit,NoHide
-	Batch:=Batch    
-	EnvSet, Batch, %Batch%
-	return
+gui, show
+return
 }
+UpdateVar()
+{
+	global
+	ClipSaved := ClipboardAll
+	Send, ^c        ; copy the selected word
+	ClipWait 1      ; wait for the clipboard to contain data
+	If !ErrorLevel  ; If NOT ErrorLevel clipwait found data on the clipboard
+	{
+	    Index++     ; checks the number in the variable "Index" and increases it by 1, each time you press esc.
+	    if (Index = MaxIndex+1) ; when the specific amount of words is exceeded
+	    {
+		   Index := 1      ; set this variable to 1
+		   MyArray := []   ; recreate the object (empty the array)
+	    }
+	    MyArray.Insert(Index, clipboard)    
+	}
+	Sleep, 300
+	clipboard := ClipSaved  ; restore original clipboard
+	return
+
+	DebugWindow(Batch[1] "`n" Batch[2] "`n" batch[3],0,1,10,0,0)
+
+}
+
+
 
 ;-------------------------------------------------------------------------------
 WM_LBUTTONDOWN() { ; move window
@@ -73,6 +90,8 @@ VariableBar_Relocate() {
 	VariableBar()
 	return
 	}
+
+
 RightClickText(){
 	mousegetpos, mousex, mousey
 	Click, %A_CaretX% %A_caretY%, right
@@ -174,7 +193,7 @@ Click(Link) {
 Excel_ConnectTo(option=1){
 	Global
 	try {
-		XLBook := ComObjActive("Excel.Application").Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\Mats Workbook.xlsm")
+		XLBook := ComObjActive("Excel.Application").Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\New Products Workbook.xlsm")
 		;XLBook:=ComObjGet("C:\Users\mmignin\OneDrive - Vitaquest International\Mats Workbook.xlsm")
 		XL:=XLBook.ActiveSheet
 		Visible := True		
@@ -188,8 +207,8 @@ Excel_ConnectTo(option=1){
 	XL_ProductCode:=XL.Range("B7").text
 	XL_Name:=Xl.Range("B2").text
 	
-	XL_Batch:=Xl.Range("B4").text
-	XL_Lot:=Xl.Range("B5").text
+	XL_Batch:=Xl.Range("C1").text
+	XL_Lot:=Xl.Range("E1").text
 	XL_Customer:=Xl.Range("B3").text
 	sleep 200
 	EnvSet, ProductCode, %XL_ProductCode%
@@ -205,7 +224,7 @@ Excel_ConnectTo(option=1){
 Excel_Set_lot(Product_Code){
 	Global
 	try {
-		XLBook := ComObjActive("Excel.Application").Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\Mats Workbook.xlsm")
+		XLBook := ComObjActive("Excel.Application").Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\New Products Workbook.xlsm")
 		;XL:=XLBook.Sheets(Product_Code)
 		XL:=XLBook.ActiveSheet
 		;XL_Current := ComObjActive("Excel.Application")
@@ -226,15 +245,17 @@ clipwait, 0.25
 
 Wheel_ZoomOut() {
 	BlockInput, On
-	sendinput, ^{Wheeldown}
-	SLEEP 50
+	;sendinput, ^{Wheeldown}
+	send, ^-
+	SLEEP 200
 	blockinput, off
 	return
 }
 Wheel_ZoomIn() {
 	blockinput, On
-	sendinput, ^{Wheelup}
-	SLEEP 50
+	;sendinput, ^{Wheelup}
+	send, ^=
+	SLEEP 200
 	blockinput, off
 	return
 }
@@ -290,60 +311,48 @@ CloseWindow() {
 		sleep 300
 		return
 	}
-	else if WinActive("firefox.exe")
+	else if WinActive("firefox.exe") || winactive("ahk_exe msedge.exe")
 	{
 		sendinput, {ctrl down}w{ctrl up}
 		sleep 300
 		return
 	}
-	else if WinActive("ahk_exe explorer.exe") && winactive("Inbox - mmignin@vitaquest.com - Outlook")
+	else if WinActive("ahk_exe explorer.exe") || winactive("Inbox - mmignin@vitaquest.com - Outlook")
 	{
 		sendinput, !{F4}
 		sleep 300
 		return
 	}
-	
-	else if winactive("ahk_exe msedge.exe")
-	{
-		send, ^w
-		sleep 300
-		return
-	}
 	else if winactive("Settings ahk_class ApplicationFrameWindow")
 	{
-		winclose, Settings ahk_class ApplicationFrameWindow
+		winclose
 		sleep 300
 		return
 	}
-	else if winactive("ahk_exe mstsc.exe") 
-	{
+	else if winactive("ahk_exe mstsc.exe") ||  winactive("ahk_exe EXCEL.EXE")
+	{ 
 		Send, ^v
 		sleep 300
 		return
 	}
-	else If winactive("ahk_exe EXCEL.EXE")
-	{
-		send, ^v
-		sleep 300
-		return
-	}
 	else If winactive("NuGenesis LMS - \\Remote")
-	{
-		sendinput, %Clipboard%
-		send, {enter}
-		sleep 300
-		return
-	}
+		Tooltip("nope")
 	else
-	Else If 
-	{
-		sendinput, !f4
-	}
-	0
 	return
 	return
 }
-
+Tooltip(msg, time=700) {
+	global
+	tooltip, %msg%
+	sleep, %time%
+	tooltip
+	}
+	
+Main_EditResults(){
+	sendinput, {click}{click 77, 751} ;edit results
+	winwaitactive, Results Definition - \\Remote
+	return
+	}
 Send_ProductCode() 
 {
 	global
@@ -457,6 +466,10 @@ clipwait, 0.25
 Set_Batch() 
 {
 	global
+	Batch_code3:=Batch2
+	sleep 100
+	Batch_code2:=Batch
+	clipwait, 0.5
 	ToolTip, Batch
 	PreClip:=Clipboard
 	sleep 100
@@ -469,11 +482,38 @@ clipwait, 0.25
 	Clipboard:=Preclip
 	sleep 100
 	EnvSet, Batch, %Batch_Code%
+	EnvSet, Batch2, %Batch_Code2%
+	EnvSet, Batch3, %Batch_Code3%
+
 	Sleep 200
 	VariableBar()
 	sleep 200
 	tooltip,
-	return %Batch%
+	return ; %Batch%
+}
+Set_Batchs(The_BatchCode) 
+{
+	global
+	Batch_code3:=Batch2
+	sleep 100
+	Batch_code2:=Batch
+	clipwait, 0.5
+	ToolTip, Batch
+	sleep 100
+	The_BatchCode := StrReplace(The_BatchCode, "`r`n")
+	sleep 100
+	Batch_Code:=The_BatchCode
+clipwait, 0.25
+	sleep 100
+	EnvSet, Batch, %Batch_Code%
+	EnvSet, Batch2, %Batch_Code2%
+	EnvSet, Batch3, %Batch_Code3%
+
+	Sleep 200
+	VariableBar()
+	sleep 200
+	tooltip,
+	return ; %Batch%
 }
 Set_Customer() 
 {
@@ -614,7 +654,7 @@ Product_Tab_EditProduct(Product_Code) {
 
 
 
-Spec_Tab_HeavymetalsComponents_US() {
+HeavymetalsComponentsUS_Spec_Tab() {
 	click 125,120 ;click 2nd row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
@@ -651,7 +691,7 @@ Spec_Tab_HeavymetalsComponents_US() {
 	click 390, 659	;click okay
 	return
 }
-Spec_Tab_HeavymetalsComponents_Canada() {
+HeavymetalsComponentsCanada_Spec_Tab() {
 	click 125,120 ;click 2nd row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
@@ -688,7 +728,7 @@ Spec_Tab_HeavymetalsComponents_Canada() {
 	click 390, 659	;click okay
 	return
 }
-Spec_Tab_HeavymetalsComponents_Prop65() {
+HeavymetalsComponentsProp65_Spec_Tab() {
 	click 125,120 ;click 2nd row
 	click 80,70 ;Edit
 	winactivate, Result Editor - \\Remote
@@ -1305,8 +1345,8 @@ set_ExcelProductCode(){
 		return
 	XL_ProductCode:=XL.Range("B7").text
 	XL_Name:=Xl.Range("B2").text
-	XL_Batch:=Xl.Range("B4").text
-	XL_Lot:=Xl.Range("B5").text
+	XL_Batch:=Xl.Range("C1").text
+	XL_Lot:=Xl.Range("E1").text
 	XL_Customer:=Xl.Range("B3").text
 	sleep 200
 	EnvSet, ProductCode, %XL_ProductCode%

@@ -20,11 +20,12 @@
 Enter::sendinput, +^enter
 	
 Lctrl::winactivate, ahk_exe AHK-Studio.exe
-j::down
-k::up
+j::sendinput, {esc}{down}
+k::sendinput, {esc}{Up}
 h::left
 l::right
 x::Delete
+space::sendinput, {down}
 g::send, ^{end}
 4::end
 0::home
@@ -51,7 +52,7 @@ while GetKeyState("Capslock","p")
 	sendinput, {shift up}
 return
 
-Capslock & space::+^f
+;Capslock & space::+^f
 
 +Capslock::
 	GetKeyState("Capslock","p")

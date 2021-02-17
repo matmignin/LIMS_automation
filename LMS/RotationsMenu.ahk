@@ -25,9 +25,9 @@ Rotation_GetTable(showTable=1){
 	Excel_ConnectTo()
 	Chemicals:=[]
 	;RotationOrder:=[]
-	while (Xl.Range("N" . A_Index).Value != "|") {
+	while (Xl.Range("M" . A_Index).Value != "|") {
 		;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
-		Chemicals[A_index]:=Xl.Range("P" . A_Index+1).Text
+		Chemicals[A_index]:=Xl.Range("Q" . A_Index+1).Text
 		Total_rows:=A_index
 		Cycle:=A_Index
 	}	

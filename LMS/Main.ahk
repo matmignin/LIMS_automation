@@ -1,34 +1,30 @@
 ﻿#IfWinActive
 
-Main_EditResults(){
-sendinput, {click}{click 77, 751} ;edit results
-winwaitactive, Results Definition - \\Remote
-return
-}
 
-Return & Space::Send_ProductCode()
-Return & A::Enter_ProductCode("A")
-Return & E::Enter_ProductCode("E")
-Return & G::Enter_ProductCode("G")
-Return & H::Enter_ProductCode("H")
-Return & I::Enter_ProductCode("I")
-Return & J::Enter_ProductCode("J")
-Return & K::Enter_ProductCode("K")
-Return & L::Enter_ProductCode("L")
-Return & 1::Enter_Batch("011")
-Return & 2::Enter_Batch("012")
-Return & 3::Enter_Batch("013")
-Return & 4::Enter_Batch("014")
-Return & 5::Enter_Batch("015")
-Return & 6::Enter_Batch("006")
-Return & 7::Enter_Batch("007")
-Return & 8::Enter_Batch("008")
-Return & 9::Enter_Batch("009")
-Return & 0:: return
+
+	Return & Space::Send_ProductCode()
+	Return & A::Enter_ProductCode("A")
+	Return & E::Enter_ProductCode("E")
+	Return & G::Enter_ProductCode("G")
+	Return & H::Enter_ProductCode("H")
+	Return & I::Enter_ProductCode("I")
+	Return & J::Enter_ProductCode("J")
+	Return & K::Enter_ProductCode("K")
+	Return & L::Enter_ProductCode("L")
+	Return & 1::Enter_Batch("011")
+	Return & 2::Enter_Batch("012")
+	Return & 3::Enter_Batch("013")
+	Return & 4::Enter_Batch("014")
+	Return & 5::Enter_Batch("015")
+	Return & 6::Enter_Batch("006")
+	Return & 7::Enter_Batch("007")
+	Return & 8::Enter_Batch("008")
+	Return & 9::Enter_Batch("009")
+	Return & 0:: return
 Return_0_Trigger:
 #If (A_PriorHotKey = "Return & 0" AND A_TimeSincePriorHotkey < 4000)
-Return & 0::Enter_Batch("010")
-0::Enter_Batch("000")
+	Return & 0::Enter_Batch("010")
+	0::Enter_Batch("000")
 
 
 #ifwinactive, NuGenesis LMS - \\Remote
@@ -36,7 +32,7 @@ Rbutton & Wheelleft::sendinput,%ProductCode%{enter}
 ;Main_ProductSearchBar()
 wheelright::
 Main_EditResults()
-;Spec_Tab_HeavymetalsComponents_prop65()
+;HeavymetalsComponentsProp65_Spec_Tab()
 ;send, {enter}
 return
 F14 & Wheelup::click, 544, 41
