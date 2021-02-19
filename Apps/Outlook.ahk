@@ -1,10 +1,7 @@
 ﻿
-#ifwinactive, ahk_exe OUTLOOK.EXE ;{ 
-Capslock::return
-Mbutton::
-sendinput, {click , 2}
-Set_Batch()
-return
+#ifwinactive,  outlook
+
+
 
 Rbutton & WheelRight::
 	;F13 & F16::Send_ProductCode()
@@ -25,12 +22,12 @@ Rbutton & WheelRight::
 			return
 	#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe OUTLOOK.EXE")
 				f13::wheel_copy() 
-				Wheelup::Set_Lot()
+				Wheelup::VarSet_lot()
 				Wheeldown::sendinput, #v
-				F16::Set_ProductCode()
-				Wheelleft::Set_ProductCode()
-				F17::Set_Batch()
-				Wheelright::Set_Batch()   
+				F16::VarSet_ProductCode()
+				Wheelleft::VarSet_ProductCode()
+				F17::VarSet_Batch()
+				Wheelright::VarSet_Batch()   
 	#if
 	*/
 

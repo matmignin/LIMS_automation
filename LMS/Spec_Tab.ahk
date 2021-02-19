@@ -1,50 +1,11 @@
 ﻿
-return
-
-
-
-#ifwinactive, Result Editor - \\Remote
-Wheelleft::Run, LMS\GUI_SpecTable.ahk ;GetIngredientMenu()
-#ifwinactive, Results Definition - \\Remote  
-F15::
-Menu, Results_DefinitionMenu, Add, USP Heavy Metal, Results_DefinitionMenuHandler
-Menu, Results_DefinitionMenu, Add, Canada Heavy Metal, Results_DefinitionMenuHandler
-Menu, Results_DefinitionMenu, Add, Prop65 Heavy Metal, Results_DefinitionMenuHandler
-Menu, Results_DefinitionMenu, Show,
-return
-Results_DefinitionMenuHandler:
-if (A_ThisMenuItem = "USP Heavy Metal")
-	HeavymetalsComponentsUS_Spec_Tab()
-else if (A_ThisMenuItem = "Canada Heavy Metal")
-	HeavymetalsComponentsCanada_Spec_Tab()
-else if (A_ThisMenuItem = "Prop65 Heavy Metal")
-	HeavymetalsComponentsProp65_Spec_Tab()
-return
-
-
-
-
-
-Wheelright::Click("Add") ;Click,45, 61 ;Add
-Wheelleft::Run, LMS\GUI_SpecTable.ahk 
-return
-#ifwinactive, Test Definition Editor - \\Remote ;Formulation window, 
-WheelLeft::Run, LMS\GUI_SpecTable.ahk 
-enter::Click("Save_Spec_Tab_TestDefinitionEditor")
-wheelright::Spec_Tab_TestDefinitionEditor(Description)
-#ifwinactive, Edit sample template - \\Remote
-	WheelLeft::sendinput, {tab}{delete 4}%ProductCode%{enter}
-	F15::mymenu()
-#ifwinactive, Select methods tests - \\Remote
-wheelleft::Click("SearchBar_SelectMethodsTests")
-
 
 
 
 Create_Specification_template: ;{
-		#ifwinactive, ahk_exe WFICA32.EXE
-:*:p\::EditSpecification_Physical()
-EditSpecification_Physical(){
+#ifwinactive, ahk_exe WFICA32.EXE
+:*:p\::Spec_Tab_Edit_Physical()
+Spec_Tab_Edit_Physical(){
 Global
 winactivate, Edit specification - \\Remote
 	sendinput, {click 376, 87}{home}
@@ -81,8 +42,8 @@ winactivate, Edit specification - \\Remote
 		sleep 200
 		send,{tab 2}{right} 
 		return
-:*:r\::EditSpecification_Retain()
-EditSpecification_Retain(){
+:*:r\::Spec_Tab_Edit_Retain()
+Spec_Tab_Edit_Retain(){
 Global
 winactivate, Edit specification - \\Remote
 	sendinput, {click 376, 87}{home}
@@ -120,8 +81,8 @@ winactivate, Edit specification - \\Remote
 		else
 			sendinput, {tab}{delete 4}%ProductCode%{enter}
 		return
-:*:m\::EditSpecification_Micro()
-EditSpecification_Micro(){
+:*:m\::Spec_Tab_Edit_Micro()
+Spec_Tab_Edit_Micro(){
 Global
 winactivate, Edit specification - \\Remote
 	sendinput, {click 376, 87}{home}
@@ -148,7 +109,7 @@ winactivate, Edit specification - \\Remote
 		return
 		}
 :*:a\:: ;Analytical
-EditSpecification_Analytical() {
+Spec_Tab_Edit_Analytical() {
 Global
 		If WinActive("Edit sample template - \\Remote")
 			Spec_Tab_EditSampleTemplate_A()

@@ -1,47 +1,36 @@
 ﻿
 
 
-Batch1:
- {
-	Set_Batchs(Batch)
- }
-return
-
-Batch2:
- {
-	Set_Batchs(Batch2)
- }
-return
-
-Batch3:
- {
-	Set_Batchs(Batch3)
- }
-return
-
-Batch4:
- {
-   clipboard := Lot[0]
- }
-return
-
-guiclose:
-gui, Destroy
-
-
-
-ScreenHandler:
-VariableBar_Relocate()
-
-	ProductCodeVar:
-	run, LMS\GUI_ProductTable.ahk
+/*
+	mmignin	Kilgore7744Batch1:
+	 {
+		VarSet_Batchs()
+	 }
 	return
-	Gui, Var:submit,NoHide
-	ProductCode:=ProductCode    
-	EnvSet, ProductCode, %ProductCode%
+	
+	Batch2:
+	 {
+		VarSet_Batchs()
+	 }
 	return
-	BatchVar:
-	Gui, Var:submit,NoHide
-	Batch:=Batch    
-	EnvSet, Batch, %Batch%
+	
+	Batch3:
+	 {
+		VarSet_Batchs()
+	 }
 	return
+	
+	Batch4:
+	 {
+	   clipboard := Lot[0]
+	 }
+	return
+	
+	guiclose:
+	gui, Destroy
+	
+	
+*/
+
+
+

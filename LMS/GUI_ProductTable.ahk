@@ -281,3 +281,4 @@ return
 
 #SingleInstance,Force
 #include Functions.ahk
+;#include VariableBar.ahk

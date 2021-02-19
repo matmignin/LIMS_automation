@@ -1,13 +1,13 @@
 ﻿#IfWinActive, ahk_exe ONENOTE.EXE ;{
-	Lwin & x::
-	lalt & x::send, ^4
-	lalt & Space::send, ^1
-	Lwin & z::
-	lalt & z::send,^2
-	Lwin & c::
-	lalt & c::SendInput, {U+02713}
-	Mbutton::^tab
-	lalt::return
+	/*
+		Lwin & x::
+		lalt & x::send, ^4
+		lalt & Space::send, ^1
+		Lwin & z::
+		lalt & z::send,^2
+		Lwin & c::
+		lalt & c::SendInput, {U+02713}
+	*/
 	;F13 & Lbutton::sendinput, ^!h
 	Rbutton::Rbutton
 	capslock & 1::^!1

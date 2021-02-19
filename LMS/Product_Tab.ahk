@@ -1,25 +1,15 @@
 ﻿return
 #Include LMS\GUI_ProductTable.ahk
-#IfWinActive, Edit Product - \\Remote 
-	wheelleft::Product_Tab_EditProduct(ProductCode)
 
-#ifwinactive, Edit Formulation - \\Remote  
-	WheelRight::Product_Tab_tabletsizeMenu()
-	wheelleft::sendinput,{tab}%ProductCode%+{tab 7}
-		
+/*
+	} else if winactive("Edit Product - \\Remote"){
 	
-#ifwinactive, Composition - \\Remote   
-	;Wheelup::Product_Tab_QuickSelectNextIngredient() 
-	WheelRight::click("Edit")
-	Wheelleft::run, LMS\GUI_ProductTable.ahk
 	
-#ifwinactive, Edit Ingredient - \\Remote ;  
-	wheelright::Product_Tab_DropDown_Ingredient()
-	Wheelleft::run, LMS\GUI_ProductTable.ahk
-	F13::click("OK_Product_Tab_EditIngredient")
-	Enter::click("OK_Product_Tab_EditIngredient")
-	+Enter::sendinput, {enter}
-
+		;F13::click("OK_Product_Tab_EditIngredient")
+	
+		;+Enter::sendinput, {enter}
+	
+*/
 #ifwinactive, ;}
 
 	

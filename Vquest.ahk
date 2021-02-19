@@ -14,49 +14,45 @@ AutoTrim, On
 Setnumlockstate Alwayson
 setCapslockstate alwaysoff
 SetscrolllockState, alwaysOff
-Menu, Tray, Icon, Robot.ico 
-rightScreen:=		A_ScreenWidth-1270
-TopScreen:=		0 
+Menu, Tray, Icon, lib\Robot.ico 
 
-EnvGet, Batch, Batch
-EnvGet, Batch2, Batch2
-EnvGet, Batch3, Batch3
-EnvGet, ProductCode, ProductCode
-Envget, Name, Name
-Envget, Customer, Customer
-Envget, Lot, Lot
-Envget, Description, Description
-Envget, Iteration, Iteration
+
 ;Excel_ConnectTo(0)
 
 ; Create an object (array) to save the selected word (value) 
 ; each time you press your key (combination): 
+/*
+	
+	MyArray := []
+	Index := 0
+	MaxIndex = 12       ; specific amount of words
+	
+*/
 
-MyArray := []
-Index := 0
-MaxIndex = 12       ; specific amount of words
-
-
+rightScreen:=		A_ScreenWidth-1270
+TopScreen:=		0 
 
 
 VariableBar()
-;sendinput, {Shift}{alt}{alt}{ctrl}{win}
+
 #include LMS\Product_Tab.ahk 
 #Include LMS\Spec_Tab.ahk
 #include LMS\RotationsMenu.ahk
 #include LMS\Samples_Tab.ahk
 #Include LMS\Main.ahk
-#Include ViM.ahk
-#Include Apps\Browsers.ahk
+#Include Hotkeys\ViM.ahk
 #include Apps\Other.ahk
-#include Apps\Outlook.ahk
-#Include Apps\OneNote.ahk
-#Include Apps\AhkStudio.ahk
-#Include Apps\Excel.ahk
-#Include Apps\RemoteDesktop.ahk
 #Include Functions.ahk
-#Include Hotkeys.ahk
-#Include F14.ahk
+#Include Hotkeys\Keyboard.ahk
+#Include Hotkeys\Enter.ahk
+#Include MouseKeys\F13.ahk
+#Include MouseKeys\F14.ahk
+#Include MouseKeys\F15.ahk
+#Include MouseKeys\WheelLeft.ahk
+#Include MouseKeys\WheelRight.ahk
+#Include MouseKeys\RightButton.ahk
+#Include MouseKeys\Middlebutton.ahk
+#Include VariableBar.ahk
 #Include Testing.ahk
 
 #IfWinActive,
@@ -69,8 +65,6 @@ F14 & Mbutton::MouseLocation_Show()
 
 
 
-
-Rshift & Ralt::Run, testing.ahk
 
 
 
@@ -146,17 +140,17 @@ mymenu() {
 		envset, Iteration, %Iteration%
 	}
 	else if A_thismenuitem contains Product Code
-		set_ProductCode()
+		VarSet_ProductCode()
 	else if A_thismenuItem contains Batch
-		Set_Batch() 
+		VarSet_Batch() 
 	else if A_thismenuItem contains Name
-		set_name()
+		VarSet_Name()
 	else if A_thismenuItem contains Customer
-		set_customer()
+		VarSet_Customer()
 	else if A_thismenuItem contains Lot
-		Set_Lot() 
+		VarSet_lot() 
 	else if A_thismenuitem contains Analytical 
-		EditSpecification_Analytical()
+		Spec_Tab_Edit_Analytical()
 	;{
 		;If WinActive("Edit sample template - \\Remote")
 		;Spec_Tab_EditSampleTemplate_A()
@@ -165,11 +159,11 @@ mymenu() {
 		;return
 	;}
 	else if A_thismenuitem contains Retain
-		EditSpecification_Retain()
+		Spec_Tab_Edit_Retain()
 	else if A_thismenuitem contains Micro
-		EditSpecification_Micro()
+		Spec_Tab_Edit_Micro()
 	else if A_thismenuitem contains Physical
-		EditSpecification_Physical()		
+		Spec_Tab_Edit_Physical()		
 	else
 		menu, mymenu, deleteAll
 	return

@@ -3,9 +3,9 @@ F15 & WheelDown::
 	send, ^w
 	sleep 500
 	return
-F14 & Lbutton::^w
-wheelright::Browser_Forward
-wheelleft::Browser_Back
+F15 & Wheelleft::Browser_Back
+F15 & wheelright::Browser_Forward
+F14 & Rbutton::send, ^w
 Capslock::return
 #ifwinactive, ahk_exe msedge.exe ; edge
 #ifwinactive, ahk_exe explorer.exe ; explorer

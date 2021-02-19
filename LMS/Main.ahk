@@ -30,23 +30,18 @@ Return_0_Trigger:
 #ifwinactive, NuGenesis LMS - \\Remote
 Rbutton & Wheelleft::sendinput,%ProductCode%{enter}
 ;Main_ProductSearchBar()
-wheelright::
-Main_EditResults()
-;HeavymetalsComponentsProp65_Spec_Tab()
-;send, {enter}
+
 return
 F14 & Wheelup::click, 544, 41
 F14 & WheelRight::click, 743, 41
 F14 & Wheelleft::Click 354, 44
 
 
-;Wheelright:: Sendinput, {Click}{click 74, 776}    			; click Enter Results
+;Wheelright::Sendinput, {Click}{click 74, 776}    			; click Enter Results
 ;wheelleft::AddSampleLog(1)  ; Click 34, 747
-Rwin::Click("SearchBar_Productcode")	; rigth comm button)))
-Ralt::Click("SearchBar_Batch")     	   	     ; right alt button
-#ifwinactive, Result Entry - \\Remote
-Wheelleft::ChangeTestResults()
-Wheelright::ChangeTestResults("Toggle")
+F17::Click("SearchBar_Productcode")	; rigth comm button)))
+F18::Click("SearchBar_Batch")     	   	     ; right alt button
+
 
 #ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
 wheelright::

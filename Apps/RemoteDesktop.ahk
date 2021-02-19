@@ -2,7 +2,7 @@
 F15::Sendinput, Kilgore7744{enter}
 #IfWinActive, Remote Desktop Connection,
 F15::
-Menu, RemoteDesktopMenu, Add, TEST_Citrix, RemoteDesktopHandler
+Menu, RemoteDesktopMenu, Add, TEST_Citrix (for Testing LMS), RemoteDesktopHandler
 Menu, RemoteDesktopMenu, Add, TEST_LMS, RemoteDesktopHandler
 Menu, RemoteDesktopMenu, Add, TEST_NuGen, RemoteDesktopHandler
 Menu, RemoteDesktopMenu, Add, TEST_SDMS, RemoteDesktopHandler
@@ -18,7 +18,7 @@ Menu, RemoteDesktopMenu, Show,
 return
 
 RemoteDesktopHandler:
-If (A_thisMenuItem = "TEST_Citrix") 
+If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
 {	
 	Click 182, 97
 	sendinput, 10.1.2.153

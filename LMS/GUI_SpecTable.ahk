@@ -114,6 +114,8 @@ if (A_GuiEvent = "DoubleClick" )  {
 
 
 SpecListGuiClose:
-ExitApp
+	ExitApp
+	return
 #SingleInstance,Force
 #include Functions.ahk
+;#include VariableBar.ahk

@@ -1,20 +1,23 @@
+#Include Apps\Browsers.ahk
+#include Apps\Outlook.ahk
+#Include Apps\OneNote.ahk
+#Include Apps\AhkStudio.ahk
+#Include Apps\Excel.ahk
+#Include Apps\RemoteDesktop.ahk
 
-return
 #Ifwinactive,
 
 F1::return
 +F1::F1
 +F2::f2
-#IfWinActive, ahk_exe explorer.exe ;_____________________________________Explorer
-	wheelleft::!left
-	wheelright::!right
 
 ;_________________________________________________________________________Snipper
-	#ifwinactive, Snipper - Snipaste ahk_exe Snipaste.exe
+	#ifwinactive, If winactive("ahk_exe explorer.exe")
 	Rbutton::Mbutton
 	F13::sendinput, {enter}
 	F13 & Rbutton::Click, 2
 	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
+	F14::send, ^{rbutton}
 	Mbutton::Sendinput, {click right}{down 3}{enter}
 	wheelright::sendinput, ^=^=
 	wheelleft::sendinput, ^-^-
@@ -24,8 +27,8 @@ F1::return
 
 
 #ifwinactive,
-RAlt & \::Sendinput, mmignin{tab}Kilgore7744
-RWin & \::Sendinput, Kilgore7744
+F18 & \::Sendinput, mmignin{tab}Kilgore7744
+F17 & \::Sendinput, Kilgore7744
 #!\::
 	sendinput, 4130220009588038
 	trayTip, ,11/21  127
@@ -33,7 +36,7 @@ RWin & \::Sendinput, Kilgore7744
 
 	
 +!^F2::^Lbutton
-enter::enter
+
 
 
 

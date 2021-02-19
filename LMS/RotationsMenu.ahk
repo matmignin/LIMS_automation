@@ -42,7 +42,6 @@ Rotation_GetTable(showTable=1){
 		return
 	Return
 
-}
 
 RotationMenuHandler:
    Rotation:=A_ThisMenuItemPos
@@ -54,6 +53,7 @@ RotationMenuHandler:
 return
 
 
+}
 Rotation_Iterations(Rotations,Cycles) {  
 	global
 	If (Rotations = 1) {
