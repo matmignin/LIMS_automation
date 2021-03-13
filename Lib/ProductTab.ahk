@@ -85,7 +85,8 @@ return
 }
 
 
-ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
+ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position)
+{
 	Global
 	Excel_Get_Current_row()
 	Ingredient_Name:=Trim(Ingredient_Name, "`r`n")

@@ -21,12 +21,9 @@ F13 & LButton::
 
 F13 & RButton::	 
 {
-	If Winactive("ahk_exe AHK-Studio.exe") {
-		
-		
-	} ELSE 
-		sendinput, ^{lbutton}
-	Return
+	CoordMode, mouse, screen
+	OCR()
+	CoordMode, mouse, window
 }
 
 F13 & MButton::	 
@@ -85,7 +82,7 @@ F13 & WheelRight::
 			
 			
 		} ELSE 
-
+			
 		Return	
 	}
 	
@@ -95,10 +92,25 @@ F13 & WheelRight::
 			
 			
 		} ELSE 
-		Return
+			Return
 	}
 */
 
+#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe OUTLOOK.EXE")
+f13::Mouse_Wheelcopy() 
+Wheelup::Set_lot()
+Wheeldown::sendinput, #v
+F16::
+Wheelleft::
+Save_Code("Products") ;
+Set_Product()
+return
+F17::
+Wheelright::
+sendinput, ^+{right 2}
+Save_Code("Batches") 
+return  
+#if
 
 #If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4500)
 {
@@ -114,4 +126,3 @@ F13 & WheelRight::
 	#If
 }
 F13:: Tooltip("☩",4500)
-

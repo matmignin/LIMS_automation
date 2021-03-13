@@ -1,15 +1,18 @@
-F14 & Mbutton::Test2()
+F14 & Mbutton::Test_2()
 
-Test(){
+Test_1()
+{
 	Global
-	
-	
+	if OCR() contains "help"
+    MsgBox You have successfully used OCR!
+	else
+    MsgBox % " You have found [ " text " ] `, try finding 'help' instead."
 }
-Test2(){
+Test_2()
+{
 	Global
-	Sendinput, %  Varbar_get(Product)
+	debug("Product",Varbar_get(product))
 }
-
 
 
 
@@ -58,19 +61,10 @@ test_Excelsheets()
 
 
 
-Test_Varbar()
-{
-	global
-	;DebugWindow("Varbar_x : " Locations1 "`nVarbar_Y:" Locations2,0,1,10,0,0)
-	;Batchlist := "Batch|"
-	;Loop, % Batch.MaxIndex()
-	;BatchList .= "|" Batch[A_Index]
-	;Gui, Add, DropDownList, vBatch x24 y110 w90, %BatchList%
-}
 
 
 
 
-DebugWindow(Text,Clear:=0,LineBreak:=1,Sleep:=10,AutoHide:=0,MsgBox:=0){
-	x:=ComObjActive("{DBD5A90A-A85C-11E4-B0C7-43449580656B}"),x.DebugWindow(Text,Clear,LineBreak,Sleep,AutoHide,MsgBox)
-}
+;DebugWindow(Text,Clear:=0,LineBreak:=1,Sleep:=10,AutoHide:=0,MsgBox:=0){
+	;x:=ComObjActive("{DBD5A90A-A85C-11E4-B0C7-43449580656B}"),x.DebugWindow(Text,Clear,LineBreak,Sleep,AutoHide,MsgBox)
+;}

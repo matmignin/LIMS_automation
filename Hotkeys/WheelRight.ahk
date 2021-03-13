@@ -58,12 +58,14 @@
 		return
 	
 }
-	
-	
-	
-	
-	
-	
-	
-	#IfWinActive
-	wheelright::WHeelright()
+
+
+
+
+
+
+
+#IfWinActive
+wheelright::WHeelright()
+#ifwinactive,  outlook
+F17::Wheelright()

@@ -118,19 +118,15 @@ Mouse_Click(Link)
 		Global
 		if winactive("ahk_exe WFICA32.EXE")
 		{
-			;Clipboard := Trim((Clipboard, "`r`n"))
+			Clipboard := Trim((Clipboard, "`r`n"))
+			sleep 150
 			send, %Clipboard%
-			tooltip, Paste
-			sleep 1000
-			tooltip,
-			return
-			
+			tooltip("Paste")
 		}
 		else 
 			send, ^v
-		ToolTip, Paste
-		sleep 800
-		tooltip,
+		ToolTip("Paste")
+		sleep 1000
 		return
 	}
 	Mouse_WheelCut() 
@@ -138,10 +134,9 @@ Mouse_Click(Link)
 		global
 		Send, ^x
 		clipwait, 0.25
-		VarBar()
-		ToolTip, %clipboard%
+		ToolTip(clipboard)
 		sleep 800
-		tooltip,,
+		
 		return
 	}
 	Mouse_WheelCopy() 
@@ -149,10 +144,8 @@ Mouse_Click(Link)
 		global
 		Send, ^c
 		clipwait, 0.25
-		VarBar()
-		ToolTip, %clipboard%
+		ToolTip(clipboard)
 		sleep 800
-		tooltip,,
 		return
 	}
 	
@@ -162,31 +155,31 @@ Mouse_Click(Link)
 		If WinActive("ahk_exe WFICA32.EXE")
 		{
 			send, {esc}
-			sleep 300
+			sleep 400
 			return
 		}
 		else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe")
 		{
 			sendinput, {ctrl down}w{ctrl up}
-			sleep 300
+			sleep 400
 			return
 		}
 		else if WinActive("ahk_exe explorer.exe") || winactive("Inbox - mmignin@vitaquest.com - Outlook")
 		{
 			sendinput, !{F4}
-			sleep 300
+			sleep 400
 			return
 		}
 		else if winactive("Settings ahk_class ApplicationFrameWindow")
 		{
 			winclose
-			sleep 300
+			sleep 400
 			return
 		}
 		else if winactive("ahk_exe mstsc.exe") ||  winactive("ahk_exe EXCEL.EXE")
 		{ 
 			Send, ^v
-			sleep 300
+			sleep 400
 			return
 		}
 		else If winactive("NuGenesis LMS - \\Remote")
@@ -196,7 +189,8 @@ Mouse_Click(Link)
 		return
 	}
 	
-	Mouse_Location_Get() {
+	Mouse_Location_Get() 
+	{
 		global
 		MouseGetPos, MouseLocationX, MouseLocationY
 		MouseClick, right,,, 1, 0, D  ; Hold down the left mouse button.
@@ -205,46 +199,49 @@ Mouse_Click(Link)
 			Sleep, 10
 			if !GetKeyState("Rbutton", "P")  ; The key has been released, so break out of the loop.
 				break
-			MouseGetPos, MouseLocationX, MouseLocationY
-			WinGetTitle, Title, A
-			Tooltip, %MouseLocationX% `, %MouseLocationY% `n%Title%
+			MouseGetPos, MousePosX, MousePosY, , WinControl
+			MousePosition:=MousePosX "`, " MousePosY
+			WinGetTitle, winTitle, A
+			WinGetClass, Winclass, A
+			WinGet, WinProcess, ProcessName, A			
+			Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
 			
-			; ... insert here any other actions you want repeated.
 		}
 		MouseClick, Right,,, 1, 0, U ; Release the mouse button.
-		;WinGetTitle, Title, A
-		WinName:=Title
-		MousePosition:=MouseLocationX "`, " MouseLocationY
-		Store := [MouseLocationX, MouseLocationY]
-		
-		;DebugWindow(Store[Title],0,0,10,0,0)
-		tooltip,
-		;msgbox % Store[1] "`n" Title
+		sendinput, {esc}
+		;MouseClick, left,,, 1, 0,
+		sleep 1000
+		tooltip
+		;WinGetTitle, Title, 
+		;WinTitle:=Wintitle
+		;WinProcess
 		return
 	}
 	
-	Mouse_Location_Show()
-	{
-		global
-		AutoTrim, Off
-		if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 250)
-			Run, C:\Program Files\AutoHotkey\WindowSpy.ahk
-		else 
+	/*
+		Mouse_Location_Show()
 		{
-			;CoordMode, mouse, screen
-			MouseGetPos, MouseLocationX, MouseLocationY
-			WinGet, CurrentWindow, ProcessName, A
-			WinGetTitle, Title, A
-			windowTitle:=Title
-			MousePosition:=MouseLocationX "`, " MouseLocationY
-			ToolTip, %CurrentWindow%`, %Title% `n Mouse: %MouseLocationX% `, %MouseLocationY%
-			;CoordMode, mouse, window		
+			global
+			AutoTrim, Off
+			if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 250)
+				Run, C:\Program Files\AutoHotkey\WindowSpy.ahk
+			else 
+			{
+				;CoordMode, mouse, screen
+				MouseGetPos, MouseLocationX, MouseLocationY, WindowTitle, MouseControl
+				;WinGet, CurrentWindow, ProcessName, A
+				WinGet, WindowProcess, ProcessName, A
+				windowTitle:=Title
+				MousePosition:=MouseLocationX "`, " MouseLocationY
+				ToolTip, %CurrentWindow%`, %Title% `n Mouse: %MouseLocationX% `, %MouseLocationY%
+				;CoordMode, mouse, window		
+			}
+			AutoTrim, On
+			sleep 1000
+			tooltip
+			return
 		}
-		AutoTrim, On
-		sleep 1000
-		tooltip
-		return
-	}
+	*/
 	
 	
 	
@@ -300,3 +297,4 @@ Mouse_Click(Link)
 		mousemove, %mousex%, %mousey%
 		return
 	}
+	

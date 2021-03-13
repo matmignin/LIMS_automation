@@ -28,8 +28,8 @@ VarBar(X:=1, Y:=1, Destroy:="Reset")
 	Gui, VarBar:add, Text, vname  x170 -wrap y0 w160, %Name%
 	Gui, VarBar:add, Text, vcustomer  x175 -wrap y18 w160, %Customer%
 	GUI, VarBar:Font, s15 cBlack Bold, Consolas
-	Gui, VarBar:Add, Edit, gIterationVarbar  x340 h33 y1 w60,
-	Gui, VarBar:Add, UpDown, vIteration wrap x380 h35 y1 w0 Range1-5, %Iteration%
+	Gui, VarBar:Add, Edit, gIterationVarbar  x340 h35 y0 w60,
+	Gui, VarBar:Add, UpDown, vIteration wrap x380 h35 y0 w0 Range1-5, %Iteration%
 	OnMessage(0x203, "VarBar_Relocate")
 	
 	
@@ -50,7 +50,7 @@ try
 	XL:=XL.Sheets(ProductVar).activate
 }
 Catch
-	tooltip(no dice)
+	return
 Excel_Connect()
 ;GuiControl, ,Edit1, %Product%
 GuiControl, ,Static1,%Batch%
@@ -72,7 +72,7 @@ Iteration:=Iteration
 iniwrite, %iteration%, data.ini, iteration, 
 sleep 600
 ;Save_Code("Iteration",Iteration)
-;debugwindow(Iteration)
+DebugWindow("Iteration: " Iteration,0,1,10,0,0)
 return
 
 VarBarGuiClose:

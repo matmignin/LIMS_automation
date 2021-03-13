@@ -122,3 +122,7 @@
 
 #IfWinActive
 wheelleft::WheelLeft()
+
+#ifwinactive,  outlook
+
+F16::Wheelleft()

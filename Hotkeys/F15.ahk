@@ -1,34 +1,13 @@
 ﻿
 
-F15(){
+F15()
+{
 	global
-	If Winactive("NuGenesis LMS - \\Remote"){
-		Menu()
-		
-	} Else If winactive("Edit sample template - \\Remote"){
-		Menu()
-	} Else If winactive("Test Definition Editor - \\Remote "){
+	If winactive("Test Definition Editor - \\Remote ")
 		Sendinput, {Click}^a
-	} Else If winactive("Results Definition - \\Remote"){
-		Menu, Results_DefinitionMenu, Add, USP Heavy Metal, Results_DefinitionMenuHandler
-		Menu, Results_DefinitionMenu, Add, Canada Heavy Metal, Results_DefinitionMenuHandler
-		Menu, Results_DefinitionMenu, Add, Prop65 Heavy Metal, Results_DefinitionMenuHandler
-		Menu, Results_DefinitionMenu, Add, Report Only Heavy Metal, Results_DefinitionMenuHandler
-		Menu, Results_DefinitionMenu, Show,
-		return
-		Results_DefinitionMenuHandler:
-		if (A_ThisMenuItem = "USP Heavy Metal")
-			SpecTab_HM_USP()
-		else if (A_ThisMenuItem = "Canada Heavy Metal")
-			SpecTab_HM_Canada()
-		else if (A_ThisMenuItem = "Prop65 Heavy Metal")
-			SpecTab_HM_Prop65()
-		else if (A_ThisMenuItem = "Report Only Heavy Metal")
-			SpecTab_HM_ReportOnly() 
-		return
-		
-	} else
+	else 
 		Menu()
+	return
 }
 
 
