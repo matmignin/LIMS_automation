@@ -1,4 +1,4 @@
-﻿
+
 
 
 
@@ -40,7 +40,6 @@ SpecTab_Create_Template: ;{
 			sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
 		return
 	}
-	
 :*:m\::
 	SpecTab_Edit_Micro()
 	return
@@ -105,7 +104,7 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision)
 SpecTab_TestDefinitionEditor(The_Description) 
 {
 	Global
-	Excel_ConnectTo()
+	Excel_Connect()
 	WinActivate, Test Definition Editor - \\Remote 
 	DescriptionRaw:=The_Description
 	Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
@@ -147,7 +146,7 @@ SpecTab_Edit_Physical()
 }
 SpecTab_Edit_Retain(){
 	Global
-	VarBar(Varbar_X, Varbar_Y)
+	VarBar()
 	winactivate, Edit specification - \\Remote
 	sendinput, {click 376, 87}{home}
 	send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
@@ -203,7 +202,15 @@ SpecTab_Edit_Micro()
 	sendinput, {tab}{delete 4}%Product%{enter}
 	return
 }
-
+ 
+SpecTab_InsertDescription()
+{
+	Global
+	DescriptionRaw:=Description
+	Description:=RTrim(DescriptionRaw, "`r`n")
+	Send,^a%Description%
+	Return
+} 
 
 SpecTab_HM_ReportOnly() 
 {
@@ -372,4 +379,4 @@ SpecTab_HM_Prop65()
 
 
 #IfWinActive,
-;#include %A_ScriptDir%\LMS\SpecTab_GUI.ahk
+;#include LMS\GUI_SpecTable.ahk

@@ -1,11 +1,11 @@
 ﻿return
-#Include LMS\GUI_ProductTable.ahk
+;#Include %A_ScriptDir%\LMS\ProductTab_GUI.ahk
 
 /*
 	} else if winactive("Edit Product - \\Remote"){
 	
 	
-		;F13::click("OK_Product_Tab_EditIngredient")
+		;F13::click("OK_ProductTab_EditIngredient")
 	
 		;+Enter::sendinput, {enter}
 	

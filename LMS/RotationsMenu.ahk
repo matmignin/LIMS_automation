@@ -1,21 +1,19 @@
 return
 
 #IfWinActive, Select Iterations - \\Remote
-
-EnvGet, ProductCode, ProductCode
-	Mbutton::
-	1::
-	2::
-	3::
-	4::
-	5::
-		Rotation_GetTable(0)
-		WinActivate, Select Iterations - \\Remote
-		sleep 100
-		Rotation_Iterations(A_ThisHotkey,Cycle)
-		;SetKeyDelay 10
-		send,{tab 4}{enter}
-		Return
+wheelleft::Rotation_GetTable()
+1::
+2::
+3::
+4::
+5::
+Rotation_GetTable(0)
+WinActivate, Select Iterations - \\Remote
+sleep 100
+Rotation_Iterations(A_ThisHotkey,Cycle)
+;SetKeyDelay 10
+send,{tab 4}{enter}
+Return
 
 
 
