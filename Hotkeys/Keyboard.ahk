@@ -22,7 +22,7 @@ f11::SaveRestart()
 Media_Next::run, testing.ahk
 +Volume_Up::SaveRestart()
 
-F10::Exitapp
++F10::Exitapp
 
 
 

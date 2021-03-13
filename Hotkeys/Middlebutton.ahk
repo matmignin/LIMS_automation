@@ -9,7 +9,7 @@ Mbutton()
 		return 
 		
 	} Else If winactive("Edit sample template - \\Remote"){
-		mymenu()
+		menu()
 	} Else If winactive("Results Definition - \\Remote"){
 		Sendinput, {Click}^a
 	} Else If winactive("NuGenesis LMS - \\Remote"){
@@ -35,5 +35,5 @@ Mbutton::Mbutton()
 
 #IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
 
-Mbutton::Sendinput, {click right}z1{click right}e^5
+Mbutton::Sendinput, {click right}z1{click right}e{ctrl down}5{ctrl up}
 #ifwinactive, 

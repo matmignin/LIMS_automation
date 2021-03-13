@@ -1,8 +1,6 @@
 ﻿autotrim,On
 ;#maxthreadsperhotkey, 5
 
-Iniread, ProductTable_X, data.ini, Locations, ProductTable_X
-Iniread, ProductTable_Y, data.ini, Locations, ProductTable_Y
 ;Iniread, VarBar_X, data.ini, Locations, VarBar_X
 ;Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
 iniread, Product, data.ini, Products, 1
@@ -12,6 +10,8 @@ iniread, Customer, data.ini, Customers, 1
 iniread, Lot, data.ini, Lots, 1
 iniread, Description, data.ini, Descriptions, 1
 iniread, Iteration, data.ini, Iterations, 1
+Iniread, ProductTable_X, data.ini, Locations, ProductTable_X
+Iniread, ProductTable_Y, data.ini, Locations, ProductTable_Y
 Excel_Connect()
 Name:=[]
 LabelClaim:=[]
@@ -90,6 +90,8 @@ if (A_GuiEvent = "DoubleClick")  {
 	}
 }
 return
+
+
 
 ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
 	Global

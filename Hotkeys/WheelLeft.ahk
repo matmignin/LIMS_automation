@@ -4,11 +4,11 @@
 	If Winactive("ahk_exe AHK-Studio.exe") {
 		sendinput, !{left}
 	} Else If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote") {
-		Menu, PasswordMenu, Add, Samples, PasswordMenuHandler
-		Menu, PasswordMenu, Add, Tests, PasswordMenuHandler
-		Menu, PasswordMenu, Add, Visual, PasswordMenuHandler
-		Menu, PasswordMenu, Add, VQ, PasswordMenuHandler
-		Menu, PasswordMenu, Show,
+		Menu, Menu, Add, Samples, Menu
+		Menu, Menu, Add, Tests, Menu
+		Menu, Menu, Add, Visual, Menu
+		Menu, Menu, Add, VQ, Menu
+		Menu, Menu, Show,
 		return
 		
 		PasswordMenuHandler:
@@ -23,7 +23,7 @@
 		else	
 			return
 		Return
-		menu, passwordmenu, deleteAll
+		menu, Menu, deleteAll
 	} Else If winactive("ahk_exe EXCEL.EXE"){
 		SetScrollLockState, On
 		Send, {Left 1} 
@@ -42,12 +42,12 @@
 	} Else If winactive("Edit Formulation - \\Remote"){
 		sendinput,{tab}%Product%+{tab 7}
 	} Else If winactive("Composition - \\Remote"){
-		run, ProductTab_GUI.ahk
+		ProductTab_Table()
 	} Else If winactive("Edit Ingredient - \\Remote"){
-		run, ProductTab_GUI.ahk
+		ProductTab_Table()
 		;SpecTab -------------------------------------------------------------------
 	} Else If winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote"){
-		Run, SpecTab_GUI.ahk ;GetIngredientMenu()
+		SpecTab_Table() ;GetIngredientMenu()
 		
 	} Else If winactive("Edit sample template - \\Remote"){
 		sendinput, {tab}{delete 4}%Product%{enter}

@@ -1,7 +1,8 @@
-﻿SetWorkingDir "C:\Users\mmignin\OneDrive - Vitaquest International\VQuest"
-#Persistent 
+﻿#Persistent 
 #NoEnv
 #SingleInstance,Force
+SetWorkingDir "C:\Users\mmignin\OneDrive - Vitaquest International\VQuest"
+Menu, Tray, Add, Reset VarBar, VarBar_Reset
 #InstallKeybdHook
 ;#HotkeyModifierTimeout 800
 Setnumlockstate Alwayson
@@ -30,7 +31,7 @@ Excel_Connect()
 ;testExcel_sheets()
 VarBar()
 
-Menu, Tray, Add, Reset VarBar, VarBar_Reset
+
 #IfWinActive,
 return
 
@@ -71,6 +72,6 @@ return
 #Include Hotkeys\WheelRight.ahk
 #Include Hotkeys\RightButton.ahk
 #Include Hotkeys\Middlebutton.ahk
-;#include Functions\MyMenu.ahk
+;#include Functions\Menu.ahk
 
 

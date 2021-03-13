@@ -118,8 +118,8 @@ Mouse_Click(Link)
 		Global
 		if winactive("ahk_exe WFICA32.EXE")
 		{
-			Clipboard := Trim((Clipboard, "`r`n"))
-			sendinput, %Clipboard%
+			;Clipboard := Trim((Clipboard, "`r`n"))
+			send, %Clipboard%
 			tooltip, Paste
 			sleep 1000
 			tooltip,
@@ -127,7 +127,7 @@ Mouse_Click(Link)
 			
 		}
 		else 
-			sendinput, ^v
+			send, ^v
 		ToolTip, Paste
 		sleep 800
 		tooltip,

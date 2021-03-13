@@ -3,10 +3,10 @@
 F15(){
 	global
 	If Winactive("NuGenesis LMS - \\Remote"){
-		MyMenu()
+		Menu()
 		
 	} Else If winactive("Edit sample template - \\Remote"){
-		mymenu()
+		Menu()
 	} Else If winactive("Test Definition Editor - \\Remote "){
 		Sendinput, {Click}^a
 	} Else If winactive("Results Definition - \\Remote"){
@@ -28,7 +28,7 @@ F15(){
 		return
 		
 	} else
-		MyMenu()
+		Menu()
 }
 
 

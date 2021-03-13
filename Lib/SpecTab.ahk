@@ -1,45 +1,154 @@
 
+SpecTab_Table()
+{
+	Global
+	Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
+	Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
+	Excel_Connect()
+	Name:=[]
+	Position:=[]
+	LabelClaim:=[] 
+	MinLimit:=[]
+	MaxLimit:=[]
+	Units:=[]
+	Percision:=[]
+	LabelName:=[]
+	Description:=[]
+	Requirement:=[]
+	while (Xl.Range("M" . A_Index+6).Value != "") 
+	{
+		Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
+		Name[A_index]:=		Xl.Range("K" . A_Index+7).text
+		LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
+		MinLimit[A_index]:=		Xl.Range("G" . A_Index+7).Text
+		MaxLimit[A_index]:=		Xl.Range("H" . A_Index+7).Text
+		Units[A_index]:=		Xl.Range("I" . A_Index+7).Text
+		Percision[A_index]:=	Xl.Range("J" . A_Index+7).Text
+		Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
+		
+		Total_rows:=A_index
+		Table_Height:=A_index
+		if (Table_Height > 30)
+			Table_Height = 30
+	}
+	
+	
+	;GetExcel_Specification(Product)
+	Gui, Spec_Table:Default
+	Gui +LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
+	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w320 Grid NoSortHdr checked gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description
+	GUI, Spec_Table:Font, s16 cBlack Bold, Consolas
+	loop, %Total_Rows% {
+		if Position[A_index] =""
+		{
+			Table_height:=table_height+1
+			Total_rows:=total_rows-1
+			continue
+		}
+		else	
+			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index]) 
+	}
+	LV_ModifyCol(1,150)
+	LV_ModifyCol(2,0)			
+	LV_ModifyCol(6,0)
+	LV_ModifyCol(7,0)
+	LV_ModifyCol(8,0)
+	LV_ModifyCol(9,0)
+	LV_Delete(Table_Height)
+	sleep 200	
+	CoordMode, mouse, screen
+	Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w320, %Product%
+	CoordMode, mouse, window
+	return			
+	
+	
+	
+	
+	
+	
+	
+	
+	Spec_Table:
+	if (A_GuiEvent = "DoubleClick" )  {	
+		LV_GetText(Name, A_EventInfo,1)
+		LV_GetText(LabelClaim, A_EventInfo,2)
+		LV_GetText(MinLimit, A_EventInfo,3)
+		LV_GetText(MaxLimit, A_EventInfo,4)
+		LV_GetText(Units, A_EventInfo,5)
+		LV_GetText(Percision, A_EventInfo,6)
+		LV_GetText(Description, A_EventInfo,7)
+		sendinput, {space}
+		Gui, Spec_Table:submit,NoHide
+		sleep 200
+		If WinExist("Result Editor - \\Remote") 
+		{
+			SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+			return
+		}
+		else if winexist("Results Definition - \\Remote")
+		{	
+			winactivate, Results Definition - \\Remote
+			Mouse_Click("Edit")
+			sleep 200
+			winwaitactive, Result Editor - \\Remote
+			SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+			return
+		}
+		else If WinExist("Test Definition Editor - \\Remote") 
+		{
+			SpecTab_TestDefinitionEditor(Description) ; the first window
+			return
+		}
+		else If Winexist("NuGenesis LMS - \\Remote") 
+		{
+			winactivate,
+			Mouse_Click("Main_EditTest")
+			sleep 200
+			winactivate, Results Definition - \\Remote
+			Mouse_Click("Edit")
+			SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+			return
+		}
+		else
+			return
+	}
+	
+}
 
 
 
-SpecTab_Create_Template: ;{
+
+
+
+
+Spec_TableGuiClose:
+coordmode, mouse, Screen
+WinGetPos,SpecTable_X,SpecTable_Y,w,h
+sleep 100
+IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
+IniWrite, %SpecTable_Y%, data.ini, Locations, SpecTable_Y
+coordmode, mouse, Window
+sleep 500
+GUI, Spec_Table:destroy
+return
+
+
+
+SpecTab_Create_Template: 
+{
 	#ifwinactive, ahk_exe WFICA32.EXE
 :*:p\::
 	SpecTab_Edit_Physical()
 	return
-:*:cp\::  ;Coated Physical Spec
-	{
-		send,%Product%`, {shift down}C{shift Up}oated`, {shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
-		sleep 400
-		send,{tab}{right} 
-		sleep 200
-		send,{tab}{right}{tab}{left 4}
-		winwaitactive, NuGenesis LMS - \\Remote, ,8
-		if !errorlevel 
-			click, 70, 515 ;click edit sample template
-		winwaitactive, Edit sample template - \\Remote,, 5
-		if !errorlevel
-			sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
-		return
-	}
+:*:cp\::  
+	SpecTab_Edit_CoatedPhysical()
+	return
 :*:r\::
 	SpecTab_Edit_Retain()
 	return
-:*:cr\:: ;Coated Retain
-	{
-		send,%Product%`, {shift down}C{shift Up}oated`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
-		sleep 400
-		send,{tab}{right} 
-		sleep 200
-		send,{tab}{right}{tab 3}{left 4}
-		winwaitactive, NuGenesis LMS - \\Remote, ,8
-		if !errorlevel 
-			click, 70, 515 ;click edit sample template
-		winwaitactive, Edit sample template - \\Remote,, 5
-		if !errorlevel
-			sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
-		return
-	}
+:*:cr\::
+SpecTab_Edit_CoatedRetain()
+return
 :*:m\::
 	SpecTab_Edit_Micro()
 	return
@@ -49,7 +158,8 @@ SpecTab_Create_Template: ;{
 :*:ac\::
 	sendinput, %Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}A{shift Up}nalytical
 	Sendinput, {tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{tab}{right}
-return ;}
+	return 
+}
 	
 	
 	
@@ -144,6 +254,36 @@ SpecTab_Edit_Physical()
 	sendinput, {tab}{delete 4}%Product%{enter}
 	return
 }
+SpecTab_Edit_CoatedRetain()
+{
+	send,%Product%`, {shift down}C{shift Up}oated`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	sleep 400
+	send,{tab}{right} 
+	sleep 200
+	send,{tab}{right}{tab 3}{left 4}
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		click, 70, 515 ;click edit sample template
+	winwaitactive, Edit sample template - \\Remote,, 5
+	if !errorlevel
+		sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
+	return
+}
+SpecTab_Edit_CoatedPhysical()
+{
+	send,%Product%`, {shift down}C{shift Up}oated`, {shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	sleep 400
+	send,{tab}{right} 
+	sleep 200
+	send,{tab}{right}{tab}{left 4}
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		click, 70, 515 ;click edit sample template
+	winwaitactive, Edit sample template - \\Remote,, 5
+	if !errorlevel
+		sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
+	return
+}		
 SpecTab_Edit_Retain(){
 	Global
 	VarBar()
