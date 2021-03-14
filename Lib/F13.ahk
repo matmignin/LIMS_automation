@@ -1,4 +1,4 @@
-﻿#include <Mouse>
+﻿;#include <Mouse>
 
 #ifwinactive, If winactive("ahk_exe explorer.exe")
 ;Rbutton::Mbutton

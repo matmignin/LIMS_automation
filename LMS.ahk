@@ -82,11 +82,15 @@ inputbox,Code,,  %key%`t ,,70,130,%MouseLocationX%,%MouseLocationY%,,,%Code%
 			sendinput, {ctrl down}a{ctrl up}%Product%{enter}
 		VarBar()
 		return
-	} 
+} 
 
 
-	
 
+#ifwinactive,  outlook
+capslock::return
+F13 & WheelRight::
+SENDINPUT % Varbar_get(Batch) " is updated"
+RETURN
 
 
 Main_EditResults() 

@@ -1,4 +1,4 @@
-#include <AhkStudio>
+;#include <AhkStudio>
 
 #Ifwinactive, ahk_exe AHK-Studio.exe 
 {
@@ -11,10 +11,7 @@ F14 & Mbutton::Test_2()
 Test_1()
 {
 	Global
-	if OCR() contains "help"
-    MsgBox You have successfully used OCR!
-	else
-    MsgBox % " You have found [ " text " ] `, try finding 'help' instead."
+
 }
 Test_2()
 {

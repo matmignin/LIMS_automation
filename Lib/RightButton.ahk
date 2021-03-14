@@ -24,12 +24,7 @@ suspend, Off
 return
 
 
-#ifwinactive,  outlook
-capslock::return
-F13 & WheelRight::
-send_Batch()
-SENDINPUT, {space}is updated
-RETURN
+
 
 #IfWinActive,
 ;Rbutton & F16::sendinput, % Varbar_Get(Product)()
