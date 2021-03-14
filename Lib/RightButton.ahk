@@ -1,21 +1,28 @@
-﻿RightButtons() {
-global
-If Winactive("ahk_exe AHK-Studio.exe") {
-		suspend, On
-		sleep 200
-		click, right,  
-		sleep 1000
-		suspend, Off
-		return
+﻿/*
+	RightButtons() {
+	global
+	If Winactive("ahk_exe AHK-Studio.exe") {
+			suspend, OnRbuttonRbutton
+			sleep 200
+			click, right,  
+			sleep 1000
+			suspend, Off
+			return
+		}
 	}
-}
+*/
 
 
-#Ifwinactive, ahk_exe AHK-Studio.exe 
-{
-	Rbutton & F15::Test_2()
-	Rbutton & F14::Test_1()
-}
+#IfWinActive, ahk_exe AHK-Studio.exe 
+Rbutton::
+suspend, On
+sleep 50
+MouseClick, Right,,,1, 0, D
+sleep 500
+MouseClick, Right,,,1, 0, U
+suspend, Off
+return
+
 
 #ifwinactive,  outlook
 capslock::return
@@ -34,7 +41,7 @@ Rbutton & Lbutton::Enter
 Rbutton & Mbutton::Esc
 Rbutton & F13::backspace
 Rbutton & F15::Mouse_Location_get()
-Rbutton::Rbutton
+Rbutton::Click, Right
 
 
 

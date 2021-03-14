@@ -1,7 +1,7 @@
 ﻿#Persistent 
 #NoEnv
 #SingleInstance,Force
-SetWorkingDir "C:\Users\mmignin\OneDrive - Vitaquest International\VQuest"
+;SetWorkingDir "C:\Users\mmignin\Documents\AHK-Studio\Projects\VQuest"
 Menu, Tray, Add, Reset VarBar, VarBar_Reset
 Menu, Tray, Add, ViM, Run_ViM
 Menu, Tray, Add, Cl3, Run_CL3
@@ -18,7 +18,7 @@ settitlematchmode, slow
 SetKeyDelay, 2,5 
 setwindelay, 250
 AutoTrim, On
-Menu, Tray, Icon, lib\Robot.ico 
+Menu, Tray, Icon, Robot.ico 
 rightScreen:=		A_ScreenWidth-1270
 TopScreen:=		0 
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
@@ -50,33 +50,35 @@ return
 	;Send {F18}
 ;}
 ;Return
-#include lib\TextRead\vis2.ahk
+;#include lib\TextRead\vis2.ahk
 
 
 VarBar_Reset:
 VarBar_Reset()
 return
 Run_CL3:
-run, lib\CL3\Cl3.ahk
+run, Cl3.ahk, C:\Users\mmignin\Documents\Autohotkey\lib\CL3
 return
 Run_ViM:
-run, ViM.ahk
+run, ViM.ahk, C:\Users\mmignin\Documents\Autohotkey\lib
 return
 
 #Include LMS.ahk
-;#Include ViM.ahk
 #include <varbar>
-#include <
-#Include Functions.ahk
+#include test.ahk
 
-	#Include Hotkeys\Keyboard.ahk
-	#Include Hotkeys\F13.ahk
-	#Include Hotkeys\F14.ahk
-	#Include Hotkeys\F15.ahk
-	#Include Hotkeys\WheelLeft.ahk
-	#Include Hotkeys\WheelRight.ahk
-	#Include Hotkeys\RightButton.ahk
-	#Include Hotkeys\Middlebutton.ahk
-	;#include Functions\Menu.ahk
+#Include <F13>
+#Include <F14>
+#Include <F15>
+#Include <WheelLeft>
+#Include <WheelRight>
+#Include <RightButton>
+#Include <Middlebutton>
+#Include <Functions>
+#include <Vis2>
+
+;#Include <Mouse>
+
+
 
 

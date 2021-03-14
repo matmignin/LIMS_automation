@@ -1,6 +1,0 @@
-
--- @NoteTime=yyyy-MM-dd hh:mm:ss@ -- ✄ ------------------------------
-
-@clipboard@
-
--- @NoteUri@

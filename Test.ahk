@@ -1,3 +1,11 @@
+#include <AhkStudio>
+
+#Ifwinactive, ahk_exe AHK-Studio.exe 
+{
+	Rbutton & F15::Test_2()
+	Rbutton & F14::Test_1()
+}
+
 F14 & Mbutton::Test_2()
 
 Test_1()
@@ -61,6 +69,14 @@ test_Excelsheets()
 
 
 
+
+
+debug(text,var)
+{
+global
+Text:=Text ": "
+Debugwindow(Text var, 0,1,10,0,0)
+}
 
 
 

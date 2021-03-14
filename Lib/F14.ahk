@@ -30,7 +30,7 @@
 		ProductTab_EditProduct() 
 		
 	} else
-		Test()
+		return
 	Return
 	
 }
@@ -82,12 +82,9 @@ return
 
 F14 & Rbutton:: 
 If Winactive("ahk_exe AHK-Studio.exe"){
-	Test()
-} Else If winactive("Notepad"){
-	Test()
-	
+ test_1()
 } ELSE 
-	Mouse_Closewindow()
+	;Mouse_Closewindow()
 return
 
 

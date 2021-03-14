@@ -160,7 +160,7 @@ Varbar_SetProduct(input)
 		XL:=XL.Sheets(Var).activate
 	}
 	Catch
-		tooltip(no dice)
+		Return
 	Product:=XL.Range("B7").Value
 	Name:=Xl.Range("B2").Value
 	Batch:=Xl.Range("C1").Value

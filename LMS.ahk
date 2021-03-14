@@ -1,10 +1,18 @@
 ﻿#include <ProductTab>
 #include <SampleTab>
 #include <SpecTab>
-#include <varBar>
+;#include <varBar>
 #include <Rotation>
 
 #IfWinActive
+
+
+
+
+
+F20::Send_batch()
+F19::sendinput, % Varbar_Get(Product)()
+
 Return & Space::Send_Product()
 Return & G::Enter_Product("G")
 Return & H::Enter_Product("H")
@@ -103,10 +111,11 @@ SelectCustomer()
 {
 	sendinput, {tab} ;{right 7}{enter} ;501 nutrition was 7
 		return
-}
+	}
 	
 	
-
-	#ifwinactive,
 	
 	
+		#ifwinactive,
+		
+		
