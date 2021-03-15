@@ -1,3 +1,51 @@
+﻿F13 & LButton::Sendinput, +^4 ;screenshot
+
+F13 & MButton::Sendinput, % Varbar_get(Product)
+F13 & WheelLeft::Sendinput, % Varbar_get(Product)
+F13 & WheelUp::Sendinput, % Varbar_get(lot)
+F13 & WheelRight::Sendinput, % Varbar_get(Batch)
+Mbutton & F15::Varbar_Reset()
+#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe OUTLOOK.EXE")
+{
+	f13::Mouse_Wheelcopy() 
+	Wheelup::Set_lot()
+	Wheeldown::sendinput, #v
+	Wheelleft::
+	Save_Code("Products") ;
+	Set_Product()
+	return
+	F17::
+	Wheelright::
+	sendinput, ^+{right 2}
+	Save_Code("Batches") 
+	return  
+	#if
+}
+#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000)
+{
+	f13::Mouse_Wheelcopy() 
+	Wheelup::Varbar_SetLot(Mouse_clip()) ;Set_lot()
+	Wheeldown::sendinput, #v
+	F16::
+	Wheelleft::Varbar_SetProduct(Mouse_clip()) 
+	F17::
+	Wheelright::Varbar_SetBatch(Mouse_clip()) 
+	Lbutton::^+4 ;screenshot
+	Rbutton::OCR()
+	mbutton::Varbar_SetProduct(Mouse_clip())
+	#If
+}
+F13:: Tooltip("☩",4000)
+#if
+
+
+
+
+
+
+
+
+
 
 VarBar(X:=1, Y:=1, Destroy:="Reset")
 { 
@@ -19,7 +67,6 @@ VarBar(X:=1, Y:=1, Destroy:="Reset")
 	WinSet, Transparent, 200
 	Gui, VarBar:color, ef6950	 
 	GUI, VarBar:Font, s20 cBlack Bold, Consolas
-	;Iniread, Product, data.ini, Products, 0
 	Gui, VarBar:Add, Edit, h35 x0 y0 w80 -Wantreturn vProductVar , %Product%
 	gui, varbar:Add, Button, +Default gProductVarBar
 	GUI, VarBar:Font, s10 cBlack Bold, Consolas
@@ -57,22 +104,18 @@ GuiControl, ,Static1,%Batch%
 GuiControl, ,Static2,%lot%
 GuiControl, ,Static3,%Name%
 GuiControl, ,Static4,%Customer%
-;Product:=Product    
-;Product:= Trim(Product, "`r`n")
-;iniwrite, %Product%, data.ini,Products, 0
-;iniwrite, %Batch%,data.ini,Batches, Batch
+GuiControl, ,Edit2,%iteration%
 return
 BatchVarBar:
 Gui, VarBar:submit, NoHide
+ControlGetText, Batch, Static1, VarBar
 return
 
 IterationVarbar:
-Gui, Varbar:Submit,Nohide
-Iteration:=Iteration
-iniwrite, %iteration%, data.ini, iteration, 
 sleep 600
-;Save_Code("Iteration",Iteration)
-DebugWindow("Iteration: " Iteration,0,1,10,0,0)
+Gui, Varbar:Submit,Nohide
+ControlGetText, Iteration, Edit2, VarBar
+DebugWindow("Iteration after submit: " Iteration,0,1,10,0,0)
 return
 
 VarBarGuiClose:
@@ -85,6 +128,52 @@ IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 sleep 500
 GUI, VarBar:destroy
 return
+
+
+VarBar_GetProduct() 
+{
+	global
+	ControlGetText, Product, Edit1, VarBar
+	Return %Product%
+}
+VarBar_GetIteration() 
+{
+	global
+	ControlGetText, Iteration, Edit2, VarBar
+	Return %Iteration%
+}
+Varbar_getlot()
+{
+	global
+	ControlGetText, lot, Static2, VarBar
+	Return %lot%
+}
+;iniread, Product, data.ini, Products, 1
+varbar_get(output)
+{
+	Global
+	If Output contains Product
+		The_GuiElement:="Edit1"
+	else If Output contains Batch
+		The_GuiElement:="Static1"
+	else If Output contains Lot
+	{
+		ControlGetText, lot, Static2, VarBar
+		Return %lot%
+	}
+	else If Output contains Name
+		The_GuiElement:="Static3"
+	else If Output contains Customer
+		The_GuiElement:="Static4"
+	else If (Output:= "Iteration")
+		The_guielement:="Edit2"
+	;ControlGetText, Output, %The_GuiElement%, VarBar
+	sleep 100
+	Return %Output%
+}
+
+
+
 
 VarBar_Relocate() 
 {
@@ -108,45 +197,44 @@ VarBar_Reset()
 	coordmode, mouse, Screen
 	MouseGetPos,MousePos_X,MousePos_Y,w,h
 	coordmode, mouse, Window
+	IniWrite, "0", data.ini, Locations, ProductTable_X
+	IniWrite, "0", data.ini, Locations, ProductTable_Y
+	IniWrite, "0", data.ini, Locations, SpecTable_X
+	IniWrite, "0", data.ini, Locations, SpecTable_Y
 	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
 	varbar(0)
 }
 
-VarBar_LoadData()
+Varbar_Set(Input)
 {
-	iniread, Lot, data.ini, Lots, 1
-	iniread, Product, data.ini, Products, 1
-	loop 5 {
-		iniread, Temp, data.ini, Batches, [A_Index]
-		Batches[A_index]:=Temp
-	}
-	loop 5 {
-		iniread, Temp, data.ini, Products, [A_Index]
-		Products[A_index]:=Temp
-	}
+	clip:= Mouse_clip()
+	If input contains Product
+		The_GuiElement:="Edit1"
+	else If input contains Batch
+		The_GuiElement:="Static1"
+	else If input contains Lot
+		The_GuiElement:="Static2"
+	else If input contains Name
+		The_GuiElement:="Static3"
+	else If input contains Customer
+		The_GuiElement:="Static4"
+	else If input   := Iteration
+		The_guielement:="Edit2"
+		ControlSetText, %The_GuiElement%,%clip%, VarBar
+	DebugWindow("input: " input,0,1,10,0,0)
 }
 Varbar_Setlot(input) 
 {
 	Global
 	Lot:=Input
-	;iniwrite, %Var%, data.ini,Products, 0
-	;ControlSend, %Edit1%, ^a%Var%{enter}, VarBar
 	ControlSetText, Static2,%lot%, VarBar
-	;ControlSetText, Static2,%lot%, VarBar
-	;Gui, VarBar:submit, NoHide
-	return 
 }
 
 Varbar_SetBatch(input) 
 {
 	Global
 	Batch:=Input
-	;iniwrite, %Var%, data.ini,Products, 0
-	;ControlSend, %Edit1%, ^a%Var%{enter}, VarBar
 	ControlSetText, Static1,%Batch%, VarBar
-	;ControlSetText, Static2,%lot%, VarBar
-	;Gui, VarBar:submit, NoHide
-	return 
 }
 Varbar_SetProduct(input) 
 {
@@ -178,21 +266,3 @@ Varbar_SetProduct(input)
 	return 
 }
 
-VarBar_Get(Output) 
-{
-	global
-	;iniread, Product, data.ini, Products, 1
-	If Output contains Product
-		GuiElement:="Edit1"
-	If Output contains Batch
-		GuiElement:="Static1"
-	If Output contains Lot
-		GuiElement:="Static2"
-	If Output contains Name
-		GuiElement:="Static3"
-	If Output contains Customer
-		GuiElement:="Static4"
-	ControlGetText, Output, %GuiElement%, VarBar
-	sleep 100
-	Return %Output%
-}

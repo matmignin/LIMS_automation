@@ -190,50 +190,52 @@ Send_Batch()
 		sleep 200
 		return
 	}
+	/*
+		
+		Set_Batch2() 
+		{
+			global
+			ToolTip, Batch
+			PreClip:=ClipboardAll
+			sleep 100
+			Send, ^c    
+			clipwait, 0.25
+			Clipboard := StrReplace(Clipboard, "`r`n")
+			sleep 100
+			Batch_Code:=Clipboard
+			clipwait, 0.25
+			Clipboard:=Preclip
+			sleep 100
+			Batches.insert(Batch_code)
+			Sleep 200
+			VarBar()
+			sleep 200
+			tooltip,
+			return ; %Batch%
+		}
+		
+		Set_Customer() 
+		{
+			global
+			ToolTip, Customer
+			PreClip:=ClipboardAll
+			sleep 100
+			Send, ^c    
+			clipwait, 0.25
+			Clipboard := StrReplace(Clipboard, "`r`n")
+			sleep 100
+			Customer:=Clipboard
+			clipwait, 0.25
+			Clipboard:=Preclip
+			sleep 100
+			Sleep 200
+			VarBar()
+			sleep 200
+			tooltip,
+			return 
+		}
+	*/
 	
-	Set_Batch2() 
-	{
-		global
-		ToolTip, Batch
-		PreClip:=ClipboardAll
-		sleep 100
-		Send, ^c    
-		clipwait, 0.25
-		Clipboard := StrReplace(Clipboard, "`r`n")
-		sleep 100
-		Batch_Code:=Clipboard
-		clipwait, 0.25
-		Clipboard:=Preclip
-		sleep 100
-		Batches.insert(Batch_code)
-		Sleep 200
-		VarBar()
-		sleep 200
-		tooltip,
-		return ; %Batch%
-	}
 	
-	Set_Customer() 
-	{
-		global
-		ToolTip, Customer
-		PreClip:=ClipboardAll
-		sleep 100
-		Send, ^c    
-		clipwait, 0.25
-		Clipboard := StrReplace(Clipboard, "`r`n")
-		sleep 100
-		Customer:=Clipboard
-		clipwait, 0.25
-		Clipboard:=Preclip
-		sleep 100
-		Sleep 200
-		VarBar()
-		sleep 200
-		tooltip,
-		return 
-	}
-
-
 	
 	

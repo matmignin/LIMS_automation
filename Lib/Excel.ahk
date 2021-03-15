@@ -1,14 +1,17 @@
 #ifwinactive, ahk_exe EXCEL.EXE
-	+Enter::sendinput, !{enter}
++Enter::sendinput, !{enter}
+$Enter::sendinput, {enter}
+
 
 #IfWinActive, LMS_Workbook.xlsm - Excel
-	Rbutton & Lbutton::
+Rbutton & Lbutton::
 Excel_Connect()
 Varbar()
 return
 
 #ifwinactive, Find and Replace,
-	rbutton & Lbutton::sendinput, !i
+rbutton & Lbutton::sendinput, !i
+#IfWinActive
 
 /*
 	#If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe EXCEL.EXE")
@@ -21,45 +24,43 @@ return
 		Wheelright::Save_Code("Batches")   
 		#if
 	}
-*/
-
-/*
+	
 	#IfWinActive, ahk_exe EXCEL.EXE
-		Rbutton & Mbutton::Excel_Set_Product_Cell()
+	Rbutton & Mbutton::Excel_Set_Product_Cell()
 	F16::wheelleft()
 	F17::WheelRight()
 	F13 & F16::Send_Product()
-*/
 
-#IfWinActive
-	
+
 ;Try XL := ComObjCreate("Excel.Application").Open(Path) 
 ;else
-	;XL:=XL.Sheets(sheet).activate
+;XL:=XL.Sheets(sheet).activate
 ;XL:=XL.Sheets(sheet).activate
 ;}
+*/
 
-Excel_Connect(openXL:="ask")
+Excel_Connect()
 {
 	Global
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS_Workbook.xlsm - Excel")
 		ControlSend,ahk_parent, {esc}, LMS_Workbook.xlsm - Excel
-	else if openXL contains open
-		runwait, LMS_Workbook.xlsm, %Path%
-	else if openXL contains ask
-	{
-		msgbox,4,,open LMS Workbook?
-		IfMsgBox, Yes
-			runwait, LMS_Workbook.xlsm, %Path%
-		IfMsgBox,No
-			ToolTip("workbook not open")
-	}
-	;runwait, LMS_Workbook.xlsm, %Path%
-	else if openXL contains no
-		return
 	else
-		ToolTip("something is wrong",1000)
+		runwait, LMS_Workbook.xlsm, %Path%
+	/*ERROR
+		else if openXL contains ask
+		{
+			msgbox,4,,open LMS Workbook?
+			IfMsgBox, Yes
+			runwait, LMS_Workbook.xlsm, %Path%
+			IfMsgBox,No
+			ToolTip("workbook not open")
+		}
+		else if openXL contains no
+			return
+		else
+			ToolTip("something is wrong",1000)
+	*/
 	Try 
 	{
 		XL := ComObjActive("Excel.Application")

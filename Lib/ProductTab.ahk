@@ -1,88 +1,89 @@
 ﻿
 ProductTab_Table()
 {
-global
-Iniread, ProductTable_X, data.ini, Locations, ProductTable_X
-Iniread, ProductTable_Y, data.ini, Locations, ProductTable_Y
-Excel_Connect()
-Name:=[]
-LabelClaim:=[]
-Position:=[]
-LabelName:=[]
-Sub_Table_height:=0
-while (Xl.Range("M" . A_Index+7).Value != "") {
-	Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
-	Name[A_index]:=		Xl.Range("K" . A_Index+7).text
-	LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
-	LabelName[A_index]:=	Xl.Range("M" . A_Index+7).Text
-	Total_rows:=			A_index +1
-	Table_Height:=			A_index
-	if (Xl.Range("F" . A_Index+7).text = "")
-		Sub_Table_Height:=Sub_Table_Height+1			
-}
-Table_Height:=Table_height-Sub_table_Height
-Gui, Ingredient_Table:Default
-Gui, Ingredient_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu 
-GUI, Ingredient_Table:Font, s13 cBlack arial ;Consolas
-Gui, Ingredient_Table:Add, ListView, x0 y0 r%Table_height% W500 Grid NoSortHdr -hdr checked gIngredient_Table,  `t |`t|`t|LabelName	
-loop, %Total_Rows% {
-	if Position[A_index] =""
-	{
-		;Table_height:=table_height
-		Total_rows:=total_rows - 1
-		continue
+Global
+	;Try GUI, Ingredient_Table:destroy
+	Iniread, ProductTable_X, data.ini, Locations, ProductTable_X
+	Iniread, ProductTable_Y, data.ini, Locations, ProductTable_Y
+	Excel_Connect()
+	Name:=[]
+	LabelClaim:=[]
+	Position:=[]
+	LabelName:=[]
+	Sub_Table_height:=0
+	while (Xl.Range("M" . A_Index+7).Value != "") {
+		Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
+		Name[A_index]:=		Xl.Range("K" . A_Index+7).text
+		LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
+		LabelName[A_index]:=	Xl.Range("M" . A_Index+7).Text
+		Total_rows:=			A_index +1
+		Table_Height:=			A_index
+		if (Xl.Range("F" . A_Index+7).text = "")
+			Sub_Table_Height:=Sub_Table_Height+1			
 	}
-	else	
-		LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index])
-}
-Gui, Ingredient_Table:Add, Checkbox, vAutoEnter x20, Auto-Enter Results?
-LV_ModifyCol(1,50) 
-LV_ModifyCol(2,200)
-LV_ModifyCol(3,180)			
-LV_ModifyCol(4,0)
-;LV_delete(Total_rows)
-sleep 100		
-;CoordMode, mouse, screen
-Gui, Ingredient_Table:Show, x%ProductTable_X% y%ProductTable_Y% w320, %Product% `t
-;CoordMode, mouse, window
-return	
-
-
-/*
-	WM_LBUTTONDOWN() { ; move window
-		Global
-		PostMessage, 0xA1, 2 ; WM_NCLBUTTONDOWN
-		keywait, Lbutton, U
-		coordmode, mouse, Screen
-		WinGetPos,ProductTable_X,ProductTable_Y,w,h
-		sleep 100
-		tooltip, %ProductTable_x% , %ProductTable_Y%
-		IniWrite, %ProductTable_X%, data.ini, Locations, ProductTable_X
-		IniWrite, %ProductTable_Y%, data.ini, Locations, ProductTable_Y
-		coordmode, mouse, Window
-		sleep 1000
-		tooltip,
-		
-		return
+	Table_Height:=Table_height-Sub_table_Height
+	Gui, Ingredient_Table:Default
+	Gui, Ingredient_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu 
+	GUI, Ingredient_Table:Font, s13 cBlack arial ;Consolas
+	Gui, Ingredient_Table:Add, ListView, x0 y0 r%Table_height% W500 Grid NoSortHdr -hdr checked gIngredient_Table,  `t |`t|`t|LabelName	
+	loop, %Total_Rows% {
+		if Position[A_index] =""
+		{
+			;Table_height:=table_height
+			Total_rows:=total_rows - 1
+			continue
+		}
+		else	
+			LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index])
 	}
-*/
-
-Ingredient_Table:
-if (A_GuiEvent = "DoubleClick")  {
-	Gui, Ingredient_Table:submit,NoHide
-	Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
-	Current_Row:=A_EventInfo
-	Loop % Rows_left {
-		Excel_Get_Current_row()
-		ProductTab_EditIngredient(LabelName,LabelClaim,Position)
-		if WinExist("Duplicate ingredient ID - \\Remote")
-			break 
-		
-		sleep 300
+	Gui, Ingredient_Table:Add, Checkbox, vAutoEnter x20, Auto-Enter Results?
+	LV_ModifyCol(1,50) 
+	LV_ModifyCol(2,200)
+	LV_ModifyCol(3,180)			
+	LV_ModifyCol(4,0)
+	;LV_delete(Total_rows)
+	sleep 100		
+	CoordMode, mouse, screen
+	Gui, Ingredient_Table:Show, x%ProductTable_X% y%ProductTable_Y% w320, %Product%
+	CoordMode, mouse, window
+	return	
 	}
-}
-return
-}
+	
+	/*
+		WM_LBUTTONDOWN() { ; move window
+			Global
+			PostMessage, 0xA1, 2 ; WM_NCLBUTTONDOWN
+			keywait, Lbutton, U
+			coordmode, mouse, Screen
+			WinGetPos,ProductTable_X,ProductTable_Y,w,h
+			sleep 100
+			tooltip, %ProductTable_x% , %ProductTable_Y%
+			IniWrite, %ProductTable_X%, data.ini, Locations, ProductTable_X
+			IniWrite, %ProductTable_Y%, data.ini, Locations, ProductTable_Y
+			coordmode, mouse, Window
+			sleep 1000
+			tooltip,
+			
+			return
+		}
+	*/
+	
+	Ingredient_Table:
+	if (A_GuiEvent = "DoubleClick")  {
+		Gui, Ingredient_Table:submit,NoHide
+		Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
+		Current_Row:=A_EventInfo
+		Loop % Rows_left {
+			Excel_Get_Current_row()
+			ProductTab_EditIngredient(LabelName,LabelClaim,Position)
+			if WinExist("Duplicate ingredient ID - \\Remote")
+				break 
+			
+			sleep 300
+		}
+	}
+	return
+
 
 
 ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position)
@@ -305,7 +306,7 @@ ProductTab_Select_Ingredient()
 
 Formulation_Hotstrings: ;{:::::::::::::::::::::::::::::
 	#IfWinActive, ahk_exe WFICA32.EXE
-	Capslock::return
+	;Capslock::return
 	:*R:#00\::#00 capsule / 0.917” x 0.336”
 	:*R:#3\::`#3 capsule / 0.626” x 0.229”
 	:*R:#2\::`#2 capsule / 0.709” x 0.250”

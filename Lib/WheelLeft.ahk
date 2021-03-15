@@ -4,31 +4,7 @@
 	If Winactive("ahk_exe AHK-Studio.exe") {
 		sendinput, !{left}
 	} Else If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote") {
-		Menu, Menu, Add, Samples, Menu
-		Menu, Menu, Add, Tests, Menu
-		Menu, Menu, Add, Visual, Menu
-		Menu, Menu, Add, VQ, Menu
-		Menu, Menu, Show,
-		return
-		
-		PasswordMenuHandler:
-		if (A_ThisMenuItem = "Samples")
-			sendinput, care{enter}
-		else if (A_ThisMenuItem = "Tests")
-			Sendinput, lab{enter}
-		else if (A_ThisMenuItem = "Visual")
-			Sendinput, open{enter}
-		else if (A_ThisMenuItem = "VQ")
-			Sendinput, ?Kilgore7744{enter}
-		else	
-			return
-		Return
-		menu, Menu, deleteAll
-	} Else If winactive("ahk_exe EXCEL.EXE"){
-		SetScrollLockState, On
-		Send, {Left 1} 
-		SetScrollLockState, Off 
-		return
+		Menu()
 	} Else If winactive("outlook"){
 		Send, {wheelleft} 
 	} Else If winactive("ahk_exe explorer.exe"){
@@ -47,8 +23,7 @@
 		ProductTab_Table()
 		;SpecTab -------------------------------------------------------------------
 	} Else If winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote"){
-		SpecTab_Table() ;GetIngredientMenu()
-		
+		SpecTab_Table() 
 	} Else If winactive("Edit sample template - \\Remote"){
 		sendinput, {tab}{delete 4}%Product%{enter}
 	} Else If winactive("Select methods tests - \\Remote"){
@@ -61,30 +36,22 @@
 	} else if Winactive("Register new samples - \\Remote"){
 		SampleTab_RegisterNewSample()
 	} Else if winactive("Edit sample (Field Configuration: I`, Physical) - \\Remote"){		
-		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		SelectCustomer()
+		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%{tab}
 		;==================================================================
 	} Else if WinActive("Edit sample (Field Configuration: CT`, Physical) - \\Remote"){
-		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		SelectCustomer()
+		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%{tab}
 	} Else if WinActive("Edit sample (Field Configuration: I`, Analytical) - \\Remote"){
-		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		SelectCustomer()
+		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%{tab}
 	} Else if Winactive("Edit sample (Field Configuration: F`, Micro) - \\Remote"){
-		sendinput, {tab 2}{right}{click 277, 139}{tab 7}%Batch%{tab}%Lot%
-		SelectCustomer()
+		sendinput, {tab 2}{right}{click 277, 139}{tab 7}%Batch%{tab}%Lot%{tab}
 	} Else if WinActive("Edit sample (Field Configuration: CT`, Retain) - \\Remote"){
-		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		SelectCustomer()
+		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%{tab}
 	} Else if WinActive("Edit sample (Field Configuration: I`, Retain) - \\Remote"){
-		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		SelectCustomer()
+		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%{tab}
 	} Else If winactive("Find and Replace") {
-		
+		sendinput, %Product%
 	} Else If winactive("Select Product - \\Remote"){ ; rotation testing product select
-		
 		sendinput, {click 108, 67}%product%{enter 2}
-		
 	} Else If Winexist("Release:") {
 		winactivate,
 		sendinput, {tab}{enter}
@@ -125,4 +92,4 @@ wheelleft::WheelLeft()
 
 #ifwinactive,  outlook
 
-F16::Wheelleft()
+;F16::Wheelleft()
