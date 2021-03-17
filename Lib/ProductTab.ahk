@@ -345,6 +345,7 @@ Formulation_Hotstrings: ;{:::::::::::::::::::::::::::::
 	:*:5\::`Each five (5)  contains{ctrl down}{left}{ctrl up}{left}
 	:*:6\::`Each six (6)  contains{ctrl down}{left}{ctrl up}{left}
 	:*:7\::`Each seven (7)  contains{ctrl down}{left}{ctrl up}{left}
+	:*:scoop\::scoop ( g){left 3}{tab}Blend+{tab}
 	:*:NMT30::`NMT 30 Minutes
 	:*:NMT5::`NMT 5 mcg/day
 	:*:NMT15::`NMT 15 mcg/day

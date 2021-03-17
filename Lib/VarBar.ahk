@@ -1,8 +1,8 @@
 ﻿
 #IfWinActive
 F13 & LButton::Sendinput, +^4 ;screenshot
-F13 & MButton::Sendinput, % Varbar_get(Product)
-F13 & WheelUp::Sendinput, % Varbar_get(lot)
+F13 & MButton::Sendinput, % Varbar_get("lot")
+F13 & WheelUp::Sendinput, % Varbar_get("Product")
 #If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe OUTLOOK.EXE")
 {
 	f13::Mouse_Wheelcopy() 
@@ -99,54 +99,29 @@ IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 sleep 500
 GUI, VarBar:destroy
 return
-varbar_get(output)
+varbar_get(Category)
 {
 	Global
-	If (Output := "Product")
+	If Category contains Product
 		ControlGetText, Output, Edit1, VarBar
-	else If Output contains Batch
+	else If Category contains Batch
 		ControlGetText, Output, Static1, VarBar
-	else If Output contains Lot
+	else If Category contains Lot
 	{
-		ControlGetText, %lot%, Static2, VarBar
+		ControlGetText, lot, Static2, VarBar
 		Return %lot%
 	}
-	else If Output contains Name
+	else If Category contains Name
 		ControlGetText, Output, Static3, VarBar
-	else If Output contains Customer
+	else If Category contains Customer
 		ControlGetText, Output, Static4, VarBar
-	else If (Output:= "Iteration")
+	else If Output contains Iteration
 		ControlGetText, Output, Edit2, VarBar
 	sleep 100
 	Return %Output%
 }
-VarBar_Relocate() 
-{
-	global
-	PostMessage, 0xA1, 2 
-	keywait, Lbutton, U
-	coordmode, mouse, Screen
-	WinGetPos,VarBar_X,VarBar_Y,w,h
-	coordmode, mouse, Window
-	sleep 300
-	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
-	IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
-	return
-}
-VarBar_Reset()
-{
-	Global
-	GUI, VarBar:destroy
-	coordmode, mouse, Screen
-	MouseGetPos,MousePos_X,MousePos_Y,w,h
-	coordmode, mouse, Window
-	IniWrite, "0", data.ini, Locations, ProductTable_X
-	IniWrite, "0", data.ini, Locations, ProductTable_Y
-	IniWrite, "0", data.ini, Locations, SpecTable_X
-	IniWrite, "0", data.ini, Locations, SpecTable_Y
-	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
-	varbar(0)
-}
+
+
 Varbar_Set(Input)
 {
 	global
@@ -185,7 +160,40 @@ Varbar_Set(Input)
 	else If input   := Iteration
 		guielement:="Edit2"
 	ControlSetText, %GuiElement%,%clip%, VarBar
-	DebugWindow("clip: " clip, 1,1,10,0,0)
-	debugwindow("Input: " Input "  Guielement: " GuiElement,0,1,10)
+	;DebugWindow("clip: " clip, 1,1,10,0,0)
+	;debugwindow("Input: " Input "  Guielement: " GuiElement,0,1,10)
+	return
 }
+
+
+
+
+VarBar_Relocate() 
+{
+	global
+	PostMessage, 0xA1, 2 
+	keywait, Lbutton, U
+	coordmode, mouse, Screen
+	WinGetPos,VarBar_X,VarBar_Y,w,h
+	coordmode, mouse, Window
+	sleep 300
+	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
+	IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
+	return
+}
+VarBar_Reset()
+{
+	Global
+	GUI, VarBar:destroy
+	coordmode, mouse, Screen
+	MouseGetPos,MousePos_X,MousePos_Y,w,h
+	coordmode, mouse, Window
+	IniWrite, "0", data.ini, Locations, ProductTable_X
+	IniWrite, "0", data.ini, Locations, ProductTable_Y
+	IniWrite, "0", data.ini, Locations, SpecTable_X
+	IniWrite, "0", data.ini, Locations, SpecTable_Y
+	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
+	varbar(0)
+}
+
  
