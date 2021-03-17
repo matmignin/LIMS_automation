@@ -1,10 +1,10 @@
 ﻿#Persistent 
 #NoEnv
 #SingleInstance,Force
-;SetWorkingDir "C:\Users\mmignin\Documents\AHK-Studio\Projects\VQuest"
-Menu, Tray, Add, Run ViM and CL3, Run_ViM_CL3
+Menu, Tray, Add, Run CL3, Run_cl3
 Menu, Tray, Add, Reset Table Locations, Varbar_Reset
-#InstallKeybdHook
+;#InstallKeybdHook
+;#InstallMouseHook
 Setnumlockstate Alwayson
 setCapslockstate alwaysoff
 SetscrolllockState, alwaysOff
@@ -12,38 +12,35 @@ SetDefaultMouseSpeed, 0
 detecthiddenwindows, on
 SetTitleMatchMode, 2
 settitlematchmode, slow
-#MaxHotkeysPerInterval 800
+#MaxHotkeysPerInterval 100
 #maxthreadsperhotkey, 1
-SetKeyDelay, 0,0
+SetKeyDelay, 0
 setwindelay, 250
 AutoTrim, On
-Menu, Tray, Icon, bin\Robot.ico 
-;rightScreen:=		A_ScreenWidth-1270
-;TopScreen:=		0 
+Menu, Tray, Icon, Robot.ico
+#HotkeyModifierTimeout 
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
 Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-;iniread, Batch, data.ini, Batches, Batch 
-;iniread, Product, data.ini, Products, Product 
 Excel_Connect()
 VarBar()
-;Run, Vim.Ahk, C:\Users\mmignin\Documents\Autohotkey\Lib
+;Run, ViM.Ahk, C:\Users\mmignin\Documents\Autohotkey\Lib
 return
 #IfWinActive,
+
 
 VarBar_Reset:
 VarBar_Reset()
 return
-Run_Vim_CL3:
-run, Cl3.ahk, C:\Users\mmignin\Documents\Autohotkey\lib\CL3
-Run, Vim.Ahk, C:\Users\mmignin\Documents\Autohotkey\Lib
+Run_CL3:
+Run, cl3.Ahk, C:\Users\mmignin\Documents\Autohotkey\lib\CL3
 return
-
+#include <Vim>
+;#include <Vis2>
 #Include LMS.ahk
-#include <ViM>
 #include test.ahk
 #Include <WheelLeft>
 #Include <WheelRight>
-#Include <RightButton>
-#Include <Functions>
 #include <varBar>
-;#Include <Mouse>
+
+#Include <Mouse>
+;F13 & RButton::OCR()

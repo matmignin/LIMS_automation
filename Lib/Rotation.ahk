@@ -11,7 +11,9 @@ WinActivate, Select Iterations - \\Remote
 sleep 100
 Rotation_Iterations(A_ThisHotkey,Cycle)
 ;SetKeyDelay 10
-send,{tab 4}{enter}
+send,{tab 4}{
+	
+	
 Return
 
 

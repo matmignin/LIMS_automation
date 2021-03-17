@@ -1,12 +1,14 @@
-﻿WheelLeft()
+﻿
+#IfWinActive, ahk_exe WFICA32.EXE
+F13::AutoLMS()
+
+AutoLMS()
 {
 	global
 	If Winactive("ahk_exe AHK-Studio.exe") {
 		sendinput, !{left}
 	} Else If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote") {
 		Menu()
-	} Else If winactive("outlook"){
-		Send, {wheelleft} 
 	} Else If winactive("ahk_exe explorer.exe"){
 		;LMS ------------------------------------------------------------------------
 	} Else If winactive("Result Entry - \\Remote"){
@@ -86,10 +88,3 @@
 	} else
 		return
 }
-
-#IfWinActive
-wheelleft::WheelLeft()
-
-#ifwinactive,  outlook
-
-;F16::Wheelleft()

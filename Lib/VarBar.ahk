@@ -1,52 +1,32 @@
-﻿F13 & LButton::Sendinput, +^4 ;screenshot
-
+﻿
+#IfWinActive
+F13 & LButton::Sendinput, +^4 ;screenshot
 F13 & MButton::Sendinput, % Varbar_get(Product)
-F13 & WheelLeft::Sendinput, % Varbar_get(Product)
 F13 & WheelUp::Sendinput, % Varbar_get(lot)
-F13 & WheelRight::Sendinput, % Varbar_get(Batch)
-Mbutton & F15::Varbar_Reset()
 #If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe OUTLOOK.EXE")
 {
 	f13::Mouse_Wheelcopy() 
-	Wheelup::Set_lot()
+	;Wheelup::Set_lot()
 	Wheeldown::sendinput, #v
-	Wheelleft::
-	Save_Code("Products") ;
-	Set_Product()
-	return
+	F16::
 	F17::
-	Wheelright::
-	sendinput, ^+{right 2}
-	Save_Code("Batches") 
-	return  
 	#if
 }
 #If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000)
 {
 	f13::Mouse_Wheelcopy() 
-	Wheelup::Varbar_SetLot(Mouse_clip()) ;Set_lot()
-	Wheeldown::sendinput, #v
+	Wheelup::Varbar_Set("Product") ;Set_lot()
+	Wheeldown::sendinput, {lcontrol down}b{lcontrol up}
 	F16::
-	Wheelleft::Varbar_SetProduct(Mouse_clip()) 
-	F17::
-	Wheelright::Varbar_SetBatch(Mouse_clip()) 
-	Lbutton::^+4 ;screenshot
-	Rbutton::OCR()
-	mbutton::Varbar_SetProduct(Mouse_clip())
+	;F17::
+	;Lbutton::^+4 ;screenshot
+	;Rbutton::OCR()
+	;mbutton::Varbar_SetProduct(Mouse_clip())
 	#If
 }
 F13:: Tooltip("☩",4000)
 #if
-
-
-
-
-
-
-
-
-
-
+; K244
 VarBar(X:=1, Y:=1, Destroy:="Reset")
 { 
 	Global
@@ -62,7 +42,6 @@ VarBar(X:=1, Y:=1, Destroy:="Reset")
 	}
 	if (Destroy:="Reset")
 		GUI, VarBar:destroy
-	
 	Gui VarBar:+LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 	WinSet, Transparent, 200
 	Gui, VarBar:color, ef6950	 
@@ -78,16 +57,11 @@ VarBar(X:=1, Y:=1, Destroy:="Reset")
 	Gui, VarBar:Add, Edit, gIterationVarbar  x340 h35 y0 w60,
 	Gui, VarBar:Add, UpDown, vIteration wrap x380 h35 y0 w0 Range1-5, %Iteration%
 	OnMessage(0x203, "VarBar_Relocate")
-	
-	
 	CoordMode, mouse, screen
 	Gui, VarBar:Show, h35 x%VarBar_X% y%VarBar_y%  w370 NoActivate, VarBar
 	CoordMode, mouse, window
-	
 	return
 }
-
-
 ProductVarBar:
 Gui, VarBar:submit,NoHide
 ;Excel_SetProduct(Product)
@@ -110,14 +84,11 @@ BatchVarBar:
 Gui, VarBar:submit, NoHide
 ControlGetText, Batch, Static1, VarBar
 return
-
 IterationVarbar:
 sleep 600
 Gui, Varbar:Submit,Nohide
 ControlGetText, Iteration, Edit2, VarBar
-DebugWindow("Iteration after submit: " Iteration,0,1,10,0,0)
 return
-
 VarBarGuiClose:
 coordmode, mouse, Screen
 WinGetPos,VarBar_X,Varbar_Y,w,h
@@ -128,53 +99,27 @@ IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 sleep 500
 GUI, VarBar:destroy
 return
-
-
-VarBar_GetProduct() 
-{
-	global
-	ControlGetText, Product, Edit1, VarBar
-	Return %Product%
-}
-VarBar_GetIteration() 
-{
-	global
-	ControlGetText, Iteration, Edit2, VarBar
-	Return %Iteration%
-}
-Varbar_getlot()
-{
-	global
-	ControlGetText, lot, Static2, VarBar
-	Return %lot%
-}
-;iniread, Product, data.ini, Products, 1
 varbar_get(output)
 {
 	Global
-	If Output contains Product
-		The_GuiElement:="Edit1"
+	If (Output := "Product")
+		ControlGetText, Output, Edit1, VarBar
 	else If Output contains Batch
-		The_GuiElement:="Static1"
+		ControlGetText, Output, Static1, VarBar
 	else If Output contains Lot
 	{
-		ControlGetText, lot, Static2, VarBar
+		ControlGetText, %lot%, Static2, VarBar
 		Return %lot%
 	}
 	else If Output contains Name
-		The_GuiElement:="Static3"
+		ControlGetText, Output, Static3, VarBar
 	else If Output contains Customer
-		The_GuiElement:="Static4"
+		ControlGetText, Output, Static4, VarBar
 	else If (Output:= "Iteration")
-		The_guielement:="Edit2"
-	;ControlGetText, Output, %The_GuiElement%, VarBar
+		ControlGetText, Output, Edit2, VarBar
 	sleep 100
 	Return %Output%
 }
-
-
-
-
 VarBar_Relocate() 
 {
 	global
@@ -186,10 +131,8 @@ VarBar_Relocate()
 	sleep 300
 	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 	IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
-	
 	return
 }
-
 VarBar_Reset()
 {
 	Global
@@ -204,65 +147,45 @@ VarBar_Reset()
 	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
 	varbar(0)
 }
-
 Varbar_Set(Input)
 {
+	global
 	clip:= Mouse_clip()
-	If input contains Product
-		The_GuiElement:="Edit1"
-	else If input contains Batch
-		The_GuiElement:="Static1"
-	else If input contains Lot
-		The_GuiElement:="Static2"
-	else If input contains Name
-		The_GuiElement:="Static3"
-	else If input contains Customer
-		The_GuiElement:="Static4"
-	else If input   := Iteration
-		The_guielement:="Edit2"
-		ControlSetText, %The_GuiElement%,%clip%, VarBar
-	DebugWindow("input: " input,0,1,10,0,0)
-}
-Varbar_Setlot(input) 
-{
-	Global
-	Lot:=Input
-	ControlSetText, Static2,%lot%, VarBar
-}
-
-Varbar_SetBatch(input) 
-{
-	Global
-	Batch:=Input
-	ControlSetText, Static1,%Batch%, VarBar
-}
-Varbar_SetProduct(input) 
-{
-	Global
-	Var:=Input
-	;iniwrite, %Var%, data.ini,Products, 0
-	ControlSend, %Edit1%, ^a%Var%{enter}, VarBar
-	try
+	If input contains Product		
 	{
-		XL := ComObjActive("Excel.Application")
-		XL:=XL.Sheets(Var).activate
+		GuiElement:="Edit1"
+		Product:=Clip
+		;ControlSetText, Edit1, %clip%, VarBar
+		Try {
+			XL := ComObjActive("Excel.Application")
+			XL:=XL.Sheets(Var).activate
+			Product:=XL.Range("B7").Value
+			Name:=Xl.Range("B2").Value
+			Batch:=Xl.Range("C1").Value
+			Lot:=Xl.Range("E1").Value
+			Customer:=Xl.Range("B3").Value
+			Excel_Connect()
+			ControlSetText, Static1,%Batch%, VarBar
+			ControlSetText, Static2,%lot%, VarBar
+			ControlSetText, Static3, %Name%, VarBar
+			ControlSetText, Static4,%Customer%, VarBar
+			Gui, VarBar:color, 21a366
+		}
+		catch
+			Gui, VarBar:color, ef6950	
 	}
-	Catch
-		Return
-	Product:=XL.Range("B7").Value
-	Name:=Xl.Range("B2").Value
-	Batch:=Xl.Range("C1").Value
-	Lot:=Xl.Range("E1").Value
-	Customer:=Xl.Range("B3").Value
-	Excel_Connect()
-	ControlSetText, Edit1, %Product%
-	ControlSetText, Static1,%Batch%, VarBar
-	ControlSetText, Static2,%lot%, VarBar
-	ControlSetText, Static3,%Name%, VarBar
-	ControlSetText, Static4,%Customer%, VarBar
-	;ControlSend, %CNN%, {enter}, VarBar
-	;Gui, VarBar:submit, NoHide
-	;debugwindow("var: "Var "`nProduct: " Product)
-	return 
+	else If input contains Batch
+		GuiElement:="Static1"
+	else If input contains Lot
+		GuiElement:="Static2"
+	else If input contains Name
+		GuiElement:="Static3"
+	else If input contains Customer
+		GuiElement:="Static4"
+	else If input   := Iteration
+		guielement:="Edit2"
+	ControlSetText, %GuiElement%,%clip%, VarBar
+	DebugWindow("clip: " clip, 1,1,10,0,0)
+	debugwindow("Input: " Input "  Guielement: " GuiElement,0,1,10)
 }
-
+ 

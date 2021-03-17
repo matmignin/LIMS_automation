@@ -36,7 +36,7 @@ SpecTab_Table()
 	
 	;GetExcel_Specification(Product)
 	Gui, Spec_Table:Default
-	Gui +LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
+	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w320 Grid NoSortHdr checked gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description
 	GUI, Spec_Table:Font, s16 cBlack Bold, Consolas
 	loop, %Total_Rows% {

@@ -1,19 +1,12 @@
 ﻿#include <ProductTab>
 #include <SampleTab>
 #include <SpecTab>
-
 #include <Rotation>
-
+#include <Excel>
 #IfWinActive
-
-
-
-
-
-F20::Send_batch()
-F19::sendinput, % Varbar_GetProduct
-
-Return & Space::Send_Product()
+Hotstrings:
+{
+F19::return
 Return & G::Enter_Product("G")
 Return & H::Enter_Product("H")
 Return & I::Enter_Product("I")
@@ -21,34 +14,17 @@ Return & J::Enter_Product("J")
 Return & K::Enter_Product("K")
 Return & L::Enter_Product("L")
 
-Return & 1::return ;Enter_Batch("011")
-;Return & 1::Enter_Batch("011")
-Return & 2::Enter_Batch("002")
-Return & 3::Enter_Batch("003")
-Return & 4::Enter_Batch("004")
-Return & 5::Enter_Batch("005")
-Return & 6::Enter_Batch("006")
-Return & 7::Enter_Batch("007")
-Return & 8::Enter_Batch("008")
-Return & 9::Enter_Batch("009")
-Return & 0:: return
-Return_0_Trigger:
-#If (A_PriorHotKey = "Return & 0" AND A_TimeSincePriorHotkey < 4000)
-Return & 0::Enter_Batch("010")
-0::Enter_Batch("000")
-Return_1_Trigger:
-#If (A_PriorHotKey = "Return & 1" AND A_TimeSincePriorHotkey < 4000)
-Return & 1::Enter_Batch("011")
-Return & 0::Enter_Batch("010")
-0::Enter_Batch("010")
-1::Enter_Batch("011")
-2::Enter_Batch("012")
+}
+
+
 #ifwinactive, NuGenesis LMS - \\Remote
 F19::Mouse_Click("SearchBar_Product")	; rigth comm button)))
 F20::Mouse_Click("SearchBar_Batch")     	   	     ; right alt button
-
-F16::Mouse_wheel("left+^{left}")
+F16::Mouse_wheel("{left}+^{left}")
 #IfWinActive
+F13 & WheelRight::
+SENDINPUT % Varbar_get(Batch) " is updated"
+RETURN
 
 Enter_Batch(key) 
 {
@@ -61,7 +37,7 @@ Enter_Batch(key)
 		return
 	else
 		Batch:=key . "-" . Batch
-	Save_Code("Batches", Batch)
+	;Save_Code("Batches", Batch)
 	;Envset, Batch, %Batch%
 	Sleep 100		
 	VarBar()
@@ -76,23 +52,13 @@ Enter_Product(key)
 	inputbox,Code,,  %key%`t ,,70,130,%MouseLocationX%,%MouseLocationY%,,,%Code%
 	if !ErrorLevel
 		Product:=key . Code
-	Save_Code("Products", Product)
+	;Save_Code("Products", Product)
 	Sleep 200	
 	IfWinActive, NuGenesis LMS - \\Remote
 		sendinput, {ctrl down}a{ctrl up}%Product%{enter}
 	VarBar()
 	return
 } 
-
-
-
-#ifwinactive,  outlook
-;capslock::return
-F13 & WheelRight::
-SENDINPUT % Varbar_get(Batch) " is updated"
-RETURN
-
-
 Main_EditResults() 
 {
 	sendinput, {click}{click 77, 751} ;edit results
@@ -106,11 +72,10 @@ RegisterNewSample()
 	Send, {click 179, 105}{click}%Product%{enter}
 }
 
-
 #IfWinActive
 ;_________________________________________________________________________
 ;______________________________________________________________________F14
-F14()
+LMS_AutoClick()
 {
 	global
 	If Winactive("NuGenesis LMS - \\Remote"){
@@ -151,22 +116,22 @@ Ifwinactive,NuGenesis LMS - \\Remote
 ELSE 
 	Sendinput, #{left}
 return
-F14 & Wheeldown::Mouse_WheelZoomOut()
-F14 & wheelup::Mouse_WheelZoomIn()
+F14 & WheelDOWN::Sendinput, {Click 46, 855}
+F14 & wheelUP::sendinput, {click, 544, 41}
+
+
 F14 & Rbutton:: 
 F14 & Lbutton::Sendinput, #{down}
-F14 & F15::sendinput, !{tab}
-F14::F14()
+F13 & F14::sendinput, !{tab}
+
 ;_________________________________________________________________________
-;______________________________________________________________________F15
+;______________________________________________________________________F18
 #Ifwinactive, NuGenesis LMS - \\Remote
-F15 & WheelRIGHT::sendinput, {click, 743, 41}
-F15 & WheelLEFT::sendinput, {Click 354, 44} 
-F15 & WheelDOWN::Sendinput, {Click 46, 855}
-F15 & wheelUP::sendinput, {click, 544, 41}
+F14 & WheelRIGHT::sendinput, {click, 743, 41}
+F14 & WheelLEFT::sendinput, {Click 354, 44} 
 #IfWinActive
-F15 & Rbutton:: 
-F15 & Lbutton::sendinput, ^{Lbutton}
-F15 & Mbutton:: 
-F15 & F14::sendinput, #{tab}
-F15::Menu()
+F18 & Rbutton:: 
+F18 & Lbutton::sendinput, ^{Lbutton}
+F18 & Mbutton:: 
+F14 & F13::sendinput, #{tab}
+

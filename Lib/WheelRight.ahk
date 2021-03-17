@@ -1,14 +1,10 @@
-﻿WheelRight(){
+﻿F17(){
 	global
 	If winactive("ahk_exe AHK-Studio.exe"){
 		sendinput, !{right}	
 	} Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{right}	
-	} Else If winactive("ahk_exe EXCEL.EXE"){
-		SetScrollLockState, On
-		Send, {right 1} 
-		SetScrollLockState, Off 
-		return
+
 	} Else If winactive("outlook"){
 		Send, {wheelright} 
 	} else if Winactive("Select tests for request"){
@@ -66,6 +62,4 @@
 
 
 #IfWinActive
-wheelright::WHeelright()
-#ifwinactive,  outlook
-F17::Wheelright()
+F17::F17()

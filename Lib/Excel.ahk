@@ -1,10 +1,26 @@
 #ifwinactive, ahk_exe EXCEL.EXE
 +Enter::sendinput, !{enter}
 $Enter::sendinput, {enter}
+F17::
+;SetKeyDelay, -1,-1
+sendinput, {wheelright}
+;SetKeyDelay, 0,-1
 
+return
+;SetScrollLockState, On
+;Send, {right 1} 
+;SetScrollLockState, Off 
+return
 
-#IfWinActive, LMS_Workbook.xlsm - Excel
-Rbutton & Lbutton::
+F16::
+;SetKeyDelay, 0,
+;SetKeyDelay, 0,
+sendinput, {Wheelleft}
+;SetKeyDelay, 0,-1
+
+return
+#IfWinActive, LMS Workbook.xlsm - Excel
+F18::
 Excel_Connect()
 Varbar()
 return
@@ -27,7 +43,7 @@ rbutton & Lbutton::sendinput, !i
 	
 	#IfWinActive, ahk_exe EXCEL.EXE
 	Rbutton & Mbutton::Excel_Set_Product_Cell()
-	F16::wheelleft()
+	F16::AutoLMS()
 	F17::WheelRight()
 	F13 & F16::Send_Product()
 
@@ -43,16 +59,16 @@ Excel_Connect()
 {
 	Global
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if WinExist("LMS_Workbook.xlsm - Excel")
-		ControlSend,ahk_parent, {esc}, LMS_Workbook.xlsm - Excel
+	if WinExist("LMS Workbook.xlsm - Excel")
+		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsm - Excel
 	else
-		runwait, LMS_Workbook.xlsm, %Path%
+		runwait, LMS Workbook.xlsm, %Path%
 	/*ERROR
 		else if openXL contains ask
 		{
 			msgbox,4,,open LMS Workbook?
 			IfMsgBox, Yes
-			runwait, LMS_Workbook.xlsm, %Path%
+			runwait, LMS Workbook.xlsm, %Path%
 			IfMsgBox,No
 			ToolTip("workbook not open")
 		}

@@ -140,7 +140,7 @@ Send_Batch()
 		global
 		ToolTip, Product
 		PreClip:= ClipboardAll
-		sleep 200
+		sleep 25
 		Send, ^c    
 		clipwait, 0.25
 		Clipboard := StrReplace(Clipboard, "`r`n")
