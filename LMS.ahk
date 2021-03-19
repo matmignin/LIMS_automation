@@ -75,35 +75,7 @@ RegisterNewSample()
 #IfWinActive
 ;_________________________________________________________________________
 ;______________________________________________________________________F14
-LMS_AutoClick()
-{
-	global
-	If Winactive("NuGenesis LMS - \\Remote"){
-		click, 79, 440
 
-	} Else If Winactive("ahk_exe EXCEL.EXE") {
-		Excel_Search()
-	} Else If Winactive("Results Definition - \\Remote") {
-		Sendinput, ^{Lbutton}
-	} Else If Winexist("Result Entry - \\Remote"){
-		winactivate,
-		Mouse_Click("OK_ResultEntry")
-	} Else If Winexist("Delete Test - \\Remote ") {
-		winactivate,
-		Sendinput, {enter}
-	} Else If Winexist("Select Iterations - \\Remote") {
-		winactivate,
-		Rotation_GetTable()
-	} Else If winactive("Select Product - \\Remote") {
-		excel_Connect()
-		sendinput, {click 106, 64}%Product%{enter}{enter}
-		return
-	} Else If winactive("Edit specification - \\Remote"){
-		ProductTab_EditProduct() 
-	} else
-		return
-	Return
-}
 F14 & WheelRight:: 
 Ifwinactive, NuGenesis LMS - \\Remote
 	sendinput, {click, 743, 41}
@@ -135,3 +107,32 @@ F18 & Lbutton::sendinput, ^{Lbutton}
 F18 & Mbutton:: 
 F14 & F13::sendinput, #{tab}
 
+LMS_AutoClick()
+{
+	global
+	If Winactive("NuGenesis LMS - \\Remote"){
+		click, 79, 440
+
+	} Else If Winactive("ahk_exe EXCEL.EXE") {
+		Excel_Search()
+	} Else If Winactive("Results Definition - \\Remote") {
+		Sendinput, ^{Lbutton}
+	} Else If Winexist("Result Entry - \\Remote"){
+		winactivate,
+		Mouse_Click("OK_ResultEntry")
+	} Else If Winexist("Delete Test - \\Remote ") {
+		winactivate,
+		Sendinput, {enter}
+	} Else If Winexist("Select Iterations - \\Remote") {
+		winactivate,
+		Rotation_GetTable()
+	} Else If winactive("Select Product - \\Remote") {
+		excel_Connect()
+		sendinput, {click 106, 64}%Product%{enter}{enter}
+		return
+	} Else If winactive("Edit specification - \\Remote"){
+		ProductTab_EditProduct() 
+	} else
+		return
+	Return
+}
