@@ -31,6 +31,11 @@ Menu()
 	}
 	Else if WinActive("ahk_exe AHK-Studio.exe") || WinActive("ahk_exe Code.exe") 
 	{
+		loop 10
+		{
+			Worksheet:=Products[A_index]
+			menu, Menu, Add, %worksheet%, Worksheet_menu
+		}
 		Menu, menu, Add, Mouse Location `t%MousePosition%, menu	
 		Menu, menu, Add, Window Title `t%wintitle%, menu	
 		Menu, menu, Add, Process `t%winProcess% , menu	
@@ -58,6 +63,7 @@ Menu()
 	}
 	else
 	{
+
 		menu, Menu, Add, &Ingredient Table, menu
 		menu, Menu, Add, &Spec Table, menu
 		
@@ -77,7 +83,7 @@ Menu()
 	}
 	Menu, Menu, Show,
 	return
-	
+
 	Menu:
 	if (A_ThisMenuItem = "Samples")
 		sendinput, care{enter}

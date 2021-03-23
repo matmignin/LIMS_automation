@@ -92,9 +92,8 @@ F13 & MButton::Varbar_Send("lot")
 ; }
 ; F13:: Tooltip("☩",4000) 
 
-#if
+;#if
 return
-#inputlevel 1
 
 Mbutton & WheelDown::Mouse_Wheel("^{WheelDown}") 
 Mbutton & Wheelup::Mouse_Wheel("^{WheelUp}") 
@@ -107,6 +106,7 @@ Rbutton & WheelRight::delete
 Rbutton & Lbutton::Enter
 Rbutton & F18::^a
 Rbutton & F13::Mouse_Get_WindowInfo()
+#inputlevel 1
 Rbutton up::
 {
 	suspend, On

@@ -12,7 +12,12 @@ Test(n=0)
 	}
 	else if (n=2)
 	{
-
+		loop % Products.MaxIndex()
+		{
+			Worksheet:=Products[A_index]
+			menu, Menu, Add, %worksheet%, Worksheet_menu
+		}
+					Menu, Menu, Show,
 	}
 	else if (n=3)
 	{
@@ -64,3 +69,11 @@ test_Excelsheets()
 
 
 
+Worksheet_menu:
+; Worksheet:= A_ThisMenuItem
+		XL:= ComObjActive("Excel.Application")
+		Visible := True
+		XL:=XL.Sheets(A_ThisMenuItem).activate
+				; XL.Visible := True	
+		;menu, menu, DeleteAll
+return
