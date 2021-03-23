@@ -7,6 +7,7 @@
 	F18::Excel_Connect()
 
 #ifwinactive, Find and Replace,
+	enter::sendinput, !i
 	rbutton & Lbutton::sendinput, !i
 #IfWinActive
 

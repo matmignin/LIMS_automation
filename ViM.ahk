@@ -87,9 +87,26 @@ v up::
 #if
 }
 
-
-
 #ifwinactive,
+#If Getkeystate("F19","p")
+	 j::numpad4
+	 k::numpad5
+	 l::numpad6
+	 m::numpad1
+	 ,::numpad2
+	 .::numpad3
+	 u::numpad7
+	 i::numpad8
+	 o::numpad9
+	 n::numpad0
+	 `;::numpadsub
+	 /::numpadadd
+	 p::numpaddiv
+
+
+#if
+F19::numpadDot
+
 ;__________________________________________________________________
 ;_______________________________________________________Other stuff
 ;__________________________________________________________________
@@ -120,6 +137,8 @@ v up::
 	Numlock::BackSpace
 	#ifwinactive,  outlook
 	capslock::return
+	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
+	Rbutton & wheeldown::mouse_wheel("{ctrl down}p{ctrl up}")
 
 
 	#ifwinactive, ahk_exe explorer.exe ; _______________________explorer
@@ -154,20 +173,24 @@ v up::
 	+^l::sendinput, {home}{tab}
 	+^h::sendinput, {home}+{tab}
 	Mbutton::sendinput, ^d
-	F17::Mouse_Wheel("+{right}",0)
-	F16::Mouse_Wheel("+{left}",0)
+	F17::Mouse_Wheel("!{right}")
+	F16::Mouse_Wheel("!{left}")
 	F14 & WheelLEFT::mouse_wheel("{home}+{tab}")
 	F14 & WheelRIGHT::mouse_wheel("{home}+{tab}")
 	F14 & WheelDOWN::mouse_wheel("{alt down}j{alt up}")
 	F14 & wheelUP::Mouse_wheel("{alt down}k{alt up}")
-	F14::sendinput, +^f
+	F14 & F13::sendinput, #{tab}
+	F14 & Rbutton::sendinput, +^f
 	Mbutton & Wheeldown::mouse_wheel("!{right}")
 	Mbutton & Wheelup::mouse_wheel("!{left}")
-
+	F14::
+		sendinput, ^s
+		sleep 200
+		run, VQuest.ahk
+		tooltip("Reload")
+		; reload
+		return
 	F3::+^F1 	;search Help
-	F19 & h::!h
-	F19 & m::^M
-	F19::sendinput, !f
 	^k::sendinput, +^{up}
 	^j::sendinput, +^{down}
 	Rbutton & F16::mouse_wheel("+{home}{delete}")
@@ -176,8 +199,9 @@ v up::
 	Rbutton & wheeldown::mouse_wheel("{ctrl down}p{ctrl up}")
 	$Rbutton::Click right
 	capslock::sendinput, {esc}
+	;Rbutton & F18::Mouse_Get_WindowInfo()
 }
-#Ifwinactive, Find & Replace 
+#Ifwinactive, Find and Replace 
 {
 	capslock::return	
 	enter::!i

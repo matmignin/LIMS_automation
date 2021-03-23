@@ -16,15 +16,22 @@ VarBar(X:=1, Y:=1, Destroy:="Reset")
 		GUI, VarBar:destroy
 	Gui VarBar:+LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 	WinSet, Transparent, 200
-	Gui, VarBar:color, ef6950	 
-	GUI, VarBar:Font, s20 cBlack Bold, Consolas
-	Gui, VarBar:Add, Edit, h35 x0 y0 w80 -Wantreturn vProductVar , %Product%
-	gui, varbar:Add, Button, +Default gProductVarBar
+	Gui, VarBar:color, 21a366
+ 
+	GUI, VarBar:Font, s18 cBlack Bold, Consolas
+	; Gui, VarBar:Add, Edit, h35 x0 y0 w80 -Wantreturn vProductVar , %Product%
+	
+	Gui, VarBar:Add, ComboBox, vProductvar gproductVarbar h35 x0 r10 y0 w80, %Product%|%DDLProducts%	
+	; Gui, VarBar:Add, DropDownList, vProductvar gproductVarbar h35 x0 r10 y0 w80, %Product%|%DDLProducts%	
+
+
+	; gui, varbar:Add, Button, +Default gProductVarBar
+	GUI, VarBar:Font, s12 cBlack Bold, Consolas
+	Gui, VarBar:add, Text, vBatch x88 y0 w1200, %Batch%
 	GUI, VarBar:Font, s10 cBlack Bold, Consolas
-	Gui, VarBar:add, Text, vBatch x90 y0 w100, %Batch%
-	Gui, VarBar:add, Text, vlot x100 y18 w100, %Lot%
-	Gui, VarBar:add, Text, vname  x170 -wrap y0 w160, %Name%
-	Gui, VarBar:add, Text, vcustomer  x175 -wrap y18 w160, %Customer%
+	Gui, VarBar:add, Text, vlot x100 y18 w120, %Lot%
+	Gui, VarBar:add, Text, vname  x180 -wrap y0 w180, %Name%
+	Gui, VarBar:add, Text, vcustomer  x235 -wrap y18 w170, %Customer%
 	GUI, VarBar:Font, s15 cBlack Bold, Consolas
 	Gui, VarBar:Add, Edit, gIterationVarbar vIteration x340 h35 y0 w60,
 	Gui, VarBar:Add, UpDown, vIterationUpDown wrap x380 h35 y0 w0 Range1-5, %Iteration%
@@ -32,6 +39,7 @@ VarBar(X:=1, Y:=1, Destroy:="Reset")
 	CoordMode, mouse, screen
 	Gui, VarBar:Show, h35 x%VarBar_X% y%VarBar_y%  w370 NoActivate, VarBar
 	CoordMode, mouse, window
+
 	return
 }
 ProductVarBar:
@@ -39,12 +47,12 @@ Gui, VarBar:submit,NoHide
 try
 {
 	XL:= ComObjActive("Excel.Application")
+			Visible := True
 	XL:=XL.Sheets(ProductVar).activate
 }
 Catch
 	return
-Excel_Connect()
-;GuiControl, ,Edit1, %Product%
+        Excel_Connect()
 GuiControl, ,Static1,%Batch%
 GuiControl, ,Static2,%lot%
 GuiControl, ,Static3,%Name%
@@ -110,24 +118,25 @@ varbar_Send(Category)
 	else If Category contains Iteration
 		ControlGetText, Output, Edit2, VarBar
 	sleep 150
-	Sendinput, %output%
+	Send, %output%
+	sleep 150
 	if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote")
 		send, {enter}	
-	sleep 500
+	sleep 600
 	return
 }
 
 
-Varbar_Set(Input)
-{
+Varbar_Set(Input:=0){
 	global
-	clip:= Mouse_clip()
-	If input contains Product		
+	clipForProduct:= Clip()
+	clipForBatch:= ClipForProduct
+	tooltip % Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}", ClipforProduct)
+	If (Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
 	{
-		GuiElement:="Edit1"
-		Product:=Clip
-		;ControlSetText, Edit1, %clip%, VarBar
+		Product:=ClipforProduct
 		Try {
+
 			XL := ComObjActive("Excel.Application")
 			XL:=XL.Sheets(Var).activate
 			Product:=XL.Range("B7").Value
@@ -135,34 +144,58 @@ Varbar_Set(Input)
 			Batch:=Xl.Range("C1").Value
 			Lot:=Xl.Range("E1").Value
 			Customer:=Xl.Range("B3").Value
+			;VarBar(1,1,1)
 			Excel_Connect()
+			Gui, VarBar:color, 21a366 ;green
 			ControlSetText, Static1,%Batch%, VarBar
 			ControlSetText, Static2,%lot%, VarBar
-			ControlSetText, Static3, %Name%, VarBar
+			ControlSetText, Static3,%Name%, VarBar
 			ControlSetText, Static4,%Customer%, VarBar
-			Gui, VarBar:color, 21a366
+		
 		}
 		catch
-			Gui, VarBar:color, ef6950	
+		{
+			Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
+			ControlSetText, Edit1,%clipforProduct%, VarBar
+			VarBar(1,1,1)
+			Gui, VarBar:color, ef6950 ;red
+		}
+		Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}\b", ClipForProduct) 
 	}
-	else If input contains Batch
-		GuiElement:="Static1"
+	tooltip, % Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch)
+	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
+	{
+		Batch:=ClipforBatch
+		Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
+		; Regexmatch(Clip, "\b\d{3}-\d{4}\b", Clip) 
+		; Gui, VarBar:color, ef6950	
+		GUI, VarBar:Font, s18 cBlack Bold, Consolas
+		ControlSetText, Static1,%clip%, VarBar
+		;Gui, VarBar:submit,NoHide
+		VarBar(1,1,1)
+		ControlSetText, Static3,, VarBar
+		ControlSetText, Static4,, VarBar
+		Gui, VarBar:color, ef6950 ;red
+	}
 	else If input contains Lot
-		GuiElement:="Static2"
+		ControlSetText, Static2,%clip%, VarBar
 	else If input contains Name
-		GuiElement:="Static3"
+		ControlSetText, Static3,%clip%, VarBar
 	else If input contains Customer
-		GuiElement:="Static4"
+		ControlSetText, Static4,%clip%, VarBar
 	else If input contains Iteration
-		guielement:="Edit2"
-	ControlSetText, %GuiElement%,%clip%, VarBar
-	;DebugWindow("clip: " clip, 1,1,10,0,0)
-	;debugwindow("Input: " Input "  Guielement: " GuiElement,0,1,10)
+		ControlSetText, Edit2,%clip%, VarBar
+	; ControlSetText, %GuiElement%,%clip%, VarBar
+	else
 	return
 }
 
 
-
+Varbar_Focus() {
+	global
+	ControlFocus, Edit1,VarBar
+	return
+}
 
 VarBar_Relocate() 
 {
@@ -191,14 +224,3 @@ VarBar_Reset()
 	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
 	varbar(0)
 }
-
-; Varbar_Addup(){
-; 	global
-;  Iteration:= Iteration +1
-; gosub, IterationVarbar
-; ;Tooltip(Iteration)
-; ; Controlsettext, %Iteration%, Edit2, varbar
-; ;Varbar()
-; ;gui, VarBar:submit,NoHide
-; return
-; }

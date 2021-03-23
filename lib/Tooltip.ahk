@@ -1,4 +1,4 @@
-Tooltip(msg, time=800) 
+Tooltip(msg, time=900) 
 {
 	global
 	tooltip, %msg%

@@ -134,3 +134,12 @@ SampleTab_ShipToSelect(x_pos:=304,y_pos:=433)
 		}
 		return
 	}
+
+
+
+SampleTab_SelectShipTo(pgdowns,downs)
+{
+	selection := 22 * pgdowns + downs + 5
+	sendinput, {right %selection%}
+	return
+}
