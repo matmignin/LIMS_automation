@@ -112,7 +112,6 @@ v up::
 	F20 & Down::send, #{Down}
 	; F15 & Wheelup::lwin
 	; F15 & Wheeldown::Mouse_CloseWindow()
-	
 
 	#ifwinactive, ahk_exe Code.exe
 	capslock::esc
@@ -164,6 +163,7 @@ v up::
 	F14::sendinput, +^f
 	Mbutton & Wheeldown::mouse_wheel("!{right}")
 	Mbutton & Wheelup::mouse_wheel("!{left}")
+
 	F3::+^F1 	;search Help
 	F19 & h::!h
 	F19 & m::^M

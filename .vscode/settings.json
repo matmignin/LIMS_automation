@@ -1,0 +1,5 @@
+{
+    "npm.enableRunFromFolder": true,
+    "editor.autoClosingBrackets": "never",
+    "editor.acceptSuggestionOnEnter": "off"
+}
