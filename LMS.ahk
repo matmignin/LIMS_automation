@@ -21,10 +21,9 @@ Return & L::Enter_Product("L")
 F19::Mouse_Click("SearchBar_Product")	; rigth comm button)))
 F20::Mouse_Click("SearchBar_Batch")     	   	     ; right alt button
 F16::Mouse_wheel("{left}+^{left}")
-#IfWinActive
-F13 & WheelRight::
-SENDINPUT % Varbar_get(Batch) " is updated"
-RETURN
+#IfWinActive, outlook
+F13 & F16::SENDINPUT % Varbar_get(Batch) " is updated"
+#IfWinActive, [ WinTitle, WinText]
 
 Enter_Batch(key) 
 {
@@ -95,9 +94,6 @@ F14 & wheelUP::sendinput, {click, 544, 41}
 F14 & Rbutton:: 
 F14 & Lbutton::Sendinput, #{down}
 F13 & F14::sendinput, !{tab}
-
-;_________________________________________________________________________
-;______________________________________________________________________F18
 #Ifwinactive, NuGenesis LMS - \\Remote
 F14 & WheelRIGHT::sendinput, {click, 743, 41}
 F14 & WheelLEFT::sendinput, {Click 354, 44} 

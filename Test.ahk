@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 Test(n=0)
 {
 	Global
@@ -14,15 +7,16 @@ Test(n=0)
 	}
 	else if (n=1)
 	{
-		DebugWindow("Product: " Varbar_get("product"))
+		test_Excelsheets()
+		
 	}
 	else if (n=2)
 	{
-		DebugWindow("Batch: " Varbar_get("Batch"))
+
 	}
 	else if (n=3)
 	{
-		debugwindow("lot: " varbar_get("lot"))
+		
 	}
 	else
 	{
@@ -42,3 +36,31 @@ Debugwindow(Text var, 0,1,10,0,0)
 ;DebugWindow(Text,Clear:=0,LineBreak:=0,Sleep:=0,AutoHide:=0,MsgBox:=0){
 	;x:=ComObjActive("{DBD5A90A-A85C-11E4-B0C7-43449580656B}"),x.DebugWindow(Text,Clear,LineBreak,Sleep,AutoHide,MsgBox)
 ;}
+
+
+test_Excelsheets()
+{
+	Global
+	Products:=[]
+	;	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
+		XL:= ComObjActive("Excel.Application")
+		Visible := True
+		;XL:=XL.Active
+
+	For sheet in xl.ActiveWorkbook.Worksheets { 
+		Products.insert(Sheet.Name)
+	}		
+	Products.remove(1)
+	Products.remove(1)
+	loop 12 {
+		if (Products[A_index] = "Finished")
+			break
+		else 	
+			Temp:=Products[A_index]
+		iniwrite, %Temp%, data.ini, ExcelWorkSheets, %a_index%
+	}
+	return
+}
+
+
+

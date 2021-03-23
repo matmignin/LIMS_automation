@@ -1,14 +1,5 @@
-﻿#Persistent 
-#NoEnv
-#SingleInstance,Force
-SetKeyDelay, -1,-1
-#HotkeyModifierTimeout 100
-Setnumlockstate Alwayson
-setCapslockstate alwaysoff
-SetscrolllockState, alwaysOff
-Menu, Tray, Icon, ViM.ico
-Process, Priority,, High
-sendlevel 1
+﻿gosub, Vim_opened
+
 
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
 {
@@ -106,7 +97,6 @@ v up::
 	CapsLock::return
 	$enter::sendinput, {enter}
 	F20::^m
-	Open_in_Notepad()
 	+F12::Exitapp
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744
@@ -119,7 +109,12 @@ v up::
 	F20 & Right::send, #{right}
 	F20 & Left::send, #{Left}
 	F20 & UP::send, #{UP}
-	F20 & Down::send, #{Down}#ifwinactive, ahk_exe Code.exe
+	F20 & Down::send, #{Down}
+	; F15 & Wheelup::lwin
+	; F15 & Wheeldown::Mouse_CloseWindow()
+	
+
+	#ifwinactive, ahk_exe Code.exe
 	capslock::esc
 
 	#IfWinActive,
@@ -129,31 +124,32 @@ v up::
 
 
 	#ifwinactive, ahk_exe explorer.exe ; _______________________explorer
-	F16::Mouse_wheel("!{left}")
-	F17::Mouse_wheel("!{right}")
 	Mbutton::Open_in_Notepad()
 	;________________________________________Firefox and Edge
-	#If WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe")
+	#IfWinActive, ahk_exe firefox.exe OR ahk_exe msedge.exe
 	F15 & WheelDown::
 	send, ^w
 	sleep 500
 	return
-	F15 & Wheelleft::Browser_Back
-	F15 & wheelright::Browser_Forward
-	;_________________________________________________________________________Snipper 
+	F13 & WheelDOWN::Browser_Back
+	F14 & wheelUP::Browser_Forward
+	;_________________________________________________________Snipper 
 	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
 
 	F13 & Rbutton::Click, 2
 	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
 	Mbutton::Sendinput, {click right}z1{click right}e{ctrl down}5{ctrl up}
-}
+}#if
 ;__________________________________________________________________
-;________________________________________________________AHK-Studio
+;__________________________________________________________________Editors
 ;__________________________________________________________________
-#IfWinActive, ahk_exe AHK-Studio.exe || ahk_exe Code.exe
+#IfWinActive, ahk_exe AHK-Studio.exe OR ahk_exe Code.exe
 {
-	capslock::esc
 	Capslock & ,::^j
+	Capslock & a::!^a
+	^r::sendinput, ^s
+		reload
+		return
 	+^j::+^down
 	+^K::+^up
 	+^l::sendinput, {home}{tab}
@@ -179,6 +175,7 @@ v up::
 	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
 	Rbutton & wheeldown::mouse_wheel("{ctrl down}p{ctrl up}")
 	$Rbutton::Click right
+	capslock::sendinput, {esc}
 }
 #Ifwinactive, Find & Replace 
 {
@@ -187,8 +184,7 @@ v up::
 }
 
 #IfWinActive,
-
-{
+	Open_in_Notepad(){
 	click
 	WinGetClass class, % " ahk_id " WinExist("A")
 	for Window in ComObjCreate("Shell.Application").Windows 
@@ -199,8 +195,7 @@ v up::
 }
 
 
-DoublePress()
-{
+DoublePress(){
 	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 400) 
 	{
 		Sendinput, {%A_ThisHotkey%}
@@ -210,3 +205,18 @@ DoublePress()
 }
 
 
+
+
+Vim_opened:
+	#Persistent 
+	#NoEnv
+	#SingleInstance,Force
+	SetKeyDelay, -1,-1
+	#HotkeyModifierTimeout 100
+	Setnumlockstate Alwayson
+	setCapslockstate alwaysoff
+	SetscrolllockState, alwaysOff
+	Menu, Tray, Icon, ViM.ico
+	Process, Priority,, High
+	sendlevel 1
+	return

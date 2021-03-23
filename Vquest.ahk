@@ -24,6 +24,7 @@ Iniread, VarBar_X, data.ini, Locations, VarBar_x
 Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 Excel_Connect()
 VarBar()
+test_Excelsheets()
 Run, ViM.Ahk
 return
 #IfWinActive,
@@ -38,24 +39,26 @@ return
 #include Vim.ahk
 #Include LMS.ahk
 #include test.ahk
-#Include <F17>
+; #Include <F17>
 #include <varBar>
-/*
-	#include <Menu>
-*/
 
 
 
 
-;F18::SampleTab_ChangeTestResults()
-;F13::SampleTab_ChangeTestResults("Toggle")
+
 F18::Menu()
-F17::F17()
-
-
+F17::Wheel_Right()
+F16::Wheel_left()
+F15 & Wheelup::Test(3)
+F15 & Wheeldown::Test(2)
+F12::
+F15::Test(Iteration)
+;----send LMS codes
 F13 & LButton::Sendinput, +^4 ;screenshot
-F13 & MButton::Sendinput, % Varbar_get("lot")
-F13 & WheelUp::Sendinput, % Varbar_get("Product")
+F13 & MButton::Varbar_Send("lot")
+F13 & WheelUp::Varbar_Send("Product")
+F13 & WheelDown::Varbar_Send("Batch")
+
 /* 
 #If (A_PriorHotKey = "F13" AND A_TimeSincePriorHotkey < 4000) && winactive("ahk_exe OUTLOOK.EXE")
 {
@@ -82,11 +85,10 @@ F13:: Tooltip("☩",4000)
 */
 #if
 return
-F13 & WheelDown::Mouse_Wheelpaste()
+
 Mbutton & WheelDown::Mouse_Wheel("^{WheelDown}") 
 Mbutton & Wheelup::Mouse_Wheel("^{WheelUp}") 
-F16::LMS_Autofill()
-;F17::Mouse_Wheelright()
+;F17::Mouse_Wheel_Right()
 Rbutton & Wheelup::Mouse_Wheelcut()
 Rbutton & Wheeldown::Mouse_Wheelpaste()
 Rbutton & WheelLeft::
