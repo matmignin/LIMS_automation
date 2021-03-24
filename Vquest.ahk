@@ -80,7 +80,7 @@ F13 & WheelDown::Varbar_Send("Batch")
 	mbutton::Varbar_Set("Lot")
 	#If
 }
-F13:: Tooltip("☩",4000) 
+F13::Varbar_Set() ;Tooltip("☩",4000) 
 
 #if
 #IfWinActive,

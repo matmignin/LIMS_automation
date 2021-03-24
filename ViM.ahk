@@ -33,9 +33,9 @@
 
 
 
-#If WinActive("ahk_class AutoHotkeyGUI") && Getkeystate("Capslock","p") ;editor
+#If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
 {
-	,::sendinput, {ctrl down}{/}{ctrl up}
+	,::sendinput, {ctrl down}{j}{ctrl up}
 	m::+!down
 	n::+!up
 	u::+!up
@@ -98,10 +98,13 @@ v up::
 	 u::numpad7
 	 i::numpad8
 	 o::numpad9
-	 n::numpad0
-	 `;::numpadsub
+	 `;::numpad0
+	 n::numpadsub
 	 /::numpadadd
-	 p::numpaddiv
+	 h::numpaddiv
+	 p::numpadmult
+	 '::numpaddot
+
 
 
 #if
