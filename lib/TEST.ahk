@@ -32,9 +32,7 @@ test_Excelsheets()
 		if (Products[A_index] = "Finished")
 			break
 		else 	
-		;	Temp:=Products[A_index]
 			DDLProducts .= "|" Products[A_Index]
-		;iniwrite, %Temp%, data.ini, ExcelWorkSheets, %a_index%
 	}
 	return
 }

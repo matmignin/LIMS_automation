@@ -2,8 +2,8 @@
 SpecTab_Table(){
 	Global
 	Try GUI, Spec_Table:destroy 
-	Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
-	Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
+	Iniread, VarBar_X, data.ini, Locations, SpecTable_X
+	Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
 	Excel_Connect()
 	Name:=			[]
 	Position:=		[]

@@ -2,6 +2,7 @@
 VarBar(X:=1, Y:=1, Destroy:="Reset")
 { 
 	Global
+	try Gui,VarBar:Destroy
 	If (X<>0)
 	{
 		Iniread, VarBar_X, data.ini, Locations, VarBar_X
@@ -52,7 +53,7 @@ try
 }
 Catch
 	return
-        Excel_Connect()
+Excel_Connect()
 GuiControl, ,Static1,%Batch%
 GuiControl, ,Static2,%lot%
 GuiControl, ,Static3,%Name%
@@ -78,6 +79,9 @@ VarBarGuiClose:
 	sleep 500
 	GUI, VarBar:destroy
 return
+
+
+
 varbar_get(Category)
 {
 	Global
@@ -145,8 +149,8 @@ Varbar_Set(Input:=0){
 			Lot:=Xl.Range("E1").Value
 			Customer:=Xl.Range("B3").Value
 			;VarBar(1,1,1)
-			Excel_Connect()
-			Gui, VarBar:color, 21a366 ;green
+			; Excel_Connect()
+			; Gui, VarBar:color, 21a366 ;green
 			ControlSetText, Static1,%Batch%, VarBar
 			ControlSetText, Static2,%lot%, VarBar
 			ControlSetText, Static3,%Name%, VarBar
@@ -157,7 +161,7 @@ Varbar_Set(Input:=0){
 		{
 			Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 			ControlSetText, Edit1,%clipforProduct%, VarBar
-			VarBar(1,1,1)
+			VarBar()
 			Gui, VarBar:color, ef6950 ;red
 		}
 		Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}\b", ClipForProduct) 
@@ -169,10 +173,10 @@ Varbar_Set(Input:=0){
 		Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 		; Regexmatch(Clip, "\b\d{3}-\d{4}\b", Clip) 
 		; Gui, VarBar:color, ef6950	
-		GUI, VarBar:Font, s18 cBlack Bold, Consolas
+		; GUI, VarBar:Font, s18 cBlack Bold, Consolas
 		ControlSetText, Static1,%clip%, VarBar
 		;Gui, VarBar:submit,NoHide
-		VarBar(1,1,1)
+		VarBar()
 		ControlSetText, Static3,, VarBar
 		ControlSetText, Static4,, VarBar
 		Gui, VarBar:color, ef6950 ;red
@@ -224,3 +228,4 @@ VarBar_Reset()
 	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
 	varbar(0)
 }
+

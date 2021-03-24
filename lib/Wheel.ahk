@@ -9,12 +9,12 @@
 	} Else If winactive("outlook"){
 		Send, {wheelright} 
 	} Else If winactive("Result Entry - \\Remote"){
-		SampleTab_ChangeTestResults()	
+		WorkTab_ChangeTestResults()	
 	} else if Winactive("Select tests for request"){
 		Mouse_Click("Select_TestsForRequests")
 		;LMS
 	} Else If winactive("NuGenesis LMS - \\Remote"){
-		Main_EditResults()
+		WorkTab_Main_EditResults()
 		;ProductTab
 	} else if winactive("Edit Formulation - \\Remote"){
 		return
@@ -33,17 +33,17 @@
 	} Else if winactive("Edit sample (Field Configuration: I`, Physical) - \\Remote"){
 		Excel_Connect()
 		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		SampleTab_ShipToSelect()
+		WorkTab_ShipToSelect()
 	} Else if winactive("Edit sample (Field Configuration: CT`, Physical) - \\Remote"){
-		SampleTab_ShipToSelect()
+		WorkTab_ShipToSelect()
 	} Else if winactive("Edit sample (Field Configuration: I`, Analytical) - \\Remote"){
-		SampleTab_ShipToSelect()
+		WorkTab_ShipToSelect()
 	} Else if winactive("Edit sample (Field Configuration: F`, Micro) - \\Remote"){
-		SampleTab_ShipToSelect(504)
+		WorkTab_ShipToSelect()
 	} Else if winactive("Edit sample (Field Configuration: CT`, Retain) - \\Remote, "){
-		SampleTab_ShipToSelect()
+		WorkTab_ShipToSelect()
 	} Else if winactive("Edit sample (Field Configuration: I`, Retain) - \\Remote"){
-		SampleTab_ShipToSelect()
+		WorkTab_ShipToSelect()
 	} else
 		Send, {wheelright} 
 		return
@@ -58,7 +58,7 @@ global
 	} Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{left}	
 	} Else If winactive("Result Entry - \\Remote"){
-		SampleTab_ChangeTestResults("Toggle")	
+		WorkTab_ChangeTestResults("Toggle")	
 		;ProductTab
 } Else If winactive("ahk_exe EXCEL.EXE"){
 		Mouse_Wheel("{wheelright}",1100)	

@@ -3,16 +3,16 @@
 
 
 
-#Ifwinactive, Edit test (Field Configuration: F`, Micro) - \\Remote ;
-F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-#Ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
-F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-#Ifwinactive, Edit test (Field Configuration: I`, Physical) - \\Remote
-F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+; #Ifwinactive, Edit test (Field Configuration: F`, Micro) - \\Remote ;
+; F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+; #Ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
+; F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+; #Ifwinactive, Edit test (Field Configuration: I`, Physical) - \\Remote
+; F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
 
 
 
-SampleTab_RegisterNewSample() 
+WorkTab_RegisterNewSample() 
 {
 	global
 	winactivate, Register new samples - \\Remote
@@ -21,7 +21,7 @@ SampleTab_RegisterNewSample()
 
 
 
-SampleTab_ShipToSelect(x_pos:=304,y_pos:=433)
+WorkTab_ShipToSelect(x_pos:=304,y_pos:=433)
 {
 	global
 	Menu, ShipToMenu, Add, &B, ShipToMenuHandler
@@ -96,7 +96,7 @@ SampleTab_ShipToSelect(x_pos:=304,y_pos:=433)
 }
 
 
-	SampleTab_ChangeTestResults(Checkbox_Toggle:=0) 
+	WorkTab_ChangeTestResults(Checkbox_Toggle:=0) 
 	{
 		global 
 		MouseGetPos, xpos, ypos
@@ -115,7 +115,7 @@ SampleTab_ShipToSelect(x_pos:=304,y_pos:=433)
 		
 	}
 
-	SampleTab_AddSampleLog(count) 
+	WorkTab_AddSampleLog(count) 
 	{
 		global
 		;MouseGetPos, xpos, ypos
@@ -137,9 +137,32 @@ SampleTab_ShipToSelect(x_pos:=304,y_pos:=433)
 
 
 
-SampleTab_SelectShipTo(pgdowns,downs)
+WorkTab_SelectShipTo(pgdowns,downs)
 {
 	selection := 22 * pgdowns + downs + 5
 	sendinput, {right %selection%}
 	return
+}
+
+
+
+WorkTab_Main_EditResults() 
+{
+	sendinput, {click}{click 77, 751} ;edit results
+	winwaitactive, Results Definition - \\Remote
+	return
+}
+
+
+WorkTab_EditSample(Pgdown:=0,MoveDown:=0){
+	global		
+	;atch:=varbar_get("Batch")
+	;Lot:=Varbar_Send("Lot")
+	sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+	IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
+		sendinput, {tab}
+	sendinput % Varbar_Send("Batch") "{tab}"
+	IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
+		sendinput % Varbar_send("Lot") "{tab}" 
+	WorkTab_SelectShipTo(Pgdown,MoveDown)
 }

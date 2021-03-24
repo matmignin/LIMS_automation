@@ -111,7 +111,7 @@ Menu()
 	
 	else if A_thismenuitem contains &Analytical 
 		if Winactive("NuGenesis LMS - \\Remote")
-			SampleTab_NewRequest("Analytical")
+			WorkTab_NewRequest("Analytical")
 	else 
 		SpecTab_Edit_Analytical()
 	else if A_thismenuitem contains &Coated_Retain
@@ -122,13 +122,13 @@ Menu()
 		SpecTab_Edit_Retain()
 	else if A_thismenuitem contains &Micro
 		if Winactive("NuGenesis LMS - \\Remote")		
-			SampleTab_NewRequest("Micro")
+			WorkTab_NewRequest("Micro")
 	else
 		SpecTab_Edit_Micro()
 	else if A_thismenuitem contains &Physical
 	{
 		if Winactive("NuGenesis LMS - \\Remote")
-			SampleTab_NewRequest("physical")
+			WorkTab_NewRequest("physical")
 		else
 			SpecTab_Edit_Physical()		
 	}
@@ -191,7 +191,7 @@ Menu()
 	return
 	
 }
-SampleTab_NewRequest(department)
+WorkTab_NewRequest(department)
 {
 	click, 64, 286 ;click Assign To New rewuest link
 	winwaitactive, Edit request - \\Remote

@@ -3,7 +3,7 @@
 
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
 {
-	d::Send, {home 2}+{end}^x{backspace}
+	d::Send, {home 2}+{end}{Delete}
 	w::sendinput, {right}^{left}+^{right}+{left}{backspace}
 	4::sendinput, +{end}^x
 	5::sendinput, ^m^x
@@ -35,7 +35,7 @@
 
 #If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
 {
-	,::sendinput, {ctrl down}{j}{ctrl up}
+	,::sendinput, {ctrl down}j{ctrl up}
 	m::+!down
 	n::+!up
 	u::+!up
@@ -109,7 +109,8 @@ v up::
 
 #if
 F19::numpadDot
-
+#IfWinActive,
+return
 ;__________________________________________________________________
 ;_______________________________________________________Other stuff
 ;__________________________________________________________________
@@ -120,38 +121,45 @@ F19::numpadDot
 	+F12::Exitapp
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744
-	#!\::
-	{
-		sendinput, 4130220009588038
-		trayTip, ,11/21  127
-		return
-	}
+	#!\::Login()
 	F20 & Right::send, #{right}
 	F20 & Left::send, #{Left}
 	F20 & UP::send, #{UP}
 	F20 & Down::send, #{Down}
+	#ifwinactive, NuGenesis LMS - \\Remote
+
+F20::Mouse_Click("SearchBar_Batch")     
 	; F15 & Wheelup::lwin
 	; F15 & Wheeldown::Mouse_CloseWindow()
+#ifwinactive, ahk_exe EXCEL.EXE
+	+Enter::sendinput, !{enter}
+	$Enter::sendinput, {enter}
+	F13::Excel_Search()
+	`::esc
+
+
+#ifwinactive, Find and Replace,
+	enter::sendinput, !i
+	rbutton & Lbutton::sendinput, !i
+
 
 	#ifwinactive, ahk_exe Code.exe
 	capslock::esc
 
 	#IfWinActive,
 	Numlock::BackSpace
-	#ifwinactive,  outlook
+	#IfWinActive, outlook ;____________________________________Outlook
+	F13 & Wheeldown::SENDINPUT % Varbar_get(Batch) " is updated"
 	capslock::return
 	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
-	Rbutton & wheeldown::mouse_wheel("{ctrl down}p{ctrl up}")
+	Rbutton & wheeldown::mouse_wheel("{ctrl down}v{ctrl up}")
 
 
 	#ifwinactive, ahk_exe explorer.exe ; _______________________explorer
 	Mbutton::Open_in_Notepad()
 	;________________________________________Firefox and Edge
 	#IfWinActive, ahk_exe firefox.exe OR ahk_exe msedge.exe
-	F15 & WheelDown::
-	send, ^w
-	sleep 500
-	return
+	F15 & WheelDown::Mouse_wheel("^w")
 	F13 & WheelDOWN::Browser_Back
 	F14 & wheelUP::Browser_Forward
 	;_________________________________________________________Snipper 
@@ -176,32 +184,27 @@ F19::numpadDot
 	+^l::sendinput, {home}{tab}
 	+^h::sendinput, {home}+{tab}
 	Mbutton::sendinput, ^d
-	F17::Mouse_Wheel("!{right}")
-	F16::Mouse_Wheel("!{left}")
+	F17::Mouse_Wheel("!{left}")
+	F16::Mouse_Wheel("!{right}")
 	F14 & WheelLEFT::mouse_wheel("{home}+{tab}")
 	F14 & WheelRIGHT::mouse_wheel("{home}+{tab}")
-	F14 & WheelDOWN::mouse_wheel("{alt down}j{alt up}")
-	F14 & wheelUP::Mouse_wheel("{alt down}k{alt up}")
+	F14 & WheelDOWN::mouse_wheel("{ctrl down}{down}{ctrl up}")
+	F14 & wheelUP::Mouse_wheel("^{up}")
 	F14 & F13::sendinput, #{tab}
 	F14 & Rbutton::sendinput, +^f
 	Mbutton & Wheeldown::mouse_wheel("!{right}")
 	Mbutton & Wheelup::mouse_wheel("!{left}")
-	F14::
-		sendinput, ^s
-		sleep 200
-		run, VQuest.ahk
-		tooltip("Reload")
-		; reload
-		return
+	F18::ReloadScript()
 	F3::+^F1 	;search Help
 	^k::sendinput, +^{up}
-	^j::sendinput, +^{down}
-	Rbutton & F16::mouse_wheel("+{home}{delete}")
-	Rbutton & F17::mouse_wheel("+{end}{Backspace}")
+	^j::sendinput, +^j{down}
+	Rbutton & F16::mouse_wheel("{Backspace}")
+	Rbutton & F17::mouse_wheel("{Delete}")
 	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
 	Rbutton & wheeldown::mouse_wheel("{ctrl down}p{ctrl up}")
 	$Rbutton::Click right
 	capslock::sendinput, {esc}
+	; F14::Menu()
 	;Rbutton & F18::Mouse_Get_WindowInfo()
 }
 #Ifwinactive, Find and Replace 
@@ -232,7 +235,18 @@ DoublePress(){
 }
 
 
+Login(){
+		sendinput, 4130220009588038
+		trayTip, ,11/21  127
+		return
+	}
 
+ReloadScript(){
+		sendinput, ^s
+		sleep 200
+		run, VQuest.ahk
+		tooltip("Reload")
+	}
 
 Vim_opened:
 	#Persistent 
@@ -247,3 +261,4 @@ Vim_opened:
 	Process, Priority,, High
 	sendlevel 1
 	return
+
