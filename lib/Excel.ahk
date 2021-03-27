@@ -1,5 +1,6 @@
-Excel_Connect(){
+Excel_Connect(reload:=1){
 	Global
+	Gui VarBar:+LastFound 
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook.xlsm - Excel")
@@ -28,15 +29,18 @@ Excel_Connect(){
 		if (Products[A_index] = "Finished")
 			break
 		else 	
-			DDLProducts .= "|" Products[A_Index]
+			DDLProducts .= "|" Products[A_index]
+
 	}
 	Product:=XL.Range("B7").Value
 	Name:=XL.Range("B2").Value
 	Batch:=XL.Range("C1").Value
 	Lot:=XL.Range("E1").Value
 	Customer:=XL.Range("B3").Value
-	sleep 200
-	VarBar()
+	; gui,varbar:Submit,Nohide
+	sleep 50
+	if (Reload = 1)
+		VarBar.show()
 	return
 }
 

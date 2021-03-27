@@ -8,10 +8,12 @@
 Mouse_Wheel(commands,Sleptime:=900)
 {
 	BlockInput, On
-	sendinput, %Commands%
-	sleep %sleeptime%
+	sleep 50
+	send, %Commands%
+	sleep 50
 	BlockInput, Off
-	sleep 10
+	sleep %sleeptime%
+	sleep 50
 	return
 }
 
@@ -80,6 +82,8 @@ Mouse_CloseWindow()
 		sleep 400
 		return
 	}
+	else if winactive("ahk_exe Code.exe")
+		sendinput, Mouse_wheel("^w")
 	else if winactive("ahk_exe mstsc.exe") ||  winactive("ahk_exe EXCEL.EXE")
 	{ 
 		Send, ^v

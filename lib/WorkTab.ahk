@@ -1,25 +1,62 @@
-
-
-
-
-
-; #Ifwinactive, Edit test (Field Configuration: F`, Micro) - \\Remote ;
-; F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-; #Ifwinactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
-; F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-; #Ifwinactive, Edit test (Field Configuration: I`, Physical) - \\Remote
-; F14::sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
-
-
+WorkTab_EditSample(){
+	global		
+	;atch:=varbar_get("Batch")
+	;Lot:=Varbar_Send("Lot")
+	sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+	IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
+		sendinput, {tab}
+	sendinput % Varbar.Send("Batch") "{tab}"
+	IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
+		sendinput % Varbar.send("Lot") "{tab}" 
+		Selection:= iteration
+		AbsSelection:=Abs(Selection)-1
+	if (Selection > 0)
+		sendinput, {home}{right %selection%}
+	else if (Selection < 0)
+		Sendinput, {end}{left %Absselection%}
+	else
+		return
+}
 
 WorkTab_RegisterNewSample() 
 {
 	global
 	winactivate, Register new samples - \\Remote
-	Send, {click 179, 105}{click}%Product%{enter}
+	Send, {click 179, 105}{click}
+	varbar.send("Product")
+	send, {enter}
 }
-
-
+WorkTab_NewRequest(department)
+{
+	click, 64, 299 ;click Assign To New rewuest link
+	winwaitactive, Edit request - \\Remote
+	sleep 200
+	click 238, 622 ;pick test
+	winwaitactive, Select tests for request
+	sleep 200
+	click, right, 264, 590 ; click to show filer
+	sleep 100
+	send, {up}{enter}
+	sleep 200
+	click, 97, 125 ; click filter
+	send, %Department%{enter}
+	sleep 100
+	click 152, 195
+	send ^a
+	click 504, 338 ; click arrow
+	sleep 200
+	click, right, 264, 590 ; click to clear filter
+	sleep 100
+	send, {up}{enter}
+	;sleep 2000
+	;click 854, 657  ; click okay
+	winwaitclose, Select tests for request,,10
+	if !Errorlevel
+		sleep 400
+;	click 338, 619 ; click okay
+	return
+	
+}
 
 WorkTab_ShipToSelect(x_pos:=304,y_pos:=433)
 {
@@ -72,6 +109,8 @@ WorkTab_ShipToSelect(x_pos:=304,y_pos:=433)
 		sendinput, {tab}{pgdn 10}
 	else if (A_ThisMenuItem = "&K") 
 		sendinput, {tab}{pgdn 11}
+			else if (A_ThisMenuItem = "Key Nutrients") 
+		sendinput, {tab}{pgdn 10}{down 18}
 	else if (A_ThisMenuItem = "&L") 
 		sendinput, {tab}{pgdn 12}
 	else if (A_ThisMenuItem = "&M") 
@@ -137,12 +176,7 @@ WorkTab_ShipToSelect(x_pos:=304,y_pos:=433)
 
 
 
-WorkTab_SelectShipTo(pgdowns,downs)
-{
-	selection := 22 * pgdowns + downs + 5
-	sendinput, {right %selection%}
-	return
-}
+
 
 
 
@@ -153,16 +187,3 @@ WorkTab_Main_EditResults()
 	return
 }
 
-
-WorkTab_EditSample(Pgdown:=0,MoveDown:=0){
-	global		
-	;atch:=varbar_get("Batch")
-	;Lot:=Varbar_Send("Lot")
-	sendinput, {tab 2}{right}{click 277, 139}{tab 6}
-	IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-		sendinput, {tab}
-	sendinput % Varbar_Send("Batch") "{tab}"
-	IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-		sendinput % Varbar_send("Lot") "{tab}" 
-	WorkTab_SelectShipTo(Pgdown,MoveDown)
-}

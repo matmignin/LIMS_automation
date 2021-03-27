@@ -9,7 +9,7 @@
 	} Else If winactive("outlook"){
 		Send, {wheelright} 
 	} Else If winactive("Result Entry - \\Remote"){
-		WorkTab_ChangeTestResults()	
+		WorkTab_ChangeTestResults("toggle")	
 	} else if Winactive("Select tests for request"){
 		Mouse_Click("Select_TestsForRequests")
 		;LMS
@@ -58,7 +58,7 @@ global
 	} Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{left}	
 	} Else If winactive("Result Entry - \\Remote"){
-		WorkTab_ChangeTestResults("Toggle")	
+		WorkTab_ChangeTestResults()	
 		;ProductTab
 } Else If winactive("ahk_exe EXCEL.EXE"){
 		Mouse_Wheel("{wheelright}",1100)	

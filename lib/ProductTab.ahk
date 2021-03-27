@@ -2,8 +2,10 @@
 ProductTab_Table(){
 	Global
 	try GUI ingredient_table:destroy
-	Iniread,ProductTable_X,data.ini,Locations,ProductTable_X
-	Iniread,ProductTable_Y,data.ini,Locations,ProductTable_Y
+	; Iniread,ProductTable_X,data.ini,Locations,varbar_X
+	; Iniread,ProductTable_Y,data.ini,Locations,VarBar_Y
+	ProductTable_Y:=Varbar_Y + 40
+	Producttable_X:=Varbar_X + 100
 	Excel_Connect()
 	Name:=			[]
 	LabelClaim:=	[]
@@ -99,13 +101,13 @@ ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
 
 
 Ingredient_TableGuiClose:
-	coordmode,window,Screen
-	WinGetPos,ProductTable_X,ProductTable_Y
-	sleep 100
-	IniWrite,%ProductTable_X%,data.ini,Locations,ProductTable_X
-	IniWrite,%ProductTable_Y%,data.ini,Locations,ProductTable_Y
-	coordmode,window,Window
-	sleep 500
+	; coordmode,window,Screen
+	; WinGetPos,ProductTable_X,ProductTable_Y
+	; sleep 100
+	; IniWrite,%ProductTable_X%,data.ini,Locations,ProductTable_X
+	; IniWrite,%ProductTable_Y%,data.ini,Locations,ProductTable_Y
+	; coordmode,window,Window
+	; sleep 500
 	GUI,Ingredient_Table:destroy
 	return
 
@@ -160,7 +162,7 @@ ProductTab_Select_Ingredient() {
 		Sendinput,{click 150,73}{tab}{right 131}		
 	else if Name contains Inositol	
 		Sendinput,{click 150,73}{tab}{right 150}
-	else if Name contains Iodide 	
+	else if Name contains Iodine 	
 		Sendinput,{click 150,73}{tab}{right 153}
 	else if Name contains Iron 	
 		Sendinput,{click 150,73}{tab}{right 155}

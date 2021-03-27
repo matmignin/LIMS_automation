@@ -2,15 +2,17 @@
 SpecTab_Table(){
 	Global
 	Try GUI, Spec_Table:destroy 
-	Iniread, VarBar_X, data.ini, Locations, SpecTable_X
-	Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
+	; Iniread, VarBar_X, data.ini, Locations, SpecTable_X
+	; Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
+		SpecTable_Y:=Varbar_Y + 40
+	SpecTable_X:=Varbar_X + 200
 	Excel_Connect()
-	Name:=			[]
+	Name:=				[]
 	Position:=		[]
 	LabelClaim:=	[] 
 	MinLimit:=		[]
 	MaxLimit:=		[]
-	Units:=			[]
+	Units:=				[]
 	Percision:=		[]
 	LabelName:=		[]
 	Description:=	[]
@@ -58,7 +60,8 @@ SpecTab_Table(){
 	Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w320, %Product%
 	CoordMode, mouse, window
 	return			
-	
+
+
 	
 	Spec_Table:
 	if (A_GuiEvent = "DoubleClick" )  {	
@@ -114,13 +117,13 @@ SpecTab_Table(){
 
 
 Spec_TableGuiClose:
-	coordmode,window,Screen
-	WinGetPos,SpecTable_X,SpecTable_Y,
-	sleep 100
-	IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
-	IniWrite, %SpecTable_Y%, data.ini, Locations, SpecTable_Y
-	coordmode,window,Window
-	sleep 500
+	; coordmode,window,Screen
+	; WinGetPos,SpecTable_X,SpecTable_Y,
+	; sleep 100
+	; IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
+	; IniWrite, %SpecTable_Y%, data.ini, Locations, SpecTable_Y
+	; coordmode,window,Window
+	; sleep 500
 	GUI, Spec_Table:destroy
 	return
 
@@ -132,11 +135,13 @@ SpecTab_Create_Template:
 
 	WinActivate,  Edit specification - \\Remote
 		SpecTab_Edit_Physical()
+				sleep 2000
+				sendinput, {Enter}
 		return
 	:*:cp\::  
 		SpecTab_Edit_CoatedPhysical()
 		sleep 2000
-		sendinput, {Enter}
+	;	sendinput, {Enter}
 		return
 
 	WinActivate,  Edit specification - \\Remote
@@ -146,6 +151,8 @@ SpecTab_Create_Template:
 		return
 	:*:cr\::
 	SpecTab_Edit_CoatedRetain()
+					sleep 2000
+		; sendinput, {Enter}
 	return
 
 	WinActivate,  Edit specification - \\Remote
@@ -156,8 +163,8 @@ SpecTab_Create_Template:
 
 	WinActivate,  Edit specification - \\Remote
 		SpecTab_Edit_Analytical()
-		sendinput, {Enter}
 				sleep 2000
+		sendinput, {Enter}
 		return
 	:*:ac\::
 		sendinput, %Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}A{shift Up}nalytical
@@ -181,7 +188,7 @@ SpecTab_EditSpecification_Analytical(){
 	sendinput, {click 376, 87}{home}
 	sendinput, %Product%`, {Shift down}I{Shift up}n {Shift down}P{Shift up}rocess`, {Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
 		click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS - \\Remote, ,4
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !ErrorLevel 
 		click, 88, 327 ; click add sample template
 	winwaitactive, Edit sample template - \\Remote,, 8
@@ -288,7 +295,7 @@ SpecTab_Edit_CoatedPhysical(){
 }		
 SpecTab_Edit_Retain(){
 	Global
-	VarBar()
+	VarBar.show()
 	winactivate, Edit specification - \\Remote
 	sendinput, {click 376, 87}{home}
 	send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}

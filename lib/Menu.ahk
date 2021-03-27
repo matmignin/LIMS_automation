@@ -2,15 +2,40 @@
 Menu() 
 {
 	Global
-	try 
-		menu, menu, deleteAll
+	try menu, menu, deleteAll
+
+
+		menu, Menu, Add, &Ingredient Table, menu
+		menu, Menu, Add, &Spec Table, menu
+		Menu, Menu, Add, &Product `t  %Product%, Menu
+		Menu, Menu, Add, &Batch `t  %Batch%, Menu
+		Menu, Menu, Add, &Lot `t  %Lot%, Menu
+		Menu, Menu, Add, &Name `t  %name%, Menu
+			menu, Menu, Add, Excel Sheets, Menu
+				loop 10
+				{
+				Worksheet:=Products[A_index]
+				menu, SubMenu, Add, %worksheet%, Worksheet_menu
+				}
+			menu, Menu, add, Excel Sheets, :SubMenu
+
+
 	If Winactive("Password ahk_class bosa_sdm_XL9") || Winactive("Login - \\Remote") {
 		Menu, Menu, Add, Samples, Menu
 		Menu, Menu, Add, Tests, Menu
 		Menu, Menu, Add, Visual, Menu
 		Menu, Menu, Add, VQ Login, Menu
-		;Menu, Menu, Show,
+		; Menu, Menu, Show,
 	}		
+
+
+
+
+
+
+
+
+
 	Else If Winactive("Edit sample template - \\Remote") || Winactive("Edit specification - \\Remote") || winactive("NuGenesis LMS - \\Remote")
 	{
 		Excel_Connect()
@@ -20,69 +45,122 @@ Menu()
 		Menu, Menu, add, &Retain, Menu		
 		Menu, Menu, add, &Coated_Physical, Menu
 		Menu, Menu, add, &Coated_Retain, Menu
-		;Menu, Menu, Show,
+		; Menu, Menu, Show,
 	}
+
+
+
+
+
+
+
+
+
 	Else If winactive("Results Definition - \\Remote")
 	{
 		Menu, Menu, Add, USP Heavy Metal,Menu
 		Menu, Menu, Add, Canada Heavy Metal,Menu
-		Menu, Menu, Add, Prop65 Heavy Metal,Menu
-		Menu, Menu, Add, Report Only Heavy Metal,Menu
+
+
+
 	}
-	Else if WinActive("ahk_exe AHK-Studio.exe") || WinActive("ahk_exe Code.exe") 
+
+
+
+
+
+
+
+
+	Else if WinActive("ahk_exe Code.exe") 
 	{
-		loop 10
-		{
-			Worksheet:=Products[A_index]
-			menu, Menu, Add, %worksheet%, Worksheet_menu
-		}
+		try menu, menu, deleteAll
 		Menu, menu, Add, Mouse Location `t%MousePosition%, menu	
 		Menu, menu, Add, Window Title `t%wintitle%, menu	
 		Menu, menu, Add, Process `t%winProcess% , menu	
-		Menu, menu, Add, Control `t%789221364003winControl%, menu	
-		; Menu, Menu, Add,
+		Menu, menu, Add, Control `t%winControl%, menu	
+		Menu, Menu, Add, Test &1, Menu
+		Menu, Menu, Add, Test &2, Menu
+		Menu, Menu, Add, Test &3, Menu
+		Menu, Menu, Add, F13, Menu
+		Menu, Menu, Add, F14, Menu
+		Menu, Menu, Add, F15, Menu
+		Menu, Menu, Add, F16, Menu
+		Menu, Menu, Add, F17, Menu
+		Menu, Menu, Add, F18, Menu
+		Menu, Menu, Add, Mbutton, Menu
+		Menu, Menu, Add, Rbutton, Menu
+		Menu, Menu, Add, Wheel, Menu
+		menu, menu, add, Exit, menu
+
 	}
+
+
+
+
+
+
+
+
+
+
+
 	ELSE If WinActive("Remote Desktop Connection") 
 	{
 		Menu, Menu, Add, TEST_Citrix (for Testing LMS), Menu
 		Menu, Menu, Add, PRD_Citrix_One, Menu
 		Menu, Menu, Add, PRD_Citrix_Two, Menu
 		Menu, Menu, Add, PRD_Citrix_Three, Menu
-		Menu, Menu, Add,
 		menu, Menu, Add, Other Servers, Menu
-		Menu, SubMenu, Add, TEST_LMS, Menu
-		Menu, SubMenu, Add, TEST_NuGen, Menu
-		Menu, SubMenu, Add, TEST_SDMS, Menu
-		Menu, SubMenu, Add, LMS_PRD, Menu
-		Menu, SubMenu, Add, NuGenesis, Menu
-		Menu, SubMenu, Add, SDMS, Menu
-		Menu, SubMenu, Add, PRD_EMPCitrix, Menu
-		Menu, SubMenu, Add, Empower, Menu
+			Menu, SubMenu, Add, TEST_LMS, Menu
+			Menu, SubMenu, Add, TEST_NuGen, Menu
+			Menu, SubMenu, Add, TEST_SDMS, Menu
+			Menu, SubMenu, Add, LMS_PRD, Menu
+			Menu, SubMenu, Add, NuGenesis, Menu`
+			Menu, SubMenu, Add, SDMS, Menu
+			Menu, SubMenu, Add, PRD_EMPCitrix, Menu
+			Menu, SubMenu, Add, Empower, Menu
 		menu, Menu, add, Other Servers, :SubMenu
-		;Menu, Menu, Show,
+		; Menu, Menu, Show,
 	}
 	else
-	{
-
-		menu, Menu, Add, &Ingredient Table, menu
-		menu, Menu, Add, &Spec Table, menu
-		
-		Menu, Menu, Add, &Product `t  %Product%, Menu
-		Menu, Menu, Add, &Batch `t  %Batch%, Menu
-		Menu, Menu, Add, &Lot `t  %Lot%, Menu
-		Menu, Menu, Add, &Name `t  %name%, Menu
-		menu, menu, add
-		Menu, Menu, Add, Test &1, Menu
-		Menu, Menu, Add, Test &2, Menu
-		Menu, Menu, Add, Test &3, Menu
 		/*
 			Menu, Menu, Add, QuickSelect, Menu
 			Menu, SubMenu, Add, Enter Results, Menu
 			Menu, Menu, Add, QuickSelect, :SubMenu
 		*/
-	}
+	 
 	Menu, Menu, Show,
 	return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	Menu:
 	if (A_ThisMenuItem = "Samples")
@@ -106,9 +184,8 @@ Menu()
 	else if A_thismenuItem contains &Spec Table
 		SpecTab_Table()
 	
-	
-	
-	
+
+
 	else if A_thismenuitem contains &Analytical 
 		if Winactive("NuGenesis LMS - \\Remote")
 			WorkTab_NewRequest("Analytical")
@@ -138,6 +215,26 @@ Menu()
 		Try Test(2)	
 	else if A_thismenuitem contains Test &3
 		Try Test(3)	
+	else if (A_thismenuitem = "F13")
+			Sendinput, ^fF13`:`:{enter}
+				else if (A_thismenuitem = "F13")
+			Sendinput, ^fF13`:`:{enter}
+				else if (A_thismenuitem = "F14")
+			Sendinput, ^fF14`:`:{enter}
+				else if (A_thismenuitem = "F15")
+			Sendinput, ^fF15`:`:{enter}
+				else if (A_thismenuitem = "F16")
+			Sendinput, ^fF16`:`:{enter}
+				else if (A_thismenuitem = "F17")
+			Sendinput, ^fF17`:`:{enter}
+				else if (A_thismenuitem = "F18")
+			Sendinput, ^fF18`:`:{enter}
+				else if (A_thismenuitem = "Mbutton")
+			Sendinput, ^fMbutton{enter}
+			else if (A_thismenuitem = "Rbutton")
+			Sendinput, ^fRbutton{enter}
+			else if (A_thismenuitem = "Wheel")
+			Sendinput, ^fWheel`:`:{enter}
 	else if A_thismenuItem contains Mouse Location `t%MousePosition%
 		sendinput %MousePosition%
 	else if A_thismenuItem contains Window Title `t%wintitle%
@@ -178,47 +275,18 @@ Menu()
 		Sendinput, open{enter}
 	else if (A_ThisMenuItem = "VQ")
 		Sendinput, ?Kilgore7744{enter}
-	else if A_thismenuItem contains &Product
-		Sendinput, % Varbar_get("Product")
-	else if A_thismenuItem contains &Batch 
-		Sendinput, % Varbar_get("Batch")
-	else if A_thismenuItem contains &name
-		Sendinput, % Varbar_get("name")
-	else if A_thismenuItem contains &lot
-		Sendinput, % Varbar_get("lot")
-	else
-		menu, menu, deleteAll
-	return
-	
-}
-WorkTab_NewRequest(department)
-{
-	click, 64, 286 ;click Assign To New rewuest link
-	winwaitactive, Edit request - \\Remote
-	sleep 200
-	click 238, 622 ;pick test
-	winwaitactive, Select tests for request
-	sleep 400
-	click, right, 264, 590 ; click to show filer
-	sleep 100
-	send, {up}{enter}
-	sleep 200
-	click, 97, 125 ; click filter
-	send, %Department%{enter}
-	sleep 100
-	click 152, 195
-	send ^a
-	click 504, 338 ; click arrow
-	sleep 400
-	click, right, 264, 590 ; click to clear filter
-	sleep 100
-	send, {up}{enter}
-	;sleep 2000
-	;click 854, 657  ; click okay
-	winwaitclose, Select tests for request,,10
-	if !Errorlevel
-		sleep 400
-	click 338, 619 ; click okay
-	return
+	else if A_thismenuItem contains &Product `t  %Product%,
+		VarBar.send("Product")
+	else if A_thismenuItem contains &Batch `t  %Batch%
+		VarBar.send("Batch")
+	else if A_thismenuItem contains &name `t  %name%
+		VarBar.send("Name")
+	else if A_thismenuItem contains &lot `t  %Lot%
+		VarBar.send("Lot")
+	else {
+    menu, menu, deleteAll
+	}
+	;menu, menu, deleteAll
+return
 	
 }

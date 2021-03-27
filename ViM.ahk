@@ -1,6 +1,6 @@
 ﻿gosub, Vim_opened
 
-
+#ifwinactive, 
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
 {
 	d::Send, {home 2}+{end}{Delete}
@@ -35,7 +35,7 @@
 
 #If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
 {
-	,::sendinput, {ctrl down}j{ctrl up}
+	,::sendinput, !`,
 	m::+!down
 	n::+!up
 	u::+!up
@@ -87,8 +87,8 @@ v up::
 #if
 }
 
-#ifwinactive,
-#If Getkeystate("F19","p")
+
+#If Getkeystate("F19","p") ;________________________________________Psudo Numpad
 	 j::numpad4
 	 k::numpad5
 	 l::numpad6
@@ -99,16 +99,19 @@ v up::
 	 i::numpad8
 	 o::numpad9
 	 `;::numpad0
-	 n::numpadsub
-	 /::numpadadd
-	 h::numpaddiv
+	 n::numpaddiv
+	 /::,
+	 h::numpadsub
 	 p::numpadmult
 	 '::numpaddot
+		#if
+
+F19::NumpadSub
+;F20 & F19::
+
+;F20::Menu()
 
 
-
-#if
-F19::numpadDot
 #IfWinActive,
 return
 ;__________________________________________________________________
@@ -131,16 +134,7 @@ return
 F20::Mouse_Click("SearchBar_Batch")     
 	; F15 & Wheelup::lwin
 	; F15 & Wheeldown::Mouse_CloseWindow()
-#ifwinactive, ahk_exe EXCEL.EXE
-	+Enter::sendinput, !{enter}
-	$Enter::sendinput, {enter}
-	F13::Excel_Search()
-	`::esc
 
-
-#ifwinactive, Find and Replace,
-	enter::sendinput, !i
-	rbutton & Lbutton::sendinput, !i
 
 
 	#ifwinactive, ahk_exe Code.exe
@@ -148,11 +142,8 @@ F20::Mouse_Click("SearchBar_Batch")
 
 	#IfWinActive,
 	Numlock::BackSpace
-	#IfWinActive, outlook ;____________________________________Outlook
-	F13 & Wheeldown::SENDINPUT % Varbar_get(Batch) " is updated"
+	#IfWinActive, ahk_exe OUTLOOK.EXE ;____________________________________Outlook
 	capslock::return
-	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
-	Rbutton & wheeldown::mouse_wheel("{ctrl down}v{ctrl up}")
 
 
 	#ifwinactive, ahk_exe explorer.exe ; _______________________explorer
@@ -168,45 +159,129 @@ F20::Mouse_Click("SearchBar_Batch")
 	F13 & Rbutton::Click, 2
 	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
 	Mbutton::Sendinput, {click right}z1{click right}e{ctrl down}5{ctrl up}
-}#if
+}
+#if
+
+
+
+
 ;__________________________________________________________________
 ;__________________________________________________________________Editors
-;__________________________________________________________________
+;__________________________________________________________________ 
+
+
 #IfWinActive, ahk_exe AHK-Studio.exe OR ahk_exe Code.exe
 {
-	Capslock & ,::^j
+	Capslock & ,::^,
 	Capslock & a::!^a
-	^r::sendinput, ^s
-		reload
-		return
+	^r::ReloadScript()
 	+^j::+^down
 	+^K::+^up
 	+^l::sendinput, {home}{tab}
 	+^h::sendinput, {home}+{tab}
 	Mbutton::sendinput, ^d
-	F17::Mouse_Wheel("!{left}")
-	F16::Mouse_Wheel("!{right}")
-	F14 & WheelLEFT::mouse_wheel("{home}+{tab}")
-	F14 & WheelRIGHT::mouse_wheel("{home}+{tab}")
+	F17::Mouse_Wheel("!{left}",1500)
+	F16::Mouse_Wheel("!{right}",1500)
 	F14 & WheelDOWN::mouse_wheel("{ctrl down}{down}{ctrl up}")
 	F14 & wheelUP::Mouse_wheel("^{up}")
 	F14 & F13::sendinput, #{tab}
 	F14 & Rbutton::sendinput, +^f
+	F14 & Lbutton::sendinput, ^{click}
+	F14::menu()
 	Mbutton & Wheeldown::mouse_wheel("!{right}")
 	Mbutton & Wheelup::mouse_wheel("!{left}")
+	Mbutton & Rbutton::Mouse_wheel("{home}+{end}{backspace}")
+	+Mbutton::+^d
 	F18::ReloadScript()
 	F3::+^F1 	;search Help
-	^k::sendinput, +^{up}
-	^j::sendinput, +^j{down}
-	Rbutton & F16::mouse_wheel("{Backspace}")
-	Rbutton & F17::mouse_wheel("{Delete}")
-	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
-	Rbutton & wheeldown::mouse_wheel("{ctrl down}p{ctrl up}")
+	^k::sendinput, ^{up}
+	^j::sendinput, ^{down}
+	Rbutton & F17::mouse_wheel("{shift down}{home}{shift up}{ctrl down}x{ctrl up}",1000)
+	Rbutton & F16::mouse_wheel("{shift down}{end}{shift up}{ctrl down}x{ctrl up}",1000)
+	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}",4000)
+	Rbutton & wheeldown::mouse_wheel("{ctrl down}v{ctrl up}",4000)
+	Rbutton & Mbutton::sendinput, {click}{Home}+{end}^c
 	$Rbutton::Click right
 	capslock::sendinput, {esc}
-	; F14::Menu()
-	;Rbutton & F18::Mouse_Get_WindowInfo()
+	
+	Rbutton & F18::Mouse_Get_WindowInfo()
+
+
+
+
+; F14::
+; 		Menu, codemenu, Add, Mouse Location `t%MousePosition%, codemenu	
+; 		Menu, codemenu, Add, Window Title `t%wintitle%, codemenu	
+; 		Menu, codemenu, Add, Process `t%winProcess% , codemenu	
+; 		Menu, codemenu, Add, Control `t%winControl%, codemenu	
+; 		Menu, codeMenu, Add, Test &1, codeMenu
+; 		Menu, codeMenu, Add, Test &2, codeMenu
+; 		Menu, codeMenu, Add, Test &3, codeMenu
+; 		Menu, codeMenu, Add, F13, codeMenu
+; 		Menu, codeMenu, Add, F14, codeMenu
+; 		Menu, codeMenu, Add, F15, codeMenu
+; 		Menu, codeMenu, Add, F16, codeMenu
+; 		Menu, codeMenu, Add, F17, codeMenu
+; 		Menu, codeMenu, Add, F18, codeMenu
+; 		Menu, codeMenu, Add, Mbutton, codeMenu
+; 		Menu, codeMenu, Add, Rbutton, codeMenu
+; 		Menu, codeMenu, Add, Wheel, codeMenu
+; 		menu, CodeMenu, show
+; 		return
+
+; CodeMenu:
+; 	if A_thismenuitem contains Test &1
+; 		TRY Test(1)	
+; 	else if A_thismenuitem contains Test &2
+; 		Try Test(2)	
+; 	else if A_thismenuitem contains Test &3
+; 		Try Test(3)	
+; 	else if (A_thismenuitem = "F13")
+; 			Sendinput, ^fF13`:`:{enter}
+; 				else if (A_thismenuitem = "F13")
+; 			Sendinput, ^fF13`:`:{enter}
+; 				else if (A_thismenuitem = "F14")
+; 			Sendinput, ^fF14`:`:{enter}
+; 				else if (A_thismenuitem = "F15")
+; 			Sendinput, ^fF15`:`:{enter}
+; 				else if (A_thismenuitem = "F16")
+; 			Sendinput, ^fF16`:`:{enter}
+; 				else if (A_thismenuitem = "F17")
+; 			Sendinput, ^fF17`:`:{enter}
+; 				else if (A_thismenuitem = "F18")
+; 			Sendinput, ^fF18`:`:{enter}
+; 				else if (A_thismenuitem = "Mbutton")
+; 			Sendinput, ^fMbutton{enter}
+; 			else if (A_thismenuitem = "Rbutton")
+; 			Sendinput, ^fRbutton{enter}
+; 			else if (A_thismenuitem = "Wheel")
+; 			Sendinput, ^fWheel`:`:{enter}
+; 	else if A_thismenuItem contains Mouse Location `t%MousePosition%
+; 		sendinput %MousePosition%
+; 	else if A_thismenuItem contains Window Title `t%wintitle%
+; 		Sendinput %WinTitle%
+; 	else if A_thismenuItem contains Process `t%winProcess% 
+; 		sendinput ahk_exe %WinProcess%
+; 	else if A_thismenuItem contains Control `t%winControl%
+; 		sendinput, %WinControl%
+; 		else
+; 		menu, Codemenu, deleteall
+
+; return
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
 #Ifwinactive, Find and Replace 
 {
 	capslock::return	
@@ -258,7 +333,8 @@ Vim_opened:
 	setCapslockstate alwaysoff
 	SetscrolllockState, alwaysOff
 	Menu, Tray, Icon, ViM.ico
-	Process, Priority,, High
-	sendlevel 1
+	;Process, Priority,, High
+	;sendlevel 1
+	#include <menu>
 	return
 

@@ -7,11 +7,11 @@ return
 4::
 5::
 EnvGet, GetRotationTable, GetRotationTable
-sleep 100
+; sleep 100
 if GetRotationTable:=1
 	Rotation_GetTable(0)
 WinActivate, Select Iterations - \\Remote
-sleep 100
+; sleep 100
 Rotation_Iterations(A_ThisHotkey,Cycle)
 ;SetKeyDelay 10
 send,{tab 4}{enter}
@@ -49,7 +49,7 @@ Rotation_GetTable(showTable=1){
 	RotationMenuHandler:
 	Rotation:=A_ThisMenuItemPos
 	WinActivate, Select Iterations - \\Remote
-	sleep 150
+	; sleep 150
 	Rotation_Iterations(Rotation,Cycle)
 	SetKeyDelay 5, 1
 	send,{tab 4}{enter}

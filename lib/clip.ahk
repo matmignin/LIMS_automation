@@ -1,7 +1,6 @@
 Clip() {
 	global
 	PreClip:=ClipboardAll
-	sleep 50
 	Clipboard:=
 	Send, ^c    
 	clipwait, 0.25
