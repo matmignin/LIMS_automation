@@ -5,12 +5,6 @@ Menu()
 	try menu, menu, deleteAll
 
 
-		menu, Menu, Add, &Ingredient Table, menu
-		menu, Menu, Add, &Spec Table, menu
-		Menu, Menu, Add, &Product `t  %Product%, Menu
-		Menu, Menu, Add, &Batch `t  %Batch%, Menu
-		Menu, Menu, Add, &Lot `t  %Lot%, Menu
-		Menu, Menu, Add, &Name `t  %name%, Menu
 			menu, Menu, Add, Excel Sheets, Menu
 				loop 10
 				{
@@ -18,9 +12,17 @@ Menu()
 				menu, SubMenu, Add, %worksheet%, Worksheet_menu
 				}
 			menu, Menu, add, Excel Sheets, :SubMenu
+		menu, Menu, Add, &Ingredient Table, menu
+		menu, Menu, Add, &Spec Table, menu
+		menu, menu, add,
+		Menu, Menu, Add, &Product `t  %Product%, Menu
+		Menu, Menu, Add, &Batch `t  %Batch%, Menu
+		Menu, Menu, Add, &Lot `t  %Lot%, Menu
+		Menu, Menu, Add, &Name `t  %name%, Menu
 
 
 	If Winactive("Password ahk_class bosa_sdm_XL9") || Winactive("Login - \\Remote") {
+				menu, menu, add,
 		Menu, Menu, Add, Samples, Menu
 		Menu, Menu, Add, Tests, Menu
 		Menu, Menu, Add, Visual, Menu
@@ -38,7 +40,8 @@ Menu()
 
 	Else If Winactive("Edit sample template - \\Remote") || Winactive("Edit specification - \\Remote") || winactive("NuGenesis LMS - \\Remote")
 	{
-		Excel_Connect()
+				menu, menu, add,
+		;Excel_Connect()
 		Menu, Menu, add, &Analytical, Menu
 		Menu, Menu, add, &Physical, Menu
 		Menu, Menu, add, &Micro, Menu
@@ -60,6 +63,8 @@ Menu()
 	{
 		Menu, Menu, Add, USP Heavy Metal,Menu
 		Menu, Menu, Add, Canada Heavy Metal,Menu
+		Menu, Menu, Add, Prop65 Heavy Metal,Menu
+		Menu, Menu, Add, Report Only Heavy Metal,Menu
 
 
 
@@ -74,7 +79,7 @@ Menu()
 
 	Else if WinActive("ahk_exe Code.exe") 
 	{
-		try menu, menu, deleteAll
+	;	try menu, menu, deleteAll
 		Menu, menu, Add, Mouse Location `t%MousePosition%, menu	
 		Menu, menu, Add, Window Title `t%wintitle%, menu	
 		Menu, menu, Add, Process `t%winProcess% , menu	
@@ -82,16 +87,18 @@ Menu()
 		Menu, Menu, Add, Test &1, Menu
 		Menu, Menu, Add, Test &2, Menu
 		Menu, Menu, Add, Test &3, Menu
-		Menu, Menu, Add, F13, Menu
-		Menu, Menu, Add, F14, Menu
-		Menu, Menu, Add, F15, Menu
-		Menu, Menu, Add, F16, Menu
-		Menu, Menu, Add, F17, Menu
-		Menu, Menu, Add, F18, Menu
-		Menu, Menu, Add, Mbutton, Menu
-		Menu, Menu, Add, Rbutton, Menu
-		Menu, Menu, Add, Wheel, Menu
-		menu, menu, add, Exit, menu
+				menu, Menu, Add, Search Hotkeys, Menu
+		Menu, hotkeyMenu, Add, F13, Menu
+		Menu, hotkeyMenu, Add, F14, Menu
+		Menu, hotkeyMenu, Add, F15, Menu
+		Menu, hotkeyMenu, Add, F16, Menu
+		Menu, hotkeyMenu, Add, F17, Menu
+		Menu, hotkeyMenu, Add, F18, Menu
+		Menu, hotkeyMenu, Add, Mbutton, Menu
+		Menu, hotkeyMenu, Add, Rbutton, Menu
+		Menu, hotkeyMenu, Add, Wheel, Menu
+		menu, hotkeymenu, add, Exit, menu
+				menu, Menu, add, Search Hotkeys, :HotkeyMenu
 
 	}
 
@@ -123,7 +130,7 @@ Menu()
 		menu, Menu, add, Other Servers, :SubMenu
 		; Menu, Menu, Show,
 	}
-	else
+	;else
 		/*
 			Menu, Menu, Add, QuickSelect, Menu
 			Menu, SubMenu, Add, Enter Results, Menu
@@ -171,6 +178,10 @@ Menu()
 		Sendinput, open{enter}
 	else if (A_ThisMenuItem = "VQ Login")
 		Sendinput, ?Kilgore7744{enter}
+
+
+
+
 	else if (A_ThisMenuItem = "USP Heavy Metal")
 		SpecTab_HM_USP()
 	else if (A_ThisMenuItem = "Canada Heavy Metal")
@@ -179,6 +190,9 @@ Menu()
 		SpecTab_HM_Prop65()
 	else if (A_ThisMenuItem = "Report Only Heavy Metal")
 		SpecTab_HM_ReportOnly() 
+
+
+
 	else if A_thismenuitem contains &Ingredient Table
 		ProductTab_Table()
 	else if A_thismenuItem contains &Spec Table
@@ -189,8 +203,8 @@ Menu()
 	else if A_thismenuitem contains &Analytical 
 		if Winactive("NuGenesis LMS - \\Remote")
 			WorkTab_NewRequest("Analytical")
-	else 
-		SpecTab_Edit_Analytical()
+		else 
+			SpecTab_Edit_Analytical()
 	else if A_thismenuitem contains &Coated_Retain
 		SpecTab_Edit_CoatedRetain()
 	else if A_thismenuitem contains &Coated_Physical
@@ -200,15 +214,17 @@ Menu()
 	else if A_thismenuitem contains &Micro
 		if Winactive("NuGenesis LMS - \\Remote")		
 			WorkTab_NewRequest("Micro")
-	else
+		else
 		SpecTab_Edit_Micro()
 	else if A_thismenuitem contains &Physical
-	{
 		if Winactive("NuGenesis LMS - \\Remote")
 			WorkTab_NewRequest("physical")
 		else
 			SpecTab_Edit_Physical()		
-	}
+
+
+
+
 	else if A_thismenuitem contains Test &1
 		TRY Test(1)	
 	else if A_thismenuitem contains Test &2
@@ -243,6 +259,9 @@ Menu()
 		sendinput ahk_exe %WinProcess%
 	else if A_thismenuItem contains Control `t%winControl%
 		sendinput, %WinControl%
+
+
+
 	else If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
 		sendinput, {Click 182, 97}10.1.2.153
 	Else if (A_thisMenuItem = "TEST_LMS") 
@@ -267,14 +286,20 @@ Menu()
 		sendinput, {Click 182, 97}10.1.2.242
 	Else if (A_thisMenuItem = "Empower") 
 		sendinput, {Click 182, 97}10.1.2.228
-	if (A_ThisMenuItem = "Samples")
-		sendinput, care{enter}
-	else if (A_ThisMenuItem = "Tests")
-		Sendinput, lab{enter}
-	else if (A_ThisMenuItem = "Visual")
-		Sendinput, open{enter}
-	else if (A_ThisMenuItem = "VQ")
-		Sendinput, ?Kilgore7744{enter}
+
+
+
+	; if (A_ThisMenuItem = "Samples")
+	; 	sendinput, care{enter}
+	; else if (A_ThisMenuItem = "Tests")
+	; 	Sendinput, lab{enter}
+	; else if (A_ThisMenuItem = "Visual")
+	; 	Sendinput, open{enter}
+	; else if (A_ThisMenuItem = "VQ")
+	; 	Sendinput, ?Kilgore7744{enter}
+
+
+;menu
 	else if A_thismenuItem contains &Product `t  %Product%,
 		VarBar.send("Product")
 	else if A_thismenuItem contains &Batch `t  %Batch%
@@ -290,3 +315,15 @@ Menu()
 return
 	
 }
+
+
+
+Worksheet_menu:
+; Worksheet:= A_ThisMenuItem
+	;	XL:= ComObjActive("Excel.Application")
+	;	Visible := True
+		XL:=XL.Sheets(A_ThisMenuItem).activate
+		Excel_Connect()
+				; XL.Visible := True	
+		;menu, menu, DeleteAll
+return

@@ -14,6 +14,7 @@ Excel_Connect(reload:=1){
 		}
 	Try {
 		XL := ComObjActive("Excel.Application")
+		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsm")
 		XL.Visible := True		
 		; XL:=XL.ActiveSheet	
 	}

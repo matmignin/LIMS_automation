@@ -39,13 +39,6 @@ test_Excelsheets()
 
 
 
-Worksheet_menu:
-; Worksheet:= A_ThisMenuItem
-		XL:= ComObjActive("Excel.Application")
-		Visible := True
-		XL:=XL.Sheets(A_ThisMenuItem).activate
-				; XL.Visible := True	
-		;menu, menu, DeleteAll
-return
+
 
 

@@ -37,7 +37,16 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	CoordMode, mouse, window
 	return
 
+
+
+
+
+
+
+
+
 ProductVarBar:
+sleep 100
 Gui, VarBar:submit,NoHide
 try
 {
@@ -48,6 +57,7 @@ try
 Catch
 	return
 Excel_Connect()
+;GuiControl, ,Edit1,%Product%
 GuiControl, ,Static1,%Batch%
 GuiControl, ,Static2,%lot%
 GuiControl, ,Static3,%Name%
