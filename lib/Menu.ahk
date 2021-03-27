@@ -4,7 +4,7 @@ Menu()
 	Global
 	try menu, menu, deleteAll
 
-
+;default:
 			menu, Menu, Add, Excel Sheets, Menu
 				loop 10
 				{
@@ -20,7 +20,7 @@ Menu()
 		Menu, Menu, Add, &Lot `t  %Lot%, Menu
 		Menu, Menu, Add, &Name `t  %name%, Menu
 
-
+;passwords:
 	If Winactive("Password ahk_class bosa_sdm_XL9") || Winactive("Login - \\Remote") {
 				menu, menu, add,
 		Menu, Menu, Add, Samples, Menu
@@ -32,13 +32,15 @@ Menu()
 
 
 
-
+  
 
 
 
 
 
 	Else If Winactive("Edit sample template - \\Remote") || Winactive("Edit specification - \\Remote") || winactive("NuGenesis LMS - \\Remote")
+
+	;LMSautofild()
 	{
 				menu, menu, add,
 		;Excel_Connect()
@@ -58,7 +60,7 @@ Menu()
 
 
 
-
+;Heavy_meatals()
 	Else If winactive("Results Definition - \\Remote")
 	{
 		Menu, Menu, Add, USP Heavy Metal,Menu
@@ -77,7 +79,8 @@ Menu()
 
 
 
-	Else if WinActive("ahk_exe Code.exe") 
+	Else if WinActive("ahk_exe Code.exe")
+	;VS_code()
 	{
 	;	try menu, menu, deleteAll
 		Menu, menu, Add, Mouse Location `t%MousePosition%, menu	
@@ -113,20 +116,21 @@ Menu()
 
 
 	ELSE If WinActive("Remote Desktop Connection") 
+	;remote_desktop()
 	{
-		Menu, Menu, Add, TEST_Citrix (for Testing LMS), Menu
-		Menu, Menu, Add, PRD_Citrix_One, Menu
-		Menu, Menu, Add, PRD_Citrix_Two, Menu
-		Menu, Menu, Add, PRD_Citrix_Three, Menu
-		menu, Menu, Add, Other Servers, Menu
-			Menu, SubMenu, Add, TEST_LMS, Menu
-			Menu, SubMenu, Add, TEST_NuGen, Menu
-			Menu, SubMenu, Add, TEST_SDMS, Menu
-			Menu, SubMenu, Add, LMS_PRD, Menu
-			Menu, SubMenu, Add, NuGenesis, Menu`
-			Menu, SubMenu, Add, SDMS, Menu
-			Menu, SubMenu, Add, PRD_EMPCitrix, Menu
-			Menu, SubMenu, Add, Empower, Menu
+		Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
+		Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+		Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+		Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+		menu, Menu, Add, Other Servers, Remote_desktop
+			Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+			Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+			Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+			Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+			Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+			Menu, SubMenu, Add, SDMS, Remote_desktop
+			Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+			Menu, SubMenu, Add, Empower, Remote_desktop
 		menu, Menu, add, Other Servers, :SubMenu
 		; Menu, Menu, Show,
 	}
@@ -181,8 +185,8 @@ Menu()
 
 
 
-
-	else if (A_ThisMenuItem = "USP Heavy Metal")
+Remote_desktop:
+	if (A_ThisMenuItem = "USP Heavy Metal")
 		SpecTab_HM_USP()
 	else if (A_ThisMenuItem = "Canada Heavy Metal")
 		SpecTab_HM_Canada()
@@ -190,7 +194,8 @@ Menu()
 		SpecTab_HM_Prop65()
 	else if (A_ThisMenuItem = "Report Only Heavy Metal")
 		SpecTab_HM_ReportOnly() 
-
+else
+return
 
 
 	else if A_thismenuitem contains &Ingredient Table
