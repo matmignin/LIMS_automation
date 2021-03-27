@@ -1,11 +1,34 @@
-﻿Wheel_Right(){
+﻿Wheel_2(commands,Sleeptime:=600)
+{
+	global
+	If (A_PriorKey!=A_ThisHotkey) || (A_TickCount-LastActivation > 200)
+	{
+	LastActivation:=A_TickCount
+	send, %Commands%
+	sleep %sleeptime%
+	}
+	return
+}
+
+Wheel(commands,Sleeptime:=200)
+{
+	BlockInput, On
+	send, %Commands%
+	BlockInput, Off
+	sleep %sleeptime%
+	return
+}
+
+
+
+Wheel_Right(){
 	global
 	If winactive("ahk_exe AHK-Studio.exe"){
 		sendinput, !{right}	
 	} Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{right}	
 } Else If winactive("ahk_exe EXCEL.EXE"){
-		Mouse_Wheel("{wheelleft}",1100)	
+		Wheel("{wheelleft}",0)	
 	} Else If winactive("outlook"){
 		Send, {wheelright} 
 	} Else If winactive("Result Entry - \\Remote"){
@@ -31,7 +54,7 @@
 		sendinput, ^=^=
 		;=============================================================================
 	} Else if winactive("Edit sample (Field Configuration: I`, Physical) - \\Remote"){
-		Excel_Connect()
+		Excel.Connect()
 		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
 		WorkTab_ShipToSelect()
 	} Else if winactive("Edit sample (Field Configuration: CT`, Physical) - \\Remote"){
@@ -61,7 +84,7 @@ global
 		WorkTab_ChangeTestResults()	
 		;ProductTab
 } Else If winactive("ahk_exe EXCEL.EXE"){
-		Mouse_Wheel("{wheelright}",1100)	
+		Wheel("{wheelright}",0)	
 	} Else If winactive("outlook"){
 		Send, {wheelleft} 
 	} else if Winactive("Select tests for request"){
@@ -80,3 +103,39 @@ global
 }
 
 
+
+Wheel_Paste() 
+{
+	Global
+	if winactive("ahk_exe WFICA32.EXE")
+	{
+		Clipboard := Trim((Clipboard, "`r`n"))
+		sleep 150
+		send, %Clipboard%
+		tooltip("Paste")
+	}
+	else 
+		send, ^v
+	ToolTip("Paste")
+	sleep 1000
+	return
+}
+Wheel_Cut() 
+{
+	global
+	Send, ^x
+	clipwait, 0.25
+	ToolTip(clipboard)
+	sleep 800
+	
+	return
+}
+Wheel_Copy() 
+{
+	global
+	Send, ^c
+	clipwait, 0.25
+	ToolTip(clipboard)
+	sleep 800
+	return
+}

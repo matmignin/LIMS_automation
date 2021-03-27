@@ -1,11 +1,21 @@
 ﻿gosub, vquest_start
+
 return
 
 
 #IfWinActive,
 ;VarBar.show()
 
-
+#If MouseIsOver("VarBar ahk_class AutoHotkeyGUI")
+WheelUp::Varbar.AddIteration()
+wheeldown::Varbar.SubIteration()
+   F16::Excel.NextSheet()
+   F17::excel.previoussheet()
+#If
+MouseIsOver(WinTitle)
+{  MouseGetPos,,, Win
+   Return WinExist(WinTitle . " ahk_id " . Win)
+}
 
 F13 & F18::Varbar.reset()
 F14 & Rbutton:: 
@@ -17,14 +27,12 @@ F14 & F13::sendinput, #{tab}
 F14::Menu()
 F15 & Wheelup::sendinput, {F15}
 F15 & Wheeldown::
-F12::
 ;----send LMS codes
 F13 & LButton::Sendinput, +^4 ;screenshot
 F13 & MButton::VarBar.Send("lot")
 F13 & WheelUp::VarBar.Send("Product")
 F13 & WheelDown::VarBar.Send("Batch")
 F13::VarBar.set()
-!F15::Mouse_CloseWindow()
 #If (A_PriorHotKey = "F15" AND A_TimeSincePriorHotkey < 4000)
 {
 	f15::Menu()
@@ -43,19 +51,20 @@ F15::Tooltip("☩",4000)
 return
 
 
-Mbutton & WheelDown::Mouse_Wheel("^{WheelDown}") 
-Mbutton & Wheelup::Mouse_Wheel("^{WheelUp}") 
-;F17::Mouse_Wheel_Right()
-Rbutton & Wheelup::Mouse_Wheelcut() 
-Rbutton & Wheeldown::Mouse_Wheelpaste()
+Mbutton & WheelDown::Wheel("^{WheelDown}") 
+Mbutton & Wheelup::Wheel("^{WheelUp}") 
+;F17::Wheel_Right()
+Rbutton & Wheelup::Wheel_cut() 
+Rbutton & Wheeldown::Wheel_paste()
 Rbutton & F16::Backspace
-Rbutton & F18::Mouse_Get_WindowInfo()
+Rbutton & F18::Get_WindowInfo()
 
 Rbutton & F17::delete
 Rbutton & Lbutton::Enter
 F17::Wheel_Right()
 F16::Wheel_left()
 #inputlevel 1
+!F15::Mouse_CloseWindow()
 Rbutton up::
 {
 	suspend, On
@@ -76,8 +85,8 @@ Rbutton up::
 
 	#IfWinActive, ahk_exe OUTLOOK.EXE 
 	Mbutton::SENDINPUT % VarBar.send("Batch") " is updated"
-	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}")
-	Rbutton & wheeldown::mouse_wheel("{ctrl down}v{ctrl up}")
+	Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
+	Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
 	F14 & WheelDown::varbar.search("batch")
 	F14 & Wheelup::varbar.search("Product")
 	;F14::menu()
@@ -88,25 +97,33 @@ F20 & Space::Varbar.send("batch")
 
 Excel:
 ;___________________________________________________________________________
-;																				EXCEL
+;					EXCEL
 ;____________________________________________________________________________
 
 #IfWinActive, LMS Workbook.xlsm - Excel
-	Mbutton::Excel_Connect()
+	Mbutton::Excel.Connect()
 #ifwinactive, ahk_exe EXCEL.EXE
 	+Enter::sendinput, !{enter}
 	$Enter::sendinput, {enter}
-	F13::Excel_Search()
-	`::esc
+	F13::Excel.Search()
+~lbutton::
+	XL:= ComObjActive("Excel.Application")
+	Visible := True
+	CurrentSheet:=xl.ActiveWorkbook.Activesheet.name
+	if (Product != CurrentSheet)
+	varbar.update("Iteration")
+; WinWaitNotActive, LMS Workbook.xlsm - Excel,
+return
+	; `::esc
 
 
 #ifwinactive, Find and Replace,
 F13 & WheelUp::
-Mouse_Wheel("{alt down}n{alt up}")
+Wheel("{alt down}n{alt up}")
 VarBar.Send("Product")
 return
 F13 & WheelDown::
-Mouse_Wheel("{alt down}n{alt up}")
+Wheel("{alt down}n{alt up}")
 VarBar.Send("Batch")
 return
 	enter::sendinput, !i
@@ -119,21 +136,41 @@ return
 
 
 
+#IfWinActive, ahk_exe WFICA32.EXE,
+F14 & WheelUp::Varbar.AddIteration()
 
+F14 & wheeldown::Varbar.SubIteration()
 
-
-
-
+WheelRight::Excehl.NextSheet()
+wheelleft::Excel.PreviousSheet()
+F16::Excel.NextSheet()
+F17::Excel.PreviousSheet()
 
 
 #Ifwinactive, Result Entry - \\Remote
 		F13::WorkTab_ChangeTestResults("toggle")	
 
-#Ifwinactive, NuGenesis LMS - \\Remote ;____________________________Main screen
+
+
+
+
+
+
+
+				____________________________Main_screen:
+
+
+#Ifwinactive, NuGenesis LMS - \\Remote 
 F14 & WheelRight:: sendinput, {click, 743, 41}
 F14 & WheelLeft::sendinput, {Click 354, 44}
 F14 & WheelDOWN::Sendinput, {Click 46, 855}
 F14 & wheelUP::sendinput, {click, 544, 41}
+Enter::
+Send, ^a
+varbar.set()
+sleep 200
+send, {enter}
+return
 ; F14 & WheelRIGHT::sendinput, {click, 743, 41}
 ; F14 & WheelLEFT::sendinput, {Click 354, 44} 
 #IfWinActive, ahk_exe WFICA32.EXE
@@ -226,6 +263,7 @@ VQuest_Start:
 #Persistent 
 #NoEnv
 #SingleInstance,Force
+#KeyHistory 400
 SetWorkingDir, %A_ScriptDir%
 Menu, Tray, Add, Run CL3, Run_cl3
 Menu, Tray, Add, Reset Table Locations, Varbar_Reset
@@ -238,21 +276,29 @@ SetDefaultMouseSpeed, 0
 detecthiddenwindows, on
 SetTitleMatchMode, 2
 settitlematchmode, slow
-#MaxHotkeysPerInterval 100
+#MaxHotkeysPerInterval 200
 #maxthreadsperhotkey, 1
 SetKeyDelay, 0
 setwindelay, 450
 AutoTrim, On
 Menu, Tray, Icon, Robot.ico
 #HotkeyModifierTimeout 
+Iniread, Iteration, data.ini, SavedVariables, Iteration
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
 Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-Excel_Connect()
-
+Excel.Connect(1)
+excel.listsheets()
 ; test_Excelsheets()
-VarBar.show()
+;VarBar.show(1)
 Run, ViM.Ahk
+Menu, Tray, Add, Stop, StopSub 
+Menu, Tray, Default, Stop 
 return
+
+
+StopSub: 
+  exitapp
+Return
 
 
 VarBar_Reset:

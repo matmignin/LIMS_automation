@@ -14,7 +14,7 @@
 		click, 79, 440
 
 	} Else If Winactive("ahk_exe EXCEL.EXE") {
-		Excel_Search()
+		Excel.Search()
 	} Else If Winactive("Results Definition - \\Remote") {
 		Sendinput, ^{Lbutton}
 	} Else If Winexist("Delete Test - \\Remote ") {
@@ -24,7 +24,7 @@
 		winactivate,
 		Rotation_GetTable()
 	} Else If winactive("Select Product - \\Remote") {
-		excel_Connect()
+		Excel.Connect()
 		sendinput, {click 106, 64}%Product%{enter}{enter}
 		return
 	} Else If winactive("Edit specification - \\Remote"){

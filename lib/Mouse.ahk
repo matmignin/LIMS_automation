@@ -5,55 +5,8 @@
 
 
 
-Mouse_Wheel(commands,Sleptime:=900)
-{
-	BlockInput, On
-	sleep 50
-	send, %Commands%
-	sleep 50
-	BlockInput, Off
-	sleep %sleeptime%
-	sleep 50
-	return
-}
 
 
-
-Mouse_WheelPaste() 
-{
-	Global
-	if winactive("ahk_exe WFICA32.EXE")
-	{
-		Clipboard := Trim((Clipboard, "`r`n"))
-		sleep 150
-		send, %Clipboard%
-		tooltip("Paste")
-	}
-	else 
-		send, ^v
-	ToolTip("Paste")
-	sleep 1000
-	return
-}
-Mouse_WheelCut() 
-{
-	global
-	Send, ^x
-	clipwait, 0.25
-	ToolTip(clipboard)
-	sleep 800
-	
-	return
-}
-Mouse_WheelCopy() 
-{
-	global
-	Send, ^c
-	clipwait, 0.25
-	ToolTip(clipboard)
-	sleep 800
-	return
-}
 
 Mouse_CloseWindow() 
 {
@@ -83,7 +36,7 @@ Mouse_CloseWindow()
 		return
 	}
 	else if winactive("ahk_exe Code.exe")
-		sendinput, Mouse_wheel("^w")
+		sendinput, Wheel("^w")
 	else if winactive("ahk_exe mstsc.exe") ||  winactive("ahk_exe EXCEL.EXE")
 	{ 
 		Send, ^v
@@ -97,36 +50,7 @@ Mouse_CloseWindow()
 	return
 }
 
-Mouse_Get_WindowInfo() 
-{
-	global
-	clipboard:=
-	MouseGetPos, MouseLocationX, MouseLocationY
-	MouseClick, right,,, 1, 0, D  ; Hold down the right mouse button.
-	Loop
-	{
-		if !GetKeyState("Rbutton", "P")  ; The key has been released, so break out of the loop.
-			break
-		MouseGetPos, MousePosX, MousePosY, , WinControl
-		sleep 100
-		MousePosition:=MousePosX "`, " MousePosY
-		sleep 25
-		WinGetTitle, winTitle, A
-		WinGetClass, Winclass, A
-		WinGet, WinProcess, ProcessName, A			
-		Sleep, 200
-		Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
-		
-	}
-	MouseClick, Right,,, 1, 0, U ; Release the mouse button.
-	clipboard:=MousePosition
-	mouseclick, right
-	;sendinput, {esc}
-	;MouseClick, left,,, 1, 0,
-	sleep 2000
-	tooltip
-	return
-}
+
 
 
 

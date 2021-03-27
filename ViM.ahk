@@ -37,7 +37,7 @@
 {
 	,::sendinput, !`,
 	m::+!down
-	n::+!up
+	n::+!n
 	u::+!up
 	'::+^!n
 	.::+F1
@@ -115,7 +115,7 @@ F19::NumpadSub
 #IfWinActive,
 return
 ;__________________________________________________________________
-;_______________________________________________________Other stuff
+;_______________________________________________________Otherstuff
 ;__________________________________________________________________
 { 
 	CapsLock::return
@@ -149,10 +149,11 @@ F20::Mouse_Click("SearchBar_Batch")
 	#ifwinactive, ahk_exe explorer.exe ; _______________________explorer
 	Mbutton::Open_in_Notepad()
 	;________________________________________Firefox and Edge
-	#IfWinActive, ahk_exe firefox.exe OR ahk_exe msedge.exe
-	F15 & WheelDown::Mouse_wheel("^w")
+	#IfWinActive, ahk_exe firefox.exe || ahk_exe msedge.exe
+	F15 & WheelDown::Wheel("^w")
 	F13 & WheelDOWN::Browser_Back
 	F14 & wheelUP::Browser_Forward
+	Mbutton::sendinput, ^{click}
 	;_________________________________________________________Snipper 
 	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
 
@@ -169,116 +170,7 @@ F20::Mouse_Click("SearchBar_Batch")
 ;__________________________________________________________________Editors
 ;__________________________________________________________________ 
 
-
-#IfWinActive, ahk_exe AHK-Studio.exe OR ahk_exe Code.exe
-{
-	Capslock & ,::^,
-	Capslock & a::!^a
-	^r::ReloadScript()
-	+^j::+^down
-	+^K::+^up
-	+^l::sendinput, {home}{tab}
-	+^h::sendinput, {home}+{tab}
-	Mbutton::sendinput, ^d
-	F17::Mouse_Wheel("!{left}",1500)
-	F16::Mouse_Wheel("!{right}",1500)
-	F14 & WheelDOWN::mouse_wheel("{ctrl down}{down}{ctrl up}")
-	F14 & wheelUP::Mouse_wheel("^{up}")
-	F14 & F13::sendinput, #{tab}
-	F14 & Rbutton::sendinput, +^f
-	F14 & Lbutton::sendinput, ^{click}
-	F14::menu()
-	Mbutton & Wheeldown::mouse_wheel("!{right}")
-	Mbutton & Wheelup::mouse_wheel("!{left}")
-	Mbutton & Rbutton::Mouse_wheel("{home}+{end}{backspace}")
-	+Mbutton::+^d
-	F18::ReloadScript()
-	F3::+^F1 	;search Help
-	^k::sendinput, ^{up}
-	^j::sendinput, ^{down}
-	Rbutton & F17::mouse_wheel("{shift down}{home}{shift up}{ctrl down}x{ctrl up}",1000)
-	Rbutton & F16::mouse_wheel("{shift down}{end}{shift up}{ctrl down}x{ctrl up}",1000)
-	Rbutton & Wheelup::mouse_wheel("{ctrl down}x{ctrl up}",4000)
-	Rbutton & wheeldown::mouse_wheel("{ctrl down}v{ctrl up}",4000)
-	Rbutton & Mbutton::sendinput, {click}{Home}+{end}^c
-	$Rbutton::Click right
-	capslock::sendinput, {esc}
-	
-	Rbutton & F18::Mouse_Get_WindowInfo()
-
-
-
-
-; F14::
-; 		Menu, codemenu, Add, Mouse Location `t%MousePosition%, codemenu	
-; 		Menu, codemenu, Add, Window Title `t%wintitle%, codemenu	
-; 		Menu, codemenu, Add, Process `t%winProcess% , codemenu	
-; 		Menu, codemenu, Add, Control `t%winControl%, codemenu	
-; 		Menu, codeMenu, Add, Test &1, codeMenu
-; 		Menu, codeMenu, Add, Test &2, codeMenu
-; 		Menu, codeMenu, Add, Test &3, codeMenu
-; 		Menu, codeMenu, Add, F13, codeMenu
-; 		Menu, codeMenu, Add, F14, codeMenu
-; 		Menu, codeMenu, Add, F15, codeMenu
-; 		Menu, codeMenu, Add, F16, codeMenu
-; 		Menu, codeMenu, Add, F17, codeMenu
-; 		Menu, codeMenu, Add, F18, codeMenu
-; 		Menu, codeMenu, Add, Mbutton, codeMenu
-; 		Menu, codeMenu, Add, Rbutton, codeMenu
-; 		Menu, codeMenu, Add, Wheel, codeMenu
-; 		menu, CodeMenu, show
-; 		return
-
-; CodeMenu:
-; 	if A_thismenuitem contains Test &1
-; 		TRY Test(1)	
-; 	else if A_thismenuitem contains Test &2
-; 		Try Test(2)	
-; 	else if A_thismenuitem contains Test &3
-; 		Try Test(3)	
-; 	else if (A_thismenuitem = "F13")
-; 			Sendinput, ^fF13`:`:{enter}
-; 				else if (A_thismenuitem = "F13")
-; 			Sendinput, ^fF13`:`:{enter}
-; 				else if (A_thismenuitem = "F14")
-; 			Sendinput, ^fF14`:`:{enter}
-; 				else if (A_thismenuitem = "F15")
-; 			Sendinput, ^fF15`:`:{enter}
-; 				else if (A_thismenuitem = "F16")
-; 			Sendinput, ^fF16`:`:{enter}
-; 				else if (A_thismenuitem = "F17")
-; 			Sendinput, ^fF17`:`:{enter}
-; 				else if (A_thismenuitem = "F18")
-; 			Sendinput, ^fF18`:`:{enter}
-; 				else if (A_thismenuitem = "Mbutton")
-; 			Sendinput, ^fMbutton{enter}
-; 			else if (A_thismenuitem = "Rbutton")
-; 			Sendinput, ^fRbutton{enter}
-; 			else if (A_thismenuitem = "Wheel")
-; 			Sendinput, ^fWheel`:`:{enter}
-; 	else if A_thismenuItem contains Mouse Location `t%MousePosition%
-; 		sendinput %MousePosition%
-; 	else if A_thismenuItem contains Window Title `t%wintitle%
-; 		Sendinput %WinTitle%
-; 	else if A_thismenuItem contains Process `t%winProcess% 
-; 		sendinput ahk_exe %WinProcess%
-; 	else if A_thismenuItem contains Control `t%winControl%
-; 		sendinput, %WinControl%
-; 		else
-; 		menu, Codemenu, deleteall
-
-; return
-
-
-}
-
-
-
-
-
-
-
-
+#include <VScode>
 
 
 
@@ -316,16 +208,12 @@ Login(){
 		return
 	}
 
-ReloadScript(){
-		sendinput, ^s
-		sleep 200
-		run, VQuest.ahk
-		tooltip("Reload")
-	}
+
 
 Vim_opened:
 	#Persistent 
 	#NoEnv
+	#KeyHistory 400
 	#SingleInstance,Force
 	SetKeyDelay, -1,-1
 	#HotkeyModifierTimeout 100
@@ -335,6 +223,13 @@ Vim_opened:
 	Menu, Tray, Icon, ViM.ico
 	;Process, Priority,, High
 	;sendlevel 1
-	#include <menu>
+	Menu, Tray, Add, windowSpy, WindowSpySub 
+Menu, Tray, Default, WindowSpy 
+
 	return
+	#include <menu>
+
+WindowSpySub: 
+  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+Return
 

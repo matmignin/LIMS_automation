@@ -6,7 +6,7 @@ SpecTab_Table(){
 	; Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
 		SpecTable_Y:=Varbar_Y + 40
 	SpecTable_X:=Varbar_X + 200
-	Excel_Connect()
+	Excel.Connect()
 	Name:=				[]
 	Position:=		[]
 	LabelClaim:=	[] 
@@ -223,7 +223,7 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision) {
 
 SpecTab_TestDefinitionEditor(The_Description) {
 	Global
-	Excel_Connect()
+	Excel.Connect()
 	WinActivate, Test Definition Editor - \\Remote 
 	DescriptionRaw:=The_Description
 	Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")

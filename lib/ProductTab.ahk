@@ -6,7 +6,7 @@ ProductTab_Table(){
 	; Iniread,ProductTable_Y,data.ini,Locations,VarBar_Y
 	ProductTable_Y:=Varbar_Y + 40
 	Producttable_X:=Varbar_X + 100
-	Excel_Connect()
+	Excel.Connect()
 	Name:=			[]
 	LabelClaim:=	[]
 	Position:=		[]
@@ -54,7 +54,7 @@ Ingredient_Table:
 		Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
 		Current_Row:=A_EventInfo
 		Loop % Rows_left {
-			Excel_Get_Current_row()
+			Excel.Get_Current_row()
 			ProductTab_EditIngredient(LabelName,LabelClaim,Position)
 			if WinExist("Duplicate ingredient ID - \\Remote")
 				break 
@@ -68,7 +68,7 @@ Ingredient_Table:
 
 ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
 	Global
-	Excel_Get_Current_row()
+	Excel.Get_Current_row()
 	Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
 	Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
 	Ingredient_position:=Trim(Ingredient_Position,"`r`n")
@@ -302,7 +302,7 @@ Formulation_Hotstrings:
 
 ProductTab_EditProduct() {
 	global
-	Excel_Connect()
+	Excel.Connect()
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
 	sleep 200

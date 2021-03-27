@@ -1,4 +1,7 @@
-Excel_Connect(reload:=1){
+#include <varbar>
+Class Excel{
+
+Connect(reload:=0){
 	Global
 	Gui VarBar:+LastFound 
 	Products:=[]
@@ -31,15 +34,8 @@ Excel_Connect(reload:=1){
 			break
 		else 	
 			DDLProducts .= "|" Products[A_index]
-
 	}
-	Product:=XL.Range("B7").Value
-	Name:=XL.Range("B2").Value
-	Batch:=XL.Range("C1").Value
-	Lot:=XL.Range("E1").Value
-	Customer:=XL.Range("B3").Value
-	; gui,varbar:Submit,Nohide
-	sleep 50
+	Varbar.Update("Iteration")
 	if (Reload = 1)
 		VarBar.show()
 	return
@@ -47,31 +43,36 @@ Excel_Connect(reload:=1){
 
 
 
-; Excel_SetProduct(The_Product:=0){
-; 	Global
-; 	try {
-; 		XLBook := ComObjActive("Excel.Application")
-; 			;XLBook:=ComObjGet(%WorkbookPath%)
-; 		if (The_product:=0)
-; 			XL:=XLBook.ActiveSheet
-; 		else
-; 			XL:=XLBook.sheets(The_Product)
-; 	} Catch { 
-; 		return
-; 	}			
-; 	Visible := True		
-; 		;Product:=XL.Range("B7").Value
-; 	Name:=Xl.Range("B2").Value
-; 	Batch:=Xl.Range("C1").value
-; 	Lot:=Xl.Range("E1").Value
-; 	Customer:=Xl.Range("B3").Value
-; 	return
-; }
+
+NextSheet(){
+	global 
+	Gui VarBar:+LastFound 
+	;GuiControl, -redraw, varbar
+	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
+	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
+	if (nextsheetname = "Finished")
+		exit
+	XL.Sheets(NextSheetname).activate
+	varbar.Update()
+	Gui, VarBar:color, 21a366 ;green
+	;GuiControl, +redraw, varbar
+}
+
+PreviousSheet(){
+	global
+	Gui VarBar:+LastFound 
+	;GuiControl, -redraw, varbar
+	PreviousSheet:=xl.ActiveWorkbook.Activesheet.index -1
+	if (PreviousSheet < 3) 
+		exit
+	XL.Sheets(PreviousSheet).activate
+	varbar.Update()
+	Gui, VarBar:color, 21a366 ;green
+	;GuiControl, +redraw, varbar
+}
 
 
-
-
-Excel_Get_Current_row()
+Get_Current_row()
 {
 	Global
 	LV_GetText(Position, Current_row,1)	
@@ -79,12 +80,13 @@ Excel_Get_Current_row()
 	LV_GetText(LabelClaim, Current_row,3)
 	LV_GetText(LabelName, Current_row,4)
 	LV_Modify(Current_row, "Check")
-	sleep 200
+	sleep 100
 }
-Excel_Search()
+Search()
 {
 	BlockInput, on
 	sendinput, ^f!t!h{right}{enter}!s{right}!t!n
 	BlockInput, off
-	sleep 400
+	sleep 200
+}
 }

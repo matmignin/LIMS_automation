@@ -25,7 +25,7 @@ Return
 
 Rotation_GetTable(showTable=1){ 
 	Global
-	Excel_Connect()
+	Excel.Connect()
 	Chemicals:=[]
 	;RotationOrder:=[]
 	while (Xl.Range("M" . A_Index).Value != "|") {
