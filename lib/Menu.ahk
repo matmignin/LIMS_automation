@@ -1,7 +1,12 @@
 
-Menu(){
+Menu(n:=0){
 	Global
 	try menu, menu, deleteAll
+	if n contains Sheets
+		{
+			Sheets()
+			exit
+		}
 			default()
 		If Winactive("Password ahk_class bosa_sdm_XL9") || Winactive("Login - \\Remote") 
 			passwords()
@@ -13,6 +18,7 @@ Menu(){
 			VScode()
 		ELSE If WinActive("Remote Desktop Connection") 
 			remote_desktop()
+		
 		Menu, Menu, Show,
 	return
 }
@@ -24,14 +30,6 @@ Menu(){
 
 default(){
 	global
-			menu, Menu, Add, WorkSheets, Sheets
-				loop 10 {
-					Worksheet:=Products[A_index]
-					if worksheet != Finished
-						menu, Work_Sheets, Add, %worksheet%, Sheets
-				}
-			menu, Menu, add, WorkSheets, :Work_sheets
-
 		menu, Menu, Add, &Ingredient Table, Tables
 		menu, Menu, Add, &Spec Table, Tables
 		menu, menu, add,
@@ -62,17 +60,25 @@ Tables:
 		SpecTab_Table()
 			else 
     menu, menu, deleteAll
-	Return
-
-Sheets:
-		XL:=XL.Sheets(A_ThisMenuItem).activate
-		Excel.Connect()
-		;menu, menu, DeleteAll
 return
-
-
 }
 
+Sheets(){
+	global
+				loop 10 {
+					Worksheet:=Products[A_index]
+					if worksheet != Finished
+						menu, Menu, Add, %worksheet%, Sheets
+				}
+				Menu, Menu, Show,
+			return
+}
+Sheets:
+		XL:=XL.Sheets(A_ThisMenuItem).activate
+		varbar.Update()
+		;Excel.Connect()
+		;menu, menu, DeleteAll
+return
 
 
 
@@ -87,6 +93,7 @@ passwords() {
 		Menu, Menu, Add, Visual, Passwords
 		Menu, Menu, Add, VQ Login, Passwords
 		; Menu, Menu, Show,
+		return
 
 Passwords:
 	if (A_ThisMenuItem = "Samples")
@@ -109,6 +116,7 @@ Heavy_meatals(){
 		Menu, Menu, Add, Canada Heavy Metal,Heavy_metals
 		Menu, Menu, Add, Prop65 Heavy Metal,Heavy_metals
 		Menu, Menu, Add, Report Only Heavy Metal,Heavy_metals
+		return
 Heavy_metals:
 	if (A_ThisMenuItem = "USP Heavy Metal")
 		SpecTab_HM_USP()
@@ -125,7 +133,7 @@ return
 
 
 
-	autofill(){
+autofill(){
 		Global
 		menu, menu, add,
 		;Excel.Connect()
@@ -151,9 +159,9 @@ Autofill:
 		SpecTab_Edit_Retain()
 	else if A_thismenuitem contains &Micro
 		if Winactive("NuGenesis LMS - \\Remote")		
-			WorkTab_NewRequest("Micro")
+			WorkTab_NewRequest("Micro") ;Add tests to sample
 		else
-		SpecTab_Edit_Micro()
+		SpecTab_Edit_Micro() ; copy micro spec tests
 	else if A_thismenuitem contains &Physical
 		if Winactive("NuGenesis LMS - \\Remote")
 			WorkTab_NewRequest("physical")
@@ -184,6 +192,7 @@ Autofill:
 		Menu, hotkeyMenu, Add, Wheel, vscode
 		menu, hotkeymenu, add, Exit, vscode
 				menu, Menu, add, Search Hotkeys, :HotkeyMenu
+				return
 
 VScode:
 	if (A_thismenuitem = "F13")
@@ -236,6 +245,7 @@ remote_desktop(){
 			Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
 			Menu, SubMenu, Add, Empower, Remote_desktop
 		menu, Menu, add, Other Servers, :SubMenu
+		return
 		; Menu, Menu, Show,
 Remote_Desktop:
 	If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 

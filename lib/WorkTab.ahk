@@ -48,11 +48,19 @@ WorkTab_NewRequest(department)
 	click, right, 264, 590 ; click to clear filter
 	sleep 100
 	send, {up}{enter}
-	;sleep 2000
-	;click 854, 657  ; click okay
+	sleep 2000
+	While GetKeyState("Lbutton", "p")
+		Sleep 200
+		sleep 1000
+	IfWinnotActive, Select tests for request 
+	{
+		tooltip("over")
+		exit
+}
+	click 854, 657  ; click okay
 	winwaitclose, Select tests for request,,10
 	if !Errorlevel
-		sleep 400
+		sleep 300
 ;	click 338, 619 ; click okay
 	return
 	

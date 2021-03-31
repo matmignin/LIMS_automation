@@ -67,8 +67,8 @@ Get_WindowInfo()
 		Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
 		
 	}
-    WinGetTitle, winTitle, A
-		WinGetClass, Winclass, A
+   winTitle:=Wintitle
+	Winclass:=Winclass
 		WinGet, WinProcess, ProcessName, A	
 	MouseClick, Right,,, 1, 0, U ; Release the mouse button.
 	;clipboard:=MousePosition
@@ -100,10 +100,10 @@ ReloadScript(){
 	}
 
 ShowDefinition(){
-  If toggle := !toggle {
-    sendinput, {esc}
-	  sendinput ^d
-  } else 
+	global
+  If toggle := !toggle
+		sendinput ^d
+	else 
     sendinput, {esc}
 return
   }
