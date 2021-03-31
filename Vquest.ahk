@@ -92,12 +92,24 @@ Rbutton up::
 	;F14::menu()
 	F13::varbar.set()
 	F19 & Space::Varbar.send("Product")
-F20 & Space::Varbar.send("batch")
+	F20 & Space::Varbar.send("batch")
+	F18::
+		send, ^c
+		ClipWait, 1,
+		Clipboard := Trim((Clipboard, "`r`n"))
+		WinActivate, NuGenesis LMS - \\Remote
+		;Click 364, 46
+		;sleep 200
+		click, 500,127, 2 ;click search bar
+		sleep 200
+		Send, %clipboard%{enter}
+		return
+
 #IfWinActive,
 
 Excel:
 ;___________________________________________________________________________
-;					EXCEL
+______________________________________EXCEL:
 ;____________________________________________________________________________
 
 #IfWinActive, LMS Workbook.xlsm - Excel
@@ -106,29 +118,45 @@ Excel:
 	+Enter::sendinput, !{enter}
 	$Enter::sendinput, {enter}
 	F13::Excel.Search()
-~lbutton::
-	XL:= ComObjActive("Excel.Application")
-	Visible := True
-	CurrentSheet:=xl.ActiveWorkbook.Activesheet.name
-	if (Product != CurrentSheet)
-	varbar.update("Iteration")
-; WinWaitNotActive, LMS Workbook.xlsm - Excel,
-return
+; ~lbutton::
+; 	XL:= ComObjActive("Excel.Application")
+; 	Visible := True
+; 	CurrentSheet:=xl.ActiveWorkbook.Activesheet.name
+; 	if (Product != CurrentSheet)
+; 	varbar.update("Iteration")
+; ; WinWaitNotActive, LMS Workbook.xlsm - Excel,
+; return
 	; `::esc
-
+return
+F18::
+	;Varbar.Set()
+		;CellValue:= 
+	; if (Regexmatch(Clip, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
+			; Cellvalue := ClipforBatch
+	; else 
+			; Cellvalue := Clip
+		; regexmatch(Clip, "\b[EGLHKJI]{1}\d{3}", CellValue)
+		WinActivate, NuGenesis LMS - \\Remote
+		;Click 364, 46
+		;sleep 200
+		click, 500,127, 2 ;click search bar
+		sleep 200
+	send % Excel.ActiveCell()
+	sleep 200
+	send, {enter}
+	return
 
 #ifwinactive, Find and Replace,
 F13 & WheelUp::
-Wheel("{alt down}n{alt up}")
-VarBar.Send("Product")
-return
+	Wheel("{alt down}n{alt up}")
+	VarBar.Send("Product")
+	return
 F13 & WheelDown::
-Wheel("{alt down}n{alt up}")
-VarBar.Send("Batch")
-return
+	Wheel("{alt down}n{alt up}")
+	VarBar.Send("Batch")
+	return
 	enter::sendinput, !i
 	rbutton & Lbutton::sendinput, !i
-
 
 
 

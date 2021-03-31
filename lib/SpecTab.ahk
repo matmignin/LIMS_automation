@@ -265,6 +265,8 @@ SpecTab_Edit_Physical(){
 }
 SpecTab_Edit_CoatedRetain(){
 	global
+	winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
 	send,%Product%`, {shift down}C{shift Up}oated`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
 	send,{tab}{right} 
@@ -280,6 +282,8 @@ SpecTab_Edit_CoatedRetain(){
 }
 SpecTab_Edit_CoatedPhysical(){
 	global
+		winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
 	send,%Product%`, {shift down}C{shift Up}oated`, {shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
 	send,{tab}{right} 
@@ -295,7 +299,6 @@ SpecTab_Edit_CoatedPhysical(){
 }		
 SpecTab_Edit_Retain(){
 	Global
-	VarBar.show()
 	winactivate, Edit specification - \\Remote
 	sendinput, {click 376, 87}{home}
 	send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}

@@ -41,8 +41,12 @@ Connect(reload:=0){
 	return
 }
 
-
-
+ActiveCell(){
+	Global
+	ActiveCell := Xl.ActiveCell.value
+	ActiveCell := Trim((ActiveCell, "`r`n"))
+return ActiveCell
+}
 
 NextSheet(){
 	global 

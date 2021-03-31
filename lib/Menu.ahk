@@ -39,6 +39,7 @@ default(){
 		Menu, Menu, Add, &Batch `t  %Batch%, Variables
 		Menu, Menu, Add, &Lot `t  %Lot%, Variables
 		Menu, Menu, Add, &Name `t  %name%, Variables
+		return
 
 Variables:
 	if A_thismenuItem contains &Product `t  %Product%,
@@ -51,7 +52,7 @@ Variables:
 		VarBar.send("Lot")
 	else 
    try menu, menu, deleteAll
-	;menu, menu, deleteAll
+	menu, menu, deleteAll
 return
 
 Tables:
@@ -78,6 +79,7 @@ return
 
 
 passwords() {
+	global
 	menu, menu, add,
 		menu, menu, add,
 		Menu, Menu, Add, Samples, Passwords
@@ -125,7 +127,7 @@ return
 
 	autofill(){
 		Global
-				menu, menu, add,
+		menu, menu, add,
 		;Excel.Connect()
 		Menu, Menu, add, &Analytical, AutoFill
 		Menu, Menu, add, &Physical, AutoFill
@@ -133,7 +135,8 @@ return
 		Menu, Menu, add, &Retain, AutoFill		
 		Menu, Menu, add, &Coated_Physical, AutoFill
 		Menu, Menu, add, &Coated_Retain, AutoFill
-		; Menu, Menu, Show,
+	;	Menu, Menu, Show,
+		return
 Autofill:
 	if A_thismenuitem contains &Analytical 
 		if Winactive("NuGenesis LMS - \\Remote")
@@ -157,7 +160,7 @@ Autofill:
 		else
 			SpecTab_Edit_Physical()		
 				else 
-    menu, menu, deleteAll
+				menu, menu, deleteAll
 	return
 	}
 
@@ -217,6 +220,7 @@ return
 	}
 
 remote_desktop(){
+	global
 		menu, menu, add,	
 		Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
 		Menu, Menu, Add, PRD_Citrix_One, Remote_desktop

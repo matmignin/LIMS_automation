@@ -53,7 +53,7 @@ try
 			Visible := True
 	XL:=XL.Sheets(Product).activate
 }
-Excel.Connect()
+;Excel.Connect()
 Varbar.Update()
 return
 IterationVarBar:
@@ -80,21 +80,22 @@ Update(Skip:=0){
 	global
 	Gui VarBar:+LastFound
 	GuiControl, -redraw, varbar
-	Product:=XL.Range("B7").Value
+	try Product:=XL.Range("B7").Value
 		ControlSetText, Edit1,%Product%, VarBar
-	Batch:=XL.Range("C1").Value
+	try Batch:=XL.Range("C1").Value
 		ControlSetText, Static1,%Batch%, VarBar
-	Lot:=XL.Range("C2").Value
+	try Lot:=XL.Range("C2").Value
 		ControlSetText, Static2,%lot%, VarBar
-	Coated:=xl.range("E2").value
+	try Coated:=xl.range("E2").value
 		ControlSetText, Static3,%Coated%, VarBar
-	Name:=XL.Range("B2").Value
+	try Name:=XL.Range("B2").Value
 		ControlSetText, Static4,%Name%, VarBar
-	Customer:=XL.Range("B3").Value	
+	try Customer:=XL.Range("B3").Value	
 		ControlSetText, Static5,%Customer%, VarBar
 		if (Skip := Iteration)
 			ControlSetText, Edit2,%Iteration%, VarBar
 			GuiControl, +redraw, varbar
+			Return
 }
 
 
@@ -143,6 +144,7 @@ Send(Category)
 	if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote")
 		send, {enter}	
 	if winactive("Find and Replace")
+		send, !i
 	sleep 400
 	return
 }
@@ -211,7 +213,7 @@ Search(input){
 	varbar.set()
 	WinActivate, NuGenesis LMS - \\Remote
 	click, 500,127, 2 ;click search bar
-	sleep 100
+	sleep 200
 	varbar.Send(input)
 }
 
