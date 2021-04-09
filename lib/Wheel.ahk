@@ -1,4 +1,24 @@
-﻿Wheel_2(commands,Sleeptime:=600)
+﻿Wheel_scroll(direction){
+	ifwinactive, Result Editor - \\Remote
+		mousemove, 505, 200,0	
+
+	mouseclickDrag, L,0, 0, 0, %Direction%,0,R	; mouseclick, %upOrDown%, ,,1,0	0
+	return
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wheel_2(commands,Sleeptime:=600)
 {
 	global
 	If (A_PriorKey!=A_ThisHotkey) || (A_TickCount-LastActivation > 200)
@@ -107,15 +127,18 @@ global
 Wheel_Paste() 
 {
 	Global
+	sleep 100
 	if winactive("ahk_exe WFICA32.EXE")
 	{
 		Clipboard := Trim((Clipboard, "`r`n"))
-		sleep 150
+		clipwait, 1
+		BlockInput, on
 		send, %Clipboard%
 		tooltip("Paste")
+		blockinput off
 	}
 	else 
-		send, ^v
+	sendinput, ^v
 	ToolTip("Paste")
 	sleep 1000
 	return

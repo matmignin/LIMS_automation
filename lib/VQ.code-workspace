@@ -4,5 +4,8 @@
 			"path": "..\\..\\VQuest"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"autoHide.autoHidePanel": true,
+		"autoHide.autoHideSideBar": false
+	}
 }

@@ -72,26 +72,26 @@ SpecTab_Table(){
 		LV_GetText(Units, 		A_EventInfo,5)
 		LV_GetText(Percision, 	A_EventInfo,6)
 		LV_GetText(Description, A_EventInfo,7)
-		;sendinput, {space}
 		Gui, Spec_Table:submit,NoHide
 		sleep 200
-		If WinExist("Result Editor - \\Remote") 
+		
+		If WinExist("Result Editor - \\Remote")   ;the editing window
 		{
-			SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+			SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
 			return
 		}
-		else if winexist("Results Definition - \\Remote")
+		else if winexist("Results Definition - \\Remote")  ;Selection window
 		{	
-			winactivate, Results Definition - \\Remote
-			Mouse_Click("Edit")
-			sleep 200
-			winwaitactive, Result Editor - \\Remote
+			; winactivate, Results Definition - \\Remote
+			; Mouse_Click("Edit")
+			; sleep 200
+			; winwaitactive, Result Editor - \\Remote
 			SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
 			return
 		}
 		else If WinExist("Test Definition Editor - \\Remote") 
 		{
-			SpecTab_TestDefinitionEditor(Description) ; the first window
+			SpecTab_TestDefinitionEditor(Description) ; the pre window
 			return
 		}
 		else If Winexist("NuGenesis LMS - \\Remote") 
@@ -197,18 +197,34 @@ SpecTab_EditSpecification_Analytical(){
 	return
 }			
 
-SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision) {
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0) {
 	Global
-	WinActivate, Result Editor - \\Remote
+	if WinExist("Result Editor - \\Remote")	
+		WinActivate, Result Editor - \\Remote
+	Else
+	{
+		winactivate, Results Definition - \\Remote
+		winwaitactive, Results Definition - \\Remote
+		sleep 200
+		Mouse_Click("Edit")
+		sleep 200
+		winwaitactive, Result Editor - \\Remote
+	}
 	Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
-	sleep 250
+	sleep 200
 	click, 200, 137 ; click id box to orient
-	sleep 300
-	;if (Allergen = 1)
-	;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
-	;else
-	send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+	sleep 2	00
+							;if (Allergen = 1)
+							;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
+							;else
+	; if (uselimitsbox := 0)
+		; send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
+		sleep 100
+	If (UseLimitsBox != 0)
+		send, {space}
 	sleep 100
+	send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 	if (Max_limit = "")
 		sendinput, NLT %Min_Limit% %The_Units%
 	else if (Min_limit = "<")
@@ -217,7 +233,7 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision) {
 		sendinput, NMT %Max_Limit% %The_Units%
 	Else
 		Sendinput, %Requirement%
-	sleep 500
+	sleep 300
 	click 350, 660 ; click okay
 }
 

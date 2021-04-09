@@ -89,7 +89,7 @@ Mouse_Click(Link)
 	else if Link Contains Main_EditTest
 		Sendinput, {click, 56, 784 }
 	else if Link Contains Add_Formulation
-		Sendinput, {click, 75, 280}
+		click, 73, 280
 	else if Link contains AddNewSampleTemplate
 		click 103, 325
 	else if Link contains Orient_SpecTab_TestDefinitionEditor

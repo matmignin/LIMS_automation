@@ -4,7 +4,7 @@
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
 {
 	d::Send, {home 2}+{end}{Delete}
-	w::sendinput, {right}^{left}+^{right}+{left}{backspace}
+	w::sendinput, {right}^{left}+^{right}{backspace}
 	4::sendinput, +{end}^x
 	5::sendinput, ^m^x
 	0::sendinput, +{home}^x
@@ -44,6 +44,7 @@
 	up::^+up
 	down::^+down
 	/::sendinput, !^w
+	5::^+/
 }
 #If Getkeystate("Capslock","p")
 {
@@ -106,21 +107,29 @@ v up::
 	 '::numpaddot
 		#if
 
-F19::NumpadSub
-;F20 & F19::
 
-;F20::Menu()
+
+
 
 
 #IfWinActive,
 return
 ;__________________________________________________________________
-;_______________________________________________________Otherstuff
+_______________________________________________________Otherstuff:
 ;__________________________________________________________________
 { 
+	Media_Next::tooltip(A_ThisHotkey)
+	Browser_Back::tooltip(A_ThisHotkey)
+	Browser_Forward::tooltip(A_ThisHotkey)
+	Media_Prev::tooltip(A_ThisHotkey)
+
+	Volume_Down::tooltip(A_ThisHotkey)
+	Volume_Up::tooltip(A_ThisHotkey)
+	#right::tooltip(A_ThisHotkey)
+	^+!down::tooltip(A_ThisHotkey)
 	CapsLock::return
 	$enter::sendinput, {enter}
-	F20::^m
+
 	+F12::Exitapp
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744
@@ -129,6 +138,30 @@ return
 	F20 & Left::send, #{Left}
 	F20 & UP::send, #{UP}
 	F20 & Down::send, #{Down}
+
+
+	F20::LMS_autofill()
+	; sendinput, ^s
+		; sleep 200
+		; run, VQuest.ahk
+		; return
+#If (A_PriorHotKey = "F19" AND A_TimeSincePriorHotkey < 4000)
+{
+	f19::Menu("Sheets")
+	Wheelup::tooltip(A_ThisHotkey)
+	Wheeldown::tooltip(A_ThisHotkey)
+	wheelleft::tooltip(A_ThisHotkey)
+	wheelright::tooltip(A_ThisHotkey)
+	Lbutton::tooltip(A_ThisHotkey)
+	Rbutton::tooltip(A_ThisHotkey)
+	mbutton::tooltip(A_ThisHotkey)
+}
+	#If
+F19::Tooltip("☩",4000) 
+
+
+
+
 	#ifwinactive, NuGenesis LMS - \\Remote
 
 F20::Mouse_Click("SearchBar_Batch")     
@@ -155,20 +188,21 @@ F20::Mouse_Click("SearchBar_Batch")
 	F14 & wheelUP::Browser_Forward
 	Mbutton::sendinput, ^{click}
 	;_________________________________________________________Snipper 
-	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
+	#IfWinActive, Snipper - Snipaste ; the capture screen
+	rbutton::Enter
+	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
+	Mbutton & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
+	Mbutton::send, !{click}
+	F13::sendinput, ^c
 
-	F13 & Rbutton::Click, 2
-	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe
-	Mbutton::Sendinput, {click right}z1{click right}e{ctrl down}5{ctrl up}
+	
+	F16::sendinput, ^+{+}
+	F17::sendinput, ^+{-}
 }
 #if
 
 
 
-
-;__________________________________________________________________
-;__________________________________________________________________Editors
-;__________________________________________________________________ 
 
 #include <VScode>
 

@@ -1,12 +1,19 @@
 Test(n:=0) {
 	Global
-Excel.connect()
-; currentsheet:=xl.ActiveWorkbook.Activesheet.index +1
-XL.Sheets(xl.ActiveWorkbook.Activesheet.index +1).activate
-;msgbox, %currentSheet%
+WinActivate, NuGenesis LMS - \\Remote ahk_class Transparent Windows Client
+ Click, 60, 521,	
+WinwaitActive, Results Definition - \\Remote ahk_class Transparent Windows Client
+click 78,63
+WinwaitActive, Result Editor - \\Remote ahk_class Transparent Windows Client
+click 32, 410 ;use limits for test
+Click_ok()
+WinwaitActive, Results Definition - \\Remote ahk_class Transparent Windows Client
+click_ok()
+; sendinput, {esc}
 return
 
 }
+;Sendinput,{click 150,73}{tab}{right 204}
 
 
 test_Excelsheets()
@@ -32,8 +39,13 @@ test_Excelsheets()
 	return
 }
 
-
-
-
+Click_OK(){
+	if winactive("Results Definition - \\Remote")
+		click 1336,592
+	else if winactive("Result Editor - \\Remote")
+		click 370,660
+		sleep 200
+		return
+}
 
 
