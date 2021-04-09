@@ -1,38 +1,37 @@
 WorkTab_EditSample(){
   global		
-  ;atch:=varbar_get("Batch")
-  ;Lot:=Varbar_Send("Lot")
+ifwinactive, Register new samples - \\Remote
+  click 2
+  sleep 200
+  winwaitactive, Edit sample (Field Configuration
   sendinput, {tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-    sendinput, {tab}
-  sendinput % Varbar.Send("Batch") "{tab}"
+    sendinput, {tab}^a
+  sendinput % Varbar.Send("Batch") "{tab}^a"
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
     sendinput % Varbar.send("Lot") "{tab}" 
   Selection:= iteration
   AbsSelection:=Abs(Selection)-1
   if (Selection > 0)
     sendinput, {home}{right %selection%}
-  else if (Selection < 0)
+  if (Selection < 0)
     Sendinput, {end}{left %Absselection%}
-  else
+  sleep 300
+  send, {enter}
     return
 }
 
-WorkTab_RegisterNewSample() 
-{
-  global
-  winactivate, Register new samples - \\Remote
-  Send, {click 179, 105}{click}
-  varbar.send("Product")
-  send, {enter}
-}
+ 
 WorkTab_NewRequest(department)
 {
   click, 64, 300 ;click Assign To New rewuest link
-  winwaitactive, Edit request - \\Remote
+  winwaitactive, Edit request - \\Remote,,3
+      if !Errorlevel
   sleep 200
+  WinActivate, Edit request - \\Remote,
   click 238, 622 ;pick test
-  winwaitactive, Select tests for request
+  winwaitactive, Select tests for request,,3 
+    if !Errorlevel
     sleep 200
   click, right, 264, 590 ; click to show filer
   sleep 100
@@ -45,26 +44,28 @@ WorkTab_NewRequest(department)
   send ^a
   click 504, 338 ; click arrow
   sleep 200
+  WinActivate, Select tests for request
   click, right, 264, 590 ; click to clear filter
-  sleep 100
   send, {up}{enter}
-  sleep 1000
+  sleep 100
+  WinActivate, Select tests for request
+  sleep 250
   While GetKeyState("Lbutton", "p")
     Sleep 200
-  sleep 300
+  sleep 100
   IfWinnotActive, Select tests for request 
   {
     tooltip("over")
     exit
   }
+  WinActivate, Select tests for request
   click 854, 657 ; click okay
   winwaitclose, Select tests for request,,10
     if !Errorlevel
-    sleep 300
+    sleep 200
     WinWaitActive, Edit request
     winactivate, Edit request
     send, {tab}{enter}
-  ; click 338, 62 ; click save
   return
 
 }

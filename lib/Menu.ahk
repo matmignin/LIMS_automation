@@ -60,6 +60,8 @@ default(){
   if WinActive("ahk_exe explorer.exe") || Winactive("ahk_exe OUTLOOK.EXE")
   {
     menu, menu, add
+    loop 5
+      menu, menu, add, %a_index%, Variables
     menu, menu, add, Paste to Excel, Tables
     menu, menu, add
   }
@@ -81,7 +83,13 @@ default(){
       VarBar.set("Lot")
     else if A_thismenuItem contains &Coated `t %Coated%
       VarBar.set("Coated")
-    else 
+    else if A_ThisMenuItem is digit
+    {
+      ControlSetText, Edit2,%A_thismenuitem%, VarBar
+      Iteration:=A_Thismenuitem
+     varbar.Search(batch) 
+    }
+    else
       try menu, menu, deleteAll
     menu, menu, deleteAll
   return
@@ -125,7 +133,6 @@ Passwords:
   else 
     menu, menu, deleteAll
 return
-
 }		
 
 Heavy_meatals(){
@@ -192,10 +199,10 @@ VScode(){
   Global
   menu, menu, add,
   ; try menu, menu, deleteAll
-  Menu, menu, Add, Mouse Location, vscode
-  Menu, menu, Add, Window Title, vscode
-  Menu, menu, Add, Process, vscode
-  Menu, menu, Add, Control, vscode
+  Menu, menu, Add, %MousePosition%, vscode
+  Menu, menu, Add, %WinTitle%, vscode
+  Menu, menu, Add, %WinProcess%, vscode
+  Menu, menu, Add, %WinControl%, vscode
   menu, Menu, Add, Search Hotkeys, vscode
   Menu, hotkeyMenu, Add, F13, vscode
   Menu, hotkeyMenu, Add, F14, vscode
@@ -211,87 +218,87 @@ VScode(){
 return
 
 VScode:
-  if (A_thismenuitem = "F13")
-    Sendinput, ^fF13`:`:{enter}
-    else if (A_thismenuitem = "F13")
-      Sendinput, ^fF13`:`:{enter}
-      else if (A_thismenuitem = "F14")
-        Sendinput, ^fF14`:`:{enter}
-        else if (A_thismenuitem = "F15")
-          Sendinput, ^fF15`:`:{enter}
-          else if (A_thismenuitem = "F16")
-            Sendinput, ^fF16`:`:{enter}
-            else if (A_thismenuitem = "F17")
-              Sendinput, ^fF17`:`:{enter}
-              else if (A_thismenuitem = "F18")
-                Sendinput, ^fF18`:`:{enter}
-                else if (A_thismenuitem = "Mbutton")
-                  Sendinput, ^fMbutton{enter}
-                else if (A_thismenuitem = "Rbutton")
-                  Sendinput, ^fRbutton{enter}
-                else if (A_thismenuitem = "Wheel")
-                  Sendinput, ^fWheel`:`:{enter}
-                  else if A_thismenuItem contains Mouse Location
-                    sendinput %MousePosition%
-                  else if A_thismenuItem contains Window Title
-                    Sendinput %WinTitle%
-                  else if A_thismenuItem contains Process
-                    sendinput ahk_exe %WinProcess%
-                  else if A_thismenuItem contains Control
-                    sendinput, %WinControl%
-                  else 
-                    menu, menu, deleteAll
-                return
-              }
+if (A_thismenuitem = "F13")
+Sendinput, ^fF13`:`:{enter}
+else if (A_thismenuitem = "F13")
+Sendinput, ^fF13`:`:{enter}
+else if (A_thismenuitem = "F14")
+Sendinput, ^fF14`:`:{enter}
+else if (A_thismenuitem = "F15")
+Sendinput, ^fF15`:`:{enter}
+else if (A_thismenuitem = "F16")
+Sendinput, ^fF16`:`:{enter}
+else if (A_thismenuitem = "F17")
+Sendinput, ^fF17`:`:{enter}
+else if (A_thismenuitem = "F18")
+Sendinput, ^fF18`:`:{enter}
+else if (A_thismenuitem = "Mbutton")
+Sendinput, ^fMbutton{enter}
+else if (A_thismenuitem = "Rbutton")
+Sendinput, ^fRbutton{enter}
+else if (A_thismenuitem = "Wheel")
+Sendinput, ^fWheel`:`:{enter}
+else if A_thismenuItem contains %MousePosition%
+  send %MousePosition%
+else if A_thismenuItem contains %WinTitle%
+  Send %WinTitle%
+else if A_thismenuItem %WinProcess%
+  send ahk_exe %WinProcess%
+else if A_thismenuItem %WinControl%
+  send, %WinControl%
+else 
+  menu, menu, deleteAll
+return
+}
 
-              remote_desktop(){
-                global
-                menu, menu, add,	
-                Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
-                  Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
-                Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
-                Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
-                menu, Menu, Add, Other Servers, Remote_desktop
-                Menu, SubMenu, Add, TEST_LMS, Remote_desktop
-                Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
-                Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
-                Menu, SubMenu, Add, LMS_PRD, Remote_desktop
-                Menu, SubMenu, Add, NuGenesis, Remote_desktop`
-                Menu, SubMenu, Add, SDMS, Remote_desktop
-                Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
-                Menu, SubMenu, Add, Empower, Remote_desktop
-                menu, Menu, add, Other Servers, :SubMenu
-                return
-                ; Menu, Menu, Show,
-                Remote_Desktop:
-                  If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
-                    sendinput, {Click 182, 97}10.1.2.153
-                  Else if (A_thisMenuItem = "TEST_LMS") 
-                    sendinput, {Click 182, 97}10.1.2.152
-                  Else if (A_thisMenuItem = "TEST_NuGen")
-                    sendinput, {Click 182, 97}10.1.2.150
-                  Else if (A_thisMenuItem = "TEST_SDMS") 
-                    sendinput, {Click 182, 97}10.1.2.149
-                  Else if (A_thisMenuItem = "PRD_Citrix_One") 
-                    sendinput, {Click 182, 97}10.1.2.134
-                  Else if (A_thisMenuItem = "PRD_Citrix_Two") 
-                    sendinput, {Click 182, 97}10.1.2.226
-                  Else if (A_thisMenuItem = "PRD_Citrix_Three") 
-                    sendinput, {Click 182, 97}10.1.2.227
-                  Else if (A_thisMenuItem = "LMS_PRD") 
-                    sendinput, {Click 182, 97}10.1.2.138
-                  Else if (A_thisMenuItem = "NuGenesis") 
-                    sendinput, {Click 182, 97}10.1.2.164
-                  Else if (A_thisMenuItem = "SDMS") 
-                    sendinput, {Click 182, 97}10.1.2.142
-                  Else if (A_thisMenuItem = "PRD_EMPCitrix") 
-                    sendinput, {Click 182, 97}10.1.2.242
-                  Else if (A_thisMenuItem = "Empower") 
-                    sendinput, {Click 182, 97}10.1.2.228
-                  else 
-                    menu, menu, deleteAll
-                return
-              }
+remote_desktop(){
+  global
+  menu, menu, add,	
+  Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+  menu, Menu, Add, Other Servers, Remote_desktop
+  Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+  Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+  Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+  Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+  Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+  Menu, SubMenu, Add, SDMS, Remote_desktop
+  Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+  Menu, SubMenu, Add, Empower, Remote_desktop
+  menu, Menu, add, Other Servers, :SubMenu
+  return
+  ; Menu, Menu, Show,
+  Remote_Desktop:
+    If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
+      sendinput, {Click 182, 97}10.1.2.153
+    Else if (A_thisMenuItem = "TEST_LMS") 
+      sendinput, {Click 182, 97}10.1.2.152
+    Else if (A_thisMenuItem = "TEST_NuGen")
+      sendinput, {Click 182, 97}10.1.2.150
+    Else if (A_thisMenuItem = "TEST_SDMS") 
+      sendinput, {Click 182, 97}10.1.2.149
+    Else if (A_thisMenuItem = "PRD_Citrix_One") 
+      sendinput, {Click 182, 97}10.1.2.134
+    Else if (A_thisMenuItem = "PRD_Citrix_Two") 
+      sendinput, {Click 182, 97}10.1.2.226
+    Else if (A_thisMenuItem = "PRD_Citrix_Three") 
+      sendinput, {Click 182, 97}10.1.2.227
+    Else if (A_thisMenuItem = "LMS_PRD") 
+      sendinput, {Click 182, 97}10.1.2.138
+    Else if (A_thisMenuItem = "NuGenesis") 
+      sendinput, {Click 182, 97}10.1.2.164
+    Else if (A_thisMenuItem = "SDMS") 
+      sendinput, {Click 182, 97}10.1.2.142
+    Else if (A_thisMenuItem = "PRD_EMPCitrix") 
+      sendinput, {Click 182, 97}10.1.2.242
+    Else if (A_thisMenuItem = "Empower") 
+      sendinput, {Click 182, 97}10.1.2.228
+    else 
+      menu, menu, deleteAll
+  return
+}
 
               ; if (A_ThisMenuItem = "Samples")
               ; 	sendinput, care{enter}

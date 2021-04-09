@@ -116,6 +116,7 @@ get(Category)
 Send(Category,ExtraOutput:="")
 {
 	Global
+	BlockInput, on
 	sleep 100
 	If Category contains Product
 		ControlGetText, Output, Edit1, VarBar
@@ -135,7 +136,8 @@ Send(Category,ExtraOutput:="")
 	sleep 100
 	if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
 		send, {enter}	
-	if winactive("Find and Replace")
+		blockinput off
+if winactive("Find and Replace")
 		send, !i
 	sleep 400
 	return
@@ -169,6 +171,12 @@ Set(Input:=0){
 		ControlSetText, Static3,, VarBar
 		ControlSetText, Static4,, VarBar
 		ControlSetText, Static5,, VarBar
+		product:=Clipforproduct
+		Batch:=
+		lot:=
+		Name:=
+		Customer:=
+		coated:=
 			Gui, VarBar:color, 847545 ;brown
 	}
 		; exit
@@ -186,6 +194,11 @@ Set(Input:=0){
 		ControlSetText, Static2,, VarBar
 		ControlSetText, Static4,, VarBar
 		ControlSetText, Static5,, VarBar
+		Batch:=clipforbatch
+		lot:=
+		Name:=
+		Customer:=
+		coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
 	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
@@ -195,20 +208,23 @@ Set(Input:=0){
 		ControlSetText, Static3,%Clipforlot%, VarBar
 		ControlSetText, Static4,, VarBar
 		ControlSetText, Static5,, VarBar
+		lot:=clipforlot
+		Name:=
+		Customer:=
+		coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
-	; else If input contains Lot
-		; ControlSetText, Static2,%clip%, VarBar
-	else If input contains Coated
-		ControlSetText, Static3,%clip%, VarBar
-	else If input contains Name
-		ControlSetText, Static4,%clip%, VarBar
-	else If input contains Customer
-		ControlSetText, Static5,%clip%, VarBar
-	else If input contains Iteration
-		ControlSetText, Edit2,%clip%, VarBar
-	else
-	return
+	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) = 0) 
+	{
+  send, ^c
+  ClipWait, 1,
+  Clipboard := Trim((Clipboard, "`r`n"))
+	sleep 100
+	tooltip, %product%`n%batch%`n%lot%, %varbar_x%, %varbar_y%
+	tooltip(Clipboard,2000)
+	exit
+	}
+	tooltip, %product%`n%batch%`n%lot%, %varbar_x%,%varbar_y%
 	return
 }
 
@@ -216,6 +232,8 @@ Search(input){
 	global
 	varbar.set()
 	WinActivate, NuGenesis LMS - \\Remote
+	send, {click 761, 44}
+	sleep 150
 	click, 500,127, 2 ;click search bar
 	sleep 200
 	varbar.Send(input)

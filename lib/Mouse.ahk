@@ -2,7 +2,22 @@
 
 
 
+Mouse_IsOver(WinTitle){ 
+  MouseGetPos,,, Win
+  Return WinExist(WinTitle . " ahk_id " . Win)
+  }
 
+Mouse_RbuttonUP(){
+  #inputlevel 1
+    suspend, On
+    sleep 50
+    Click, Right
+    sleep 500
+    ;MouseClick, Right,,,1, 0, U
+    suspend, Off
+    return
+  #inputlevel 0
+  }
 
 
 

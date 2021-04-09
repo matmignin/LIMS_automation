@@ -50,14 +50,18 @@ Connect(reload:=0){
 		ControlSetText, Edit1,%Product%, VarBar
 	Batch:=XL.Range("C1").Value
 		ControlSetText, Static1,%Batch%, VarBar
-	Lot:=XL.Range("C2").Value
+	Lot:=XL.Range("C4").Value
 		ControlSetText, Static2,%lot%, VarBar
-	Coated:=xl.range("E2").value
+	Coated:=xl.range("E4").value
 		ControlSetText, Static3,%Coated%, VarBar
-	Name:=XL.Range("B2").Value
+	Name:=XL.Range("F4").Value
 		ControlSetText, Static4,%Name%, VarBar
 	Customer:=XL.Range("B3").Value	
 		ControlSetText, Static5,%Customer%, VarBar
+	Iteration:=XL.Range("C3").Value	
+	ControlSetText, Edit2,%Iteration%, VarBar
+		ShapeAndSize:=XL.Range("C2").Value	
+	; ControlSetText, Edit2,%Iteration%, VarBar
 	; Gui, varbar:submit, nohide
 	; if (Skip := "Iteration")
 		; ControlSetText, Edit2,%Iteration%, VarBar

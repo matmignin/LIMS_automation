@@ -81,7 +81,7 @@
 	} Else If winactive("Result Entry - \\Remote"){
 		WorkTab_ChangeTestResults("toggle")	
 	} else if Winactive("Register new samples - \\Remote"){
-		WorkTab_RegisterNewSample()
+		WorkTab_EditSample()
 
 
 
@@ -120,7 +120,7 @@
 		Sendinput, {tab 2}{space}
 		winwaitactive, Error - \\Remote, , 4
 		sendinput, {enter}
-		workTab_RegisterNewSample()
+		WorkTab_EditSample()
 		return
 		
 		
