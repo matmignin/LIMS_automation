@@ -1,7 +1,7 @@
 
 return
 #IfWinActive, ahk_exe Code.exe
-    Capslock & ,::sendinput, !',
+    Capslock & ,::sendinput, !^b
     Capslock & a::!^a
     ^r::ReloadScript()
     ^k::sendinput, ^{up}

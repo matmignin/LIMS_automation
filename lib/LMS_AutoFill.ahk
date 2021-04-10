@@ -31,7 +31,7 @@
 		ProductTab_EditProduct() 
 
 
-
+						
 
 		;------------------------------------------
 	} Else If winactive("Edit Product - \\Remote"){
@@ -142,3 +142,4 @@
 	
 		return
 }
+

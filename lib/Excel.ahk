@@ -12,7 +12,7 @@ Connect(reload:=0){
 	Gui VarBar:+LastFound 
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if WinExist("LMS Workbook.xlsm - Excel")
+	if WinExist("LMS Workbook")
 		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsm - Excel
 	else{
 			msgbox,4,,open LMS Workbook?

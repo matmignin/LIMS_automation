@@ -1,5 +1,4 @@
 ﻿gosub, vquest_start
-
   Results_Definition_edit:="78,63"
   Result_Editor_Ok:="370,660"
   Results_Definition_ok:="1336,592"
@@ -187,20 +186,20 @@ Media_Play_Pause::F8
 	F20 & UP::send, #{UP}
 	F20 & Down::send, #{Down}
 	F20::LMS_autofill()
-#If (A_PriorHotKey = "F15" AND A_TimeSincePriorHotkey < 4000)
-{
-	f15::Menu()
-	Wheelup::tooltip(A_ThisHotkey)
-	Wheeldown::tooltip(A_ThisHotkey)
-	wheelleft::tooltip(A_ThisHotkey)
-	wheelright::tooltip(A_ThisHotkey)
-	Lbutton::tooltip(A_ThisHotkey)
-	Rbutton::tooltip(A_ThisHotkey)
-	mbutton::tooltip(A_ThisHotkey)
-}
-	#If
-F15::Tooltip("F15",2000) 
-
+; #If (A_PriorHotKey = "F15" AND A_TimeSincePriorHotkey < 4000)
+; {
+; 	f15::Menu()
+; 	Wheelup::tooltip(A_ThisHotkey)
+; 	Wheeldown::tooltip(A_ThisHotkey)
+; 	wheelleft::tooltip(A_ThisHotkey)
+; 	wheelright::tooltip(A_ThisHotkey)
+; 	Lbutton::tooltip(A_ThisHotkey)
+; 	Rbutton::tooltip(A_ThisHotkey)
+; 	mbutton::tooltip(A_ThisHotkey)
+; }
+; 	#If
+; F15::Tooltip("F15",2000) 
+F15::#tab
 #If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
 {
 	,::sendinput, +!/
@@ -324,7 +323,7 @@ VQuest_Start:
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
   Excel.Connect(1)
 
-     Run, ViM.Ahk
+    test() 
   return
 
 

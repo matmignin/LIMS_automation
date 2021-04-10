@@ -1,17 +1,8 @@
 Test(n:=0) {
 	Global
-WinActivate, NuGenesis LMS - \\Remote ahk_class Transparent Windows Client
- Click, 60, 521,	
-WinwaitActive, Results Definition - \\Remote ahk_class Transparent Windows Client
-click 78,63
-WinwaitActive, Result Editor - \\Remote ahk_class Transparent Windows Client
-click 32, 410 ;use limits for test
-Click_ok()
-WinwaitActive, Results Definition - \\Remote ahk_class Transparent Windows Client
-click_ok()
-; sendinput, {esc}
+	; Rotation_GetTable()
+	Rotation_table()
 return
-
 }
 ;Sendinput,{click 150,73}{tab}{right 204}
 
@@ -49,3 +40,17 @@ Click_OK(){
 }
 
 
+
+/* 
+WinActivate, NuGenesis LMS - \\Remote ahk_class Transparent Windows Client
+ Click, 60, 521,	
+WinwaitActive, Results Definition - \\Remote ahk_class Transparent Windows Client
+click 78,63
+WinwaitActive, Result Editor - \\Remote ahk_class Transparent Windows Client
+click 32, 410 ;use limits for test
+Click_ok()
+WinwaitActive, Results Definition - \\Remote ahk_class Transparent Windows Client
+click_ok()
+; sendinput, {esc}
+return
+ */

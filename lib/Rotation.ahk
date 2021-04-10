@@ -18,7 +18,8 @@ return
     EnvSet, GetRotationTable, 1
     GetRotationTable:=1
 
-  Return
+  Return 
+  
 
   Rotation_Table(){
     Global
@@ -29,30 +30,30 @@ return
     Methods:=[]
     TestIngredients:=[]
     RotationCycles:=[]
-    while (Xl.Range("M" . A_Index+6).Value != "") 
+    while (Xl.Range("P" . A_Index+7).Value != "") 
     {
-      Method[A_index]:=		Xl.Range("P" . A_Index+7).Text
-      TestIngredients[A_index]:=			Xl.Range("Q" . A_Index+7).text
+      TestIngredients[A_index]:=			Xl.Range("Q" . A_Index+7).Value
       RotationCycles[A_index]:=	Xl.Range("R" . A_Index+7).Text
+      Methods[A_index]:=		Xl.Range("P" . A_Index+7).Value
 
       Total_rows:=A_index
-     ; Table_Height:=A_index
-      ; if (Table_Height > 30)
+     Table_Height:=A_index
+      if (Table_Height > 30)
         Table_Height = 30
     }
 
     Gui, Rotation_Table:Default
-    Gui Rotation_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-    Gui, Rotation_Table:Add, ListView, x0 y0 r%Total_rows% w320 Grid NoSortHdr gRotation_Table, `t%Product%|`t%Name%|Cycles
-    GUI, Rotation_Table:Font, s12 cBlack Bold, Consolas
+    Gui Rotation_Table: +ToolWindow +Owner +AlwaysOnTop +resize -SysMenu +MinimizeBox
+    Gui, Rotation_Table:Add, ListView, x0 y0 w400 r%Table_height%  Grid  gRotation_Table, %Product%|`tTests|Cycles
+    GUI, Rotation_Table:Font, s14 cBlack Bold, Consolas
     loop, %Total_Rows% {
-        LV_add(,""Method[A_index],TestIngredients[A_index], RotationCycles[A_index]) 
+        LV_add(,""RotationCycles[A_index],TestIngredients[A_index],Methods[A_index]) 
     }
-
+LV_ModifyCol()
     ;LV_Delete(Table_Height)
     sleep 200	
     CoordMode, mouse, screen
-    Gui, Rotation_Table:Show, x%RotatWodionTable_X% y%RotationTable_Y% w320, %Product%
+    Gui, Rotation_Table:Show,  x%RotationTable_X% y%RotationTable_Y%, %Product%
     CoordMode, mouse, window
   return			
 
@@ -61,10 +62,13 @@ return
       LV_GetText(Method, 		A_EventInfo,1)
       LV_GetText(TestIngredients, 		A_EventInfo,2)
       LV_GetText(RotationCycles, 		A_EventInfo,3)
-      msgbox % A_eventInfo "`n" Method "`n" TestIngredients "`n"
+      tooltip % A_eventInfo "`n" Method "`n" TestIngredients "`n"
       Gui, Rotation_Table:submit,NoHide
       sleep 200      
+      return
     }
+      else
+      return
 }
 
 Rotation_GetTable(showTable=1){ 
@@ -93,7 +97,7 @@ Return
 RotationMenuHandler:
   Rotation:=A_ThisMenuItemPos
   WinActivate, Select Iterations - \\Remote
-  ; sleep 150
+; sleep 150
   Rotation_Iterations(Rotation,Cycle)
   ;	SetKeyDelay 5, 1
   send,{tab 4}{enter}

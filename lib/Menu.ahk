@@ -65,6 +65,7 @@ default(){
     menu, menu, add, Paste to Excel, Tables
     menu, menu, add
   }
+  menu,menu,add,Test_1,Tables
   Menu, Menu, Add, &Product `t %Product%, Variables
   Menu, Menu, Add, &Batch `t %Batch%, Variables
   Menu, Menu, Add, &Lot `t %Lot%, Variables
@@ -101,6 +102,8 @@ default(){
       SpecTab_Table()
     else if A_thismenuItem contains Paste to excel
       excel.PasteValues()
+    else if A_thismenuItem contains Test_1
+      Test()
     else 
       menu, menu, deleteAll
   return

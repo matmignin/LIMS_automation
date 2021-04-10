@@ -111,7 +111,7 @@ SpecTab_Table(){
 }
 
 
-
+IfWinActive, wintitlke, WinText, ExcludeTitle, ExcludeText]
 
 
 
@@ -129,8 +129,8 @@ Spec_TableGuiClose:
 
 
 
-SpecTab_Create_Template: 
-{
+SpecTab_Create_Template:
+ {	
 #ifwinactive, Edit specification - \\Remote
 
 	WinActivate,  Edit specification - \\Remote
@@ -213,7 +213,7 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0
 	Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
 	sleep 200
 	click, 200, 137 ; click id box to orient
-	sleep 2	00
+	sleep 200
 							;if (Allergen = 1)
 							;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
 							;else
