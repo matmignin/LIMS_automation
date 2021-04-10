@@ -45,7 +45,13 @@
     F19 & l::sendinput, +!{right}
     F19::!left
     F20::!right
-    capslock::sendinput, {esc}
+    
+    ; ~capslock::
+    ; send, {esc}
+    ; keywait, Capslock
+    ; return
+    
+    Capslock Up::send, {esc}
     
 
 

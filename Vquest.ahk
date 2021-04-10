@@ -7,7 +7,6 @@ return
 
   
 
-
 KEY_DEFAULT:
   Mbutton & WheelDown::Wheel("^{WheelDown}") 
   Mbutton & Wheelup::Wheel("^{WheelUp}") 
@@ -286,6 +285,9 @@ VQuest_Start:
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add,CL3, Run_cl3
     Menu, Tray, Add, Vim, Run_Vim
+  Menu, Tray, Add, Stop, StopSub 
+  Menu, Tray, Add, ResetVarbar, Varbar_Reset
+  Menu, Tray, Default, ResetVarbar
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
@@ -305,14 +307,12 @@ VQuest_Start:
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
   Excel.Connect(1)
 
-  Menu, Tray, Add, Stop, StopSub 
-  Menu, Tray, Add, Reset Table Locations, Varbar_Reset
-  Menu, Tray, Default, Reset Table Locations  
+     Run, ViM.Ahk
   return
 
 
 
-  #include Vim.ahk
+  ;#include Vim.ahk
   #Include <LMS_autofill>
   #include <test>
   #include <varBar>
