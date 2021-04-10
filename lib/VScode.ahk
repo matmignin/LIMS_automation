@@ -1,7 +1,7 @@
 
-
+return
 #IfWinActive, ahk_exe Code.exe
-    Capslock & ,::^,
+    Capslock & ,::sendinput, !',
     Capslock & a::!^a
     ^r::ReloadScript()
     ^k::sendinput, ^{up}
@@ -13,18 +13,18 @@
     +^l::^+#`;
     +^h::^+#h
     Mbutton & Wheeldown::Wheel_2("!d",1000)
-    Mbutton & Wheelup::^m
+    Mbutton & Wheelup::wheel_2("^m",2000)
     Mbutton & Rbutton::+^m ; toggle bookmark
     Mbutton::ShowDefinition()
-    Rbutton & F16::Wheel_2("{backspace}", 10)
-    Rbutton & F17::Wheel_2("{delete}", 10)
+    Rbutton & F16::Wheel_2("{left}", 20)
+    Rbutton & F17::Wheel_2("{right}", 20)
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
     Rbutton & F14::Get_WindowInfo()
     $Rbutton::Click right
-    F14 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
     F14 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
-    F14 & F13::sendinput, #{tab}
+    F14 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
+    ;F14 & F13::sendinput, #{tab}
     F14 & Mbutton::sendinput, !d
     F14 & Rbutton::+F8
     F14 & Lbutton::sendinput, ^{click}
@@ -33,39 +33,32 @@
     F13 & F18::F5
     F13::sendinput, {F13}
     F13 & Lbutton::^+4
-    F17::Wheel_2("!{right}",90)
-    F16::Wheel_2("!{left}",90)
+    F17::Wheel_2("!{right}",100)
+    F16::Wheel_2("!{left}",100)
     F14 & F17::Wheel_2("^]")
     F14 & F16::wheel_2("^[")
     F18::ReloadScript()
-    F19 & space::^+p
-    F19 & h::sendinput, +!{left}
-    F19 & k::sendinput, +!{up}
-    F19 & j::sendinput, +!{down}
-    F19 & l::sendinput, +!{right}
-    F19::!left
+    F20 & space::^+p
+    F20 & h::sendinput, +!{left}
+    F20 & k::sendinput, +!{up}
+    F20 & j::sendinput, +!{down}
+    F20 & l::sendinput, +!{right}
+    F19 & k::F3
+    F19 & j::+F3
     F20::!right
-    
-    ; ~capslock::
-    ; send, {esc}
-    ; keywait, Capslock
-    ; return
-    
-    Capslock Up::send, {esc}
-    
+    Media_Next::F3
+    Media_Prev::+F3
 
 
 
-
-
-#If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
+#if winactive("ahk_exe code.exe") && getkeystate("capslock","p") ;edit  or
 {
-	,::sendinput, !`,
+	,::sendinput, +!/,
 	m::+!down
 	n::+!n
 	u::+!up
 	'::+^!n
-	.::+F1
+	.::+f1
 	up::^+up
 	down::^+down
 	/::sendinput, !^w
@@ -74,6 +67,8 @@
 
 
 
+
+#if
 
 
 
@@ -140,3 +135,138 @@
       sendinput, {esc}
     return
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VIM:
+#ifwinactive, 
+#If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
+{
+	d::Send, {home 2}+{end}{Delete}
+	w::sendinput, {right}^{left}+^{right}{backspace}
+	4::sendinput, +{end}^x
+	5::sendinput, ^m^x
+	0::sendinput, +{home}^x
+}
+#If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 4000)
+{
+	d::Send, {home 2}+{end}^c
+	w::sendinput, {right}^{left}+^{right}+{left}^c 
+	5::sendinput, ^m^c
+	4::sendinput, +{end}^c{right}
+	y::
+	Send {home}+{end}^c
+	sleep 25
+	ClipWait, 1
+	send, {right}
+	return
+	Capslock & 0::sendinput, +{home}^c
+	0::sendinput, +{home}^c
+}	
+#If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
+{
+	Capslock & g::Send, ^{home}
+}
+
+#If Getkeystate("Capslock","p")
+{
+	1::F1
+	2::F2
+	3::F3
+	`::esc
+	Enter::sendinput, +^enter
+	j::down
+	k::Up
+	h::left
+	l::right
+	x::Delete
+	g::send, ^{end}
+	4::end
+	0::home
+	y::return
+	d::return ; Send, {home 2}+{end}^x{delete}
+	p::Send {end}{enter}^v
+	w::Send {right}^{right 2}{left}
+	e::Send ^{right}
+	u::Send ^z
+	up::+up
+	down::+down
+	right::+right
+	left::+left
+	b::^left
+	Shift & o::sendinput, {home}{enter}{up}
+	5::Send ^m
+	o::Send, {end}{enter}
+	Shift & ,::sendinput, +{F1}
+	left::sendinput, {home}+{Tab}
+	right::sendinput, {home}{Tab}
+v up::
+	while GetKeyState("Capslock","p")
+		sendinput, {Shift down}
+	sleep 200
+	sendinput, {shift up}
+	return
+#if
+}
+
+
+#If Getkeystate("F19","p") ;________________________________________Psudo Numpad
+	 m::numpad1
+	 ,::numpad2
+	 .::numpad3
+	 j::numpad4
+	 k::numpad5
+	 l::numpad6
+	 u::numpad7
+	 i::numpad8
+	 o::numpad9
+	 `;::numpad0
+	 n::numpaddiv
+	 /::,
+	 h::numpadsub
+	 p::numpadmult
+	 '::numpaddot
+		#if
+#IfWinActive,
+
+	F20 & \::Sendinput, mmignin{tab}Kilgore7744
+	F19 & \::Sendinput, ?Kilgore7744
+	#!\::Login()
+  
+  
+  
+  
+DoublePress(){
+	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 400) 
+	{
+		Sendinput, {%A_ThisHotkey%}
+		return
+	}
+	return
+}
+
+
+Login(){
+		sendinput, 4130220009588038
+		trayTip, ,11/21  127
+		return
+	}

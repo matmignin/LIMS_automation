@@ -5,8 +5,12 @@
   Results_Definition_ok:="1336,592"
 return
 
-  
-
+Sendlevel 1
+F13 & F14::sendinput, +{F13}
+F14 & F13::Sendinput, {F21}
+F19::sendinput, {F21}
+Sendlevel 0
+#IfWinActive,
 KEY_DEFAULT:
   Mbutton & WheelDown::Wheel("^{WheelDown}") 
   Mbutton & Wheelup::Wheel("^{WheelUp}") 
@@ -25,14 +29,13 @@ KEY_DEFAULT:
   F13 & Mbutton:: varbar.set("OCR") 
   F13 & WheelUp::VarBar.Send("Product")
   F13 & WheelDown::VarBar.Send("Batch")
+  ; F14 & Rbutton::Get_WindowInfo()
   F13::VarBar.set()
   F13 & F18::Varbar.reset()
-  F13 & F14::sendinput, !{ab}
-  ; F14 & Rbutton::Get_WindowInfo()
+  F14 & wheelDown::Mouse_CloseWindow()
+  F14 & Wheelup::Wheel("#{tab}")
   F14 & Lbutton::Sendinput, #{down}
-  F14 & F13::sendinput, #{tab}
-  F14::Menu()
-  F14 & wheelDown::Mouse_CloseWindow()()
+  ; F14::Menu()
   F18 & Wheelup::sendinput, {F15}
   F18 & Lbutton::sendinput, ^{Click}
   F18 & Rbutton::sendinput, +{Click}
@@ -164,16 +167,16 @@ Scroll_Fix:
 #ifwinactive, Result Editor - \\Remote
   wheeldown::Wheel_scroll("100")
   wheelup::Wheel_scroll("-100")
-
-
 return
+#IfWinActive
 KEY_Otherstuff:
-	Media_Next::tooltip(A_ThisHotkey)
+Media_Play_Pause::F8
+	Media_Next::F9
 	Browser_Back::tooltip(A_ThisHotkey)
 	Browser_Forward::tooltip(A_ThisHotkey)
-	Media_Prev::tooltip(A_ThisHotkey)
-	Volume_Down::tooltip(A_ThisHotkey)
-	Volume_Up::tooltip(A_ThisHotkey)
+	Media_Prev::F7
+	Volume_Down::F11
+	Volume_Up::F12
 	#right::tooltip(A_ThisHotkey)
 	^+!down::tooltip(A_ThisHotkey)
 	CapsLock::return
@@ -184,9 +187,9 @@ KEY_Otherstuff:
 	F20 & UP::send, #{UP}
 	F20 & Down::send, #{Down}
 	F20::LMS_autofill()
-#If (A_PriorHotKey = "F19" AND A_TimeSincePriorHotkey < 4000)
+#If (A_PriorHotKey = "F15" AND A_TimeSincePriorHotkey < 4000)
 {
-	f19::Menu()
+	f15::Menu()
 	Wheelup::tooltip(A_ThisHotkey)
 	Wheeldown::tooltip(A_ThisHotkey)
 	wheelleft::tooltip(A_ThisHotkey)
@@ -196,9 +199,21 @@ KEY_Otherstuff:
 	mbutton::tooltip(A_ThisHotkey)
 }
 	#If
-F19::Tooltip("F19",2000) 
+F15::Tooltip("F15",2000) 
 
-
+#If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
+{
+	,::sendinput, +!/
+	m::+!down
+	n::+!n
+	u::+!up
+	'::+^!n
+	.::+F1
+	up::^+up
+	down::^+down
+	/::sendinput, !^w
+	5::^+/
+}
 
 	Open_in_Notepad(){
 	click
@@ -285,8 +300,9 @@ VQuest_Start:
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add,CL3, Run_cl3
     Menu, Tray, Add, Vim, Run_Vim
-  Menu, Tray, Add, Stop, StopSub 
-  Menu, Tray, Add, ResetVarbar, Varbar_Reset
+  Menu, Tray, Add, Stop, StopSub
+  	Menu, Tray, Add, windowSpy, WindowSpySub 
+  Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
   Menu, Tray, Default, ResetVarbar
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
@@ -296,6 +312,7 @@ VQuest_Start:
   SetTitleMatchMode, 2
   settitlematchmode, slow
   #MaxHotkeysPerInterval 200
+  #HotkeyModifierTimeout 100
   #maxthreadsperhotkey, 1
   SetKeyDelay, 0
   setwindelay, 450
@@ -327,7 +344,7 @@ VQuest_Start:
   StopSub: 
     exitapp
     Return
-  VarBar_Reset:
+  VarBar_ResetSub:
    VarBar.Reset()
     return
   Run_CL3:
@@ -337,3 +354,6 @@ VQuest_Start:
    Run, ViM.Ahk
    return
   #IfWinActive,
+WindowSpySub: 
+  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+Return
