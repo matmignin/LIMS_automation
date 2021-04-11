@@ -5,9 +5,9 @@
 return
 
 Sendlevel 1
-F13 & F14::sendinput, +{F13}
-F14 & F13::Sendinput, {F21}
-F19::sendinput, {F21}
+F13 & F14::sendinput, ^{F13}
+F14 & F13::send, {F21}
+F19::send, {F21}
 Sendlevel 0
 #IfWinActive,
 KEY_DEFAULT:

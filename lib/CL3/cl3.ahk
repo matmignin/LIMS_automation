@@ -31,7 +31,6 @@ See readme.md for more info and documentation on plugins and templates.
 
 ; General script settings
 #SingleInstance, Force
-#NoTrayIcon
 SetBatchlines, -1
 SendMode, Input
 SetWorkingDir, %A_ScriptDir%
