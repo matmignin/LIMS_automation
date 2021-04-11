@@ -2,7 +2,16 @@
   Results_Definition_edit:="78,63"
   Result_Editor_Ok:="370,660"
   Results_Definition_ok:="1336,592"
+
+
+
+Test(n:=0){
+	Global
+	Rotation_table()
+}
+
 return
+
 
 Sendlevel 1
 F13 & F14::sendinput, ^{F13}
@@ -290,7 +299,33 @@ LMS_Search(){
   }
 
 
+  StopSub: 
+    exitapp
+    Return
+  VarBar_ResetSub:
+   VarBar.Reset()
+    return
+  Run_CL3:
+   Run, cl3.Ahk, lib\CL3
+    return
+  run_VIM:
+   Run, ViM.Ahk
+   return
+  #IfWinActive,
+WindowSpySub: 
+  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 
+  #Include <LMS_autofill>
+  #include <test>
+  #include <varBar>
+  #include <ProductTab>
+  #include <WorkTab>
+  #include <SpecTab>
+  #include <Rotation>
+  #include <Excel>
+  #include <vis2>
+  #include <wheel>
+  #include <VScode>
 VQuest_Start:
   #Persistent 
   #NoEnv
@@ -322,37 +357,3 @@ VQuest_Start:
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
   Excel.Connect(1)
-
-    test() 
-  return
-
-
-
-  ;#include Vim.ahk
-  #Include <LMS_autofill>
-  #include <test>
-  #include <varBar>
-  #include <ProductTab>
-  #include <WorkTab>
-  #include <SpecTab>
-  #include <Rotation>
-  #include <Excel>
-  #include <vis2>
-  #include <wheel>
-  #include <VScode>
-  StopSub: 
-    exitapp
-    Return
-  VarBar_ResetSub:
-   VarBar.Reset()
-    return
-  Run_CL3:
-   Run, cl3.Ahk, lib\CL3
-    return
-  run_VIM:
-   Run, ViM.Ahk
-   return
-  #IfWinActive,
-WindowSpySub: 
-  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-Return

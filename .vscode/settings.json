@@ -1,5 +1,27 @@
 {
     "npm.enableRunFromFolder": true,
     "editor.autoClosingBrackets": "never",
-    "editor.acceptSuggestionOnEnter": "off"
+    "editor.acceptSuggestionOnEnter": "off",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        ".gitignore": true,
+        "*.ico": true,
+        "*.vscode": true,
+        "bin/": true,
+        "lib/*.code-workspace": true,
+        "lib/CL3": true,
+        "lib/clip.ahk": true,
+        "lib/DebugWindow.AHK": true,
+        "lib/Gdip_All.ahk": true,
+        "lib/JSON.ahk": true,
+        "lib/Studio.ahk": true,
+        "lib/Tooltip.ahk": true,
+        "lib/Vis2.ahk": true,
+        "**/.vimrc": true
+    },
+    "explorerExclude.backup": null
 }
