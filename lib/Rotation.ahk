@@ -19,7 +19,6 @@ return
     GetRotationTable:=1
 
   Return 
-  
 
   Rotation_Table(){
     Global
@@ -37,23 +36,23 @@ return
       Methods[A_index]:=		Xl.Range("P" . A_Index+7).Value
 
       Total_rows:=A_index
-     Table_Height:=A_index
+      Table_Height:=A_index
       if (Table_Height > 30)
         Table_Height = 30
     }
 
     Gui, Rotation_Table:Default
     Gui Rotation_Table: +ToolWindow +Owner +AlwaysOnTop +resize -SysMenu +MinimizeBox
-    Gui, Rotation_Table:Add, ListView, x0 y0 w400 r%Table_height%  Grid  gRotation_Table, %Product%|`tTests|Cycles
+    Gui, Rotation_Table:Add, ListView, x0 y0 w400 r%Table_height% Grid gRotation_Table, %Product%|`tTests|Cycles
     GUI, Rotation_Table:Font, s14 cBlack Bold, Consolas
     loop, %Total_Rows% {
-        LV_add(,""RotationCycles[A_index],TestIngredients[A_index],Methods[A_index]) 
+      LV_add(,""RotationCycles[A_index],TestIngredients[A_index],Methods[A_index]) 
     }
-LV_ModifyCol()
+    LV_ModifyCol()
     ;LV_Delete(Table_Height)
     sleep 200	
     CoordMode, mouse, screen
-    Gui, Rotation_Table:Show,  x%RotationTable_X% y%RotationTable_Y%, %Product%
+    Gui, Rotation_Table:Show, x%RotationTable_X% y%RotationTable_Y%, %Product%
     CoordMode, mouse, window
   return			
 
@@ -64,44 +63,44 @@ LV_ModifyCol()
       LV_GetText(RotationCycles, 		A_EventInfo,3)
       tooltip % A_eventInfo "`n" Method "`n" TestIngredients "`n"
       Gui, Rotation_Table:submit,NoHide
-      sleep 200      
+      sleep 200 
       return
     }
-      else
+    else
       return
-}
-
-Rotation_GetTable(showTable=1){ 
-  Global
-  Excel.Connect()
-  Chemicals:=[]
-  ;RotationOrder:=[]
-  while (Xl.Range("M" . A_Index).Value != "|") {
-    ;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
-    Chemicals[A_index]:=Xl.Range("P" . A_Index+1).Value
-    Total_rows:=A_index
-    Cycle:=A_Index
-  }	
-  loop, %Cycle%,
-  {
-    ChemicalRotation:= A_index " `t " Chemicals[A_index]
-    msgbox % Chemicals[A_index]
-    Menu, RotationMenu, Add, &%ChemicalRotation%, RotationMenuHandler
   }
-  If (ShowTable=1)
-    Menu, RotationMenu, Show
-  else
-  return
-Return
 
-RotationMenuHandler:
-  Rotation:=A_ThisMenuItemPos
-  WinActivate, Select Iterations - \\Remote
-; sleep 150
-  Rotation_Iterations(Rotation,Cycle)
-  ;	SetKeyDelay 5, 1
-  send,{tab 4}{enter}
-return
+  Rotation_GetTable(showTable=1){ 
+    Global
+    Excel.Connect()
+    Chemicals:=[]
+    ;RotationOrder:=[]
+    while (Xl.Range("M" . A_Index).Value != "|") {
+      ;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
+      Chemicals[A_index]:=Xl.Range("P" . A_Index+1).Value
+      Total_rows:=A_index
+      Cycle:=A_Index
+    }	
+    loop, %Cycle%,
+    {
+      ChemicalRotation:= A_index " `t " Chemicals[A_index]
+      msgbox % Chemicals[A_index]
+      Menu, RotationMenu, Add, &%ChemicalRotation%, RotationMenuHandler
+    }
+    If (ShowTable=1)
+      Menu, RotationMenu, Show
+    else
+      return
+  Return
+
+  RotationMenuHandler:
+    Rotation:=A_ThisMenuItemPos
+    WinActivate, Select Iterations - \\Remote
+    ; sleep 150
+    Rotation_Iterations(Rotation,Cycle)
+    ;	SetKeyDelay 5, 1
+    send,{tab 4}{enter}
+  return
 
 }
 Rotation_Iterations(Rotations,Cycles) { 
@@ -144,5 +143,5 @@ Rotation_Iterations(Rotations,Cycles) {
     if (Cycles = 5)
       Sendinput,{tab}{tab}511{Space}1{Space}1{Space}1{Space}122{Space}2{Space}2{Space}2{Space}233{Space}3{Space}3{Space}3{Space}344{Space}4{Space}4{Space}4{Space}455{Space}5{Space}5{Space}5{Space}566{Space}6{Space}6{Space}6{Space}677{Space}7{Space}7{Space}7{Space}788{Space}8{Space}8{Space}8{Space}899{Space}9{Space}9{Space}9{Space}91
   }
-return
+  return
 }

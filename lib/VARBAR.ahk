@@ -113,7 +113,7 @@ get(Category)
 		Return %ouput%
 }
 
-Send(Category,ExtraOutput:="")
+Sendinput(Category,ExtraOutput:="")
 {
 	Global
 	BlockInput, on
@@ -236,7 +236,7 @@ Search(input){
 	sleep 150
 	click, 500,127, 2 ;click search bar
 	sleep 200
-	varbar.Send(input)
+	Varbar.sendinput(input)
 	return
 }
 
