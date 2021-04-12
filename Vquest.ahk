@@ -14,7 +14,7 @@ return
 
 
 Sendlevel 1
-F13 & F14::sendinput, ^{F13}
+F13 & F14::sendinput, {CtrlDown}{F21}{CtrlUp}
 F14 & F13::send, {F21}
 F19::send, {F21}
 Sendlevel 0
@@ -138,7 +138,7 @@ KEY_Excel:
 
 
 #IfWinActive, ahk_exe explorer.EXE
-    Mbutton::Open_in_Notepad()
+    Mbutton::space ;Open_in_Notepad()
 #IfWinActive, ahk_exe OUTLOOK.EXE 
   Mbutton::SENDINPUT % VarBar.send("Batch") " is updated"
   Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
@@ -160,7 +160,7 @@ KEY_Browser:
 		Mbutton::sendinput, ^{click}
 KEY_Snipper: 
 	#IfWinActive, Snipper - Snipaste ; the capture screen
-		rbutton::Enter
+		rbutton::send, ^t
 	#IfWinActive,  Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
 		Mbutton & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
 		Mbutton::send, !{click}
@@ -177,38 +177,48 @@ Scroll_Fix:
   wheelup::Wheel_scroll("-100")
 return
 #IfWinActive
+#If (A_PriorHotKey = "Browser_forward" AND A_TimeSincePriorHotkey < 1000)
+{
+  browser_forward::Send, !{tab}{space}
+  browser_back::send, +!{tab}{space}
+  media_Next::Mouse_CloseWindow()
+}
+#if
 KEY_Otherstuff:
-Media_Play_Pause::F8
-	Media_Next::F9
-	Browser_Back::tooltip(A_ThisHotkey)
-	Browser_Forward::tooltip(A_ThisHotkey)
-	Media_Prev::F7
+  Media_Play_Pause::F18 ;4finger tap
+	Media_Prev::F7 ;3fringer down
+	; Media_Next:: ;3finger up
+	Browser_Back::+!tab ;3finger left
+	Browser_Forward::^!tab
+  
 	Volume_Down::F11
 	Volume_Up::F12
 	#right::tooltip(A_ThisHotkey)
 	^+!down::tooltip(A_ThisHotkey)
 	CapsLock::return
-	$enter::sendinput, {enter}
 	+F12::Exitapp
 	F20 & Right::send, #{right}
 	F20 & Left::send, #{Left}
 	F20 & UP::send, #{UP}
 	F20 & Down::send, #{Down}
 	F20::LMS_autofill()
-; #If (A_PriorHotKey = "F15" AND A_TimeSincePriorHotkey < 4000)
-; {
-; 	f15::Menu()
-; 	Wheelup::tooltip(A_ThisHotkey)
-; 	Wheeldown::tooltip(A_ThisHotkey)
-; 	wheelleft::tooltip(A_ThisHotkey)
-; 	wheelright::tooltip(A_ThisHotkey)
-; 	Lbutton::tooltip(A_ThisHotkey)
-; 	Rbutton::tooltip(A_ThisHotkey)
-; 	mbutton::tooltip(A_ThisHotkey)
-; }
-; 	#If
-; F15::Tooltip("F15",2000) 
-F15::#tab
+#If (A_PriorHotKey = "Media_next" AND A_TimeSincePriorHotkey < 1000)
+{
+  Browser_forward::#right
+  Browser_back::#left
+  
+	Media_Next::sendinput, #{up}
+	Wheelup::tooltip(A_ThisHotkey)
+	Wheeldown::tooltip(A_ThisHotkey)
+	wheelleft::tooltip(A_ThisHotkey)
+	wheelright::tooltip(A_ThisHotkey)
+	Lbutton::tooltip(A_ThisHotkey)
+	Rbutton::tooltip(A_ThisHotkey)
+	mbutton::tooltip(A_ThisHotkey)
+}
+	#If
+Media_next::Tooltip("Swipe",2000) 
+; F15::#tab
 #If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
 {
 	,::sendinput, +!/
@@ -222,6 +232,21 @@ F15::#tab
 	/::sendinput, !^w
 	5::^+/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	Open_in_Notepad(){
 	click
@@ -316,7 +341,6 @@ WindowSpySub:
   Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 
   #Include <LMS_autofill>
-  #include <test>
   #include <varBar>
   #include <ProductTab>
   #include <WorkTab>

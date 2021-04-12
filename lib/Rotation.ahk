@@ -8,7 +8,7 @@ return
   5::
     EnvGet, GetRotationTable, GetRotationTable
     ; sleep 100
-    if GetRotationTable:=1
+    if (GetRotationTable:=1)
       Rotation_GetTable(0)
     WinActivate, Select Iterations - \\Remote
     ; sleep 100

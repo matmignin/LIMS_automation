@@ -24,7 +24,7 @@ return
     $Rbutton::Click right
     F14 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
     F14 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
-    ;F14 & F13::sendinput, #{tab}
+
     F14 & Mbutton::sendinput, !d
     F14 & Rbutton::+F8
     F14 & Lbutton::sendinput, ^{click}
@@ -45,10 +45,8 @@ return
     F20 & l::sendinput, +!{right}
     F19 & k::F3
     F19 & j::+F3
-    F20::!right
-    Media_Next::F3
-    Media_Prev::+F3
-
+    F20::Menu()
+ 
 
 
 #if winactive("ahk_exe code.exe") && getkeystate("capslock","p") ;edit  or
@@ -167,7 +165,7 @@ VIM:
 	5::sendinput, ^m^x
 	0::sendinput, +{home}^x
 }
-#If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 4000)
+#If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
 {
 	d::Send, {home 2}+{end}^c
 	w::sendinput, {right}^{left}+^{right}+{left}^c 
@@ -216,6 +214,7 @@ VIM:
 	Shift & o::sendinput, {home}{enter}{up}
 	5::Send ^m
 	o::Send, {end}{enter}
+  +o::Send, {Home}{enter}
 	Shift & ,::sendinput, +{F1}
 	left::sendinput, {home}+{Tab}
 	right::sendinput, {home}{Tab}
