@@ -16,9 +16,9 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	}
 	if (Destroy:="Reset")
 		GUI, VarBar:destroy
-		Gui Varbar:Default
+	Gui Varbar:Default
 	Gui VarBar:+LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner  
-	WinSet, Transparent, 200
+	;WinSet, Transparent, 300
 	Gui, VarBar:color, 21a366
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
@@ -33,8 +33,8 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	Gui, VarBar:add, Text, vcustomer  x190 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s11 cBlack Bold, Consolas
 	Gui, VarBar:Add, Edit, gIterationVarBar vIteration left x300 h30 y0 w70,
-	Gui, VarBar:Add, UpDown, vIterationUpDown wrap x300 h30 y0 w1 Range-300-600, %Iteration%
-	OnMessage(0x203, "VarBar.Relocate")
+	Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
+	OnMessage(0x201, "VarBar.Relocate")
 	CoordMode, mouse, screen
 	Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w340 NoActivate, VarBar
 	CoordMode, mouse, window
@@ -47,14 +47,6 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 ProductVarBar:
 sleep 100
 Gui, VarBar:submit,NoHide
-; try
-; {
-	; XL:= ComObjActive("Excel.Application")
-			; Visible := True
-	; XL:=XL.Sheets(Product).activate
-; }
-; Excel.Connect()
-
 return
 IterationVarBar:
 	sleep 600
@@ -78,6 +70,19 @@ return
 
 
 
+Relocate() 
+{
+	global
+	PostMessage, 0xA1, 2 
+	keywait, lbutton, U
+	coordmode, mouse, Screen
+	WinGetPos,VarBar_X,VarBar_Y,w,h
+	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
+	IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
+	sleep 300
+	coordmode, mouse, Window
+	return
+}
 
 
 get(Category)
@@ -113,18 +118,25 @@ get(Category)
 		Return %ouput%
 }
 
-Sendinput(Category,ExtraOutput:="")
+Sendinput(Category:="",PostOutput:="")
 {
 	Global
 	BlockInput, on
 	sleep 100
+	if WinActive("Select Product - \\Remote")
+	{
+		sendinput, {click 106, 64}%Product%{enter}{enter}
+		exit
+		}
+	if winactive("Register new samples - \\Remote")
+		send, {click 182, 103}%Product%
 	If Category contains Product
 		ControlGetText, Output, Edit1, VarBar
 	else If Category contains Batch
 		ControlGetText, Output, Static1, VarBar
 	else If Category contains Lot
 		ControlGetText, Output, Static2, VarBar
-	else If Category contains coated
+	else If Category contains Coated
 		ControlGetText, Output, Static3, VarBar
 	else If Category contains Name
 		ControlGetText, Output, Static4, VarBar
@@ -132,9 +144,9 @@ Sendinput(Category,ExtraOutput:="")
 		ControlGetText, Output, Static5, VarBar
 	else If Category contains Iteration
 		ControlGetText, Output, Edit2, VarBar
-	Send, %output%%ExtraOutput%
+	Send, %output%%PostOutput%
 	sleep 100
-	if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
+if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
 		send, {enter}	
 		blockinput off
 if winactive("Find and Replace")
@@ -232,7 +244,7 @@ Search(input){
 	global
 	varbar.set()
 	WinActivate, NuGenesis LMS - \\Remote
-	send, {click 761, 44}
+	send, {click 761, 44}{click 761,44}
 	sleep 150
 	click, 500,127, 2 ;click search bar
 	sleep 200
@@ -241,19 +253,6 @@ Search(input){
 }
 
 
-Relocate() 
-{
-	global
-	PostMessage, 0xA1, 2 
-	keywait, Lbutton, U
-	coordmode, mouse, Screen
-	WinGetPos,VarBar_X,VarBar_Y,w,h
-	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
-	IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
-	sleep 300
-	coordmode, mouse, Window
-	return
-}
 
 
 AddIteration(){

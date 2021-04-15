@@ -1,31 +1,25 @@
 
 
-
-
 Mouse_IsOver(WinTitle){ 
-  MouseGetPos,,, Win
-  Return WinExist(WinTitle . " ahk_id " . Win)
-  }
+	MouseGetPos,,, Win
+	Return WinExist(WinTitle . " ahk_id " . Win)
+}
 
 Mouse_RbuttonUP(){
-  #inputlevel 1
-    suspend, On
-    sleep 50
-    Click, Right
-    sleep 500
-    ;MouseClick, Right,,,1, 0, U
-    suspend, Off
-    return
-  #inputlevel 0
-  }
-
-
-
-
+	#inputlevel 1
+	suspend, On
+	sleep 50
+	Click, Right
+	sleep 200
+	;MouseClick, Right,,,1, 0, U
+	suspend, Off
+	return
+	#inputlevel 0
+}
 
 Mouse_CloseWindow() 
 {
-	
+
 	If WinActive("ahk_exe WFICA32.EXE")
 	{
 		send, {esc}
@@ -52,7 +46,7 @@ Mouse_CloseWindow()
 	}
 	else if winactive("ahk_exe Code.exe")
 		sendinput, Wheel("^w")
-	else if winactive("ahk_exe mstsc.exe") ||  winactive("ahk_exe EXCEL.EXE")
+	else if winactive("ahk_exe mstsc.exe") || winactive("ahk_exe EXCEL.EXE")
 	{ 
 		Send, ^v
 		sleep 400
@@ -65,18 +59,23 @@ Mouse_CloseWindow()
 	return
 }
 
-
-
-
-
-
-
-
 Mouse_Click(Link) 
 {
 	global
 	if Link contains Save_ProductTab_EditProduct 
-		click 275, 578
+		click 275, 578	
+else If link contains Results_Definition_edit
+	click 78,63
+else If link contains Result_Editor_Ok
+	click 370,660
+else If link contains Results_Definition_ok
+	click 1336,592
+else If link contains Requests_tab
+	click 865,83
+else If link contains MyWork_Tab
+	click 761,44
+else If link contains Mywork_Searchbar
+	click 500,127, 2
 	else if Link contains Save_Composition
 		click 1236, 888
 	else if Link contains Save_Composition
@@ -90,7 +89,7 @@ Mouse_Click(Link)
 	else if Link contains main_enter_results
 		click 74, 776
 	else if Link contains ScrollDown_EditFormulation
-		click  453, 444
+		click 453, 444
 	else if Link contains Dropdown_ProductTab_EditIngredient
 		click 272, 67
 	else if Link contains SearchBar_SelectMethodsTests
@@ -161,13 +160,10 @@ Mouse_Click(Link)
 		}
 		Return
 	}
-	
+
 	else
 		msgbox, yo
 	return
 }
-
-
-
 
 #IfWinActive

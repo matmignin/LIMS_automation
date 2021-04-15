@@ -11,15 +11,15 @@ return
     +^j::+^down
     +^K::+^up
     +^l::^+#`;
-    +^h::^+#h
     Mbutton & Wheeldown::Wheel_2("!d",1000)
+    +^h::^+#h
     Mbutton & Wheelup::wheel_2("^m",2000)
     Mbutton & Rbutton::+^m ; toggle bookmark
-    Mbutton::ShowDefinition()
+    Mbutton::ToggleDefinition()
     Rbutton & F16::Wheel_2("{left}", 20)
     Rbutton & F17::Wheel_2("{right}", 20)
-    Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
+    Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
     Rbutton & F14::Get_WindowInfo()
     $Rbutton::Click right
     F14 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
@@ -125,12 +125,12 @@ return
     }
   }
 
-  ShowDefinition(){
+ToggleDefinition(){
     global
     If toggle := !toggle
       sendinput ^d
     else 
-      sendinput, {esc}
+      sendinput, +{esc}
     return
   }
 

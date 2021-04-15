@@ -84,7 +84,7 @@ return
     loop, %Cycle%,
     {
       ChemicalRotation:= A_index " `t " Chemicals[A_index]
-      msgbox % Chemicals[A_index]
+      ;msgbox % Chemicals[A_index]
       Menu, RotationMenu, Add, &%ChemicalRotation%, RotationMenuHandler
     }
     If (ShowTable=1)
@@ -103,6 +103,43 @@ return
   return
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Rotation_Iterations(Rotations,Cycles) { 
   global
   If (Rotations = 1) {

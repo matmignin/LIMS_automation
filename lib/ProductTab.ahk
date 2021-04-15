@@ -113,6 +113,8 @@ ProductTab_Select_Ingredient(){
     Sendinput,{click 150,73}{tab}{right 18}
   else if Name contains Biotin 
     Sendinput,{click 150,73}{tab}{right 21}
+  else if Name contains Biotin 
+    Sendinput,{click 150,73}{tab}{right 22
   else if Name contains Cadmium 
     Sendinput,{click 150,73}{tab}{right 23}
   else if Name Contains Acetyl L-Carnitine HCL 
@@ -193,27 +195,27 @@ ProductTab_Select_Ingredient(){
   else if Name contains Lutein 	
     Sendinput,{click 150,73}{tab}{right 182}
   else if Name contains Magnesium 	
-    Sendinput,{click 150,73}{tab}{right 185}
+    Sendinput,{click 150,73}{tab}{end}{left 90}
   else if Name contains Malic Acid 	
-    Sendinput,{click 150,73}{tab}{right 186}
+    Sendinput,{click 150,73}{tab}{end}{left 89}
   else if Name contains Manganese 	
-    Sendinput,{click 150,73}{tab}{right 187}
+    Sendinput,{click 150,73}{tab}{end}{left 88} 
   else if Name contains Mercury 	
-    Sendinput,{click 150,73}{tab}{right 189}
+    Sendinput,{click 150,73}{tab}{end}{left 86} 
   else if Name contains Methylsulfonylmethane 	
-    Sendinput,{click 150,73}{tab}{right 191}
+    Sendinput,{click 150,73}{tab}{end}{left 84} 
   else if Name contains MSM 	
-    Sendinput,{click 150,73}{tab}{right 191}
+    Sendinput,{click 150,73}{tab}{end}{left 84} 
   else if Name contains Molybdenum 	
-    Sendinput,{click 150,73}{tab}{right 195}
+    Sendinput,{click 150,73}{tab}{end}{left 80} 
   else if Name contains Niacin 	
-    Sendinput,{click 150,73}{tab}{right 204}
+    Sendinput,{click 150,73}{tab}{end}{left 71}
   else if Name contains PABA 	
-    Sendinput,{click 150,73}{tab}{right 206}
+    Sendinput,{click 150,73}{tab}{end}{left 89} 
   else if Name contains Pantothenic Acid 	
-    Sendinput,{click 150,73}{tab}{right 208}
+    Sendinput,{click 150,73}{tab}{end}{left 67}
   else if Name contains Phosphorus 	
-    Sendinput,{click 150,73}{tab}{right 214}
+    Sendinput,{click 150,73}{tab}{end}{left 61}
   else if Name contains Potassium 	
     Sendinput,{click 150,73}{tab}{end}{left 58}
   else if Name contains Protein 	
@@ -451,13 +453,13 @@ Formulation_Hotstrings:
     :*R:5.5 oval\::Oval / 0.625`" x 0.344`""
     :*R:5 oblong\::Oblong / 0.750`" x 0.250`""
     :*:1\::`Each (1){space} contains {ctrl down}{left}{ctrl up}{left}
-    :*:2\::`Each two (2){space}contains {ctrl down}{left}{ctrl up}{left}
-    :*:3\::`Each three (3){space}contains {ctrl down}{left}{ctrl up}{left}
-    :*:4\::`Each four (4){space}contains {ctrl down}{left}{ctrl up}{left}
-    :*:5\::`Each five (5){space}contains {ctrl down}{left}{ctrl up}{left}
-    :*:6\::`Each six (6){space}contains {ctrl down}{left}{ctrl up}{left}
-    :*:7\::`Each seven (7){space}contains {ctrl down}{left}{ctrl up}{left}
-    :*:scoop\::scoop ( g){left 3}{tab}Blend+{tab}
+    :*:2\::`Each two (2){space} contains {ctrl down}{left}{ctrl up}{left}
+    :*:3\::`Each three (3){space} contains {ctrl down}{left}{ctrl up}{left}
+    :*:4\::`Each four (4){space} contains {ctrl down}{left}{ctrl up}{left}
+    :*:5\::`Each five (5){space} contains {ctrl down}{left}{ctrl up}{left}
+    :*:6\::`Each six (6){space} contains {ctrl down}{left}{ctrl up}{left}
+    :*:7\::`Each seven (7){space} contains {ctrl down}{left}{ctrl up}{left}
+    :*:scoop::scoop ( g){left 3}{tab}Blend+{tab}
     :*:NMT30::`NMT 30 Minutes
     :*:NMT5::`NMT 5 mcg/day
     :*:NMT15::`NMT 15 mcg/day

@@ -8,7 +8,7 @@ Menu(n:=0){
   else if Winactive("Login - \\Remote")
     LMS_Env()
   Else If Winactive("Edit sample template - \\Remote") || Winactive("Edit specification - \\Remote") || winactive("NuGenesis LMS - \\Remote")
-    autofill()
+    LMS_autofill()
   Else If winactive("Results Definition - \\Remote")
     Heavy_meatals()
   Else if WinActive("ahk_exe Code.exe")
@@ -19,44 +19,10 @@ Menu(n:=0){
   Menu, Menu, Show,
   return
 }
-
-LMS_Env(){
-  Global
-  try menu, menu, deleteAll
-  menu, menu, add, 
-  menu, menu, add, &Login, LMS_Env
-  menu, menu, add, &Production Server, LMS_Env
-  menu, menu, add, &Test Server, LMS_Env
-  menu, menu, add, 
-  return
-  LMS_Env:
-    sleep 200
-    Send, mmignin{tab}Kilgore7744
-    if A_thismenuItem contains &Login 
-      send, {enter}
-    else if A_thismenuItem contains &Production Server
-      SwitchEnv("Prd")
-    else if A_thismenuItem contains &Test Server
-      SwitchEnv("Test")
-    else
-      menu, menu, deleteall
-  return
-}
-
-SwitchEnv(ServerEnv){
-  sleep 200
-  Send, {Tab}{Tab}{Down} ; WinwaitActive, Change Configuration - \\Remote ahk_class Transparent Windows Client
-  sleep 200
-  Send, {Home}{Right}{Right}{Right}{Right}{LShift Down}{End}{End}{LShift Up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
-  sleep 200 ; WinwaitActive, Login - \\Remote ahk_class Transparent Windows Client
-  Send, {Enter}
-  return
-}
-
+;default
 default(){
   global
-  ; ControlGetText, Product, Edit1, VarBar
-  ;menu, Menu, Add, Test, Test
+
   if WinActive("ahk_exe explorer.exe") || Winactive("ahk_exe OUTLOOK.EXE")
   {
     menu, menu, add
@@ -75,11 +41,11 @@ default(){
 
   Variables:
     if A_thismenuItem contains &Product `t %Product%,
-      VarBar.send("Product")
+      Varbar.Sendinput("Product")
     else if A_thismenuItem contains &Batch `t %Batch%
-      VarBar.send("Batch")
+      Varbar.Sendinput("Batch")
     else if A_thismenuItem contains &name `t %name%
-      VarBar.send("Name")
+      Varbar.Sendinput("Name")
     else if A_thismenuItem contains &lot `t %Lot%
       VarBar.set("Lot")
     else if A_thismenuItem contains &Coated `t %Coated%
@@ -88,7 +54,7 @@ default(){
     {
       ControlSetText, Edit2,%A_thismenuitem%, VarBar
       Iteration:=A_Thismenuitem
-     varbar.Search(batch) 
+      varbar.Search(batch) 
     }
     else
       try menu, menu, deleteAll
@@ -159,9 +125,41 @@ Heavy_metals:
 return
 }
 
-autofill(){
+LMS_Env(){
   Global
-  menu, menu, add,`
+  try menu, menu, deleteAll
+  menu, menu, add, 
+  menu, menu, add, &Login, LMS_Env
+  menu, menu, add, &Production Server, LMS_Env
+  menu, menu, add, &Test Server, LMS_Env
+  menu, menu, add, 
+return
+LMS_Env:
+  sleep 200
+  Send, mmignin{tab}Kilgore7744
+  if A_thismenuItem contains &Login 
+    send, {enter}
+  else if A_thismenuItem contains &Production Server
+    SwitchEnv("Prd")
+  else if A_thismenuItem contains &Test Server
+    SwitchEnv("Test")
+  else
+    menu, menu, deleteall
+return
+}
+
+SwitchEnv(ServerEnv){
+  sleep 200
+  Send, {Tab}{Tab}{Down} ; WinwaitActive, Change Configuration - \\Remote ahk_class Transparent Windows Client
+  sleep 200
+  Send, {Home}{Right}{Right}{Right}{Right}{LShift Down}{End}{End}{LShift Up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
+  sleep 200 ; WinwaitActive, Login - \\Remote ahk_class Transparent Windows Client
+  Send, {Enter}
+return
+}
+LMS_autofill(){
+  Global
+  menu, menu, add,
   ;Excel.Connect()
   Menu, Menu, add, &Analytical, AutoFill
   Menu, Menu, add, &Physical, AutoFill
@@ -174,7 +172,7 @@ return
 Autofill:
   if A_thismenuitem contains &Analytical 
     if Winactive("NuGenesis LMS - \\Remote")
-    WorkTab_NewRequest("Analytical")
+    WorkTab_NewRequest()
   else 
     SpecTab_Edit_Analytical()
   else if A_thismenuitem contains &Coated_Retain
@@ -185,12 +183,12 @@ Autofill:
     SpecTab_Edit_Retain()
   else if A_thismenuitem contains &Micro
     if Winactive("NuGenesis LMS - \\Remote")		
-    WorkTab_NewRequest("Micro") ;Add tests to sample
+    WorkTab_NewRequest() ;Add tests to sample
   else
     SpecTab_Edit_Micro() ; copy micro spec tests
   else if A_thismenuitem contains &Physical
     if Winactive("NuGenesis LMS - \\Remote")
-    WorkTab_NewRequest("physical")
+    WorkTab_NewRequest()
   else
     SpecTab_Edit_Physical()		
   else 
@@ -200,12 +198,7 @@ return
 
 VScode(){
   Global
-  menu, menu, add,
-  ; try menu, menu, deleteAll
-  Menu, menu, Add, %MousePosition%, vscode
-  Menu, menu, Add, %WinTitle%, vscode
-  Menu, menu, Add, %WinProcess%, vscode
-  Menu, menu, Add, %WinControl%, vscode
+  try menu, menu, deleteAll
   menu, Menu, Add, Search Hotkeys, vscode
   Menu, hotkeyMenu, Add, F13, vscode
   Menu, hotkeyMenu, Add, F14, vscode
@@ -216,99 +209,104 @@ VScode(){
   Menu, hotkeyMenu, Add, Mbutton, vscode
   Menu, hotkeyMenu, Add, Rbutton, vscode
   Menu, hotkeyMenu, Add, Wheel, vscode
-  menu, hotkeymenu, add, Exit, vscode
   menu, Menu, add, Search Hotkeys, :HotkeyMenu
+  Menu, menu, Add, &Mouse `t %MousePosition%, vscode
+  Menu, menu, Add, &Title `t %WinTitle%, vscode
+  Menu, menu, Add, &Process `t %WinProcess%, vscode
+  Menu, menu, Add, &Control `t %WinControl%, vscode
+  menu, menu, add,
+  default()
 return
 
 VScode:
-if (A_thismenuitem = "F13")
-Sendinput, ^fF13`:`:{enter}
-else if (A_thismenuitem = "F13")
-Sendinput, ^fF13`:`:{enter}
-else if (A_thismenuitem = "F14")
-Sendinput, ^fF14`:`:{enter}
-else if (A_thismenuitem = "F15")
-Sendinput, ^fF15`:`:{enter}
-else if (A_thismenuitem = "F16")
-Sendinput, ^fF16`:`:{enter}
-else if (A_thismenuitem = "F17")
-Sendinput, ^fF17`:`:{enter}
-else if (A_thismenuitem = "F18")
-Sendinput, ^fF18`:`:{enter}
-else if (A_thismenuitem = "Mbutton")
-Sendinput, ^fMbutton{enter}
-else if (A_thismenuitem = "Rbutton")
-Sendinput, ^fRbutton{enter}
-else if (A_thismenuitem = "Wheel")
-Sendinput, ^fWheel`:`:{enter}
-else if A_thismenuItem contains %MousePosition%
+  if (A_thismenuitem = "F13")
+  Sendinput, ^fF13`:`:{enter}
+  else if (A_thismenuitem = "F13")
+  Sendinput, ^fF13`:`:{enter}
+  else if (A_thismenuitem = "F14")
+  Sendinput, ^fF14`:`:{enter}
+  else if (A_thismenuitem = "F15")
+  Sendinput, ^fF15`:`:{enter}
+  else if (A_thismenuitem = "F16")
+  Sendinput, ^fF16`:`:{enter}
+  else if (A_thismenuitem = "F17")
+  Sendinput, ^fF17`:`:{enter}
+  else if (A_thismenuitem = "F18")
+  Sendinput, ^fF18`:`:{enter}
+  else if (A_thismenuitem = "Mbutton")
+  Sendinput, ^fMbutton{enter}
+  else if (A_thismenuitem = "Rbutton")
+  Sendinput, ^fRbutton{enter}
+  else if (A_thismenuitem = "Wheel")
+  Sendinput, ^fWheel{enter}
+  else if A_thismenuItem contains &Mouse `t %MousePosition%
   send %MousePosition%
-else if A_thismenuItem contains %WinTitle%
+  else if A_thismenuItem contains &Title `t %WinTitle%
   Send %WinTitle%
-else if A_thismenuItem %WinProcess%
+  else if A_thismenuItem &Process `t %WinProcess%
   send ahk_exe %WinProcess%
-else if A_thismenuItem %WinControl%
+  else if A_thismenuItem &Control `t %WinControl%
   send, %WinControl%
-else 
+  else 
   menu, menu, deleteAll
-return
-}
-
-remote_desktop(){
-  global
-  menu, menu, add,	
-  Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
-    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
-  Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
-  Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
-  menu, Menu, Add, Other Servers, Remote_desktop
-  Menu, SubMenu, Add, TEST_LMS, Remote_desktop
-  Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
-  Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
-  Menu, SubMenu, Add, LMS_PRD, Remote_desktop
-  Menu, SubMenu, Add, NuGenesis, Remote_desktop`
-  Menu, SubMenu, Add, SDMS, Remote_desktop
-  Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
-  Menu, SubMenu, Add, Empower, Remote_desktop
-  menu, Menu, add, Other Servers, :SubMenu
   return
-  ; Menu, Menu, Show,
-  Remote_Desktop:
-    If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
-      sendinput, {Click 182, 97}10.1.2.153
-    Else if (A_thisMenuItem = "TEST_LMS") 
-      sendinput, {Click 182, 97}10.1.2.152
-    Else if (A_thisMenuItem = "TEST_NuGen")
-      sendinput, {Click 182, 97}10.1.2.150
-    Else if (A_thisMenuItem = "TEST_SDMS") 
-      sendinput, {Click 182, 97}10.1.2.149
-    Else if (A_thisMenuItem = "PRD_Citrix_One") 
-      sendinput, {Click 182, 97}10.1.2.134
-    Else if (A_thisMenuItem = "PRD_Citrix_Two") 
-      sendinput, {Click 182, 97}10.1.2.226
-    Else if (A_thisMenuItem = "PRD_Citrix_Three") 
-      sendinput, {Click 182, 97}10.1.2.227
-    Else if (A_thisMenuItem = "LMS_PRD") 
-      sendinput, {Click 182, 97}10.1.2.138
-    Else if (A_thisMenuItem = "NuGenesis") 
-      sendinput, {Click 182, 97}10.1.2.164
-    Else if (A_thisMenuItem = "SDMS") 
-      sendinput, {Click 182, 97}10.1.2.142
-    Else if (A_thisMenuItem = "PRD_EMPCitrix") 
-      sendinput, {Click 182, 97}10.1.2.242
-    Else if (A_thisMenuItem = "Empower") 
-      sendinput, {Click 182, 97}10.1.2.228
-    else 
-      menu, menu, deleteAll
-  return
-}
+  }
 
-              ; if (A_ThisMenuItem = "Samples")
-              ; 	sendinput, care{enter}
-              ; else if (A_ThisMenuItem = "Tests")
-              ; 	Sendinput, lab{enter}
-              ; else if (A_ThisMenuItem = "Visual")
-              ; 	Sendinput, open{enter}
-              ; else if (A_ThisMenuItem = "VQ")
-              ; 	Sendinput, ?Kilgore7744{enter}
+            remote_desktop(){
+              global
+              menu, menu, add,	
+              Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
+                Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+              Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+              Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+              menu, Menu, Add, Other Servers, Remote_desktop
+              Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+              Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+              Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+              Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+              Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+              Menu, SubMenu, Add, SDMS, Remote_desktop
+              Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+              Menu, SubMenu, Add, Empower, Remote_desktop
+              menu, Menu, add, Other Servers, :SubMenu
+              return
+              ; Menu, Menu, Show,
+              Remote_Desktop:
+                If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
+                  sendinput, {Click 182, 97}10.1.2.153
+                Else if (A_thisMenuItem = "TEST_LMS") 
+                  sendinput, {Click 182, 97}10.1.2.152
+                Else if (A_thisMenuItem = "TEST_NuGen")
+                  sendinput, {Click 182, 97}10.1.2.150
+                Else if (A_thisMenuItem = "TEST_SDMS") 
+                  sendinput, {Click 182, 97}10.1.2.149
+                Else if (A_thisMenuItem = "PRD_Citrix_One") 
+                  sendinput, {Click 182, 97}10.1.2.134
+                Else if (A_thisMenuItem = "PRD_Citrix_Two") 
+                  sendinput, {Click 182, 97}10.1.2.226
+                Else if (A_thisMenuItem = "PRD_Citrix_Three") 
+                  sendinput, {Click 182, 97}10.1.2.227
+                Else if (A_thisMenuItem = "LMS_PRD") 
+                  sendinput, {Click 182, 97}10.1.2.138
+                Else if (A_thisMenuItem = "NuGenesis") 
+                  sendinput, {Click 182, 97}10.1.2.164
+                Else if (A_thisMenuItem = "SDMS") 
+                  sendinput, {Click 182, 97}10.1.2.142
+                Else if (A_thisMenuItem = "PRD_EMPCitrix") 
+                  sendinput, {Click 182, 97}10.1.2.242
+                Else if (A_thisMenuItem = "Empower") 
+                  sendinput, {Click 182, 97}10.1.2.228
+                else 
+                  menu, menu, deleteAll
+              return
+            }
+
+            ; if (A_ThisMenuItem = "Samples")
+            ; 	sendinput, care{enter}
+            ; else if (A_ThisMenuItem = "Tests")
+            ; 	Sendinput, lab{enter}
+            ; else if (A_ThisMenuItem = "Visual")
+            ; 	Sendinput, open{enter}
+            ; else if (A_ThisMenuItem = "VQ")
+            ; 	Sendinput, ?Kilgore7744{enter}
 

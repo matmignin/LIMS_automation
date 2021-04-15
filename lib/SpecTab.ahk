@@ -283,7 +283,7 @@ SpecTab_Table(){
 					click, 70, 515 ;click edit sample template
 				winwaitactive, Edit sample template - \\Remote,, 5
 				if !errorlevel
-					sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
+					sendinput, {tab}{delete 4}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
 				return
 			}
 			SpecTab_Edit_CoatedPhysical(){
@@ -300,7 +300,7 @@ SpecTab_Table(){
 					click, 70, 515 ;click edit sample template
 				winwaitactive, Edit sample template - \\Remote,, 5
 				if !errorlevel
-					sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
+					sendinput, {tab}{delete 16%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
 				return
 			}		
 			SpecTab_Edit_Retain(){

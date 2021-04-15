@@ -3,6 +3,7 @@
 
 
 #include <varbar>
+#include <mouse>
 
 
 Class Excel{
@@ -30,42 +31,35 @@ Connect(reload:=0){
 	Catch {
 		Tooltip("no excel workbook open", 4000)
 		exit
-	}
-	
-	
-	
+	}	
 	; For sheet in xl.ActiveWorkbook.Worksheets 
-		; Products.insert(Sheet.Name)
+	; 	Products.insert(Sheet.Name)
 	; Products.remove(1)
 	; Products.remove(1)
-	; loop 10 {
-		; if (Products[A_index] = "Finished")
-			; break
-		; else 	
-			; DDLProducts .= "|" Products[A_index]
+	; loop 3 {
+	; 	if (Products[A_index] = "Finished")
+	; 		break
+	; 	else 	
+	; 		DDLProducts .= "|" Products[A_index]
 	; }
 	Gui VarBar:+LastFound
 	GuiControl, -redraw, varbar
 	Product:=XL.Range("B7").Value
 		ControlSetText, Edit1,%Product%, VarBar
-	Batch:=XL.Range("C1").Value
+	Batch:=XL.Range("C4").Value
 		ControlSetText, Static1,%Batch%, VarBar
-	Lot:=XL.Range("C4").Value
+	Lot:=XL.Range("E4").Value
 		ControlSetText, Static2,%lot%, VarBar
-	Coated:=xl.range("E4").value
+	Coated:=xl.range("F4").value
 		ControlSetText, Static3,%Coated%, VarBar
-	Name:=XL.Range("F4").Value
+	Name:=XL.Range("B2").Value
 		ControlSetText, Static4,%Name%, VarBar
 	Customer:=XL.Range("B3").Value	
 		ControlSetText, Static5,%Customer%, VarBar
-	Iteration:=XL.Range("C3").Value	
-	ControlSetText, Edit2,%Iteration%, VarBar
-		ShapeAndSize:=XL.Range("C2").Value	
-	; ControlSetText, Edit2,%Iteration%, VarBar
-	; Gui, varbar:submit, nohide
-	; if (Skip := "Iteration")
-		; ControlSetText, Edit2,%Iteration%, VarBar
-	; Varbar.Update(Iteration)
+	ShipTo:=XL.Range("C3").Value	
+		EnvSet, ShipTo, %ShipTo%
+	;ControlSetText, Edit2,%Iteration%, VarBar
+		ShapeAndSize:=XL.Range("C5").Value	
 	GuiControl, +redraw, varbar
 	if (Reload = 1)
 		VarBar.show()

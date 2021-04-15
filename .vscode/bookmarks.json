@@ -1,21 +1,26 @@
 {
 	"files": [
 		{
-			"path": "../../AppData/Roaming/Code/User/settings.json",
-			"bookmarks": [
-				{
-					"line": 239,
-					"column": 0,
-					"label": ""
-				}
-			]
-		},
-		{
 			"path": "lib/Rotation.ahk",
 			"bookmarks": [
 				{
 					"line": 22,
 					"column": 12,
+					"label": "Rotation_table"
+				}
+			]
+		},
+		{
+			"path": "Vquest.ahk",
+			"bookmarks": [
+				{
+					"line": 353,
+					"column": 11,
+					"label": ""
+				},
+				{
+					"line": 153,
+					"column": 1,
 					"label": ""
 				}
 			]

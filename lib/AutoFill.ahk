@@ -1,4 +1,4 @@
-﻿LMS_AutoFill()
+﻿AutoFill(Option:=0)
 {
 	global
 
@@ -81,7 +81,21 @@
 	} Else If winactive("Result Entry - \\Remote"){
 		WorkTab_ChangeTestResults("toggle")	
 	} else if Winactive("Register new samples - \\Remote"){
-		WorkTab_EditSample()
+			If Option = 0
+				WorkTab_EditSample()
+			else {
+				sendinput, {Click 200, 134} 
+				sleep 300 ;register new sample
+				WinWaitActive, Error - \\Remote,, 4
+					if !ErrorLevel
+						Send, {enter}
+				sleep 200
+				WinWaitNotActive, Error - \\Remote
+				sleep 200
+				winactivate, Register new samples - \\Remote
+				varbar.Sendinput("Product","{enter}")
+				return
+			}
 
 
 
@@ -109,8 +123,10 @@
 		sleep 400
 	} Else If Winexist("Error - \\Remote") {
 		winactivate,
-		Sendinput, {enter}
-		sleep 300
+		Send, {enter}
+		sleep 200
+		winactivate, Register new samples - \\Remote
+		varbar.Sendinput("Product","{enter}")
 	} Else If Winexist("Sign :") {
 		winactivate,
 		sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
@@ -143,3 +159,5 @@
 		return
 }
 
+
+	

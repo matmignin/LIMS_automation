@@ -1,5 +1,6 @@
 WorkTab_EditSample(){
   global		
+  EnvGet, ShipTo, ShipTo
 ifwinactive, Register new samples - \\Remote
   click 2
   sleep 200
@@ -7,24 +8,53 @@ ifwinactive, Register new samples - \\Remote
   sendinput, {tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
     sendinput, {tab}^a
-  sendinput % Varbar.Send("Batch") "{tab}^a"
-  IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-    sendinput % Varbar.send("Lot") "{tab}" 
-  Selection:= iteration
-  AbsSelection:=Abs(Selection)-1
-  if (Selection > 0)
-    sendinput, {home}{right %selection%}
-  if (Selection < 0)
+  sendinput % Varbar.Sendinput("Batch") "{tab}^a"
+  IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote 
+  {
+    sendinput % Varbar.Sendinput("Lot") 
+    send, {tab 3} 
+    sleep 100
+    send, % Varbar.Sendinput("Coated") 
+    sleep 100
+    send, +{tab 2}
+  }
+  sleep 140
+  AbsSelection:=Abs(ShipTo)-1
+  if (ShipTo > 0)
+    sendinput, {home}{right %ShipTo%}
+  if (ShipTo < 0)
     Sendinput, {end}{left %Absselection%}
   sleep 300
   send, {enter}
     return
 }
-
+Worktab_CheckDepartment(){
+  global 
+  department:=Clip()
+  ;department:=Clipboard
+  MicroDepartment:=Department
+  PhysicalDepartment:=Department
+  AnalyticalDepartment:=Department 
+  sleep 200
+  if (Regexmatch(MicroDepartment, "\bMicro\s\(Finished\)", MicroDepartment) > 0)
+    Return "Micro"
+  else if (Regexmatch(PhysicalDepartment, "\bPhysical\s\((In Process|Coated)\)", PhysicalDepartment) > 0)
+    Return "Physical"
+  else if (Regexmatch(AnalyticalDepartment, "\bAnalytical\s\(In Process\)", AnalyticalDepartment) > 0)
+    Return "Analytical"
+  return %Department%
+  	;Clipboard:=Preclip
+}
  
-WorkTab_NewRequest(department)
+WorkTab_NewRequest()
 {
-  click, 64, 300 ;click Assign To New rewuest link
+  global
+  ; send, ^c
+  ; clipwait
+  msgbox % Worktab_CheckDepartment()
+  sleep 400
+return
+  click 64, 300 ;click Assign To New rewuest link
   winwaitactive, Edit request - \\Remote,,3
       if !Errorlevel
   sleep 200
@@ -32,38 +62,33 @@ WorkTab_NewRequest(department)
   click 238, 622 ;pick test
   winwaitactive, Select tests for request,,3 
     if !Errorlevel
-    sleep 200
+    sleep 100
   click, right, 264, 590 ; click to show filer
   sleep 100
   send, {up}{enter}
-  sleep 200
+  sleep 100
   click, 97, 125 ; click filter
   send, %Department%{enter}
   sleep 100
   click 152, 195
   send ^a
   click 504, 338 ; click arrow
-  sleep 200
   WinActivate, Select tests for request
   click, right, 264, 590 ; click to clear filter
   send, {up}{enter}
   sleep 100
   WinActivate, Select tests for request
-  sleep 250
-  While GetKeyState("Lbutton", "p")
-    Sleep 200
   sleep 100
-  IfWinnotActive, Select tests for request 
-  {
-    tooltip("over")
-    exit
-  }
   WinActivate, Select tests for request
   click 854, 657 ; click okay
   winwaitclose, Select tests for request,,10
     if !Errorlevel
-    sleep 200
     WinWaitActive, Edit request
+  While GetKeyState("Lbutton", "p")
+  sleep 100
+  IfWinnotActive, Edit request
+    exit
+  Sleep 100
     winactivate, Edit request
     send, {tab}{enter}
   return
