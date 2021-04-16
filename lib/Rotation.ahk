@@ -61,7 +61,7 @@ return
       LV_GetText(Method, 		A_EventInfo,1)
       LV_GetText(TestIngredients, 		A_EventInfo,2)
       LV_GetText(RotationCycles, 		A_EventInfo,3)
-      tooltip % A_eventInfo "`n" Method "`n" TestIngredients "`n"
+      ;tooltip % A_eventInfo "`n" Method "`n" TestIngredients "`n"
       Gui, Rotation_Table:submit,NoHide
       sleep 200 
       return

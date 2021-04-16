@@ -18,10 +18,10 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 		GUI, VarBar:destroy
 	Gui Varbar:Default
 	Gui VarBar:+LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner  
-	;WinSet, Transparent, 300
 	Gui, VarBar:color, 21a366
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
+	WinSet, Transparent, 225
 	GUI, VarBar:Font, s12 cBlack Bold, Consolas
 	Gui, VarBar:add, Text, vBatch x68 y0 w1200, %Batch%
 	GUI, VarBar:Font, s9 cBlack , Arial Narrow
@@ -33,7 +33,7 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	Gui, VarBar:add, Text, vcustomer  x190 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s11 cBlack Bold, Consolas
 	Gui, VarBar:Add, Edit, gIterationVarBar vIteration left x300 h30 y0 w70,
-	Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
+	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
 	OnMessage(0x201, "VarBar.Relocate")
 	CoordMode, mouse, screen
 	Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w340 NoActivate, VarBar
@@ -125,7 +125,8 @@ Sendinput(Category:="",PostOutput:="")
 	sleep 100
 	if WinActive("Select Product - \\Remote")
 	{
-		sendinput, {click 106, 64}%Product%{enter}{enter}
+		
+		send, {click 106, 64}%Product%{enter}{enter}
 		exit
 		}
 	if winactive("Register new samples - \\Remote")
@@ -147,7 +148,7 @@ Sendinput(Category:="",PostOutput:="")
 	Send, %output%%PostOutput%
 	sleep 100
 if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
-		send, {enter}	
+		send, ^a^c{enter}	
 		blockinput off
 if winactive("Find and Replace")
 		send, !i
@@ -232,11 +233,9 @@ Set(Input:=0){
   ClipWait, 1,
   Clipboard := Trim((Clipboard, "`r`n"))
 	sleep 100
-	tooltip, %product%`n%batch%`n%lot%, %varbar_x%, %varbar_y%
-	tooltip(Clipboard,2000)
+	;tooltip(Clipboard,2000)
 	exit
 	}
-	tooltip, %product%`n%batch%`n%lot%, %varbar_x%,%varbar_y%
 	return
 }
 

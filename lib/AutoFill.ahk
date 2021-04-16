@@ -131,7 +131,8 @@
 		winactivate,
 		sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
 	} Else If winactive("Edit test (Field Configuration:"){
-		sendinput, {click 305, 294}{end}(on sample log){click 330, 617}
+			WorkTab_AddTestDescription("(on sample log)")
+			;WorkTab_AddTestDescription("(Send Out Eurofins)")
 	} Else If winactive("Register new samples - \\Remote ") {
 		Sendinput, {tab 2}{space}
 		winwaitactive, Error - \\Remote, , 4
@@ -159,5 +160,6 @@
 		return
 }
 
-
-	
+	WorkTab_AddTestDescription(Text){
+		sendinput, {click 305, 294}{end}%TEXT%{click 330, 617}
+	}

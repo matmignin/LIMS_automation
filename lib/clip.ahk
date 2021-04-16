@@ -1,6 +1,6 @@
 Clip() {
 	global
-	sendlevel, 1
+	sendlevel, 2
 	PreClip:=ClipboardAll
 	Clipboard:=
 	sleep 50
@@ -31,15 +31,6 @@ clip_set(input:=0){
 	clipForlot:= Clipboard
 	If (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) > 0) 	
 	{
-		; Product:=ClipforProduct
-		; Try {
-			;  XL:=XL.Sheets(Clipforproduct).activate
-			;  varbar.Update("iteration")
-			;  Gui, VarBar:color, 21a366 ;green
-		; }
-		; catch
-		; {
-		; Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}\b", ClipForProduct) 
 		ControlSetText, Edit1,%clipforProduct%, VarBar
 		ControlSetText, Static2,, VarBar
 		ControlSetText, Static3,, VarBar
@@ -53,8 +44,6 @@ clip_set(input:=0){
 		coated:=
 			Gui, VarBar:color, 847545 ;brown
 	}
-		; exit
-	; tooltip, % Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch)
 	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
 	{
 		; Batch:=ClipforBatch
@@ -90,14 +79,12 @@ clip_set(input:=0){
 	}
 	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) = 0) 
 	{
-  send, ^c
-  ClipWait, 1,
+  send, {ctrl down}c{ctrl up}
+  ClipWait, 3
   Clipboard := Trim((Clipboard, "`r`n"))
 	sleep 100
-	tooltip, %product%`n%batch%`n%lot%, %varbar_x%, %varbar_y%
 	tooltip(Clipboard,2000)
 	exit
 	}
-	tooltip, %product%`n%batch%`n%lot%, %varbar_x%,%varbar_y%
 	return
 }

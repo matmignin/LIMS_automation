@@ -16,3 +16,27 @@ Menu, Tray, Add, This menu item is a submenu, :MySubmenu
 Menu, Tray, Add, This menu item is a submenu, :MySubmenu
 
 -- https://www.autohotkey.com/docs/commands/Menu.htm
+
+-- 2021-04-15 11:18:46 -- ✄ ------------------------------
+
+K473
+
+-- Slots.xml - Notepad
+
+-- 2021-04-15 11:18:56 -- ✄ ------------------------------
+
+K473
+
+-- Program Manager
+
+-- 2021-04-15 11:19:11 -- ✄ ------------------------------
+
+K473
+
+-- Program Manager
+
+-- 2021-04-15 11:26:55 -- ✄ ------------------------------
+
+K473
+
+-- Program Manager

@@ -90,7 +90,7 @@ return
       WinGet, WinProcess, ProcessName, A			
       Sleep, 200
       MousePosition:=MousePosX "`, " MousePosY
-      Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
+      ;Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
 
     }
     winTitle:=Wintitle
@@ -228,8 +228,10 @@ v up::
 }
 
 
-#If Getkeystate("F19","p") ;________________________________________Psudo Numpad
-	 m::numpad1
+
+#If Getkeystate("F19","p") || getkeystate("Capslock", "T")=True ;AND A_TimeSincePriorHotkey < 1000) || (A_PriorHotKey = "Numpad4" AND A_TimeSincePriorHotkey < 1000)    ;________________________________________Psudo Numpad
+	;sendlevel 1
+   m::numpad1
 	 ,::numpad2
 	 .::numpad3
 	 j::numpad4
@@ -241,11 +243,25 @@ v up::
 	 `;::numpad0
 	 n::numpaddiv
 	 /::,
-	 h::numpadsub
+	 h::-
 	 p::numpadmult
 	 '::numpaddot
+   F19::SetCapsLockState off ;45465% !GetKeyState("CapsLock", "T")
+   ;sendlevel 0
 		#if
 #IfWinActive,
+F19::
+SetCapsLockState on ;% !GetKeyState("CapsLock", "T")
+settimer, CapslockTimer, 1000
+return
+
+
+CapslockTimer:
+while (A_TimeSincePriorHotkey < 900)
+  sleep 300
+SetCapsLockState Off
+return
+
 
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744

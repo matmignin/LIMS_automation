@@ -28,7 +28,6 @@ Features:
 See readme.md for more info and documentation on plugins and templates.
 
 */
-
 ; General script settings
 #SingleInstance, Force
 SetBatchlines, -1
@@ -52,7 +51,7 @@ TemplateClip:=0
 
 iconlist:="a,c,s,t,x,y,z"
 loop, parse, iconlist, CSV
-	 icon%A_LoopField%:="icon-" A_LoopField ".ico"
+	icon%A_LoopField%:="icon-" A_LoopField ".ico"
 
 Pause, Off
 Suspend, Off
@@ -107,7 +106,7 @@ if (XA_Load( A_ScriptDir "\ClipData\History\History.xml") = 1) ; the name of the
 	Error:=1
 
 If (Error = 1)
-	{
+{
 	 FileCopy, res\history.bak.txt, %A_ScriptDir%\ClipData\History\History.xml, 1
 	 History:=[]
 	 XA_Load(A_ScriptDir "\ClipData\History\History.xml") ; the name of the variable containing the array is returned OR the value 1 in case of error

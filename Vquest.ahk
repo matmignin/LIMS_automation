@@ -66,7 +66,6 @@ return
 
 
 
-
 #IfWinActive,
 Sendlevel 1
   F14 & F13::sendinput, {CtrlDown}{F21}{CtrlUp}
@@ -77,7 +76,7 @@ WinActivate, ahk_exe firefox.exe
 return
   Rbutton & Mbutton::send, {F21}
   Rbutton & F17::F21
-  F19::send, {F21}
+ ; F19::Return ;send, {F21}
   Sendlevel 0
 
 
@@ -100,7 +99,18 @@ Return & K::Enter_Product("K")
   F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
   ; F14 & Rbutton::Get_WindowInfo()
-  F13::Clip_set()
+  F13::
+			if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 600)
+      {
+				Send, {CtrlDown}c{CtrlUp}
+        clipwait 2
+        tooltip(Clipboard)
+        }
+			else
+				Clip_set()
+			return ;}
+  
+  ;F13::Clip_set()
   F13 & F18::Varbar.reset()
   F14 & wheelDown::Mouse_CloseWindow()
   F18 & Wheelup::!^tab
@@ -157,18 +167,24 @@ KEY_LMS:
   F14 & WheelRight:: sendinput, {click, 743, 41}
   F14 & WheelLeft::sendinput, {Click 354, 44}
   F17::click 78, 750
-  F14 & wheeldown::mouse_click("searchBar_Batch")
-  F14 & wheelup::mouse_click("searchBar_Product")
-    F13 & WheelUp::Varbar.Sendinput("Product")
+  F14 & WheelUp::Varbar.AddIteration()
+  F14 & wheeldown::Varbar.SubIteration()
+  F14 & F17::Excel.NextSheet()
+  F14 & F16::Excel.PreviousSheet()
+  F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
+  Mbutton::Excel.Connect()
   #IfWinActive
   ;select methods
   #Ifwinactive, Select methods tests - \\Remote
   F19 & space::AutoFill()
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
-#Ifwinactive, Result Entry - \\Remote
+#Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
   F13::WorkTab_ChangeTestResults("toggle")	
+  F16::WorkTab_ChangeTestResults("toggle")
+  F17::WorkTab_ChangeTestResults()
+  
 #ifwinactive, Register new samples - \\Remote
   F13 & wheelup::sendinput, {click 180, 103, 2}%Product%{enter}
   F18::Autofill(1)
@@ -176,13 +192,26 @@ KEY_LMS:
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
   F14 & WheelUp::Varbar.AddIteration()
   F14 & wheeldown::Varbar.SubIteration()
-  browser_Forward::Excehl.NextSheet()
+  browser_Forward::Excel.NextSheet()
   browser_Back::Excel.PreviousSheet()
   F13 & F17::Excel.NextSheet()
   F13 & F16::Excel.PreviousSheet()
   Mbutton::AutoFill()
   F18::autofill()
 
+#IfWinActive, Enter Product Number ahk_class #32770
+  m::1
+  ,::2
+  .::3
+  j::4
+  k::5
+  l::6
+  u::7
+  i::8
+  o::9
+  `;::0
+  F19::0
+  h::-
 
 
 
@@ -353,12 +382,12 @@ return
 
 Enter_Product(key){
   WinActivate, ahk_class Transparent Windows Client ahk_exe WFICA32.EXE
-  inputbox, Code,, %key% `t ,,,,%varbar_x%,%Varbar_y%
+  inputbox, Code,Enter Product Number, %key% `t ,,,,%varbar_x%,%Varbar_y%,,Default
   Sleep 100	
   click 755, 48
   sleep 200
   ;click 1131, 80
-  click 577, 131, 2 ;click search bar
+  click 600, 123, 2 ;click search bar
   sleep 100
   varbar.set(Key . Code)
   Sendinput, %Key%%Code%{enter}
