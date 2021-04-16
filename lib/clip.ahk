@@ -1,19 +1,17 @@
 Clip() {
 	global
-	sendlevel, 2
-	PreClip:=ClipboardAll
+	;PreClip:=ClipboardAll
 	Clipboard:=
 	sleep 50
 	Send, ^c    
 	clipwait, 1
-	Clipboard := StrReplace(Clipboard, "`r`n")
+	;Clipboard := StrReplace(Clipboard, "`r`n")
 	sleep 50
-	; ToolTip(Selection, 1000)
+	;ToolTip(Selection, 1000)
 	Selection:=Clipboard
-	clipwait, 0.25
-	Clipboard:=Preclip
-	clipwait, 0.25
-	sendlevel, 0
+	; clipwait, 0.25
+	;Clipboard:=Preclip
+	; clipwait, 0.25
 	return %Selection%
 }
 
@@ -22,14 +20,14 @@ clip_set(input:=0){
 	global
 	Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 	If Input contains OCR
-	OCR()
+		OCR()
 	Else		
-	send, ^c
-	sleep 200
+		send, ^c
+		sleep 200
 	clipForProduct:= Clipboard
 	clipForBatch:= Clipboard
 	clipForlot:= Clipboard
-	If (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) > 0) 	
+	If (Regexmatch(ClipforProduct, "[AEGLHKJI]\d{3}", ClipForProduct) > 0) 	
 	{
 		ControlSetText, Edit1,%clipforProduct%, VarBar
 		ControlSetText, Static2,, VarBar
@@ -44,7 +42,7 @@ clip_set(input:=0){
 		coated:=
 			Gui, VarBar:color, 847545 ;brown
 	}
-	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
+	if (Regexmatch(ClipforBatch, "\d{3}-\d{4}", ClipforBatch) > 0)
 	{
 		; Batch:=ClipforBatch
 		Gui VarBar:+LastFound 
@@ -64,7 +62,7 @@ clip_set(input:=0){
 		coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
-	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
+	if (Regexmatch(Clipforlot, "\d{4}\w\d\w?", Clipforlot) > 0)
 	{
 			Gui VarBar:+LastFound 
 		Gui, VarBar:submit,NoHide
@@ -77,7 +75,7 @@ clip_set(input:=0){
 		coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
-	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) = 0) 
+	else if (Regexmatch(Clipforlot, "\d{4}\w\d\w?", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\d{3}-\d{4}", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "[AEGLHKJI]\d{3}", ClipForProduct) = 0) 
 	{
   send, {ctrl down}c{ctrl up}
   ClipWait, 3

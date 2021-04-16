@@ -23,9 +23,11 @@ Wheel_2(commands,Sleeptime:=600)
 	global
 	If (A_PriorKey!=A_ThisHotkey) || (A_TickCount-LastActivation > 400)
 	{
+	blockinput on
 	LastActivation:=A_TickCount
-	send, %Commands%
+	sendinput, %Commands%
 	sleep %sleeptime%
+	blockinput off
 	}
 	return
 }

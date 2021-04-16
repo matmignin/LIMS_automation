@@ -54,7 +54,9 @@ default(){
     {
       ControlSetText, Edit2,%A_thismenuitem%, VarBar
       Iteration:=A_Thismenuitem
-      varbar.Search(batch) 
+      Clip_set("batch")
+      sleep 200
+      varbar.Search("batch") 
     }
     else
       try menu, menu, deleteAll
@@ -220,25 +222,27 @@ return
 
 VScode:
   if (A_thismenuitem = "F13")
-  Sendinput, ^fF13`:`:{enter}
+  Sendinput, ^fF13`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F13")
-  Sendinput, ^fF13`:`:{enter}
+  Sendinput, ^fF13`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F14")
-  Sendinput, ^fF14`:`:{enter}
+  Sendinput, ^fF14`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F15")
-  Sendinput, ^fF15`:`:{enter}
+  Sendinput, ^fF15`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F16")
-  Sendinput, ^fF16`:`:{enter}
+  Sendinput, ^fF16`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F17")
-  Sendinput, ^fF17`:`:{enter}
-  else if (A_thismenuitem = "F18")
-  Sendinput, ^fF18`:`:{enter}
+  Sendinput, ^fF17`:`:{Tab 6}{down 2}
+  else if (A_thismenuitem = "F19")
+  Sendinput, ^fF19`:`:{Tab 6}{down 2}
+    else if (A_thismenuitem = "F20")
+  Sendinput, ^fF20`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "Mbutton")
-  Sendinput, ^fMbutton{enter}
+  Sendinput, ^fMbutton{Tab 6}{down 2}
   else if (A_thismenuitem = "Rbutton")
-  Sendinput, ^fRbutton{enter}
+  Sendinput, ^fRbutton{Tab 6}{down 2}
   else if (A_thismenuitem = "Wheel")
-  Sendinput, ^fWheel{enter}
+  Sendinput, ^fWheel{Tab 6}{down 2}
   else if A_thismenuItem contains &Mouse `t %MousePosition%
   send %MousePosition%
   else if A_thismenuItem contains &Title `t %WinTitle%

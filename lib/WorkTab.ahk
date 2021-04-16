@@ -42,7 +42,9 @@ Worktab_CheckDepartment(){
     Return "Physical"
   else if (Regexmatch(AnalyticalDepartment, "\bAnalytical\s\(In Process\)", AnalyticalDepartment) > 0)
     Return "Analytical"
-  return %Department%
+  else
+    msgbox, none %department% `r %physicalDepartment%
+  ; return %Department%
   	;Clipboard:=Preclip
 }
  
@@ -51,9 +53,9 @@ WorkTab_NewRequest()
   global
   ; send, ^c
   ; clipwait
-  msgbox % Worktab_CheckDepartment()
+ ThisDepartment:=Worktab_CheckDepartment()
   sleep 400
-return
+  Tooltip(ThisDepartment)
   click 64, 300 ;click Assign To New rewuest link
   winwaitactive, Edit request - \\Remote,,3
       if !Errorlevel
@@ -68,10 +70,11 @@ return
   send, {up}{enter}
   sleep 100
   click, 97, 125 ; click filter
-  send, %Department%{enter}
+  send, %ThisDepartment%{enter}
   sleep 100
   click 152, 195
   send ^a
+  input, , V T3, {Lbutton}{enter}
   click 504, 338 ; click arrow
   WinActivate, Select tests for request
   click, right, 264, 590 ; click to clear filter

@@ -8,11 +8,12 @@ return
 
 Test(n:=0){
   Global
-  ToggleFilter_Test()
-  FilterSearch_Test("Vitamin C","221")
-  CopyResults_Test()
-  ParseResultSpecs()
-  FilterSearch_Test()
+  Click_SearchBox()
+  ; ToggleFilter_Test()
+  ; FilterSearch_Test("Vitamin C","221")
+  ; CopyResults_Test()
+  ; ParseResultSpecs()
+  ; FilterSearch_Test()
   return
 }
 
@@ -60,28 +61,39 @@ FilterSearch_Test(TestName:="", MethodName:=""){
 
 return
 
+Click_SearchBox(){
+  Global
+WinActivate, NuGenesis LMS - \\Remote
+Sleep, 200
+CoordMode, Pixel, Window
+PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
+If ErrorLevel = 0
+  Click,505,129,2 ;samples tab
+If ErrorLevel
+  click,543,90,2 ;Product/Specifications bar
+send, ^a
 
+
+return
+}
 
 
 
 
 
 #IfWinActive,
+  F14 & F13::wheel("^!{tab}")
+
 Sendlevel 1
-  F14 & F13::sendinput, {CtrlDown}{F21}{CtrlUp}
-  F13 & F14::
-IfWinnotExist, ahk_exe firefox.exe,
- send, #2 ; open firefox
-WinActivate, ahk_exe firefox.exe 
-return
   Rbutton & Mbutton::send, {F21}
+  F13 & F14::sendinput, {CtrlDown}{F21}{CtrlUp}
   Rbutton & F17::F21
  ; F19::Return ;send, {F21}
   Sendlevel 0
 
-
 KEY_DEFAULT:
 Return & K::Enter_Product("K")
+Return & 0::Enter_Batch()
   Mbutton & WheelDown::Wheel("^{WheelDown}") 
   Mbutton & Wheelup::Wheel("^{WheelUp}") 
   Mbutton & F17::Wheel_Right()
@@ -95,22 +107,21 @@ Return & K::Enter_Product("K")
   Rbutton up::Mouse_RbuttonUP()
   F13 & LButton::Sendinput, +^4 ;screenshot"
   F13 & RButton::Sendinput, +^3 ;screenshot"
-  F13 & Mbutton:: varbar.set("OCR") 
+  F13 & Mbutton::varbar.set("OCR") 
   F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
+  F13 & F16::
+   WinActivate, NuGenesis LMS - \\Remote
+   Varbar.Sendinput("Product")
+  return
+  F13 & F17::
+  WinActivate, NuGenesis LMS - \\Remote
+  click, 753, 42
+  sleep 200
+  Varbar.Sendinput("Batch")
+  return
   ; F14 & Rbutton::Get_WindowInfo()
-  F13::
-			if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 600)
-      {
-				Send, {CtrlDown}c{CtrlUp}
-        clipwait 2
-        tooltip(Clipboard)
-        }
-			else
-				Clip_set()
-			return ;}
-  
-  ;F13::Clip_set()
+  F13::Clip_set()
   F13 & F18::Varbar.reset()
   F14 & wheelDown::Mouse_CloseWindow()
   F18 & Wheelup::!^tab
@@ -194,10 +205,12 @@ KEY_LMS:
   F14 & wheeldown::Varbar.SubIteration()
   browser_Forward::Excel.NextSheet()
   browser_Back::Excel.PreviousSheet()
-  F13 & F17::Excel.NextSheet()
-  F13 & F16::Excel.PreviousSheet()
+  ; F13 & F17::Excel.NextSheet()
+  ; F13 & F16::Excel.PreviousSheet()
   Mbutton::AutoFill()
   F18::autofill()
+  F13 & WheelUp::Varbar.Sendinput("Product")
+  F13 & WheelDown::Varbar.Sendinput("Batch")
 
 #IfWinActive, Enter Product Number ahk_class #32770
   m::1
@@ -218,13 +231,14 @@ KEY_LMS:
 
 
 KEY_Excel:
-  #IfWinActive, LMS Workbook.xlsm - Excel
+  #IfWinActive, LMS Workbook.xlsm
   F18::Excel.Connect(1)
   MButton::Excel.Connect(1)
   #ifwinactive, ahk_exe EXCEL.EXE
   +Enter::sendinput, !{enter}
   $Enter::sendinput, {enter}
-  Mbutton::Excel.Search()
+  F18::Excel.Search()
+  Mbutton::Excel.Connect(1)
   F16::wheel("{wheelleft}",80)
   F17::wheel("{wheelRight}",80)
   #ifwinactive, Find and Replace,
@@ -233,7 +247,7 @@ KEY_Excel:
   Varbar.Sendinput("Product")
   return
   F13 & WheelDown::
-  Wheel("{alt down}n{alt up}")
+ ; Wheel("{alt down}n{alt up}")
   Varbar.Sendinput("Batch")
   return
   return::sendinput, !i
@@ -241,7 +255,13 @@ KEY_Excel:
 
 #IfWinActive, ahk_exe explorer.EXE
 Mbutton::Open_in_Notepad()
+F13 & Wheelup::
+send, ^e
+sleep 30
+sendinput, %product%{enter}
+sleep 300
 
+return
 KEY_OUTLOOK:
   #IfWinActive, ahk_exe OUTLOOK.EXE 
   Mbutton::SENDINPUT % Varbar.Sendinput("Batch") " is updated"
@@ -250,7 +270,7 @@ KEY_OUTLOOK:
   Rbutton & F17::Varbar.Sendinput("Batch"," is updated.")
   F14 & WheelDown::varbar.search("batch")
   F14 & Wheelup::varbar.search("Product")
-  F13::varbar.set()
+  F13::Clip_set()
   F19 & Space::Varbar.Sendinput("Product")
   F20 & Space::Varbar.Sendinput("batch")
   F18::LMS_Search()
@@ -269,6 +289,7 @@ KEY_Snipper:
   rbutton::send, ^c
   WheelDown::wheel("^1")
   Wheelup::Wheel("^5")
+  Mbutton::excel.PasteValues("snip")
   #IfWinActive, Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
   Mbutton & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
   Mbutton::send, {esc}
@@ -364,35 +385,48 @@ KEY_Otherstuff:
     tooltip("Snip Group Changed",2000)
   return
 }
-Enter_Batch(key){
+Enter_Batch(){
   global
-  ;CoordMode, mouse, screen
-  inputbox,Batch,, %key%-,,70,130,,,,%Batch%
-  if ErrorLevel
+  ;inputbox, Batch,Enter Batch Number, %key%- ,,,,%varbar_x%,%Varbar_y%,,Default
+  WinActivate, ahk_class Transparent Windows Client ahk_exe WFICA32.EXE
+  ;inputbox, Code,Enter Product Number, %key% `t ,,,,%varbar_x%,%Varbar_y%,,Default
+  click 755, 480
+  sleep 100
+  ;click 1131, 80
+  click 487, 130, 2 ;click search bar
+  sendlevel, 1
+  sendinput, {F19}
+  sendlevel, 0
+  Input, CodeA, V L3 T5, -
+  if !ErrorLevel
+  sendinput, -
+  Input, CodeB, V L4 T5, {enter}
+  if !ErrorLevel
+  send, {enter}
+  Batch:=CodeA . "-" . CodeB
+  varbar.set("Batch")
+  tooltip(Batch)
   return
-else
-  Batch:=key . "-" . Batch
-CoordMode, mouse, window
-;Save_Code("Batches", Batch)
-;Envset, Batch, %Batch%
-Sleep 100		
-VarBar.show()
-return
 }
 
 Enter_Product(key){
+  Global
   WinActivate, ahk_class Transparent Windows Client ahk_exe WFICA32.EXE
-  inputbox, Code,Enter Product Number, %key% `t ,,,,%varbar_x%,%Varbar_y%,,Default
-  Sleep 100	
-  click 755, 48
-  sleep 200
-  ;click 1131, 80
-  click 600, 123, 2 ;click search bar
+  ;inputbox, Code,Enter Product Number, %key% `t ,,,,%varbar_x%,%Varbar_y%,,Default
+  click 755, 480
   sleep 100
-  varbar.set(Key . Code)
-  Sendinput, %Key%%Code%{enter}
-  ;sendinput, {ctrl down}a{ctrl up}%Product%{enter}
-  ; VarBar.show()
+  ;click 1131, 80
+  click 487, 130, 2 ;click search bar
+  sendinput, %Key%
+  sendlevel, 1
+  sendinput, {F19}
+  sendlevel, 0
+  Input, Code, V L3 T5, {enter}
+    if !ErrorLevel
+  send, {enter}
+  Product:=Key Code
+  varbar.set("Product")
+  tooltip(Product)
   return
 } 
 
@@ -452,21 +486,21 @@ VQuest_Start:
   Menu, Tray, Add, windowSpy, WindowSpySub 
   Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
   Menu, Tray, Default, ResetVarbar
+  SetBatchLines, 10ms
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
   SetDefaultMouseSpeed, 0
-  detecthiddenwindows, on
+  ;detecthiddenwindows, on
   SetTitleMatchMode, 2
   settitlematchmode, slow
   #MaxHotkeysPerInterval 200
-  #HotkeyModifierTimeout 100
+  #HotkeyModifierTimeout 30
   #maxthreadsperhotkey, 1
-  SetKeyDelay, -1, 0
+  SetKeyDelay, 1, 0
   setwindelay, 450
   AutoTrim, On
   Menu, Tray, Icon, Robot.ico
-  #HotkeyModifierTimeout 
   Results_Definition_edit:="78,63"
 Result_Editor_Ok:="370,660"
 Results_Definition_ok:="1336,592"

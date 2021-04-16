@@ -70,8 +70,7 @@ return
 
 
 
-Relocate() 
-{
+Relocate(){
 	global
 	PostMessage, 0xA1, 2 
 	keywait, lbutton, U
@@ -125,10 +124,13 @@ Sendinput(Category:="",PostOutput:="")
 	sleep 100
 	if WinActive("Select Product - \\Remote")
 	{
-		
 		send, {click 106, 64}%Product%{enter}{enter}
 		exit
 		}
+	if WinActive("NuGenesis LMS - \\Remote") 
+	{
+			Click_SearchBox()
+	}
 	if winactive("Register new samples - \\Remote")
 		send, {click 182, 103}%Product%
 	If Category contains Product
@@ -148,7 +150,7 @@ Sendinput(Category:="",PostOutput:="")
 	Send, %output%%PostOutput%
 	sleep 100
 if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
-		send, ^a^c{enter}	
+		sendinput, ^a^c{enter}	
 		blockinput off
 if winactive("Find and Replace")
 		send, !i
@@ -162,14 +164,26 @@ Set(Input:=0){
 			Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 			If Input contains OCR
 					OCR()
+			if input:="product"
+			{
+				ControlSetText, Edit1,%Product%, VarBar
+				product:=product
+				Gui, VarBar:color, 847545 ;brow
+			}
+			if input:="Batch"
+			{
+				ControlSetText, Static2,%Batch%, VarBar
+				Batch:=Batch
+				Gui, VarBar:color, 847545 ;brow
+			}
 			Else		
-	send, ^c
-	sleep 200
-	clipForProduct:= Clipboard
-	clipForBatch:= Clipboard
-	clipForlot:= Clipboard
-	If (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) > 0) 	
-	{
+				send, ^c
+				sleep 200
+				clipForProduct:= Clipboard
+				clipForBatch:= Clipboard
+				clipForlot:= Clipboard
+			If (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) > 0) 	
+			{
 		; Product:=ClipforProduct
 		; Try {
 			;  XL:=XL.Sheets(Clipforproduct).activate
@@ -180,38 +194,35 @@ Set(Input:=0){
 		; {
 		; Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}\b", ClipForProduct) 
 		ControlSetText, Edit1,%clipforProduct%, VarBar
-		ControlSetText, Static2,, VarBar
-		ControlSetText, Static3,, VarBar
-		ControlSetText, Static4,, VarBar
-		ControlSetText, Static5,, VarBar
+		; ControlSetText, Static2,, VarBar
+			; ControlSetText, Static3,, VarBar
+		; ControlSetText, Static4,, VarBar
+		; ControlSetText, Static5,, VarBar
 		product:=Clipforproduct
-		Batch:=
-		lot:=
-		Name:=
-		Customer:=
-		coated:=
+		; Batch:=
+		; lot:=
+		; Name:=
+		; Customer:=
+		; coated:=
 			Gui, VarBar:color, 847545 ;brown
 	}
-		; exit
-	; tooltip, % Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch)
+
 	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
 	{
-		; Batch:=ClipforBatch
 		Gui VarBar:+LastFound 
 		Gui, VarBar:submit,NoHide
 		if input contains Coated
 			ControlSetText, Static3,%ClipforBatch%, VarBar
 		else
 		 ControlSetText, Static1,%ClipforBatch%, VarBar
-		; GuiControl, Text, Batch, %Batch%
-		ControlSetText, Static2,, VarBar
-		ControlSetText, Static4,, VarBar
-		ControlSetText, Static5,, VarBar
+		; ControlSetText, Static2,, VarBar
+		; ControlSetText, Static4,, VarBar
+		; ControlSetText, Static5,, VarBar
 		Batch:=clipforbatch
-		lot:=
-		Name:=
-		Customer:=
-		coated:=
+		; lot:=
+		; Name:=
+		; Customer:=
+		; coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
 	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
@@ -219,12 +230,12 @@ Set(Input:=0){
 			Gui VarBar:+LastFound 
 		Gui, VarBar:submit,NoHide
 		ControlSetText, Static3,%Clipforlot%, VarBar
-		ControlSetText, Static4,, VarBar
-		ControlSetText, Static5,, VarBar
+		; ControlSetText, Static4,, VarBar
+		; ControlSetText, Static5,, VarBar
 		lot:=clipforlot
-		Name:=
-		Customer:=
-		coated:=
+		; Name:=
+		; Customer:=
+		; coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
 	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) = 0) 
@@ -240,14 +251,13 @@ Set(Input:=0){
 }
 
 Search(input){
-	global
+		global
 	varbar.set()
 	WinActivate, NuGenesis LMS - \\Remote
-	send, {click 761, 44}{click 761,44}
-	sleep 150
-	click, 500,127, 2 ;click search bar
+	click 746, 47
 	sleep 200
-	Varbar.sendinput(input)
+	Click_SearchBox()
+	Varbar.sendinput("Batch")
 	return
 }
 

@@ -16,8 +16,8 @@ return
     Mbutton & Wheelup::wheel_2("^m",2000)
     Mbutton & Rbutton::+^m ; toggle bookmark
     Mbutton::ToggleDefinition()
-    Rbutton & F16::Wheel_2("{left}", 20)
-    Rbutton & F17::Wheel_2("{right}", 20)
+    Rbutton & F16::Wheel_2("{backspace}", 20)
+      Rbutton & F17::Wheel_2("^]", 20)
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
     Rbutton & F14::Get_WindowInfo()
@@ -74,7 +74,7 @@ return
   Get_WindowInfo() 
   {
     global
-    clipboard:=
+    ;clipboard:=
     
     CoordMode, mouse, window
     MouseClick, right,,, 1, 0, D ; Hold down the right mouse button.
@@ -90,7 +90,7 @@ return
       WinGet, WinProcess, ProcessName, A			
       Sleep, 200
       MousePosition:=MousePosX "`, " MousePosY
-      ;Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
+      Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
 
     }
     winTitle:=Wintitle
@@ -181,12 +181,16 @@ VIM:
 	0::sendinput, +{home}^c
 }	
 #If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
-{
 	Capslock & g::Send, ^{home}
-}
 
+#If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
+  capslock & p::Sendinput, {esc}p{esc}
+
+  
+  
 #If Getkeystate("Capslock","p")
 {
+	p::return
 	1::F1
 	2::F2
 	3::F3
@@ -202,7 +206,6 @@ VIM:
 	0::home
 	y::return
 	d::return ; Send, {home 2}+{end}^x{delete}
-	p::Send {end}{enter}^v
 	w::Send {right}^{right 2}{left}
 	e::Send ^{right}
 	u::Send ^z
@@ -240,28 +243,37 @@ v up::
 	 u::numpad7
 	 i::numpad8
 	 o::numpad9
-	 `;::numpad0
+	 `;::-
 	 n::numpaddiv
 	 /::,
-	 h::-
 	 p::numpadmult
-	 '::numpaddot
-   F19::SetCapsLockState off ;45465% !GetKeyState("CapsLock", "T")
+	 '::right
+   space::sendinput, {numpad0} ;SetCapsLockState off ;45465% !GetKeyState("CapsLock", "T")
+  ~ENTER::
+  sendinput, {enter}
+	 h::left
+   F19::
+   F20::
+  Capslock::
+   SetCapsLockState off
+   tooltip
+   return
+
+    
    ;sendlevel 0
 		#if
 #IfWinActive,
 F19::
-SetCapsLockState on ;% !GetKeyState("CapsLock", "T")
-settimer, CapslockTimer, 1000
+   SetCapsLockState % !GetKeyState("CapsLock", "T")
+   tooltip, NUMLOCK
+  return
+  
 return
-
-
 CapslockTimer:
 while (A_TimeSincePriorHotkey < 900)
-  sleep 300
+  sleep 800
 SetCapsLockState Off
 return
-
 
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744

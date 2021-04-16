@@ -14,7 +14,7 @@ Connect(reload:=0){
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook")
-		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsm - Excel
+		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsm
 	else{
 			msgbox,4,,open LMS Workbook?
 			IfMsgBox, Yes
@@ -126,9 +126,22 @@ Search(){
 	return
 }
 
-PasteValues() {
+PasteValues(input:=0) {
 	global
-;	excel.connect()
+	if (input:="Snip")
+	{
+		send, ^c
+	excel.connect()
+		sleep 200
+		xl.Range("C66").Select
+		; WinActivate, LMS Workbook.xlsm
+		SendLevel, 1
+		ControlSend,ahk_parent, {esc}{up 4}, LMS Workbook.xlsm
+		Xl.ActiveSheet.Paste
+		sleep 300
+		sendlevel, 0
+		return
+	}
 			If (Regexmatch(Clip(), "[EGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
 			{
 				Product:=ClipforProduct
@@ -138,7 +151,7 @@ PasteValues() {
 			else 
 			{
 				send, ^c
-				clipwait, 1
+				sleep 300
 				Xl.CutCopyMode := False
 	if WinActive("ahk_exe OUTLOOK.EXE") 
      xl.Run("'LMS Workbook.xlsm'!PasteRotation")
