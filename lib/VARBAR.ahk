@@ -16,8 +16,8 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	}
 	if (Destroy:="Reset")
 		GUI, VarBar:destroy
-	Gui Varbar:Default
-	Gui VarBar:+LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner  
+	; Gui Varbar:Default
+	Gui VarBar: +AlwaysOnTop  -Caption  +ToolWindow +owner  
 	Gui, VarBar:color, 21a366
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
@@ -34,7 +34,7 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	GUI, VarBar:Font, s11 cBlack Bold, Consolas
 	Gui, VarBar:Add, Edit, gIterationVarBar vIteration left x300 h30 y0 w70,
 	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
-	OnMessage(0x201, "VarBar.Relocate")
+	OnMessage(0x203, "VarBar.Relocate")
 	CoordMode, mouse, screen
 	Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w340 NoActivate, VarBar
 	CoordMode, mouse, window
@@ -56,13 +56,13 @@ IterationVarBar:
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 	return
 VarBarGuiClose:
-	coordmode, mouse, Screen
-	WinGetPos,VarBar_X,Varbar_Y,w,h
+	; coordmode, mouse, Screen
+	;WinGetPos,VarBar_X,Varbar_Y,w,h
 	sleep 100
-	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
-	IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-	coordmode, mouse, Window
-	sleep 500
+	;IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
+	;IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+	;coordmode, mouse, Window
+	;sleep 500
 	GUI, VarBar:destroy
 return
 }
@@ -73,7 +73,7 @@ return
 Relocate(){
 	global
 	PostMessage, 0xA1, 2 
-	keywait, lbutton, U
+	keywait, Lbutton, U
 	coordmode, mouse, Screen
 	WinGetPos,VarBar_X,VarBar_Y,w,h
 	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X

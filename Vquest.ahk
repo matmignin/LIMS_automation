@@ -8,11 +8,11 @@ return
 
 Test(n:=0){
   Global
-  Click_SearchBox()
+  ; Click_SearchBox()
   ; ToggleFilter_Test()
   ; FilterSearch_Test("Vitamin C","221")
   ; CopyResults_Test()
-  ; ParseResultSpecs()
+  ParseResultSpecs()
   ; FilterSearch_Test()
   return
 }
@@ -64,14 +64,14 @@ return
 Click_SearchBox(){
   Global
 WinActivate, NuGenesis LMS - \\Remote
-Sleep, 200
+; Sleep, 200
 CoordMode, Pixel, Window
 PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
 If ErrorLevel = 0
   Click,505,129,2 ;samples tab
 If ErrorLevel
   click,543,90,2 ;Product/Specifications bar
-send, ^a
+; send, ^a
 
 
 return
@@ -241,6 +241,8 @@ KEY_Excel:
   Mbutton::Excel.Connect(1)
   F16::wheel("{wheelleft}",80)
   F17::wheel("{wheelRight}",80)
+  F13 & F17::Excel.NextSheet()
+  F13 & F16::Excel.PreviousSheet()
   #ifwinactive, Find and Replace,
   F13 & WheelUp::
   Wheel("{alt down}n{alt up}")
@@ -253,12 +255,14 @@ KEY_Excel:
   return::sendinput, !i
   rbutton & Lbutton::sendinput, !i
 
-#IfWinActive, ahk_exe explorer.EXE
+#IfWinActive, ahk_exe explorer.exe
 Mbutton::Open_in_Notepad()
+#IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
 F13 & Wheelup::
+winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
 send, ^e
-sleep 30
-sendinput, %product%{enter}
+sleep 60
+sendinput % varbar.sendinput("Product") "{enter}"
 sleep 300
 
 return
@@ -282,7 +286,7 @@ KEY_Browser:
   F13 & WheelDOWN::Browser_Back
   F17::!right
   F14 & wheelUP::Browser_Forward
-  Mbutton::sendinput, ^{click}
+  Mbutton::Mbutton ;sendinput, ^{click}
 
 KEY_Snipper: 
   #IfWinActive, Snipper - Snipaste ; the capture screen
@@ -327,7 +331,7 @@ ClipTool:
   #if
 
 KEY_Otherstuff:
-  Media_Play_Pause::F18 ;4finger tap
+  Media_Play_Pause::^+4 ;4finger tap
   Media_Prev::F7 ;3fringer down
   ; Media_Next:: ;3finger up
   Browser_Back::+!tab ;3finger left

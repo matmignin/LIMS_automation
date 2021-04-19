@@ -429,25 +429,25 @@ SpecTab_Table(){
 				click 125,120 ;click 2nd row
 				click 80,70 ;Edit
 				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
 				click 390, 659	;click okay
 				WinWaitClose, Result Editor - \\Remote,,4
 				click 125,140 ;click 2nd row
 				click 80,70 ;Edit
 				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
 				click 390, 659	;click okay
 				WinWaitClose, Result Editor - \\Remote,,4
 				click 125,180 ;click 3rd row
 				click 80,70 ;Edit
 				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
 				click 390, 659	;click okay
 				WinWaitClose, Result Editor - \\Remote,,4
 				click 125,200 ;click 4th row
 				click 80,70 ;Edit
 				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
 				click 390, 659	;click okay
 				return
 			}

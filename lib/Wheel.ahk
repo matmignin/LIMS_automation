@@ -140,7 +140,7 @@ Wheel_Paste()
 		tooltip("Paste")
 	}
 	else 
-	sendinput, ^v
+	send, ^v
 	ToolTip("Paste")
 		blockinput off
 		sendlevel 0
