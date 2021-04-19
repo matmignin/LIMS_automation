@@ -23,11 +23,11 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
 	WinSet, Transparent, 225
 	GUI, VarBar:Font, s12 cBlack Bold, Consolas
-	Gui, VarBar:add, Text, vBatch x68 y0 w1200, %Batch%
+	Gui, VarBar:add, Text, vBatch x68 y0 w120, %Batch%
 	GUI, VarBar:Font, s9 cBlack , Arial Narrow
-	Gui, VarBar:add, Text, vlot x70 y16 w120, %Lot%
+	Gui, VarBar:add, Text, vlot x70 y16 w90, %Lot%
 	GUI, VarBar:Font, s7 cBlack , arial
-	Gui, VarBar:add, Text, vCoated x120 y18 w100, %Coated%
+	Gui, VarBar:add, Text, vCoated x120 y18 w50, %Coated%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
 	Gui, VarBar:add, Text, vname  x150 -wrap y0 w160, %Name%
 	Gui, VarBar:add, Text, vcustomer  x190 -wrap y16 w160, %Customer%
@@ -56,13 +56,13 @@ IterationVarBar:
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 	return
 VarBarGuiClose:
-	; coordmode, mouse, Screen
-	;WinGetPos,VarBar_X,Varbar_Y,w,h
+	coordmode, mouse, Screen
+	WinGetPos,VarBar_X,Varbar_Y,w,h
 	sleep 100
-	;IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
-	;IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-	;coordmode, mouse, Window
-	;sleep 500
+	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
+	IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+	coordmode, mouse, Window
+	sleep 500
 	GUI, VarBar:destroy
 return
 }
@@ -166,14 +166,14 @@ Set(Input:=0){
 					OCR()
 			if input:="product"
 			{
-				ControlSetText, Edit1,%Product%, VarBar
 				product:=product
+				GuiControl, Varbar:Text, Product, %Product%
 				Gui, VarBar:color, 847545 ;brow
 			}
 			if input:="Batch"
 			{
-				ControlSetText, Static2,%Batch%, VarBar
 				Batch:=Batch
+				GuiControl, Varbar:Text, Batch, %Batch%
 				Gui, VarBar:color, 847545 ;brow
 			}
 			Else		
@@ -182,8 +182,10 @@ Set(Input:=0){
 				clipForProduct:= Clipboard
 				clipForBatch:= Clipboard
 				clipForlot:= Clipboard
-			If (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) > 0) 	
+			If (Regexmatch(ClipforProduct, "\b[DEGLHKJI]\d{3}", ClipForProduct) > 0) 	
 			{
+				Gui VarBar:+LastFound 
+				Gui, VarBar:submit,NoHide
 		; Product:=ClipforProduct
 		; Try {
 			;  XL:=XL.Sheets(Clipforproduct).activate
@@ -192,18 +194,9 @@ Set(Input:=0){
 		; }
 		; catch
 		; {
-		; Regexmatch(ClipforProduct, "\b[EGLHKJI]{1}\d{3}\b", ClipForProduct) 
-		ControlSetText, Edit1,%clipforProduct%, VarBar
-		; ControlSetText, Static2,, VarBar
-			; ControlSetText, Static3,, VarBar
-		; ControlSetText, Static4,, VarBar
-		; ControlSetText, Static5,, VarBar
+		; Regexmatch(ClipforProduct, "\b[DEGLHKJI]{1}\d{3}\b", ClipForProduct) 
+		GuiControl, Varbar:Text, Product, %Product%
 		product:=Clipforproduct
-		; Batch:=
-		; lot:=
-		; Name:=
-		; Customer:=
-		; coated:=
 			Gui, VarBar:color, 847545 ;brown
 	}
 
@@ -212,33 +205,23 @@ Set(Input:=0){
 		Gui VarBar:+LastFound 
 		Gui, VarBar:submit,NoHide
 		if input contains Coated
-			ControlSetText, Static3,%ClipforBatch%, VarBar
+			GuiControl, Varbar:Text, Coated, %ClipforBatch%
 		else
-		 ControlSetText, Static1,%ClipforBatch%, VarBar
-		; ControlSetText, Static2,, VarBar
-		; ControlSetText, Static4,, VarBar
-		; ControlSetText, Static5,, VarBar
-		Batch:=clipforbatch
-		; lot:=
-		; Name:=
-		; Customer:=
-		; coated:=
+		 GuiControl, Varbar:Text, Batch, %ClipforBatch%
+
+		Batch:=clipforbatch=
 		Gui, VarBar:color, 847545 ;brown
 	}
 	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
 	{
 			Gui VarBar:+LastFound 
 		Gui, VarBar:submit,NoHide
-		ControlSetText, Static3,%Clipforlot%, VarBar
-		; ControlSetText, Static4,, VarBar
-		; ControlSetText, Static5,, VarBar
+		GuiControl, Varbar:Text,lot, %Clipforlot%
+
 		lot:=clipforlot
-		; Name:=
-		; Customer:=
-		; coated:=
 		Gui, VarBar:color, 847545 ;brown
 	}
-	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[EGLHKJI]\d{3}", ClipForProduct) = 0) 
+	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[DEGHKLJI]\d{3}", ClipForProduct) = 0) 
 	{
   send, ^c
   ClipWait, 1,
@@ -266,14 +249,14 @@ Search(input){
 
 AddIteration(){
 	global Iteration
+GuiControl, Varbar:Text, iteration, %iteration%
 Iteration+=1
-ControlSetText, Edit2,%Iteration%, VarBar
 return
 }
 SubIteration(){
 	global Iteration
+GuiControl, Varbar:Text, iteration, %iteration%
 Iteration-=1
-ControlSetText, Edit2,%Iteration%, VarBar
 return
 }
 
@@ -294,4 +277,16 @@ Reset()
 	return
 }
 
+
+update(){
+	Global
+	GuiControl, Varbar:Text, Product, %Product%
+	GuiControl, Varbar:Text, Batch, %Batch%
+	GuiControl, Varbar:Text, lot, %lot%
+	GuiControl, Varbar:Text, Coated, %coated%
+	GuiControl, Varbar:Text, name, %name%
+	GuiControl, Varbar:Text, customer, %Customer%
+	GuiControl, Varbar:Text, iteration, %iteration%
+	GuiControl, varbar:text, ShapeSize, %shapeSize%
+}
 }

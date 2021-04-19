@@ -55,7 +55,7 @@ WorkTab_NewRequest()
   ; clipwait
  ThisDepartment:=Worktab_CheckDepartment()
   sleep 400
-  Tooltip(ThisDepartment)
+  ;Tooltip(ThisDepartment)
   click 64, 300 ;click Assign To New rewuest link
   winwaitactive, Edit request - \\Remote,,3
       if !Errorlevel

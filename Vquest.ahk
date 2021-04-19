@@ -12,8 +12,9 @@ Test(n:=0){
   ; ToggleFilter_Test()
   ; FilterSearch_Test("Vitamin C","221")
   ; CopyResults_Test()
-  ParseResultSpecs()
+  ; ParseResultSpecs()
   ; FilterSearch_Test()
+  msgbox, %product% `t %batch% `n %lot%
   return
 }
 
@@ -167,7 +168,36 @@ KEY_Varbar:
   
   
   
-  
+  Methods() {
+  global
+  ; Mouse_Click("searchBar_SelectMethodsTest")
+  WinActivate, Select methods tests - \\Remote
+  click, 229, 72,2
+  send, ^a
+  Menu, MethodMenu, Add, &Minerals, Methods
+  Menu, MethodMenu, Add, Vitamin &C UPLC, Methods
+  Menu, MethodMenu, Add, Vitamin &C Titration, Methods
+  Menu, MethodMenu, Add, &B Vitamins, Methods
+  Menu, MethodMenu, Show,
+return
+
+Methods:
+sleep 200
+  if (A_ThisMenuItem = "&Minerals")
+      Sendinput, 231{enter}
+  else if (A_ThisMenuItem = "Vitamin &C UPLC")
+    Sendinput, 210{enter}
+  else if (A_ThisMenuItem = "Vitamin &C Titration")
+    Sendinput, VQ 221{enter}
+  else if (A_ThisMenuItem = "&B Vitamins")
+    Sendinput, UPLC 180{enter}
+  else 
+    menu, menu, deleteAll
+   sleep 300
+   click 506, 341
+   Methods() 
+return
+}	
   
   
   
@@ -189,6 +219,9 @@ KEY_LMS:
   ;select methods
   #Ifwinactive, Select methods tests - \\Remote
   F19 & space::AutoFill()
+  F17::Methods()
+
+
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window

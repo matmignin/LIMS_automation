@@ -52,8 +52,8 @@ default(){
       VarBar.set("Coated")
     else if A_ThisMenuItem is digit
     {
-      ControlSetText, Edit2,%A_thismenuitem%, VarBar
       Iteration:=A_Thismenuitem
+      GuiControl, Varbar:Text, iteration, %A_thismenuitem%
       Clip_set("batch")
       sleep 200
       varbar.Search("batch") 

@@ -141,8 +141,8 @@ Wheel_Paste()
 	}
 	else 
 	send, ^v
-	ToolTip("Paste")
 		blockinput off
+	ToolTip("Paste")
 		sendlevel 0
 	sleep 1000
 	return

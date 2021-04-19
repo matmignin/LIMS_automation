@@ -25,7 +25,6 @@ Connect(reload:=0){
 	Try {
 		XL := ComObjActive("Excel.Application")
 		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsm")
-		; XL:=XL.ActiveSheet	
 		XL.Visible := True		
 	}
 	Catch {
@@ -45,21 +44,24 @@ Connect(reload:=0){
 	Gui VarBar:+LastFound
 	GuiControl, -redraw, varbar
 	Product:=XL.Range("B7").Value
-		ControlSetText, Edit1,%Product%, VarBar
+		; GuiControl, Varbar:Text, Product, %Product%
+
+		GuiControl, Varbar:Text, Product, %Product%
 	Batch:=XL.Range("C4").Value
-		ControlSetText, Static1,%Batch%, VarBar
+		GuiControl, Varbar:Text, Batch, %Batch%
 	Lot:=XL.Range("E4").Value
-		ControlSetText, Static2,%lot%, VarBar
+		GuiControl, Varbar:Text, lot, %lot%
 	Coated:=xl.range("F4").value
-		ControlSetText, Static3,%Coated%, VarBar
+		GuiControl, Varbar:Text, Coated, %coated%
 	Name:=XL.Range("B2").Value
-		ControlSetText, Static4,%Name%, VarBar
+			GuiControl, Varbar:Text, name, %name%
 	Customer:=XL.Range("B3").Value	
-		ControlSetText, Static5,%Customer%, VarBar
+			GuiControl, Varbar:Text, customer, %Customer%
 	ShipTo:=XL.Range("C3").Value	
 		EnvSet, ShipTo, %ShipTo%
-	;ControlSetText, Edit2,%Iteration%, VarBar
+	GuiControl, Varbar:Text, iteration, %iteration%
 		ShapeAndSize:=XL.Range("C5").Value	
+GuiControl, varbar:text, ShapeSize, %shapeSize%
 	GuiControl, +redraw, varbar
 	if (Reload = 1)
 		VarBar.show()
@@ -67,10 +69,9 @@ Connect(reload:=0){
 }
 
 
-
-
-
-
+		
+		
+		
 ActiveCell(){
 	Global
 	ActiveCell := Xl.ActiveCell.value
@@ -142,7 +143,7 @@ PasteValues(input:=0) {
 		sendlevel, 0
 		return
 	}
-			If (Regexmatch(Clip(), "[EGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
+			If (Regexmatch(Clip(), "[DEGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
 			{
 				Product:=ClipforProduct
 				xl.ActiveWorkbook.Activesheet.Range("B7").value := Product

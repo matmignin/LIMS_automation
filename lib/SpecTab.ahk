@@ -17,6 +17,7 @@ SpecTab_Table(){
 	LabelName:=		[]
 	Description:=	[]
 	Requirement:=	[]
+	method:= 			[]
 	while (Xl.Range("M" . A_Index+6).Value != "") 
 	{
 		Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
@@ -27,6 +28,7 @@ SpecTab_Table(){
 		Units[A_index]:=		Xl.Range("I" . A_Index+7).Text
 		Percision[A_index]:=	Xl.Range("J" . A_Index+7).Text
 		Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
+		Method[A_index]:=	Xl.Range("D" . A_Index+7).Text
 
 		Total_rows:=A_index
 		Table_Height:=A_index
@@ -36,7 +38,7 @@ SpecTab_Table(){
 
 	Gui, Spec_Table:Default
 	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w320 Grid NoSortHdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description
+	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 	GUI, Spec_Table:Font, s12 cBlack Bold, Consolas
 	loop, %Total_Rows% {
 		if Position[A_index] =""
@@ -46,18 +48,18 @@ SpecTab_Table(){
 			continue
 		}
 		else	
-			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index]) 
+			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index]) 
 	}
-	LV_ModifyCol(1,150)
+	LV_ModifyCol(1,130)
 	LV_ModifyCol(2,0)			
 	LV_ModifyCol(6,0)
 	LV_ModifyCol(7,0)
-	LV_ModifyCol(8,0)
+	LV_ModifyCol(8,80)
 	LV_ModifyCol(9,0)
 	LV_Delete(Table_Height)
 	sleep 200	
 	CoordMode, mouse, screen
-	Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w320, %Product%
+	Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
 	CoordMode, mouse, window
 	return			
 
