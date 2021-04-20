@@ -9,14 +9,16 @@ return
 Test(n:=0){
   Global
   
+  XA_load("Customers.xml")
   
+  msgbox % Customers["3"]
   ; Click_SearchBox()
   ; ToggleFilter_Test()
   ; FilterSearch_Test("Vitamin C","221")
   ; CopyResults_Test()
   ; ParseResultSpecs()
   ; FilterSearch_Test()
-  msgbox, %product% `t %batch% `n %lot%
+  ;msgbox, %product% `t %batch% `n %lot%
   return
 }
 
