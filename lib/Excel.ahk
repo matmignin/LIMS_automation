@@ -43,10 +43,10 @@ Connect(reload:=0){
 	; }
 	Gui VarBar:+LastFound
 	GuiControl, -redraw, varbar
-	if (xl.ActiveWorkbook.Activesheet.Name = "Finished")
-				Excel.PreviousSheet()
-	While (Regexmatch(XL.Range("B7").Value, "[ADEGLHKJI]\d{3}", ExcelSheet) = 0)
-				Excel.NextSheet()
+;	if (xl.ActiveWorkbook.Activesheet.Name = "Finished")
+		;		Excel.PreviousSheet()
+;	While (Regexmatch(XL.Range("B7").Value, "[ADEGLHKJI]\d{3}", ExcelSheet) = 0)
+	;			Excel.NextSheet()
 	Product:=XL.Range("B7").Value
 		GuiControl, Varbar:Text, Product, %Product%
 	Batch:=XL.Range("C4").Value

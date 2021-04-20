@@ -1,32 +1,47 @@
 ﻿gosub, vquest_start
   customer:=[]
-  ; Loop, Read, Customers.ini
-; {
-  ; If A_Index = 1
-    ; Continue
-  ; Customer := StrSplit(A_LoopReadLine, "=") 
-  ;Gui, Add, text, gctrlEvent, % Customer[1]
-; Gui, show, w150
-; }
+
+
+
+; SetTimer, CheckActive, 100
+
 
 return
 
-\::Methods()
+
+CheckActive:
+IfWinActive, ahk_exe WFICA32.EXE
+{
+  varbar.move()
+}
+Else
+{
+    ; WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0,
+  WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
+	Varbar_X := LMS_X+(LMS_W/2)
+	Varbar_Y := LMS_Y+2
+  WinMove, VarBar ahk_class AutoHotkeyGUI,, Varbar_X, Varbar_Y,
+
+Return
+}
+
+
+return
+
+
 
 
 Test(n:=0){
   Global
-  
-  ; Customer:="Infinicare"
-; IniRead,vOutput, Customers.ini, Customers, %Customer%
-; msgbox, %vOutput%
   ; Click_SearchBox()
   ; ToggleFilter_Test()
   ; FilterSearch_Test("Vitamin C","221")
-  ; CopyResults_Test()
-  ; ParseResultSpecs()
+  CopyResults_Test()
+  ParseResultSpecs()
   ; FilterSearch_Test()
-  ;msgbox, %product% `t %batch% `n %lot%
+  	coordmode, tooltip, Screen
+  tooltip, Low: %LowerLimit% `t High: %UpperLimit% `t Unit: %Unit% `t %Precision% `n `t %Requirement%, 1500, 0
+  ; msgbox, %product% `t %batch% `n %lot%
   return
 }
   
@@ -41,14 +56,16 @@ msgbox, %vOutput%
 }
 
 CopyResults_Test(){
+  global
   WinActivate, NuGenesis LMS - \\Remote
     click 57, 1079 ; edit results
     WinWaitActive, Results Definition - \\Remote
     click 282, 121 ; click row
       sleep 100
-  SendLevel, 1
+  ; SendLevel, 1
   send, ^c
-  clipwait, 1
+  sleep 200
+  ; clipwait, 1
   if ErrorLevel
     msgbox, yo
   sendlevel,0
@@ -60,7 +77,7 @@ ParseResultSpecs(){
   global
   ParsedSpecs:=[]
   Loop, parse, Clipboard, `t 
-    ParsedSpecs.insert(A_LoopField)
+  ParsedSpecs.insert(A_LoopField)
   LowerLimit:=Parsedspecs[17]
   UpperLimit:=Parsedspecs[18]
   Precision:=Parsedspecs[19]
@@ -193,9 +210,9 @@ KEY_Varbar:
   Methods() {
   global
   ; Mouse_Click("searchBar_SelectMethodsTest")
-  ;WinActivate, Select methods tests - \\Remote
-  ; click, 229, 72,2
-  ; send, ^a
+  WinActivate, Select methods tests - \\Remote
+  click, 229, 72,2
+  send, ^a
   Loop, Read, Methods.ini
 {
   If A_Index = 1
@@ -214,16 +231,6 @@ sleep 200
 InputVar:=A_ThisMenuItem
   IniRead,vOutput, Methods.ini, Methods, %InputVar%
   Sendinput, %vOutput%{enter}
-  ; if (A_ThisMenuItem = "&Minerals")
-  ;     Sendinput, 231{enter}
-  ; else if (A_ThisMenuItem = "Vitamin &C UPLC")
-  ;   Sendinput, 210{enter}
-  ; else if (A_ThisMenuItem = "Vitamin &C Titration")
-  ;   Sendinput, VQ 221{enter}
-  ; else if (A_ThisMenuItem = "&B Vitamins")
-  ;   Sendinput, UPLC 180{enter}
-  ; else 
-  menu, Methodmenu, deleteAll
    sleep 300
    click 506, 341
    Methods() 
@@ -561,7 +568,8 @@ VQuest_Start:
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
   SetDefaultMouseSpeed, 0
-  ;detecthiddenwindows, on
+  ; detecthiddenwindows, on
+  SetTimer, CheckActive, 10
   SetTitleMatchMode, 2
   settitlematchmode, slow
   #MaxHotkeysPerInterval 200

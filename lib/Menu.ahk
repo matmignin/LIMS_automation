@@ -248,9 +248,9 @@ VScode:
   send %MousePosition%
   else if A_thismenuItem contains &Title `t %WinTitle%
   Send %WinTitle%
-  else if A_thismenuItem &Process `t %WinProcess%
-  send ahk_exe %WinProcess%
-  else if A_thismenuItem &Control `t %WinControl%
+  else if A_thismenuItem contains &Process `t %WinProcess%
+  send, ahk_exe %WinProcess%
+  else if A_thismenuItem Contains &Control `t %WinControl%
   send, %WinControl%
   else 
   menu, menu, deleteAll

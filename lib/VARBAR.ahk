@@ -6,8 +6,8 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	try Gui,VarBar:Destroy
 	If (X<>0)
 	{
-		Iniread, VarBar_X, data.ini, Locations, VarBar_X
-		Iniread, VarBar_Y, data.ini, Locations, Varbar_Y	
+		; Iniread, VarBar_X, data.ini, Locations, VarBar_X
+		; Iniread, VarBar_Y, data.ini, Locations, Varbar_Y	
 	}
 	If (X=0)
 	{
@@ -16,12 +16,15 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	}
 	if (Destroy:="Reset")
 		GUI, VarBar:destroy
-	; Gui Varbar:Default
-	Gui VarBar: +AlwaysOnTop  -Caption  +ToolWindow +owner  
+	Gui Varbar:Default
+	Gui VarBar: +LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner  
+	WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
+	Varbar_X := LMS_X+1000
+	WinSet, Transparent, 230
+	Varbar_Y := LMS_Y
 	Gui, VarBar:color, 21a366
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
-	WinSet, Transparent, 225
 	GUI, VarBar:Font, s12 cBlack Bold, Consolas
 	Gui, VarBar:add, Text, vBatch x68 y0 w120, %Batch%
 	GUI, VarBar:Font, s9 cBlack , Arial Narrow
@@ -32,11 +35,14 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	Gui, VarBar:add, Text, vname  x150 -wrap y0 w160, %Name%
 	Gui, VarBar:add, Text, vcustomer  x190 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s11 cBlack Bold, Consolas
-	Gui, VarBar:Add, Edit, gIterationVarBar vIteration left x300 h30 y0 w70,
+	; Gui, VarBar:Add, text, gIterationVarBar vIteration left x300 h30 y0 w70,
 	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
 	OnMessage(0x203, "VarBar.Relocate")
 	CoordMode, mouse, screen
-	Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w340 NoActivate, VarBar
+	; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
+	; varbar_x:= Varbar_x +100
+	Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w300 NoActivate, VarBar
+	; Gui, VarBar:Show, h30 x%offset_X% y%offset_y%  w320 NoActivate, VarBar
 	CoordMode, mouse, window
 	return
 
@@ -47,39 +53,47 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 ProductVarBar:
 sleep 100
 Gui, VarBar:submit,NoHide
+
 return
 IterationVarBar:
-	sleep 600
-	Gui, VarBar:Submit,Nohide
-	ControlGetText, Iteration, Edit2, VarBar
-	sleep 100
-	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-	return
+	; sleep 600
+	; Gui, VarBar:Submit,Nohide
+	; ControlGetText, Iteration, Edit2, VarBar
+	
+	; sleep 100
+	; IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+	; return
 VarBarGuiClose:
 	coordmode, mouse, Screen
-	WinGetPos,VarBar_X,Varbar_Y,w,h
+	; WinGetPos,VarBar_X,Varbar_Y,w,h
+		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
+	Varbar_X := LMS_X+1000
+	Varbar_Y := LMS_Y
 	sleep 100
 	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 	IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-	coordmode, mouse, Window
+	; coordmode, mouse, Window
 	sleep 500
 	GUI, VarBar:destroy
 return
 }
 
 
-
+Move(){
+		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
+	Varbar_X := LMS_X+(LMS_W/2)-100
+	Varbar_Y := LMS_Y 
+  WinMove, VarBar ahk_class AutoHotkeyGUI,, Varbar_X, Varbar_Y,
+}
 
 Relocate(){
 	global
 	PostMessage, 0xA1, 2 
-	keywait, Lbutton, U
-	coordmode, mouse, Screen
-	WinGetPos,VarBar_X,VarBar_Y,w,h
-	IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
-	IniWrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
+	;  keywait, Lbutton, Un
+varbar.Move()
+	; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+	; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 	sleep 300
-	coordmode, mouse, Window
 	return
 }
 

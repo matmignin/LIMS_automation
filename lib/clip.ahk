@@ -18,7 +18,7 @@ Clip() {
 
 clip_set(input:=0){
 	global
-	clipboard:=
+	; clipboard:=
 	Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 	If Input contains OCR
 		OCR()
@@ -31,7 +31,7 @@ clip_set(input:=0){
 		GuiControl, Varbar:Text, Product, %Product%
 		Gui, VarBar:color, 847545 ;brown
 	}
-	if (Regexmatch(Clipboard, "\b\d{3}-\d{4}", Batch) > 0)
+	if (Regexmatch(Clipboard, "\d{3}-\d{4}", Batch) > 0)
 	{
 		GuiControl, Varbar:Text, Batch, %Batch%
 		if input contains Coated
@@ -50,7 +50,7 @@ clip_set(input:=0){
   send, {ctrl down}c{ctrl up}
 	sleep 100
 	tooltip(Clipboard)
-	return %clipboard%
+	; return %clipboard%
 	}
 	return
 }
