@@ -83,9 +83,37 @@ Relocate(){
 	return
 }
 
+Clear(Var:="NotProduct"){
+	global
+	If (Var:= "NotProduct")
+	{
+		ControlsetText, Static1,, VarBar
+		ControlsetText, Static2,, VarBa
+		ControlsetText, Static3,, VarBar
+		ControlsetText, Static4,, VarBar
+		ControlsetText, Static5,, VarBar
+	}
+If (Var:= "NotBatch")
+	{
+		ControlsetText, Static2,, VarBar
+		ControlsetText, Static3,, VarBar
+		ControlsetText, Static4,, VarBar
+		ControlsetText, Static5,, VarBar
+	}
+	If (Var:= "Notlot")
+	{
+		ControlsetText, Static3,, VarBar
+		ControlsetText, Static4,, VarBar
+		ControlsetText, Static5,, VarBar
+	}
+	else
+		GuiControl, Varbar:Text, %Var%, 
+	
+}
 
-get(Category)
-{
+
+
+get(Category:="All"){
 	Global
 	If Category contains All
 	{
@@ -235,7 +263,7 @@ Set(Input:=0){
 
 Search(input){
 		global
-	varbar.set()
+	Clip_set()
 	WinActivate, NuGenesis LMS - \\Remote
 	click 746, 47
 	sleep 200

@@ -143,12 +143,12 @@ PasteValues(input:=0) {
 		sendlevel, 0
 		return
 	}
-			If (Regexmatch(Clip(), "[DEGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
-			{
-				Product:=ClipforProduct
-				xl.ActiveWorkbook.Activesheet.Range("B7").value := Product
-				ControlSend, , {Enter}, ahk_class XLMAIN
-			}
+	; If (Regexmatch(Clip(), "[DEGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
+	; {
+		; Product:=ClipforProduct
+		; xl.ActiveWorkbook.Activesheet.Range("B7").value := Product
+		; ControlSend, , {Enter}, ahk_class XLMAIN
+	; }
 			else 
 			{
 				send, ^c

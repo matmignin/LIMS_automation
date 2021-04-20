@@ -18,71 +18,39 @@ Clip() {
 
 clip_set(input:=0){
 	global
+	clipboard:=
 	Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 	If Input contains OCR
 		OCR()
 	Else		
 		send, ^c
 		sleep 200
-	clipForProduct:= Clipboard
-	clipForBatch:= Clipboard
-	clipForlot:= Clipboard
-	If (Regexmatch(ClipforProduct, "[AEGLHKJI]\d{3}", ClipForProduct) > 0) 	
+	If (Regexmatch(CLIPBOARD, "[ADEGLHKJI]\d{3}", Product) > 0) 	
 	{
-		ControlSetText, Edit1,%clipforProduct%, VarBar
-		ControlSetText, Static2,, VarBar
-		ControlSetText, Static3,, VarBar
-		ControlSetText, Static4,, VarBar
-		ControlSetText, Static5,, VarBar
-		product:=Clipforproduct
-		Batch:=
-		lot:=
-		Name:=
-		Customer:=
-		coated:=
-			Gui, VarBar:color, 847545 ;brown
+		Varbar.Clear("notProduct")
+		GuiControl, Varbar:Text, Product, %Product%
+		Gui, VarBar:color, 847545 ;brown
 	}
-	if (Regexmatch(ClipforBatch, "\d{3}-\d{4}", ClipforBatch) > 0)
+	if (Regexmatch(Clipboard, "\b\d{3}-\d{4}", Batch) > 0)
 	{
-		; Batch:=ClipforBatch
-		Gui VarBar:+LastFound 
-		Gui, VarBar:submit,NoHide
+		GuiControl, Varbar:Text, Batch, %Batch%
 		if input contains Coated
-			ControlSetText, Static3,%ClipforBatch%, VarBar
+			Coated:=Batch
 		else
-		 ControlSetText, Static1,%ClipforBatch%, VarBar
-		; GuiControl, Text, Batch, %Batch%
-		ControlSetText, Static2,, VarBar
-		ControlSetText, Static4,, VarBar
-		ControlSetText, Static5,, VarBar
-		Batch:=clipforbatch
-		lot:=
-		Name:=
-		Customer:=
-		coated:=
+		GuiControl, Varbar:Text, Coated, %Coated%
 		Gui, VarBar:color, 847545 ;brown
 	}
-	if (Regexmatch(Clipforlot, "\d{4}\w\d\w?", Clipforlot) > 0)
+	if (Regexmatch(Clipboard, "\b\d{4}\w\d\w?", lot) > 0) || (Regexmatch(Clipboard, "Bulk", lot) > 0)
 	{
-			Gui VarBar:+LastFound 
-		Gui, VarBar:submit,NoHide
-		ControlSetText, Static3,%Clipforlot%, VarBar
-		ControlSetText, Static4,, VarBar
-		ControlSetText, Static5,, VarBar
-		lot:=clipforlot
-		Name:=
-		Customer:=
-		coated:=
+		GuiControl, Varbar:Text, Lot, %Lot%
 		Gui, VarBar:color, 847545 ;brown
 	}
-	else if (Regexmatch(Clipforlot, "\d{4}\w\d\w?", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\d{3}-\d{4}", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "[AEGLHKJI]\d{3}", ClipForProduct) = 0) 
+	else
 	{
   send, {ctrl down}c{ctrl up}
-  ClipWait, 3
-  Clipboard := Trim((Clipboard, "`r`n"))
 	sleep 100
-	tooltip(Clipboard,2000)
-	exit
+	tooltip(Clipboard)
+	return %clipboard%
 	}
 	return
 }

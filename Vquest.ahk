@@ -8,6 +8,8 @@ return
 
 Test(n:=0){
   Global
+  
+  
   ; Click_SearchBox()
   ; ToggleFilter_Test()
   ; FilterSearch_Test("Vitamin C","221")
@@ -108,7 +110,7 @@ Return & 0::Enter_Batch()
   Rbutton up::Mouse_RbuttonUP()
   F13 & LButton::Sendinput, +^4 ;screenshot"
   F13 & RButton::Sendinput, +^3 ;screenshot"
-  F13 & Mbutton::varbar.set("OCR") 
+  F13 & Mbutton::Clip_set("OCR") 
   F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
   F13 & F16::
@@ -145,7 +147,7 @@ enter::enter
   F17::sendinput, {click, 743, 41}
   Lbutton::sendinput, ^{click}
   Rbutton::sendinput, +{click}
-  mbutton::VarBar.set()
+  mbutton::Clip_set()
   #If
   F18::Autofill() ;Tooltip("☩",2000) 
 
@@ -215,6 +217,7 @@ KEY_LMS:
   F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
   Mbutton::Excel.Connect()
+  Enter::Sendinput, ^a^c{enter}
   #IfWinActive
   ;select methods
   #Ifwinactive, Select methods tests - \\Remote
@@ -441,7 +444,7 @@ Enter_Batch(){
   if !ErrorLevel
   send, {enter}
   Batch:=CodeA . "-" . CodeB
-  varbar.set("Batch")
+  GuiControl, Varbar:Text, Batch, %Batch% 
   tooltip(Batch)
   return
 }
@@ -462,7 +465,7 @@ Enter_Product(key){
     if !ErrorLevel
   send, {enter}
   Product:=Key Code
-  varbar.set("Product")
+	GuiControl, Varbar:Text, Product, %Product% 
   tooltip(Product)
   return
 } 

@@ -47,9 +47,9 @@ default(){
     else if A_thismenuItem contains &name `t %name%
       Varbar.Sendinput("Name")
     else if A_thismenuItem contains &lot `t %Lot%
-      VarBar.set("Lot")
+      VarBar.sendinput("Lot")
     else if A_thismenuItem contains &Coated `t %Coated%
-      VarBar.set("Coated")
+     Clip_set("Coated")
     else if A_ThisMenuItem is digit
     {
       Iteration:=A_Thismenuitem
@@ -203,6 +203,7 @@ VScode(){
   try menu, menu, deleteAll
   menu, Menu, Add, Search Hotkeys, vscode
   Menu, hotkeyMenu, Add, F13, vscode
+  Menu, hotkeyMenu, Add, Numlock, vscode
   Menu, hotkeyMenu, Add, F14, vscode
   Menu, hotkeyMenu, Add, F15, vscode
   Menu, hotkeyMenu, Add, F16, vscode
@@ -223,8 +224,8 @@ return
 VScode:
   if (A_thismenuitem = "F13")
   Sendinput, ^fF13`:`:{Tab 6}{down 2}
-  else if (A_thismenuitem = "F13")
-  Sendinput, ^fF13`:`:{Tab 6}{down 2}
+  else if (A_thismenuitem = "Numlock")
+  Sendinput, ^f_Psudo Numpad{Tab 6}{down 2}
   else if (A_thismenuitem = "F14")
   Sendinput, ^fF14`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F15")
@@ -256,54 +257,54 @@ VScode:
   return
   }
 
-            remote_desktop(){
-              global
-              menu, menu, add,	
-              Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
-                Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
-              Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
-              Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
-              menu, Menu, Add, Other Servers, Remote_desktop
-              Menu, SubMenu, Add, TEST_LMS, Remote_desktop
-              Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
-              Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
-              Menu, SubMenu, Add, LMS_PRD, Remote_desktop
-              Menu, SubMenu, Add, NuGenesis, Remote_desktop`
-              Menu, SubMenu, Add, SDMS, Remote_desktop
-              Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
-              Menu, SubMenu, Add, Empower, Remote_desktop
-              menu, Menu, add, Other Servers, :SubMenu
-              return
-              ; Menu, Menu, Show,
-              Remote_Desktop:
-                If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
-                  sendinput, {Click 182, 97}10.1.2.153
-                Else if (A_thisMenuItem = "TEST_LMS") 
-                  sendinput, {Click 182, 97}10.1.2.152
-                Else if (A_thisMenuItem = "TEST_NuGen")
-                  sendinput, {Click 182, 97}10.1.2.150
-                Else if (A_thisMenuItem = "TEST_SDMS") 
-                  sendinput, {Click 182, 97}10.1.2.149
-                Else if (A_thisMenuItem = "PRD_Citrix_One") 
-                  sendinput, {Click 182, 97}10.1.2.134
-                Else if (A_thisMenuItem = "PRD_Citrix_Two") 
-                  sendinput, {Click 182, 97}10.1.2.226
-                Else if (A_thisMenuItem = "PRD_Citrix_Three") 
-                  sendinput, {Click 182, 97}10.1.2.227
-                Else if (A_thisMenuItem = "LMS_PRD") 
-                  sendinput, {Click 182, 97}10.1.2.138
-                Else if (A_thisMenuItem = "NuGenesis") 
-                  sendinput, {Click 182, 97}10.1.2.164
-                Else if (A_thisMenuItem = "SDMS") 
-                  sendinput, {Click 182, 97}10.1.2.142
-                Else if (A_thisMenuItem = "PRD_EMPCitrix") 
-                  sendinput, {Click 182, 97}10.1.2.242
-                Else if (A_thisMenuItem = "Empower") 
-                  sendinput, {Click 182, 97}10.1.2.228
-                else 
-                  menu, menu, deleteAll
-              return
-            }
+remote_desktop(){
+  global
+  menu, menu, add,	
+  Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+  menu, Menu, Add, Other Servers, Remote_desktop
+  Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+  Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+  Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+  Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+  Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+  Menu, SubMenu, Add, SDMS, Remote_desktop
+  Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+  Menu, SubMenu, Add, Empower, Remote_desktop
+  menu, Menu, add, Other Servers, :SubMenu
+  return
+  ; Menu, Menu, Show,
+  Remote_Desktop:
+    If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
+      sendinput, {Click 182, 97}10.1.2.153
+    Else if (A_thisMenuItem = "TEST_LMS") 
+      sendinput, {Click 182, 97}10.1.2.152
+    Else if (A_thisMenuItem = "TEST_NuGen")
+      sendinput, {Click 182, 97}10.1.2.150
+    Else if (A_thisMenuItem = "TEST_SDMS") 
+      sendinput, {Click 182, 97}10.1.2.149
+    Else if (A_thisMenuItem = "PRD_Citrix_One") 
+      sendinput, {Click 182, 97}10.1.2.134
+    Else if (A_thisMenuItem = "PRD_Citrix_Two") 
+      sendinput, {Click 182, 97}10.1.2.226
+    Else if (A_thisMenuItem = "PRD_Citrix_Three") 
+      sendinput, {Click 182, 97}10.1.2.227
+    Else if (A_thisMenuItem = "LMS_PRD") 
+      sendinput, {Click 182, 97}10.1.2.138
+    Else if (A_thisMenuItem = "NuGenesis") 
+      sendinput, {Click 182, 97}10.1.2.164
+    Else if (A_thisMenuItem = "SDMS") 
+      sendinput, {Click 182, 97}10.1.2.142
+    Else if (A_thisMenuItem = "PRD_EMPCitrix") 
+      sendinput, {Click 182, 97}10.1.2.242
+    Else if (A_thisMenuItem = "Empower") 
+      sendinput, {Click 182, 97}10.1.2.228
+    else 
+      menu, menu, deleteAll
+  return
+}
 
             ; if (A_ThisMenuItem = "Samples")
             ; 	sendinput, care{enter}
