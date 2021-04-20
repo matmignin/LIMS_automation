@@ -1,17 +1,25 @@
 ﻿gosub, vquest_start
-
+  customer:=[]
+  ; Loop, Read, Customers.ini
+; {
+  ; If A_Index = 1
+    ; Continue
+  ; Customer := StrSplit(A_LoopReadLine, "=") 
+  ;Gui, Add, text, gctrlEvent, % Customer[1]
+; Gui, show, w150
+; }
 
 return
 
-
+\::Methods()
 
 
 Test(n:=0){
   Global
   
-  XA_load("Customers.xml")
-  
-  msgbox % Customers["3"]
+  ; Customer:="Infinicare"
+; IniRead,vOutput, Customers.ini, Customers, %Customer%
+; msgbox, %vOutput%
   ; Click_SearchBox()
   ; ToggleFilter_Test()
   ; FilterSearch_Test("Vitamin C","221")
@@ -20,6 +28,16 @@ Test(n:=0){
   ; FilterSearch_Test()
   ;msgbox, %product% `t %batch% `n %lot%
   return
+}
+  
+  
+  
+ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="")
+{
+  
+  ;GuiControlGet, OutputVar , , %CtrlHwnd%,
+  IniRead,vOutput, Customers.ini, Customers, %OutputVar%
+msgbox, %vOutput%
 }
 
 CopyResults_Test(){
@@ -175,28 +193,37 @@ KEY_Varbar:
   Methods() {
   global
   ; Mouse_Click("searchBar_SelectMethodsTest")
-  WinActivate, Select methods tests - \\Remote
-  click, 229, 72,2
-  send, ^a
-  Menu, MethodMenu, Add, &Minerals, Methods
-  Menu, MethodMenu, Add, Vitamin &C UPLC, Methods
-  Menu, MethodMenu, Add, Vitamin &C Titration, Methods
-  Menu, MethodMenu, Add, &B Vitamins, Methods
-  Menu, MethodMenu, Show,
+  ;WinActivate, Select methods tests - \\Remote
+  ; click, 229, 72,2
+  ; send, ^a
+  Loop, Read, Methods.ini
+{
+  If A_Index = 1
+    Continue
+  Method := StrSplit(A_LoopReadLine, "=") 
+  MethodGroup := StrSplit(A_LoopReadLine, "|") 
+  Selection:= % Method[1]
+  Group:= % MethodGroup[2]
+  Menu, Methodmenu, add, %Selection%, Methods
+}
+   Menu, MethodMenu, Show,
 return
 
 Methods:
 sleep 200
-  if (A_ThisMenuItem = "&Minerals")
-      Sendinput, 231{enter}
-  else if (A_ThisMenuItem = "Vitamin &C UPLC")
-    Sendinput, 210{enter}
-  else if (A_ThisMenuItem = "Vitamin &C Titration")
-    Sendinput, VQ 221{enter}
-  else if (A_ThisMenuItem = "&B Vitamins")
-    Sendinput, UPLC 180{enter}
-  else 
-    menu, menu, deleteAll
+InputVar:=A_ThisMenuItem
+  IniRead,vOutput, Methods.ini, Methods, %InputVar%
+  Sendinput, %vOutput%{enter}
+  ; if (A_ThisMenuItem = "&Minerals")
+  ;     Sendinput, 231{enter}
+  ; else if (A_ThisMenuItem = "Vitamin &C UPLC")
+  ;   Sendinput, 210{enter}
+  ; else if (A_ThisMenuItem = "Vitamin &C Titration")
+  ;   Sendinput, VQ 221{enter}
+  ; else if (A_ThisMenuItem = "&B Vitamins")
+  ;   Sendinput, UPLC 180{enter}
+  ; else 
+  menu, Methodmenu, deleteAll
    sleep 300
    click 506, 341
    Methods() 
@@ -512,6 +539,7 @@ Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 #include <Rotation>
 #include <Excel>
 #include <vis2>
+
 #include <wheel>
 #include <VScode>
 #include <mouse>
