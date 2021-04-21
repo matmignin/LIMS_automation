@@ -6,8 +6,8 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	try Gui,VarBar:Destroy
 	If (X<>0)
 	{
-		; Iniread, VarBar_X, data.ini, Locations, VarBar_X
-		; Iniread, VarBar_Y, data.ini, Locations, Varbar_Y	
+		 Iniread, VarBar_X, data.ini, Locations, VarBar_X
+		Iniread, VarBar_Y, data.ini, Locations, Varbar_Y	
 	}
 	If (X=0)
 	{
@@ -18,10 +18,10 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 		GUI, VarBar:destroy
 	Gui Varbar:Default
 	Gui VarBar: +LastFound +AlwaysOnTop  -Caption  +ToolWindow +owner  
-	WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
-	Varbar_X := LMS_X+1000
-	WinSet, Transparent, 230
-	Varbar_Y := LMS_Y
+	; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
+	; Varbar_X := LMS_X+1000
+	WinSet, Transparent, 200
+	; Varbar_Y := LMS_Y
 	Gui, VarBar:color, 21a366
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
@@ -80,19 +80,22 @@ return
 
 
 Move(){
-		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
-	Varbar_X := LMS_X+(LMS_W/2)-100
-	Varbar_Y := LMS_Y 
-  WinMove, VarBar ahk_class AutoHotkeyGUI,, Varbar_X, Varbar_Y,
+	global
+	  SetTimer, CheckActive, 800
+		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
+	VarWin_X := LMS_X+(LMS_W/2)-100
+	VarWin_Y := LMS_Y 
+  WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
+	return
 }
 
 Relocate(){
 	global
 	PostMessage, 0xA1, 2 
-	;  keywait, Lbutton, Un
-varbar.Move()
-	; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-	; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+	 keywait, Lbutton, U
+	 wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+	IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+	IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 	sleep 300
 	return
 }
@@ -132,29 +135,29 @@ get(Category:="All"){
 	If Category contains All
 	{
 		
-		ControlGetText, Product, Edit1, VarBar
-		ControlGetText, Batch, Static1, VarBar
-		ControlGetText, Lot, Static2, VarBar
-		ControlGetText, Coated, Static3, VarBar
-		ControlGetText, Name, Static4, VarBar
-		ControlGetText, customer, Static5, VarBar
-		ControlGetText, Iteration, Edit2, VarBar
+		; ControlGetText, Product, Edit1, VarBar
+		; ControlGetText, Batch, Static1, VarBar
+		; ControlGetText, Lot, Static2, VarBar
+		; ControlGetText, Coated, Static3, VarBar
+		; ControlGetText, Name, Static4, VarBar
+		; ControlGetText, customer, Static5, VarBar
+		; ControlGetText, Iteration, Edit2, VarBar
 		return
 	}
-	else If Category contains Product
-		ControlGetText, Output, Edit1, VarBar
+	If Category contains Product
+		output:=product
 	else If Category contains Batch
-		ControlGetText, Output, Static1, VarBar
+		output:=Batch	
 	else If Category contains Lot
-		ControlGetText, output, Static2, VarBar
-		else If Category contains Coated
-		ControlGetText, output, Static3, VarBar
+		output:=Lot
+	else If Category contains Coated
+		output:=Coated
 	else If Category contains Name
-		ControlGetText, Output, Static4, VarBar
+		output:=Name
 	else If Category contains Customer
-		ControlGetText, Output, Static5, VarBar
+		output:=Customer
 	else If Category contains Iteration
-		ControlGetText, Output, Edit2, VarBar
+		output:=Iteration
 	sleep 100
 		Return %ouput%
 }
@@ -176,19 +179,19 @@ Sendinput(Category:="",PostOutput:="")
 	if winactive("Register new samples - \\Remote")
 		send, {click 182, 103}%Product%
 	If Category contains Product
-		ControlGetText, Output, Edit1, VarBar
+		output:=product
 	else If Category contains Batch
-		ControlGetText, Output, Static1, VarBar
+		output:=Batch	
 	else If Category contains Lot
-		ControlGetText, Output, Static2, VarBar
+		output:=Lot
 	else If Category contains Coated
-		ControlGetText, Output, Static3, VarBar
+		output:=Coated
 	else If Category contains Name
-		ControlGetText, Output, Static4, VarBar
+		output:=Name
 	else If Category contains Customer
-		ControlGetText, Output, Static5, VarBar
+		output:=Customer
 	else If Category contains Iteration
-		ControlGetText, Output, Edit2, VarBar
+		output:=Iteration
 	Send, %output%%PostOutput%
 	sleep 100
 if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
@@ -201,83 +204,83 @@ if winactive("Find and Replace")
 }
 
 
-Set(Input:=0){
-	global
-			Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
-			If Input contains OCR
-					OCR()
-			if input:="product"
-			{
-				product:=product
-				GuiControl, Varbar:Text, Product, %Product%
-				Gui, VarBar:color, 847545 ;brow
-			}
-			if input:="Batch"
-			{
-				Batch:=Batch
-				GuiControl, Varbar:Text, Batch, %Batch%
-				Gui, VarBar:color, 847545 ;brow
-			}
-			Else		
-				send, ^c
-				sleep 200
-				clipForProduct:= Clipboard
-				clipForBatch:= Clipboard
-				clipForlot:= Clipboard
-			If (Regexmatch(ClipforProduct, "\b[DEGLHKJI]\d{3}", ClipForProduct) > 0) 	
-			{
-				Gui VarBar:+LastFound 
-				Gui, VarBar:submit,NoHide
-		; Product:=ClipforProduct
-		; Try {
-			;  XL:=XL.Sheets(Clipforproduct).activate
-			;  varbar.Update("iteration")
-			;  Gui, VarBar:color, 21a366 ;green
-		; }
-		; catch
-		; {
-		; Regexmatch(ClipforProduct, "\b[DEGLHKJI]{1}\d{3}\b", ClipForProduct) 
-		GuiControl, Varbar:Text, Product, %Product%
-		product:=Clipforproduct
-			Gui, VarBar:color, 847545 ;brown
-	}
+; Set(Input:=0){
+; 	global
+; 			Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
+; 			If Input contains OCR
+; 					OCR()
+; 			if input:="product"
+; 			{
+; 				product:=product
+; 				GuiControl, Varbar:Text, Product, %Product%
+; 				Gui, VarBar:color, 847545 ;brow
+; 			}
+; 			if input:="Batch"
+; 			{
+; 				Batch:=Batch
+; 				GuiControl, Varbar:Text, Batch, %Batch%
+; 				Gui, VarBar:color, 847545 ;brow
+; 			}
+; 			Else		
+; 				send, ^c
+; 				sleep 200
+; 				clipForProduct:= Clipboard
+; 				clipForBatch:= Clipboard
+; 				clipForlot:= Clipboard
+; 			If (Regexmatch(ClipforProduct, "\b[DEGLHKJI]\d{3}", ClipForProduct) > 0) 	
+; 			{
+; 				Gui VarBar:+LastFound 
+; 				Gui, VarBar:submit,NoHide
+; 		; Product:=ClipforProduct
+; 		; Try {
+; 			;  XL:=XL.Sheets(Clipforproduct).activate
+; 			;  varbar.Update("iteration")
+; 			;  Gui, VarBar:color, 21a366 ;green
+; 		; }
+; 		; catch
+; 		; {
+; 		; Regexmatch(ClipforProduct, "\b[DEGLHKJI]{1}\d{3}\b", ClipForProduct) 
+; 		GuiControl, Varbar:Text, Product, %Product%
+; 		product:=Clipforproduct
+; 			Gui, VarBar:color, 847545 ;brown
+; 	}
 
-	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
-	{
-		Gui VarBar:+LastFound 
-		Gui, VarBar:submit,NoHide
-		if input contains Coated
-			GuiControl, Varbar:Text, Coated, %ClipforBatch%
-		else
-		 GuiControl, Varbar:Text, Batch, %ClipforBatch%
+; 	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
+; 	{
+; 		Gui VarBar:+LastFound 
+; 		Gui, VarBar:submit,NoHide
+; 		if input contains Coated
+; 			GuiControl, Varbar:Text, Coated, %ClipforBatch%
+; 		else
+; 		 GuiControl, Varbar:Text, Batch, %ClipforBatch%
 
-		Batch:=clipforbatch=
-		Gui, VarBar:color, 847545 ;brown
-	}
-	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
-	{
-			Gui VarBar:+LastFound 
-		Gui, VarBar:submit,NoHide
-		GuiControl, Varbar:Text,lot, %Clipforlot%
+; 		Batch:=clipforbatch=
+; 		Gui, VarBar:color, 847545 ;brown
+; 	}
+; 	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
+; 	{
+; 			Gui VarBar:+LastFound 
+; 		Gui, VarBar:submit,NoHide
+; 		GuiControl, Varbar:Text,lot, %Clipforlot%
 
-		lot:=clipforlot
-		Gui, VarBar:color, 847545 ;brown
-	}
-	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[DEGHKLJI]\d{3}", ClipForProduct) = 0) 
-	{
-  send, ^c
-  ClipWait, 1,
-  Clipboard := Trim((Clipboard, "`r`n"))
-	sleep 100
-	;tooltip(Clipboard,2000)
-	exit
-	}
-	return
-}
+; 		lot:=clipforlot
+; 		Gui, VarBar:color, 847545 ;brown
+; 	}
+; 	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[DEGHKLJI]\d{3}", ClipForProduct) = 0) 
+; 	{
+;   send, ^c
+;   ClipWait, 1,
+;   Clipboard := Trim((Clipboard, "`r`n"))
+; 	sleep 100
+; 	;tooltip(Clipboard,2000)
+; 	exit
+; 	}
+; 	return
+; }
 
 Search(input){
 		global
-	Clip_set()
+	Clip()
 	WinActivate, NuGenesis LMS - \\Remote
 	click 746, 47
 	sleep 200

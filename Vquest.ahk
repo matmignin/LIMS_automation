@@ -4,48 +4,50 @@
 
 
 ; SetTimer, CheckActive, 100
-
+settimer, checkactive, off
 
 return
 
 
 CheckActive:
-IfWinActive, ahk_exe WFICA32.EXE
-{
-  varbar.move()
-}
-Else
-{
-    ; WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0,
-  WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
-	Varbar_X := LMS_X+(LMS_W/2)
-	Varbar_Y := LMS_Y+2
-  WinMove, VarBar ahk_class AutoHotkeyGUI,, Varbar_X, Varbar_Y,
-
-Return
-}
+  If WinActive("NuGenesis LMS - \\Remote") || Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
+  {
+    varbar.move()
+    return
+    }
+  Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
+    exit
+  else
+    WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0
+  Return
 
 
 return
 
 
 
-
 Test(n:=0){
   Global
-  ; Click_SearchBox()
-  ; ToggleFilter_Test()
-  ; FilterSearch_Test("Vitamin C","221")
-  CopyResults_Test()
-  ParseResultSpecs()
-  ; FilterSearch_Test()
-  	coordmode, tooltip, Screen
-  tooltip, Low: %LowerLimit% `t High: %UpperLimit% `t Unit: %Unit% `t %Precision% `n `t %Requirement%, 1500, 0
-  ; msgbox, %product% `t %batch% `n %lot%
+  ; Gosub, TestSpeccopying
+  gosub, Test1
   return
 }
-  
-  
+Test1:
+Spec_SelectRow()
+
+Return  
+
+TestSpecCopying:
+  ; ToggleFilter_Test()
+  ; FilterSearch_Test("Vitamin C","221")
+  ; CopyResults_Test()
+  ; ParseResultSpecs()
+  ;   ; FilterSearch_Test()
+  ; 	coordmode, tooltip, Screen
+  ;   tooltip, Low: %LowerLimit% `t High: %UpperLimit% `t Unit: %Unit% `t %Precision% `n `t %Requirement%, 1500, 0
+  ; ; msgbox, %product% `t %batch% `n %lot%
+return
+
   
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="")
 {
@@ -58,7 +60,7 @@ msgbox, %vOutput%
 CopyResults_Test(){
   global
   WinActivate, NuGenesis LMS - \\Remote
-    click 57, 1079 ; edit results
+    click 57, 750 ; edit results
     WinWaitActive, Results Definition - \\Remote
     click 282, 121 ; click row
       sleep 100
@@ -78,11 +80,11 @@ ParseResultSpecs(){
   ParsedSpecs:=[]
   Loop, parse, Clipboard, `t 
   ParsedSpecs.insert(A_LoopField)
-  LowerLimit:=Parsedspecs[17]
-  UpperLimit:=Parsedspecs[18]
+  MinLimit:=Parsedspecs[17]
+  MaxLimit:=Parsedspecs[18]
   Precision:=Parsedspecs[19]
   Requirement:=Parsedspecs[20]
-  Unit:=Parsedspecs[21]
+  Units:=Parsedspecs[21]
 }
 
 ToggleFilter_Test(){
@@ -93,10 +95,10 @@ ToggleFilter_Test(){
 
 FilterSearch_Test(TestName:="", MethodName:=""){
   WinActivate, NuGenesis LMS - \\Remote
-  click 837, 810 ;click name filterbox
-  sendinput, %TestName%{enter}
-  click 687, 809
-  sendinput, %MethodName%{enter}
+  click 1230, 648 ;click name filterbox
+  send, ^a%TestName%{enter}
+  click 1067, 647 ; click method ID Filterbox
+  send, ^a%MethodName%{enter}{tab 4}
 }
 
 return
@@ -108,9 +110,9 @@ WinActivate, NuGenesis LMS - \\Remote
 CoordMode, Pixel, Window
 PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
 If ErrorLevel = 0
-  Click,505,129,2 ;samples tab
+  Click,556, 127,2 ;samples tab
 If ErrorLevel
-  click,543,90,2 ;Product/Specifications bar
+  click,591,90,2 ;Product/Specifications bar
 ; send, ^a
 
 
@@ -132,6 +134,12 @@ Sendlevel 1
   Sendlevel 0
 
 KEY_DEFAULT:
+!f::
+ifwinexist, ahk_exe firefox.exe
+WinActivate, ahk_exe firefox.exe
+else 
+run, Firefox.exe, "C:\Program Files\Mozilla Firefox\" 
+return
 Return & K::Enter_Product("K")
 Return & 0::Enter_Batch()
   Mbutton & WheelDown::Wheel("^{WheelDown}") 
@@ -147,21 +155,15 @@ Return & 0::Enter_Batch()
   Rbutton up::Mouse_RbuttonUP()
   F13 & LButton::Sendinput, +^4 ;screenshot"
   F13 & RButton::Sendinput, +^3 ;screenshot"
-  F13 & Mbutton::Clip_set("OCR") 
+  F13 & Mbutton::Clip("OCR") 
   F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
-  F13 & F16::
-   WinActivate, NuGenesis LMS - \\Remote
-   Varbar.Sendinput("Product")
-  return
-  F13 & F17::
-  WinActivate, NuGenesis LMS - \\Remote
-  click, 753, 42
-  sleep 200
-  Varbar.Sendinput("Batch")
-  return
+  F13 & wheelleft::Excel.PreviousSheet()
+  F13 & wheelright::Excel.NextSheet()
+  F13 & F17::Excel.NextSheet()
+  F13 & F16::Excel.PreviousSheet()
   ; F14 & Rbutton::Get_WindowInfo()
-  F13::Clip_set()
+  F13::Clip()
   F13 & F18::Varbar.reset()
   F14 & wheelDown::Mouse_CloseWindow()
   F18 & Wheelup::!^tab
@@ -184,19 +186,27 @@ enter::enter
   F17::sendinput, {click, 743, 41}
   Lbutton::sendinput, ^{click}
   Rbutton::sendinput, +{click}
-  mbutton::Clip_set()
+  mbutton::Clip()
   #If
   F18::Autofill() ;Tooltip("☩",2000) 
 
+
+
+
+
+
+
+
 KEY_Varbar:
   #If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI") 
+  wheelleft::Excel.PreviousSheet()
+  wheelRight::excel.Nextsheet()
   WheelUp::Varbar.AddIteration()
-  wheelleft::Excel.NextSheet()
-  wheeldown::Varbar.SubIteration()
+  wheeldown::excel.previoussheet()
   F17::Excel.NextSheet()
-  wheelRight::excel.previoussheet()
-  Rbutton::Excel.connect()
   F16::excel.previoussheet()
+  Rbutton::Excel.connect()
+  Mbutton & WheelDown::varbar.Move()
   mbutton::
     if WinExist("Result Editor - \\Remote") || WinExist("Test Definition Editor - \\Remote") || winexist("Results Definition - \\Remote")
       SpecTab_Table()
@@ -218,9 +228,9 @@ KEY_Varbar:
   If A_Index = 1
     Continue
   Method := StrSplit(A_LoopReadLine, "=") 
-  MethodGroup := StrSplit(A_LoopReadLine, "|") 
+  ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
   Selection:= % Method[1]
-  Group:= % MethodGroup[2]
+  ; Group:= % MethodGroup[2]
   Menu, Methodmenu, add, %Selection%, Methods
 }
    Menu, MethodMenu, Show,
@@ -246,10 +256,8 @@ KEY_LMS:
   F14 & WheelRight:: sendinput, {click, 743, 41}
   F14 & WheelLeft::sendinput, {Click 354, 44}
   F17::click 78, 750
-  F14 & WheelUp::Varbar.AddIteration()
+  F14 & WheelUp::Test()
   F14 & wheeldown::Varbar.SubIteration()
-  F14 & F17::Excel.NextSheet()
-  F14 & F16::Excel.PreviousSheet()
   F13 & WheelUp::Varbar.Sendinput("Product")
   F13 & WheelDown::Varbar.Sendinput("Batch")
   Mbutton::Excel.Connect()
@@ -259,7 +267,9 @@ KEY_LMS:
   #Ifwinactive, Select methods tests - \\Remote
   F19 & space::AutoFill()
   F17::Methods()
-
+#IfWinActive, Results Definition - \\Remote
+wheelup::Mouse_click("Edit")
+WheelDown::SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
 
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
@@ -313,8 +323,9 @@ KEY_Excel:
   Mbutton::Excel.Connect(1)
   F16::wheel("{wheelleft}",80)
   F17::wheel("{wheelRight}",80)
-  F13 & F17::Excel.NextSheet()
-  F13 & F16::Excel.PreviousSheet()
+  
+  F14 & F17::^PgDN ;Excel.NextSheet()
+  F14 & F16::^PgUp ;Excel.PreviousSheet()
   #ifwinactive, Find and Replace,
   F13 & WheelUp::
   Wheel("{alt down}n{alt up}")
@@ -329,6 +340,8 @@ KEY_Excel:
 
 #IfWinActive, ahk_exe explorer.exe
 Mbutton::Open_in_Notepad()
+  F14 & F17::Excel.NextSheet()
+  F14 & F16::Excel.PreviousSheet()
 #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
 F13 & Wheelup::
 winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
@@ -346,7 +359,7 @@ KEY_OUTLOOK:
   Rbutton & F17::Varbar.Sendinput("Batch"," is updated.")
   F14 & WheelDown::varbar.search("batch")
   F14 & Wheelup::varbar.search("Product")
-  F13::Clip_set()
+  F13::Clip()
   F19 & Space::Varbar.Sendinput("Product")
   F20 & Space::Varbar.Sendinput("batch")
   F18::LMS_Search()
@@ -378,10 +391,13 @@ KEY_Snipper:
   #if
 
 Scroll_Fix:
-  #ifwinactive, Result Editor - \\Remote
+  #if winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote")
   wheeldown::Wheel_scroll("100")
   wheelup::Wheel_scroll("-100")
-  
+    ; #ifwinactive, Test Definition Editor - \\Remote
+  ; wheeldown::Wheel_scroll("100")
+  ; wheelup::Wheel_scroll("-100"
+  #if
 ClipTool:
 #IfWinactive, C:\Users\mmignin\Documents\VQuest\lib\CL3\cl3.ahk - AutoHotkey v1.1.33.06,
   F19::send, {esc}
@@ -513,7 +529,7 @@ LMS_Search(){
   WinActivate, NuGenesis LMS - \\Remote
   click 783, 45
   sleep 400
-  click 487, 125, 2 ;click search bar
+Click_Searchbox()
   ; click, 500,127, 2 ;click search bar
   sleep 200
   Send, %clipboard%{enter}
@@ -567,9 +583,10 @@ VQuest_Start:
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
+  	CoordMode, mouse, window
   SetDefaultMouseSpeed, 0
   ; detecthiddenwindows, on
-  SetTimer, CheckActive, 10
+
   SetTitleMatchMode, 2
   settitlematchmode, slow
   #MaxHotkeysPerInterval 200
@@ -579,7 +596,7 @@ VQuest_Start:
   setwindelay, 450
   AutoTrim, On
   Menu, Tray, Icon, Robot.ico
-  Results_Definition_edit:="78,63"
+Results_Definition_edit:="78,63"
 Result_Editor_Ok:="370,660"
 Results_Definition_ok:="1336,592"
 Requests_tab:="865,83"

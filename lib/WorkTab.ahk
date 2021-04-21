@@ -30,20 +30,25 @@ ifwinactive, Register new samples - \\Remote
 }
 Worktab_CheckDepartment(){
   global 
-  department:=Clip()
-  ;department:=Clipboard
-  MicroDepartment:=Department
-  PhysicalDepartment:=Department
-  AnalyticalDepartment:=Department 
+  department:= ;Clip()
+  send, ^c
+  sleep 400
   sleep 200
-  if (Regexmatch(MicroDepartment, "\bMicro\s\(Finished\)", MicroDepartment) > 0)
-    Return "Micro"
-  else if (Regexmatch(PhysicalDepartment, "\bPhysical\s\((In Process|Coated)\)", PhysicalDepartment) > 0)
-    Return "Physical"
-  else if (Regexmatch(AnalyticalDepartment, "\bAnalytical\s\(In Process\)", AnalyticalDepartment) > 0)
-    Return "Analytical"
-  else
-    msgbox, none %department% `r %physicalDepartment%
+  if (Regexmatch(Clipboard, "\bMicro\s\(Finished\)",Micr) > 0)
+  {
+    Department:="Micro"
+    Return 
+  }
+  else if (Regexmatch(clipboard, "\bPhysical\b", Phys) > 0)
+  {
+    Department:="Physical"
+    Return
+  }
+  else if (Regexmatch(clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
+  {
+    Department:="Analytical"
+      Return
+  }
   ; return %Department%
   	;Clipboard:=Preclip
 }
@@ -51,11 +56,15 @@ Worktab_CheckDepartment(){
 WorkTab_NewRequest()
 {
   global
-  ; send, ^c
+  Clipboard:=
+  send, ^c
   ; clipwait
- ThisDepartment:=Worktab_CheckDepartment()
   sleep 400
-  ;Tooltip(ThisDepartment)
+ Worktab_CheckDepartment()
+  sleep 400
+  Tooltip, %Department%
+
+
   click 64, 300 ;click Assign To New rewuest link
   winwaitactive, Edit request - \\Remote,,3
       if !Errorlevel
@@ -70,7 +79,7 @@ WorkTab_NewRequest()
   send, {up}{enter}
   sleep 100
   click, 97, 125 ; click filter
-  send, %ThisDepartment%{enter}
+  send, %Department%{enter}
   sleep 100
   click 152, 195
   send ^a
@@ -94,88 +103,12 @@ WorkTab_NewRequest()
   Sleep 100
     winactivate, Edit request
     send, {tab}{enter}
+    tooltip,
   return
 
 }
 
-WorkTab_ShipToSelect(x_pos:=304,y_pos:=433)
-{
-  global
-  Menu, ShipToMenu, Add, &B, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &C, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &D, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &Equilife, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &E, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &F, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &G, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &H, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &I, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &J, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &K, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &L, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &M, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &N, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &O, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &P, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &R, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &S, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &T, ShipToMenuHandler
-  Menu, ShipToMenu, Add, &V, ShipToMenuHandler
-  Menu, ShipToMenu, Show,noactivate
-  Return
-
-  ShipToMenuHandler:
-    winactivate, Edit sample
-    sendinput, {click, %x_pos%, %y_pos%}{Home}
-    If (A_ThisMenuItem = "&B") 
-      sendinput, {tab}{pgdn 2}
-    else if (A_ThisMenuItem = "&C") 
-      sendinput, {tab}{pgdn 3}
-    else if (A_ThisMenuItem = "&D") 
-      sendinput, {tab}{pgdn 4}
-    else if (A_ThisMenuItem = "&E") 
-      sendinput, {tab}{pgdn 5}
-    else if (A_ThisMenuItem = "&Equilife") 
-      sendinput, {tab}{pgdn 6}{down 9}
-    else if (A_ThisMenuItem = "&F") 
-      sendinput, {tab}{pgdn 6}
-    else if (A_ThisMenuItem = "&G") 
-      sendinput, {tab}{pgdn 7}
-    else if (A_ThisMenuItem = "&H") 
-      sendinput, {tab}{pgdn 8}
-    else if (A_ThisMenuItem = "&I") 
-      sendinput, {tab}{pgdn 9}
-    else if (A_ThisMenuItem = "&J") 
-      sendinput, {tab}{pgdn 10}
-    else if (A_ThisMenuItem = "&K") 
-      sendinput, {tab}{pgdn 11}
-    else if (A_ThisMenuItem = "Key Nutrients") 
-      sendinput, {tab}{pgdn 10}{down 18}
-    else if (A_ThisMenuItem = "&L") 
-      sendinput, {tab}{pgdn 12}
-    else if (A_ThisMenuItem = "&M") 
-      sendinput, {tab}{pgdn 13}
-    else if (A_ThisMenuItem = "&N") 
-      sendinput, {tab}{pgdn 14}
-    else if (A_ThisMenuItem = "&O") 
-      sendinput, {tab}{end}{pgup 8}
-    else if (A_ThisMenuItem = "&P") 
-      sendinput, {tab}{end}{pgup 7}
-    else if (A_ThisMenuItem = "&R") 
-      sendinput, {tab}{end}{pgup 6}
-    else if (A_ThisMenuItem = "&S") 
-      sendinput, {tab}{end}{pgup 5}
-    else if (A_ThisMenuItem = "&T") 
-      sendinput, {tab}{end}{pgup 4}
-    else if (A_ThisMenuItem = "&V") 
-      sendinput, {tab}{end}{pgup 1}
-    else
-      return
-  return
-}
-
-WorkTab_ChangeTestResults(Checkbox_Toggle:=0) 
-{
+WorkTab_ChangeTestResults(Checkbox_Toggle:=0) {
   global 
   MouseGetPos, xpos, ypos
   click

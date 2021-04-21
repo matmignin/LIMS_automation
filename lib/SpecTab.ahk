@@ -77,21 +77,19 @@ SpecTab_Table(){
 
 			If WinExist("Result Editor - \\Remote") ;the editing window
 			{
-				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
 				return
 			}
 			else if winexist("Results Definition - \\Remote") ;Selection window
 			{	
-				; winactivate, Results Definition - \\Remote
-				; Mouse_Click("Edit")
-				; sleep 200
-				; winwaitactive, Result Editor - \\Remote
-				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
 				return
 			}
 			else If WinExist("Test Definition Editor - \\Remote") 
 			{
 				SpecTab_TestDefinitionEditor(Description) ; the pre window
+				WinActivate, Results Definition - \\Remote
+				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
 				return
 			}
 			else If Winexist("NuGenesis LMS - \\Remote") 
@@ -113,15 +111,30 @@ SpecTab_Table(){
 	IfWinActive, wintitlke, WinText, ExcludeTitle, ExcludeText]
 
 	Spec_TableGuiClose:
-		; coordmode,window,Screen
-		; WinGetPos,SpecTable_X,SpecTable_Y,
-		; sleep 100
-		; IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
-		; IniWrite, %SpecTable_Y%, data.ini, Locations, SpecTable_Y
-		; coordmode,window,Window
-		; sleep 500
 		GUI, Spec_Table:destroy
 	return
+
+
+Spec_SelectRow(){
+	global
+	RowNumber = 0  ; This causes the first loop iteration to start the search at the top of the list.
+Loop
+{
+    RowNumber := LV_GetNext(RowNumber)  ; Resume the search at the row after that found by the previous iteration.
+    if not RowNumber  ; The above returned zero, so there are no more selected rows.
+        break
+    LV_GetText(Text, RowNumber)
+		if TestName contains
+    MsgBox, The next selected row is #%RowNumber%, whose first field is "%Text%".
+		return
+}
+	
+}
+
+
+
+
+
 
 	SpecTab_Create_Template:
 		{	
@@ -225,18 +238,20 @@ SpecTab_Table(){
 					sendinput, NMT %Max_Limit% %The_Units%
 				Else
 					Sendinput, %Requirement%
-				sleep 300
-				click 350, 660 ; click okay
+				; sleep 300
+				;click 350, 660 ; click okay
 			}
 
 			SpecTab_TestDefinitionEditor(The_Description) {
 				Global
-				Excel.Connect()
+				; Excel.Connect()
 				WinActivate, Test Definition Editor - \\Remote 
 				DescriptionRaw:=The_Description
 				Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
 				Click, 187, 200 ;Orient_SpecTab_TestDefinitionEditor
-				Sendinput,^a%Trimmed_Description%{pg down 5}
+				Send,^a%Trimmed_Description%
+				sleep 300
+				Wheel_scroll("100")
 				;send, {shift down}{Tab 15}{Shift up}{enter}
 				return
 			}

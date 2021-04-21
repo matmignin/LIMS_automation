@@ -67,6 +67,7 @@ GuiControl, varbar:text, ShapeSize, %shapeSize%
 	GuiControl, +redraw, varbar
 	if (Reload = 1)
 		VarBar.show()
+		; excel.MatchColor()
 	return
 }
 
@@ -88,29 +89,44 @@ NextSheet(){
 	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
 	if (nextsheetname = "Finished")
-		exit
+			XL.Sheets(3).activate
 	XL.Sheets(NextSheetname).activate
-	; varbar.Update()
-	Gui, VarBar:color, 21a366 ;green
+	Excel.MatchColor()
 	excel.connect()
 	;GuiControl, +redraw, varbar
 }
 
 PreviousSheet(){
 	global
-	Gui VarBar:+LastFound 
+	; Gui VarBar:+LastFound 
 	;GuiControl, -redraw, varbar
 	PreviousSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	if (PreviousSheet < 3) 
 		exit
-	XL.Sheets(PreviousSheet).activate
-	; varbar.Update()
-	Gui, VarBar:color, 21a366 ;green
 	excel.connect()
+	; Excel.MatchColor()
+	; varbar.Update()
 	;GuiControl, +redraw, varbar
+	}
+
+MatchColor(){
+	Global
+		TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
+		if (TabColor = 16764057) 
+ 			Gui, VarBar:color, 8ea9db; blue
+		else if (TabColor = 65280) 	
+			Gui, VarBar:color, 21a366 ;green
+		else if (TabColor = 10092543) ;yellow	
+			Gui, VarBar:color, ffff00 ;Yellow
+		else if (TabColor = 26367) 	;orange
+			Gui, VarBar:color, ff9966 ;orange
+		else if (TabColor = 12632256) 	;greay
+			Gui, VarBar:color, 808080 ;Gray
+		if (TabColor = 0) 	;black
+			Gui, VarBar:color, 808080 ;Gray
+		else
+			Gui, VarBar:color, ffffff ;White
 }
-
-
 Get_Current_row(){
 	Global
 	LV_GetText(Position, Current_row,1)	
@@ -132,7 +148,7 @@ Search(){
 PasteValues(input:=0) {
 	global
 	if (input:="Snip")
-	{
+		{
 		send, ^c
 	excel.connect()
 		sleep 200
@@ -145,13 +161,13 @@ PasteValues(input:=0) {
 		sendlevel, 0
 		return
 	}
-	; If (Regexmatch(Clip(), "[DEGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
+		; If (Regexmatch(Clip(), "[DEGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	
 	; {
 		; Product:=ClipforProduct
 		; xl.ActiveWorkbook.Activesheet.Range("B7").value := Product
 		; ControlSend, , {Enter}, ahk_class XLMAIN
 	; }
-			else 
+		else 
 			{
 				send, ^c
 				sleep 300
@@ -159,14 +175,14 @@ PasteValues(input:=0) {
 	if WinActive("ahk_exe OUTLOOK.EXE") 
      xl.Run("'LMS Workbook.xlsm'!PasteRotation")
 	else if WinActive("ahk_exe explorer.exe") 
-	{
-		xl.ActiveWorkbook.Activesheet.Range("B8").select
+		{
+			xl.ActiveWorkbook.Activesheet.Range("B8").select
     xl.Run("'LMS Workbook.xlsm'!PasteIngredients")
-	}
+		}
 		return
-}
+		}
 
-}
+	}
 }
 
 

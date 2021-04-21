@@ -1,8 +1,18 @@
 ﻿Wheel_scroll(direction){
 	ifwinactive, Result Editor - \\Remote
+	{
 		mousemove, 505, 200,0	
-
 	mouseclickDrag, L,0, 0, 0, %Direction%,0,R	; mouseclick, %upOrDown%, ,,1,0	0
+	}
+  ifwinactive, Test Definition Editor - \\Remote
+		{
+			click, 466, 437
+		; mousemove, 463, 302,0	
+		sleep 100
+		click 240, 488
+
+		return
+		}
 	return
 	}
 
@@ -49,7 +59,7 @@ Wheel_Right(){
 		sendinput, !{right}	
 	} Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{right}	
-} Else If winactive("ahk_exe EXCEL.EXE"){
+	} Else If winactive("ahk_exe EXCEL.EXE"){
 		Wheel("{wheelleft}",0)	
 	} Else If winactive("outlook"){
 		Send, {wheelright} 
@@ -78,19 +88,8 @@ Wheel_Right(){
 	} Else if winactive("Edit sample (Field Configuration: I`, Physical) - \\Remote"){
 		Excel.Connect()
 		sendinput, {tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		WorkTab_ShipToSelect()
-	} Else if winactive("Edit sample (Field Configuration: CT`, Physical) - \\Remote"){
-		WorkTab_ShipToSelect()
-	} Else if winactive("Edit sample (Field Configuration: I`, Analytical) - \\Remote"){
-		WorkTab_ShipToSelect()
-	} Else if winactive("Edit sample (Field Configuration: F`, Micro) - \\Remote"){
-		WorkTab_ShipToSelect()
-	} Else if winactive("Edit sample (Field Configuration: CT`, Retain) - \\Remote, "){
-		WorkTab_ShipToSelect()
-	} Else if winactive("Edit sample (Field Configuration: I`, Retain) - \\Remote"){
-		WorkTab_ShipToSelect()
-	} else
 		Send, {wheelright} 
+	}
 		return
 	
 }

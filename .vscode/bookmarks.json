@@ -14,37 +14,37 @@
 			"path": "Vquest.ahk",
 			"bookmarks": [
 				{
-					"line": 190,
+					"line": 199,
 					"column": 6,
 					"label": ""
 				},
 				{
-					"line": 242,
+					"line": 252,
 					"column": 1,
 					"label": ""
 				},
 				{
-					"line": 304,
+					"line": 314,
 					"column": 4,
 					"label": ""
 				},
 				{
-					"line": 329,
+					"line": 340,
 					"column": 20,
 					"label": "KEY_explorer"
 				},
 				{
-					"line": 340,
+					"line": 353,
 					"column": 8,
 					"label": ""
 				},
 				{
-					"line": 362,
+					"line": 375,
 					"column": 9,
 					"label": ""
 				},
 				{
-					"line": 487,
+					"line": 503,
 					"column": 11,
 					"label": ""
 				}
@@ -54,7 +54,7 @@
 			"path": "lib/VarBar.ahk",
 			"bookmarks": [
 				{
-					"line": 203,
+					"line": 206,
 					"column": 8,
 					"label": ""
 				}
@@ -79,17 +79,17 @@
 					"label": ""
 				},
 				{
-					"line": 41,
+					"line": 42,
 					"column": 7,
 					"label": ""
 				},
 				{
-					"line": 161,
+					"line": 162,
 					"column": 5,
 					"label": ""
 				},
 				{
-					"line": 200,
+					"line": 208,
 					"column": 3,
 					"label": ""
 				}

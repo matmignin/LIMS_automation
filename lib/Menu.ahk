@@ -32,6 +32,7 @@ default(){
     menu, menu, add
   }
   menu,menu,add,Test_1,Tables
+  menu,menu,add, &Spec Table,Tables
   Menu, Menu, Add, &Product `t %Product%, Variables
   Menu, Menu, Add, &Batch `t %Batch%, Variables
   Menu, Menu, Add, &Lot `t %Lot%, Variables
@@ -49,12 +50,12 @@ default(){
     else if A_thismenuItem contains &lot `t %Lot%
       VarBar.sendinput("Lot")
     else if A_thismenuItem contains &Coated `t %Coated%
-     Clip_set("Coated")
+     Clip("Coated")
     else if A_ThisMenuItem is digit
     {
       Iteration:=A_Thismenuitem
       GuiControl, Varbar:Text, iteration, %A_thismenuitem%
-      Clip_set("batch")
+      Clip("batch")
       sleep 200
       varbar.Search("batch") 
     }
@@ -163,34 +164,41 @@ LMS_autofill(){
   Global
   menu, menu, add,
   ;Excel.Connect()
-  Menu, Menu, add, &Analytical, AutoFill
-  Menu, Menu, add, &Physical, AutoFill
-  Menu, Menu, add, &Micro, AutoFill
-  Menu, Menu, add, &Retain, AutoFill		
-  Menu, Menu, add, &Coated_Physical, AutoFill
-  Menu, Menu, add, &Coated_Retain, AutoFill
+    Menu, Menu, add, New &Request, AutoFill
+  Menu, Menu, add, Analytical, AutoFill
+  Menu, Menu, add, Physical, AutoFill
+  Menu, Menu, add, Micro, AutoFill
+  Menu, Menu, add, Retain, AutoFill		
+  Menu, Menu, add, Coated_Physical, AutoFill
+  Menu, Menu, add, Coated_Retain, AutoFill
   ;	Menu, Menu, Show,
 return
 Autofill:
-  if A_thismenuitem contains &Analytical 
+  if A_thismenuitem contains Analytical 
     if Winactive("NuGenesis LMS - \\Remote")
     WorkTab_NewRequest()
   else 
     SpecTab_Edit_Analytical()
-  else if A_thismenuitem contains &Coated_Retain
+  else if A_thismenuitem contains Coated_Retain
     SpecTab_Edit_CoatedRetain()
-  else if A_thismenuitem contains &Coated_Physical
+  else if A_thismenuitem contains Coated_Physical
     SpecTab_Edit_CoatedPhysical()
-  else if A_thismenuitem contains &Retain
+  else if A_thismenuitem contains Retain
     SpecTab_Edit_Retain()
-  else if A_thismenuitem contains &Micro
+  else if A_thismenuitem contains Micro
     if Winactive("NuGenesis LMS - \\Remote")		
     WorkTab_NewRequest() ;Add tests to sample
   else
     SpecTab_Edit_Micro() ; copy micro spec tests
-  else if A_thismenuitem contains &Physical
+  else if A_thismenuitem contains Physical
     if Winactive("NuGenesis LMS - \\Remote")
     WorkTab_NewRequest()
+  else if A_thismenuitem contains New &Request
+  {
+    MouseGetPos, MX, MY, MWin,, 
+     WorkTab_NewRequest()
+    MouseMove, MX, Y+25, 0, R
+  }
   else
     SpecTab_Edit_Physical()		
   else 
@@ -215,7 +223,7 @@ VScode(){
   menu, Menu, add, Search Hotkeys, :HotkeyMenu
   Menu, menu, Add, &Mouse `t %MousePosition%, vscode
   Menu, menu, Add, &Title `t %WinTitle%, vscode
-  Menu, menu, Add, &Process `t %WinProcess%, vscode
+  Menu, menu, Add, P&rocess `t %WinProcess%, vscode
   Menu, menu, Add, &Control `t %WinControl%, vscode
   menu, menu, add,
   default()

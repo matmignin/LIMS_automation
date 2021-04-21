@@ -3,6 +3,8 @@ return
 #IfWinActive, ahk_exe Code.exe
     Capslock & ,::sendinput, !^b
     Capslock & a::!^a
+    Capslock & 8::F3
+    Capslock & 3::+F3
     ^r::ReloadScript()
     ^k::sendinput, ^{up}
     ^l::sendinput, ^]
@@ -241,19 +243,18 @@ v up::
 	 k::numpad5
 	 l::numpad6
 	 u::numpad7
+   h::numpadsub
 	 i::numpad8
 	 o::numpad9
-	 `;::-
-	 n::numpaddiv
+	 `;::sendinput, {numpad0}
+	 n::Numpaddiv
 	 /::,
 	 p::numpadmult
-	 '::right
-   space::sendinput, {numpad0} ;SetCapsLockState off ;45465% !GetKeyState("CapsLock", "T")
-  ~ENTER::
-  sendinput, {enter}
-	 h::left
+	 '::numpadDot
+  ~ENTER::sendinput, {enter}
    F19::
    F20::
+   space::
   Capslock::
    SetCapsLockState off
    tooltip
