@@ -24,8 +24,9 @@ Clip(input:=0){
 		OCR()
 	Else		
 	clipboard:=""
+	sleep 20
 		send, ^c
-		sleep 200
+		clipwait, 1
 		If (Input = "S")
 		{
 				Clipboard:=""

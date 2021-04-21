@@ -23,9 +23,9 @@ SpecTab_Table(){
 		else	
 		{
 			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index]) 
-			TestSpecs:= Name[A_index] "|" LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+			temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 			Test:= Name[A_index]
-			Iniwrite, %TestSpecs%, data.ini, %Product%, %Test%
+			Iniwrite, %Temp%, data.ini, %Product%, %Test%
 		}
 	}
 	SpecTab_ModifyColumns()
@@ -123,19 +123,19 @@ SpecTab_ModifyColumns(){
 	}
 	
 SpecTab_GetRowText(){ 
-		LV_GetText(Name, 		A_EventInfo,1)
+		LV_GetText(Name, 				A_EventInfo,1)
 		LV_GetText(LabelClaim, 	A_EventInfo,2)
-		LV_GetText(MinLimit, 	A_EventInfo,3)
-		LV_GetText(MaxLimit, 	A_EventInfo,4)
-		LV_GetText(Units, 		A_EventInfo,5)
+		LV_GetText(MinLimit, 		A_EventInfo,3)
+		LV_GetText(MaxLimit, 		A_EventInfo,4)
+		LV_GetText(Units, 			A_EventInfo,5)
 		LV_GetText(Percision, 	A_EventInfo,6)
 		LV_GetText(Description, A_EventInfo,7)
+		LV_GetText(Method, 			A_EventInfo,8)
 		Gui, Spec_Table:submit,NoHide
 }
 SpecTab_GetExcelData(){
 			Global
 		Name:=				[]
-		Position:=		[]
 		LabelClaim:=	[] 
 		MinLimit:=		[]
 		MaxLimit:=		[]

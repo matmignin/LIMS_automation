@@ -53,18 +53,17 @@ Worktab_CheckDepartment(){
   	;Clipboard:=Preclip
 }
  
-WorkTab_NewRequest()
-{
+WorkTab_NewRequest(){
   global
   Clipboard:=
+  sleep 100
   send, ^c
-  ; clipwait
-  sleep 400
- Worktab_CheckDepartment()
+  clipwait, 1
+    if err
+  ; sleep 400
+  Worktab_CheckDepartment()
   sleep 400
   Tooltip, %Department%
-
-
   click 64, 300 ;click Assign To New rewuest link
   winwaitactive, Edit request - \\Remote,,3
       if !Errorlevel

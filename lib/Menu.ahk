@@ -174,10 +174,7 @@ LMS_autofill(){
   ;	Menu, Menu, Show,
 return
 Autofill:
-  if A_thismenuitem contains Analytical 
-    if Winactive("NuGenesis LMS - \\Remote")
-    WorkTab_NewRequest()
-  else 
+  if A_thismenuitem contains Analytical  
     SpecTab_Edit_Analytical()
   else if A_thismenuitem contains Coated_Retain
     SpecTab_Edit_CoatedRetain()
@@ -185,22 +182,17 @@ Autofill:
     SpecTab_Edit_CoatedPhysical()
   else if A_thismenuitem contains Retain
     SpecTab_Edit_Retain()
-  else if A_thismenuitem contains Micro
-    if Winactive("NuGenesis LMS - \\Remote")		
-    WorkTab_NewRequest() ;Add tests to sample
-  else
+  else if A_thismenuitem contains Microe
     SpecTab_Edit_Micro() ; copy micro spec tests
   else if A_thismenuitem contains Physical
-    if Winactive("NuGenesis LMS - \\Remote")
-    WorkTab_NewRequest()
+    SpecTab_Edit_Physical()
   else if A_thismenuitem contains New &Request
   {
-    MouseGetPos, MX, MY, MWin,, 
+     MouseGetPos, MX, MY, MWin,, 
      WorkTab_NewRequest()
-    MouseMove, MX, Y+25, 0, R
-  }
-  else
-    SpecTab_Edit_Physical()		
+     winwaitactive, NuGenesis LMS - \\Remote
+    Click, MX, Y+25,
+      }
   else 
     menu, menu, deleteAll
 return

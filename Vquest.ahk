@@ -1,7 +1,8 @@
 ﻿gosub, vquest_start
 
 StartTest(){
-   SpecTab_Table()
+  ;  SpecTab_Table()
+  ;  Test()
 }
   customer:=[]
 
@@ -37,8 +38,13 @@ Test(n:=0){
   return
 }
 Test1:
-Spec_Test()
-msgbox, %test%
+iniread, full, data.ini, %Product%,
+Test_Specs:= strsplit(Full,"=")
+Test:=Test_Specs[1]
+Specs:= strsplit(Test_Specs[2],"|")
+msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+
+LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 Return  
 
 TestSpecCopying:
@@ -136,14 +142,13 @@ Sendlevel 1
   Rbutton & F17::F21
  ; F19::Return ;send, {F21}
   Sendlevel 0
+  
+
 
 KEY_DEFAULT:
-!f::
-ifwinexist, ahk_exe firefox.exe
-WinActivate, ahk_exe firefox.exe
-else 
-run, Firefox.exe, "C:\Program Files\Mozilla Firefox\" 
-return
+!f::Open_Firefox()
+^t::open_firefox(1)
+
 Return & K::Enter_Product("K")
 Return & 0::Enter_Batch()
   Mbutton & WheelDown::Wheel("^{WheelDown}") 
@@ -173,7 +178,7 @@ Return & 0::Enter_Batch()
   F18 & Wheelup::!^tab
   F14 & Lbutton::Sendinput, #{down}
   
-  F14::Menu()
+  ; F14::Menu()
   ; F18 & Wheelup::sendinput, {F15}
   F18 & Lbutton::sendinput, ^{Click}
   F18 & Rbutton::sendinput, +{Click}
@@ -181,6 +186,21 @@ Return & 0::Enter_Batch()
   F18 & F17::sendinput, !^{tab}
   F18 & F16::sendinput, !^{+tab}
 enter::enter
+  F14::Menu()
+  ; if (A_TimeSincePriorHotkey != -1 & A_TimeSincePriorHotkey <300)
+  ;   cnt +=1
+  ; else if (A_TimeSincePriorHotkey > 400)
+  ;   cnt :=0
+    
+  ;   if (cnt==2)
+  ;   {
+  ; ;  try menu, menu, deleteAll
+  ;     Autofill()
+  ;     tooltip("Tripple")
+  ;   }
+  ;   if (cnt == 1)
+  ;     Menu()
+  ;     RETurn
 
 #If (A_PriorHotKey = "F18" AND A_TimeSincePriorHotkey < 2000) ;____F18____
   f18::ReloadScript()
@@ -466,6 +486,20 @@ KEY_Otherstuff:
     /::sendinput, !^w
     5::^+/
 
+
+
+
+open_Firefox(NewTab:=0){
+  if winnotexist ("ahk_exe firefox.exe")
+    run, Firefox.exe, "C:\Program Files\Mozilla Firefox\" 
+  else 
+    WinActivate, ahk_exe firefox.exe
+  ; If (NewTab=1) 
+    ; sendinput, ^t
+  return
+}
+
+
   Open_in_Notepad(){
     click
     WinGetClass class, % " ahk_id " WinExist("A")
@@ -595,7 +629,7 @@ VQuest_Start:
   SetTitleMatchMode, 2
   settitlematchmode, slow
   #MaxHotkeysPerInterval 200
-  #HotkeyModifierTimeout 30
+  #HotkeyModifierTimeout 10
   #maxthreadsperhotkey, 1
   SetKeyDelay, 1, 0
   setwindelay, 450
