@@ -23,11 +23,12 @@ Clip(input:=0){
 	If Input contains OCR
 		OCR()
 	Else		
+	clipboard:=""
 		send, ^c
 		sleep 200
 		If (Input = "S")
 		{
-				Clipboard:=
+				Clipboard:=""
 					Send, ^c    
 					clipwait, 1
 				Selection:=StrReplace(Clipboard, "`r`n")

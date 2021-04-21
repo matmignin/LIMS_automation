@@ -523,6 +523,7 @@ Enter_Product(key){
 } 
 
 LMS_Search(){
+  clipboard:=""
   send, ^c
   ClipWait, 1,
   Clipboard := Trim((Clipboard, "`r`n"))
