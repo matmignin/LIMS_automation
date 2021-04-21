@@ -5,6 +5,7 @@ return
     Capslock & a::!^a
     Capslock & 8::F3
     Capslock & 3::+F3
+    capslock::esc
     ^r::ReloadScript()
     ^k::sendinput, ^{up}
     ^l::sendinput, ^]

@@ -4,38 +4,11 @@ SpecTab_Table(){
 	Try GUI, Spec_Table:destroy 
 	; Iniread, VarBar_X, data.ini, Locations, SpecTable_X
 	; Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
-	SpecTable_Y:=Varbar_Y + 40
-	SpecTable_X:=Varbar_X + 200
+		CoordMode, mouse, screen
+	SpecTable_Y:=Varbar_Y + 10
+	SpecTable_X:=A_screenwidth-800
 	Excel.Connect()
-	Name:=				[]
-	Position:=		[]
-	LabelClaim:=	[] 
-	MinLimit:=		[]
-	MaxLimit:=		[]
-	Units:=				[]
-	Percision:=		[]
-	LabelName:=		[]
-	Description:=	[]
-	Requirement:=	[]
-	method:= 			[]
-	while (Xl.Range("M" . A_Index+6).Value != "") 
-	{
-		Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
-		Name[A_index]:=			Xl.Range("K" . A_Index+7).text
-		LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
-		MinLimit[A_index]:=		Xl.Range("G" . A_Index+7).Text
-		MaxLimit[A_index]:=		Xl.Range("H" . A_Index+7).Text
-		Units[A_index]:=		Xl.Range("I" . A_Index+7).Text
-		Percision[A_index]:=	Xl.Range("J" . A_Index+7).Text
-		Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
-		Method[A_index]:=	Xl.Range("D" . A_Index+7).Text
-
-		Total_rows:=A_index
-		Table_Height:=A_index
-		if (Table_Height > 30)
-			Table_Height = 30
-	}
-
+	SpecTab_GetExcelData()
 	Gui, Spec_Table:Default
 	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
@@ -48,33 +21,64 @@ SpecTab_Table(){
 			continue
 		}
 		else	
+		{
 			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index]) 
+			TestSpecs:= Name[A_index] "|" LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+			Test:= Name[A_index]
+			Iniwrite, %TestSpecs%, data.ini, %Product%, %Test%
+		}
 	}
-	LV_ModifyCol(1,130)
-	LV_ModifyCol(2,0)			
-	LV_ModifyCol(6,0)
-	LV_ModifyCol(7,0)
-	LV_ModifyCol(8,80)
-	LV_ModifyCol(9,0)
-	LV_Delete(Table_Height)
+	SpecTab_ModifyColumns()
+	
 	sleep 200	
 	CoordMode, mouse, screen
 	Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
 	CoordMode, mouse, window
 	return			
 
+
 	Spec_Table:
 		if (A_GuiEvent = "DoubleClick" ) {	
-			LV_GetText(Name, 		A_EventInfo,1)
-			LV_GetText(LabelClaim, 	A_EventInfo,2)
-			LV_GetText(MinLimit, 	A_EventInfo,3)
-			LV_GetText(MaxLimit, 	A_EventInfo,4)
-			LV_GetText(Units, 		A_EventInfo,5)
-			LV_GetText(Percision, 	A_EventInfo,6)
-			LV_GetText(Description, A_EventInfo,7)
-			Gui, Spec_Table:submit,NoHide
-			sleep 200
+			Spec_Test()
+; SpecTab_GetRowText()
+SpecTab_AutoFill()
 
+		}
+Return
+	}
+
+
+
+	
+
+
+Spec_Test(){
+	global
+	Gui, Spec_Table:submit,NoHide
+	; Gui, Spec_Table:Default
+	RowNumber = 0  ; This causes the first loop iteration to start the search at the top of the list.
+	Loop
+		{
+			RowNumber := LV_GetNext(RowNumber)  ; Resume the search at the row after that found by the previous iteration.
+			if not RowNumber  ; The above returned zero, so there are no more selected rows.
+					break
+			LV_GetText(Text, RowNumber)
+			if Text contains Vitamin C
+			Test:=RowNumber
+				; MsgBox, The next selected row is #%RowNumber%, whose first field is "%Text%".
+	msgbox, %Test%
+	}
+}
+	
+
+
+
+
+
+
+SpecTab_AutoFill(){ 
+	global
+				sleep 200
 			If WinExist("Result Editor - \\Remote") ;the editing window
 			{
 				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
@@ -104,35 +108,61 @@ SpecTab_Table(){
 			}
 			else
 				return
-		}
+ }
 
+
+SpecTab_ModifyColumns(){
+	Global
+		LV_ModifyCol(1,130)
+		LV_ModifyCol(2,0)			
+		LV_ModifyCol(6,0)
+		LV_ModifyCol(7,0)
+		LV_ModifyCol(8,80)
+		LV_ModifyCol(9,0)
+		LV_Delete(Table_Height)
 	}
-
-	IfWinActive, wintitlke, WinText, ExcludeTitle, ExcludeText]
-
-	Spec_TableGuiClose:
-		GUI, Spec_Table:destroy
-	return
-
-
-Spec_SelectRow(){
-	global
-	RowNumber = 0  ; This causes the first loop iteration to start the search at the top of the list.
-Loop
-
-{
-    RowNumber := LV_GetNext(RowNumber)  ; Resume the search at the row after that found by the previous iteration.
-    if not RowNumber  ; The above returned zero, so there are no more selected rows.
-        break
-    LV_GetText(Text, RowNumber)
-		if TestName contains
-    MsgBox, The next selected row is #%RowNumber%, whose first field is "%Text%".
-		return
-}
 	
+SpecTab_GetRowText(){ 
+		LV_GetText(Name, 		A_EventInfo,1)
+		LV_GetText(LabelClaim, 	A_EventInfo,2)
+		LV_GetText(MinLimit, 	A_EventInfo,3)
+		LV_GetText(MaxLimit, 	A_EventInfo,4)
+		LV_GetText(Units, 		A_EventInfo,5)
+		LV_GetText(Percision, 	A_EventInfo,6)
+		LV_GetText(Description, A_EventInfo,7)
+		Gui, Spec_Table:submit,NoHide
 }
+SpecTab_GetExcelData(){
+			Global
+		Name:=				[]
+		Position:=		[]
+		LabelClaim:=	[] 
+		MinLimit:=		[]
+		MaxLimit:=		[]
+		Units:=				[]
+		Percision:=		[]
+		LabelName:=		[]
+		Description:=	[]
+		Requirement:=	[]
+		method:= 			[]
+		while (Xl.Range("M" . A_Index+6).Value != "") 
+		{
+			Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
+			Name[A_index]:=			Xl.Range("K" . A_Index+7).text
+			LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
+			MinLimit[A_index]:=		Xl.Range("G" . A_Index+7).Text
+			MaxLimit[A_index]:=		Xl.Range("H" . A_Index+7).Text
+			Units[A_index]:=		Xl.Range("I" . A_Index+7).Text
+			Percision[A_index]:=	Xl.Range("J" . A_Index+7).Text
+			Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
+			Method[A_index]:=	Xl.Range("D" . A_Index+7).Text
 
-
+			Total_rows:=A_index
+			Table_Height:=A_index
+			if (Table_Height > 30)
+				Table_Height = 30
+		}
+	}
 
 
 
@@ -517,3 +547,6 @@ Loop
 			}
 
 			#IfWinActive,
+	Spec_TableGuiClose:
+		GUI, Spec_Table:destroy
+	return

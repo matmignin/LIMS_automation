@@ -91,6 +91,7 @@ Move(){
 
 Relocate(){
 	global
+	settimer, checkactive, off
 	PostMessage, 0xA1, 2 
 	 keywait, Lbutton, U
 	 wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI

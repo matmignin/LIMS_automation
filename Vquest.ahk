@@ -1,10 +1,13 @@
 ﻿gosub, vquest_start
+
+StartTest(){
+   SpecTab_Table()
+}
   customer:=[]
 
 
 
 ; SetTimer, CheckActive, 100
-settimer, checkactive, off
 
 return
 
@@ -22,6 +25,7 @@ CheckActive:
   Return
 
 
+
 return
 
 
@@ -33,8 +37,8 @@ Test(n:=0){
   return
 }
 Test1:
-Spec_SelectRow()
-
+Spec_Test()
+msgbox, %test%
 Return  
 
 TestSpecCopying:
@@ -607,3 +611,4 @@ Mywork_Searchbar:="500,127,2"
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
   Excel.Connect(1)
+  StartTest()
