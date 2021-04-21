@@ -23,23 +23,23 @@ return
       Rbutton & F17::Wheel_2("^]", 20)
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
-    Rbutton & F14::Get_WindowInfo()
+    Rbutton & Xbutton1::Get_WindowInfo()
     $Rbutton::Click right
-    F14 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
-    F14 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
+    Xbutton1 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
+    Xbutton1 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
 
-    F14 & Mbutton::sendinput, !d
-    F14 & Rbutton::+F8
-    F14 & Lbutton::sendinput, ^{click}
-    F14 & F18::F4
-    F14::menu()
-    F13 & F18::F5
-    F13::sendinput, {F13}
-    F13 & Lbutton::^+4
+    Xbutton1 & Mbutton::sendinput, !d
+    Xbutton1 & Rbutton::+F8
+    Xbutton1 & Lbutton::sendinput, ^{click}
+    Xbutton1 & F18::F4
+    Xbutton1::menu()
+    Xbutton2 & F18::F5
+    Xbutton2::sendinput, {Xbutton2}
+    Xbutton2 & Lbutton::^+4
     F17::Wheel_2("!{right}",100)
     F16::Wheel_2("!{left}",100)
-    F14 & F17::Wheel_2("^]")
-    F14 & F16::wheel_2("^[")
+    Xbutton1 & F17::Wheel_2("^]")
+    Xbutton1 & F16::wheel_2("^[")
     F18::ReloadScript()
     F20 & space::^+p
     F20 & h::sendinput, +!{left}
@@ -104,7 +104,6 @@ return
     mouseclick, right
     ;sendinput, {esc}
     ;MouseClick, left,,, 1, 0,
-    sleep 10000
     tooltip
     return
   }
@@ -176,8 +175,8 @@ VIM:
 	4::sendinput, +{end}^c{right}
 	y::
 	Send {home}+{end}^c
-	sleep 25
-	ClipWait, 1
+	sleep 150
+	; ClipWait, 1
 	send, {right}
 	return
 	Capslock & 0::sendinput, +{home}^c
@@ -282,14 +281,12 @@ return
 	#!\::Login()
   
   
-  
-  
+
 DoublePress(){
+  global
 	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 400) 
-	{
-		Sendinput, {%A_ThisHotkey%}
-		return
-	}
+		Send, {%A_ThisHotkey%}
+   else 
 	return
 }
 

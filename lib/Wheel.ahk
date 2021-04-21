@@ -134,7 +134,8 @@ Wheel_Paste()
 	if winactive("ahk_exe WFICA32.EXE")
 	{
 		Clipboard := Trim((Clipboard, "`r`n"))
-		clipwait, 1
+		; clipwait, 1
+		sleep 100
 		send, %Clipboard%
 		tooltip("Paste")
 	}
@@ -143,7 +144,6 @@ Wheel_Paste()
 		blockinput off
 	ToolTip("Paste")
 		sendlevel 0
-	sleep 1000
 	return
 }
 Wheel_Cut() 
@@ -151,9 +151,11 @@ Wheel_Cut()
 	global
 	sendlevel 2
 	Send, ^x
-	clipwait, 0.75
-	ToolTip(clipboard)
-	sleep 800
+	
+	; clipwait, 0.75
+	sleep 100
+	; sleep 800
+	 ToolTip(clipboard)
 	sendlevel 0
 	return
 }
@@ -162,9 +164,10 @@ Wheel_Copy()
 	global
 	sendlevel 2
 	Send, ^c
-	clipwait, 0.75
-	ToolTip(clipboard)
+	; clipwait, 0.75
+	sleep 100
 	sendlevel 0
+	ToolTip(clipboard)
 	sleep 800
 	return
 }

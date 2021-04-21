@@ -2,6 +2,7 @@
 Menu(n:=0){
   Global
   try menu, menu, deleteAll
+
   default()
   If Winactive("Password ahk_class bosa_sdm_XL9") 
     passwords()
@@ -22,7 +23,9 @@ Menu(n:=0){
 ;default
 default(){
   global
-
+  If Winactive("NuGenesis LMS - \\Remote")
+    Menu, Menu, add, New &Request, AutoFill
+    Menu, Menu, Add,
   if WinActive("ahk_exe explorer.exe") || Winactive("ahk_exe OUTLOOK.EXE")
   {
     menu, menu, add
@@ -164,7 +167,7 @@ LMS_autofill(){
   Global
   menu, menu, add,
   ;Excel.Connect()
-    Menu, Menu, add, New &Request, AutoFill
+   
   Menu, Menu, add, Analytical, AutoFill
   Menu, Menu, add, Physical, AutoFill
   Menu, Menu, add, Micro, AutoFill
@@ -182,7 +185,7 @@ Autofill:
     SpecTab_Edit_CoatedPhysical()
   else if A_thismenuitem contains Retain
     SpecTab_Edit_Retain()
-  else if A_thismenuitem contains Microe
+  else if A_thismenuitem contains Micro
     SpecTab_Edit_Micro() ; copy micro spec tests
   else if A_thismenuitem contains Physical
     SpecTab_Edit_Physical()
@@ -202,9 +205,9 @@ VScode(){
   Global
   try menu, menu, deleteAll
   menu, Menu, Add, Search Hotkeys, vscode
-  Menu, hotkeyMenu, Add, F13, vscode
+  Menu, hotkeyMenu, Add, Xbutton2, vscode
   Menu, hotkeyMenu, Add, Numlock, vscode
-  Menu, hotkeyMenu, Add, F14, vscode
+  Menu, hotkeyMenu, Add, Xbutton1, vscode
   Menu, hotkeyMenu, Add, F15, vscode
   Menu, hotkeyMenu, Add, F16, vscode
   Menu, hotkeyMenu, Add, F17, vscode
@@ -222,12 +225,12 @@ VScode(){
 return
 
 VScode:
-  if (A_thismenuitem = "F13")
-  Sendinput, ^fF13`:`:{Tab 6}{down 2}
+  if (A_thismenuitem = "Xbutton2")
+  Sendinput, ^fXbutton2`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "Numlock")
   Sendinput, ^f_Psudo Numpad{Tab 6}{down 2}
-  else if (A_thismenuitem = "F14")
-  Sendinput, ^fF14`:`:{Tab 6}{down 2}
+  else if (A_thismenuitem = "Xbutton1")
+  Sendinput, ^fXbutton1`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F15")
   Sendinput, ^fF15`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F16")

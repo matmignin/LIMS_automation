@@ -8,13 +8,13 @@ ifwinactive, Register new samples - \\Remote
   sendinput, {tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
     sendinput, {tab}^a
-  sendinput % Varbar.Sendinput("Batch") "{tab}^a"
+  sendinput, ^a%Batch% {tab}^a
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote 
   {
-    sendinput % Varbar.Sendinput("Lot") 
+    sendinput ^a%Lot% 
     send, {tab 3} 
     sleep 100
-    send, % Varbar.Sendinput("Coated") 
+    sendinput, ^a%Coated%
     sleep 100
     send, +{tab 2}
   }
@@ -30,10 +30,7 @@ ifwinactive, Register new samples - \\Remote
 }
 Worktab_CheckDepartment(){
   global 
-  department:= ;Clip()
-  send, ^c
-  sleep 400
-  sleep 200
+Send, ^c
   if (Regexmatch(Clipboard, "\bMicro\s\(Finished\)",Micr) > 0)
   {
     Department:="Micro"
@@ -49,21 +46,25 @@ Worktab_CheckDepartment(){
     Department:="Analytical"
       Return
   }
+  else
+  exit
   ; return %Department%
   	;Clipboard:=Preclip
 }
  
 WorkTab_NewRequest(){
   global
-  Clipboard:=
+  department:="" ;Clip()
+  Clipboard:=""
   sleep 100
+  WinActivate, NuGenesis LMS - \\Remote
   send, ^c
-  clipwait, 1
-    if err
-  ; sleep 400
+  sleep 200
+  ; clipwait
+  clipboard:=Clipboard ; Tooltip, %Clipboard%
   Worktab_CheckDepartment()
   sleep 400
-  Tooltip, %Department%
+  tooltip, %department%
   click 64, 300 ;click Assign To New rewuest link
   winwaitactive, Edit request - \\Remote,,3
       if !Errorlevel
@@ -78,8 +79,9 @@ WorkTab_NewRequest(){
   send, {up}{enter}
   sleep 100
   click, 97, 125 ; click filter
-  send, %Department%{enter}
+  send, %Department%{enter}{tab 2}
   sleep 100
+  send, %product%{enter}
   click 152, 195
   send ^a
   input, , V T3, {Lbutton}{enter}

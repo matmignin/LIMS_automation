@@ -451,8 +451,9 @@ Formulation_Hotstrings:
     :*R:#2\::`#2 capsule / 0.709`" x 0.250`"
     :*R:#1\::`#1 capsule / 0.765`" x 0.272`"
     :*R:#0\::`#0 capsule / 0.854`" x 0.300`"
-    
-
+    :*R:USP\::Meets USP Requirements
+    :*R:fr\::Fixing Rotation
+    :*R:?\::?Kilgore7744
     :*R:7/16\::`Round / 0.4375`"
     :*R:5.5 oblong\::Oblong / 0.750`" x 0.313`"
     :*R:5.5 oval\::Oval / 0.625`" x 0.344`""
@@ -464,7 +465,8 @@ Formulation_Hotstrings:
     :*:5\::`Each five (5){space} contains {ctrl down}{left}{ctrl up}{left}
     :*:6\::`Each six (6){space} contains {ctrl down}{left}{ctrl up}{left}
     :*:7\::`Each seven (7){space} contains {ctrl down}{left}{ctrl up}{left}
-    :*:scoop::scoop ( g){left 3}{tab}Blend+{tab}
+    :*:scoop\::scoop ( g){left 3}{tab}Blend+{tab}
+    :*:stick\::stick packet ( g){left 3}{tab}Blend+{tab}
     :*:NMT30::`NMT 30 Minutes
     :*:NMT5::`NMT 5 mcg/day
     :*:NMT15::`NMT 15 mcg/day

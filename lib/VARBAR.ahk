@@ -175,7 +175,7 @@ Sendinput(Category:="",PostOutput:="")
 		}
 	if WinActive("NuGenesis LMS - \\Remote") 
 	{
-			Click_SearchBox()
+			SearchBar()
 	}
 	if winactive("Register new samples - \\Remote")
 		send, {click 182, 103}%Product%
@@ -285,8 +285,8 @@ Search(input){
 	WinActivate, NuGenesis LMS - \\Remote
 	click 746, 47
 	sleep 200
-	Click_SearchBox()
-	Varbar.sendinput("Batch")
+	SearchBar(Batch)
+	; Varbar.sendinput("Batch")
 	return
 }
 

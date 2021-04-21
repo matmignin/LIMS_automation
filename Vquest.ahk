@@ -1,6 +1,7 @@
 ﻿gosub, vquest_start
 
 StartTest(){
+  SetTimer, SmartDocs, 10
   ;  SpecTab_Table()
   ;  Test()
 }
@@ -25,8 +26,9 @@ CheckActive:
     WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0
   Return
 
-
-
+SmartDocs:
+    Autofill_SmartDoc()
+    
 return
 
 
@@ -34,9 +36,10 @@ return
 Test(n:=0){
   Global
   ; Gosub, TestSpeccopying
-  gosub, Test1
+  gosub, Test2
   return
 }
+
 Test1:
 iniread, full, data.ini, %Product%,
 Test_Specs:= strsplit(Full,"=")
@@ -46,6 +49,60 @@ msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMa
 
 LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 Return  
+
+
+Test2:
+Autofill_SmartDoc()
+  setwindelay, 450
+return
+
+Autofill_SmartDoc(){
+  global
+  setwindelay, 50
+  If Winexist("LMS Actions - \\Remote") {
+			WinActivate,
+			click 60, 44
+      sleep 200
+      WinWaitClose, LMS Actions - \\Remote
+      return
+    }
+  else if winexist("Select Iterations - \\Remote"){
+    WinActivate, 
+      Rotation_GetTable()
+    WinWaitClose, Select Iterations - \\Remote
+      return
+  }
+	else If Winexist("New Document - \\Remote") {
+    WinActivate,   
+    sleep 200                    
+		send, {tab 6}{right 5}{tab 4}%Product%{tab 2}{enter}
+		sleep 400
+		WinActivate, NuGenesis LMS - \\Remote
+		sleep 400
+		click, 525, 100 ;edit section
+		sleep 200			
+    return				 
+  }
+		else If Winexist("Select Product - \\Remote"){
+      WinActivate,
+		  click 105, 62 ;select Formulation search
+		sendinput, %product%{enter 2}
+    WinWaitClose, Select Product - \\Remote
+    return
+    }
+    else if winactive("Release: Rotational Testing Schedule - \\Remote")
+    autofill()
+    else if winactive("Sign : 210421_Rotation_0007 - \\Remote")
+      AutoFill()
+    else if winactive("Release:"){
+      AutoFill()
+      SetTimer, SmartDocs, off
+      exit
+    }  
+    else
+      return
+}
+
 
 TestSpecCopying:
   ; ToggleFilter_Test()
@@ -113,32 +170,18 @@ FilterSearch_Test(TestName:="", MethodName:=""){
 
 return
 
-Click_SearchBox(){
-  Global
-WinActivate, NuGenesis LMS - \\Remote
-; Sleep, 200
-CoordMode, Pixel, Window
-PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
-If ErrorLevel = 0
-  Click,556, 127,2 ;samples tab
-If ErrorLevel
-  click,591,90,2 ;Product/Specifications bar
-; send, ^a
 
-
-return
-}
 
 
 
 
 
 #IfWinActive,
-  F14 & F13::wheel("^!{tab}")
+  Xbutton1 & Xbutton2::wheel("^!{tab}")
 
 Sendlevel 1
   Rbutton & Mbutton::send, {F21}
-  F13 & F14::sendinput, {CtrlDown}{F21}{CtrlUp}
+  Xbutton2 & Xbutton1::sendinput, {CtrlDown}{F21}{CtrlUp}
   Rbutton & F17::F21
  ; F19::Return ;send, {F21}
   Sendlevel 0
@@ -147,46 +190,47 @@ Sendlevel 1
 
 KEY_DEFAULT:
 !f::Open_Firefox()
-^t::open_firefox(1)
+!v::Open_vsCode()
 
 Return & K::Enter_Product("K")
 Return & 0::Enter_Batch()
-  Mbutton & WheelDown::Wheel("^{WheelDown}") 
-  Mbutton & Wheelup::Wheel("^{WheelUp}") 
+  Mbutton & WheelDown::^WheelDown
+  Mbutton & Wheelup::^WheelUp 
   Mbutton & F17::Wheel_Right()
   Mbutton & F16::Wheel_left()
   Mbutton::Mbutton
   Rbutton & Wheelup::Wheel_cut() 
   Rbutton & Wheeldown::Wheel_paste()
-  Rbutton & F14::Get_WindowInfo()
+  Rbutton & Xbutton1::Get_WindowInfo()
   Rbutton & F16::Backspace
   Rbutton & Lbutton::Enter
   Rbutton up::Mouse_RbuttonUP()
-  F13 & LButton::Sendinput, +^4 ;screenshot"
-  F13 & RButton::Sendinput, +^3 ;screenshot"
-  F13 & Mbutton::Clip("OCR") 
-  F13 & WheelUp::Varbar.Sendinput("Product")
-  F13 & WheelDown::Varbar.Sendinput("Batch")
-  F13 & wheelleft::Excel.PreviousSheet()
-  F13 & wheelright::Excel.NextSheet()
-  F13 & F17::Excel.NextSheet()
-  F13 & F16::Excel.PreviousSheet()
-  ; F14 & Rbutton::Get_WindowInfo()
-  F13::Clip()
-  F13 & F18::Varbar.reset()
-  F14 & wheelDown::Mouse_CloseWindow()
+  Xbutton2 & LButton::Sendinput, +^4 ;screenshot"
+  Xbutton2 & RButton::Sendinput, +^3 ;screenshot"
+  Xbutton2 & Mbutton::Clip("OCR") 
+  Xbutton2 & WheelUp::Wheel(Product)
+  Xbutton2 & WheelDown::Wheel(Batch)
+  Xbutton2 & wheelleft::Excel.PreviousSheet()
+  Xbutton2 & wheelright::Excel.NextSheet()
+  Xbutton2 & F17::Excel.NextSheet()
+  Xbutton2 & F16::Excel.PreviousSheet()
+  ; Xbutton1 & Rbutton::Get_WindowInfo()
+  Xbutton2::Clip()
+  Xbutton2 & F18::Varbar.reset()
+  Xbutton1 & wheelDown::Mouse_CloseWindow()
   F18 & Wheelup::!^tab
-  F14 & Lbutton::Sendinput, #{down}
+  Xbutton1 & Lbutton::Sendinput, #{down}
   
-  ; F14::Menu()
-  ; F18 & Wheelup::sendinput, {F15}
+  ; Xbutton1::Menu()
+  F18 & Wheeldown::+^!tab
   F18 & Lbutton::sendinput, ^{Click}
   F18 & Rbutton::sendinput, +{Click}
   F18 & Mbutton::^a
-  F18 & F17::sendinput, !^{tab}
-  F18 & F16::sendinput, !^{+tab}
+  F18 & F17::!tab
+  F18 & F16::!+tab
+
 enter::enter
-  F14::Menu()
+  Xbutton1::Menu()
   ; if (A_TimeSincePriorHotkey != -1 & A_TimeSincePriorHotkey <300)
   ;   cnt +=1
   ; else if (A_TimeSincePriorHotkey > 400)
@@ -212,7 +256,8 @@ enter::enter
   Rbutton::sendinput, +{click}
   mbutton::Clip()
   #If
-  F18::Autofill() ;Tooltip("☩",2000) 
+  ; F18::Autofill() ;Tooltip("☩",2000) 
+  F18 uP::send, {space}
 
 
 
@@ -277,13 +322,14 @@ return
 KEY_LMS:
   #Ifwinactive, NuGenesis LMS - \\Remote 
   F20::Mouse_Click("SearchBar_Batch") 
-  F14 & WheelRight:: sendinput, {click, 743, 41}
-  F14 & WheelLeft::sendinput, {Click 354, 44}
+  Xbutton1 & WheelRight:: sendinput, {click, 743, 41}
+  Xbutton1 & WheelLeft::sendinput, {Click 354, 44}
   F17::click 78, 750
-  F14 & WheelUp::Test()
-  F14 & wheeldown::Varbar.SubIteration()
-  F13 & WheelUp::Varbar.Sendinput("Product")
-  F13 & WheelDown::Varbar.Sendinput("Batch")
+    F18::autofill()
+  Xbutton1 & WheelUp::Test()
+  Xbutton1 & wheeldown::Varbar.SubIteration()
+  Xbutton2 & WheelUp::SearchBar(Product)
+  Xbutton2 & WheelDown::SearchBar(Batch)
   Mbutton::Excel.Connect()
   Enter::Sendinput, ^a^c{enter}
   #IfWinActive
@@ -293,30 +339,30 @@ KEY_LMS:
   F17::Methods()
 #IfWinActive, Results Definition - \\Remote
 wheelup::Mouse_click("Edit")
-WheelDown::SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+WheelDown::wheel("{esc}")
 
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
-  F13::WorkTab_ChangeTestResults("toggle")	
+  Xbutton2::WorkTab_ChangeTestResults("toggle")	
   F16::WorkTab_ChangeTestResults("toggle")
   F17::WorkTab_ChangeTestResults()
   
 #ifwinactive, Register new samples - \\Remote
-  F13 & wheelup::sendinput, {click 180, 103, 2}%Product%{enter}
+  Xbutton2 & wheelup::sendinput, {click 180, 103, 2}%Product%{enter}
   F18::Autofill(1)
 
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  F14 & WheelUp::Varbar.AddIteration()
-  F14 & wheeldown::Varbar.SubIteration()
+  Xbutton1 & WheelUp::Varbar.AddIteration()
+  Xbutton1 & wheeldown::Varbar.SubIteration()
   browser_Forward::Excel.NextSheet()
   browser_Back::Excel.PreviousSheet()
-  ; F13 & F17::Excel.NextSheet()
-  ; F13 & F16::Excel.PreviousSheet()
+  ; Xbutton2 & F17::Excel.NextSheet()
+  ; Xbutton2 & F16::Excel.PreviousSheet()
   Mbutton::AutoFill()
   F18::autofill()
-  F13 & WheelUp::Varbar.Sendinput("Product")
-  F13 & WheelDown::Varbar.Sendinput("Batch")
+  Xbutton2 & WheelUp::Wheel(Product)
+  Xbutton2 & WheelDown::Wheel(Batch)
 
 #IfWinActive, Enter Product Number ahk_class #32770
   m::1
@@ -348,30 +394,30 @@ KEY_Excel:
   F16::wheel("{wheelleft}",80)
   F17::wheel("{wheelRight}",80)
   
-  F14 & F17::^PgDN ;Excel.NextSheet()
-  F14 & F16::^PgUp ;Excel.PreviousSheet()
+  Xbutton1 & F17::^PgDN ;Excel.NextSheet()
+  Xbutton1 & F16::^PgUp ;Excel.PreviousSheet()
   #ifwinactive, Find and Replace,
-  F13 & WheelUp::
+  Xbutton2 & WheelUp::
   Wheel("{alt down}n{alt up}")
-  Varbar.Sendinput("Product")
+  Sendinput, %Product%
   return
-  F13 & WheelDown::
+  Xbutton2 & WheelDown::
  ; Wheel("{alt down}n{alt up}")
-  Varbar.Sendinput("Batch")
+  Sendinput % Batch
   return
   return::sendinput, !i
   rbutton & Lbutton::sendinput, !i
 
 #IfWinActive, ahk_exe explorer.exe
 Mbutton::Open_in_Notepad()
-  F14 & F17::Excel.NextSheet()
-  F14 & F16::Excel.PreviousSheet()
+  Xbutton1 & F17::Excel.NextSheet()
+  Xbutton1 & F16::Excel.PreviousSheet()
 #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
-F13 & Wheelup::
+Xbutton2 & Wheelup::
 winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
 send, ^e
 sleep 60
-sendinput % varbar.sendinput("Product") "{enter}"
+sendinput, %Product%{enter}
 sleep 300
 
 return
@@ -381,20 +427,20 @@ KEY_OUTLOOK:
   Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
   Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
   Rbutton & F17::Varbar.Sendinput("Batch"," is updated.")
-  F14 & WheelDown::varbar.search("batch")
-  F14 & Wheelup::varbar.search("Product")
-  F13::Clip()
+  Xbutton1 & WheelDown::varbar.search("batch")
+  Xbutton1 & Wheelup::varbar.search("Product")
+  Xbutton2::Clip()
   F19 & Space::Varbar.Sendinput("Product")
   F20 & Space::Varbar.Sendinput("batch")
   F18::LMS_Search()
 
 KEY_Browser:
   #IfWinActive, ahk_exe firefox.exe
-  F14 & WheelDown::Wheel("^w")
+  Xbutton1 & WheelDown::Wheel("^w")
   F16::sendinput, !{left}
-  F13 & WheelDOWN::Browser_Back
+  Xbutton2 & WheelDOWN::Browser_Back
   F17::!right
-  F14 & wheelUP::Browser_Forward
+  Xbutton1 & wheelUP::Browser_Forward
   Mbutton::Mbutton ;sendinput, ^{click}
 
 KEY_Snipper: 
@@ -406,7 +452,7 @@ KEY_Snipper:
   #IfWinActive, Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
   Mbutton & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
   Mbutton::send, {esc}
-  F13::sendinput, ^c
+  Xbutton2::sendinput, ^c
   F17::sendinput, ^+{+}
   F16::sendinput, ^+{-}
   #If mouse_isover("Paster - Snipaste ahk_class Qt5QWindowToolSaveBits")
@@ -489,16 +535,23 @@ KEY_Otherstuff:
 
 
 
-open_Firefox(NewTab:=0){
-  if winnotexist ("ahk_exe firefox.exe")
-    run, Firefox.exe, "C:\Program Files\Mozilla Firefox\" 
+open_Firefox(){
+  ifwinnotexist, ahk_exe firefox.exe
+    run, firefox.exe, "C:\Program Files\Mozilla Firefox\" 
   else 
     WinActivate, ahk_exe firefox.exe
-  ; If (NewTab=1) 
-    ; sendinput, ^t
+
   return
 }
 
+open_VScode(){
+  ifwinnotexist,ahk_exe Code.exe
+    run, Code.exe, "C:\Program Files\Microsoft VS Code\" 
+  else 
+    WinActivate, ahk_exe Code.exe
+
+  return
+}
 
   Open_in_Notepad(){
     click
@@ -563,15 +616,16 @@ Enter_Product(key){
 LMS_Search(){
   clipboard:=""
   send, ^c
-  ClipWait, 1,
+  sleep 200
+  ;ClipWait, 1,
   Clipboard := Trim((Clipboard, "`r`n"))
   WinActivate, NuGenesis LMS - \\Remote
   click 783, 45
   sleep 400
-Click_Searchbox()
+SearchBar(Clipboard)
   ; click, 500,127, 2 ;click search bar
   sleep 200
-  Send, %clipboard%{enter}
+  ; Send, %clipboard%{enter}
   return
 }
 
@@ -601,7 +655,7 @@ Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 #include <Rotation>
 #include <Excel>
 #include <vis2>
-
+#include <SearchBar>
 #include <wheel>
 #include <VScode>
 #include <mouse>
@@ -627,13 +681,13 @@ VQuest_Start:
   ; detecthiddenwindows, on
 
   SetTitleMatchMode, 2
-  settitlematchmode, slow
+  ; settitlematchmode, slow
   #MaxHotkeysPerInterval 200
   #HotkeyModifierTimeout 10
   #maxthreadsperhotkey, 1
-  SetKeyDelay, 1, 0
+  SetKeyDelay, 2, 1
   setwindelay, 450
-  AutoTrim, On
+  ; AutoTrim, On
   Menu, Tray, Icon, Robot.ico
 Results_Definition_edit:="78,63"
 Result_Editor_Ok:="370,660"
@@ -646,3 +700,6 @@ Mywork_Searchbar:="500,127,2"
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
   Excel.Connect(1)
   StartTest()
+  
+
+

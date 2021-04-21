@@ -1,4 +1,4 @@
-Tooltip(msg, time=900) {
+Tooltip(msg, time=400) {
 	global
 	tooltip, %msg%
 	sleep, %time%

@@ -10,6 +10,7 @@
 		;LMS ------------------------------------------------------------------------
 	If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote") {
 		Menu()
+
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
 		click, 79, 440
 
@@ -99,9 +100,6 @@
 
 
 
-
-
-
 		;================================================================== make a method
 	} Else if winactive("Edit sample (Field Configuration:") {
 		WorkTab_EditSample() ;
@@ -117,6 +115,7 @@
 		ifwinactive, Sections Exceeding - \\Remote
 			send, {enter}
 		return
+
 	} Else If Winexist("Opened Section found - \\Remote") {
 		winactivate,
 		Sendinput, {enter}
@@ -163,3 +162,5 @@
 	WorkTab_AddTestDescription(Text){
 		sendinput, {click 305, 294}{end}%TEXT%{click 330, 617}
 	}
+	
+	

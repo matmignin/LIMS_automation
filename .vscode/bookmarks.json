@@ -14,37 +14,37 @@
 			"path": "Vquest.ahk",
 			"bookmarks": [
 				{
-					"line": 221,
+					"line": 266,
 					"column": 6,
 					"label": ""
 				},
 				{
-					"line": 274,
+					"line": 319,
 					"column": 1,
 					"label": ""
 				},
 				{
-					"line": 336,
+					"line": 382,
 					"column": 4,
 					"label": ""
 				},
 				{
-					"line": 362,
+					"line": 408,
 					"column": 20,
 					"label": "KEY_explorer"
 				},
 				{
-					"line": 375,
+					"line": 421,
 					"column": 8,
 					"label": ""
 				},
 				{
-					"line": 397,
+					"line": 443,
 					"column": 9,
 					"label": ""
 				},
 				{
-					"line": 539,
+					"line": 592,
 					"column": 11,
 					"label": ""
 				}
@@ -74,22 +74,22 @@
 			"path": "lib/Menu.ahk",
 			"bookmarks": [
 				{
-					"line": 22,
+					"line": 23,
 					"column": 5,
 					"label": ""
 				},
 				{
-					"line": 42,
+					"line": 45,
 					"column": 7,
 					"label": ""
 				},
 				{
-					"line": 162,
+					"line": 165,
 					"column": 5,
 					"label": ""
 				},
 				{
-					"line": 200,
+					"line": 203,
 					"column": 3,
 					"label": ""
 				}
