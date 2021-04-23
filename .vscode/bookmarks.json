@@ -11,46 +11,6 @@
 			]
 		},
 		{
-			"path": "Vquest.ahk",
-			"bookmarks": [
-				{
-					"line": 266,
-					"column": 6,
-					"label": ""
-				},
-				{
-					"line": 319,
-					"column": 1,
-					"label": ""
-				},
-				{
-					"line": 382,
-					"column": 4,
-					"label": ""
-				},
-				{
-					"line": 408,
-					"column": 20,
-					"label": "KEY_explorer"
-				},
-				{
-					"line": 421,
-					"column": 8,
-					"label": ""
-				},
-				{
-					"line": 443,
-					"column": 9,
-					"label": ""
-				},
-				{
-					"line": 592,
-					"column": 11,
-					"label": ""
-				}
-			]
-		},
-		{
 			"path": "lib/VarBar.ahk",
 			"bookmarks": [
 				{

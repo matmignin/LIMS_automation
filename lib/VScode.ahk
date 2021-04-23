@@ -16,9 +16,9 @@ return
     +^l::^+#`;
     Mbutton & Wheeldown::Wheel_2("!d",1000)
     +^h::^+#h
-    Mbutton & Wheelup::wheel_2("^m",2000)
-    Mbutton & Rbutton::+^m ; toggle bookmark
-    Mbutton::ToggleDefinition()
+    F18 & Wheelup::wheel_2("^m",2000)
+    F18 & Rbutton::+^m ; toggle bookmark
+    F18::ToggleDefinition()
     Rbutton & F16::Wheel_2("{backspace}", 20)
       Rbutton & F17::Wheel_2("^]", 20)
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
@@ -28,10 +28,9 @@ return
     Xbutton1 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
     Xbutton1 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
 
-    Xbutton1 & Mbutton::sendinput, !d
+    Xbutton1 & F18::sendinput, !d
     Xbutton1 & Rbutton::+F8
     Xbutton1 & Lbutton::sendinput, ^{click}
-    Xbutton1 & F18::F4
     Xbutton1::menu()
     Xbutton2 & F18::F5
     Xbutton2::sendinput, {Xbutton2}
@@ -40,7 +39,7 @@ return
     F16::Wheel_2("!{left}",100)
     Xbutton1 & F17::Wheel_2("^]")
     Xbutton1 & F16::wheel_2("^[")
-    F18::ReloadScript()
+    ; F18::ReloadScript()
     F20 & space::^+p
     F20 & h::sendinput, +!{left}
     F20 & k::sendinput, +!{up}
@@ -49,27 +48,24 @@ return
     F19 & k::F3
     F19 & j::+F3
     F20::Menu()
+;#if winactive("ahk_exe code.exe") && getkeystate("capslock","p") ;edit  or
+	;capslock & ,::sendinput, +!/,
+	capslock & m::+!down
+	capslock & n::+!n
+	capslock & u::+!up
+	capslock & '::+^!n
+	capslock & .::+f1
+	capslock & up::^+up
+	capslock & down::^+down
+	capslock & /::sendinput, !^w
+	capslock & 5::^+/
  
 
 
-#if winactive("ahk_exe code.exe") && getkeystate("capslock","p") ;edit  or
-{
-	,::sendinput, +!/,
-	m::+!down
-	n::+!n
-	u::+!up
-	'::+^!n
-	.::+f1
-	up::^+up
-	down::^+down
-	/::sendinput, !^w
-	5::^+/
-}
 
 
 
-
-#if
+;#if
 
 
 
@@ -160,15 +156,12 @@ ToggleDefinition(){
 VIM:
 #ifwinactive, 
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
-{
 	d::Send, {home 2}+{end}{Delete}
 	w::sendinput, {right}^{left}+^{right}{backspace}
 	4::sendinput, +{end}^x
 	5::sendinput, ^m^x
 	0::sendinput, +{home}^x
-}
 #If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
-{
 	d::Send, {home 2}+{end}^c
 	w::sendinput, {right}^{left}+^{right}+{left}^c 
 	5::sendinput, ^m^c
@@ -181,17 +174,11 @@ VIM:
 	return
 	Capslock & 0::sendinput, +{home}^c
 	0::sendinput, +{home}^c
-}	
 #If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
 	Capslock & g::Send, ^{home}
-
 #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
   capslock & p::Sendinput, {esc}p{esc}
-
-  
-  
 #If Getkeystate("Capslock","p")
-{
 	p::return
 	1::F1
 	2::F2
@@ -223,18 +210,21 @@ VIM:
 	Shift & ,::sendinput, +{F1}
 	left::sendinput, {home}+{Tab}
 	right::sendinput, {home}{Tab}
-v up::
-	while GetKeyState("Capslock","p")
-		sendinput, {Shift down}
-	sleep 200
-	sendinput, {shift up}
-	return
-#if
-}
+  v up::
+    while GetKeyState("Capslock","p")
+      sendinput, {Shift down}
+    sleep 200
+    sendinput, {shift up}
+    return
 
 
 
-#If Getkeystate("F19","p") || getkeystate("Capslock", "T")=True ;AND A_TimeSincePriorHotkey < 1000) || (A_PriorHotKey = "Numpad4" AND A_TimeSincePriorHotkey < 1000)    ;________________________________________Psudo Numpad
+
+
+
+
+PsudoNumlock:
+#If Getkeystate("F19","p")
 	;sendlevel 1
    m::numpad1
 	 ,::numpad2
@@ -251,23 +241,19 @@ v up::
 	 /::,
 	 p::numpadmult
 	 '::numpadDot
+   RShift::sendinput, {Tab 2}^a
   ~ENTER::sendinput, {enter}
-   F19::
-   F20::
-   space::
-  Capslock::
-   SetCapsLockState off
-   tooltip
-   return
+   space::SendInput, 0
 
     
    ;sendlevel 0
 		#if
+
 #IfWinActive,
-F19::
-   SetCapsLockState % !GetKeyState("CapsLock", "T")
-   tooltip, NUMLOCK
-  return
+; F19::
+  ;  SetCapsLockState % !GetKeyState("CapsLock", "T")
+  ;  tooltip, NUMLOCK
+  ; return
   
 return
 CapslockTimer:

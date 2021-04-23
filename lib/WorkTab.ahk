@@ -8,10 +8,10 @@ ifwinactive, Register new samples - \\Remote
   sendinput, {tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
     sendinput, {tab}^a
-  sendinput, ^a%Batch% {tab}^a
+  sendinput, ^a%Batch%{tab}^a
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote 
   {
-    sendinput ^a%Lot% 
+    sendinput ^a%Lot%
     send, {tab 3} 
     sleep 100
     sendinput, ^a%Coated%

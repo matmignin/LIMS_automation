@@ -9,6 +9,58 @@ SpecTab_Table(){
 	SpecTable_X:=A_screenwidth-800
 	Excel.Connect()
 	SpecTab_GetExcelData()
+		; Name:=				[]
+		; Position:=		[]
+		; LabelClaim:=	[] 
+		; MinLimit:=		[]
+		; MaxLimit:=		[]
+		; Units:=				[]
+		; Percision:=		[]
+		; LabelName:=		[]
+		; Description:=	[]
+		; Requirement:=	[]
+		; method:= 			[]
+		; while (Xl.Range("M" . A_Index+6).Value != "") 
+		; 	{
+		; 		Position[A_index]:=			Xl.Range("F" . A_Index+7).Text
+		; 		Name[A_index]:=					Xl.Range("K" . A_Index+7).text
+		; 		LabelClaim[A_index]:=		Xl.Range("L" . A_Index+7).Text
+		; 		MinLimit[A_index]:=			Xl.Range("G" . A_Index+7).Text
+		; 		MaxLimit[A_index]:=			Xl.Range("H" . A_Index+7).Text
+		; 		Units[A_index]:=				Xl.Range("I" . A_Index+7).Text
+		; 		Percision[A_index]:=		Xl.Range("J" . A_Index+7).Text
+		; 		Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
+		; 		Method[A_index]:=				Xl.Range("D" . A_Index+7).Text
+
+		; 		Total_rows:=A_index
+		; 		Table_Height:=A_index
+		; 		if (Table_Height > 30)
+		; 			Table_Height = 30
+		; 	}
+		Spectab_CreateGUI()
+
+		SpecTab_ModifyColumns()
+		sleep 200	
+		SpecTab_ShowGUI()
+
+	Spec_Table:
+		if (A_GuiEvent = "DoubleClick" ) {	
+		;Spec_Test()
+		SpecTab_GetRowText()
+		SpecTab_AutoFill()
+		}
+	Return
+}
+	
+	
+	SpecTab_ShowGUI(){
+		CoordMode, mouse, screen
+		Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
+		CoordMode, mouse, window
+		return			
+		}
+Spectab_CreateGUI(){
+	global
 	Gui, Spec_Table:Default
 	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
@@ -28,24 +80,7 @@ SpecTab_Table(){
 			Iniwrite, %Temp%, data.ini, %Product%, %Test%
 		}
 	}
-	SpecTab_ModifyColumns()
-	
-	sleep 200	
-	CoordMode, mouse, screen
-	Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
-	CoordMode, mouse, window
-	return			
-
-
-	Spec_Table:
-		if (A_GuiEvent = "DoubleClick" ) {	
-			Spec_Test()
-; SpecTab_GetRowText()
-SpecTab_AutoFill()
-
-		}
-Return
-	}
+}
 
 
 
@@ -123,6 +158,7 @@ SpecTab_ModifyColumns(){
 	}
 	
 SpecTab_GetRowText(){ 
+	global
 		LV_GetText(Name, 				A_EventInfo,1)
 		LV_GetText(LabelClaim, 	A_EventInfo,2)
 		LV_GetText(MinLimit, 		A_EventInfo,3)
@@ -131,11 +167,12 @@ SpecTab_GetRowText(){
 		LV_GetText(Percision, 	A_EventInfo,6)
 		LV_GetText(Description, A_EventInfo,7)
 		LV_GetText(Method, 			A_EventInfo,8)
-		Gui, Spec_Table:submit,NoHide
+			Gui, Spec_Table:submit,NoHide
 }
 SpecTab_GetExcelData(){
 			Global
 		Name:=				[]
+		Position:=		[]
 		LabelClaim:=	[] 
 		MinLimit:=		[]
 		MaxLimit:=		[]
@@ -147,15 +184,15 @@ SpecTab_GetExcelData(){
 		method:= 			[]
 		while (Xl.Range("M" . A_Index+6).Value != "") 
 		{
-			Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
-			Name[A_index]:=			Xl.Range("K" . A_Index+7).text
-			LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
-			MinLimit[A_index]:=		Xl.Range("G" . A_Index+7).Text
-			MaxLimit[A_index]:=		Xl.Range("H" . A_Index+7).Text
-			Units[A_index]:=		Xl.Range("I" . A_Index+7).Text
-			Percision[A_index]:=	Xl.Range("J" . A_Index+7).Text
+			Position[A_index]:=			Xl.Range("F" . A_Index+7).Text
+			Name[A_index]:=					Xl.Range("K" . A_Index+7).text
+			LabelClaim[A_index]:=		Xl.Range("L" . A_Index+7).Text
+			MinLimit[A_index]:=			Xl.Range("G" . A_Index+7).Text
+			MaxLimit[A_index]:=			Xl.Range("H" . A_Index+7).Text
+			Units[A_index]:=				Xl.Range("I" . A_Index+7).Text
+			Percision[A_index]:=		Xl.Range("J" . A_Index+7).Text
 			Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
-			Method[A_index]:=	Xl.Range("D" . A_Index+7).Text
+			Method[A_index]:=				Xl.Range("D" . A_Index+7).Text
 
 			Total_rows:=A_index
 			Table_Height:=A_index
@@ -270,7 +307,7 @@ SpecTab_GetExcelData(){
 				Else
 					Sendinput, %Requirement%
 				; sleep 300
-				;click 350, 660 ; click okay
+				click 350, 660 ; click okay
 			}
 
 			SpecTab_TestDefinitionEditor(The_Description) {

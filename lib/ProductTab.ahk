@@ -117,8 +117,8 @@ ProductTab_Select_Ingredient(){
     Sendinput,{tab}{right 18}
   else if Name contains Biotin 
     Sendinput,{tab}{right 21}
-  else if Name contains Biotin 
-    Sendinput,{tab}{right 22
+  else if Name contains Boron
+    Sendinput,{tab}{right 22}
   else if Name contains Cadmium 
     Sendinput,{tab}{right 23}
   else if Name Contains Acetyl L-Carnitine HCL 
@@ -197,7 +197,7 @@ ProductTab_Select_Ingredient(){
   else if Name contains L-Tyrosine 	
     Sendinput,{tab}{right 181}  
   else if Name contains Lutein 	
-    Sendinput,{tab}{right 182}
+    Sendinput,{tab}{right 183}
   else if Name contains Magnesium 	
     Sendinput,{tab}{end}{left 90}
   else if Name contains Malic Acid 	
@@ -215,7 +215,7 @@ ProductTab_Select_Ingredient(){
   else if Name contains Niacin 	
     Sendinput,{tab}{end}{left 71}
   else if Name contains PABA 	
-    Sendinput,{tab}{end}{left 89} 
+    Sendinput,{tab}{end}{left 69} 
   else if Name contains Pantothenic Acid 	
     Sendinput,{tab}{end}{left 67}
   else if Name contains Phosphorus 	
@@ -244,6 +244,8 @@ ProductTab_Select_Ingredient(){
     Sendinput,{tab}{end}{left 17}
   else if Name contains Total Probiotic 
     Sendinput,{tab}{end}{left 17}
+  else if Name contains Vanadium
+    Sendinput,{tab}{end}{left 14}
   else if Name contains Vitamin A 
     Sendinput,{tab}{end}{left 13}
   else if Name contains Vitamin B12 
@@ -547,11 +549,15 @@ Formulation_Hotstrings:
       Menu,IngredientMenu,Add,Generic Ingredient &T,IngredientMenuHandler
       Menu,IngredientMenu,Add,Generic Ingredient &U,IngredientMenuHandler
       Menu,IngredientMenu,Add,Generic Ingredient &V,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Generic Ingredient &W,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Generic Ingredient &X,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Generic Ingredient &Y,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Generic Ingredient &Z,IngredientMenuHandler
      ; Menu,IngredientMenu,Add,Glucosamine,IngredientMenuHandler
-      Menu,IngredientMenu,Add,&Ingredient Note 1,IngredientMenuHandler
-      Menu,IngredientMenu,Add,&Ingredient Note 2,IngredientMenuHandler
-      Menu,IngredientMenu,Add,&Ingredient Note 3,IngredientMenuHandler
-      Menu,IngredientMenu,Add,&Methylsulfonylmethane (MSM),IngredientMenuHandler
+      Menu,IngredientMenu,Add,Ingredient Note 1,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Ingredient Note 2,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Ingredient Note 3,IngredientMenuHandler
+      Menu,IngredientMenu,Add,Methylsulfonylmethane (MSM),IngredientMenuHandler
      ; Menu,IngredientMenu,Add,Molybdenum,IngredientMenuHandler
       ;Menu,IngredientMenu,Add,PABA,IngredientMenuHandler
       Menu,IngredientMenu,Add,Protein,IngredientMenuHandler
@@ -562,22 +568,8 @@ Formulation_Hotstrings:
       return
 
       IngredientMenuHandler:
-      click 150, 73
-        if (A_ThisMenuItem ="&Biotin") 
-          Sendinput,{tab}{right 21}
-        else if (A_ThisMenuItem ="Cadmium") 
-          Sendinput,{tab}{right 23}
-        else if (A_ThisMenuItem ="Choline") 
-          Sendinput,{tab}{right 30}
-        else if (A_ThisMenuItem ="&Chromium") 
-          Sendinput,{tab}{right 32}
-        else if (A_ThisMenuItem ="Coenzyme Q10") 
-          Sendinput,{tab}{right 34}
-        else if (A_ThisMenuItem ="Creatine") 
-          Sendinput,{tab}{right 36}
-        else if (A_ThisMenuItem ="&Folic Acid") 
-          Sendinput,{tab}{right 52}
-        else if (A_ThisMenuItem ="Generic Ingredient &A.1") 
+      Click 150, 73
+        if (A_ThisMenuItem ="Generic Ingredient &A.1") 
           Sendinput,{tab}{right 57}
         else if (A_ThisMenuItem ="Generic Ingredient &B.1") 
           Sendinput,{tab}{right 63}
@@ -621,27 +613,35 @@ Formulation_Hotstrings:
           Sendinput,{tab}{right 110}
         else if (A_ThisMenuItem ="Generic Ingredient &V") 
           Sendinput,{tab}{right 111}
+        else if (A_ThisMenuItem ="Generic Ingredient &W") 
+          Sendinput,{tab}{right 112}
+        else if (A_ThisMenuItem ="Generic Ingredient &X") 
+          Sendinput,{tab}{right 113}
+        else if (A_ThisMenuItem ="Generic Ingredient &Y") 
+          Sendinput,{tab}{right 114}
+        else if (A_ThisMenuItem ="Generic Ingredient &Z") 
+          Sendinput,{tab}{right 115}
         else if (A_ThisMenuItem ="Glucosamine") 
           Sendinput,{tab}{right 127}
         else if (A_ThisMenuItem ="Glycine") 
           Sendinput,{tab}{right 131}
-        else if (A_ThisMenuItem ="&Ingredient Note 1") 
+        else if (A_ThisMenuItem ="Ingredient Note 1") 
           Sendinput,{tab}{right 140}
-        else if (A_ThisMenuItem ="&Ingredient Note 2") 
+        else if (A_ThisMenuItem ="Ingredient Note 2") 
           Sendinput,{tab}{right 142}
-        else if (A_ThisMenuItem ="&Ingredient Note 3") 
+        else if (A_ThisMenuItem ="Ingredient Note 3") 
           Sendinput,{tab}{right 143}
         else if (A_ThisMenuItem ="Inositol") 
           Sendinput,{tab}{right 149}
         else if (A_ThisMenuItem ="Lead") 
           Sendinput,{tab}{right 167}
-        else if (A_ThisMenuItem ="&L-Tyrosine") 
+        else if (A_ThisMenuItem ="L-Tyrosine") 
           Sendinput,{tab}{right 181}
         else if (A_ThisMenuItem ="Malic Acid") 
           Sendinput,{tab}{right 186}
         else if (A_ThisMenuItem ="Mercury") 
           Sendinput,{tab}{right 189}
-        else if (A_ThisMenuItem ="&Methylsulfonylmethane (MSM)") 
+        else if (A_ThisMenuItem ="Methylsulfonylmethane (MSM)") 
           Sendinput,{tab}{right 191}
         else if (A_ThisMenuItem ="Molybdenum") 
           Sendinput,{tab}{right 195}
