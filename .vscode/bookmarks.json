@@ -14,7 +14,7 @@
 			"path": "lib/VarBar.ahk",
 			"bookmarks": [
 				{
-					"line": 207,
+					"line": 204,
 					"column": 8,
 					"label": ""
 				}
@@ -27,31 +27,6 @@
 					"line": 18,
 					"column": 4,
 					"label": "CLIP"
-				}
-			]
-		},
-		{
-			"path": "lib/Menu.ahk",
-			"bookmarks": [
-				{
-					"line": 23,
-					"column": 5,
-					"label": ""
-				},
-				{
-					"line": 45,
-					"column": 7,
-					"label": ""
-				},
-				{
-					"line": 165,
-					"column": 5,
-					"label": ""
-				},
-				{
-					"line": 203,
-					"column": 3,
-					"label": ""
 				}
 			]
 		}

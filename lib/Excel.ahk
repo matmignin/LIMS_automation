@@ -59,7 +59,7 @@ Connect(reload:=0){
 			GuiControl, Varbar:Text, name, %name%
 	Customer:=XL.Range("B3").Value	
 			GuiControl, Varbar:Text, customer, %Customer%
-	ShipTo:=XL.Range("C3").Value	
+	ShipTo:=XL.Range("E3").Value	
 		EnvSet, ShipTo, %ShipTo%
 	GuiControl, Varbar:Text, iteration, %iteration%
 		ShapeAndSize:=XL.Range("C5").Value	

@@ -1,37 +1,11 @@
 ﻿gosub, vquest_start
+  customer:=[]
 
 StartTest(){
  ; SetTimer, SmartDocs, 10
   ;  SpecTab_Table()
   ;  Test()
 }
-  customer:=[]
-
-
-
-; SetTimer, CheckActive, 100
-
-return
-
-
-CheckActive:
-  If WinActive("NuGenesis LMS - \\Remote") || Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
-  {
-    varbar.move()
-    return
-    }
-  Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
-    exit
-  else
-    WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0
-  Return
-
-SmartDocs:
-    Autofill_SmartDoc()
-    
-return
-
-
 
 Test(n:=0){
   Global
@@ -56,6 +30,42 @@ Autofill_SmartDoc()
   setwindelay, 450
 return
 
+
+QuickCode(){
+  global
+  Click, 2
+  sleep 100
+  WinActivate, Edit Ingredient
+  click 357, 340
+  send, {home}{space 2}{click 277, 561}
+  return
+}
+
+
+
+
+
+
+
+
+CheckActive:
+  If WinActive("NuGenesis LMS - \\Remote") || Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
+  {
+    varbar.move()
+    return
+    }
+  Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
+    exit
+  else
+    WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0
+  Return
+
+
+
+
+SmartDocs:
+    Autofill_SmartDoc() 
+return
 Autofill_SmartDoc(){
   global
   setwindelay, 50
@@ -114,8 +124,7 @@ TestSpecCopying:
   ;   tooltip, Low: %LowerLimit% `t High: %UpperLimit% `t Unit: %Unit% `t %Precision% `n `t %Requirement%, 1500, 0
   ; ; msgbox, %product% `t %batch% `n %lot%
 return
-
-  
+ 
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="")
 {
   
@@ -189,18 +198,11 @@ Sendlevel 1
 
 
 KEY_DEFAULT:
-!f::Open_Firefox()
-!v::Open_vsCode()
-`::
-
-Click, 2
-sleep 100
-WinActivate, Edit Ingredient
-click 357, 340
-send, {home}{space 2}{click 277, 561}
-return
-Return & K::Enter_Product("K")
-Return & 0::Enter_Batch()
+  !f::Open_Firefox()
+  !v::Open_vsCode()
+  Capslock & `::QuickCode()
+  Return & K::Enter_Product("K")
+  Return & 0::Enter_Batch()
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
   Mbutton & WheelDown::^WheelDown
   $mbutton up::sendinput, {ctrl up}
@@ -239,15 +241,15 @@ Return & 0::Enter_Batch()
   F18 & F16::!+tab
   
   
-    F20 & Right::send, #{right}
+  F20 & Right::send, #{right}
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
   F20 & Down::send, #{Down}
   F19::send, {Click 463, 182}{Click 463, 144}^a
   F20::send, {Click 555, 182}{Click 555, 144}^a
-F19 & f20::WinActivate, ahk_exe WFICA32.EXE
-F20 & f19::WinActivate, ahk_exe WFICA32.EXE
-enter::enter
+  F19 & f20::WinActivate, ahk_exe WFICA32.EXE
+  F20 & f19::WinActivate, ahk_exe WFICA32.EXE
+  enter::enter
   Xbutton1::Menu()
   ; if (A_TimeSincePriorHotkey != -1 & A_TimeSincePriorHotkey <300)
   ;   cnt +=1
@@ -264,16 +266,16 @@ enter::enter
   ;     Menu()
   ;     RETurn
 
-#If (A_PriorHotKey = "F18" AND A_TimeSincePriorHotkey < 2000) ;____F18____
-  f18::ReloadScript()
-  Wheelup::test()
-  Wheeldown::send, {esc}
-  F16::sendinput, {Click 354, 44}
-  F17::sendinput, {click, 743, 41}
-  Lbutton::sendinput, ^{click}
-  Rbutton::sendinput, +{click}
-  mbutton::Clip()
-  #If
+; #If (A_PriorHotKey = "F18" AND A_TimeSincePriorHotkey < 2000) ;____F18____
+  ; f18::ReloadScript()
+  ; Wheelup::test()
+  ; Wheeldown::send, {esc}
+  ; F16::sendinput, {Click 354, 44}
+  ; F17::sendinput, {click, 743, 41}
+  ; Lbutton::sendinput, ^{click}
+  ; Rbutton::sendinput, +{click}
+  ; mbutton::Clip()
+  ; #If
   ; F18::Autofill() ;Tooltip("☩",2000) 
 
 
@@ -294,12 +296,7 @@ KEY_Varbar:
   F16::excel.previoussheet()
   Rbutton::Excel.connect()
   Mbutton & WheelDown::varbar.Move()
-  mbutton::
-    if WinExist("Result Editor - \\Remote") || WinExist("Test Definition Editor - \\Remote") || winexist("Results Definition - \\Remote")
-      SpecTab_Table()
-    else
-      ProductTab_Table()
-  return
+  mbutton::LaunchTable(){
   #if
   
   
@@ -677,6 +674,10 @@ Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 #include <wheel>
 #include <VScode>
 #include <mouse>
+
+
+
+
 VQuest_Start:
   #Persistent 
   #NoEnv
@@ -697,13 +698,12 @@ VQuest_Start:
   	CoordMode, mouse, window
   SetDefaultMouseSpeed, 0
   ; detecthiddenwindows, on
-
   SetTitleMatchMode, 2
   ; settitlematchmode, slow
   #MaxHotkeysPerInterval 200
   #HotkeyModifierTimeout 10
   #maxthreadsperhotkey, 1
-  SetKeyDelay, 2, 1
+  SetKeyDelay, 1, 0
   setwindelay, 450
   AutoTrim, On
   Menu, Tray, Icon, Robot.ico

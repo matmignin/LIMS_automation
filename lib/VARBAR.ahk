@@ -129,22 +129,19 @@ If (Var:= "NotBatch")
 	
 }
 
-
+LaunchTable(){
+		global
+    if WinExist("Result Editor - \\Remote") || WinExist("Test Definition Editor - \\Remote") || winexist("Results Definition - \\Remote")
+      SpecTab_Table()
+    else
+      ProductTab_Table()
+  return
+  }
 
 get(Category:="All"){
 	Global
 	If Category contains All
-	{
-		
-		; ControlGetText, Product, Edit1, VarBar
-		; ControlGetText, Batch, Static1, VarBar
-		; ControlGetText, Lot, Static2, VarBar
-		; ControlGetText, Coated, Static3, VarBar
-		; ControlGetText, Name, Static4, VarBar
-		; ControlGetText, customer, Static5, VarBar
-		; ControlGetText, Iteration, Edit2, VarBar
 		return
-	}
 	If Category contains Product
 		output:=product
 	else If Category contains Batch

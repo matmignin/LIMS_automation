@@ -155,9 +155,7 @@ PsudoNumlock:
     space::SendInput, 0
     ;sendlevel 0
       #if
-  #IfWinActive,
 
-  
 
 return
 
