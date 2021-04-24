@@ -3,7 +3,7 @@ SpecTab_Table(){
 	Global
 	Try GUI, Spec_Table:destroy 
 	; Iniread, VarBar_X, data.ini, Locations, SpecTable_X
-	; Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
+	 ;Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
 		CoordMode, mouse, screen
 	SpecTable_Y:=Varbar_Y + 10
 	SpecTable_X:=A_screenwidth-800
@@ -40,13 +40,18 @@ SpecTab_Table(){
 		Spectab_CreateGUI()
 
 		SpecTab_ModifyColumns()
+
+
 		sleep 200	
 		SpecTab_ShowGUI()
 
 	Spec_Table:
 		if (A_GuiEvent = "DoubleClick" ) {	
+			sendinput,{space}
+			
 		;Spec_Test()
 		SpecTab_GetRowText()
+		
 		SpecTab_AutoFill()
 		}
 	Return
@@ -54,6 +59,7 @@ SpecTab_Table(){
 	
 	
 	SpecTab_ShowGUI(){
+		global
 		CoordMode, mouse, screen
 		Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
 		CoordMode, mouse, window
@@ -63,7 +69,7 @@ Spectab_CreateGUI(){
 	global
 	Gui, Spec_Table:Default
 	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 	GUI, Spec_Table:Font, s12 cBlack Bold, Consolas
 	loop, %Total_Rows% {
 		if Position[A_index] =""
@@ -72,6 +78,11 @@ Spectab_CreateGUI(){
 			Total_rows:=total_rows-1
 			continue
 		}
+    if Method[A_index] =""
+    {
+      Total_rows:=total_rows - 1
+      continue
+    }
 		else	
 		{
 			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index]) 
@@ -90,7 +101,7 @@ Spectab_CreateGUI(){
 Spec_Test(){
 	global
 	Gui, Spec_Table:submit,NoHide
-	; Gui, Spec_Table:Default
+	;Gui, Spec_Table:Default
 	RowNumber = 0  ; This causes the first loop iteration to start the search at the top of the list.
 	Loop
 		{
@@ -113,31 +124,37 @@ Spec_Test(){
 
 SpecTab_AutoFill(){ 
 	global
+			WinActivate, ahk_exe WFICA32.EXE
 				sleep 200
-			If WinExist("Result Editor - \\Remote") ;the editing window
-			{
-				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
-				return
-			}
-			else if winexist("Results Definition - \\Remote") ;Selection window
-			{	
-				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
-				return
-			}
-			else If WinExist("Test Definition Editor - \\Remote") 
+			If Winactive("NuGenesis LMS - \\Remote") 
+				{
+					click, 57, 719
+					Sleep 200
+					WinActivate, Test Definition Editor - \\Remote
+				}
+			If Winactive("Test Definition Editor - \\Remote") 
 			{
 				SpecTab_TestDefinitionEditor(Description) ; the pre window
-				WinActivate, Results Definition - \\Remote
-				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
-				return
-			}
-			else If Winexist("NuGenesis LMS - \\Remote") 
-			{
-				winactivate,
-				Mouse_Click("Main_EditTest")
 				sleep 200
-				winactivate, Results Definition - \\Remote
-				Mouse_Click("Edit")
+					Wheel_scroll("100")
+					click 240, 488 ;click resulst
+					sleep 200
+				WinActivate, Results Definition - \\Remote
+			;	SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+			}
+			if winactive("Results Definition - \\Remote") ;Selection window
+			{	
+					WinActivate, Results Definition - \\Remote
+					;winwaitactive, Results Definition - \\Remote,, 3
+					sleep 200
+					Mouse_Click("Edit")
+					sleep 200
+					winactivate, Result Editor - \\Remote
+					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+					return
+			}
+			If Winactive("Result Editor - \\Remote") ;the editing window
+				{
 				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
 				return
 			}
@@ -204,10 +221,8 @@ SpecTab_GetExcelData(){
 
 
 
-	SpecTab_Create_Template:
-		{	
+SpecTab_Create_Template:
 			#ifwinactive, Edit specification - \\Remote
-
 				WinActivate, Edit specification - \\Remote
 				SpecTab_Edit_Physical()
 				sleep 2000
@@ -246,7 +261,6 @@ SpecTab_GetExcelData(){
 					Sendinput, {tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{tab}{right}
 				return 
 
-			}
 
 			SpecTab_EditSampleTemplate_A(){
 				global
@@ -270,318 +284,311 @@ SpecTab_GetExcelData(){
 				return
 			}			
 
-			SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0) {
-				Global
-				if WinExist("Result Editor - \\Remote")	
-					WinActivate, Result Editor - \\Remote
-				Else
-				{
-					winactivate, Results Definition - \\Remote
-					winwaitactive, Results Definition - \\Remote
-					sleep 200
-					Mouse_Click("Edit")
-					sleep 200
-					winwaitactive, Result Editor - \\Remote
-				}
-				Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
-				sleep 200
-				click, 200, 137 ; click id box to orient
-				sleep 200
-				;if (Allergen = 1)
-				;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
-				;else
-				; if (uselimitsbox := 0)
-				; send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-				send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
-				sleep 100
-				If (UseLimitsBox != 0)
-					send, {space}
-				sleep 100
-				send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-				if (Max_limit = "")
-					sendinput, NLT %Min_Limit% %The_Units%
-				else if (Min_limit = "<")
-					sendinput, %min_limit%%Max_Limit% %The_Units%
-				else if (Min_limit = "")
-					sendinput, NMT %Max_Limit% %The_Units%
-				Else
-					Sendinput, %Requirement%
-				; sleep 300
-				click 350, 660 ; click okay
-			}
 
-			SpecTab_TestDefinitionEditor(The_Description) {
-				Global
-				; Excel.Connect()
-				WinActivate, Test Definition Editor - \\Remote 
-				DescriptionRaw:=The_Description
-				Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
-				Click, 187, 200 ;Orient_SpecTab_TestDefinitionEditor
-				Send,^a%Trimmed_Description%
-				sleep 300
-				Wheel_scroll("100")
-				;send, {shift down}{Tab 15}{Shift up}{enter}
-				return
-			}
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0) {
+		Global
 
-			SpecTab_Edit_Physical(){
-				Global
-				winactivate, Edit specification - \\Remote
-				sendinput, {click 376, 87}{home}
-				send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}P{shift Up}hysical{tab 3}^a{backspace}
-				send, {tab}^a%Product%{tab 2}
-				Sleep 200
-				send,{Space}
-				sleep 200
-				winwaitactive, Products List - \\Remote, , 8
-				if !errorlevel
-					sleep 300
-				send, {enter 2}
-				sleep 200
-				send,{tab}
-				sleep 200
-				send,{right} 
-				sleep 500
-				click, 340, 622 ;click okay
-				winwaitactive, NuGenesis LMS - \\Remote, ,8
-				if !errorlevel 
-					sleep 300
-				click, 70, 518 ;edit sample method 
-				sleep 499
-				winwaitactive, Edit sample template - \\Remote,,4
-				if !errorlevel
-					sleep 300
-				sendinput, {tab}{delete 4}%Product%{enter}
-				return
-			}
-			SpecTab_Edit_CoatedRetain(){
-				global
-				winactivate, Edit specification - \\Remote
-				sendinput, {click 376, 87}{home}
-				send,%Product%`, {shift down}C{shift Up}oated`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
-				sleep 400
-				send,{tab}{right} 
-				sleep 200
-				send,{tab}{right}{tab 3}{left 4}
-				winwaitactive, NuGenesis LMS - \\Remote, ,8
-				if !errorlevel 
-					click, 70, 515 ;click edit sample template
-				winwaitactive, Edit sample template - \\Remote,, 5
-				if !errorlevel
-					sendinput, {tab}{delete 4}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
-				return
-			}
-			SpecTab_Edit_CoatedPhysical(){
-				global
-				winactivate, Edit specification - \\Remote
-				sendinput, {click 376, 87}{home}
-				send,%Product%`, {shift down}C{shift Up}oated`, {shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
-				sleep 400
-				send,{tab}{right} 
-				sleep 200
-				send,{tab}{right}{tab}{left 4}
-				winwaitactive, NuGenesis LMS - \\Remote, ,8
-				if !errorlevel 
-					click, 70, 515 ;click edit sample template
-				winwaitactive, Edit sample template - \\Remote,, 5
-				if !errorlevel
-					sendinput, {tab}{delete 16%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
-				return
-			}		
-			SpecTab_Edit_Retain(){
-				Global
-				winactivate, Edit specification - \\Remote
-				sendinput, {click 376, 87}{home}
-				send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
-				sleep 200
-				send,{tab}{right} 
-				sleep 400
-				send,{tab}{right}
-				sleep 1500
-				WinWaitactive, Edit specification - \\Remote,, 1
-				if !errorlevel
-					click, 340, 622 ;click okay
-				winwaitactive, NuGenesis LMS - \\Remote, ,8
-				if !errorlevel 
-					sleep 300
-				click, 70, 518 ;click edit sample template
-				winwaitactive, Edit sample template - \\Remote,,5
-				if !errorlevel
-					sleep 300
-				sendinput, {tab}{delete 4}%Product%{enter}
-				return
-			}
-			SpecTab_Edit_Analytical() {
-				Global
-				If WinActive("Edit sample template - \\Remote")
-					SpecTab_EditSampleTemplate_A()
-				else If winexist("Edit specification - \\Remote")
-				{
-					winactivate,
-					SpecTab_EditSpecification_Analytical()
-				}
-				return
-			}
+		sleep 200
+		if WinExist("Result Editor - \\Remote")	
+			WinActivate, Result Editor - \\Remote
+		Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
+		sleep 200
+		click, 200, 137 ; click id box to orient
+		sleep 200
+		;if (Allergen = 1)
+		;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
+		;else
+		; if (uselimitsbox := 0)
+		; send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
+		sleep 100
+		If (UseLimitsBox != 0)
+			send, {space}
+		sleep 100
+		send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		if (Max_limit = "")
+			sendinput, NLT %Min_Limit% %The_Units%
+		else if (Min_limit = "<")
+			sendinput, %min_limit%%Max_Limit% %The_Units%
+		else if (Min_limit = "")
+			sendinput, NMT %Max_Limit% %The_Units%
+		Else
+			Sendinput, %Requirement%
+		; sleep 300
+		click 350, 660 ; click okay
+}
 
-			SpecTab_Edit_Micro(){
-				Global
-				winactivate, Edit specification - \\Remote
-				sendinput, {click 376, 87}{home}
-				send,%Product%`, {shift down}F{shift Up}inished`, {shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
-				Sleep 200
-				send,{Space}
-				sleep 200
-				winwaitactive, Products List - \\Remote, ,5
-				send, {enter 2}
-				sleep 200
-				send,{tab}
-				sleep 200
-				send,{right} {tab}{left 2}
-				winwaitactive, NuGenesis LMS - \\Remote, ,8
-				if !errorlevel 
-					sleep 300
-				click, 70, 518 ;click edit sample template
-				winwaitactive, Edit sample template - \\Remote,, 5
-				if !errorlevel
-					sleep 300
-				sendinput, {tab}{delete 4}%Product%{enter}
-				return
-			}
+SpecTab_TestDefinitionEditor(The_Description) {
+	Global
+	; Excel.Connect()
+	WinActivate, Test Definition Editor - \\Remote 
+	DescriptionRaw:=The_Description
+	Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
+	Click, 187, 200 ;Orient_SpecTab_TestDefinitionEditor
+	Send,^a%Trimmed_Description%
+	sleep 300
 
-			SpecTab_InsertDescription(){
-				Global
-				DescriptionRaw:=Description
-				Description:=RTrim(DescriptionRaw, "`r`n")
-				Send,^a%Description%
-				Return
-			} 
+	;send, {shift down}{Tab 15}{Shift up}{enter}
+}
 
-			SpecTab_HM_ReportOnly() {
-				click 125,120 ;click 1st row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,140 ;click 2nd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,180 ;click 3rd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,200 ;click 4th row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
-				click 390, 659	;click okay
-				return
-			}
+SpecTab_Edit_Physical(){
+	Global
+	winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+	send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}P{shift Up}hysical{tab 3}^a{backspace}
+	send, {tab}^a%Product%{tab 2}
+	Sleep 200
+	send,{Space}
+	sleep 200
+	winwaitactive, Products List - \\Remote, , 8
+	if !errorlevel
+		sleep 300
+	send, {enter 2}
+	sleep 200
+	send,{tab}
+	sleep 200
+	send,{right} 
+	sleep 500
+	click, 340, 622 ;click okay
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		sleep 300
+	click, 70, 518 ;edit sample method 
+	sleep 499
+	winwaitactive, Edit sample template - \\Remote,,4
+	if !errorlevel
+		sleep 300
+	sendinput, {tab}{delete 4}%Product%{enter}
+	return
+}
+SpecTab_Edit_CoatedRetain(){
+	global
+	winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+	send,%Product%`, {shift down}C{shift Up}oated`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	sleep 400
+	send,{tab}{right} 
+	sleep 200
+	send,{tab}{right}{tab 3}{left 4}
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		click, 70, 515 ;click edit sample template
+	winwaitactive, Edit sample template - \\Remote,, 5
+	if !errorlevel
+		sendinput, {tab}{delete 4}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
+	return
+}
+SpecTab_Edit_CoatedPhysical(){
+	global
+	winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+	send,%Product%`, {shift down}C{shift Up}oated`, {shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	sleep 400
+	send,{tab}{right} 
+	sleep 200
+	send,{tab}{right}{tab}{left 4}
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		click, 70, 515 ;click edit sample template
+	winwaitactive, Edit sample template - \\Remote,, 5
+	if !errorlevel
+		sendinput, {tab}{delete 16%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
+	return
+}		
+SpecTab_Edit_Retain(){
+	Global
+	winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+	send,%Product%`, {shift down}I{shift Up}n {shift down}P{shift Up}rocess`, {shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	sleep 200
+	send,{tab}{right} 
+	sleep 400
+	send,{tab}{right}
+	sleep 1500
+	WinWaitactive, Edit specification - \\Remote,, 1
+	if !errorlevel
+		click, 340, 622 ;click okay
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		sleep 300
+	click, 70, 518 ;click edit sample template
+	winwaitactive, Edit sample template - \\Remote,,5
+	if !errorlevel
+		sleep 300
+	sendinput, {tab}{delete 4}%Product%{enter}
+	return
+}
+SpecTab_Edit_Analytical() {
+	Global
+	If WinActive("Edit sample template - \\Remote")
+		SpecTab_EditSampleTemplate_A()
+	else If winexist("Edit specification - \\Remote")
+	{
+		winactivate,
+		SpecTab_EditSpecification_Analytical()
+	}
+	return
+}
 
-			SpecTab_HM_USP() {
-				click 125,120 ;click 1st row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,140 ;click 2nd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,180 ;click 3rd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,200 ;click 4th row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
-				click 390, 659	;click okay
-				return
-			}
+SpecTab_Edit_Micro(){
+	Global
+	winactivate, Edit specification - \\Remote
+	sendinput, {click 376, 87}{home}
+	send,%Product%`, {shift down}F{shift Up}inished`, {shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
+	Sleep 200
+	send,{Space}
+	sleep 200
+	winwaitactive, Products List - \\Remote, ,5
+	send, {enter 2}
+	sleep 200
+	send,{tab}
+	sleep 200
+	send,{right} {tab}{left 2}
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	if !errorlevel 
+		sleep 300
+	click, 70, 518 ;click edit sample template
+	winwaitactive, Edit sample template - \\Remote,, 5
+	if !errorlevel
+		sleep 300
+	sendinput, {tab}{delete 4}%Product%{enter}
+	return
+}
 
-			SpecTab_HM_Canada() {
-				click 125,120 ;click 2nd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,140 ;click 2nd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,180 ;click 3rd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				click 125,200 ;click 4th row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
-				click 390, 659	;click okay
-				return
-			}
-			SpecTab_HM_Prop65() {
-				click 125,120 ;click 2nd row
-				click 80,70 ;Edit
-				winactivate, Result Editor - \\Remote
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 12}{space}{tab 2}^a
-				;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
-				sendinput, 0{tab}^a
-				sleep 100
-				sendinput, 9.999{tab 5}^a<10 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				winactivate, Result Definition - \\Remote
-				click 125,140 ;click 2nd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 12}{space}{tab 2}^a
-				;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
-				sendinput, 0{tab}^a
-				sleep 100
-				sendinput, 0.499{tab 5}^a<0.5 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				winactivate, Result Definition - \\Remote
-				click 125,180 ;click 3rd row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 12}{space}{tab 2}^a
-				;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
-				sendinput, 0{tab}^a
-				sleep 100
-				sendinput, 4.099{tab 5}^a<4.1 mcg/day
-				click 390, 659	;click okay
-				WinWaitClose, Result Editor - \\Remote,,4
-				winactivate, Result Definition - \\Remote
-				click 125,200 ;click 4th row
-				click 80,70 ;Edit
-				winwaitactive, Result Editor - \\Remote,,4
-				sendinput, {tab 12}{space}{tab 2}^a
-				;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
-				sendinput, 0{tab}^a
-				sleep 100
-				sendinput, 0.299{tab 5}^a<0.3 mcg/day
-				click 390, 659	;click okay
-				return
-			}
+SpecTab_InsertDescription(){
+	Global
+	DescriptionRaw:=Description
+	Description:=RTrim(DescriptionRaw, "`r`n")
+	Send,^a%Description%
+	Return
+} 
+
+SpecTab_HM_ReportOnly() {
+	click 125,120 ;click 1st row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,140 ;click 2nd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,180 ;click 3rd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,200 ;click 4th row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	click 390, 659	;click okay
+	return
+}
+
+SpecTab_HM_USP() {
+	click 125,120 ;click 1st row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,140 ;click 2nd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,180 ;click 3rd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,200 ;click 4th row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+	click 390, 659	;click okay
+	return
+}
+
+SpecTab_HM_Canada() {
+	click 125,120 ;click 2nd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,140 ;click 2nd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,180 ;click 3rd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,200 ;click 4th row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
+	click 390, 659	;click okay
+	return
+}
+SpecTab_HM_Prop65() {
+	click 125,120 ;click 2nd row
+	click 80,70 ;Edit
+	winactivate, Result Editor - \\Remote
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 12}{space}{tab 2}^a
+	;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
+	sendinput, 0{tab}^a
+	sleep 100
+	sendinput, 9.999{tab 5}^a<10 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	winactivate, Result Definition - \\Remote
+	click 125,140 ;click 2nd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 12}{space}{tab 2}^a
+	;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
+	sendinput, 0{tab}^a
+	sleep 100
+	sendinput, 0.499{tab 5}^a<0.5 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	winactivate, Result Definition - \\Remote
+	click 125,180 ;click 3rd row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 12}{space}{tab 2}^a
+	;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
+	sendinput, 0{tab}^a
+	sleep 100
+	sendinput, 4.099{tab 5}^a<4.1 mcg/day
+	click 390, 659	;click okay
+	WinWaitClose, Result Editor - \\Remote,,4
+	winactivate, Result Definition - \\Remote
+	click 125,200 ;click 4th row
+	click 80,70 ;Edit
+	winwaitactive, Result Editor - \\Remote,,4
+	sendinput, {tab 12}{space}{tab 2}^a
+	;sendinput, {tab 5}mcg/day{tab 7}{tab 2}^a
+	sendinput, 0{tab}^a
+	sleep 100
+	sendinput, 0.299{tab 5}^a<0.3 mcg/day
+	click 390, 659	;click okay
+	return
+}
 
 			#IfWinActive,
 	Spec_TableGuiClose:

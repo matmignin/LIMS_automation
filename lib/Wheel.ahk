@@ -9,7 +9,6 @@
 			click, 466, 437
 		; mousemove, 463, 302,0	
 		sleep 100
-		click 240, 488
 
 		return
 		}

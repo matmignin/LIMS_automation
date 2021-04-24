@@ -29,7 +29,7 @@ return
     Methods:=[]
     TestIngredients:=[]
     RotationCycles:=[]
-    while (Xl.Range("P" . A_Index+7).Value != "") 
+    while (Xl.Range("P" . A_Index+7).Value != "") || (Xl.Range("P" . A_Index+7).Value != "Method")
     {
       TestIngredients[A_index]:=			Xl.Range("Q" . A_Index+7).Value
       RotationCycles[A_index]:=	Xl.Range("R" . A_Index+7).Text
@@ -75,15 +75,18 @@ return
     Excel.Connect()
     Chemicals:=[]
     ;RotationOrder:=[]
-    while (Xl.Range("M" . A_Index).Value != "|") {
+    loop % Xl.Range("V6").Value 
+    {
+    ; while (Xl.Range("M" . A_Index).Value != "|") || (Xl.Range("M" . A_Index).Value != "Method"){
       ;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
-      Chemicals[A_index]:=Xl.Range("P" . A_Index+1).Value
+      Chemicals[A_index]:=Xl.Range("S" . A_Index).Value
       Total_rows:=A_index
       Cycle:=A_Index
     }	
     loop, %Cycle%,
     {
-      ChemicalRotation:= A_index " `t " Chemicals[A_index]
+      loopcycle := Chemicals[A_index]
+      ChemicalRotation:= A_index " `t " StrReplace(loopcycle, "|", "         ", ChemicalRotation)
       ;msgbox % Chemicals[A_index]
       Menu, RotationMenu, Add, &%ChemicalRotation%, RotationMenuHandler
     }

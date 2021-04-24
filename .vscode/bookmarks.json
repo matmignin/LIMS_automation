@@ -9,26 +9,6 @@
 					"label": "Rotation_table"
 				}
 			]
-		},
-		{
-			"path": "lib/VarBar.ahk",
-			"bookmarks": [
-				{
-					"line": 204,
-					"column": 8,
-					"label": ""
-				}
-			]
-		},
-		{
-			"path": "lib/clip.ahk",
-			"bookmarks": [
-				{
-					"line": 18,
-					"column": 4,
-					"label": "CLIP"
-				}
-			]
 		}
 	]
 }

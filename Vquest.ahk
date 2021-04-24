@@ -2,6 +2,7 @@
   customer:=[]
 
 StartTest(){
+    ;Rotation_GetTable(1)
  ; SetTimer, SmartDocs, 10
   ;  SpecTab_Table()
   ;  Test()
@@ -10,7 +11,7 @@ StartTest(){
 Test(n:=0){
   Global
   ; Gosub, TestSpeccopying
-  gosub, Test2
+ ; gosub, Test2
   return
 }
 
@@ -186,11 +187,10 @@ return
 
 
 #IfWinActive,
-  Xbutton1 & Xbutton2::wheel("^!{tab}")
 
 Sendlevel 1
   Rbutton & F18::send, {F21}
-  Xbutton2 & Xbutton1::sendinput, {CtrlDown}{F21}{CtrlUp}
+Xbutton2 & Xbutton1::sendinput, {F21}
   Rbutton & F17::F21
  ; F19::Return ;send, {F21}
   Sendlevel 0
@@ -245,12 +245,12 @@ KEY_DEFAULT:
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
   F20 & Down::send, #{Down}
-  F19::send, {Click 463, 182}{Click 463, 144}^a
-  F20::send, {Click 555, 182}{Click 555, 144}^a
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
   enter::enter
   Xbutton1::Menu()
+ ; xbutton1 & Xbutton2::+^Tab
+   ;xbutton1 & Xbutton2::!^Tab
   ; if (A_TimeSincePriorHotkey != -1 & A_TimeSincePriorHotkey <300)
   ;   cnt +=1
   ; else if (A_TimeSincePriorHotkey > 400)
@@ -285,61 +285,33 @@ KEY_DEFAULT:
 
 
 
-
-KEY_Varbar:
-  #If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI") 
-  wheelleft::Excel.PreviousSheet()
-  wheelRight::excel.Nextsheet()
-  WheelUp::Varbar.AddIteration()
-  wheeldown::excel.previoussheet()
-  F17::Excel.NextSheet()
-  F16::excel.previoussheet()
-  Rbutton::Excel.connect()
-  Mbutton & WheelDown::varbar.Move()
-  mbutton::LaunchTable(){
-  #if
-  
-  
-  
-  Methods() {
-  global
-  ; Mouse_Click("searchBar_SelectMethodsTest")
-  WinActivate, Select methods tests - \\Remote
-  click, 229, 72,2
-  send, ^a
-  Loop, Read, Methods.ini
-{
-  If A_Index = 1
-    Continue
-  Method := StrSplit(A_LoopReadLine, "=") 
-  ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
-  Selection:= % Method[1]
-  ; Group:= % MethodGroup[2]
-  Menu, Methodmenu, add, %Selection%, Methods
+Click_Filter(Code:=0,PostCmd:=""){ 
+  Global
+  WinActivate, NuGenesis LMS - \\Remote
+  if (Code:=2)
+   sendinput, {Click 748, 47}{Click %BatchFilter%, 182}^a%batch%^a
+  else if (Code:=3)
+   sendinput, {Click 748, 47}{Click %LotFilter%, 182}^a%Lot%^a
+  else if (code:=1)
+    sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a%Product%^a 
+  else 
+    sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a
+  Send, {%postCMD%}
+  return
 }
-   Menu, MethodMenu, Show,
-return
-
-Methods:
-sleep 200
-InputVar:=A_ThisMenuItem
-  IniRead,vOutput, Methods.ini, Methods, %InputVar%
-  Sendinput, %vOutput%{enter}
-   sleep 300
-   click 506, 341
-   Methods() 
-return
-}	
   
   
   
 ;___________________________________________________________________________
+  F19::Click_Filter(2) 
+  F20::Click_Filter(1) 
 KEY_LMS:
   #Ifwinactive, NuGenesis LMS - \\Remote 
  ; F20::send, {Click 462, 182}{Click 463, 144}^a
   Xbutton1 & WheelRight::sendinput, {click, 743, 41}
   Xbutton1 & WheelLeft::sendinput, {Click 354, 44}
-  F17::click 78, 750
+  F16::Click_Filter(2,"enter") 
+  F17::Click_Filter(1,"enter") 
   F18::autofill()
   Xbutton1 & WheelUp::Test()
   Xbutton1 & wheeldown::Varbar.SubIteration()
@@ -352,7 +324,8 @@ KEY_LMS:
   F17::Methods()
 #IfWinActive, Results Definition - \\Remote
   wheelup::Mouse_click("Edit")
-  WheelDown::wheel("{esc}",1000)
+  F16::wheel("{esc}",1000)
+  WheelDown::Click, 1330, 592
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
@@ -390,6 +363,50 @@ KEY_LMS:
   F19::0
   h::-
 
+KEY_Varbar:
+  #If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI") 
+  wheelleft::Excel.PreviousSheet()
+  wheelRight::excel.Nextsheet()
+  WheelUp::Varbar.AddIteration()
+  wheeldown::excel.previoussheet()
+  F17::Excel.NextSheet()
+  F16::excel.previoussheet()
+  Rbutton::Excel.connect()
+  Mbutton & WheelDown::varbar.Move()
+  mbutton::Varbar.LaunchTable()
+  #if
+  
+  
+  
+  Methods() {
+  global
+  ; Mouse_Click("searchBar_SelectMethodsTest")
+  WinActivate, Select methods tests - \\Remote
+  click, 229, 72,2
+  send, ^a
+  Loop, Read, Methods.ini
+{
+  If A_Index = 1
+    Continue
+  Method := StrSplit(A_LoopReadLine, "=") 
+  ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
+  Selection:= % Method[1]
+  ; Group:= % MethodGroup[2]
+  Menu, Methodmenu, add, %Selection%, Methods
+}
+   Menu, MethodMenu, Show,
+return
+
+Methods:
+sleep 200
+InputVar:=A_ThisMenuItem
+  IniRead,vOutput, Methods.ini, Methods, %InputVar%
+  Sendinput, %vOutput%{enter}
+   sleep 300
+   click 506, 341
+   Methods() 
+return
+}	
 
 
 
@@ -716,6 +733,10 @@ Mywork_Searchbar:="500,127,2"
   Iniread, Iteration, data.ini, SavedVariables, Iteration
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
+    Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
+    ProductFilter:=filterbox_x
+    BatchFilter:=filterbox_x + 50
+    LotFilter:=BatchFilter + 50
   Excel.Connect(1)
   StartTest()
   

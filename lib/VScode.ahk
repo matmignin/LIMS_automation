@@ -43,14 +43,13 @@ VScode_:
     Xbutton1 & F18::sendinput, !d
     Xbutton1 & Rbutton::+F8
     Xbutton1 & Lbutton::sendinput, ^{click}
-    Xbutton1::menu()
     Xbutton2 & F18::F5
-    Xbutton2::sendinput, {Xbutton2}
-    Xbutton2 & Lbutton::^+4
+    ; Xbutton2 & Lbutton::^+4
     F17::Wheel_2("!{right}",100)
     F16::Wheel_2("!{left}",100)
     Xbutton1 & F17::Wheel_2("^]")
     Xbutton1 & F16::wheel_2("^[")
+    Xbutton1::menu()
     F20 & space::^+p
     F20 & h::sendinput, +!{left}
     F20 & k::sendinput, +!{up}
