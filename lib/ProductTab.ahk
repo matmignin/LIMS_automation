@@ -17,8 +17,8 @@ ProductTab_Table(){
     Name[A_index]:=		  	Xl.Range("K" . A_Index+7).text
     LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
     LabelName[A_index]:=	Xl.Range("M" . A_Index+7).Text
-    Total_rows:=			A_index +1
-    Table_Height:=			A_index
+    Total_rows:=		    	A_index +1
+    Table_Height:=		  	A_index
     if (Xl.Range("F" . A_Index+7).text = "")
       Sub_Table_Height:=Sub_Table_Height+1			
   }

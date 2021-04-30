@@ -103,6 +103,8 @@ PreviousSheet(){
 	PreviousSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	if (PreviousSheet < 3) 
 		exit
+	Xl.Sheets(PreviousSheet).activate
+	Excel.MatchColor()
 	excel.connect()
 	; Excel.MatchColor()
 	; varbar.Update()
@@ -150,13 +152,13 @@ PasteValues(input:=0) {
 	if (input:="Snip")
 		{
 		send, ^c
-	excel.connect()
+		excel.connect()
 		sleep 200
 		xl.Range("C66").Select
-		; WinActivate, LMS Workbook.xlsm
+		WinActivate, LMS Workbook.xlsm
 		SendLevel, 1
-		ControlSend,ahk_parent, {esc}{up 4}, LMS Workbook.xlsm
-		Xl.ActiveSheet.Paste
+		send, ^v
+
 		sleep 300
 		sendlevel, 0
 		return
@@ -167,7 +169,7 @@ PasteValues(input:=0) {
 		; xl.ActiveWorkbook.Activesheet.Range("B7").value := Product
 		; ControlSend, , {Enter}, ahk_class XLMAIN
 	; }
-		else 
+	If (input = "xl")
 			{
 				send, ^c
 				sleep 300
@@ -176,8 +178,8 @@ PasteValues(input:=0) {
      xl.Run("'LMS Workbook.xlsm'!PasteRotation")
 	else if WinActive("ahk_exe explorer.exe") 
 		{
-			xl.ActiveWorkbook.Activesheet.Range("B8").select
-    xl.Run("'LMS Workbook.xlsm'!PasteIngredients")
+			xl.Range("B8").select
+    	xl.Run("'LMS Workbook.xlsm'!PasteIngredients")
 		}
 		return
 		}

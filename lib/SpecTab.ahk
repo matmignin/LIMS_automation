@@ -126,42 +126,57 @@ SpecTab_AutoFill(){
 	global
 			WinActivate, ahk_exe WFICA32.EXE
 				sleep 200
+				blockinput, on
 			If Winactive("NuGenesis LMS - \\Remote") 
 				{
-					click, 57, 719
+					sendinput, {click, 456, 616}^a%Name%{enter}
+					sleep 200
+					click, 57, 719 ;click Edit Test
 					Sleep 200
 					WinActivate, Test Definition Editor - \\Remote
+					sleep 200
 				}
 			If Winactive("Test Definition Editor - \\Remote") 
 			{
+				sleep 200
 				SpecTab_TestDefinitionEditor(Description) ; the pre window
 				sleep 200
 					Wheel_scroll("100")
 					click 240, 488 ;click resulst
 					sleep 200
-				WinActivate, Results Definition - \\Remote
-			;	SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+					WinActivate, Results Definition - \\Remote
+					WinWaitActive, Results Definition,,0.25
+						if errorlevel
+							WinActivate, Results Definition
+					; Mouse_click("edit")
+					; sleep 300
+					; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+					; return
 			}
 			if winactive("Results Definition - \\Remote") ;Selection window
 			{	
-					WinActivate, Results Definition - \\Remote
-					;winwaitactive, Results Definition - \\Remote,, 3
+					; WinActivate, Results Definition - \\Remote
+					;Sleep 200
+					WinActivate, Results Definition
 					sleep 200
-					Mouse_Click("Edit")
+					send, {click 80, 66}
 					sleep 200
 					winactivate, Result Editor - \\Remote
 					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+					blockinput, off
 					return
 			}
 			If Winactive("Result Editor - \\Remote") ;the editing window
 				{
-				SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
-				return
+					winactivate, Result Editor - \\Remote
+					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+					blockinput, off
+					return
 			}
 			else
+			Blockinput,off
 				return
  }
-
 
 SpecTab_ModifyColumns(){
 	Global
@@ -285,49 +300,67 @@ SpecTab_Create_Template:
 			}			
 
 
-SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0) {
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,The_Requirements:=0) {
 		Global
-
-		sleep 200
-		if WinExist("Result Editor - \\Remote")	
+		If winexist("Result Editor - \\Remote")
 			WinActivate, Result Editor - \\Remote
-		Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
-		sleep 200
-		click, 200, 137 ; click id box to orient
-		sleep 200
-		;if (Allergen = 1)
-		;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
-		;else
-		; if (uselimitsbox := 0)
-		; send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-		send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
-		sleep 100
-		If (UseLimitsBox != 0)
-			send, {space}
-		sleep 100
-		send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-		if (Max_limit = "")
-			sendinput, NLT %Min_Limit% %The_Units%
-		else if (Min_limit = "<")
-			sendinput, %min_limit%%Max_Limit% %The_Units%
-		else if (Min_limit = "")
-			sendinput, NMT %Max_Limit% %The_Units%
-		Else
-			Sendinput, %Requirement%
-		; sleep 300
-		click 350, 660 ; click okay
+		{
+			WinActivate, Result Editor - \\Remote
+			If (The_Requirements:=0)
+				Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
+			sleep 250
+			send, {click, 250, 140} ; click id box to orient
+			ToolTip, %requirement%, 260, 160
+			sleep 200
+			;if (Allergen = 1)
+			;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
+			;else
+			; if (uselimitsbox := 0)
+			; send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+			send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
+			sleep 200
+			If (UseLimitsBox != 0)
+				send, {space}
+			sleep 200
+			send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+			if (Max_limit = "")
+				sendinput, NLT %Min_Limit% %The_Units%
+			else if (Min_limit = "<")
+				sendinput, %min_limit%%Max_Limit% %The_Units%
+			else if (Min_limit = "")
+				sendinput, NMT %Max_Limit% %The_Units%
+			Else
+				Sendinput, %Requirement%
+			sleep 100
+			click 350, 660 ; click okay
+			WinWaitClose, Results Definition,, 6
+				if errorlevel
+					tooltip,
+			tooltip,		
+		}
 }
 
 SpecTab_TestDefinitionEditor(The_Description) {
 	Global
-	; Excel.Connect()
-	WinActivate, Test Definition Editor - \\Remote 
-	DescriptionRaw:=The_Description
-	Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
-	Click, 187, 200 ;Orient_SpecTab_TestDefinitionEditor
-	Send,^a%Trimmed_Description%
-	sleep 300
-
+	if The_description is space
+		{
+				Wheel_scroll("100")
+				click 240, 488 ;click resulst
+		return
+		}
+	else	
+	{
+		WinActivate, Test Definition Editor - \\Remote 
+		DescriptionRaw:=The_Description
+		Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
+		Click, 187, 200 ;Orient_SpecTab_TestDefinitionEditor
+		if Name contains Vitamin C
+			send, {Home}{Delete 12}%Trimmed_Description%
+		else
+			Send,^a%Trimmed_Description%
+		sleep 300
+	}
+return
 	;send, {shift down}{Tab 15}{Shift up}{enter}
 }
 

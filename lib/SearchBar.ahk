@@ -10,12 +10,13 @@ IfWinActive, NuGenesis LMS - \\Remote
 	CoordMode, Pixel, Window
 	PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
 	If ErrorLevel = 0
-	click 367, 130,2
+	click 487, 130,2
 		; SearchBar_Work() ;bluebar
 	If ErrorLevel
-	click 397, 94,2
+	click 537, 94,2
 		; SearchBar_Product() ;whitebar
-	} 
+	}  
+	; Input := Trim((Input, "`r`n"))
   Send, ^a%input%{enter}
 	sleep 400
 return

@@ -35,6 +35,7 @@ default(){
     menu, menu, add
   }
   menu,menu,add,Test_1,Tables
+  menu,menu,add,Test_2,Tables
   menu,menu,add, &Spec Table,Tables
   Menu, Menu, Add, &Product `t %Product%, Variables
   Menu, Menu, Add, &Batch `t %Batch%, Variables
@@ -73,9 +74,11 @@ default(){
     else if A_thismenuItem contains &Spec Table
       SpecTab_Table()
     else if A_thismenuItem contains Paste to excel
-      excel.PasteValues()
+      excel.PasteValues("xl")
     else if A_thismenuItem contains Test_1
       Test()
+    else if A_thismenuItem contains Test_2
+      Test2()
     else 
       menu, menu, deleteAll
   return
@@ -167,7 +170,9 @@ LMS_autofill(){
   Global
   menu, menu, add,
   ;Excel.Connect()
-   
+  if winactive("NuGenesis LMS - \\Remote")
+    menu, menu, add, Copy Spec Results, Autofill   
+    menu, menu, add, Paste Spec Results, Autofill
   Menu, Menu, add, Analytical, AutoFill
   Menu, Menu, add, Physical, AutoFill
   Menu, Menu, add, Micro, AutoFill
@@ -188,7 +193,11 @@ Autofill:
   else if A_thismenuitem contains Micro
     SpecTab_Edit_Micro() ; copy micro spec tests
   else if A_thismenuitem contains Physical
-    SpecTab_Edit_Physical()
+    SpecTab_Edit_Physical()  
+  else if A_thismenuitem contains Copy Spec Results
+    SpecTab_TestSpecs.Copy()  
+  else if A_thismenuitem contains Paste Spec Results
+    SpecTab_TestSpecs.Paste()
   else if A_thismenuitem contains New &Request
   {
      MouseGetPos, MX, MY, MWin,, 

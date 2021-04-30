@@ -2,7 +2,21 @@ return
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744
 	#!\::Login()
-  
+ +f2::
+toggle:=!toggle
+if toggle
+{
+; temp := ComObjCreate("WScript.Shell").Exec("C:\Windows\devcon.exe disable @ACPI\ALP0017\4*").StdOut.ReadAll()
+Run C:\Windows\devcon.exe disable @ACPI\ALP0017\4*,,Hide
+; MsgBox %temp%
+}
+else
+{
+; temp := ComObjCreate("WScript.Shell").Exec("C:\Windows\devcon.exe enable @ACPI\ALP0017\4*").StdOut.ReadAll()
+Run C:\Windows\devcon.exe enable @ACPI\ALP0017\4*,,Hide
+; MsgBox %temp%
+}
+return 
 VScode_:
     #IfWinActive, ahk_exe Code.exe
     Capslock & ,::sendinput, !^b
@@ -27,7 +41,7 @@ VScode_:
     +^j::+^down
     +^K::+^up
     +^l::^+#`;
-    Mbutton & Wheeldown::Wheel_2("!d",1000)
+    ; Mbutton & Wheeldown::Wheel_2("!d",1000)
     +^h::^+#h
     F18 & Wheelup::wheel_2("^m",2000)
     F18 & Rbutton::+^m ; toggle bookmark
@@ -127,10 +141,6 @@ VIM:
 
 
 
-
-
-
-
 PsudoNumlock:
   #If Getkeystate("F19","p")
     ;sendlevel 1
@@ -141,11 +151,11 @@ PsudoNumlock:
     k::numpad5
     l::numpad6
     u::numpad7
-    h::numpadsub
+    h::numpaddiv
     i::numpad8
     o::numpad9
     `;::sendinput, {numpad0}
-    n::Numpaddiv
+    n::Numpadsub
     /::,
     p::numpadmult
     '::numpadDot
@@ -154,7 +164,6 @@ PsudoNumlock:
     space::SendInput, 0
     ;sendlevel 0
       #if
-
 
 return
 

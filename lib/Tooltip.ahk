@@ -1,6 +1,11 @@
-Tooltip(msg, time=400) {
+Tooltip(msg, time:=3000, X:="",Y:="") {
 	global
-	tooltip, %msg%
-	sleep, %time%
-	tooltip
+	tooltip, %msg%, %X%, %Y%,
+	SetTimer, RemoveToolTip, -%time%
+return
+
+RemoveToolTip:
+ToolTip
+return
 }
+

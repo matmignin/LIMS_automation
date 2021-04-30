@@ -8,28 +8,141 @@ StartTest(){
   ;  Test()
 }
 
+
 Test(n:=0){
   Global
-  ; Gosub, TestSpeccopying
- ; gosub, Test2
+  SpecTab_TestSpecs.CopyDescription()()
   return
 }
+Test2(){
+ Global 
+   SpecTab_TestSpecs.PasteDescription()()
+  ; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+ 
+ return
+}
 
-Test1:
-iniread, full, data.ini, %Product%,
-Test_Specs:= strsplit(Full,"=")
-Test:=Test_Specs[1]
-Specs:= strsplit(Test_Specs[2],"|")
-msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+Class SpecTab_TestSpecs{
+    ; Global
+    ; winactivate, NuGenesis LMS - \\Remote
+    ; CopyTest()
+    ; Parse()
+    ; return
+    
+  CopyDescription(){
+    global
+    WinActivate, NuGenesis LMS - \\Remote
+      click 57, 715 ; edit results
+    winwaitactive, Test Definition Editor - \\Remote
+      click 418, 202
+      send, ^a^c
+      sleep 200
+      Description:=Clipboard
+      sleep 200
+      Return
+  }
+    
+  Copy(){
+    global
+    WinActivate, NuGenesis LMS - \\Remote
+      click 57, 750 ; edit results
+      WinWaitActive, Results Definition - \\Remote
+      click 282, 121 ; click row
+        sleep 100
+    ; SendLevel, 1
+    send, ^c
+    sleep 200
+    ; clipwait, 1
+    if ErrorLevel
+      msgbox, yo
+    sendlevel,0
+    sleep 200
+    send, {esc}
+    ParsedSpecs:=[]
+    Loop, parse, Clipboard, `t 
+    ParsedSpecs.insert(A_LoopField)
+    MinLimit:=Parsedspecs[17]
+    MaxLimit:=Parsedspecs[18]
+    Percision:=Parsedspecs[19]
+    Requirement:=Parsedspecs[20]
+    Units:=Parsedspecs[21]
+    tooltip(Requirement)
+    Return
+    }
+    
+    Paste(){
+      Global
+      WinActivate, NuGenesis LMS - \\Remote
+        click 57, 750 ; edit results
+      WinWaitActive, Results Definition - \\Remote
+      Mouse_Click("edit")
+      winwaitactive, Result Editor - \\Remote
+      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+      return
+    }
+    
+    PasteDescription(){
+      global
+      WinActivate, NuGenesis LMS - \\Remote
+      click 57, 715 ; edit results
+      winwaitactive, Test Definition Editor - \\Remote
+      click 418, 202
+				SpecTab_TestDefinitionEditor(Description) ; the pre window
+				sleep 200
+					Wheel_scroll("100")
+					click 240, 488 ;click resulst
+					sleep 200
+					WinActivate, Results Definition - \\Remote
+					WinWaitActive, Results Definition,,0.25
+						if errorlevel
+							WinActivate, Results Definition
+      }
+    
+  }
 
-LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-Return  
+ReadSpecIntoDataBase:
+  iniread, full, data.ini, %Product%,
+  Test_Specs:= strsplit(Full,"=")
+  Test:=Test_Specs[1]
+  Specs:= strsplit(Test_Specs[2],"|")
+  msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+
+  LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+  Return  
 
 
-Test2:
-Autofill_SmartDoc()
-  setwindelay, 450
-return
+TestScriptFillOut:
+  WinActivate, Substance ID Registration Verification V.1.0.3.docx - Word ahk_class OpusApp
+  Sleep, 333
+  Sendinput, {Down}+{Tab}
+  sleep 300
+  sendinput, ^{c}
+
+  sleep 300
+  WinActivate, LMS Workbook.xlsm - Excel ahk_class XLMAIN
+  Sleep, 333
+  Sendinput, ^{f}
+  sleep 200
+  WinActivate, Find and Replace ahk_class bosa_sdm_XL9
+  Sleep, 333
+  Sendinput, ^{v}{Enter}
+  sleep 300
+  sendinput, {esc}
+
+  Sleep, 333
+  Sendinput, {right}
+  sleep 200
+  sendinput, ^{c}
+  WinActivate, Substance ID Registration Verification V.1.0.3.docx - Word ahk_class OpusApp
+  Sleep, 333
+  Sendinput, {Tab}
+  sleep 200
+  send, !^{v}
+    return
+  Test2:
+  Autofill_SmartDoc()
+    setwindelay, 450
+  return
 
 
 QuickCode(){
@@ -65,54 +178,54 @@ CheckActive:
 
 
 SmartDocs:
-    Autofill_SmartDoc() 
+  Autofill_SmartDoc() 
 return
-Autofill_SmartDoc(){
-  global
-  setwindelay, 50
-  If Winexist("LMS Actions - \\Remote") {
-			WinActivate,
-			click 60, 44
-      sleep 200
-      WinWaitClose, LMS Actions - \\Remote
-      return
+  Autofill_SmartDoc(){
+    global
+    setwindelay, 50
+    If Winexist("LMS Actions - \\Remote") {
+        WinActivate,
+        click 60, 44
+        sleep 200
+        WinWaitClose, LMS Actions - \\Remote
+        return
+      }
+    else if winexist("Select Iterations - \\Remote"){
+      WinActivate, 
+        Rotation_GetTable()
+      WinWaitClose, Select Iterations - \\Remote
+        return
     }
-  else if winexist("Select Iterations - \\Remote"){
-    WinActivate, 
-      Rotation_GetTable()
-    WinWaitClose, Select Iterations - \\Remote
-      return
-  }
-	else If Winexist("New Document - \\Remote") {
-    WinActivate,   
-    sleep 200                    
-		send, {tab 6}{right 5}{tab 4}%Product%{tab 2}{enter}
-		sleep 400
-		WinActivate, NuGenesis LMS - \\Remote
-		sleep 400
-		click, 525, 100 ;edit section
-		sleep 200			
-    return				 
-  }
-		else If Winexist("Select Product - \\Remote"){
-      WinActivate,
-		  click 105, 62 ;select Formulation search
-		sendinput, %product%{enter 2}
-    WinWaitClose, Select Product - \\Remote
-    return
+    else If Winexist("New Document - \\Remote") {
+      WinActivate,   
+      sleep 200                    
+      send, {tab 6}{right 5}{tab 4}%Product%{tab 2}{enter}
+      sleep 400
+      WinActivate, NuGenesis LMS - \\Remote
+      sleep 400
+      click, 525, 100 ;edit section
+      sleep 200			
+      return				 
     }
-    else if winactive("Release: Rotational Testing Schedule - \\Remote")
-    autofill()
-    else if winactive("Sign : 210421_Rotation_0007 - \\Remote")
-      AutoFill()
-    else if winactive("Release:"){
-      AutoFill()
-      SetTimer, SmartDocs, off
-      exit
-    }  
-    else
+      else If Winexist("Select Product - \\Remote"){
+        WinActivate,
+        click 105, 62 ;select Formulation search
+      sendinput, %product%{enter 2}
+      WinWaitClose, Select Product - \\Remote
       return
-}
+      }
+      else if winactive("Release: Rotational Testing Schedule - \\Remote")
+      autofill()
+      else if winactive("Sign : 210421_Rotation_0007 - \\Remote")
+        AutoFill()
+      else if winactive("Release:"){
+        AutoFill()
+        SetTimer, SmartDocs, off
+        exit
+      }  
+      else
+        return
+  }
 
 
 TestSpecCopying:
@@ -126,43 +239,15 @@ TestSpecCopying:
   ; ; msgbox, %product% `t %batch% `n %lot%
 return
  
-ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="")
-{
+ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
   
   ;GuiControlGet, OutputVar , , %CtrlHwnd%,
   IniRead,vOutput, Customers.ini, Customers, %OutputVar%
-msgbox, %vOutput%
-}
+  msgbox, %vOutput%
+  }
 
-CopyResults_Test(){
-  global
-  WinActivate, NuGenesis LMS - \\Remote
-    click 57, 750 ; edit results
-    WinWaitActive, Results Definition - \\Remote
-    click 282, 121 ; click row
-      sleep 100
-  ; SendLevel, 1
-  send, ^c
-  sleep 200
-  ; clipwait, 1
-  if ErrorLevel
-    msgbox, yo
-  sendlevel,0
-  sleep 200
-  send, {esc}
-}
 
-ParseResultSpecs(){
-  global
-  ParsedSpecs:=[]
-  Loop, parse, Clipboard, `t 
-  ParsedSpecs.insert(A_LoopField)
-  MinLimit:=Parsedspecs[17]
-  MaxLimit:=Parsedspecs[18]
-  Precision:=Parsedspecs[19]
-  Requirement:=Parsedspecs[20]
-  Units:=Parsedspecs[21]
-}
+
 
 ToggleFilter_Test(){
   WinActivate, NuGenesis LMS - \\Remote
@@ -189,11 +274,15 @@ return
 #IfWinActive,
 
 Sendlevel 1
-  Rbutton & F18::send, {F21}
-Xbutton2 & Xbutton1::sendinput, {F21}
+  ;Rbutton & F18::send, {F21}
+  Rbutton & F13::sendinput, {F21}
+Xbutton2 & Xbutton1::
+Xbutton1 & Xbutton2::sendinput, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
   Rbutton & F17::F21
  ; F19::Return ;send, {F21}
-  Sendlevel 0
+ !t::ToggleTrackpsd()
+
+  Sendlevel 0 
   
 
 
@@ -204,9 +293,10 @@ KEY_DEFAULT:
   Return & K::Enter_Product("K")
   Return & 0::Enter_Batch()
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
-  Mbutton & WheelDown::^WheelDown
-  $mbutton up::sendinput, {ctrl up}
-  Mbutton & Wheelup::^WheelUp 
+  Mbutton & WheelDown::sendinput, {ctrldown}{WheelDown}
+  Mbutton & Wheelup::sendinput, {ctrldown}{Wheelup}
+  ~$mbutton up::sendinput, {ctrl up}{AltUp}{ShiftUp}
+
   Mbutton & F17::Wheel_Right()
   Mbutton & F16::Wheel_left()
   Mbutton::LControl
@@ -230,7 +320,7 @@ KEY_DEFAULT:
   Xbutton2 & Mbutton::Varbar.reset()
   Xbutton1 & wheelDown::Mouse_CloseWindow()
   F18 & Wheelup::!^tab
-  Xbutton1 & Lbutton::Sendinput, #{down}
+  ; Xbutton1 & Lbutton::Sendinput, #{down}
   
   ; Xbutton1::Menu()
   F18 & Wheeldown::+^!tab
@@ -285,15 +375,19 @@ KEY_DEFAULT:
 
 
 
-Click_Filter(Code:=0,PostCmd:=""){ 
+Click_Filter(Code:=0,PostCmd:="",Source:=0){ 
   Global
+  if (Source ="xl")
+    excel.connect()
+  if (Source= "clip")
+    clip()
   WinActivate, NuGenesis LMS - \\Remote
-  if (Code:=2)
+  if (code:=1)
+    sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a%Product%^a 
+  else if (Code:=2)
    sendinput, {Click 748, 47}{Click %BatchFilter%, 182}^a%batch%^a
   else if (Code:=3)
    sendinput, {Click 748, 47}{Click %LotFilter%, 182}^a%Lot%^a
-  else if (code:=1)
-    sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a%Product%^a 
   else 
     sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a
   Send, {%postCMD%}
@@ -303,6 +397,8 @@ Click_Filter(Code:=0,PostCmd:=""){
   
   
 ;___________________________________________________________________________
+  F13 & F16::Click_Filter(2,"enter") 
+  F13 & F17::Click_Filter(1,"enter") 
   F19::Click_Filter(2) 
   F20::Click_Filter(1) 
 KEY_LMS:
@@ -325,7 +421,11 @@ KEY_LMS:
 #IfWinActive, Results Definition - \\Remote
   wheelup::Mouse_click("Edit")
   F16::wheel("{esc}",1000)
-  WheelDown::Click, 1330, 592
+  WheelDown::
+  Click, 1330, 592
+  sleep 100
+  click, 338, 619
+  Return
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
@@ -370,7 +470,7 @@ KEY_Varbar:
   WheelUp::Varbar.AddIteration()
   wheeldown::excel.previoussheet()
   F17::Excel.NextSheet()
-  F16::excel.previoussheet()
+  F16::Excel.previoussheet()
   Rbutton::Excel.connect()
   Mbutton & WheelDown::varbar.Move()
   mbutton::Varbar.LaunchTable()
@@ -415,6 +515,8 @@ KEY_Excel:
   #IfWinActive, LMS Workbook.xlsm
   F18::Excel.Connect(1)
   MButton::Excel.Connect(1)
+  F13 & F16::Click_Filter(2,"enter","xl") 
+  F13 & F17::Click_Filter(1,"enter","xl") 
   #ifwinactive, ahk_exe EXCEL.EXE
   +Enter::sendinput, !{enter}
   $Enter::sendinput, {enter}
@@ -422,8 +524,8 @@ KEY_Excel:
   Mbutton::Excel.Connect(1)
   F16::wheel("{wheelleft}",80)
   F17::wheel("{wheelRight}",80)
-  Mbutton & Wheelup::^Wheelup
-  Mbutton & Wheeldown::^wheeldown
+  ; Mbutton & Wheelup::^Wheelup
+  ; Mbutton & Wheeldown::^wheeldown
   Xbutton1 & F17::^PgDN ;Excel.NextSheet()
   Xbutton1 & F16::^PgUp ;Excel.PreviousSheet()
   #ifwinactive, Find and Replace,
@@ -442,14 +544,21 @@ KEY_Excel:
   Mbutton::Open_in_Notepad()
   Xbutton1 & F17::Excel.NextSheet()
   Xbutton1 & F16::Excel.PreviousSheet()
-  F18 uP::send, {space}
+  ; F18 uP::send, {space}
 #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
 Xbutton2 & Wheelup::
+  Excel.Connect()
   winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
-  send, ^e
-  sleep 60
-  sendinput, %Product%{enter}
-  sleep 300
+blockinput, on
+  ; ControlClick, ModernSearchBox1, C:\Users\mmignin\Desktop\Label Copy\All Label Copy, ,Left, 1
+  ControlSetText, ModernSearchBox1, %Product%,C:\Users\mmignin\Desktop\Label Copy\All Label Copy,
+  ; send, ^a
+  sleep 100
+  send, {enter}
+  ; send, %Product%
+
+  sleep 400
+  blockinput, Off
   return
 
 
@@ -496,6 +605,13 @@ KEY_Snipper:
   F18::send, !{click}
   #if
 
+KEY_OneNote:
+  #IfWinActive, ONENOTE.EXE
+  Mbutton & Wheelup::Wheel("^{wheelup}",800)
+  Mbutton & Wheeldown::Wheel("^{wheeldown}",800)
+
+
+
 Scroll_Fix:
   #if winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote")
   wheeldown::Wheel_scroll("100")
@@ -525,7 +641,7 @@ ClipTool:
   #if
 
 KEY_Otherstuff:
-  Media_Play_Pause::^+4 ;4finger tap
+  Media_Play_Pause::F15 ;4finger tap
   Media_Prev::F7 ;3fringer down
   ; Media_Next:: ;3finger up
   Browser_Back::+!tab ;3finger left
@@ -565,7 +681,14 @@ KEY_Otherstuff:
     5::^+/
 
 
-
+ToggleTrackpsd(){
+  Send, !{f12}
+  winactivate, Settings
+  sleep 800
+  send, {space}!{F4}
+  Tooltip("TrackPad Toggled",2000)
+  return
+  }
 
 open_Firefox(){
   ifwinnotexist, ahk_exe firefox.exe
@@ -585,7 +708,7 @@ open_VScode(){
   return
 }
 
-  Open_in_Notepad(){
+Open_in_Notepad(){
     click
     WinGetClass class, % " ahk_id " WinExist("A")
     for Window in ComObjCreate("Shell.Application").Windows 
@@ -595,11 +718,11 @@ open_VScode(){
     Run C:\Windows\system32\Notepad.exe %Path_to_Selection%
   }
 
-  Snip_groupChange(){
-    Wheel("{ctrl down}22{Ctrl up}")
-    tooltip("Snip Group Changed",2000)
+Snip_groupChange(){
+  Wheel("{ctrl down}22{Ctrl up}")
+  tooltip("Snip Group Changed",2000)
   return
-}
+  }
 Enter_Batch(){
   global
   ;inputbox, Batch,Enter Batch Number, %key%- ,,,,%varbar_x%,%Varbar_y%,,Default
@@ -646,15 +769,17 @@ Enter_Product(key){
 } 
 
 LMS_Search(){
+  Global
   clipboard:=""
   send, ^c
   sleep 200
   ;ClipWait, 1,
-  Clipboard := Trim((Clipboard, "`r`n"))
+  ; Clipboard := Trim((Clipboard, "`r`n"))
+  Clip()
   WinActivate, NuGenesis LMS - \\Remote
   click 783, 45
-  sleep 400
-SearchBar(Clipboard)
+  sleep 200
+SearchBar(Batch)
   ; click, 500,127, 2 ;click search bar
   sleep 200
   ; Send, %clipboard%{enter}
@@ -662,23 +787,24 @@ SearchBar(Clipboard)
 }
 
 StopSub: 
-exitapp
-Return
+  exitapp
+  Return
 VarBar_ResetSub:
   VarBar.Reset()
-return
+  return
 Run_Display:
   run, Display.url, C:\Users\mmignin\Desktop\
 Run_CL3:
   Run, cl3.Ahk, lib\CL3
-return
+  return
 run_VIM:
   Run, ViM.Ahk
-return
-#IfWinActive,
+  return
 WindowSpySub: 
-Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-
+  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+  return
+  
+#IfWinActive,
 #Include <AutoFill>
 #include <varBar>
 #include <ProductTab>
@@ -700,6 +826,7 @@ VQuest_Start:
   #NoEnv
   #SingleInstance,Force
   #KeyHistory 100
+  ; #WinActivateForce
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add,CL3, Run_cl3
   menu, tray, add, Display settings, Run_display
@@ -708,20 +835,21 @@ VQuest_Start:
   Menu, Tray, Add, windowSpy, WindowSpySub 
   Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
   Menu, Tray, Default, ResetVarbar
-  SetBatchLines, 10ms
+  SetBatchLines, 20ms
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
-  	CoordMode, mouse, window
-  SetDefaultMouseSpeed, 0
+  	CoordMode, mouse, Window
+    ; SetMouseDelay, 25
+  SetDefaultMouseSpeed, 1
   ; detecthiddenwindows, on
   SetTitleMatchMode, 2
-  ; settitlematchmode, slow
-  #MaxHotkeysPerInterval 200
-  #HotkeyModifierTimeout 10
+  ; settitlematchmode, Slow
+  #MaxHotkeysPerInterval 400
+  ; #HotkeyModifierTimeout 40
   #maxthreadsperhotkey, 1
-  SetKeyDelay, 1, 0
-  setwindelay, 450
+   SetKeyDelay, 0, 0
+  setwindelay,500
   AutoTrim, On
   Menu, Tray, Icon, Robot.ico
 Results_Definition_edit:="78,63"
