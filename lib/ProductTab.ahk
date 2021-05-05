@@ -161,49 +161,49 @@ ProductTab_Select_Ingredient(){
   else if Name contains Iron 	
     Sendinput,{tab}{right 155}
   else if Name contains L-Alanine	
-    Sendinput,{tab}{right 161}
+    Sendinput,{tab}{end}{left 116}
   else if Name contains L-Arginine	
-    Sendinput,{tab}{right 162}
+    Sendinput,{tab}{end}{left 115}
   else if Name contains L-Carnitine	
-    Sendinput,{tab}{right 163}
+    Sendinput,{tab}{end}{left 114}
   else if Name contains L-Cysteine	
-    Sendinput,{tab}{right 164}
+    Sendinput,{tab}{end}{left 113}
   else if Name contains L-Cystine	
-    Sendinput,{tab}{right 165}
+    Sendinput,{tab}{end}{left 112}
   else if Name contains Lead 	
-    Sendinput,{tab}{right 167}
+    Sendinput,{tab}{end}{left 110}
   else if Name contains L-Glutamic Acid	
-    Sendinput,{tab}{right 168}
+    Sendinput,{tab}{end}{left 109}
   else if Name contains L-Glutamine	
-    Sendinput,{tab}{right 169}
+    Sendinput,{tab}{end}{left 108}
   else if Name contains L-Glutathione	
-    Sendinput,{tab}{right 170}
+    Sendinput,{tab}{end}{left 107}
   else if Name contains Glycine	
-    Sendinput,{tab}{right 171}
+    Sendinput,{tab}{end}{left 106}
   else if Name contains L-Isoleucine	
-    Sendinput,{tab}{right 172}
+    Sendinput,{tab}{end}{left 105}
   else if Name contains Leucine	
-    Sendinput,{tab}{right 173}
+    Sendinput,{tab}{end}{left 103}
   else if Name contains Lysine	
-    Sendinput,{tab}{right 174}
+    Sendinput,{tab}{end}{left 102}
   else if Name contains L-Methionine	
-    Sendinput,{tab}{right 175}
+    Sendinput,{tab}{end}{left 101}
   else if Name contains Phenylalanine	
-    Sendinput,{tab}{right 178}
+    Sendinput,{tab}{end}{left 98}
   else if Name contains L-Theanine	
-    Sendinput,{tab}{right 179}
+    Sendinput,{tab}{end}{left 97}
   else if Name contains L-Tryptophan	
-    Sendinput,{tab}{right 180}
+    Sendinput,{tab}{end}{left 96}
   else if Name contains L-Tyrosine 	
-    Sendinput,{tab}{right 181}  
+    Sendinput,{tab}{end}{left 95}  
   else if Name contains Lutein 	
-    Sendinput,{tab}{right 183}
+    Sendinput,{tab}{end}{left 94}
   else if Name contains Magnesium 	
-    Sendinput,{tab}{end}{left 90}
+    Sendinput,{tab}{end}{left 91}
   else if Name contains Malic Acid 	
-    Sendinput,{tab}{end}{left 89}
+    Sendinput,{tab}{end}{left 90}
   else if Name contains Manganese 	
-    Sendinput,{tab}{end}{left 88} 
+    Sendinput,{tab}{end}{left 89} 
   else if Name contains Mercury 	
     Sendinput,{tab}{end}{left 86} 
   else if Name contains Methylsulfonylmethane 	
@@ -240,10 +240,12 @@ ProductTab_Select_Ingredient(){
     Sendinput,{tab}{end}{left 27}
   else if Name contains Thiamin 	
     Sendinput,{tab}{end}{left 25}	
-  else if Name contains Probiotic Blend 
-    Sendinput,{tab}{end}{left 17}
-  else if Name contains Total Probiotic 
-    Sendinput,{tab}{end}{left 17}
+    else if Name contains Probiotic Blend 
+      Sendinput,{tab}{end}{left 17}
+    else if Name contains Probiotics 
+      Sendinput,{tab}{end}{left 17}
+    else if Name contains Total Probiotic 
+      Sendinput,{tab}{end}{left 17}
   else if Name contains Vanadium
     Sendinput,{tab}{end}{left 14}
   else if Name contains Vitamin A 

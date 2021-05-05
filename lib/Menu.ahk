@@ -25,7 +25,14 @@ default(){
   global
   If Winactive("NuGenesis LMS - \\Remote")
     Menu, Menu, add, New &Request, AutoFill
+    If Winactive("ahk_exe WFICA32.EXE"){
+  Menu, Menu, Add, &Product `t %Product%, Variables
+  Menu, Menu, Add, &Batch `t %Batch%, Variables
+  Menu, Menu, Add, &Lot `t %Lot%, Variables
+  Menu, Menu, Add, &Name `t %name%, Variables
+  Menu, Menu, Add, &Coated `t %Coated%, Variables
     Menu, Menu, Add,
+  }
   if WinActive("ahk_exe explorer.exe") || Winactive("ahk_exe OUTLOOK.EXE")
   {
     menu, menu, add
@@ -37,11 +44,7 @@ default(){
   menu,menu,add,Test_1,Tables
   menu,menu,add,Test_2,Tables
   menu,menu,add, &Spec Table,Tables
-  Menu, Menu, Add, &Product `t %Product%, Variables
-  Menu, Menu, Add, &Batch `t %Batch%, Variables
-  Menu, Menu, Add, &Lot `t %Lot%, Variables
-  Menu, Menu, Add, &Name `t %name%, Variables
-  Menu, Menu, Add, &Coated `t %Coated%, Variables
+  
   return
 
   Variables:
@@ -59,9 +62,9 @@ default(){
     {
       Iteration:=A_Thismenuitem
       GuiControl, Varbar:Text, iteration, %A_thismenuitem%
-      Clip("batch")
+      Clip()
       sleep 200
-      varbar.Search("batch") 
+      varbar.Search("Batch") 
     }
     else
       try menu, menu, deleteAll

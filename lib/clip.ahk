@@ -23,28 +23,38 @@ Clip(input:=0){
 	If Input contains OCR
 		OCR()
 	Else		
-	clipboard:=""
+		clipboard:=""
 	sleep 20
-		send, ^c
-		clipwait, 1
-		If (Input = "S")
-		{
-				Clipboard:=""
-					Send, ^c    
-					clipwait, 1
-				Selection:=StrReplace(Clipboard, "`r`n")
-					TrayTip, Copy, %Selection%,,
-				return %Selection%
-		}
-	If (Regexmatch(CLIPBOARD, "[ADEGLHKJI]\d{3}", Product) > 0) 	
+	send, ^c
+	clipwait, 1
+	ProductClipboard:=Clipboard
+	BatchClipboard:=Clipboard
+	If (Input = "S")
+			{
+					Clipboard:=""
+						Send, ^c    
+						clipwait, 1
+					Selection:=StrReplace(Clipboard, "`r`n")
+						TrayTip, Copy, %Selection%,,
+					return %Selection%
+			}
+	If (Regexmatch(ProductCLIPBOARD, "[ADEGLHKJI]\d{3}", Product) > 0) 	
 	{
-		Varbar.Clear("notProduct")
+		; Varbar.Clear("NotProduct)
 		GuiControl, Varbar:Text, Product, %Product%
+		ControlGetText, Batch, Static1, VarBar
+		ControlGetText, lot, Static2, VarBar
+		GuiControl, Varbar:Text, Name,
+		GuiControl, Varbar:Text, Customer,
 		Gui, VarBar:color, 847545 ;brown
 	}
-	if (Regexmatch(Clipboard, "\d{3}-\d{4}", Batch) > 0)
+	if (Regexmatch(BatchClipboard, "\d{3}-\d{4}", Batch) > 0)
 	{
 		GuiControl, Varbar:Text, Batch, %Batch%
+		ControlGetText, Product, Edit1, VarBar
+		ControlGetText, lot, Static2, VarBar
+		GuiControl, Varbar:Text, Name,
+		GuiControl, Varbar:Text, Customer,
 		; if input contains Coated
 			; Coated:=Batch
 		; else
@@ -54,14 +64,19 @@ Clip(input:=0){
 	if (Regexmatch(Clipboard, "\b\d{4}\w\d\w?", lot) > 0) || (Regexmatch(Clipboard, "Bulk", lot) > 0)
 	{
 		GuiControl, Varbar:Text, Lot, %Lot%
+		ControlGetText, Product, Edit1, VarBar
+		ControlGetText, Batch, Static1, VarBar
+		GuiControl, Varbar:Text, Name,
+		GuiControl, Varbar:Text, Customer,
 		Gui, VarBar:color, 847545 ;brown
 	}
-	else
+	else if input conains 0
 	{
-  send, {ctrl down}c{ctrl up}
+  send, ^c
 	sleep 100
 	tooltip(Clipboard)
 	; return %clipboard%
 	}
+	;Varbar.Update()
 	return
 }

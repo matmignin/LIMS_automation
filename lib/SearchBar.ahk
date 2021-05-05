@@ -1,5 +1,6 @@
 Searchbar(Input:=""){
   Global
+	blockinput on
 ;WinActivate, ahk_exe WFICA32.EXE
 ; Sleep, 200
 IfWinActive, Register new samples - \\Remote
@@ -10,15 +11,22 @@ IfWinActive, NuGenesis LMS - \\Remote
 	CoordMode, Pixel, Window
 	PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
 	If ErrorLevel = 0
-	click 487, 130,2
+	click 487, 130,
 		; SearchBar_Work() ;bluebar
 	If ErrorLevel
-	click 537, 94,2
+	click 537, 94,
 		; SearchBar_Product() ;whitebar
 	}  
 	; Input := Trim((Input, "`r`n"))
-  Send, ^a%input%{enter}
+	sleep 100
+	ControlGetText, Batch, Static1, VarBar
+	ControlGetText, Product, Edit1, VarBar
+	if input contains Batch
+		Send, ^a%Batch%{enter}
+	if input contains Product
+  	Send, ^a%Product%{enter}
 	sleep 400
+	blockinput off
 return
 }
 

@@ -103,15 +103,17 @@ Relocate(){
 
 Clear(Var:="NotProduct"){
 	global
-	If (Var:= "NotProduct")
+	If Var contains NotProduct
 	{
 		ControlsetText, Static1,, VarBar
-		ControlsetText, Static2,, VarBa
+		ControlsetText, Static2,, VarBar
 		ControlsetText, Static3,, VarBar
 		ControlsetText, Static4,, VarBar
 		ControlsetText, Static5,, VarBar
+		ControlsetText, Static6,, VarBar
+		ControlsetText, Static7,, VarBar
 	}
-If (Var:= "NotBatch")
+If Var contains NotBatch
 	{
 		ControlsetText, Static2,, VarBar
 		ControlsetText, Static3,, VarBar
@@ -125,7 +127,7 @@ If (Var:= "NotBatch")
 		ControlsetText, Static5,, VarBar
 	}
 	else
-		GuiControl, Varbar:Text, %Var%, 
+		varbar.update(), 
 	
 }
 
@@ -172,7 +174,7 @@ Sendinput(Category:="",PostOutput:="")
 		}
 	if WinActive("NuGenesis LMS - \\Remote") 
 	{
-			SearchBar()
+			SearchBar("Product")
 	}
 	if winactive("Register new samples - \\Remote")
 		send, {click 182, 103}%Product%
@@ -279,10 +281,10 @@ if winactive("Find and Replace")
 Search(input){
 		global
 	Clip()
-	WinActivate, NuGenesis LMS - \\Remote
-	click 746, 47
-	sleep 200
-	SearchBar(Batch)
+	; WinActivate, NuGenesis LMS - \\Remote
+	; click 746, 47
+	; sleep 200
+	SearchBar(input)
 	; Varbar.sendinput("Batch")
 	return
 }
@@ -294,12 +296,16 @@ AddIteration(){
 	global Iteration
 GuiControl, Varbar:Text, iteration, %iteration%
 Iteration+=1
+sleep 50
+tooltip(Iteration)
 return
 }
 SubIteration(){
 	global Iteration
 GuiControl, Varbar:Text, iteration, %iteration%
 Iteration-=1
+sleep 50
+tooltip(Iteration)
 return
 }
 

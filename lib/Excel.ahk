@@ -156,11 +156,11 @@ PasteValues(input:=0) {
 		sleep 200
 		xl.Range("C66").Select
 		WinActivate, LMS Workbook.xlsm
-		SendLevel, 1
+		; SendLevel, 1
 		send, ^v
 
 		sleep 300
-		sendlevel, 0
+		; sendlevel, 0
 		return
 	}
 		; If (Regexmatch(Clip(), "[DEGLHKJI]{1}\d{3}", ClipForProduct) > 0) 	

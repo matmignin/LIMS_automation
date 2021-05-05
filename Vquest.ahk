@@ -6,56 +6,82 @@ StartTest(){
  ; SetTimer, SmartDocs, 10
   ;  SpecTab_Table()
   ;  Test()
+  SpecTab_Table()
 }
 
 
 Test(n:=0){
   Global
-  SpecTab_TestSpecs.CopyDescription()()
+  SpecTab_TestSpecs.AddMethod("VQ 221")
   return
 }
 Test2(){
  Global 
-   SpecTab_TestSpecs.PasteDescription()()
+  ;  SpecTab_TestSpecs.PasteDescription()()
   ; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
- 
+ Ingredients()
  return
 }
 
+
+Ingredients() {
+  global
+    IniRead,vSelect, Ingredients.ini, Ingredients, %vIngredient%
+    ; Loop, Read, Ingredients.ini
+  ; {
+    ; If A_Index = 1
+      ; Continue
+    ; Ingredients := StrSplit(A_LoopReadLine, "=") 
+    ; Selection:= % Ingredient[1]
+    ; Menu, Ingredientmenu, add, %Selection%, Ingredients
+  ; }
+    msgbox % vSelect
+  ConvertIngredientSelection(vSelect)
+  return
+
+
+  }	
+ConvertIngredientSelection(IngredientSelection){
+  
+  sleep 140
+  AbsSelection:=Abs(IngredientSelection)-1
+  if (IngredientSelection > 0)
+   msgbox, %ingredientSelection% ; sendinput, {home}{right %IngredientSelection%}
+  if (IngredientSelection < 0)
+    msgbox, %AbsSelection% ;Sendinput, {tab}{end}{left %Absselection%}
+  sleep 300
+  ; send, {enter}
+    return
+}
+
 Class SpecTab_TestSpecs{
-    ; Global
-    ; winactivate, NuGenesis LMS - \\Remote
-    ; CopyTest()
-    ; Parse()
-    ; return
-    
-  CopyDescription(){
+
+  Copy(){
     global
     WinActivate, NuGenesis LMS - \\Remote
-      click 57, 715 ; edit results
+      click 57, 715 ; edit Test
+    ; click 57, 750 ; edit results
     winwaitactive, Test Definition Editor - \\Remote
       click 418, 202
       send, ^a^c
       sleep 200
       Description:=Clipboard
       sleep 200
-      Return
-  }
-    
-  Copy(){
-    global
-    WinActivate, NuGenesis LMS - \\Remote
-      click 57, 750 ; edit results
+			Wheel_scroll("100")
+			click 240, 488 ;click resulst
+			sleep 200
+			WinActivate, Results Definition - \\Remote
+			WinWaitActive, Results Definition,,0.25
+				if errorlevel
+					WinActivate, Results Definition
       WinWaitActive, Results Definition - \\Remote
       click 282, 121 ; click row
         sleep 100
-    ; SendLevel, 1
     send, ^c
     sleep 200
-    ; clipwait, 1
     if ErrorLevel
       msgbox, yo
-    sendlevel,0
+    ; sendlevel,0
     sleep 200
     send, {esc}
     ParsedSpecs:=[]
@@ -73,18 +99,8 @@ Class SpecTab_TestSpecs{
     Paste(){
       Global
       WinActivate, NuGenesis LMS - \\Remote
-        click 57, 750 ; edit results
-      WinWaitActive, Results Definition - \\Remote
-      Mouse_Click("edit")
-      winwaitactive, Result Editor - \\Remote
-      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
-      return
-    }
-    
-    PasteDescription(){
-      global
-      WinActivate, NuGenesis LMS - \\Remote
-      click 57, 715 ; edit results
+      click 57, 715 ; edit Test
+    ; click 57, 750 ; edit results
       winwaitactive, Test Definition Editor - \\Remote
       click 418, 202
 				SpecTab_TestDefinitionEditor(Description) ; the pre window
@@ -96,7 +112,23 @@ Class SpecTab_TestSpecs{
 					WinWaitActive, Results Definition,,0.25
 						if errorlevel
 							WinActivate, Results Definition
-      }
+      Mouse_Click("edit")
+      winwaitactive, Result Editor - \\Remote
+      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+      return
+    }
+    
+    AddMethod(MethodID){
+      WinActivate, NuGenesis LMS - \\Remote
+      click 67, 562 ; Add Methods
+      winwaitactive, Select methods tests - \\Remote
+      click 227, 69. 2 ; method search bar
+      sendinput, %MethodID%{enter}^a{click 506, 337}{click 851, 656} ; add test and hit okay
+      sleep 200
+      WinActivate, NuGenesis LMS - \\Remote
+      click 397, 591 ; click attrobutes
+      return
+    }
     
   }
 
@@ -273,7 +305,7 @@ return
 
 #IfWinActive,
 
-Sendlevel 1
+; Sendlevel 1
   ;Rbutton & F18::send, {F21}
   Rbutton & F13::sendinput, {F21}
 Xbutton2 & Xbutton1::
@@ -282,7 +314,7 @@ Xbutton1 & Xbutton2::sendinput, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
  ; F19::Return ;send, {F21}
  !t::ToggleTrackpsd()
 
-  Sendlevel 0 
+  ; Sendlevel 0 
   
 
 
@@ -411,8 +443,8 @@ KEY_LMS:
   F18::autofill()
   Xbutton1 & WheelUp::Test()
   Xbutton1 & wheeldown::Varbar.SubIteration()
-  Xbutton2 & WheelUp::SearchBar(Product)
-  Xbutton2 & WheelDown::SearchBar(Batch)
+  Xbutton2 & WheelUp::SearchBar("Product")
+  Xbutton2 & WheelDown::SearchBar("Batch")
   Mbutton::Excel.Connect()
   Enter::Sendinput, ^a^c{enter}
 #Ifwinactive, Select methods tests - \\Remote
@@ -446,8 +478,8 @@ KEY_LMS:
   ; Xbutton2 & F16::Excel.PreviousSheet()
   Mbutton::AutoFill()
   F18::autofill()
-  Xbutton2 & WheelUp::Wheel(Product)
-  Xbutton2 & WheelDown::Wheel(Batch)
+  ; Xbutton2 & WheelUp::Wheel(Product)
+  ; Xbutton2 & WheelDown::Wheel(Batch)
 
 #IfWinActive, Enter Product Number ahk_class #32770
   m::1
@@ -468,7 +500,7 @@ KEY_Varbar:
   wheelleft::Excel.PreviousSheet()
   wheelRight::excel.Nextsheet()
   WheelUp::Varbar.AddIteration()
-  wheeldown::excel.previoussheet()
+  Wheeldown::Varbar.SubIteration()
   F17::Excel.NextSheet()
   F16::Excel.previoussheet()
   Rbutton::Excel.connect()
@@ -478,7 +510,7 @@ KEY_Varbar:
   
   
   
-  Methods() {
+Methods() {
   global
   ; Mouse_Click("searchBar_SelectMethodsTest")
   WinActivate, Select methods tests - \\Remote
@@ -517,6 +549,13 @@ KEY_Excel:
   MButton::Excel.Connect(1)
   F13 & F16::Click_Filter(2,"enter","xl") 
   F13 & F17::Click_Filter(1,"enter","xl") 
+  #ifwinactive, Book4
+    F17::
+      wheelright::sendinput, #{right}
+      return
+    F16::
+      wheelleft::sendinput, #{left}
+      return
   #ifwinactive, ahk_exe EXCEL.EXE
   +Enter::sendinput, !{enter}
   $Enter::sendinput, {enter}
@@ -545,21 +584,21 @@ KEY_Excel:
   Xbutton1 & F17::Excel.NextSheet()
   Xbutton1 & F16::Excel.PreviousSheet()
   ; F18 uP::send, {space}
-#IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
-Xbutton2 & Wheelup::
-  Excel.Connect()
-  winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
-blockinput, on
+; #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
+; Xbutton2 & Wheelup::
+  ; Excel.Connect()
+  ; winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
+; blockinput, on
   ; ControlClick, ModernSearchBox1, C:\Users\mmignin\Desktop\Label Copy\All Label Copy, ,Left, 1
-  ControlSetText, ModernSearchBox1, %Product%,C:\Users\mmignin\Desktop\Label Copy\All Label Copy,
+  ; ControlSetText, ModernSearchBox1, %Product%,C:\Users\mmignin\Desktop\Label Copy\All Label Copy,
   ; send, ^a
-  sleep 100
-  send, {enter}
+  ; sleep 100
+  ; send, {enter}
   ; send, %Product%
 
-  sleep 400
-  blockinput, Off
-  return
+  ; sleep 400
+  ; blockinput, Off
+  ; return
 
 
 KEY_ClickUp:
@@ -572,11 +611,13 @@ KEY_OUTLOOK:
   Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
   Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
   Rbutton & F17::Varbar.Sendinput("Batch"," is updated.")
-  Xbutton1 & WheelDown::varbar.search("batch")
-  Xbutton1 & Wheelup::varbar.search("Product")
+  Xbutton1 & WheelDown::searchbar("batch")
+  Xbutton1 & Wheelup::searchBar("Product")
   Xbutton2::Clip()
   F19 & Space::Varbar.Sendinput("Product")
   F20 & Space::Varbar.Sendinput("batch")
+  Xbutton2 & Wheelright::Varbar.AddIteration()
+  Xbutton2 & wheelleft::Varbar.SubIteration()
   F18::LMS_Search()
 
 KEY_Browser:
@@ -601,8 +642,9 @@ KEY_Snipper:
   F17::sendinput, ^+{+}
   F16::sendinput, ^+{-}
   #If mouse_isover("Paster - Snipaste ahk_class")
-  sendlevel 1
+  ; sendlevel 1
   F18::send, !{click}
+  ; sendlevel 0
   #if
 
 KEY_OneNote:
@@ -641,7 +683,7 @@ ClipTool:
   #if
 
 KEY_Otherstuff:
-  Media_Play_Pause::F15 ;4finger tap
+  Media_Play_Pause::Menu() ;4finger tap
   Media_Prev::F7 ;3fringer down
   ; Media_Next:: ;3finger up
   Browser_Back::+!tab ;3finger left
@@ -732,9 +774,9 @@ Enter_Batch(){
   sleep 100
   ;click 1131, 80
   click 487, 130, 2 ;click search bar
-  sendlevel, 1
+  ; sendlevel, 1
   sendinput, {F19}
-  sendlevel, 0
+  ; sendlevel, 0
   Input, CodeA, V L3 T5, -
   if !ErrorLevel
   sendinput, -
@@ -756,9 +798,9 @@ Enter_Product(key){
   ;click 1131, 80
   click 487, 130, 2 ;click search bar
   sendinput, %Key%
-  sendlevel, 1
+  ; sendlevel, 1
   sendinput, {F19}
-  sendlevel, 0
+  ; sendlevel, 0
   Input, Code, V L3 T5, {enter}
     if !ErrorLevel
   send, {enter}
@@ -779,7 +821,7 @@ LMS_Search(){
   WinActivate, NuGenesis LMS - \\Remote
   click 783, 45
   sleep 200
-SearchBar(Batch)
+SearchBar("Batch")
   ; click, 500,127, 2 ;click search bar
   sleep 200
   ; Send, %clipboard%{enter}

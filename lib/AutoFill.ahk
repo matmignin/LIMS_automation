@@ -81,6 +81,11 @@
 		;SampleTab -------------------------------------------------------------------
 	} Else If winactive("Result Entry - \\Remote"){
 		WorkTab_ChangeTestResults("toggle")	
+	} else if winexist("Reason For Change - \\Remote"){
+		winactivate, Reason For Change - \\Remote	
+		sendinput, {click 143, 118}Fixing Rotation{click 240, 239}
+		tooltip("Fixing Rotation",2000)
+				return
 	} else if Winactive("Register new samples - \\Remote"){
 			If Option = 0
 				WorkTab_EditSample()
@@ -97,7 +102,6 @@
 				varbar.Sendinput("Product","{enter}")
 				return
 			}
-
 
 
 		;================================================================== make a method

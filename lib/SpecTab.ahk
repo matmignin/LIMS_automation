@@ -2,11 +2,11 @@
 SpecTab_Table(){
 	Global
 	Try GUI, Spec_Table:destroy 
-	; Iniread, VarBar_X, data.ini, Locations, SpecTable_X
-	 ;Iniread, VarBar_Y, data.ini, Locations, SpecTable_Y
+	Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
+	Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
 		CoordMode, mouse, screen
-	SpecTable_Y:=Varbar_Y + 10
-	SpecTable_X:=A_screenwidth-800
+	; SpecTable_Y:=Varbar_Y + 10
+	; SpecTable_X:=A_screenwidth-800
 	Excel.Connect()
 	SpecTab_GetExcelData()
 		; Name:=				[]
@@ -41,15 +41,18 @@ SpecTab_Table(){
 
 		SpecTab_ModifyColumns()
 
-
-		sleep 200	
 		SpecTab_ShowGUI()
 
+		sleep 200	
+
+	return
+	
+	
 	Spec_Table:
 		if (A_GuiEvent = "DoubleClick" ) {	
 			sendinput,{space}
 			
-		;Spec_Test()
+		; Spec_Test()
 		SpecTab_GetRowText()
 		
 		SpecTab_AutoFill()
@@ -129,7 +132,7 @@ SpecTab_AutoFill(){
 				blockinput, on
 			If Winactive("NuGenesis LMS - \\Remote") 
 				{
-					sendinput, {click, 456, 616}^a%Name%{enter}
+					sendinput, {click, 456, 616}^a%Name%{enter}{click r, 416, 1039}+{tab 2}{enter}
 					sleep 200
 					click, 57, 719 ;click Edit Test
 					Sleep 200
@@ -155,14 +158,17 @@ SpecTab_AutoFill(){
 			}
 			if winactive("Results Definition - \\Remote") ;Selection window
 			{	
-					; WinActivate, Results Definition - \\Remote
-					;Sleep 200
-					WinActivate, Results Definition
+				WinActivate, Results Definition - \\Remote
+
 					sleep 200
+					WinActivate, Results Definition - \\Remote
+					If Method contains ICP-MS 231	
+						send, {click 217, 141}
 					send, {click 80, 66}
 					sleep 200
-					winactivate, Result Editor - \\Remote
-					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
+					winwaitactive, Result Editor - \\Remote,,0.5
+					if !errorlevel
+					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,0)
 					blockinput, off
 					return
 			}
@@ -178,6 +184,8 @@ SpecTab_AutoFill(){
 				return
  }
 
+
+	
 SpecTab_ModifyColumns(){
 	Global
 		LV_ModifyCol(1,130)
@@ -200,7 +208,7 @@ SpecTab_GetRowText(){
 		LV_GetText(Description, A_EventInfo,7)
 		LV_GetText(Method, 			A_EventInfo,8)
 			Gui, Spec_Table:submit,NoHide
-}
+	}
 SpecTab_GetExcelData(){
 			Global
 		Name:=				[]
@@ -302,24 +310,21 @@ SpecTab_Create_Template:
 
 SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,The_Requirements:=0) {
 		Global
-		If winexist("Result Editor - \\Remote")
-			WinActivate, Result Editor - \\Remote
-		{
-			WinActivate, Result Editor - \\Remote
-			If (The_Requirements:=0)
-				Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
-			sleep 250
-			send, {click, 250, 140} ; click id box to orient
-			ToolTip, %requirement%, 260, 160
+
+		If The_Requirements contains 0
+			Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
+			sleep 200
+			click, 250, 140 ; click id box to orient
+			; tooltip(Requirement,4000,260,160)
 			sleep 200
 			;if (Allergen = 1)
 			;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
 			;else
-			; if (uselimitsbox := 0)
-			; send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+			if (Uselimitsbox := 0)
+				send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 			send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
 			sleep 200
-			If (UseLimitsBox != 0)
+			If (UseLimitsBox:=1)
 				send, {space}
 			sleep 200
 			send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
@@ -333,12 +338,10 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0
 				Sendinput, %Requirement%
 			sleep 100
 			click 350, 660 ; click okay
-			WinWaitClose, Results Definition,, 6
-				if errorlevel
-					tooltip,
-			tooltip,		
-		}
-}
+			; WinWaitClose, Results Definition,, 6
+				; if errorlevel
+					; return
+	}
 
 SpecTab_TestDefinitionEditor(The_Description) {
 	Global
@@ -360,9 +363,9 @@ SpecTab_TestDefinitionEditor(The_Description) {
 			Send,^a%Trimmed_Description%
 		sleep 300
 	}
-return
+	return
 	;send, {shift down}{Tab 15}{Shift up}{enter}
-}
+	}
 
 SpecTab_Edit_Physical(){
 	Global
@@ -393,7 +396,7 @@ SpecTab_Edit_Physical(){
 		sleep 300
 	sendinput, {tab}{delete 4}%Product%{enter}
 	return
-}
+	}
 SpecTab_Edit_CoatedRetain(){
 	global
 	winactivate, Edit specification - \\Remote
@@ -410,7 +413,7 @@ SpecTab_Edit_CoatedRetain(){
 	if !errorlevel
 		sendinput, {tab}{delete 4}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
 	return
-}
+	}
 SpecTab_Edit_CoatedPhysical(){
 	global
 	winactivate, Edit specification - \\Remote
@@ -427,7 +430,7 @@ SpecTab_Edit_CoatedPhysical(){
 	if !errorlevel
 		sendinput, {tab}{delete 16%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
 	return
-}		
+	}		
 SpecTab_Edit_Retain(){
 	Global
 	winactivate, Edit specification - \\Remote
@@ -450,7 +453,7 @@ SpecTab_Edit_Retain(){
 		sleep 300
 	sendinput, {tab}{delete 4}%Product%{enter}
 	return
-}
+	}
 SpecTab_Edit_Analytical() {
 	Global
 	If WinActive("Edit sample template - \\Remote")
@@ -461,7 +464,7 @@ SpecTab_Edit_Analytical() {
 		SpecTab_EditSpecification_Analytical()
 	}
 	return
-}
+	}
 
 SpecTab_Edit_Micro(){
 	Global
@@ -486,7 +489,7 @@ SpecTab_Edit_Micro(){
 		sleep 300
 	sendinput, {tab}{delete 4}%Product%{enter}
 	return
-}
+	}
 
 SpecTab_InsertDescription(){
 	Global
@@ -494,7 +497,7 @@ SpecTab_InsertDescription(){
 	Description:=RTrim(DescriptionRaw, "`r`n")
 	Send,^a%Description%
 	Return
-} 
+	} 
 
 SpecTab_HM_ReportOnly() {
 	click 125,120 ;click 1st row
@@ -521,7 +524,7 @@ SpecTab_HM_ReportOnly() {
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	return
-}
+	}
 
 SpecTab_HM_USP() {
 	click 125,120 ;click 1st row
@@ -548,7 +551,7 @@ SpecTab_HM_USP() {
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 	click 390, 659	;click okay
 	return
-}
+	}
 
 SpecTab_HM_Canada() {
 	click 125,120 ;click 2nd row
@@ -575,7 +578,7 @@ SpecTab_HM_Canada() {
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
 	click 390, 659	;click okay
 	return
-}
+	}
 SpecTab_HM_Prop65() {
 	click 125,120 ;click 2nd row
 	click 80,70 ;Edit
@@ -621,9 +624,16 @@ SpecTab_HM_Prop65() {
 	sendinput, 0.299{tab 5}^a<0.3 mcg/day
 	click 390, 659	;click okay
 	return
-}
+	}
 
-			#IfWinActive,
-	Spec_TableGuiClose:
-		GUI, Spec_Table:destroy
+
+
+Spec_TableGuiClose:
+	coordmode, mouse, Screen
+	; ,WinGetPos,VarBar_X,Varbar_Y,w,h
+		WinGetPos, SpecTable_X, SpecTable_Y, %Product%
+	IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
+	IniWrite, %SpecTable_y%, data.ini, Locations, SpecTable_Y
+	GUI, Spec_Table:destroy
+	coordmode, mouse, window
 	return
