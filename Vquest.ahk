@@ -1,29 +1,7 @@
 ﻿gosub, vquest_start
   customer:=[]
-
-StartTest(){
-    ;Rotation_GetTable(1)
- ; SetTimer, SmartDocs, 10
-  ;  SpecTab_Table()
-  ;  Test()
-  SpecTab_Table()
-}
-
-
-Test(n:=0){
-  Global
-  SpecTab_TestSpecs.AddMethod("VQ 221")
-  return
-}
-Test2(){
- Global 
-  ;  SpecTab_TestSpecs.PasteDescription()()
-  ; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
- Ingredients()
- return
-}
-
-
+return
+  
 Ingredients() {
   global
     IniRead,vSelect, Ingredients.ini, Ingredients, %vIngredient%
@@ -151,7 +129,7 @@ TestScriptFillOut:
   sendinput, ^{c}
 
   sleep 300
-  WinActivate, LMS Workbook.xlsm - Excel ahk_class XLMAIN
+  WinActivate, LMS Workbook.xlsb - Excel ahk_class XLMAIN
   Sleep, 333
   Sendinput, ^{f}
   sleep 200
@@ -301,16 +279,23 @@ return
 
 
 
+  SendPassword(){
+    if winactive, Remote Desktop
+    sendinput, ?+{K}ilgore7744{enter}
+      else
+    sendinput, +{K}ilgore7744{enter}
+    return
+  }
 
 
 #IfWinActive,
 
 ; Sendlevel 1
   ;Rbutton & F18::send, {F21}
-  Rbutton & F13::sendinput, {F21}
-Xbutton2 & Xbutton1::
-Xbutton1 & Xbutton2::sendinput, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
-  Rbutton & F17::F21
+  ; Rbutton & F13::sendinput, {F21}
+; Xbutton1 & Xbutton2::
+Xbutton2 & Xbutton1::send, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
+  ; Rbutton & F17::F21
  ; F19::Return ;send, {F21}
  !t::ToggleTrackpsd()
 
@@ -319,50 +304,50 @@ Xbutton1 & Xbutton2::sendinput, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
 
 
 KEY_DEFAULT:
+  Xbutton1 & F18::Clip("OCR") 
+  Mbutton & Xbutton1::SendPassword()
   !f::Open_Firefox()
   !v::Open_vsCode()
   Capslock & `::QuickCode()
-  Return & K::Enter_Product("K")
-  Return & 0::Enter_Batch()
+  Mbutton::RControl
+  ~$mbutton up::
+  sendlevel 1
+  sendinput, {Rctrl up}{Lctrl up}{Alt Up}{Shift Up}
+  sendlevel 0
+  return
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
   Mbutton & WheelDown::sendinput, {ctrldown}{WheelDown}
   Mbutton & Wheelup::sendinput, {ctrldown}{Wheelup}
-  ~$mbutton up::sendinput, {ctrl up}{AltUp}{ShiftUp}
 
   Mbutton & F17::Wheel_Right()
   Mbutton & F16::Wheel_left()
-  Mbutton::LControl
   Rbutton & Wheelup::Wheel_cut() 
   Rbutton & Wheeldown::Wheel_paste()
-  Rbutton & Xbutton1::Get_WindowInfo()
+  Rbutton & Xbutton2::Get_WindowInfo()
   Rbutton & F16::Backspace
   Rbutton & Lbutton::Enter
   Rbutton up::Mouse_RbuttonUP()
-  Xbutton2 & LButton::Sendinput, +^4 ;screenshot"
-  Xbutton2 & RButton::Sendinput, +^3 ;screenshot"
-  Xbutton2 & F18::Clip("OCR") 
-  Xbutton2 & WheelUp::Wheel(Product)
-  Xbutton2 & WheelDown::Wheel(Batch)
-  Xbutton2 & wheelleft::Excel.PreviousSheet()
-  Xbutton2 & wheelright::Excel.NextSheet()
-  Xbutton2 & F17::Excel.NextSheet()
-  Xbutton2 & F16::Excel.PreviousSheet()
-  ; Xbutton1 & Rbutton::Get_WindowInfo()
-  Xbutton2::Clip()
-  Xbutton2 & Mbutton::Varbar.reset()
-  Xbutton1 & wheelDown::Mouse_CloseWindow()
+  Xbutton1 & LButton::Sendinput, +^4 ;screenshot"
+  Xbutton1 & RButton::Sendinput, +^3 ;screenshot"
+  Xbutton1 & WheelUp::Wheel(Product)
+  Xbutton1 & WheelDown::Wheel(Batch)
+  Xbutton1 & wheelleft::Excel.PreviousSheet()
+  Xbutton1 & wheelright::Excel.NextSheet()
+  Xbutton1 & F17::Excel.NextSheet()
+  Xbutton1 & F16::Excel.PreviousSheet()
+  ; Xbutton2 & Rbutton::Get_WindowInfo()
+  Xbutton1::Clip()
+  Xbutton1 & Mbutton::Varbar.reset()
+  Xbutton2 & wheelDown::Mouse_CloseWindow()
   F18 & Wheelup::!^tab
-  ; Xbutton1 & Lbutton::Sendinput, #{down}
-  
-  ; Xbutton1::Menu()
+  ; Xbutton2 & Lbutton::Sendinput, #{down}
+  ; Xbutton2::Menu()
   F18 & Wheeldown::+^!tab
   F18 & Lbutton::sendinput, ^{Click}
   F18 & Rbutton::sendinput, +{Click}
-  F18 & F18::^a
-  F18 & F17::!tab
-  F18 & F16::!+tab
-  
-  
+  F18 & F17::
+  F18 & F16::
+
   F20 & Right::send, #{right}
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
@@ -370,9 +355,10 @@ KEY_DEFAULT:
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
   enter::enter
-  Xbutton1::Menu()
- ; xbutton1 & Xbutton2::+^Tab
-   ;xbutton1 & Xbutton2::!^Tab
+
+  capslock::sendinput, {esc}{Rctrl up}{Alt Up}
+ ; Xbutton2 & Xbutton1::+^Tab
+   ;Xbutton2 & Xbutton1::!^Tab
   ; if (A_TimeSincePriorHotkey != -1 & A_TimeSincePriorHotkey <300)
   ;   cnt +=1
   ; else if (A_TimeSincePriorHotkey > 400)
@@ -400,28 +386,44 @@ KEY_DEFAULT:
   ; #If
   ; F18::Autofill() ;Tooltip("☩",2000) 
 
+  Xbutton2::Menu()
+#If (A_PriorHotKey = "Xbutton2" AND A_TimeSincePriorHotkey < 500)
+    ; Browser_forward::#right
+    ; Browser_back::#left
+    ; Media_Next::sendinput, #{up}
+    Wheelup::tooltip(A_ThisHotkey)
+    Wheeldown::tooltip(A_ThisHotkey)
+    wheelleft::tooltip(A_ThisHotkey)
+    wheelright::tooltip(A_ThisHotkey)
+    Lbutton::tooltip(A_ThisHotkey)
+    Rbutton::tooltip(A_ThisHotkey)
+    Xbutton2::msgbox, %A_thishotkey% ;tooltip(A_ThisHotkey)
+    mbutton::tooltip(A_ThisHotkey)
+    Xbutton1::tooltip(A_ThisHotkey)
 
-
-
+    #If
 
 
 
 
 Click_Filter(Code:=0,PostCmd:="",Source:=0){ 
   Global
+    ProductFilter:=FilterBox_X
+    BatchFilter:=FilterBox_X+60
+    LotFilter:=BatchFilter+100
   if (Source ="xl")
     excel.connect()
   if (Source= "clip")
     clip()
   WinActivate, NuGenesis LMS - \\Remote
-  if (code:=1)
-    sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a%Product%^a 
-  else if (Code:=2)
-   sendinput, {Click 748, 47}{Click %BatchFilter%, 182}^a%batch%^a
-  else if (Code:=3)
-   sendinput, {Click 748, 47}{Click %LotFilter%, 182}^a%Lot%^a
+  if code contains Product
+    sendinput, {Click %ProductFilter%, %FilterBox_Y%}{Click %ProductFilter%, %FilterBox_Y%}^a%Product%^a 
+  else if code contains Batch
+   sendinput, {Click 748, 47}{Click %BatchFilter%, %FilterBox_Y%}^a%batch%^a
+  else if code contains Lot
+   sendinput, {Click 748, 47}{Click %LotFilter%, %FilterBox_Y%}^a%Lot%^a
   else 
-    sendinput, {Click %ProductFilter%, 182}{Click %ProductFilter%, 144}^a
+    sendinput, {Click %ProductFilter%, %FilterBox_Y%}{Click %ProductFilter%, %FilterBox_Y%}^a
   Send, {%postCMD%}
   return
 }
@@ -436,15 +438,15 @@ Click_Filter(Code:=0,PostCmd:="",Source:=0){
 KEY_LMS:
   #Ifwinactive, NuGenesis LMS - \\Remote 
  ; F20::send, {Click 462, 182}{Click 463, 144}^a
-  Xbutton1 & WheelRight::sendinput, {click, 743, 41}
-  Xbutton1 & WheelLeft::sendinput, {Click 354, 44}
-  F16::Click_Filter(2,"enter") 
-  F17::Click_Filter(1,"enter") 
+  Xbutton2 & WheelRight::sendinput, {click, 743, 41}
+  Xbutton2 & WheelLeft::sendinput, {Click 354, 44}
+  F16::Click_Filter("Product","enter") 
+  F17::Click_Filter("Batch","enter") 
   F18::autofill()
-  Xbutton1 & WheelUp::Test()
-  Xbutton1 & wheeldown::Varbar.SubIteration()
-  Xbutton2 & WheelUp::SearchBar("Product")
-  Xbutton2 & WheelDown::SearchBar("Batch")
+  Xbutton2 & WheelUp::Test()
+  Xbutton2 & wheeldown::Varbar.SubIteration()
+  Xbutton1 & WheelUp::SearchBar("Product")
+  Xbutton1 & WheelDown::SearchBar("Batch")
   Mbutton::Excel.Connect()
   Enter::Sendinput, ^a^c{enter}
 #Ifwinactive, Select methods tests - \\Remote
@@ -461,25 +463,25 @@ KEY_LMS:
 #ifwinactive, Edit test (Field Configuration:
   F16::Autofill()
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
-  Xbutton2::WorkTab_ChangeTestResults("toggle")	
+  Xbutton1::WorkTab_ChangeTestResults("toggle")	
   F16::WorkTab_ChangeTestResults("toggle")
   F17::WorkTab_ChangeTestResults()
   
 #ifwinactive, Register new samples - \\Remote
-  Xbutton2 & wheelup::sendinput, {click 180, 103, 2}%Product%{enter}
+  Xbutton1 & wheelup::sendinput, {click 180, 103, 2}%Product%{enter}
   F18::Autofill(1)
 
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  Xbutton1 & WheelUp::Varbar.AddIteration()
-  Xbutton1 & wheeldown::Varbar.SubIteration()
+  Xbutton2 & WheelUp::Varbar.AddIteration()
+  Xbutton2 & wheeldown::Varbar.SubIteration()
   browser_Forward::Excel.NextSheet()
   browser_Back::Excel.PreviousSheet()
-  ; Xbutton2 & F17::Excel.NextSheet()
-  ; Xbutton2 & F16::Excel.PreviousSheet()
+  ; Xbutton1 & F17::Excel.NextSheet()
+  ; Xbutton1 & F16::Excel.PreviousSheet()
   Mbutton::AutoFill()
   F18::autofill()
-  ; Xbutton2 & WheelUp::Wheel(Product)
-  ; Xbutton2 & WheelDown::Wheel(Batch)
+  ; Xbutton1 & WheelUp::Wheel(Product)
+  ; Xbutton1 & WheelDown::Wheel(Batch)
 
 #IfWinActive, Enter Product Number ahk_class #32770
   m::1
@@ -506,6 +508,8 @@ KEY_Varbar:
   Rbutton::Excel.connect()
   Mbutton & WheelDown::varbar.Move()
   mbutton::Varbar.LaunchTable()
+  Rbutton & F16::ProductTab_Table()
+  Rbutton & F17::SpecTab_Table()
   #if
   
   
@@ -544,7 +548,7 @@ return
 
 
 KEY_Excel:
-  #IfWinActive, LMS Workbook.xlsm
+  #IfWinActive, LMS Workbook.xlsb
   F18::Excel.Connect(1)
   MButton::Excel.Connect(1)
   F13 & F16::Click_Filter(2,"enter","xl") 
@@ -565,14 +569,14 @@ KEY_Excel:
   F17::wheel("{wheelRight}",80)
   ; Mbutton & Wheelup::^Wheelup
   ; Mbutton & Wheeldown::^wheeldown
-  Xbutton1 & F17::^PgDN ;Excel.NextSheet()
-  Xbutton1 & F16::^PgUp ;Excel.PreviousSheet()
+  Xbutton2 & F17::^PgDN ;Excel.NextSheet()
+  Xbutton2 & F16::^PgUp ;Excel.PreviousSheet()
   #ifwinactive, Find and Replace,
-  Xbutton2 & WheelUp::
-  Wheel("{alt down}n{alt up}")
+  Xbutton1 & WheelUp::
+  Wheel("!n")
   Sendinput, %Product%
   return
-  Xbutton2 & WheelDown::
+  Xbutton1 & WheelDown::
  ; Wheel("{alt down}n{alt up}")
   Sendinput % Batch
   return
@@ -581,24 +585,23 @@ KEY_Excel:
 
 #IfWinActive, ahk_exe explorer.exe
   Mbutton::Open_in_Notepad()
-  Xbutton1 & F17::Excel.NextSheet()
-  Xbutton1 & F16::Excel.PreviousSheet()
+  Xbutton2 & F17::Excel.NextSheet()
+  Xbutton2 & F16::Excel.PreviousSheet()
   ; F18 uP::send, {space}
-; #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
-; Xbutton2 & Wheelup::
+ #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe OR - search ahk_exe explorer.exe
+ Xbutton1 & Wheelup:: ;LabelCopySearch(){
   ; Excel.Connect()
-  ; winactivate, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe
-; blockinput, on
-  ; ControlClick, ModernSearchBox1, C:\Users\mmignin\Desktop\Label Copy\All Label Copy, ,Left, 1
-  ; ControlSetText, ModernSearchBox1, %Product%,C:\Users\mmignin\Desktop\Label Copy\All Label Copy,
-  ; send, ^a
-  ; sleep 100
-  ; send, {enter}
-  ; send, %Product%
+  winactivate, ahk_exe explorer.exe
+  blockinput, on
+  ControlClick, ModernSearchBox1, ahk_exe explorer.exe, ,Left, 1
+  ControlSetText, ModernSearchBox1, %Product%,ahk_exe explorer.exe,
+  ; send, ^a%Product%
+  sleep 100
+  send, {enter}
 
-  ; sleep 400
-  ; blockinput, Off
-  ; return
+  sleep 400
+   blockinput, Off
+  return
 
 
 KEY_ClickUp:
@@ -611,22 +614,22 @@ KEY_OUTLOOK:
   Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
   Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
   Rbutton & F17::Varbar.Sendinput("Batch"," is updated.")
-  Xbutton1 & WheelDown::searchbar("batch")
-  Xbutton1 & Wheelup::searchBar("Product")
-  Xbutton2::Clip()
+  Xbutton2 & WheelDown::searchbar("batch")
+  Xbutton2 & Wheelup::searchBar("Product")
+  Xbutton1::Clip()
   F19 & Space::Varbar.Sendinput("Product")
   F20 & Space::Varbar.Sendinput("batch")
-  Xbutton2 & Wheelright::Varbar.AddIteration()
-  Xbutton2 & wheelleft::Varbar.SubIteration()
+  Xbutton1 & Wheelright::Varbar.AddIteration()
+  Xbutton1 & wheelleft::Varbar.SubIteration()
   F18::LMS_Search()
 
 KEY_Browser:
   #IfWinActive, ahk_exe firefox.exe
-  Xbutton1 & WheelDown::Wheel("^w")
+  Xbutton2 & WheelDown::Wheel("^w")
   F16::sendinput, !{left}
-  Xbutton2 & WheelDOWN::Browser_Back
+  Xbutton1 & WheelDOWN::Browser_Back
   F17::!right
-  Xbutton1 & wheelUP::Browser_Forward
+  Xbutton2 & wheelUP::Browser_Forward
   Mbutton::Mbutton ;sendinput, ^{click}
 
 KEY_Snipper: 
@@ -638,7 +641,7 @@ KEY_Snipper:
   #IfWinActive, Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
   F18 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
   F18::send, {esc}
-  Xbutton2::sendinput, ^c
+  Xbutton1::sendinput, ^c
   F17::sendinput, ^+{+}
   F16::sendinput, ^+{-}
   #If mouse_isover("Paster - Snipaste ahk_class")
@@ -648,10 +651,11 @@ KEY_Snipper:
   #if
 
 KEY_OneNote:
-  #IfWinActive, ONENOTE.EXE
-  Mbutton & Wheelup::Wheel("^{wheelup}",800)
-  Mbutton & Wheeldown::Wheel("^{wheeldown}",800)
-
+  #IfWinActive, ahk_exe ONENOTE.EXE
+  Mbutton & Wheelup::Wheel_2("^!+{=}",50)
+  Mbutton & Wheeldown::Wheel_2("^!+{-}",50)
+  Mbutton::send, {AltDown}{Altup}{w}{i}
+  F18::F11
 
 
 Scroll_Fix:
@@ -663,7 +667,7 @@ Scroll_Fix:
   ; wheelup::Wheel_scroll("-100"
   #if
 ClipTool:
-#IfWinactive, C:\Users\mmignin\Documents\VQuest\lib\CL3\cl3.ahk - AutoHotkey v1.1.33.06,
+#IfWinactive, C:\Users\mmignin\Documents\VQuest\lib\CL3\cl3.ahk,
   F19::send, {esc}
   F19 & j::send, {down}
   F19 & k::send, {up}
@@ -676,11 +680,6 @@ ClipTool:
   capslock::esc
   #IfWinActive
 
-#If (A_PriorHotKey = "Browser_forward" AND A_TimeSincePriorHotkey < 1000)
-  browser_forward::Send, !{tab}{space}
-  browser_back::send, +!{tab}{space}
-  media_Next::Mouse_CloseWindow()
-  #if
 
 KEY_Otherstuff:
   Media_Play_Pause::Menu() ;4finger tap
@@ -693,8 +692,18 @@ KEY_Otherstuff:
   Volume_Up::F12
   #right::tooltip(A_ThisHotkey)
   ^+!down::tooltip(A_ThisHotkey)
-  CapsLock::return
 
+
+
+
+
+
+
+TrouchPad:
+#If (A_PriorHotKey = "Browser_forward" AND A_TimeSincePriorHotkey < 1000)
+  browser_forward::Send, !{tab}{space}
+  browser_back::send, +!{tab}{space}
+  media_Next::Mouse_CloseWindow()
   
 #If (A_PriorHotKey = "Media_next" AND A_TimeSincePriorHotkey < 1000)
     Browser_forward::#right
@@ -739,7 +748,7 @@ open_Firefox(){
     WinActivate, ahk_exe firefox.exe
 
   return
-}
+  }
 
 open_VScode(){
   ifwinnotexist,ahk_exe Code.exe
@@ -748,7 +757,7 @@ open_VScode(){
     WinActivate, ahk_exe Code.exe
 
   return
-}
+  }
 
 Open_in_Notepad(){
     click
@@ -765,50 +774,7 @@ Snip_groupChange(){
   tooltip("Snip Group Changed",2000)
   return
   }
-Enter_Batch(){
-  global
-  ;inputbox, Batch,Enter Batch Number, %key%- ,,,,%varbar_x%,%Varbar_y%,,Default
-  WinActivate, ahk_class Transparent Windows Client ahk_exe WFICA32.EXE
-  ;inputbox, Code,Enter Product Number, %key% `t ,,,,%varbar_x%,%Varbar_y%,,Default
-  click 755, 480
-  sleep 100
-  ;click 1131, 80
-  click 487, 130, 2 ;click search bar
-  ; sendlevel, 1
-  sendinput, {F19}
-  ; sendlevel, 0
-  Input, CodeA, V L3 T5, -
-  if !ErrorLevel
-  sendinput, -
-  Input, CodeB, V L4 T5, {enter}
-  if !ErrorLevel
-  send, {enter}
-  Batch:=CodeA . "-" . CodeB
-  GuiControl, Varbar:Text, Batch, %Batch% 
-  tooltip(Batch)
-  return
-}
 
-Enter_Product(key){
-  Global
-  WinActivate, ahk_class Transparent Windows Client ahk_exe WFICA32.EXE
-  ;inputbox, Code,Enter Product Number, %key% `t ,,,,%varbar_x%,%Varbar_y%,,Default
-  click 755, 480
-  sleep 100
-  ;click 1131, 80
-  click 487, 130, 2 ;click search bar
-  sendinput, %Key%
-  ; sendlevel, 1
-  sendinput, {F19}
-  ; sendlevel, 0
-  Input, Code, V L3 T5, {enter}
-    if !ErrorLevel
-  send, {enter}
-  Product:=Key Code
-	GuiControl, Varbar:Text, Product, %Product% 
-  tooltip(Product)
-  return
-} 
 
 LMS_Search(){
   Global
@@ -826,7 +792,7 @@ SearchBar("Batch")
   sleep 200
   ; Send, %clipboard%{enter}
   return
-}
+  }
 
 StopSub: 
   exitapp
@@ -839,6 +805,17 @@ Run_Display:
 Run_CL3:
   Run, cl3.Ahk, lib\CL3
   return
+FilterBox_Location:
+    KeyWait, Lbutton, D
+    sleep 200
+    ; KeyWait, Lbutton, D
+    CoordMode, mouse, window
+    MouseGetPos, FilterBox_X, FilterBox_Y,
+  	IniWrite, %FilterBox_X%, data.ini, Locations, FilterBox_X
+  	IniWrite, %FilterBox_Y%, data.ini, Locations, FilterBox_Y
+    FilterBoxLocation:=FilterBox_X ", " FilterBox_Y
+    tooltip(FilterBoxLocation)
+    return
 run_VIM:
   Run, ViM.Ahk
   return
@@ -859,6 +836,8 @@ WindowSpySub:
 #include <wheel>
 #include <VScode>
 #include <mouse>
+#include <click>
+#include <test>
 
 
 
@@ -868,10 +847,11 @@ VQuest_Start:
   #NoEnv
   #SingleInstance,Force
   #KeyHistory 100
-  ; #WinActivateForce
+  #WinActivateForce
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add,CL3, Run_cl3
   menu, tray, add, Display settings, Run_display
+  Menu, Tray, Add, Set FilterBox Location, Filterbox_Location
   Menu, Tray, Add, Vim, Run_Vim
   Menu, Tray, Add, Stop, StopSub
   Menu, Tray, Add, windowSpy, WindowSpySub 
@@ -882,18 +862,22 @@ VQuest_Start:
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
   	CoordMode, mouse, Window
-    ; SetMouseDelay, 25
+    ;SetMouseDelay, 25
   SetDefaultMouseSpeed, 1
-  ; detecthiddenwindows, on
+  detecthiddenwindows, on
   SetTitleMatchMode, 2
   ; settitlematchmode, Slow
   #MaxHotkeysPerInterval 400
-  ; #HotkeyModifierTimeout 40
-  #maxthreadsperhotkey, 1
+  ; #HotkeyModifierTimeout 400
+  #maxthreadsperhotkey, 2
    SetKeyDelay, 0, 0
-  setwindelay,500
+  setwindelay,450
   AutoTrim, On
   Menu, Tray, Icon, Robot.ico
+    Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
+    Iniread, FilterBox_Y, data.ini, Locations, FilterBox_Y
+
+    
 Results_Definition_edit:="78,63"
 Result_Editor_Ok:="370,660"
 Results_Definition_ok:="1336,592"
@@ -903,10 +887,6 @@ Mywork_Searchbar:="500,127,2"
   Iniread, Iteration, data.ini, SavedVariables, Iteration
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-    Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
-    ProductFilter:=filterbox_x
-    BatchFilter:=filterbox_x + 50
-    LotFilter:=BatchFilter + 50
   Excel.Connect(1)
   StartTest()
   

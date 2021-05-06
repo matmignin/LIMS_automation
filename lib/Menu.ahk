@@ -1,63 +1,78 @@
 
 Menu(n:=0){
   Global
-  try menu, menu, deleteAll
 
+  ;If (n=0) {
+  try menu, menu, deleteAll
   default()
+  if winactive("Edit Formulation - \\Remote")
+    Formulation_autofill()
   If Winactive("Password ahk_class bosa_sdm_XL9") 
     passwords()
-  else if Winactive("Login - \\Remote")
+  if Winactive("Login - \\Remote")
     LMS_Env()
-  Else If Winactive("Edit sample template - \\Remote") || Winactive("Edit specification - \\Remote") || winactive("NuGenesis LMS - \\Remote")
+  If Winactive("Edit sample template - \\Remote") || Winactive("Edit specification - \\Remote") || winactive("NuGenesis LMS - \\Remote")
     LMS_autofill()
-  Else If winactive("Results Definition - \\Remote")
+  If winactive("Results Definition - \\Remote")
     Heavy_meatals()
-  Else if WinActive("ahk_exe Code.exe")
+  if WinActive("ahk_exe Code.exe")
     VScode()
-  ELSE If WinActive("Remote Desktop Connection") 
+  If WinActive("Remote Desktop Connection") 
     remote_desktop()
 
   Menu, Menu, Show,
   return
+
 }
 ;default
 default(){
   global
-  If Winactive("NuGenesis LMS - \\Remote")
-    Menu, Menu, add, New &Request, AutoFill
     If Winactive("ahk_exe WFICA32.EXE"){
-  Menu, Menu, Add, &Product `t %Product%, Variables
-  Menu, Menu, Add, &Batch `t %Batch%, Variables
-  Menu, Menu, Add, &Lot `t %Lot%, Variables
-  Menu, Menu, Add, &Name `t %name%, Variables
-  Menu, Menu, Add, &Coated `t %Coated%, Variables
+      menu, Menu, add, &Variables, Variable
+  Menu, Variables, Add, &Product `t %Product%, Variable
+  Menu, Variables, Add, &Batch `t %Batch%, Variable
+  Menu, Variables, Add, &Lot `t %Lot%, Variable
+  Menu, Variables, Add, &Name `t %name%, Variable
+  Menu, Variables, Add, Cus&tomer `t %Customer%, Variable
+  Menu, Variables, Add, C&oated `t %Coated%, Variable
+  Menu, Variables, Add, &Color `t %Color%, Variable
+  Menu, Variables, Add, &ShapeSize `t %ShapeSize%, Variable
+  Menu, Variables, Add, &Weight `t %Weight%, Variable
+  menu, menu, add, &Variables, :Variables
     Menu, Menu, Add,
   }
+  If Winactive("NuGenesis LMS - \\Remote")
+    Menu, Menu, add, New &Request, AutoFill
   if WinActive("ahk_exe explorer.exe") || Winactive("ahk_exe OUTLOOK.EXE")
   {
     menu, menu, add
     loop 5
-      menu, menu, add, %a_index%, Variables
-    menu, menu, add, Paste to Excel, Tables
+      menu, menu, add, %a_index%, Variable
+    ; menu, menu, add, Paste to Excel, Tables
     menu, menu, add
   }
-  menu,menu,add,Test_1,Tables
-  menu,menu,add,Test_2,Tables
-  menu,menu,add, &Spec Table,Tables
-  
+  Tests()
   return
 
-  Variables:
+  Variable:
     if A_thismenuItem contains &Product `t %Product%,
-      Varbar.Sendinput("Product")
+      Sendinput % Product
     else if A_thismenuItem contains &Batch `t %Batch%
-      Varbar.Sendinput("Batch")
+      sendinput % Batch
     else if A_thismenuItem contains &name `t %name%
-      Varbar.Sendinput("Name")
+      sendinput % Name
     else if A_thismenuItem contains &lot `t %Lot%
-      VarBar.sendinput("Lot")
-    else if A_thismenuItem contains &Coated `t %Coated%
+      sendinput % Lot
+    else if A_thismenuItem contains C&oated `t %Coated%
      Clip("Coated")
+    else if A_thismenuItem contains Cus&tomer `t %Customer%
+      sendinput % Customer
+    else if A_thismenuItem contains &Color `t %Color%
+      sendinput % Color
+    else if A_thismenuItem contains &ShapeSize `t %ShapeSize%
+      sendinput % shapesize
+    else if A_thismenuItem contains &Weight `t %Weight%
+      sendinput % Weight
     else if A_ThisMenuItem is digit
     {
       Iteration:=A_Thismenuitem
@@ -70,7 +85,9 @@ default(){
       try menu, menu, deleteAll
     menu, menu, deleteAll
   return
-
+  
+  
+  
   Tables:
     if A_thismenuitem contains &Ingredient Table
       ProductTab_Table()
@@ -78,43 +95,58 @@ default(){
       SpecTab_Table()
     else if A_thismenuItem contains Paste to excel
       excel.PasteValues("xl")
-    else if A_thismenuItem contains Test_1
-      Test()
-    else if A_thismenuItem contains Test_2
-      Test2()
     else 
       menu, menu, deleteAll
   return
 }
-
-Test:
-  Test()
+Tests(){
+  Global
+  If n contains tests
+  {
+    try menu, menu, deleteAll
+    menu,Menu,add,Test_&1,Tests
+    menu,Menu,add,Test_&2,Tests
+    Menu, Menu, Show,
+    exit   
+    } 
+    else {
+    menu, menu, add, T&ests, Tests
+      menu,Tests,add,Test_&1,Tests
+      menu,Tests,add,Test_&2,Tests
+    menu, menu, add, T&ests, :Tests
+    menu,menu,add, &Spec Table,Tables
+    }
+Tests:
+    if A_thismenuItem contains Test_&1
+      Test()
+    else if A_thismenuItem contains Test_&2
+      Test_2()
 return
+}
 
 passwords() {
   global
-  menu, menu, add,
   menu, menu, add,
   Menu, Menu, Add, Samples, Passwords
   Menu, Menu, Add, Tests, Passwords
   Menu, Menu, Add, Visual, Passwords
   Menu, Menu, Add, VQ Login, Passwords
   ; Menu, Menu, Show,
-return
+  return
 
-Passwords:
-  if (A_ThisMenuItem = "Samples")
-    sendinput, care{enter}
-  else if (A_ThisMenuItem = "Tests")
-    Sendinput, lab{enter}
-  else if (A_ThisMenuItem = "Visual")
-    Sendinput, open{enter}
-  else if (A_ThisMenuItem = "VQ Login")
-    Sendinput, ?Kilgore7744{enter}
-  else 
-    menu, menu, deleteAll
-return
-}		
+  Passwords:
+    if (A_ThisMenuItem = "Samples")
+      sendinput, care{enter}
+    else if (A_ThisMenuItem = "Tests")
+      Sendinput, lab{enter}
+    else if (A_ThisMenuItem = "Visual")
+      Sendinput, open{enter}
+    else if (A_ThisMenuItem = "VQ Login")
+      Sendinput, ?Kilgore7744{enter}
+    else 
+      menu, menu, deleteAll
+  return
+  }		
 
 Heavy_meatals(){
   Global
@@ -122,8 +154,8 @@ Heavy_meatals(){
   Menu, Menu, Add, Canada Heavy Metal,Heavy_metals
   Menu, Menu, Add, Prop65 Heavy Metal,Heavy_metals
   Menu, Menu, Add, Report Only Heavy Metal,Heavy_metals
-return
-Heavy_metals:
+  return
+  Heavy_metals:
   if (A_ThisMenuItem = "USP Heavy Metal")
     SpecTab_HM_USP()
   else if (A_ThisMenuItem = "Canada Heavy Metal")
@@ -134,56 +166,45 @@ Heavy_metals:
     SpecTab_HM_ReportOnly() 
   else 
     menu, menu, deleteAll
-return
-}
+  return
+  }
 
-LMS_Env(){
+
+Formulation_Autofill(){
   Global
-  try menu, menu, deleteAll
-  menu, menu, add, 
-  menu, menu, add, &Login, LMS_Env
-  menu, menu, add, &Production Server, LMS_Env
-  menu, menu, add, &Test Server, LMS_Env
-  menu, menu, add, 
-return
-LMS_Env:
-  sleep 200
-  Send, mmignin{tab}Kilgore7744
-  if A_thismenuItem contains &Login 
-    send, {enter}
-  else if A_thismenuItem contains &Production Server
-    SwitchEnv("Prd")
-  else if A_thismenuItem contains &Test Server
-    SwitchEnv("Test")
-  else
-    menu, menu, deleteall
-return
+  if winexist("Edit Formulation - \\Remote")
+    menu, menu, add,
+    Menu, Menu, add,1 scoop,Autofill
+    Menu, Menu, add,2 scoops,Autofill
+    Menu, Menu, add,3 scoops,Autofill
+    Menu, Menu, add,4 scoops,Autofill
+    Menu, Menu, add,5 scoops,Autofill
+    Menu, Menu, add,6 scoops,Autofill
+    Menu, Menu, add,1 stick,Autofill
+    Menu, Menu, add,2 sticks,Autofill
+    return
 }
 
-SwitchEnv(ServerEnv){
-  sleep 200
-  Send, {Tab}{Tab}{Down} ; WinwaitActive, Change Configuration - \\Remote ahk_class Transparent Windows Client
-  sleep 200
-  Send, {Home}{Right}{Right}{Right}{Right}{LShift Down}{End}{End}{LShift Up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
-  sleep 200 ; WinwaitActive, Login - \\Remote ahk_class Transparent Windows Client
-  Send, {Enter}
-return
-}
 LMS_autofill(){
   Global
   menu, menu, add,
   ;Excel.Connect()
-  if winactive("NuGenesis LMS - \\Remote")
+    menu, menu, add, Copy Spec Template, autofill
     menu, menu, add, Copy Spec Results, Autofill   
     menu, menu, add, Paste Spec Results, Autofill
+  if winactive("Edit specification - \\Remote") {
   Menu, Menu, add, Analytical, AutoFill
   Menu, Menu, add, Physical, AutoFill
   Menu, Menu, add, Micro, AutoFill
   Menu, Menu, add, Retain, AutoFill		
   Menu, Menu, add, Coated_Physical, AutoFill
   Menu, Menu, add, Coated_Retain, AutoFill
+  }
   ;	Menu, Menu, Show,
+  ;Excel.Connect()
 return
+
+
 Autofill:
   if A_thismenuitem contains Analytical  
     SpecTab_Edit_Analytical()
@@ -201,6 +222,8 @@ Autofill:
     SpecTab_TestSpecs.Copy()  
   else if A_thismenuitem contains Paste Spec Results
     SpecTab_TestSpecs.Paste()
+  else if A_thismenuitem contains Copy Spec Template
+    SpecTab_CopySpecTemplate()
   else if A_thismenuitem contains New &Request
   {
      MouseGetPos, MX, MY, MWin,, 
@@ -208,6 +231,22 @@ Autofill:
      winwaitactive, NuGenesis LMS - \\Remote
     Click, MX, Y+25,
       }
+    else if A_thismenuitem contains 1 scoop
+    ProductTab_Scoops(1)
+    else if A_thismenuitem contains 2 scoops
+    ProductTab_Scoops(2,"two")
+    else if A_thismenuitem contains 3 scoops
+    ProductTab_Scoops(3,"three")
+    else if A_thismenuitem contains 4 scoops
+    ProductTab_Scoops(4,"four")
+    else if A_thismenuitem contains 5 scoops
+    ProductTab_Scoops(5,"five")
+    else if A_thismenuitem contains 6 scoops
+    ProductTab_Scoops(6,"six")
+    else if A_thismenuitem contains 1 stick
+    ProductTab_Scoops(1,,"stick packet")
+    else if A_thismenuitem contains 2 sticks
+    ProductTab_Scoops(2,"two","stick packet")
   else 
     menu, menu, deleteAll
 return
@@ -217,9 +256,9 @@ VScode(){
   Global
   try menu, menu, deleteAll
   menu, Menu, Add, Search Hotkeys, vscode
-  Menu, hotkeyMenu, Add, Xbutton2, vscode
-  Menu, hotkeyMenu, Add, Numlock, vscode
   Menu, hotkeyMenu, Add, Xbutton1, vscode
+  Menu, hotkeyMenu, Add, Numlock, vscode
+  Menu, hotkeyMenu, Add, Xbutton3, vscode
   Menu, hotkeyMenu, Add, F15, vscode
   Menu, hotkeyMenu, Add, F16, vscode
   Menu, hotkeyMenu, Add, F17, vscode
@@ -237,12 +276,12 @@ VScode(){
 return
 
 VScode:
-  if (A_thismenuitem = "Xbutton2")
-  Sendinput, ^fXbutton2`:`:{Tab 6}{down 2}
+  if (A_thismenuitem = "Xbutton1")
+  Sendinput, ^fXbutton1`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "Numlock")
   Sendinput, ^f_Psudo Numpad{Tab 6}{down 2}
-  else if (A_thismenuitem = "Xbutton1")
-  Sendinput, ^fXbutton1`:`:{Tab 6}{down 2}
+  else if (A_thismenuitem = "Xbutton3")
+  Sendinput, ^fXbutton3`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F15")
   Sendinput, ^fF15`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F16")
@@ -293,40 +332,65 @@ remote_desktop(){
   ; Menu, Menu, Show,
   Remote_Desktop:
     If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
-      sendinput, {Click 182, 97}10.1.2.153
+      sendinput, {Click 182, 97}10.1.2.153{enter}
     Else if (A_thisMenuItem = "TEST_LMS") 
-      sendinput, {Click 182, 97}10.1.2.152
+      sendinput, {Click 182, 97}10.1.2.152{enter}
     Else if (A_thisMenuItem = "TEST_NuGen")
-      sendinput, {Click 182, 97}10.1.2.150
+      sendinput, {Click 182, 97}10.1.2.150{enter}
     Else if (A_thisMenuItem = "TEST_SDMS") 
-      sendinput, {Click 182, 97}10.1.2.149
+      sendinput, {Click 182, 97}10.1.2.149{enter}
     Else if (A_thisMenuItem = "PRD_Citrix_One") 
-      sendinput, {Click 182, 97}10.1.2.134
+      sendinput, {Click 182, 97}10.1.2.134{enter}
     Else if (A_thisMenuItem = "PRD_Citrix_Two") 
-      sendinput, {Click 182, 97}10.1.2.226
+      sendinput, {Click 182, 97}10.1.2.226{enter}
     Else if (A_thisMenuItem = "PRD_Citrix_Three") 
-      sendinput, {Click 182, 97}10.1.2.227
+      sendinput, {Click 182, 97}10.1.2.227{enter}
     Else if (A_thisMenuItem = "LMS_PRD") 
-      sendinput, {Click 182, 97}10.1.2.138
+      sendinput, {Click 182, 97}10.1.2.138{enter}
     Else if (A_thisMenuItem = "NuGenesis") 
-      sendinput, {Click 182, 97}10.1.2.164
+      sendinput, {Click 182, 97}10.1.2.164{enter}
     Else if (A_thisMenuItem = "SDMS") 
-      sendinput, {Click 182, 97}10.1.2.142
+      sendinput, {Click 182, 97}10.1.2.142{enter}
     Else if (A_thisMenuItem = "PRD_EMPCitrix") 
-      sendinput, {Click 182, 97}10.1.2.242
+      sendinput, {Click 182, 97}10.1.2.242{enter}
     Else if (A_thisMenuItem = "Empower") 
-      sendinput, {Click 182, 97}10.1.2.228
+      sendinput, {Click 182, 97}10.1.2.228{enter}
     else 
       menu, menu, deleteAll
   return
 }
+LMS_Env(){
+  Global
+  try menu, menu, deleteAll
+  menu, menu, add, 
+  menu, menu, add, &Login, LMS_Env
+  menu, menu, add, &Production Server, LMS_Env
+  menu, menu, add, &Test Server, LMS_Env
+  menu, menu, add, 
+  return
+  LMS_Env:
+    sleep 200
+    Send, mmignin{tab}Kilgore7744
+    if A_thismenuItem contains &Login 
+      send, {enter}
+    else if A_thismenuItem contains &Production Server
+      SwitchEnv("Prd")
+    else if A_thismenuItem contains &Test Server
+      SwitchEnv("Test")
+    else
+      menu, menu, deleteall
+  return
+  }
 
-            ; if (A_ThisMenuItem = "Samples")
-            ; 	sendinput, care{enter}
-            ; else if (A_ThisMenuItem = "Tests")
-            ; 	Sendinput, lab{enter}
-            ; else if (A_ThisMenuItem = "Visual")
-            ; 	Sendinput, open{enter}
-            ; else if (A_ThisMenuItem = "VQ")
-            ; 	Sendinput, ?Kilgore7744{enter}
+  SwitchEnv(ServerEnv){
+    sleep 200
+    Send, {Tab}{Tab}{Down} ; WinwaitActive, Change Configuration - \\Remote ahk_class Transparent Windows Client
+    sleep 200
+    Send, {Home}{Right}{Right}{Right}{Right}{LShift Down}{End}{End}{LShift Up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
+    sleep 200 ; WinwaitActive, Login - \\Remote ahk_class Transparent Windows Client
+    Send, {Enter}
+  return
+  }
+
+        
 

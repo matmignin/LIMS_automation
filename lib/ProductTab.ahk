@@ -469,14 +469,53 @@ Formulation_Hotstrings:
     :*:5\::`Each five (5){space} contains {ctrl down}{left}{ctrl up}{left}
     :*:6\::`Each six (6){space} contains {ctrl down}{left}{ctrl up}{left}
     :*:7\::`Each seven (7){space} contains {ctrl down}{left}{ctrl up}{left}
-    :*:scoop\::scoop ( g){left 3}{tab}Blend+{tab}
-    :*:stick\::stick packet ( g){left 3}{tab}Blend+{tab}
     :*:NMT30::`NMT 30 Minutes
     :*:NMT5::`NMT 5 mcg/day
     :*:NMT15::`NMT 15 mcg/day
     :*:H\::Heavy Metals `*
     :*:*H::`* Heavy Metals results are based on a daily dose of (1) capsule{ctrl down}{left}{left}{ctrl up}{right}
     ;}
+
+    :*:1scoop::
+    ProductTab_Scoops(1)
+    :*:2scoops::
+    ProductTab_Scoops(2,"two")
+    :*:3scoops::
+    ProductTab_Scoops(3,"three")
+    :*:4scoops::
+    ProductTab_Scoops(4,"four")
+    :*:5scoops::
+    ProductTab_Scoops(5,"five")
+    :*:6scoops::
+    ProductTab_Scoops(6,"six")
+    :*:1stick::
+    ProductTab_Scoops(1,,"stick packet")
+    :*:2sticks::
+    ProductTab_Scoops(2,"two","stick packet")
+    return        
+    
+  ProductTab_Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
+    global
+    winactivate, Edit Formulation - \\Remote
+    click 450, 462, 3
+    send, {click 385, 347}
+    if (n=1)
+      Plural:=""
+    else
+      Plural:="s"
+    if (!color)
+      Color:="PENDING"
+    sendinput, ^{a}Each %textNumber% (%n%){space}%measurment%%plural% ( g) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}%weight%
+    exit
+    }
+    
+    :*:stick\::stick packet ( g){left 3}{tab}Blend+{tab}
+
+    ; :*:scoop\::
+    ; sendinput, scoop ( g){left 3}{tab 2}%color%+{tab}Blend+{tab}
+    ; return
+    ; :*:scoops\::scoops ( g){left 3}{tab}Blend+{tab}
+
 
     ProductTab_EditProduct() {
       global

@@ -13,18 +13,18 @@ Connect(reload:=0){
 	Gui VarBar:+LastFound 
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if WinExist("LMS Workbook.xlsm")
-		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsm
+	if WinExist("LMS Workbook.xlsb")
+		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsb
 	else{
 			msgbox,4,,open LMS Workbook?
 			IfMsgBox, Yes
-				runwait, LMS Workbook.xlsm, %Path%
+				runwait, LMS Workbook.xlsb, %Path%
 			IfMsgBox,No
 				exit
 		}
 	Try {
 		XL := ComObjActive("Excel.Application")
-		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsm")
+		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True		
 	}
 	Catch {
@@ -62,8 +62,12 @@ Connect(reload:=0){
 	ShipTo:=XL.Range("E3").Value	
 		EnvSet, ShipTo, %ShipTo%
 	GuiControl, Varbar:Text, iteration, %iteration%
-		ShapeAndSize:=XL.Range("C5").Value	
+		ShapeAndSize:=XL.Range("B5").Value	
 GuiControl, varbar:text, ShapeSize, %shapeSize%
+		Color:=XL.Range("B6").value	
+GuiControl, varbar:text, Color, %Color%
+	weight:=XL.Range("D6").Text	
+GuiControl, varbar:text, weight, %weight%
 	GuiControl, +redraw, varbar
 	if (Reload = 1)
 		VarBar.show()
@@ -155,7 +159,7 @@ PasteValues(input:=0) {
 		excel.connect()
 		sleep 200
 		xl.Range("C66").Select
-		WinActivate, LMS Workbook.xlsm
+		WinActivate, LMS Workbook.xlsb
 		; SendLevel, 1
 		send, ^v
 
@@ -175,11 +179,11 @@ PasteValues(input:=0) {
 				sleep 300
 				Xl.CutCopyMode := False
 	if WinActive("ahk_exe OUTLOOK.EXE") 
-     xl.Run("'LMS Workbook.xlsm'!PasteRotation")
+     xl.Run("'LMS Workbook.xlsb'!PasteRotation")
 	else if WinActive("ahk_exe explorer.exe") 
 		{
 			xl.Range("B8").select
-    	xl.Run("'LMS Workbook.xlsm'!PasteIngredients")
+    	xl.Run("'LMS Workbook.xlsb'!PasteIngredients")
 		}
 		return
 		}

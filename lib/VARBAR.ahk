@@ -1,7 +1,6 @@
 Class VarBar{
 
-Show(X:=1, Y:=1, Destroy:="Reset")
-{ 
+Show(X:=1, Y:=1, Destroy:="Reset"){ 
 	Global
 	try Gui,VarBar:Destroy
 	If (X<>0)
@@ -34,7 +33,9 @@ Show(X:=1, Y:=1, Destroy:="Reset")
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
 	Gui, VarBar:add, Text, vname  x150 -wrap y0 w160, %Name%
 	Gui, VarBar:add, Text, vcustomer  x190 -wrap y16 w160, %Customer%
-	GUI, VarBar:Font, s11 cBlack Bold, Consolas
+	GUI, VarBar:Font, s8 cBlack , arial Narrow
+	Gui, VarBar:add, Text, vColor x120 wrap y18 w80, %Color%
+	GUI, VarBar:Font, s11 cBlack Bold, Consolap
 	; Gui, VarBar:Add, text, gIterationVarBar vIteration left x300 h30 y0 w70,
 	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
 	OnMessage(0x203, "VarBar.Relocate")
@@ -112,6 +113,7 @@ Clear(Var:="NotProduct"){
 		ControlsetText, Static5,, VarBar
 		ControlsetText, Static6,, VarBar
 		ControlsetText, Static7,, VarBar
+		ControlsetText, Static8,, VarBar
 	}
 If Var contains NotBatch
 	{
@@ -119,12 +121,18 @@ If Var contains NotBatch
 		ControlsetText, Static3,, VarBar
 		ControlsetText, Static4,, VarBar
 		ControlsetText, Static5,, VarBar
+		ControlsetText, Static6,, VarBar
+		ControlsetText, Static7,, VarBar
+		ControlsetText, Static8,, VarBar
 	}
 	If (Var:= "Notlot")
 	{
 		ControlsetText, Static3,, VarBar
 		ControlsetText, Static4,, VarBar
 		ControlsetText, Static5,, VarBar
+		ControlsetText, Static6,, VarBar
+		ControlsetText, Static7,, VarBar
+		ControlsetText, Static8,, VarBar
 	}
 	else
 		varbar.update(), 
@@ -337,5 +345,6 @@ update(){
 	GuiControl, Varbar:Text, customer, %Customer%
 	GuiControl, Varbar:Text, iteration, %iteration%
 	GuiControl, varbar:text, ShapeSize, %shapeSize%
+	GuiControl, varbar:text, Color, %Color%
 }
 }

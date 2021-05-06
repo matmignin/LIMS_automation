@@ -31,19 +31,29 @@ ifwinactive, Register new samples - \\Remote
 Worktab_CheckDepartment(){
   global 
 Send, ^c
-  if (Regexmatch(Clipboard, "\bMicro\s\(Finished\)",Micr) > 0)
+if (Regexmatch(clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
+  {
+    Department:="Analytical"
+      Return
+  }
+    else if (Regexmatch(clipboard, "\bI, Retain\b", Retain) > 0)
+  {
+    Department:="Retain"
+      Return
+  }
+    else if (Regexmatch(Clipboard, "\bMicro\s\(Finished\)",Micr) > 0) || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
   {
     Department:="Micro"
     Return 
   }
-  else if (Regexmatch(clipboard, "\bPhysical\b", Phys) > 0)
+  else if (Regexmatch(clipboard, "\bPhysical\b", Phys) > 0)  || (Regexmatch(Clipboard, "\bI, Physical\b",Phys) > 0)
   {
     Department:="Physical"
     Return
   }
-  else if (Regexmatch(clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
+      else if (Regexmatch(clipboard, "\bCT, Retain\b", CTRetain) > 0)
   {
-    Department:="Analytical"
+    Department:="CTRetain"
       Return
   }
   else
@@ -51,6 +61,9 @@ Send, ^c
   ; return %Department%
   	;Clipboard:=Preclip
 }
+ 
+
+ 
  
 WorkTab_NewRequest(){
   global

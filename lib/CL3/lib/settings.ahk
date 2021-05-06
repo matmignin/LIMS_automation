@@ -50,18 +50,18 @@ Settings_Default()
 	{
 	 global
  	 Settings_Plugins:={ Plugins : "Title`,Lower`,Upper`,LowerReplaceSpace" }
-	 Settings_Hotkeys:={ hk_menu         :"^!v"
+	 Settings_Hotkeys:={ hk_menu         :"F21"
 		, hk_plaintext     :"^+v"
 		, hk_slots         :"^#F12"
 		, hk_clipchain     :"^#F11"
 		, hk_clipchainpaste:"^v"
 		, hk_fifo          :"^#F10"
 		, hk_search        :"^#h"
-		, hk_cyclemodkey   :"LWin"
-		, hk_cyclebackward :"v"
-		, hk_cycleforward  :"c"
+		, hk_cyclemodkey   :"Lctrl"
+		, hk_cyclebackward :"b"
+		, hk_cycleforward  :"n"
 		, hk_cycleplugins  :"f"
-		, hk_cyclecancel   :"x" 
+		, hk_cyclecancel   :"m" 
 		, hk_slot1         :">^1"
 		, hk_slot2         :">^2"
 		, hk_slot3         :">^3"
@@ -116,18 +116,18 @@ Settings_Hotkeys()
 	 local ini,index,keylist
 	 ini:=A_ScriptDir "\settings.ini"
 
-	 IniRead, hk_menu          , %ini%, Hotkeys, hk_menu          ,^!v
+	 IniRead, hk_menu          , %ini%, Hotkeys, hk_menu          ,F21
 	 IniRead, hk_plaintext     , %ini%, Hotkeys, hk_plaintext     ,^+v
 	 IniRead, hk_slots         , %ini%, Hotkeys, hk_slots         ,^#F12
 	 IniRead, hk_clipchain     , %ini%, Hotkeys, hk_clipchain     ,^#F11
 	 IniRead, hk_clipchainpaste, %ini%, Hotkeys, hk_clipchainpaste,^v
 	 IniRead, hk_fifo          , %ini%, Hotkeys, hk_fifo          ,^#F10
 	 IniRead, hk_search        , %ini%, Hotkeys, hk_search        ,^#h
-	 IniRead, hk_cyclemodkey   , %ini%, Hotkeys, hk_cyclemodkey   ,LWin
-	 IniRead, hk_cyclebackward , %ini%, Hotkeys, hk_cyclebackward ,v
-	 IniRead, hk_cycleforward  , %ini%, Hotkeys, hk_cycleforward  ,c
+	 IniRead, hk_cyclemodkey   , %ini%, Hotkeys, hk_cyclemodkey   ,Lctrl
+	 IniRead, hk_cyclebackward , %ini%, Hotkeys, hk_cyclebackward ,b
+	 IniRead, hk_cycleforward  , %ini%, Hotkeys, hk_cycleforward  ,n
 	 IniRead, hk_cycleplugins  , %ini%, Hotkeys, hk_cycleplugins  ,f
-	 IniRead, hk_cyclecancel   , %ini%, Hotkeys, hk_cyclecancel   ,x
+	 IniRead, hk_cyclecancel   , %ini%, Hotkeys, hk_cyclecancel   ,m
 	 IniRead, hk_notes         , %ini%, Hotkeys, hk_notes         ,#n
 	 IniRead, hk_cmdr          , %ini%, Hotkeys, hk_cmdr          ,#j
 	 IniRead, hk_BypassAutoReplace, %ini%, Hotkeys, hk_BypassAutoReplace

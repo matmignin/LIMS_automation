@@ -33,7 +33,7 @@ See readme.md for more info and documentation on plugins and templates.
 SetBatchlines, -1
 SendMode, Input
 SetWorkingDir, %A_ScriptDir%
-AutoTrim, off
+AutoTrim, on
 StringCaseSense, On
 name:="CL3 "
 version:="v1.99.1"

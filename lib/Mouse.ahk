@@ -59,8 +59,7 @@ Mouse_CloseWindow()
 	return
 }
 
-Mouse_Click(Link) 
-{
+Mouse_Click(Link) {
 	global
 	if Link contains Save_ProductTab_EditProduct 
 		click 275, 578	

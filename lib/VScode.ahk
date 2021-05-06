@@ -46,24 +46,25 @@ VScode_:
     F18 & Wheelup::wheel_2("^m",2000)
     F18 & Rbutton::+^m ; toggle bookmark
     F18::ToggleDefinition()
+    Rbutton & F15::ReloadScript()
     Rbutton & F16::Wheel_2("{backspace}", 20)
     Rbutton & F17::Wheel_2("^]", 20)
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
-    Rbutton & Xbutton1::Get_WindowInfo()
+    Rbutton & Xbutton2::Get_WindowInfo()
     $Rbutton::Click right
-    Xbutton1 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
-    Xbutton1 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
-    Xbutton1 & F18::sendinput, !d
-    Xbutton1 & Rbutton::+F8
-    Xbutton1 & Lbutton::sendinput, ^{click}
-    Xbutton2 & F18::F5
-    ; Xbutton2 & Lbutton::^+4
+    Xbutton2 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
+    Xbutton2 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
+    Xbutton2 & F18::sendinput, !d
+    Xbutton2 & Rbutton::+F8
+    Xbutton2 & Lbutton::sendinput, ^{click}
+    ; Xbutton1 & F18::F5
+    ; Xbutton1 & Lbutton::^+4
     F17::Wheel_2("!{right}",100)
     F16::Wheel_2("!{left}",100)
-    Xbutton1 & F17::Wheel_2("^]")
-    Xbutton1 & F16::wheel_2("^[")
-    Xbutton1::menu()
+    Xbutton2 & F17::Wheel_2("^]")
+    Xbutton2 & F16::wheel_2("^[")
+    Xbutton2::menu()
     F20 & space::^+p
     F20 & h::sendinput, +!{left}
     F20 & k::sendinput, +!{up}
