@@ -406,42 +406,23 @@ KEY_DEFAULT:
 
 
 
-Click_Filter(Code:=0,PostCmd:="",Source:=0){ 
-  Global
-    ProductFilter:=FilterBox_X
-    BatchFilter:=FilterBox_X+60
-    LotFilter:=BatchFilter+100
-  if (Source ="xl")
-    excel.connect()
-  if (Source= "clip")
-    clip()
-  WinActivate, NuGenesis LMS - \\Remote
-  if code contains Product
-    sendinput, {Click %ProductFilter%, %FilterBox_Y%}{Click %ProductFilter%, %FilterBox_Y%}^a%Product%^a 
-  else if code contains Batch
-   sendinput, {Click 748, 47}{Click %BatchFilter%, %FilterBox_Y%}^a%batch%^a
-  else if code contains Lot
-   sendinput, {Click 748, 47}{Click %LotFilter%, %FilterBox_Y%}^a%Lot%^a
-  else 
-    sendinput, {Click %ProductFilter%, %FilterBox_Y%}{Click %ProductFilter%, %FilterBox_Y%}^a
-  Send, {%postCMD%}
-  return
-}
+
   
   
   
 ;___________________________________________________________________________
-  F13 & F16::Click_Filter(2,"enter") 
-  F13 & F17::Click_Filter(1,"enter") 
-  F19::Click_Filter(2) 
-  F20::Click_Filter(1) 
+
 KEY_LMS:
   #Ifwinactive, NuGenesis LMS - \\Remote 
  ; F20::send, {Click 462, 182}{Click 463, 144}^a
   Xbutton2 & WheelRight::sendinput, {click, 743, 41}
   Xbutton2 & WheelLeft::sendinput, {Click 354, 44}
-  F16::Click_Filter("Product","enter") 
-  F17::Click_Filter("Batch","enter") 
+  F19 & Space::Sendinput, %Product%{enter}
+  F20 & Space::Sendinput, %batch%{enter}
+  F19::Click.Filter("Product") 
+  F16::Click.Filter("Product","enter") 
+  F17::Click.Filter("Batch","enter") 
+  F20::Click.Filter("Batch") 
   F18::autofill()
   Xbutton2 & WheelUp::Test()
   Xbutton2 & wheeldown::Varbar.SubIteration()
@@ -551,8 +532,8 @@ KEY_Excel:
   #IfWinActive, LMS Workbook.xlsb
   F18::Excel.Connect(1)
   MButton::Excel.Connect(1)
-  F13 & F16::Click_Filter(2,"enter","xl") 
-  F13 & F17::Click_Filter(1,"enter","xl") 
+  F13 & F16::Click.Filter(2,"Product","xl") 
+  F13 & F17::Click.Filter("Batch","enter","xl") 
   #ifwinactive, Book4
     F17::
       wheelright::sendinput, #{right}
@@ -617,8 +598,7 @@ KEY_OUTLOOK:
   Xbutton2 & WheelDown::searchbar("batch")
   Xbutton2 & Wheelup::searchBar("Product")
   Xbutton1::Clip()
-  F19 & Space::Varbar.Sendinput("Product")
-  F20 & Space::Varbar.Sendinput("batch")
+
   Xbutton1 & Wheelright::Varbar.AddIteration()
   Xbutton1 & wheelleft::Varbar.SubIteration()
   F18::LMS_Search()
