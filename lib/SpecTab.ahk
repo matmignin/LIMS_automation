@@ -51,15 +51,11 @@ SpecTab_Table(){
 	Spec_Table:
 		if (A_GuiEvent = "DoubleClick" ) {	
 			sendinput,{space}
-			MouseGetPos, Dclick_X, Dclick_Y, Dclick_win, dclick_ctrl
 			
 		; Spec_Test()
 		SpecTab_GetRowText()
 		
 		SpecTab_AutoFill()
-		sleep 200
-
-	
 		}
 	Return
 }
@@ -68,7 +64,7 @@ SpecTab_Table(){
 	SpecTab_ShowGUI(){
 		global
 		CoordMode, mouse, screen
-		Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w400, %Product%
+		Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
 		CoordMode, mouse, window
 		return			
 		}
@@ -77,7 +73,7 @@ Spectab_CreateGUI(){
 	Gui, Spec_Table:Default
 	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-	GUI, Spec_Table:Font, s11 cBlack Bold, Consolas
+	GUI, Spec_Table:Font, s12 cBlack Bold, Consolas
 	loop, %Total_Rows% {
 		if Position[A_index] =""
 		{
@@ -87,7 +83,6 @@ Spectab_CreateGUI(){
 		}
     if Method[A_index] =""
     {
-			Table_height:=table_height-1
       Total_rows:=total_rows - 1
       continue
     }
@@ -100,6 +95,162 @@ Spectab_CreateGUI(){
 		}
 	}
 }
+
+
+
+
+
+
+
+
+SpecTab_CopySpecTemplate(){
+  global
+  click 728, 191
+  department:="" ;Clip()
+  Clipboard:=""
+  sleep 100
+  WinActivate, NuGenesis LMS - \\Remote
+  send, ^c
+  sleep 200
+  ; clipwait
+  clipboard:=Clipboard ; Tooltip, %Clipboard%
+Worktab_CheckDepartment()
+  sleep 400
+  tooltip(department)
+  click.CopySpecTemplate()
+If Department Contains Analytical
+  SpecTab_Edit_Analytical()
+If Department contains Physical
+	SpecTab_Edit_Physical()
+If Department contains CTPhysical
+	SpecTab_Edit_CoatedPhysical()
+if Department contains Micro
+  SpecTab_Edit_Micro()
+If Department Contains Retain
+  SpecTab_Edit_Retain()
+If Department Contains CTRetain
+  SpecTab_Edit_CoatedRetain()
+sleep 500
+excel.NextSheet()
+Tooltip(Product)
+  return
+  }
+Class SpecTab_TestSpecs{
+
+  Copy(){
+    global
+    WinActivate, NuGenesis LMS - \\Remote
+      click 57, 715 ; edit Test
+    ; click 57, 750 ; edit results
+    winwaitactive, Test Definition Editor - \\Remote
+      click 418, 202
+      send, ^a^c
+      sleep 200
+      Description:=Clipboard
+      sleep 200
+			Wheel_scroll("100")
+			click 240, 488 ;click resulst
+			sleep 200
+			WinActivate, Results Definition - \\Remote
+			WinWaitActive, Results Definition,,0.25
+				if errorlevel
+					WinActivate, Results Definition
+      WinWaitActive, Results Definition - \\Remote
+      click 282, 121 ; click row
+        sleep 100
+    send, ^c
+    sleep 200
+    if ErrorLevel
+      msgbox, yo
+    ; sendlevel,0
+    sleep 200
+    send, {esc}
+    ParsedSpecs:=[]
+    Loop, parse, Clipboard, `t 
+    ParsedSpecs.insert(A_LoopField)
+    MinLimit:=Parsedspecs[17]
+    MaxLimit:=Parsedspecs[18]
+    Percision:=Parsedspecs[19]
+    Requirement:=Parsedspecs[20]
+    Units:=Parsedspecs[21]
+    tooltip(Requirement)
+    Return
+    }
+    
+    Paste(){
+      Global
+      WinActivate, NuGenesis LMS - \\Remote
+      click 57, 715 ; edit Test
+    ; click 57, 750 ; edit results
+      winwaitactive, Test Definition Editor - \\Remote
+      click 418, 202
+				SpecTab_TestDefinitionEditor(Description) ; the pre window
+				sleep 200
+					Wheel_scroll("100")
+					click 240, 488 ;click resulst
+					sleep 200
+					WinActivate, Results Definition - \\Remote
+					WinWaitActive, Results Definition,,0.25
+						if errorlevel
+							WinActivate, Results Definition
+      Mouse_Click("edit")
+      winwaitactive, Result Editor - \\Remote
+      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+      return
+    }
+    
+    AddMethod(MethodID){
+      WinActivate, NuGenesis LMS - \\Remote
+      click 67, 562 ; Add Methods
+      winwaitactive, Select methods tests - \\Remote
+      click 227, 69. 2 ; method search bar
+      sendinput, %MethodID%{enter}^a{click 506, 337}{click 851, 656} ; add test and hit okay
+      sleep 200
+      WinActivate, NuGenesis LMS - \\Remote
+      click 397, 591 ; click attrobutes
+      return
+    }
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -137,7 +288,7 @@ SpecTab_AutoFill(){
 				blockinput, on
 			If Winactive("NuGenesis LMS - \\Remote") 
 				{
-					send, {click, 565, 692}^a%Name%{enter}{click r, 416, 996}+{tab 2}{enter}
+					sendinput, {click, 565, 692}^a%Name%{enter}{click r, 416, 996}+{tab 2}{enter}
 					sleep 200
 					click, 57, 719 ;click Edit Test
 					Sleep 200
@@ -152,10 +303,10 @@ SpecTab_AutoFill(){
 					Wheel_scroll("100")
 					click 240, 488 ;click resulst
 					sleep 200
-					; WinActivate, Results Definition - \\Remote
-					WinWaitActive, Results Definition - \\Remote,,0.15
+					WinActivate, Results Definition - \\Remote
+					WinWaitActive, Results Definition - \\Remote,,0.25
 						if errorlevel
-							WinActivate, Results Definition - \\Remote
+							WinActivate, Results Definition 
 					; Mouse_click("edit")
 					; sleep 300
 					; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
@@ -164,48 +315,38 @@ SpecTab_AutoFill(){
 			if winactive("Results Definition - \\Remote") ;Selection window
 			{	
 				WinActivate, Results Definition - \\Remote
-
 					sleep 200
 					WinActivate, Results Definition - \\Remote
 					If Method contains ICP-MS 231	
 						send, {click 217, 141}
 					send, {click 80, 66}
-					sleep 100
-					winwaitactive, Result Editor - \\Remote,,0.15
-					if errorlevel
-						WinActivate, Results Definition
-
+					sleep 200
+					winwaitactive, Result Editor - \\Remote,,0.5
+						if !errorlevel
 					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,0)
 					blockinput, off
 					sleep 500
-					if (method!="ICP-MS 231") {
-								winactivate, %dclick_win%
-								MouseMove, %Dclick_X%, %Dclick_Y%,
-						exit
-					}
-					WinWaitClose, Results Definition,, 5
-							if errorlevel
-								send, {enter} ;hit okay
-							winactivate, Test Definition Editor - Remote
-							sleep 100
-								click 330, 621
+					; if (method!="ICP-MS 231") {
+						; exit
+					; }
+					; WinWaitClose, Results Definition,, 5
+					; 		if errorlevel
+					; 			send, {enter} ;hit okay
+					; 		winactivate, Test Definition Editor - Remote
+					; 		sleep 100
+					; 			click 330, 621
 								
 					return
 			}
 			If Winactive("Result Editor - \\Remote") ;the editing window
 				{
-					winactivate, %Product% ahk_exe AutoHotkey.exe
-					CoordMode, mouse, window
-					MouseMove, 20, 20, 0,
-					; CoordMode, mouse, screen
+				winactivate, Result Editor - \\Remote
 					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
 					blockinput, off
 					return
 			}
 			else
 			Blockinput,off
-		winactivate, %dclick_win%
-		MouseMove, %Dclick_X%, %Dclick_Y%,
 				return
  }
 
@@ -215,8 +356,8 @@ SpecTab_ModifyColumns(){
 	Global
 		LV_ModifyCol(1,130)
 		LV_ModifyCol(2,0)			
-		LV_ModifyCol(6,20)
-		LV_ModifyCol(7,100)
+		LV_ModifyCol(6,0)
+		LV_ModifyCol(7,20)
 		LV_ModifyCol(8,80)
 		LV_ModifyCol(9,0)
 		LV_Delete(Table_Height)
@@ -311,8 +452,7 @@ SpecTab_Create_Template:
 				global
 				winactivate, Edit sample template - \\Remote
 				sendinput, {click 377, 82}{home}%Product%`, {Shift down}I{Shift up}n {Shift down}P{Shift up}rocess`, {Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
-				WinWaitActive, NuGenesis LMS - \\Remote,,1
-				click 
+				; WinWaitActive, NuGenesis LMS - \\Remote,,1
 				return
 			}
 
@@ -339,7 +479,7 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0
 			Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
 			sleep 200
 			click, 250, 140 ; click id box to orient
-			tooltip(Requirement)
+			; tooltip(Requirement)
 			; tooltip(Requirement,4000,260,160)
 			sleep 200
 			;if (Allergen = 1)
@@ -401,7 +541,7 @@ SpecTab_Edit_Physical(){
 	Sleep 200
 	send,{Space}
 	sleep 200
-	winwaitactive, Products List - \\Remote, , 4
+	winwaitactive, Products List - \\Remote, , 8
 	if !errorlevel
 		sleep 300
 	send, {enter 2}
@@ -411,7 +551,7 @@ SpecTab_Edit_Physical(){
 	send,{right} 
 	sleep 500
 	click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS - \\Remote, ,5
+	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel 
 		sleep 300
 	click, 70, 518 ;edit sample method 
@@ -449,7 +589,7 @@ SpecTab_Edit_CoatedPhysical(){
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel 
 click.EditSampleTemplate()
-		sendinput, {tab}{delete 16%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
+		sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
 	return
 	}		
 SpecTab_Edit_Retain(){
@@ -597,7 +737,7 @@ SpecTab_HM_Canada() {
 	return
 	}
 SpecTab_HM_Prop65() {
-	click 125,120 ;click 2nd row
+	click 125,120 ;click 1st row
 	click 80,70 ;Edit
 	winactivate, Result Editor - \\Remote
 	winwaitactive, Result Editor - \\Remote,,4
@@ -645,6 +785,7 @@ SpecTab_HM_Prop65() {
 
 
 
+
 Spec_TableGuiClose:
 	coordmode, mouse, Screen
 	; ,WinGetPos,VarBar_X,Varbar_Y,w,h
@@ -658,35 +799,3 @@ Spec_TableGuiClose:
 	
 	
 	
-SpecTab_CopySpecTemplate(){
-  global
-  click 728, 191
-  department:="" ;Clip()
-  Clipboard:=""
-  sleep 100
-  WinActivate, NuGenesis LMS - \\Remote
-  send, ^c
-  sleep 200
-  ; clipwait
-  clipboard:=Clipboard ; Tooltip, %Clipboard%
-Worktab_CheckDepartment()
-  sleep 400
-  tooltip(department)
-  click.CopySpecTemplate()
-If Department Contains Analytical
-  SpecTab_Edit_Analytical()
-If Department contains Physical
-	SpecTab_Edit_Physical()
-If Department contains CTPhysical
-	SpecTab_Edit_CoatedPhysical()
-if Department contains Micro
-  SpecTab_Edit_Micro()
-If Department Contains Retain
-  SpecTab_Edit_Retain()
-If Department Contains CTRetain
-  SpecTab_Edit_CoatedRetain()
-sleep 500
-excel.NextSheet()
-Tooltip(Product)
-  return
-  }

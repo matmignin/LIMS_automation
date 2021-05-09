@@ -9,7 +9,7 @@
 
 		;LMS ------------------------------------------------------------------------
 	If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote") {
-		Menu()
+		Menu.Show()
 
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
 		click, 79, 440

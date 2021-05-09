@@ -15,12 +15,13 @@ Connect(reload:=0){
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook.xlsb")
 		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsb
-	else{
-			msgbox,4,,open LMS Workbook?
-			IfMsgBox, Yes
-				runwait, LMS Workbook.xlsb, %Path%
-			IfMsgBox,No
-				exit
+	else {
+		tooltip("no notebook open",500,10,1000)
+			; msgbox,4,,open LMS Workbook?
+			; IfMsgBox, Yes
+			; IfMsgBox,No
+			; 	runwait, LMS Workbook.xlsb, %Path%
+			; 	exit
 		}
 	Try {
 		XL := ComObjActive("Excel.Application")
@@ -76,8 +77,6 @@ GuiControl, varbar:text, weight, %weight%
 }
 
 
-		
-		
 		
 ActiveCell(){
 	Global

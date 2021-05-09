@@ -217,7 +217,7 @@ ProductTab_Select_Ingredient(){
   else if Name contains PABA 	
     Sendinput,{tab}{end}{left 69} 
   else if Name contains Pantothenic Acid 	
-    Sendinput,{tab}{end}{left 67}
+    Sendinput,{tab}{end}{left 68}
   else if Name contains Phosphorus 	
     Sendinput,{tab}{end}{left 61}
   else if Name contains Potassium 	
@@ -447,9 +447,9 @@ ProductTab_Select_Ingredient2() {
 
 
 
-Formulation_Hotstrings: 
+Formulation_Hotstrings:
   #IfWinActive,ahk_exe WFICA32.EXE
-    :*R:#00\::`#00 capsule / 0.917`" x 0.336`"
+    :*:#00\::`#00 capsule / 0.917`" x 0.336`"
     :*R:#00e\::`#00 elongated capsule / 0.995`" x 0.336`"
     :*R:#3\::`#3 capsule / 0.626`" x 0.229`"
     :*R:#2\::`#2 capsule / 0.709`" x 0.250`"

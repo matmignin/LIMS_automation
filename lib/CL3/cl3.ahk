@@ -67,6 +67,9 @@ Menu, tray, Add, %name% %version%     , DoubleTrayClick
 Menu, tray, Icon, %name% %version%    , res\cl3.ico
 Menu, tray, Default, %name% %version% 
 Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
+Menu, tray, Add, &Settings            , TrayMenuHandler
+Menu, tray, Icon,&Settings            , dsuiext.dll, 36
+
 Menu, tray, Add, 
 Menu, tray, Add, &AutoReplace Active  , TrayMenuHandler
 Menu, tray, Add, &FIFO Active         , TrayMenuHandler
@@ -74,8 +77,7 @@ Menu, tray, Add,
 Menu, tray, Add, &Usage statistics    , TrayMenuHandler
 Menu, tray, Icon,&Usage statistics    , shell32.dll, 278
 Menu, tray, Add, 
-Menu, tray, Add, &Settings            , TrayMenuHandler
-Menu, tray, Icon,&Settings            , dsuiext.dll, 36
+
 Menu, tray, Add, 
 Menu, tray, Add, &Reload this script  , TrayMenuHandler
 Menu, tray, Icon,&Reload this script  , shell32.dll, 239

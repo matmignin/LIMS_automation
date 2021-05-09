@@ -1,173 +1,86 @@
 return
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744
-	#!\::Login()
- +f2::
-toggle:=!toggle
-if toggle
-{
-; temp := ComObjCreate("WScript.Shell").Exec("C:\Windows\devcon.exe disable @ACPI\ALP0017\4*").StdOut.ReadAll()
-Run C:\Windows\devcon.exe disable @ACPI\ALP0017\4*,,Hide
-; MsgBox %temp%
-}
-else
-{
-; temp := ComObjCreate("WScript.Shell").Exec("C:\Windows\devcon.exe enable @ACPI\ALP0017\4*").StdOut.ReadAll()
-Run C:\Windows\devcon.exe enable @ACPI\ALP0017\4*,,Hide
-; MsgBox %temp%
-}
+;	#!\::Login()
+
 return 
-VScode_:
+
+
+VSCODE_Hotstrings:
+      
+    :*R:cd\::{CtrlDown}
+    :*R:cu\::{Ctrlup}
+    :*R:ad\::{altDown}
+    :*R:au\::{altup}
+    :*R:sd\::{shiftDown}
+    :*R:su\::{shiftup}
+
+
+
+VsCode_:
     #IfWinActive, ahk_exe Code.exe
-    Capslock & ,::sendinput, !^b
-    Capslock & a::!^a
-    Capslock & 8::F3
-    Capslock & 3::+F3
-    capslock & m::+!down
-    capslock & n::+!n
-    capslock & u::+!up
-    capslock & '::+^!n
-    capslock & .::+f1
-    capslock & up::^+up
-    capslock & down::^+down
-    capslock & /::sendinput, !^w
-    capslock & 5::^+/
-    capslock::esc
-    ^r::ReloadScript()
-    ^k::sendinput, ^{up}
-    ^l::sendinput, ^]
-    ^h::sendinput, ^[
-    ^j::sendinput, ^{down}
-    +^j::+^down
+    <^k::sendinput, {Ctrldown}{up}{CtrlUp}
+    <^l::sendinput, {Ctrldown}]{CtrlUp}
+    <^h::sendinput, {Ctrldown}[{CtrlUp}
+    <^j::sendinput, {Ctrldown}{down}{CtrlUp}
+    +^j::sendinput, {ShiftDown}{Ctrldown}{down}{CtrlUp}{ShiftUp}
     +^K::+^up
-    +^l::^+#`;
+
+    ; +^l::^+#`;
     ; Mbutton & Wheeldown::Wheel_2("!d",1000)
-    +^h::^+#h
-    F18 & Wheelup::wheel_2("^m",2000)
-    F18 & Rbutton::+^m ; toggle bookmark
-    F18::ToggleDefinition()
-    Rbutton & F15::ReloadScript()
-    Rbutton & F16::Wheel_2("{backspace}", 20)
-    Rbutton & F17::Wheel_2("^]", 20)
-    Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",1000)
-    Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",1000)
+    ; +^h::^+#h
+    ; mbutton::wheel_2("^m",2000)
+    
+    <^r::ReloadScript()
+    Mbutton & F17::Sendinput, {Ctrldown}]{CtrlUp}
+    Mbutton & F16::sendinput,{Ctrldown}[{CtrlUp}
+    Mbutton & wheelUP::sendinput, {ctrl down}{up}{ctrl up}
+    Mbutton & WheelDOWN::sendinput, {ctrl down}{down}{ctrl up}
+    Rbutton & F17::Wheel_2("!{right}",10)
+    Rbutton & F16::Wheel_2("!{left}",10)
+	  Rbutton & Lbutton::sendinput, {Shiftdown}{click}{ShiftUp}
+    Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",2000)
+    Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",2000)
     Rbutton & Xbutton2::Get_WindowInfo()
-    $Rbutton::Click right
-    Xbutton2 & wheelUP::Wheel("{ctrl down}^{up}{ctrl up}", 0)
-    Xbutton2 & WheelDOWN::Wheel("{ctrl down}{down}{ctrl up}", 0)
-    Xbutton2 & F18::sendinput, !d
+    
+    ;$Rbutton::Click right
+    Xbutton2 & F17::sendinput, {numpaddiv}
+    Xbutton2 & F16::Sendinput, {numpad6}
     Xbutton2 & Rbutton::+F8
+    Xbutton2 & F18::sendinput, !d
     Xbutton2 & Lbutton::sendinput, ^{click}
     ; Xbutton1 & F18::F5
+    
     ; Xbutton1 & Lbutton::^+4
-    F17::Wheel_2("!{right}",100)
-    F16::Wheel_2("!{left}",100)
-    Xbutton2 & F17::Wheel_2("^]")
-    Xbutton2 & F16::wheel_2("^[")
-    Xbutton2::menu()
-    F20 & space::^+p
-    F20 & h::sendinput, +!{left}
-    F20 & k::sendinput, +!{up}
-    F20 & j::sendinput, +!{down}
-    F20 & l::sendinput, +!{right}
-    F19 & k::F3
-    F19 & j::+F3
-    F20::Menu()
+		F18 & F16::return
+		F18 & F17::return
+    F18 & Rbutton::sendinput, {shiftdown}{Ctrldown}m{CtrlUp}{shiftup} ; toggle bookmark
+    F18 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
+    F18 & wheeldown::wheel_2("{ShiftDown}{altdown}{down}{altUp}{ShiftUp}",50) ;next search
+    Mbutton::sendinput, {CtrlDown}{f}{Ctrlup}
+    F18::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}  ;search
+    F16::sendinput, {ShiftDown}{altDown}{Ctrldown}{t}{CtrlUp}{altup}{ShiftUp} ;prev tab
+    F17::ToggleDefinition()
+    ; Xbutton2::Menu.Show()
+
+    ; F19 & k::F3
+    ; F19 & j::+F3
+    F20::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
 
 
 
-VIM:
-  #ifwinactive, 
-  #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 4000)
-    d::Send, {home 2}+{end}{Delete}
-    w::sendinput, {right}^{left}+^{right}{backspace}
-    4::sendinput, +{end}^x
-    5::sendinput, ^m^x
-    0::sendinput, +{home}^x
-  #If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
-    d::Send, {home 2}+{end}^c
-    w::sendinput, {right}^{left}+^{right}+{left}^c 
-    5::sendinput, ^m^c
-    4::sendinput, +{end}^c{right}
-    y::
-    Send {home}+{end}^c
-    sleep 150
-    ; ClipWait, 1
-    send, {right}
-    return
-    Capslock & 0::sendinput, +{home}^c
-    0::sendinput, +{home}^c
-  #If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
-    Capslock & g::Send, ^{home}
-  #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
-    capslock & p::Sendinput, {esc}p{esc}
-  #If Getkeystate("Capslock","p")
-    p::return
-    1::F1
-    2::F2
-    3::F3
-    `::esc
-    Enter::sendinput, +^enter
-    j::down
-    k::Up
-    h::left
-    l::right
-    x::Delete
-    g::send, ^{end}
-    4::end
-    0::home
-    y::return
-    d::return ; Send, {home 2}+{end}^x{delete}
-    w::Send {right}^{right 2}{left}
-    e::Send ^{right}
-    u::Send ^z
-    up::+up
-    down::+down
-    right::+right
-    left::+left
-    b::^left
-    Shift & o::sendinput, {home}{enter}{up}
-    5::Send ^m
-    o::Send, {end}{enter}
-    +o::Send, {Home}{enter}
-    Shift & ,::sendinput, +{F1}
-    left::sendinput, {home}+{Tab}
-    right::sendinput, {home}{Tab}
-    v up::
-      while GetKeyState("Capslock","p")
-        sendinput, {Shift down}
-      sleep 200
-      sendinput, {shift up}
-      return
 
-
-
-PsudoNumlock:
-  #If Getkeystate("F19","p")
-    ;sendlevel 1
-    m::numpad1
-    ,::numpad2
-    .::numpad3
-    j::numpad4
-    k::numpad5
-    l::numpad6
-    u::numpad7
-    h::numpaddiv
-    i::numpad8
-    o::numpad9
-    `;::sendinput, {numpad0}
-    n::Numpadsub
-    /::,
-    p::numpadmult
-    '::numpadDot
-    RShift::sendinput, {Tab 2}^a
-    ~ENTER::sendinput, {enter}
-    space::SendInput, 0
-    ;sendlevel 0
-      #if
 
 return
-
+; #IfWinexist, Vquest.ahk ahk_exe AutoHotkey.exe
+; Wheeldown::
+;   WinActivate, Vquest.ahk ahk_exe AutoHotkey.exe
+;   send, n
+; return
+; Wheelup::
+;   ifWinActivate, Vquest.ahk ahk_exe AutoHotkey.exe
+;   send, y
+;   return
   
   
 ;FUNCTIONS-----------------------------------------------------------
@@ -196,19 +109,19 @@ return
         if !GetKeyState("Rbutton", "P") ; The key has been released, so break out of the loop.
           break
         MouseGetPos, MousePosX, MousePosY, , WinControl
-        sleep 100
-        sleep 25
+        sleep 20
         WinGetTitle, winTitle, A
         WinGetClass, Winclass, A
         WinGet, WinProcess, ProcessName, A			
-        Sleep, 200
+        Sleep, 100
+        Tooltip("%MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%")
         MousePosition:=MousePosX "`, " MousePosY
-        Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
+				Process:=ahk_exe %WinProcess%
 
       }
       winTitle:=Wintitle
       Winclass:=Winclass
-      WinGet, WinProcess, ProcessName, A	
+     ; WinGet, WinProcess, ProcessName, A	
       MouseClick, Right,,, 1, 0, U ; Release the mouse button.
       ;clipboard:=MousePosition
       mouseclick, right
@@ -235,13 +148,61 @@ return
         sleep 200
         run, VQuest.ahk
       }
+      send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
     }
 
   ToggleDefinition(){
       global
       If toggle := !toggle
-        sendinput ^d
+        sendinput  ^d
       else 
         sendinput, +{esc}
       return
+      return
     }
+    
+  Modifier_Hotstrings: 
+    :*R:c\::
+    sendraw, sendinput, {CtrlDown}{}{Ctrlup}
+    sendinput, {left 9}
+    return
+    :*R:a\::
+    sendraw, sendinput, {altDown}{}{altup}
+    sendinput, {left 8}
+    return
+    :*R:s\::
+    sendraw, sendinput, {shiftDown}{}{shiftup}
+    sendinput, {left 10}
+    return
+    :*R:sac\::
+    :*R:cas\::
+    sendraw, sendinput, {ShiftDown}{altDown}{Ctrldown}{}{CtrlUp}{altup}{ShiftUp}
+    sendinput, {left 25}
+    return
+    :*R:sc::
+    :*R:cs::
+    sendraw, sendinput, {ShiftDown}{Ctrldown}{}{CtrlUp}{ShiftUp}
+    sendinput, {left 18}
+    return
+    :*R:sa\::
+    :*R:as\::
+    sendraw, sendinput, {ShiftDown}{altDown}{}{altup}{ShiftUp}
+    sendinput, {left 17}
+    return
+    :*R:ca\::
+    :*R:ac\::
+    sendraw, sendinput, {ShiftDown}{altDown}{Ctrldown}{}{CtrlUp}{altup}
+    sendinput, {left 16}
+    return
+    
+    
+    
+
+open_VScode(){
+  ifwinnotexist,ahk_exe Code.exe
+    run, Code.exe, "C:\Program Files\Microsoft VS Code\" 
+  else 
+    WinActivate, ahk_exe Code.exe
+
+  return
+  }

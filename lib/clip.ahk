@@ -38,7 +38,7 @@ Clip(input:=0){
 						TrayTip, Copy, %Selection%,,
 					return %Selection%
 			}
-	If (Regexmatch(ProductCLIPBOARD, "[ADEGLHKJI]\d{3}", Product) > 0) 	
+	If (Regexmatch(ProductCLIPBOARD, "\b[ADEGLHKJIadeglhkji]\d{3}\b", Product) > 0) 	
 	{
 		; Varbar.Clear("NotProduct)
 		GuiControl, Varbar:Text, Product, %Product%

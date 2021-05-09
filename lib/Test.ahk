@@ -13,20 +13,40 @@ StartTest(){
 return
 
 Test(){
-
+;DetectLMSTab(){
+global
+Tab:=
+       CoordMode, Pixel, Window
+;  PixelSearch, FoundX, FoundY, 816, 72, 820, 74, 0xffd353, 10, Fast RGB
+ PixelSearch, FoundX, FoundY, 11, 139, 15, 141, 0x54c7f2, 10, Fast RGB ;icon on left
+      If ErrorLevel = 0
+        Tab:="Request" 
+      If ErrorLevel
+        ; PixelSearch, FoundX, FoundY, 740, 72, 744, 74, 0xffd353, 10, Fast RGB
+            PixelSearch, FoundX, FoundY, 26, 155, 28, 158, 0x54c8f3, 10, Fast RGB ;icon on left
+            If ErrorLevel = 0
+                Tab:="Documents"
+                If ErrorLevel
+                    Tab:="Sample"
+            ;    PixelSearch, FoundX, FoundY, 740, 72, 744, 74, 0xffd353, 10, Fast RGB
+            ;    If ErrorLevel = 0
+    msgbox, %Tab%
+return
 } 
-
-
+AddCanceled(){
+  winactivate, Edit test (Field Configuration: F, Micro) - \\Remote  
+sendinput, {click 399, 219}{end}'(Canceled'){enter}
+}
 ;trying tab gui window
 Test_2(){
- Global 
-  ;  SpecTab_TestSpecs.PasteDescription()()
-  ; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
-  Gui, Add, Tab3,, Product|Specs
-  Gui,Tab, Product
-  ProductTab_Table()
-  Gui,Tab, Specs
-  SpecTab_Table()
- Ingredients()
- return
+;  Global 
+;   ;  SpecTab_TestSpecs.PasteDescription()()
+;   ; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+;   Gui, Add, Tab3,, Product|Specs
+;   Gui,Tab, Product
+;   ProductTab_Table()
+;   Gui,Tab, Specs
+;   SpecTab_Table()
+;  Ingredients()
+;  return
 }

@@ -5,13 +5,12 @@ class click{
     if WinActive("NuGenesis LMS - \\Remote")
       send, {click 518, 89, 2}%Product%{enter}
     else if winactive("Select methods tests - \\Remote")
-      click, 246,77, 2
-    else if winactive("Select Methods Tests")
-      click 225, 69, 2
+      click, 246,77, 22
     else
       return
     return
   }
+
   Filter(Code:=0,PostCmd:="",Source:=0){ 
     Global
     ControlGetText, Batch, Static1, VarBar
@@ -142,15 +141,15 @@ class click{
   EditSampleTemplate(){
     WinActivate, NuGenesis LMS - \\Remote
     click 70, 518
-    winwaitactive, Edit sample template - \\Remote,, 1
-    if errorlevel
-      winactivate, Edit sample template - \\Remote
-    return
+    winwaitactive, Edit sample template - \\Remote,, 5
+    ; if errorlevel
+      ; winactivate, Edit sample template - \\Remote
+    ; return
   }
   Dropdown(){
     if winactive("Edit Ingredient")
       click 272, 67
-    else
+  else
       return
   }
 }

@@ -1,3 +1,31 @@
+
+
+
+KEY_Varbar:
+  #If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI") 
+  wheelleft::Excel.PreviousSheet()
+  wheelRight::excel.Nextsheet()
+  WheelUp::Varbar.AddIteration()
+  Wheeldown::Varbar.SubIteration()
+  F17::Excel.NextSheet()
+  F16::Excel.previoussheet()
+  Mbutton & WheelDown::varbar.Move()
+  mbutton::Varbar.LaunchTable()
+  Rbutton & F16::ProductTab_Table()
+  Rbutton & F17::SpecTab_Table()
+  Rbutton::Excel.connect()
+  ; Lbutton::MouseClick, Right,,,1, 0, U
+  #if
+  
+  
+
+
+
+
+
+
+
+
 Class VarBar{
 
 Show(X:=1, Y:=1, Destroy:="Reset"){ 

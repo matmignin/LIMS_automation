@@ -1,9 +1,9 @@
 
 Menu(n:=0){
   Global
-
-  ;If (n=0) {
   try menu, menu, deleteAll
+
+    
   default()
   if winactive("Edit Formulation - \\Remote")
     Formulation_autofill()
@@ -19,14 +19,16 @@ Menu(n:=0){
     VScode()
   If WinActive("Remote Desktop Connection") 
     remote_desktop()
-
+    
   Menu, Menu, Show,
   return
 
 }
-;default
+
 default(){
   global
+  if Testing contains 1
+    Tests()
     If Winactive("ahk_exe WFICA32.EXE"){
       menu, Menu, add, &Variables, Variable
   Menu, Variables, Add, &Product `t %Product%, Variable
@@ -51,7 +53,6 @@ default(){
     ; menu, menu, add, Paste to Excel, Tables
     menu, menu, add
   }
-  Tests()
   return
 
   Variable:
@@ -83,55 +84,49 @@ default(){
     }
     else
       try menu, menu, deleteAll
-    menu, menu, deleteAll
+  menu, menu, deleteAll
   return
   
   
   
-  Tables:
-    if A_thismenuitem contains &Ingredient Table
-      ProductTab_Table()
-    else if A_thismenuItem contains &Spec Table
-      SpecTab_Table()
-    else if A_thismenuItem contains Paste to excel
-      excel.PasteValues("xl")
-    else 
-      menu, menu, deleteAll
-  return
 }
 Tests(){
   Global
-  If n contains tests
-  {
-    try menu, menu, deleteAll
     menu,Menu,add,Test_&1,Tests
     menu,Menu,add,Test_&2,Tests
-    Menu, Menu, Show,
-    exit   
-    } 
-    else {
-    menu, menu, add, T&ests, Tests
-      menu,Tests,add,Test_&1,Tests
-      menu,Tests,add,Test_&2,Tests
-    menu, menu, add, T&ests, :Tests
-    menu,menu,add, &Spec Table,Tables
-    }
+    menu,Menu,add,Spec Table,Tests
+    menu,Menu,add,Ingredient Table,Tests
+    menu,menu,add
+    return
+    
 Tests:
     if A_thismenuItem contains Test_&1
       Test()
     else if A_thismenuItem contains Test_&2
       Test_2()
-return
+    else if A_thismenuitem contains Ingredient Table
+      ProductTab_Table()
+    else if A_thismenuItem contains Spec Table
+      SpecTab_Table()
+    else 
+      menu, menu, deleteAll
+  return
+
 }
 
 passwords() {
   global
   menu, menu, add,
-  Menu, Menu, Add, Samples, Passwords
-  Menu, Menu, Add, Tests, Passwords
-  Menu, Menu, Add, Visual, Passwords
   Menu, Menu, Add, VQ Login, Passwords
-  ; Menu, Menu, Show,
+  Menu, Menu, Add, Kilgore, Passwords
+  
+  ; IfWinActive, [ WinTitle, WinText, ExcludeTitle, ExcludeText]
+  ; {
+    ; Menu, Menu, Add, Samples, Passwords
+    ; Menu, Menu, Add, Tests, Passwords
+    ; Menu, Menu, Add, Visual, Passwords
+  ; }
+  ;Menu, Menu, Show,
   return
 
   Passwords:
@@ -143,6 +138,8 @@ passwords() {
       Sendinput, open{enter}
     else if (A_ThisMenuItem = "VQ Login")
       Sendinput, ?Kilgore7744{enter}
+    else if (A_ThisMenuItem = "Kilgore")
+      Sendinput, Kilgore7744{enter}
     else 
       menu, menu, deleteAll
   return
@@ -273,7 +270,7 @@ VScode(){
   Menu, menu, Add, &Control `t %WinControl%, vscode
   menu, menu, add,
   default()
-return
+  return
 
 VScode:
   if (A_thismenuitem = "Xbutton1")
@@ -314,8 +311,8 @@ VScode:
 remote_desktop(){
   global
   menu, menu, add,	
-  Menu, Menu, Add, TEST_Citrix (for Testing LMS), Remote_desktop
-    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+  Menu, Menu, Add, TESTING LMS, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
   Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
   Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
   menu, Menu, Add, Other Servers, Remote_desktop
@@ -328,11 +325,17 @@ remote_desktop(){
   Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
   Menu, SubMenu, Add, Empower, Remote_desktop
   menu, Menu, add, Other Servers, :SubMenu
+  Passwords()
+
   return
-  ; Menu, Menu, Show,
   Remote_Desktop:
-    If (A_thisMenuItem = "TEST_Citrix (for Testing LMS)") 
+    If (A_thisMenuItem = "TESTING LMS") { 
       sendinput, {Click 182, 97}10.1.2.153{enter}
+      winwaitactive, Windows Security,,1 
+      if !errorlevel
+      sendinput, Kilgore7744{enter}
+      return
+    }
     Else if (A_thisMenuItem = "TEST_LMS") 
       sendinput, {Click 182, 97}10.1.2.152{enter}
     Else if (A_thisMenuItem = "TEST_NuGen")
@@ -393,4 +396,3 @@ LMS_Env(){
   }
 
         
-

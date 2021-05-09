@@ -5,22 +5,28 @@ Mouse_IsOver(WinTitle){
 	Return WinExist(WinTitle . " ahk_id " . Win)
 }
 
+
 Mouse_RbuttonUP(){
 	#inputlevel 1
 	suspend, On
 	sleep 50
 	Click, Right
-	sleep 200
-	;MouseClick, Right,,,1, 0, U
+	; sleep 200
+  MouseClick, Right,,,1, 0, U
+	; sendinput, {esc}
 	suspend, Off
-	return
 	#inputlevel 0
+	return
 }
-
+return
 Mouse_CloseWindow() 
 {
 
-	If WinActive("ahk_exe WFICA32.EXE")
+  if WinActive("Inbox - mmignin@vitaquest.com - Outlook") ; || winactive("ahk_exe OUTLOOK.EXE")
+	{
+    Return
+	}
+	else If WinActive("ahk_exe WFICA32.EXE")
 	{
 		send, {esc}
 		sleep 400
@@ -32,12 +38,12 @@ Mouse_CloseWindow()
 		sleep 400
 		return
 	}
-	else if WinActive("ahk_exe explorer.exe") || winactive("Inbox - mmignin@vitaquest.com - Outlook")
+	else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE")
 	{
 		sendinput, !{F4}
 		sleep 400
 		return
-	}
+	}	
 	else if winactive("Settings ahk_class ApplicationFrameWindow")
 	{
 		winclose

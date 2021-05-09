@@ -36,6 +36,7 @@ Wheel_2(commands,Sleeptime:=600)
 	LastActivation:=A_TickCount
 	sendinput, %Commands%
 	sleep %sleeptime%
+  send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
 	blockinput off
 	}
 	return
@@ -47,6 +48,7 @@ Wheel(commands,Sleeptime:=200)
 	send, %Commands%
 	BlockInput, Off
 	sleep %sleeptime%
+    send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
 	return
 }
 
@@ -143,6 +145,7 @@ Wheel_Paste()
 		blockinput off
 	ToolTip("Paste")
 		; sendlevel 0
+      send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
 	return
 }
 Wheel_Cut() 
@@ -156,6 +159,7 @@ Wheel_Cut()
 	; sleep 800
 	 ToolTip(clipboard)
 	; sendlevel 0
+    send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
 	return
 }
 Wheel_Copy() 
@@ -168,5 +172,6 @@ Wheel_Copy()
 	; sendlevel 0
 	ToolTip(clipboard)
 	sleep 800
+    send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
 	return
 }

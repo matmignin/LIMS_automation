@@ -1,7 +1,8 @@
 ﻿gosub, vquest_start
   customer:=[]
 return
-  
+
+
 Ingredients() {
   global
     IniRead,vSelect, Ingredients.ini, Ingredients, %vIngredient%
@@ -32,83 +33,6 @@ ConvertIngredientSelection(IngredientSelection){
     return
 }
 
-Class SpecTab_TestSpecs{
-
-  Copy(){
-    global
-    WinActivate, NuGenesis LMS - \\Remote
-      click 57, 715 ; edit Test
-    ; click 57, 750 ; edit results
-    winwaitactive, Test Definition Editor - \\Remote
-      click 418, 202
-      send, ^a^c
-      sleep 200
-      Description:=Clipboard
-      sleep 200
-			Wheel_scroll("100")
-			click 240, 488 ;click resulst
-			sleep 200
-			WinActivate, Results Definition - \\Remote
-			WinWaitActive, Results Definition,,0.25
-				if errorlevel
-					WinActivate, Results Definition
-      WinWaitActive, Results Definition - \\Remote
-      click 282, 121 ; click row
-        sleep 100
-    send, ^c
-    sleep 200
-    if ErrorLevel
-      msgbox, yo
-    ; sendlevel,0
-    sleep 200
-    send, {esc}
-    ParsedSpecs:=[]
-    Loop, parse, Clipboard, `t 
-    ParsedSpecs.insert(A_LoopField)
-    MinLimit:=Parsedspecs[17]
-    MaxLimit:=Parsedspecs[18]
-    Percision:=Parsedspecs[19]
-    Requirement:=Parsedspecs[20]
-    Units:=Parsedspecs[21]
-    tooltip(Requirement)
-    Return
-    }
-    
-    Paste(){
-      Global
-      WinActivate, NuGenesis LMS - \\Remote
-      click 57, 715 ; edit Test
-    ; click 57, 750 ; edit results
-      winwaitactive, Test Definition Editor - \\Remote
-      click 418, 202
-				SpecTab_TestDefinitionEditor(Description) ; the pre window
-				sleep 200
-					Wheel_scroll("100")
-					click 240, 488 ;click resulst
-					sleep 200
-					WinActivate, Results Definition - \\Remote
-					WinWaitActive, Results Definition,,0.25
-						if errorlevel
-							WinActivate, Results Definition
-      Mouse_Click("edit")
-      winwaitactive, Result Editor - \\Remote
-      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
-      return
-    }
-    
-    AddMethod(MethodID){
-      WinActivate, NuGenesis LMS - \\Remote
-      click 67, 562 ; Add Methods
-      winwaitactive, Select methods tests - \\Remote
-      click 227, 69. 2 ; method search bar
-      sendinput, %MethodID%{enter}^a{click 506, 337}{click 851, 656} ; add test and hit okay
-      sleep 200
-      WinActivate, NuGenesis LMS - \\Remote
-      click 397, 591 ; click attrobutes
-      return
-    }
-    
-  }
 
 ReadSpecIntoDataBase:
   iniread, full, data.ini, %Product%,
@@ -297,27 +221,26 @@ return
 Xbutton2 & Xbutton1::send, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
   ; Rbutton & F17::F21
  ; F19::Return ;send, {F21}
- !t::ToggleTrackpsd()
-
-  ; Sendlevel 0 
-  
 
 
 KEY_DEFAULT:
+
+<^;::sendinput, %Timestring%{space} 
+^tab::Test()
   Xbutton1 & F18::Clip("OCR") 
   Mbutton & Xbutton1::SendPassword()
   !f::Open_Firefox()
   !v::Open_vsCode()
   Capslock & `::QuickCode()
-  Mbutton::RControl
+  Mbutton::send, {Rctrl down}
   ~$mbutton up::
-  sendlevel 1
+  ; sendlevel 1
   sendinput, {Rctrl up}{Lctrl up}{Alt Up}{Shift Up}
-  sendlevel 0
+  ; sendlevel 0
   return
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
-  Mbutton & WheelDown::sendinput, {ctrldown}{WheelDown}
-  Mbutton & Wheelup::sendinput, {ctrldown}{Wheelup}
+  Mbutton & WheelDown::sendinput, {ctrldown}{WheelDown}{CtrlUp}
+  Mbutton & Wheelup::sendinput, {ctrldown}{Wheelup}{CtrlUp}
 
   Mbutton & F17::Wheel_Right()
   Mbutton & F16::Wheel_left()
@@ -327,8 +250,10 @@ KEY_DEFAULT:
   Rbutton & F16::Backspace
   Rbutton & Lbutton::Enter
   Rbutton up::Mouse_RbuttonUP()
-  Xbutton1 & LButton::Sendinput, +^4 ;screenshot"
-  Xbutton1 & RButton::Sendinput, +^3 ;screenshot"
+
+
+  Xbutton1 & LButton::Sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup} ;screenshot"
+  Xbutton1 & RButton::Sendinput,  {shiftdown}{ctrldown}3{CtrlUp}{shiftup};screenshot"
   Xbutton1 & WheelUp::Wheel(Product)
   Xbutton1 & WheelDown::Wheel(Batch)
   Xbutton1 & wheelleft::Excel.PreviousSheet()
@@ -339,40 +264,26 @@ KEY_DEFAULT:
   Xbutton1::Clip()
   Xbutton1 & Mbutton::Varbar.reset()
   Xbutton2 & wheelDown::Mouse_CloseWindow()
-  F18 & Wheelup::!^tab
+  ; F18 & Wheelup::!^tab
   ; Xbutton2 & Lbutton::Sendinput, #{down}
-  ; Xbutton2::Menu()
-  F18 & Wheeldown::+^!tab
-  F18 & Lbutton::sendinput, ^{Click}
-  F18 & Rbutton::sendinput, +{Click}
+  ; Xbutton2::Menu.Show()
+  ; F18 & Wheeldown::+^!tab
+  F18 & Lbutton::sendinput, {Ctrldown}{Click}{CtrlUp}
+  F18 & Rbutton::sendinput, {shiftdown}{Click}{shiftup}
   F18 & F17::
   F18 & F16::
+  F19 & Space::Sendinput, %Product%{enter}
+  F20 & Space::Sendinput, %batch%{enter}
 
-  F20 & Right::send, #{right}
-  F20 & Left::send, #{Left}
-  F20 & UP::send, #{UP}
-  F20 & Down::send, #{Down}
+;  F20 & Right::send, #{right}
+;   F20 & Left::send, #{Left}
+;   F20 & UP::send, #{UP}
+;   F20 & Down::send, #{Down}
+
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
   enter::enter
-
-  capslock::sendinput, {esc}{Rctrl up}{Alt Up}
- ; Xbutton2 & Xbutton1::+^Tab
-   ;Xbutton2 & Xbutton1::!^Tab
-  ; if (A_TimeSincePriorHotkey != -1 & A_TimeSincePriorHotkey <300)
-  ;   cnt +=1
-  ; else if (A_TimeSincePriorHotkey > 400)
-  ;   cnt :=0
-    
-  ;   if (cnt==2)
-  ;   {
-  ; ;  try menu, menu, deleteAll
-  ;     Autofill()
-  ;     tooltip("Tripple")
-  ;   }
-  ;   if (cnt == 1)
-  ;     Menu()
-  ;     RETurn
+capslock::esc
 
 ; #If (A_PriorHotKey = "F18" AND A_TimeSincePriorHotkey < 2000) ;____F18____
   ; f18::ReloadScript()
@@ -386,114 +297,61 @@ KEY_DEFAULT:
   ; #If
   ; F18::Autofill() ;Tooltip("☩",2000) 
 
-  Xbutton2::Menu()
-#If (A_PriorHotKey = "Xbutton2" AND A_TimeSincePriorHotkey < 500)
+  Xbutton2::
+  sleep 200
+  Menu()
+  return
+  ; sleep 200
+  ; If (A_ThisHotKey = "Xbutton2" AND A_PriorHotkey != "Lbutton")
+  ;   Menu()
+  ;   return
+  ;   else
+
+; UMDelay= 40 ;holding time
+; ~Xbutton2::
+; HowLong = 0
+; Loop
+; 	{
+; 		Sleep, 10
+; 	}
+; 		HowLong ++
+; 		GetKeyState, ContextKey, Xbutton2, U
+; 		IfEqual, ContextKey, U, Break
+; IfLess, HowLong, %UMDelay%, Return
+; Menu.Show()
+  Return
+#If (A_PriorHotKey = "Xbutton2" AND A_TimeSincePriorHotkey < 200)
     ; Browser_forward::#right
     ; Browser_back::#left
     ; Media_Next::sendinput, #{up}
-    Wheelup::tooltip(A_ThisHotkey)
     Wheeldown::tooltip(A_ThisHotkey)
     wheelleft::tooltip(A_ThisHotkey)
     wheelright::tooltip(A_ThisHotkey)
     Lbutton::tooltip(A_ThisHotkey)
     Rbutton::tooltip(A_ThisHotkey)
-    Xbutton2::msgbox, %A_thishotkey% ;tooltip(A_ThisHotkey)
-    mbutton::tooltip(A_ThisHotkey)
+    Mbutton::
+    Xbutton2::return
+    Wheelup::
+    try menu, menu, deleteAll
+    menu,Menu,add,Test_&1,Tests
+    menu,Menu,add,Test_&2,Tests
+    Menu, Menu, Show,
+    return
+    ; mbutton::tooltip(A_ThisHotkey)
     Xbutton1::tooltip(A_ThisHotkey)
 
     #If
 
 
-
-
-
   
+
   
   
 ;___________________________________________________________________________
 
-KEY_LMS:
-  #Ifwinactive, NuGenesis LMS - \\Remote 
- ; F20::send, {Click 462, 182}{Click 463, 144}^a
-  Xbutton2 & WheelRight::sendinput, {click, 743, 41}
-  Xbutton2 & WheelLeft::sendinput, {Click 354, 44}
-  F19 & Space::Sendinput, %Product%{enter}
-  F20 & Space::Sendinput, %batch%{enter}
-  F19::Click.Filter("Product") 
-  F16::Click.Filter("Product","enter") 
-  F17::Click.Filter("Batch","enter") 
-  F20::Click.Filter("Batch") 
-  F18::autofill()
-  Xbutton2 & WheelUp::Test()
-  Xbutton2 & wheeldown::Varbar.SubIteration()
-  Xbutton1 & WheelUp::SearchBar("Product")
-  Xbutton1 & WheelDown::SearchBar("Batch")
-  Mbutton::Excel.Connect()
-  Enter::Sendinput, ^a^c{enter}
-#Ifwinactive, Select methods tests - \\Remote
-  F19 & space::AutoFill()
-  F17::Methods()
-#IfWinActive, Results Definition - \\Remote
-  wheelup::Mouse_click("Edit")
-  F16::wheel("{esc}",1000)
-  WheelDown::
-  Click, 1330, 592
-  sleep 100
-  click, 338, 619
-  Return
-#ifwinactive, Edit test (Field Configuration:
-  F16::Autofill()
-#Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
-  Xbutton1::WorkTab_ChangeTestResults("toggle")	
-  F16::WorkTab_ChangeTestResults("toggle")
-  F17::WorkTab_ChangeTestResults()
-  
-#ifwinactive, Register new samples - \\Remote
-  Xbutton1 & wheelup::sendinput, {click 180, 103, 2}%Product%{enter}
-  F18::Autofill(1)
 
-#IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  Xbutton2 & WheelUp::Varbar.AddIteration()
-  Xbutton2 & wheeldown::Varbar.SubIteration()
-  browser_Forward::Excel.NextSheet()
-  browser_Back::Excel.PreviousSheet()
-  ; Xbutton1 & F17::Excel.NextSheet()
-  ; Xbutton1 & F16::Excel.PreviousSheet()
-  Mbutton::AutoFill()
-  F18::autofill()
-  ; Xbutton1 & WheelUp::Wheel(Product)
-  ; Xbutton1 & WheelDown::Wheel(Batch)
 
-#IfWinActive, Enter Product Number ahk_class #32770
-  m::1
-  ,::2
-  .::3
-  j::4
-  k::5
-  l::6
-  u::7
-  i::8
-  o::9
-  `;::0
-  F19::0
-  h::-
 
-KEY_Varbar:
-  #If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI") 
-  wheelleft::Excel.PreviousSheet()
-  wheelRight::excel.Nextsheet()
-  WheelUp::Varbar.AddIteration()
-  Wheeldown::Varbar.SubIteration()
-  F17::Excel.NextSheet()
-  F16::Excel.previoussheet()
-  Rbutton::Excel.connect()
-  Mbutton & WheelDown::varbar.Move()
-  mbutton::Varbar.LaunchTable()
-  Rbutton & F16::ProductTab_Table()
-  Rbutton & F17::SpecTab_Table()
-  #if
-  
-  
   
 Methods() {
   global
@@ -528,150 +386,14 @@ return
 
 
 
-KEY_Excel:
-  #IfWinActive, LMS Workbook.xlsb
-  F18::Excel.Connect(1)
-  MButton::Excel.Connect(1)
-  F13 & F16::Click.Filter(2,"Product","xl") 
-  F13 & F17::Click.Filter("Batch","enter","xl") 
-  #ifwinactive, Book4
-    F17::
-      wheelright::sendinput, #{right}
-      return
-    F16::
-      wheelleft::sendinput, #{left}
-      return
-  #ifwinactive, ahk_exe EXCEL.EXE
-  +Enter::sendinput, !{enter}
-  $Enter::sendinput, {enter}
-  ;F18::Excel.Search()
-  Mbutton::Excel.Connect(1)
-  F16::wheel("{wheelleft}",80)
-  F17::wheel("{wheelRight}",80)
-  ; Mbutton & Wheelup::^Wheelup
-  ; Mbutton & Wheeldown::^wheeldown
-  Xbutton2 & F17::^PgDN ;Excel.NextSheet()
-  Xbutton2 & F16::^PgUp ;Excel.PreviousSheet()
-  #ifwinactive, Find and Replace,
-  Xbutton1 & WheelUp::
-  Wheel("!n")
-  Sendinput, %Product%
-  return
-  Xbutton1 & WheelDown::
- ; Wheel("{alt down}n{alt up}")
-  Sendinput % Batch
-  return
-  return::sendinput, !i
-  rbutton & Lbutton::sendinput, !i
-
-#IfWinActive, ahk_exe explorer.exe
-  Mbutton::Open_in_Notepad()
-  Xbutton2 & F17::Excel.NextSheet()
-  Xbutton2 & F16::Excel.PreviousSheet()
-  ; F18 uP::send, {space}
- #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe OR - search ahk_exe explorer.exe
- Xbutton1 & Wheelup:: ;LabelCopySearch(){
-  ; Excel.Connect()
-  winactivate, ahk_exe explorer.exe
-  blockinput, on
-  ControlClick, ModernSearchBox1, ahk_exe explorer.exe, ,Left, 1
-  ControlSetText, ModernSearchBox1, %Product%,ahk_exe explorer.exe,
-  ; send, ^a%Product%
-  sleep 100
-  send, {enter}
-
-  sleep 400
-   blockinput, Off
-  return
-
-
-KEY_ClickUp:
-#IfWinActive,ahk_exe ClickUp.exe
-
-
-KEY_OUTLOOK:
-  #IfWinActive, ahk_exe OUTLOOK.EXE 
-  Mbutton::SENDINPUT % Varbar.Sendinput("Batch") " is updated"
-  Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
-  Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
-  Rbutton & F17::Varbar.Sendinput("Batch"," is updated.")
-  Xbutton2 & WheelDown::searchbar("batch")
-  Xbutton2 & Wheelup::searchBar("Product")
-  Xbutton1::Clip()
-
-  Xbutton1 & Wheelright::Varbar.AddIteration()
-  Xbutton1 & wheelleft::Varbar.SubIteration()
-  F18::LMS_Search()
-
-KEY_Browser:
-  #IfWinActive, ahk_exe firefox.exe
-  Xbutton2 & WheelDown::Wheel("^w")
-  F16::sendinput, !{left}
-  Xbutton1 & WheelDOWN::Browser_Back
-  F17::!right
-  Xbutton2 & wheelUP::Browser_Forward
-  Mbutton::Mbutton ;sendinput, ^{click}
-
-KEY_Snipper: 
-  #IfWinActive, Snipper - Snipaste ; the capture screen
-  rbutton::send, ^c
-  WheelDown::wheel("^1")
-  Wheelup::Wheel("^5")
-  F18::excel.PasteValues("snip")
-  #IfWinActive, Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
-  F18 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
-  F18::send, {esc}
-  Xbutton1::sendinput, ^c
-  F17::sendinput, ^+{+}
-  F16::sendinput, ^+{-}
-  #If mouse_isover("Paster - Snipaste ahk_class")
-  ; sendlevel 1
-  F18::send, !{click}
-  ; sendlevel 0
-  #if
-
-KEY_OneNote:
-  #IfWinActive, ahk_exe ONENOTE.EXE
-  Mbutton & Wheelup::Wheel_2("^!+{=}",50)
-  Mbutton & Wheeldown::Wheel_2("^!+{-}",50)
-  Mbutton::send, {AltDown}{Altup}{w}{i}
-  F18::F11
-
-
-Scroll_Fix:
-  #if winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote")
-  wheeldown::Wheel_scroll("100")
-  wheelup::Wheel_scroll("-100")
-    ; #ifwinactive, Test Definition Editor - \\Remote
-  ; wheeldown::Wheel_scroll("100")
-  ; wheelup::Wheel_scroll("-100"
-  #if
-ClipTool:
-#IfWinactive, C:\Users\mmignin\Documents\VQuest\lib\CL3\cl3.ahk,
-  F19::send, {esc}
-  F19 & j::send, {down}
-  F19 & k::send, {up}
-  F19 & l::send, {enter}
-  F19 & h::send, {esc}
-  Capslock & j::send, {down}
-  Capslock & k::send, {up}
-  capslock & l::send, {enter}
-  capslock & h::send, {esc}
-  capslock::esc
-  #IfWinActive
-
 
 KEY_Otherstuff:
-  Media_Play_Pause::Menu() ;4finger tap
-  Media_Prev::F7 ;3fringer down
-  ; Media_Next:: ;3finger up
-  Browser_Back::+!tab ;3finger left
-  Browser_Forward::^!tab
+
 
   Volume_Down::F11
   Volume_Up::F12
-  #right::tooltip(A_ThisHotkey)
-  ^+!down::tooltip(A_ThisHotkey)
+ ; #right::tooltip(A_ThisHotkey)
+  ;^+!down::tooltip(A_ThisHotkey)
 
 
 
@@ -679,65 +401,11 @@ KEY_Otherstuff:
 
 
 
-TrouchPad:
-#If (A_PriorHotKey = "Browser_forward" AND A_TimeSincePriorHotkey < 1000)
-  browser_forward::Send, !{tab}{space}
-  browser_back::send, +!{tab}{space}
-  media_Next::Mouse_CloseWindow()
-  
-#If (A_PriorHotKey = "Media_next" AND A_TimeSincePriorHotkey < 1000)
-    Browser_forward::#right
-    Browser_back::#left
-    Media_Next::sendinput, #{up}
-    Wheelup::tooltip(A_ThisHotkey)
-    Wheeldown::tooltip(A_ThisHotkey)
-    wheelleft::tooltip(A_ThisHotkey)
-    wheelright::tooltip(A_ThisHotkey)
-    Lbutton::tooltip(A_ThisHotkey)
-    Rbutton::tooltip(A_ThisHotkey)
-    mbutton::tooltip(A_ThisHotkey)
-    #If
-  Media_next::Tooltip("Swipe",2000) 
-
-#If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor
-    ,::sendinput, +!/
-    m::+!down
-    n::+!n
-    u::+!up
-    '::+^!n
-    .::+F1
-    up::^+up
-    down::^+down
-    /::sendinput, !^w
-    5::^+/
 
 
-ToggleTrackpsd(){
-  Send, !{f12}
-  winactivate, Settings
-  sleep 800
-  send, {space}!{F4}
-  Tooltip("TrackPad Toggled",2000)
-  return
-  }
 
-open_Firefox(){
-  ifwinnotexist, ahk_exe firefox.exe
-    run, firefox.exe, "C:\Program Files\Mozilla Firefox\" 
-  else 
-    WinActivate, ahk_exe firefox.exe
 
-  return
-  }
 
-open_VScode(){
-  ifwinnotexist,ahk_exe Code.exe
-    run, Code.exe, "C:\Program Files\Microsoft VS Code\" 
-  else 
-    WinActivate, ahk_exe Code.exe
-
-  return
-  }
 
 Open_in_Notepad(){
     click
@@ -785,6 +453,14 @@ Run_Display:
 Run_CL3:
   Run, cl3.Ahk, lib\CL3
   return
+run_testing:
+Menu, Tray, ToggleCheck, Testing
+    If Testing := !Testing
+      IniWrite, 1, data.ini, Locations, Testing
+     else 
+      IniWrite, 0, data.ini, Locations, Testing
+      send, {esc}
+return
 FilterBox_Location:
     KeyWait, Lbutton, D
     sleep 200
@@ -795,6 +471,7 @@ FilterBox_Location:
   	IniWrite, %FilterBox_Y%, data.ini, Locations, FilterBox_Y
     FilterBoxLocation:=FilterBox_X ", " FilterBox_Y
     tooltip(FilterBoxLocation)
+    MouseClick, Right,,,1, 0, U
     return
 run_VIM:
   Run, ViM.Ahk
@@ -804,6 +481,12 @@ WindowSpySub:
   return
   
 #IfWinActive,
+#Include <Firefox>
+#Include <Office>
+#Include <explorer>
+#Include <LMS>
+#Include <Snipper>
+#Include <Other>
 #Include <AutoFill>
 #include <varBar>
 #include <ProductTab>
@@ -814,10 +497,13 @@ WindowSpySub:
 #include <vis2>
 #include <SearchBar>
 #include <wheel>
-#include <VScode>
 #include <mouse>
 #include <click>
+#include <TrackPad>
 #include <test>
+#include <Vim>
+#include <VScode>
+; #include <CL3/cl3>
 
 
 
@@ -826,49 +512,55 @@ VQuest_Start:
   #Persistent 
   #NoEnv
   #SingleInstance,Force
-  #KeyHistory 100
-  #WinActivateForce
+  #KeyHistory 400
+  
+  ; #WinActivateForce
   SetWorkingDir, %A_ScriptDir%
-  Menu, Tray, Add,CL3, Run_cl3
-  menu, tray, add, Display settings, Run_display
-  Menu, Tray, Add, Set FilterBox Location, Filterbox_Location
-  Menu, Tray, Add, Vim, Run_Vim
-  Menu, Tray, Add, Stop, StopSub
-  Menu, Tray, Add, windowSpy, WindowSpySub 
+  ; Menu, Tray, Add, CL3, Run_cl3
   Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
+  ; menu, tray, add, Display settings, DoubleTrayClick
+  menu, tray, add, Testing, Run_Testing
+  Menu, Tray, Add, Set FilterBox Location, Filterbox_Location
+  ; Menu, tray, NoStandard
+; Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
+;Menu, tray, Default, &Settings
+  ; Menu, Tray, Add, Vim, Run_Vim
+  Menu, Tray, Add, windowSpy, WindowSpySub 
   Menu, Tray, Default, ResetVarbar
   SetBatchLines, 20ms
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
   	CoordMode, mouse, Window
+        UMDelay= 40 ;holding time
     ;SetMouseDelay, 25
   SetDefaultMouseSpeed, 1
-  detecthiddenwindows, on
+  ; detecthiddenwindows, on
   SetTitleMatchMode, 2
   ; settitlematchmode, Slow
-  #MaxHotkeysPerInterval 400
-  ; #HotkeyModifierTimeout 400
+ #MaxHotkeysPerInterval 40
+ #HotkeyModifierTimeout 100
   #maxthreadsperhotkey, 2
    SetKeyDelay, 0, 0
-  setwindelay,450
+  setwindelay,500
+  send, {CtrlUp}{AltUp}{shiftup}{LWinUp}
   AutoTrim, On
+  FormatTime, TimeString,, d/M/yy 
   Menu, Tray, Icon, Robot.ico
     Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
     Iniread, FilterBox_Y, data.ini, Locations, FilterBox_Y
-
-    
-Results_Definition_edit:="78,63"
-Result_Editor_Ok:="370,660"
-Results_Definition_ok:="1336,592"
-Requests_tab:="865,83"
-MyWork_Tab:="761,44"
-Mywork_Searchbar:="500,127,2"
   Iniread, Iteration, data.ini, SavedVariables, Iteration
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
+  Iniread, Testing, data.ini, Locations, Testing
   Excel.Connect(1)
+  if (testing = 1)
+    Menu, Tray, Check, Testing
+  if (testing = 0)
+    Menu, Tray, unCheck, Testing
+  
   StartTest()
   
+
 
 

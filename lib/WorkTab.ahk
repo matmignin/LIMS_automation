@@ -1,6 +1,7 @@
 WorkTab_EditSample(){
   global		
   EnvGet, ShipTo, ShipTo
+  ; excel.connect()
 ifwinactive, Register new samples - \\Remote
   click 2
   sleep 200
