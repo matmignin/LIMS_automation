@@ -120,6 +120,8 @@ class click{
       click 843, 202, 2
     else if winactive("Test Definition Editor")
       Click, 187, 200 
+
+      
     Else
       return
   }

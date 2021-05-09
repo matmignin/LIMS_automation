@@ -4,7 +4,6 @@
 #IfWinActive, ahk_exe explorer.exe
   Mbutton::send, {enter}
   Media_Play_Pause::send, {space}
-   !t::ToggleTrackpsd()
   Xbutton2 & F17::Excel.NextSheet()
   Xbutton2 & F16::Excel.PreviousSheet()
   ; F18 uP::send, {space}

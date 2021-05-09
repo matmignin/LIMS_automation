@@ -6,25 +6,17 @@ return
 return 
 
 
-VSCODE_Hotstrings:
-      
-    :*R:cd\::{CtrlDown}
-    :*R:cu\::{Ctrlup}
-    :*R:ad\::{altDown}
-    :*R:au\::{altup}
-    :*R:sd\::{shiftDown}
-    :*R:su\::{shiftup}
 
 
 
 VsCode_:
     #IfWinActive, ahk_exe Code.exe
-    <^k::sendinput, {Ctrldown}{up}{CtrlUp}
-    <^l::sendinput, {Ctrldown}]{CtrlUp}
-    <^h::sendinput, {Ctrldown}[{CtrlUp}
-    <^j::sendinput, {Ctrldown}{down}{CtrlUp}
-    +^j::sendinput, {ShiftDown}{Ctrldown}{down}{CtrlUp}{ShiftUp}
-    +^K::+^up
+    $<^k::sendinput, {Ctrldown}{up}{CtrlUp}
+    $<^l::sendinput, {Ctrldown}]{CtrlUp}
+    $<^h::sendinput, {Ctrldown}[{CtrlUp}
+    $<^j::sendinput, {Ctrldown}{down}{CtrlUp}
+    $+^j::sendinput, {ShiftDown}{Ctrldown}{down}{CtrlUp}{ShiftUp}
+    $+^K::sendinput, {ShiftDown}{Ctrldown}{up}{CtrlUp}{ShiftUp}
 
     ; +^l::^+#`;
     ; Mbutton & Wheeldown::Wheel_2("!d",1000)
@@ -44,11 +36,9 @@ VsCode_:
     Rbutton & Xbutton2::Get_WindowInfo()
     
     ;$Rbutton::Click right
-    Xbutton2 & F17::sendinput, {numpaddiv}
-    Xbutton2 & F16::Sendinput, {numpad6}
-    Xbutton2 & Rbutton::+F8
-    Xbutton2 & F18::sendinput, !d
-    Xbutton2 & Lbutton::sendinput, ^{click}
+    Xbutton2 & F17::
+    Xbutton2 & F16::
+    Xbutton2 & Lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
     ; Xbutton1 & F18::F5
     
     ; Xbutton1 & Lbutton::^+4
@@ -61,10 +51,6 @@ VsCode_:
     F18::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}  ;search
     F16::sendinput, {ShiftDown}{altDown}{Ctrldown}{t}{CtrlUp}{altup}{ShiftUp} ;prev tab
     F17::ToggleDefinition()
-    ; Xbutton2::Menu.Show()
-
-    ; F19 & k::F3
-    ; F19 & j::+F3
     F20::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
 
 
@@ -72,26 +58,8 @@ VsCode_:
 
 
 return
-; #IfWinexist, Vquest.ahk ahk_exe AutoHotkey.exe
-; Wheeldown::
-;   WinActivate, Vquest.ahk ahk_exe AutoHotkey.exe
-;   send, n
-; return
-; Wheelup::
-;   ifWinActivate, Vquest.ahk ahk_exe AutoHotkey.exe
-;   send, y
-;   return
-  
   
 ;FUNCTIONS-----------------------------------------------------------
-  DoublePress(){
-    global
-    if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 400) 
-      Send, {%A_ThisHotkey%}
-    else 
-    return
-  }
-
 
   Login(){
       sendinput, 4130220009588038
@@ -161,6 +129,17 @@ return
       return
     }
     
+    
+    
+    
+      
+    VSCODE_Hotstrings:
+    :*R:cd\::{CtrlDown}
+    :*R:cu\::{Ctrlup}
+    :*R:ad\::{altDown}
+    :*R:au\::{altup}
+    :*R:sd\::{shiftDown}
+    :*R:su\::{shiftup}
   Modifier_Hotstrings: 
     :*R:c\::
     sendraw, sendinput, {CtrlDown}{}{Ctrlup}
@@ -179,8 +158,8 @@ return
     sendraw, sendinput, {ShiftDown}{altDown}{Ctrldown}{}{CtrlUp}{altup}{ShiftUp}
     sendinput, {left 25}
     return
-    :*R:sc::
-    :*R:cs::
+    :*R:sc\::
+    :*R:cs\::
     sendraw, sendinput, {ShiftDown}{Ctrldown}{}{CtrlUp}{ShiftUp}
     sendinput, {left 18}
     return

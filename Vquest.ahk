@@ -2,7 +2,8 @@
   customer:=[]
 return
 
-
+F19 & Capslock::Test_2()
+return
 Ingredients() {
   global
     IniRead,vSelect, Ingredients.ini, Ingredients, %vIngredient%
@@ -274,7 +275,7 @@ KEY_DEFAULT:
   F18 & F16::
   F19 & Space::Sendinput, %Product%{enter}
   F20 & Space::Sendinput, %batch%{enter}
-
+F19::Menu()
 ;  F20 & Right::send, #{right}
 ;   F20 & Left::send, #{Left}
 ;   F20 & UP::send, #{UP}
@@ -282,7 +283,7 @@ KEY_DEFAULT:
 
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
-  enter::enter
+  ; enter::enter
 capslock::esc
 
 ; #If (A_PriorHotKey = "F18" AND A_TimeSincePriorHotkey < 2000) ;____F18____
