@@ -1,0 +1,26 @@
+eat it
+now eat this
+
+#Ifwinactive, NuGenesis LMS - \\Remote 
+#Ifwinactive, Select methods tests - \\Remote
+#IfWinActive, Results Definition - \\Remote
+#ifwinactive, Edit test (Field Configuration:
+#Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window  
+#ifwinactive, Register new samples - \\Remote
+#IfWinActive, ahk_exe WFICA32.EXE
+Because in the QC log and LMS they are 
+05/05/21	MARKET AMERICA, INC.	F230	TIMELESS PRESCRIPTION OXYGEN EXTREME 60S	104-0593	0619D1 04/23
+05/05/21	MARKET AMERICA, INC.	F230	TIMELESS PRESCRIPTION OXYGEN EXTREME SG 60S	104-0593	0617D1 04/23
+
+And in the Sample log they are 
+5/3/21	F	Timeless Prescription Oxygen 60's HK	F230	104-0593	Market America	0613D1	Micro
+5/4/21	F	Timeless Prescription Oxygen 60's HK	F230	104-0593	Market America	0614D1	Micro
+5/4/21	F	Timeless Prescription Oxygen 60's HK	F230	104-0593	Market America	0615D1	Micro
+5/4/21	F	Timeless Prescription Oxygen 60's HK	F230	104-0593	Market America	0616D1	Micro
+5/5/21	F	Timeless Prescription Oxygen 60's	F230	104-0593	Market America	0617D1	Micro
+5/5/21	F	Timeless Prescription Oxygen 60's	F230	104-0594	Market America	0619D1	Micro
+
+A very pleasent, 29-year old, left handed woman
+
+yoyoe
+

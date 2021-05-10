@@ -504,7 +504,7 @@ WindowSpySub:
 #include <test>
 #include <Vim>
 #include <VScode>
-; #include <CL3/cl3>
+;#include <CL3/cl3>
 
 
 
@@ -517,7 +517,7 @@ VQuest_Start:
   
   ; #WinActivateForce
   SetWorkingDir, %A_ScriptDir%
-  ; Menu, Tray, Add, CL3, Run_cl3
+  Menu, Tray, Add, CL3, Run_cl3
   Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
   ; menu, tray, add, Display settings, DoubleTrayClick
   menu, tray, add, Testing, Run_Testing

@@ -37,7 +37,7 @@ AddCanceled(){
   winactivate, Edit test (Field Configuration: F, Micro) - \\Remote  
 sendinput, {click 399, 219}{end}'(Canceled'){enter}
 }
-;trying tab gui window
+
 Test_2(){
   Global 
   ; MouseGetPos, mx, my, mw, 
@@ -52,3 +52,4 @@ Test_2(){
 return    
 
 }
+

@@ -31,36 +31,21 @@ ifwinactive, Register new samples - \\Remote
 }
 Worktab_CheckDepartment(){
   global 
-Send, ^c
+Send, {CtrlDown}{c}{Ctrlup}
 if (Regexmatch(clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
-  {
     Department:="Analytical"
-      Return
-  }
-    else if (Regexmatch(clipboard, "\bI, Retain\b", Retain) > 0)
-  {
-    Department:="Retain"
-      Return
-  }
-    else if (Regexmatch(Clipboard, "\bMicro\s\(Finished\)",Micr) > 0) || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
-  {
+else if (Regexmatch(Clipboard, "\bMicro\b)",Micr) > 0) ; || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
     Department:="Micro"
-    Return 
-  }
-  else if (Regexmatch(clipboard, "\bPhysical\b", Phys) > 0)  || (Regexmatch(Clipboard, "\bI, Physical\b",Phys) > 0)
-  {
+else if (Regexmatch(clipboard, "\bI, Retain\b", Retain) > 0)
+    Department:="Retain"
+else if (Regexmatch(clipboard, "\bPhysical\b", Phys) > 0)  || (Regexmatch(Clipboard, "\bI, Physical\b",Phys) > 0)
     Department:="Physical"
-    Return
-  }
-      else if (Regexmatch(clipboard, "\bCT, Retain\b", CTRetain) > 0)
-  {
+else if (Regexmatch(clipboard, "\bCT, Retain\b", CTRetain) > 0)
     Department:="CTRetain"
-      Return
-  }
-  else
+else {
+  Tooltip(nope)
   exit
-  ; return %Department%
-  	;Clipboard:=Preclip
+}
 }
  
 
@@ -96,8 +81,8 @@ WorkTab_NewRequest(){
   send, %Department%{enter}{tab 2}
   sleep 100
   send, %product%{enter}
-  click 152, 195
-  send ^a
+  ;click 152, 195
+  send, {tab}{CtrlDown}{a}{Ctrlup}
   input, , V T3, {Lbutton}{enter}
   click 504, 338 ; click arrow
   WinActivate, Select tests for request

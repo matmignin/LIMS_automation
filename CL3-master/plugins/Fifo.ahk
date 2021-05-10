@@ -42,7 +42,6 @@ Return
 
 ; Paste FIFO MODE
 ^v::
-send, {ctrlup}
 If (FIFOID = 0) ; just in case we cancelled the FIFO selection menu
 	{
 	 OnClipboardChange("FuncOnClipboardChange", 0)
@@ -64,7 +63,7 @@ If (FIFOID = FIFOIDCOUNTER)
 Return
 
 ; stop FIFO
-;^+#F10::
+^+#F10::
 Gosub, FifoInit
 Gosub, FifoActiveMenu
 Return

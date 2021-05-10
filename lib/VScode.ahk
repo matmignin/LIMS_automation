@@ -13,10 +13,10 @@ VsCode_:
     #IfWinActive, ahk_exe Code.exe
     $<^k::sendinput, {Ctrldown}{up}{CtrlUp}
     $<^l::sendinput, {Ctrldown}]{CtrlUp}
-    $<^h::sendinput, {Ctrldown}[{CtrlUp}
-    $<^j::sendinput, {Ctrldown}{down}{CtrlUp}
+    $<^j::sendinput, {Ctrldown}{down}{CtrlUp
     $+^j::sendinput, {ShiftDown}{Ctrldown}{down}{CtrlUp}{ShiftUp}
-    $+^K::sendinput, {ShiftDown}{Ctrldown}{up}{CtrlUp}{ShiftUp}
+    ; $+^K::sendinput, {ShiftDown}{Ctrldown}{up}{CtrlUp}{ShiftUp}
+    $<^h::sendinput, {Ctrldown}[{CtrlUp}
 
     ; +^l::^+#`;
     ; Mbutton & Wheeldown::Wheel_2("!d",1000)
@@ -28,6 +28,7 @@ VsCode_:
     Mbutton & F16::sendinput,{Ctrldown}[{CtrlUp}
     Mbutton & wheelUP::sendinput, {ctrl down}{up}{ctrl up}
     Mbutton & WheelDOWN::sendinput, {ctrl down}{down}{ctrl up}
+    Mbutton::send, {CtrlDown}{f}{Ctrlup}
     Rbutton & F17::Wheel_2("!{right}",10)
     Rbutton & F16::Wheel_2("!{left}",10)
 	  Rbutton & Lbutton::sendinput, {Shiftdown}{click}{ShiftUp}
@@ -35,27 +36,26 @@ VsCode_:
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",2000)
     Rbutton & Xbutton2::Get_WindowInfo()
     
-    ;$Rbutton::Click right
-    Xbutton2 & F17::
     Xbutton2 & F16::
+    Xbutton2 & F17::
+    ;$Rbutton::Click right
     Xbutton2 & Lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
-    ; Xbutton1 & F18::F5
     
     ; Xbutton1 & Lbutton::^+4
 		F18 & F16::return
-		F18 & F17::return
+    ; Xbutton1 & F18::F5
     F18 & Rbutton::sendinput, {shiftdown}{Ctrldown}m{CtrlUp}{shiftup} ; toggle bookmark
-    F18 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
+		F18 & F17::return
     F18 & wheeldown::wheel_2("{ShiftDown}{altdown}{down}{altUp}{ShiftUp}",50) ;next search
-    Mbutton::sendinput, {CtrlDown}{f}{Ctrlup}
     F18::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}  ;search
+    F18 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
     F16::sendinput, {ShiftDown}{altDown}{Ctrldown}{t}{CtrlUp}{altup}{ShiftUp} ;prev tab
-    F17::ToggleDefinition()
     F20::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
 
 
 
 
+    F17::ToggleDefinition()
 
 return
   
