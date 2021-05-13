@@ -14,22 +14,11 @@ class Vim{
 	Leader(LeaderKey){
   send, ~ 
   Input, Numbers, L3,,{enter}
-			send, %leader%%Numbers%%enter%
+			send, %leader%%Numbers%{enter}
 	send, {esc}
   return
   }
 }
-
-#IfWinActive, ahk_exe Code.exe
-		F19 & space::sendinput, {Ctrldown}{shiftdown}p{shiftup}{CtrlUp}
-    F19 & h::sendinput, +!{left}
-    F19 & k::sendinput, +!{up}
-    F19 & j::sendinput, +!{down}
-    F19 & l::sendinput, +!{right}
-    F19::Menu()
-  F19 & `::sendinput, ~
-#IfWinActive
-
 
     
 
@@ -66,7 +55,7 @@ VIM:
     
     4::sendinput, +{end}^c{right}
     y::
-    Send {home}+{end}^c
+    Send {home}+s{end}^c
     sleep 150
     
     ; ClipWait, 1
@@ -88,7 +77,6 @@ VIM:
     2::F2
     3::F3
     `::esc
-    Enter::sendinput, +^enter
     j::down
     k::Up
     h::left
@@ -101,21 +89,21 @@ VIM:
     d::return ; Send, {home 2}+{end}^x{delete}
     w::Send {right}^{right 2}{left}
     e::Send ^{right}
-    u::Send ^z
+  ;  u::Send ^z
     up::+up
     down::+down
     right::+right
     left::+left
     b::^left
     Shift & o::sendinput, {home}{enter}{up}
-    5::Send ^m
+
     Capslock & o::Send, {end}{enter}
     o::Send, {end}{enter}
     +o::Send, {Home}{enter}
-    Shift & ,::sendinput, +{F1}
+    Shift & ,::sendinput, !{,}
     left::sendinput, {home}+{Tab}
     right::sendinput, {home}{Tab}
-    f::sendinput, {CtrlDown}{f}{Ctrlup}
+    ; f::sendinput, {CtrlDown}{f}{Ctrlup}
     ; v up::
     ;   while GetKeyState("Capslock","p")
     ;     sendinput, {Shift down}
@@ -123,13 +111,9 @@ VIM:
     ;   sendinput, {shift up}
     ;   retur
 
-
-
-
-#If Getkeystate("Capslock","p") AND winactive("ahk_exe Code.exe")
-  ,::sendinput, {Altdown}{Ctrldown}{/}{CtrlUp}{AltUp}
-  a::sendinput, {ShiftDown}{altDown}{a}{shiftUp}{altup}
-  Tab::send, {end}+{end}{space}{backspace}
+,::sendinput, {Altdown}{Ctrldown}{/}{CtrlUp}{AltUp}
+  $a::sendinput, {ShiftDown}{altDown}{a}{shiftUp}{altup}
+  Tab::sendinput, {CtrlDown}{i}{Ctrlup}
   f::Vim.find("f")
   [::
     sendraw,{
@@ -141,18 +125,25 @@ VIM:
     send, {CtrlDown}{left}{Ctrlup}
     sendraw,{
     return
-;   3::+F3
-  m::+!down
-  u::+!up ;pselect revious instance of line
-  n::+!n ;select next instance of line
+;   3::+F3{
+  $m::sendinput, {CtrlDown}{m}{Ctrlup}
+  $u::sendinput, {CtrlDown}{u}{Ctrlup}
+  ; u::+!up ;pselect revious instance of line
+  $n::+!n ;select next instance of line
   up::sendinput, {Altdown}{shiftdown}{Ctrldown}{up}{shiftup}{CtrlUp}{AltUp}
   down::sendinput, {Altdown}{shiftdown}{Ctrldown}{down}{shiftup}{CtrlUp}{AltUp}
   `;::vim.Leader(":")
   i::sendinput, {CtrlDown}{i}{Ctrlup}
  5::sendinput, {shiftDown}{Ctrldown}/{CtrlUp}{{shiftup}
    r::^+!r
+       Enter::sendinput, {shiftDown}{enter}{shiftup}
 CapsLock::send, {esc}
-   
+    $<^k::sendinput, {Ctrldown}{up}{CtrlUp}
+    $<^l::sendinput, {Ctrldown}]{CtrlUp}
+    $<^h::sendinput, {Ctrldown}[{CtrlUp}
+    $<^j::sendinput, {Ctrldown}{down}{CtrlUp}
+
+
    #if
  ; capslock::esc
 

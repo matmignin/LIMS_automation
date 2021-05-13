@@ -12,7 +12,7 @@
 		Menu.Show()
 
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
-		click, 79, 440
+		return ;click, 79, 440
 
 	} Else If Winactive("ahk_exe EXCEL.EXE") {
 		Excel.Search()

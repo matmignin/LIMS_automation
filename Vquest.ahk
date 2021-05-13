@@ -1,9 +1,53 @@
 ﻿gosub, vquest_start
-  customer:=[]
+; MouseReturn:= "{click " My ", " My ",0}"
+  ; customer:=[]
 return
+
+blockRepeat(time=200){
+	SetTimer, BlockInput, -%time%
+	return
+}
+
+BlockInput:
+	N=0
+	return
+
+MouseSave(){
+	Global
+MouseGetPos, mx, my, mw,
+MouseReturn:="{click " Mx ", " My ",0}"
+return 
+}
 
 F19 & Capslock::Test_2()
 return
+DetectTab(){
+global
+Tab:=
+CoordMode, Pixel, Window
+WinActivate, NuGenesis LMS - \\Remote
+  PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB 
+      If ErrorLevel  ;Product/Spec Tab?
+        Tab="Product_Spec"
+      If ErrorLevel = 0 ;is worktab?
+        {
+          PixelSearch, FoundX, FoundY, 11, 139, 15, 141, 0x54c7f2, 10, Fast RGB ;icon on left
+          If ErrorLevel
+            Tab:="Sample" 
+          If ErrorLevel = 0
+          {
+            PixelSearch, FoundX, FoundY, 18, 142, 19, 143, 0xffffff, 10, Fast RGB ;icon on left
+            If ErrorLevel = 0
+              Tab:="Documents"
+            If ErrorLevel
+            Tab:="Request" 
+          }        
+        }
+    msgbox, %Tab%
+  return
+}
+
+
 Ingredients() {
   global
     IniRead,vSelect, Ingredients.ini, Ingredients, %vIngredient%
@@ -216,130 +260,81 @@ return
 #IfWinActive,
 
 ; Sendlevel 1
-  ;Rbutton & F18::send, {F21}
-  ; Rbutton & F13::sendinput, {F21}
+  ;Rbutton & F8::send, {F21}
+  Rbutton & F13::sendinput, {F21}
 ; Xbutton1 & Xbutton2::
 Xbutton2 & Xbutton1::send, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
-  ; Rbutton & F17::F21
+  ; Rbutton & F7::F21
  ; F19::Return ;send, {F21}
 
 
 KEY_DEFAULT:
 
 <^;::sendinput, %Timestring%{space} 
-^tab::Test()
-  Xbutton1 & F18::Clip("OCR") 
-  Mbutton & Xbutton1::SendPassword()
+; ^tab::Test()
   !f::Open_Firefox()
   !v::Open_vsCode()
   Capslock & `::QuickCode()
-  Mbutton::send, {Rctrl down}
-  ~$mbutton up::
-  ; sendlevel 1
+  Mbutton & Xbutton1::SendPassword()
+  $Mbutton::send, {ctrl down}
+  $mbutton up::
+  sendlevel 1
   sendinput, {Rctrl up}{Lctrl up}{Alt Up}{Shift Up}
-  ; sendlevel 0
+  sendlevel 0
   return
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
   Mbutton & WheelDown::sendinput, {ctrldown}{WheelDown}{CtrlUp}
   Mbutton & Wheelup::sendinput, {ctrldown}{Wheelup}{CtrlUp}
-
-  Mbutton & F17::Wheel_Right()
-  Mbutton & F16::Wheel_left()
+#if
+  Mbutton & F7::Wheel_Right()
+  Mbutton & F6::Wheel_left()
   Rbutton & Wheelup::Wheel_cut() 
   Rbutton & Wheeldown::Wheel_paste()
   Rbutton & Xbutton2::Get_WindowInfo()
-  Rbutton & F16::Backspace
-  Rbutton & Lbutton::Enter
-  Rbutton up::Mouse_RbuttonUP()
+  Rbutton & F6::Backspace
+  ;Rbutton & Lbutton::Enter
+  ;Rbutton up::Mouse_RbuttonUP()
+ 
 
-
+  Xbutton1 & F8::Clip("OCR") 
   Xbutton1 & LButton::Sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup} ;screenshot"
   Xbutton1 & RButton::Sendinput,  {shiftdown}{ctrldown}3{CtrlUp}{shiftup};screenshot"
   Xbutton1 & WheelUp::Wheel(Product)
   Xbutton1 & WheelDown::Wheel(Batch)
   Xbutton1 & wheelleft::Excel.PreviousSheet()
   Xbutton1 & wheelright::Excel.NextSheet()
-  Xbutton1 & F17::Excel.NextSheet()
-  Xbutton1 & F16::Excel.PreviousSheet()
+  Xbutton1 & F7::Excel.NextSheet()
+  Xbutton1 & F6::Excel.PreviousSheet()
   ; Xbutton2 & Rbutton::Get_WindowInfo()
-  Xbutton1::Clip()
   Xbutton1 & Mbutton::Varbar.reset()
   Xbutton2 & wheelDown::Mouse_CloseWindow()
-  ; F18 & Wheelup::!^tab
+  ; F8 & Wheelup::!^tab
   ; Xbutton2 & Lbutton::Sendinput, #{down}
   ; Xbutton2::Menu.Show()
-  ; F18 & Wheeldown::+^!tab
-  F18 & Lbutton::sendinput, {Ctrldown}{Click}{CtrlUp}
-  F18 & Rbutton::sendinput, {shiftdown}{Click}{shiftup}
-  F18 & F17::
-  F18 & F16::
+  ; F8 & Wheeldown::+^!tab
+  F8 & Lbutton::sendinput, {Ctrldown}{Click}{CtrlUp}
+  F8 & Rbutton::sendinput, {shiftdown}{Click}{shiftup}
+  F8 & F7::
+  F8 & F6::
   F19 & Space::Sendinput, %Product%{enter}
   F20 & Space::Sendinput, %batch%{enter}
 F19::Menu()
-;  F20 & Right::send, #{right}
-;   F20 & Left::send, #{Left}
-;   F20 & UP::send, #{UP}
-;   F20 & Down::send, #{Down}
+ F20 & Right::send, #{right}
+  F20 & Left::send, #{Left}
+  F20 & UP::send, #{UP}
+  F20 & Down::send, #{Down}
 
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
   ; enter::enter
-capslock::esc
+; capslock::esc
 
-; #If (A_PriorHotKey = "F18" AND A_TimeSincePriorHotkey < 2000) ;____F18____
-  ; f18::ReloadScript()
-  ; Wheelup::test()
-  ; Wheeldown::send, {esc}
-  ; F16::sendinput, {Click 354, 44}
-  ; F17::sendinput, {click, 743, 41}
-  ; Lbutton::sendinput, ^{click}
-  ; Rbutton::sendinput, +{click}
-  ; mbutton::Clip()
-  ; #If
-  ; F18::Autofill() ;Tooltip("☩",2000) 
+!c::open_Clickup()
+!e::send, {LWinDown}{e}{lwinup}
+!+v::open_VPN()
+Xbutton2::Menu()
+Xbutton1::Clip()
 
-  Xbutton2::
-  sleep 200
-  Menu()
-  return
-  ; sleep 200
-  ; If (A_ThisHotKey = "Xbutton2" AND A_PriorHotkey != "Lbutton")
-  ;   Menu()
-  ;   return
-  ;   else
-
-; UMDelay= 40 ;holding time
-; ~Xbutton2::
-; HowLong = 0
-; Loop
-; 	{
-; 		Sleep, 10
-; 	}
-; 		HowLong ++
-; 		GetKeyState, ContextKey, Xbutton2, U
-; 		IfEqual, ContextKey, U, Break
-; IfLess, HowLong, %UMDelay%, Return
-; Menu.Show()
-  Return
-#If (A_PriorHotKey = "Xbutton2" AND A_TimeSincePriorHotkey < 200)
-    ; Browser_forward::#right
-    ; Browser_back::#left
-    ; Media_Next::sendinput, #{up}
-    Wheeldown::tooltip(A_ThisHotkey)
-    wheelleft::tooltip(A_ThisHotkey)
-    wheelright::tooltip(A_ThisHotkey)
-    Lbutton::tooltip(A_ThisHotkey)
-    Rbutton::tooltip(A_ThisHotkey)
-    Mbutton::
-    Xbutton2::return
-    Wheelup::
-    try menu, menu, deleteAll
-    menu,Menu,add,Test_&1,Tests
-    menu,Menu,add,Test_&2,Tests
-    Menu, Menu, Show,
-    return
-    ; mbutton::tooltip(A_ThisHotkey)
-    Xbutton1::tooltip(A_ThisHotkey)
 
     #If
 
@@ -482,9 +477,11 @@ WindowSpySub:
   return
   
 #IfWinActive,
+#include <TrackPad>
 #Include <Firefox>
 #Include <Office>
 #Include <explorer>
+#Include, <clip>
 #Include <LMS>
 #Include <Snipper>
 #Include <Other>
@@ -500,12 +497,10 @@ WindowSpySub:
 #include <wheel>
 #include <mouse>
 #include <click>
-#include <TrackPad>
 #include <test>
-#include <Vim>
+#include <Vim>  
 #include <VScode>
 ;#include <CL3/cl3>
-
 
 
 
@@ -514,7 +509,15 @@ VQuest_Start:
   #NoEnv
   #SingleInstance,Force
   #KeyHistory 400
-  
+  #InstallKeybdHook
+  #InstallMouseHook
+
+EnvGet, Product, Product
+EnvGet, Batch, Batch
+EnvGet, lot, lot
+
+
+
   ; #WinActivateForce
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add, CL3, Run_cl3
@@ -528,24 +531,25 @@ VQuest_Start:
   ; Menu, Tray, Add, Vim, Run_Vim
   Menu, Tray, Add, windowSpy, WindowSpySub 
   Menu, Tray, Default, ResetVarbar
-  SetBatchLines, 20ms
+  ; SetBatchLines, 0ms
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
   	CoordMode, mouse, Window
-        UMDelay= 40 ;holding time
-    ;SetMouseDelay, 25
+
+    SetMouseDelay, 5
   SetDefaultMouseSpeed, 1
   ; detecthiddenwindows, on
   SetTitleMatchMode, 2
   ; settitlematchmode, Slow
- #MaxHotkeysPerInterval 40
- #HotkeyModifierTimeout 100
-  #maxthreadsperhotkey, 2
+ #MaxHotkeysPerInterval 400
+ #HotkeyModifierTimeout 10
+  #maxthreadsperhotkey, 3
    SetKeyDelay, 0, 0
   setwindelay,500
   send, {CtrlUp}{AltUp}{shiftup}{LWinUp}
   AutoTrim, On
+  Main:="NuGenesis LMS - \\Remote"
   FormatTime, TimeString,, d/M/yy 
   Menu, Tray, Icon, Robot.ico
     Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
@@ -554,6 +558,9 @@ VQuest_Start:
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
   Iniread, Testing, data.ini, Locations, Testing
+  Batches:=[]
+  Products:=[]
+  Lots:=[]
   Excel.Connect(1)
   if (testing = 1)
     Menu, Tray, Check, Testing

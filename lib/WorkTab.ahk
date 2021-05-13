@@ -1,6 +1,6 @@
 WorkTab_EditSample(){
   global		
-  EnvGet, ShipTo, ShipTo
+  ;EnvGet, ShipTo, ShipTo
   ; excel.connect()
 ifwinactive, Register new samples - \\Remote
   click 2
@@ -31,36 +31,60 @@ ifwinactive, Register new samples - \\Remote
 }
 Worktab_CheckDepartment(){
   global 
-Send, {CtrlDown}{c}{Ctrlup}
-if (Regexmatch(clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
+  ;clipboard:=
+Send, ^c
+sleep 200
+if (Regexmatch(Clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
     Department:="Analytical"
-else if (Regexmatch(Clipboard, "\bMicro\b)",Micr) > 0) ; || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
+else if (Regexmatch(Clipboard, "Micro \(Finished\)",Micr) > 0) ; || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
     Department:="Micro"
-else if (Regexmatch(clipboard, "\bI, Retain\b", Retain) > 0)
+else if (Regexmatch(Clipboard, "\bI, Retain\b", Retain) > 0)
     Department:="Retain"
-else if (Regexmatch(clipboard, "\bPhysical\b", Phys) > 0)  || (Regexmatch(Clipboard, "\bI, Physical\b",Phys) > 0)
+else if (Regexmatch(Clipboard, "\bPhysical\b", Phys) > 0) ; || (Regexmatch(Clipboard, "\bI, Physical\b",Phys) > 0)
     Department:="Physical"
-else if (Regexmatch(clipboard, "\bCT, Retain\b", CTRetain) > 0)
+else if (Regexmatch(Clipboard, "\bCT, Retain\b", CTRetain) > 0)
     Department:="CTRetain"
 else {
   Tooltip(nope)
+  
+  sleep 300
   exit
 }
 }
- 
+
+Worktab_CheckDepartment2(){
+  global 
+  click, 32, 176
+  sleep 400
+  If Winactive("Edit sample (Field Configuration: F, Micro) - \\Remote")
+    Department:="Micro"
+  if winactive("Edit sample (Field Configuration: I, Analytical) - \\Remote")
+    Department:="Analytical"
+  if winactive("Edit sample (Field Configuration: I, Physical) - \\Remote")
+    Department:="Physical"
+  if winactive("Edit sample `(Field Configuration: CT`, Retain`) - \\Remote")
+    Department:="CTRetain"
+  else
+  Tooltip(De)
+  exit
+  send, {esc}
+  sleep 200
+  Tooltip(Department)
+return
+}
 
  
  
 WorkTab_NewRequest(){
   global
-  department:="" ;Clip()
-  Clipboard:=""
+  department:= ; Clip()
+  Clipboard:=
   sleep 100
   WinActivate, NuGenesis LMS - \\Remote
-  send, ^c
+  ; send, ^c
   sleep 200
-  ; clipwait
-  clipboard:=Clipboard ; Tooltip, %Clipboard%
+
+  sleep 50
   Worktab_CheckDepartment()
   sleep 400
   tooltip, %department%

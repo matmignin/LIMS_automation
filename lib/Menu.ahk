@@ -257,9 +257,9 @@ VScode(){
   Menu, hotkeyMenu, Add, Numlock, vscode
   Menu, hotkeyMenu, Add, Xbutton3, vscode
   Menu, hotkeyMenu, Add, F15, vscode
-  Menu, hotkeyMenu, Add, F16, vscode
-  Menu, hotkeyMenu, Add, F17, vscode
-  Menu, hotkeyMenu, Add, F18, vscode
+  Menu, hotkeyMenu, Add, F6, vscode
+  Menu, hotkeyMenu, Add, F7, vscode
+  Menu, hotkeyMenu, Add, F8, vscode
   Menu, hotkeyMenu, Add, Mbutton, vscode
   Menu, hotkeyMenu, Add, Rbutton, vscode
   Menu, hotkeyMenu, Add, Wheel, vscode
@@ -274,17 +274,17 @@ VScode(){
 
 VScode:
   if (A_thismenuitem = "Xbutton1")
-  Sendinput, ^fXbutton1`:`:{Tab 6}{down 2}
+  Sendinput, ^{f}Xbutton1`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "Numlock")
   Sendinput, ^f_Psudo Numpad{Tab 6}{down 2}
   else if (A_thismenuitem = "Xbutton3")
   Sendinput, ^fXbutton3`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F15")
   Sendinput, ^fF15`:`:{Tab 6}{down 2}
-  else if (A_thismenuitem = "F16")
-  Sendinput, ^fF16`:`:{Tab 6}{down 2}
-  else if (A_thismenuitem = "F17")
-  Sendinput, ^fF17`:`:{Tab 6}{down 2}
+  else if (A_thismenuitem = "F6")
+  Sendinput, ^fF6`:`:{Tab 6}{down 2}
+  else if (A_thismenuitem = "F7")
+  Sendinput, ^fF7`:`:{Tab 6}{down 2}
   else if (A_thismenuitem = "F19")
   Sendinput, ^fF19`:`:{Tab 6}{down 2}
     else if (A_thismenuitem = "F20")
@@ -296,13 +296,13 @@ VScode:
   else if (A_thismenuitem = "Wheel")
   Sendinput, ^fWheel{Tab 6}{down 2}
   else if A_thismenuItem contains &Mouse `t %MousePosition%
-  send %MousePosition%
+  sendinput, %MousePosition%
   else if A_thismenuItem contains &Title `t %WinTitle%
-  Send %WinTitle%
+  Sendinput, %WinTitle%
   else if A_thismenuItem contains &Process `t %WinProcess%
-  send, ahk_exe %WinProcess%
+  sendinput, ahk_exe %WinProcess%
   else if A_thismenuItem Contains &Control `t %WinControl%
-  send, %WinControl%
+  sendinput, %WinControl%
   else 
   menu, menu, deleteAll
   return

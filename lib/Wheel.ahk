@@ -1,17 +1,21 @@
 ﻿Wheel_scroll(direction){
+	global
+	if N=1
+		exit
 	ifwinactive, Result Editor - \\Remote
-	{
-		mousemove, 505, 200,0	
-	mouseclickDrag, L,0, 0, 0, %Direction%,0,R	; mouseclick, %upOrDown%, ,,1,0	0
-	}
+		{
+			mousemove, 505, 200,0	
+			mouseclickDrag, L,0, 0, 0, %Direction%,0,R	; mouseclick, %upOrDown%, ,,1,0	0
+		}
   ifwinactive, Test Definition Editor - \\Remote
 		{
 			click, 466, 437
-		; mousemove, 463, 302,0	
-		sleep 100
-
+			; mousemove, 463, 302,0	
+			sleep 100
 		return
-		}
+		}	
+	N=1
+	SetTimer, RemoveToolTip, 600
 	return
 	}
 

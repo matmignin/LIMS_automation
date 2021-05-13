@@ -4,9 +4,9 @@
 #IfWinActive, ahk_exe explorer.exe
   Mbutton::send, {enter}
   Media_Play_Pause::send, {space}
-  Xbutton2 & F17::Excel.NextSheet()
-  Xbutton2 & F16::Excel.PreviousSheet()
-  ; F18 uP::send, {space}
+  Xbutton2 & F7::Excel.NextSheet()
+  Xbutton2 & F6::Excel.PreviousSheet()
+  ; F8 uP::send, {space}
  #IfWinActive, C:\Users\mmignin\Desktop\Label Copy\All Label Copy ahk_exe explorer.exe OR - search ahk_exe explorer.exe
  Xbutton1 & Wheelup:: ;LabelCopySearch(){
   ; Excel.Connect()

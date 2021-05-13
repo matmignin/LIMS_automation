@@ -18,7 +18,7 @@
 
 Clip(input:=0){
 	global
-	; clipboard:=
+	;clipboard:=
 	Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
 	If Input contains OCR
 		OCR()
@@ -32,7 +32,7 @@ Clip(input:=0){
 	If (Input = "S")
 			{
 					Clipboard:=""
-						Send, ^c    
+						Send, ^c
 						clipwait, 1
 					Selection:=StrReplace(Clipboard, "`r`n")
 						TrayTip, Copy, %Selection%,,
@@ -46,6 +46,8 @@ Clip(input:=0){
 		ControlGetText, lot, Static2, VarBar
 		GuiControl, Varbar:Text, Name,
 		GuiControl, Varbar:Text, Customer,
+		;FileAppend, %Product%`n, codes.txt
+	envset, Product, %Product%
 		Gui, VarBar:color, 847545 ;brown
 	}
 	if (Regexmatch(BatchClipboard, "\d{3}-\d{4}", Batch) > 0)
@@ -55,10 +57,12 @@ Clip(input:=0){
 		ControlGetText, lot, Static2, VarBar
 		GuiControl, Varbar:Text, Name,
 		GuiControl, Varbar:Text, Customer,
+		;FileAppend, %Batch%`n, codes.txt
 		; if input contains Coated
 			; Coated:=Batch
 		; else
 		; GuiControl, Varbar:Text, Coated, %Coated%
+		envset, Batch, %Batch%
 		Gui, VarBar:color, 847545 ;brown
 	}
 	if (Regexmatch(Clipboard, "\b\d{4}\w\d\w?", lot) > 0) || (Regexmatch(Clipboard, "Bulk", lot) > 0)
@@ -68,15 +72,18 @@ Clip(input:=0){
 		ControlGetText, Batch, Static1, VarBar
 		GuiControl, Varbar:Text, Name,
 		GuiControl, Varbar:Text, Customer,
+		;FileAppend, %Lot%`n, codes.txt
+		envset, lot, %lot%
 		Gui, VarBar:color, 847545 ;brown
 	}
 	else if input conains 0
 	{
   send, ^c
 	sleep 100
-	tooltip(Clipboard)
+	;tooltip(Clipboard)
 	; return %clipboard%
 	}
 	;Varbar.Update()
 	return
 }
+

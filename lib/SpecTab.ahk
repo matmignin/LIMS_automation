@@ -106,14 +106,14 @@ Spectab_CreateGUI(){
 SpecTab_CopySpecTemplate(){
   global
   click 728, 191
-  department:="" ;Clip()
-  Clipboard:=""
-  sleep 100
-  WinActivate, NuGenesis LMS - \\Remote
-  send, ^c
+  department:= ;Clip()
+  Clipboard:=
   sleep 200
-  ; clipwait
-  clipboard:=Clipboard ; Tooltip, %Clipboard%
+  WinActivate, NuGenesis LMS - \\Remote
+  ;send, ^c
+  sleep 200
+  ; clipwait; Tooltip, %Clipboard%
+	sleep 100
 Worktab_CheckDepartment()
   sleep 400
   tooltip(department)
@@ -486,8 +486,8 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0
 			;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
 			;else
 			if (Uselimitsbox := 0)
-				send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 7}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-			send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 5}
+				send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 7}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+			send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
 			sleep 200
 			If (UseLimitsBox:=1)
 				send, {space}

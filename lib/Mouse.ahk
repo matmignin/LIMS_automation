@@ -10,29 +10,31 @@ Mouse_RbuttonUP(){
 	#inputlevel 1
 	suspend, On
 	sleep 50
-	Click, Right
+Click, Right
+; send, {rbutton}
 	; sleep 200
-  MouseClick, Right,,,1, 0, U
+  ; MouseClick, Right,,,1, 0, U
 	; sendinput, {esc}
 	suspend, Off
 	#inputlevel 0
 	return
 }
 return
-Mouse_CloseWindow() 
-{
 
+
+Mouse_CloseWindow() {
+	global
   if WinActive("Inbox - mmignin@vitaquest.com - Outlook") ; || winactive("ahk_exe OUTLOOK.EXE")
-	{
     Return
-	}
+	else If winactive("NuGenesis LMS - \\Remote")
+		send, % MouseSave() "{click 1326, 379, R}{shiftDown}{tab 2}{shiftup}{enter}" MouseReturn
 	else If WinActive("ahk_exe WFICA32.EXE")
 	{
 		send, {esc}
 		sleep 400
 		return
 	}
-	else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe")
+	else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe")
 	{
 		sendinput, {ctrl down}w{ctrl up}
 		sleep 400
@@ -50,16 +52,12 @@ Mouse_CloseWindow()
 		sleep 400
 		return
 	}
-	else if winactive("ahk_exe Code.exe")
-		sendinput, Wheel("^w")
 	else if winactive("ahk_exe mstsc.exe") || winactive("ahk_exe EXCEL.EXE")
 	{ 
 		Send, ^v
 		sleep 400
 		return
 	}
-	else If winactive("NuGenesis LMS - \\Remote")
-		Tooltip("nope")
 	else
 		return
 	return

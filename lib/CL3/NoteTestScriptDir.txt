@@ -25,3 +25,16 @@ K473
 -- 2021-04-24 10:13:28 -- ✄ ------------------------------
 
 K479
+-- 2021-05-11 07:57:22 -- ✄ ------------------------------
+
+Each two (2) scoops (34.7g) contains
+
+-- Edit Formulation - \\Remote
+
+-- 2021-05-12 08:35:32 -- ✄ ------------------------------
+
+#If Getkeystate("Rbutton","p")
+  lbutton::msgbox, yo
+
+
+-- Untitled page - OneNote

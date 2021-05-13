@@ -7,13 +7,14 @@ KEY_Varbar:
   wheelRight::excel.Nextsheet()
   WheelUp::Varbar.AddIteration()
   Wheeldown::Varbar.SubIteration()
-  F17::Excel.NextSheet()
-  F16::Excel.previoussheet()
+  F7::Excel.NextSheet()
+  F6::Excel.previoussheet()
   Mbutton & WheelDown::varbar.Move()
   mbutton::Varbar.LaunchTable()
-  Rbutton & F16::ProductTab_Table()
-  Rbutton & F17::SpecTab_Table()
+  Rbutton & F6::ProductTab_Table()
+  Rbutton & F7::SpecTab_Table()
   Rbutton::Excel.connect()
+	F8::ReloadScript()
   ; Lbutton::MouseClick, Right,,,1, 0, U
   #if
   

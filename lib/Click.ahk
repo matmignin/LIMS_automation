@@ -1,46 +1,48 @@
 class click{
 
-  SearchBar(){
-    global
-    if WinActive("NuGenesis LMS - \\Remote")
-      send, {click 518, 89, 2}%Product%{enter}
-    else if winactive("Select methods tests - \\Remote")
-      click, 246,77, 22
-    else
-      return
-    return
-  }
 
-  Filter(Code:=0,PostCmd:="",Source:=0){ 
+  SearchBar(Code:=0,PostCmd:="",Source:=0){ 
     Global
     ControlGetText, Batch, Static1, VarBar
     ControlGetText, Product, Edit1, VarBar                          
     ProductFilter:=FilterBox_X
     BatchFilter:=FilterBox_X+60
     LotFilter:=BatchFilter+100
-    OtherFilterbox_Y:=Filterbox_Y+35
     blockinput on
-    if (Source ="xl")
-      excel.connect()
-    if (Source= "clip")
-      clip()
-    WinActivate, NuGenesis LMS - \\Remote
-    if code contains Product
+  ;  if (Source ="xl")
+    ;  excel.connect()
+  ;  else if (Source= "clip")
+    ;  clip()
+    if winactive("Select methods tests - \\Remote")
+      click, 246,77, 2  
+    else If winactive("Register new samples - \\Remote")
+        sendinput, {click 180, 103, 2}%Product%{enter}  
+    else if code contains Product
     {
+    WinActivate, NuGenesis LMS - \\Remote
       CoordMode, Pixel, Window
       PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
-      If ErrorLevel = 0
-      Sendinput, {Click %ProductFilter%, %OtherFilterbox_Y%,2}%Product%^a
-      If ErrorLevel
-       sendinput, {Click %ProductFilter%, %FilterBox_Y%, 2}%Product%^a
-      return    
+      If ErrorLevel = 0 ; Work Tab
+        Sendinput, {Click %ProductFilter%, %Filterbox_Y%,2}%Product%^a
+      If ErrorLevel  ;Product/Spec Tab
+        sendinput, {Click 520, 97, 2}%Product%^a   
     }
     else if code contains Batch
-      sendinput, {Click 748, 47}{Click %BatchFilter%, %otherFilterBox_Y%}^a%batch%^a
+    {
+    WinActivate, NuGenesis LMS - \\Remote
+            Click 360, 45
+            sleep 200
+        send, {Click %BatchFilter%, %FilterBox_Y%}^a%batch%^a
+    }
     else if code contains Lot
-      sendinput, {Click 748, 47}{Click %LotFilter%, %FilterBox_Y%}^a%Lot%^a
-    else 
-      sendinput, {Click %ProductFilter%, %FilterBox_Y%}{Click %ProductFilter%, %FilterBox_Y%}^a
+    {
+    WinActivate, NuGenesis LMS - \\Remote
+        Click 360, 45
+        sleep 200
+        send, {Click %lotFilter%, %FilterBox_Y%}^a%lot%^a
+    }
+    else
+      Send, ^a%Product%
     Send, {%postCMD%}
     	blockinput off
 
