@@ -3,7 +3,8 @@ return
 	F19 & \::Sendinput, ?Kilgore7744
   $F12::Reload 
   F2::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-  $F3::ListLines, On
+  
+  ; $F3::ListLines, On
   $^F12::ListLines,
   $+F12::ListLines,
   Media_Play_Pause::send, {F5}
@@ -13,35 +14,31 @@ return
 
 
 
-
-#If Getkeystate("Capslock","p") AND winactive("ahk_exe Code.exe")
-  
-  
-#if
-
 #IfWinActive, ahk_exe Code.exe
-		F19 & space::sendinput, {Ctrldown}{shiftdown}p{shiftup}{CtrlUp}
+    F19 & space::sendinput, {Ctrldown}{shiftdown}p{shiftup}{CtrlUp}
     F19 & h::sendinput, {ShiftDown}{altDown}{left}{altup}{ShiftUp}
     F19 & k::sendinput, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
-    F19 & j::sendinput, {ShiftDown}{altDown}{Ctrldown}{left}{CtrlUp}{altup}
-    F19 & l::sendinput, {ShiftDown}{altDown}{Ctrldown}{right}{CtrlUp}{altup}
+    F19 & j::sendinput, {ShiftDown}{altDown}{Ctrldown}{left}{shiftUp}{altup}
+    F19 & l::sendinput, {ShiftDown}{altDown}{Ctrldown}{right}{shiftUp}{altup}
+    F19 & -::sendinput, {CtrlDown}{-}{Ctrlup}
+    F19 & =::sendinput, {CtrlDown}{-}{Ctrlup}
+    
 
     ^n::sendinput, {ShiftDown}{altDown}{pgdn}{altup}{ShiftUp}
-    F19::Menu()
+    F20::menu()
   F19 & `::sendinput, ~
 
 VsCode_:
 
-    ; +^l::^+#`;
     ; Mbutton & Wheeldown::Wheel_2("!d",1000)
-    ; +^h::^+#h
     ; mbutton::wheel_2("^m",2000)
     
     <^r::ReloadScript()
     Mbutton & F7::Sendinput, {Ctrldown}]{CtrlUp}
     Mbutton & F6::sendinput,{Ctrldown}[{CtrlUp}
-    Mbutton & wheelUP::sendinput, {ctrl down}{up}{ctrl up}
-    Mbutton & WheelDOWN::sendinput, {ctrl down}{down}{ctrl up}
+    Mbutton & wheelUP::sendinput, {ctrl down}{u}{ctrl up}
+    Mbutton & WheelDOWN::sendinput, {ctrl down}{m}{ctrl up}
+    Mbutton & Rbutton::sendinput, {shiftdown}{altDown}{Ctrldown}m{CtrlUp}{altup}{shiftup} ; toggle bookmark
 
     Rbutton & F7::Wheel_2("!{right}",10)
     Rbutton & F6::Wheel_2("!{left}",10)
@@ -60,12 +57,11 @@ VsCode_:
     ; Xbutton1 & Lbutton::^+4
 		F8 & F6::return
     ; Xbutton1 & F8::F5
-    F8 & Rbutton::sendinput, {shiftdown}{Ctrldown}m{CtrlUp}{shiftup} ; toggle bookmark
 		F8 & F7::return
-    F8 & wheeldown::wheel_2("{ShiftDown}{altdown}{down}{altUp}{ShiftUp}",50) ;next search
-    Mbutton::sendinput, {CtrlDown}{f}{Ctrlup} ;search
+    F8 & wheeldown::ToggleDefinition() ;next search
+    Mbutton up::sendinput, {CtrlDown}{f}{Ctrlup} ;search
     F8 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
-    F20::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
+    F19::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
     capslock up::send,{esc}
 
 
@@ -83,7 +79,23 @@ return
       return
     }
 
-
+    getWindowInfo(){
+      global
+        CoordMode, mouse, window
+        KeyWait, Space,
+        sleep 100
+        ; click
+        WinGetTitle, winTitle, A
+        WinGetClass, Winclass, A
+        WinGet, WinProcess, ProcessName, A			
+        Sleep, 100
+        MousePosition:=MousePosX "`, " MousePosY
+        Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
+				Process:="ahk_exe " WinProcess
+      SetTimer, RemoveToolTip, -2000
+        
+    }
+      
     Get_WindowInfo() {
       global
       CoordMode, mouse, window
@@ -104,12 +116,12 @@ return
 
       }
       winTitle:=Wintitle
-      SetTimer, RemoveToolTip, %time%
+      SetTimer, RemoveToolTip, -2000
       Winclass:=Winclass
      ; WinGet, WinProcess, ProcessName, A	
       MouseClick, Right,,, 1, 0, U ; Release the mouse button.
       ;clipboard:=MousePosition
-      mouseclick, right
+      ;mouseclick, right
       ;sendinput, {esc}
       ;MouseClick, left,,, 1, 0,
       return
@@ -150,12 +162,8 @@ return
     
       
     VSCODE_Hotstrings:
-    :*R:cd\::
-    sendraw, {CtrlDown}
-    sendinput, {shiftdown}{ctrldown}{right}{x}{ctrlup}{shiftup}
-    :*R:cu\::
-    sendraw, {Ctrlup}
-    return
+    :*R:cd\::{CtrlDown}
+    :*R:cu\::{Ctrlup}
     :*R:ad\::{altDown}
     :*R:au\::{altup}
     :*R:sd\::{shiftDown}
@@ -190,7 +198,7 @@ return
     return
     :*R:ca\::
     :*R:ac\::
-    sendraw, {ShiftDown}{altDown}{Ctrldown}{}{CtrlUp}{altup}
+    sendraw, {altDown}{Ctrldown}{}{CtrlUp}{altup}
     sendinput, {left 16}
     return
     

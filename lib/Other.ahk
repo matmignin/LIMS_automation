@@ -29,4 +29,20 @@ open_Clickup(){
     run, http://vqhq-prdcitrix1.vitaquest.int/Citrix/StoreWeb/
 			
   return
+  }	
+  
+  open_RemoteDesktop(){
+  ifwinnotexist, ahk_exe mstsc.exe
+    run, mstsc.exe, "C:\Windows\system32\"
+  else
+    WinActivate, ahk_exe mstsc.exe
+  return
+  }
+  
+    open_workbook(){
+  ifwinnotexist, LMS Workbook.xlsb - Excel
+    run, LMS Workbook.xlsb, "C:\Users\mmignin\OneDrive - Vitaquest International\"
+  else
+    WinActivate, LMS Workbook.xlsb - Excel
+  return
   }

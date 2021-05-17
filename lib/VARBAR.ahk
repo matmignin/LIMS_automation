@@ -54,14 +54,14 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
 	GUI, VarBar:Font, s12 cBlack Bold, Consolas
-	Gui, VarBar:add, Text, vBatch x68 y0 w120, %Batch%
+	Gui, VarBar:add, Text, vBatch x68 y0 w100, %Batch%
 	GUI, VarBar:Font, s9 cBlack , Arial Narrow
-	Gui, VarBar:add, Text, vlot x70 y16 w90, %Lot%
+	Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
 	GUI, VarBar:Font, s7 cBlack , arial
 	Gui, VarBar:add, Text, vCoated x120 y18 w50, %Coated%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
-	Gui, VarBar:add, Text, vname  x150 -wrap y0 w160, %Name%
-	Gui, VarBar:add, Text, vcustomer  x190 -wrap y16 w160, %Customer%
+	Gui, VarBar:add, Text, vname  x160 -wrap y0 w160, %Name%
+	Gui, VarBar:add, Text, vcustomer  x210 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
 	Gui, VarBar:add, Text, vColor x120 wrap y18 w80, %Color%
 	GUI, VarBar:Font, s11 cBlack Bold, Consolap
@@ -241,79 +241,6 @@ if winactive("Find and Replace")
 }
 
 
-; Set(Input:=0){
-; 	global
-; 			Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
-; 			If Input contains OCR
-; 					OCR()
-; 			if input:="product"
-; 			{
-; 				product:=product
-; 				GuiControl, Varbar:Text, Product, %Product%
-; 				Gui, VarBar:color, 847545 ;brow
-; 			}
-; 			if input:="Batch"
-; 			{
-; 				Batch:=Batch
-; 				GuiControl, Varbar:Text, Batch, %Batch%
-; 				Gui, VarBar:color, 847545 ;brow
-; 			}
-; 			Else		
-; 				send, ^c
-; 				sleep 200
-; 				clipForProduct:= Clipboard
-; 				clipForBatch:= Clipboard
-; 				clipForlot:= Clipboard
-; 			If (Regexmatch(ClipforProduct, "\b[DEGLHKJI]\d{3}", ClipForProduct) > 0) 	
-; 			{
-; 				Gui VarBar:+LastFound 
-; 				Gui, VarBar:submit,NoHide
-; 		; Product:=ClipforProduct
-; 		; Try {
-; 			;  XL:=XL.Sheets(Clipforproduct).activate
-; 			;  varbar.Update("iteration")
-; 			;  Gui, VarBar:color, 21a366 ;green
-; 		; }
-; 		; catch
-; 		; {
-; 		; Regexmatch(ClipforProduct, "\b[DEGLHKJI]{1}\d{3}\b", ClipForProduct) 
-; 		GuiControl, Varbar:Text, Product, %Product%
-; 		product:=Clipforproduct
-; 			Gui, VarBar:color, 847545 ;brown
-; 	}
-
-; 	if (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) > 0)
-; 	{
-; 		Gui VarBar:+LastFound 
-; 		Gui, VarBar:submit,NoHide
-; 		if input contains Coated
-; 			GuiControl, Varbar:Text, Coated, %ClipforBatch%
-; 		else
-; 		 GuiControl, Varbar:Text, Batch, %ClipforBatch%
-
-; 		Batch:=clipforbatch=
-; 		Gui, VarBar:color, 847545 ;brown
-; 	}
-; 	if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) > 0)
-; 	{
-; 			Gui VarBar:+LastFound 
-; 		Gui, VarBar:submit,NoHide
-; 		GuiControl, Varbar:Text,lot, %Clipforlot%
-
-; 		lot:=clipforlot
-; 		Gui, VarBar:color, 847545 ;brown
-; 	}
-; 	else if (Regexmatch(Clipforlot, "\b\d{4}\w\d\w?\b", Clipforlot) = 0) && (Regexmatch(ClipforBatch, "\b\d{3}-\d{4}\b", ClipforBatch) = 0) && (Regexmatch(ClipforProduct, "\b[DEGHKLJI]\d{3}", ClipForProduct) = 0) 
-; 	{
-;   send, ^c
-;   ClipWait, 1,
-;   Clipboard := Trim((Clipboard, "`r`n"))
-; 	sleep 100
-; 	;tooltip(Clipboard,2000)
-; 	exit
-; 	}
-; 	return
-; }
 
 Search(input){
 		global

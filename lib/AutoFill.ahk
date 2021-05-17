@@ -12,6 +12,8 @@
 		Menu.Show()
 
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
+		excel.connect()
+		WorkTab_NewRequest()
 		return ;click, 79, 440
 
 	} Else If Winactive("ahk_exe EXCEL.EXE") {
@@ -23,7 +25,7 @@
 		Sendinput, {enter}
 	} Else If Winexist("Select Iterations - \\Remote") {
 		winactivate,
-		Rotation_GetTable()
+		send, +^v
 	} Else If winactive("Select Product - \\Remote") {
 		Excel.Connect()
 		sendinput, {click 106, 64}%Product%{enter}{enter}
@@ -31,7 +33,8 @@
 	} Else If winactive("Edit specification - \\Remote"){
 		ProductTab_EditProduct() 
 
-
+	} Else If winactive("New Document - \\Remote"){
+		sendinput, %Product%
 						
 
 		;------------------------------------------
@@ -120,10 +123,11 @@
 			send, {enter}
 		return
 
-	} Else If Winexist("Opened Section found - \\Remote") {
+	; } Else If Winexist("Approve specification - \\Remote") {
+	} Else If Winexist("Opened Section found - \\Remote") || Winexist("Approve specification - \\Remote"){
 		winactivate,
-		Sendinput, {enter}
-		sleep 400
+		Send, {enter}
+		sleep 100
 	} Else If Winexist("Error - \\Remote") {
 		winactivate,
 		Send, {enter}
@@ -140,7 +144,9 @@
 		Sendinput, {tab 2}{space}
 		winwaitactive, Error - \\Remote, , 4
 		sendinput, {enter}
-		WorkTab_EditSample()
+		sleep 400
+		send, {click 180, 105, 2}^a%product%{enter}
+		;WorkTab_EditSample()
 		return
 		
 		

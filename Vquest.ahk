@@ -1,9 +1,21 @@
 ﻿gosub, vquest_start
-; MouseReturn:= "{click " My ", " My ",0}"
-  ; customer:=[]
+
+
+
 return
 
-<<<<<<< HEAD
+
+QuickCode(){
+  gLOBAL
+gosub,  ReadSpecIntoDataBase
+  
+}
+
+F19 & left::Test()
+F19 & right::Test_2()
+F19 & up::test_3()
+
+
 blockRepeat(time=200){
 	SetTimer, BlockInput, -%time%
 	return
@@ -20,38 +32,10 @@ MouseReturn:="{click " Mx ", " My ",0}"
 return 
 }
 
-F19 & Capslock::Test_2()
-return
-DetectTab(){
-global
-Tab:=
-CoordMode, Pixel, Window
-WinActivate, NuGenesis LMS - \\Remote
-  PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB 
-      If ErrorLevel  ;Product/Spec Tab?
-        Tab="Product_Spec"
-      If ErrorLevel = 0 ;is worktab?
-        {
-          PixelSearch, FoundX, FoundY, 11, 139, 15, 141, 0x54c7f2, 10, Fast RGB ;icon on left
-          If ErrorLevel
-            Tab:="Sample" 
-          If ErrorLevel = 0
-          {
-            PixelSearch, FoundX, FoundY, 18, 142, 19, 143, 0xffffff, 10, Fast RGB ;icon on left
-            If ErrorLevel = 0
-              Tab:="Documents"
-            If ErrorLevel
-            Tab:="Request" 
-          }        
-        }
-    msgbox, %Tab%
-  return
-}
-
-F19 & Capslock::Test1()
-F20 & Capslock::Test_2()
 
 
+
+!n::run, notes.ahk, %A_ScriptDir%\lib
 
 Ingredients() {
   global
@@ -150,41 +134,35 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
 
 #IfWinActive,
 
-; Sendlevel 1
-  ;Rbutton & F8::send, {F21}
-  Rbutton & F13::sendinput, {F21}
-; Xbutton1 & Xbutton2::
 Xbutton2 & Xbutton1::send, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
-  ; Rbutton & F7::F21
- ; F19::Return ;send, {F21}
+
 
 
 KEY_DEFAULT:
-
-<^;::sendinput, %Timestring%{space} 
+  <^;::sendinput, %Timestring%{space} 
 ; ^tab::Test()
   !f::Open_Firefox()
   !v::Open_vsCode()
   Capslock & `::QuickCode()
-  Mbutton & Xbutton1::SendPassword()
-  $Mbutton::send, {ctrl down}
   $mbutton up::
   sendlevel 1
   sendinput, {Rctrl up}{Lctrl up}{Alt Up}{Shift Up}
   sendlevel 0
   return
+  Mbutton & Xbutton1::SendPassword()
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
   Mbutton & WheelDown::sendinput, {ctrldown}{WheelDown}{CtrlUp}
   Mbutton & Wheelup::sendinput, {ctrldown}{Wheelup}{CtrlUp}
-#if
+  Rbutton & F13::sendinput, {F21}
   Mbutton & F7::Wheel_Right()
   Mbutton & F6::Wheel_left()
+  $Mbutton::send, {ctrl down}
   Rbutton & Wheelup::Wheel_cut() 
   Rbutton & Wheeldown::Wheel_paste()
   Rbutton & Xbutton2::Get_WindowInfo()
   Rbutton & F6::Backspace
-  ;Rbutton & Lbutton::Enter
-  ;Rbutton up::Mouse_RbuttonUP()
+  Rbutton & Lbutton::Enter
+  Rbutton up::Mouse_RbuttonUP()
  
 
   Xbutton1 & F8::Clip("OCR") 
@@ -201,7 +179,7 @@ KEY_DEFAULT:
   Xbutton2 & wheelDown::Mouse_CloseWindow()
   ; F8 & Wheelup::!^tab
   ; Xbutton2 & Lbutton::Sendinput, #{down}
-  ; Xbutton2::Menu.Show()
+
   ; F8 & Wheeldown::+^!tab
   F8 & Lbutton::sendinput, {Ctrldown}{Click}{CtrlUp}
   F8 & Rbutton::sendinput, {shiftdown}{Click}{shiftup}
@@ -209,7 +187,7 @@ KEY_DEFAULT:
   F8 & F6::
   F19 & Space::Sendinput, %Product%{enter}
   F20 & Space::Sendinput, %batch%{enter}
-F19::Menu()
+F20::menu()
  F20 & Right::send, #{right}
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
@@ -223,7 +201,7 @@ F19::Menu()
 !c::open_Clickup()
 !e::send, {LWinDown}{e}{lwinup}
 !+v::open_VPN()
-Xbutton2::Menu()
+Xbutton2::menu()
 Xbutton1::Clip()
 
 
@@ -242,43 +220,40 @@ Xbutton1::Clip()
   
 Methods() {
   global
-  ; Mouse_Click("searchBar_SelectMethodsTest")
-  WinActivate, Select methods tests - \\Remote
-  click, 229, 72,2
-  send, ^a
-  Loop, Read, Methods.ini
-{
-  If A_Index = 1
-    Continue
-  Method := StrSplit(A_LoopReadLine, "=") 
-  ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
-  Selection:= % Method[1]
-  ; Group:= % MethodGroup[2]
-  Menu, Methodmenu, add, %Selection%, Methods
-}
-   Menu, MethodMenu, Show,
-return
+    ; Mouse_Click("searchBar_SelectMethodsTest")
+    WinActivate, Select methods tests - \\Remote
+    click, 229, 72,2
+    send, ^a
+    Loop, Read, Methods.ini
+  {
+    If A_Index = 1
+      Continue
+    Method := StrSplit(A_LoopReadLine, "=") 
+    ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
+    Selection:= % Method[1]
+    ; Group:= % MethodGroup[2]
+    Menu, Methodmenu, add, %Selection%, Methods
+  }
+    Menu, MethodMenu, Show,
+  return
 
-Methods:
-sleep 200
-InputVar:=A_ThisMenuItem
-  IniRead,vOutput, Methods.ini, Methods, %InputVar%
-  Sendinput, %vOutput%{enter}
-   sleep 300
-   click 506, 341
-   Methods() 
-return
+  Methods:
+  sleep 200
+  InputVar:=A_ThisMenuItem
+    IniRead,vOutput, Methods.ini, Methods, %InputVar%
+    Sendinput, %vOutput%{enter}
+    sleep 300
+    click 506, 341
+    Methods() 
+  return
 }	
 
 
 
 
 
-KEY_Otherstuff:
 
 
-  Volume_Down::F11
-  Volume_Up::F12
  ; #right::tooltip(A_ThisHotkey)
   ;^+!down::tooltip(A_ThisHotkey)
 
@@ -349,10 +324,10 @@ Menu, Tray, ToggleCheck, Testing
       send, {esc}
 return
 FilterBox_Location:
+    CoordMode, mouse, window
     KeyWait, Lbutton, D
     sleep 200
     ; KeyWait, Lbutton, D
-    CoordMode, mouse, window
     MouseGetPos, FilterBox_X, FilterBox_Y,
   	IniWrite, %FilterBox_X%, data.ini, Locations, FilterBox_X
   	IniWrite, %FilterBox_Y%, data.ini, Locations, FilterBox_Y

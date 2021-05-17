@@ -4,45 +4,29 @@
 
 StartTest(){
 
-    ;Rotation_GetTable(1)
- ; SetTimer, SmartDocs, 10
-  ;  SpecTab_Table()
-  ;  Test()
- ; SpecTab_Table()
 }
 return
 
 Test(){
-  ;DetectTab(){
 global
-Tab:=
-CoordMode, Pixel, Window
-WinActivate, NuGenesis LMS - \\Remote
-  PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB 
-      If ErrorLevel  ;Product/Spec Tab?
-        Tab="Product_Spec"
-      If ErrorLevel = 0 ;is worktab?
-        {
-          PixelSearch, FoundX, FoundY, 11, 139, 15, 141, 0x54c7f2, 10, Fast RGB ;icon on left
-          If ErrorLevel
-            Tab:="Sample" 
-          If ErrorLevel = 0
-          {
-            PixelSearch, FoundX, FoundY, 18, 142, 19, 143, 0xffffff, 10, Fast RGB ;icon on left
-            If ErrorLevel = 0
-              Tab:="Documents"
-            If ErrorLevel
-            Tab:="Request" 
-          }        
-        }
-    msgbox, %Tab%
-  return
+clip()
+sleep 300
+    ParsedSpecs:=[]
+    Loop, parse, Clipboard, `t 
+    ParsedSpecs.insert(A_LoopField)
+    MinLimit:=Parsedspecs[17]
+    MaxLimit:=Parsedspecs[18]
+    Percision:=Parsedspecs[19]
+    Requirement:=Parsedspecs[20]
+    Units:=Parsedspecs[21]
+    tooltip(Requirement)
+    msgbox %  Units "`n" Requirement "`n" Percision
+return
+}
 
-}
-AddCanceled(){
-  winactivate, Edit test (Field Configuration: F, Micro) - \\Remote  
-sendinput, {click 399, 219}{end}'(Canceled'){enter}
-}
+
+
+
 
 Test_2(){
   Global 
@@ -59,17 +43,20 @@ return
 
 }
 
-TestSpecCopying:
-  ; ToggleFilter_Test()
-  ; FilterSearch_Test("Vitamin C","221")
-  ; CopyResults_Test()
-  ; ParseResultSpecs()
-  ;   ; FilterSearch_Test()
-  ; 	coordmode, tooltip, Screen
-  ;   tooltip, Low: %LowerLimit% `t High: %UpperLimit% `t Unit: %Unit% `t %Precision% `n `t %Requirement%, 1500, 0
-  ; ; msgbox, %product% `t %batch% `n %lot%
-return
 
+
+
+Test_3(){
+}
+
+
+Test_4(){
+}
+
+AddCanceled(){
+  winactivate, Edit test (Field Configuration: F, Micro) - \\Remote  
+sendinput, {click 399, 219}{end}'(Canceled'){enter}
+}
 
 SmartDocs:
   Autofill_SmartDoc() 
@@ -149,7 +136,9 @@ TestScriptFillOut:
   sleep 200
   send, !^{v}
     return
-  Test2:
+  
+  
+
   Autofill_SmartDoc()
     setwindelay, 450
   return

@@ -23,10 +23,6 @@ KEY_Snipper:
 ClipTool:
 #IfWinactive, C:\Users\mmignin\Documents\VQuest\lib\CL3\cl3.ahk,
   F19::send, {esc}
-  F19 & j::send, {down}
-  F19 & k::send, {up}
-  F19 & l::send, {enter}
-  F19 & h::send, {esc}
   Capslock & j::send, {down}
   Capslock & k::send, {up}
   capslock & l::send, {enter}

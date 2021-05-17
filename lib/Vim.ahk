@@ -75,7 +75,7 @@ VIM:
     p::send, {F21}
     1::F1
     2::F2
-    3::F3
+    ; 3::F3
     `::esc
     j::down
     k::Up
@@ -132,9 +132,9 @@ VIM:
   $n::+!n ;select next instance of line
   up::sendinput, {Altdown}{shiftdown}{Ctrldown}{up}{shiftup}{CtrlUp}{AltUp}
   down::sendinput, {Altdown}{shiftdown}{Ctrldown}{down}{shiftup}{CtrlUp}{AltUp}
-  `;::vim.Leader(":")
+  `;::+!g 
   i::sendinput, {CtrlDown}{i}{Ctrlup}
- 5::sendinput, {shiftDown}{Ctrldown}/{CtrlUp}{{shiftup}
+ 5::sendinput, {shiftDown}{Ctrldown}/{CtrlUp}{shiftup}
    r::^+!r
        Enter::sendinput, {shiftDown}{enter}{shiftup}
 CapsLock::send, {esc}
@@ -169,18 +169,21 @@ PsudoNumlock:
     .::numpad3
     j::numpad4
     k::numpad5
-    l::numpad6
+    l::numpad6    
     u::numpad7
-    h::numpaddiv
+    h::left
     i::numpad8
     o::numpad9
     `;::sendinput, {numpad0}
-    n::Numpadsub
-    /::,
+    n::Numpaddiv
+    y::up
+    b::down
+    /::numpaddot
     p::numpadmult
-    '::numpadDot
-    RShift::sendinput, {Tab 2}^a
-    ~ENTER::sendinput, {enter}
+    '::right
+    RShift::sendinput, {Tab}
+    ENTER::sendinput, {enter}
     space::SendInput, 0
+    Lbutton::Menu()
     ;sendlevel 0
       #if

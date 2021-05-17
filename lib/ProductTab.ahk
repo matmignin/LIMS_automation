@@ -11,12 +11,14 @@ ProductTab_Table(){
   LabelClaim:=	[]
   Position:=		[]
   LabelName:=		[]
+  DropdownCount:=[]
   Sub_Table_height:=0
   while (Xl.Range("M" . A_Index+7).Value != "") {
     Position[A_index]:=		Xl.Range("F" . A_Index+7).Text
     Name[A_index]:=		  	Xl.Range("K" . A_Index+7).text
     LabelClaim[A_index]:=	Xl.Range("L" . A_Index+7).Text
     LabelName[A_index]:=	Xl.Range("M" . A_Index+7).Text
+    DropDownCount[A_index]:=	Xl.Range("A" . A_Index+7).Text
     Total_rows:=		    	A_index +1
     Table_Height:=		  	A_index
     if (Xl.Range("F" . A_Index+7).text = "")
@@ -26,7 +28,7 @@ ProductTab_Table(){
   Gui,Ingredient_Table:Default
   Gui,Ingredient_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu 
   GUI,Ingredient_Table:Font,s11 cBlack arial ;Consolas
-  Gui,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W500 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName	
+  Gui,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W500 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
   loop,%Total_Rows% {
     if Position[A_index] =""
     {
@@ -34,7 +36,7 @@ ProductTab_Table(){
       continue
     }
     else	
-      LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index])
+      LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index],DropdownCount[A_index])
   }
   Gui,Ingredient_Table:Add,Checkbox,vAutoEnter x20,Auto-Enter Results?
   LV_ModifyCol(1,50) 
@@ -449,7 +451,7 @@ ProductTab_Select_Ingredient2() {
 
 Formulation_Hotstrings:
   #IfWinActive,ahk_exe WFICA32.EXE
-    :*:#00\::`#00 capsule / 0.917`" x 0.336`"
+    :*R:#00\::`#00 capsule / 0.917`" x 0.336`"
     :*R:#00e\::`#00 elongated capsule / 0.995`" x 0.336`"
     :*R:#3\::`#3 capsule / 0.626`" x 0.229`"
     :*R:#2\::`#2 capsule / 0.709`" x 0.250`"
@@ -476,7 +478,7 @@ Formulation_Hotstrings:
     :*:*H::`* Heavy Metals results are based on a daily dose of (1) capsule{ctrl down}{left}{left}{ctrl up}{right}
     ;}
 
-    :*:1scoop::
+    :*:1scoop\::
     ProductTab_Scoops(1)
     :*:2scoops::
     ProductTab_Scoops(2,"two")
@@ -505,7 +507,7 @@ Formulation_Hotstrings:
       Plural:="s"
     if (!color)
       Color:="PENDING"
-    sendinput, ^{a}Each %textNumber% (%n%){space}%measurment%%plural% ( g) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}%weight%
+    send, Each %textNumber% (%n%){space}%measurment%%plural% ( g) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}%weight%
     exit
     }
     
@@ -532,7 +534,7 @@ Formulation_Hotstrings:
       ; Mouse_Click("Add_Formulation")
       winactivate, Edit Formulation - \\Remote,
       send, {tab}%product%
-			sendinput, {Tab 21}
+			sendinput, {Tab 23}
       return
     }
     ProductTab__HM_ReportOnly(){ ;testing out
@@ -681,7 +683,7 @@ Formulation_Hotstrings:
         else if (A_ThisMenuItem ="Malic Acid") 
           Sendinput,{tab}{right 186}
         else if (A_ThisMenuItem ="Mercury") 
-          Sendinput,{tab}{right 189}
+          Sendinput,{tab}{right 188}
         else if (A_ThisMenuItem ="Methylsulfonylmethane (MSM)") 
           Sendinput,{tab}{right 191}
         else if (A_ThisMenuItem ="Molybdenum") 

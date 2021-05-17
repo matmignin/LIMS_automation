@@ -4,39 +4,11 @@ SpecTab_Table(){
 	Try GUI, Spec_Table:destroy 
 	Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
 	Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
-		CoordMode, mouse, screen
+		;CoordMode, mouse, screen
 	; SpecTable_Y:=Varbar_Y + 10
 	; SpecTable_X:=A_screenwidth-800
 	Excel.Connect()
 	SpecTab_GetExcelData()
-		; Name:=				[]
-		; Position:=		[]
-		; LabelClaim:=	[] 
-		; MinLimit:=		[]
-		; MaxLimit:=		[]
-		; Units:=				[]
-		; Percision:=		[]
-		; LabelName:=		[]
-		; Description:=	[]
-		; Requirement:=	[]
-		; method:= 			[]
-		; while (Xl.Range("M" . A_Index+6).Value != "") 
-		; 	{
-		; 		Position[A_index]:=			Xl.Range("F" . A_Index+7).Text
-		; 		Name[A_index]:=					Xl.Range("K" . A_Index+7).text
-		; 		LabelClaim[A_index]:=		Xl.Range("L" . A_Index+7).Text
-		; 		MinLimit[A_index]:=			Xl.Range("G" . A_Index+7).Text
-		; 		MaxLimit[A_index]:=			Xl.Range("H" . A_Index+7).Text
-		; 		Units[A_index]:=				Xl.Range("I" . A_Index+7).Text
-		; 		Percision[A_index]:=		Xl.Range("J" . A_Index+7).Text
-		; 		Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
-		; 		Method[A_index]:=				Xl.Range("D" . A_Index+7).Text
-
-		; 		Total_rows:=A_index
-		; 		Table_Height:=A_index
-		; 		if (Table_Height > 30)
-		; 			Table_Height = 30
-		; 	}
 		Spectab_CreateGUI()
 
 		SpecTab_ModifyColumns()
@@ -174,6 +146,8 @@ Class SpecTab_TestSpecs{
     Requirement:=Parsedspecs[20]
     Units:=Parsedspecs[21]
     tooltip(Requirement)
+		sleep 200
+		send {esc}
     Return
     }
     
@@ -212,73 +186,6 @@ Class SpecTab_TestSpecs{
     }
     
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-Spec_Test(){
-	global
-	Gui, Spec_Table:submit,NoHide
-	;Gui, Spec_Table:Default
-	RowNumber = 0  ; This causes the first loop iteration to start the search at the top of the list.
-	Loop
-		{
-			RowNumber := LV_GetNext(RowNumber)  ; Resume the search at the row after that found by the previous iteration.
-			if not RowNumber  ; The above returned zero, so there are no more selected rows.
-					break
-			LV_GetText(Text, RowNumber)
-			if Text contains Vitamin C
-			Test:=RowNumber
-				; MsgBox, The next selected row is #%RowNumber%, whose first field is "%Text%".
-	msgbox, %Test%
-	}
-}
-	
-
-
-
-
 
 
 SpecTab_AutoFill(){ 
@@ -390,15 +297,15 @@ SpecTab_GetExcelData(){
 		method:= 			[]
 		while (Xl.Range("M" . A_Index+6).Value != "") 
 		{
-			Position[A_index]:=			Xl.Range("F" . A_Index+7).Text
-			Name[A_index]:=					Xl.Range("K" . A_Index+7).text
-			LabelClaim[A_index]:=		Xl.Range("L" . A_Index+7).Text
-			MinLimit[A_index]:=			Xl.Range("G" . A_Index+7).Text
-			MaxLimit[A_index]:=			Xl.Range("H" . A_Index+7).Text
-			Units[A_index]:=				Xl.Range("I" . A_Index+7).Text
-			Percision[A_index]:=		Xl.Range("J" . A_Index+7).Text
-			Description[A_index]:=	Xl.Range("N" . A_Index+7).Text
-			Method[A_index]:=				Xl.Range("D" . A_Index+7).Text
+			Position[A_index]:=				Xl.Range("F" . A_Index+7).Text
+			Name[A_index]:=						Xl.Range("K" . A_Index+7).text
+			LabelClaim[A_index]:=			Xl.Range("L" . A_Index+7).Text
+			MinLimit[A_index]:=				Xl.Range("G" . A_Index+7).Text
+			MaxLimit[A_index]:=				Xl.Range("H" . A_Index+7).Text
+			Units[A_index]:=					Xl.Range("I" . A_Index+7).Text
+			Percision[A_index]:=			Xl.Range("J" . A_Index+7).Text
+			Description[A_index]:=		Xl.Range("N" . A_Index+7).Text
+			Method[A_index]:=					Xl.Range("D" . A_Index+7).Text
 
 			Total_rows:=A_index
 			Table_Height:=A_index
@@ -472,11 +379,13 @@ SpecTab_Create_Template:
 			}			
 
 
-SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,The_Requirements:=0) {
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,The_Requirements:="") {
 		Global
-
-		If The_Requirements contains 0
-			Requirement= %Min_Limit% - %Max_Limit% %The_Units% ;normal
+		; If (The_Requirements:="")
+			Requirement= %Min_Limit% - %Max_Limit% %The_Units% 
+			; else
+			; Requirement:= The_Requirements
+			;normal
 			sleep 200
 			click, 250, 140 ; click id box to orient
 			; tooltip(Requirement)

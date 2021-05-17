@@ -1,4 +1,107 @@
 
+
+class menu{
+ 
+ show(){
+   global
+   menu,menu,show
+}
+Delete(){
+ global
+  try menu, menu, deleteAll
+}
+
+
+LMS(){
+  if winactive("NuGenesis LMS - \\Remote")
+    menu, menu, add, Copy Spec Template, autofill
+    menu, menu, add, Copy Spec Results, Autofill   
+    menu, menu, add, Paste Spec Results, Autofill
+  if winactive("Edit specification - \\Remote") {
+    Menu, Menu, add, Analytical, AutoFill
+    Menu, Menu, add, Physical, AutoFill
+    Menu, Menu, add, Micro, AutoFill
+    Menu, Menu, add, Retain, AutoFill		
+    Menu, Menu, add, Coated_Physical, AutoFill
+    Menu, Menu, add, Coated_Retain, AutoFill
+    menu, menu, add,
+  }
+}
+
+
+
+Variable(){
+  global
+  menu, Menu, add, &Variables, Variable
+  Menu, Variables, Add, &Product `t %Product%, Variable
+  Menu, Variables, Add, &Batch `t %Batch%, Variable
+  Menu, Variables, Add, &Lot `t %Lot%, Variable
+  Menu, Variables, Add, &Name `t %name%, Variable
+  Menu, Variables, Add, Cus&tomer `t %Customer%, Variable
+  Menu, Variables, Add, C&oated `t %Coated%, Variable
+  Menu, Variables, Add, &Color `t %Color%, Variable
+  Menu, Variables, Add, &ShapeSize `t %ShapeSize%, Variable
+  Menu, Variables, Add, &Weight `t %Weight%, Variable
+  menu, menu, add, &Variables, :Variables
+    Menu, Menu, Add,
+  }
+tests(){
+    menu,Menu,add,Test_&1,Tests
+    menu,Menu,add,Test_&2,Tests
+    menu,Menu,add,Spec Table,Tests
+    menu,Menu,add,Ingredient Table,Tests
+    menu,menu,add
+}
+
+VScode(){
+  Menu, menu, Add, &Mouse `t %MousePosition%, vscode
+  Menu, menu, Add, &Title `t %WinTitle%, vscode
+  Menu, menu, Add, P&rocess `t %WinProcess%, vscode
+  Menu, menu, Add, &Control `t %WinControl%, vscode
+  menu, menu, add,
+
+}
+
+passwords() {
+  global
+  menu, menu, add,
+  Menu, Menu, Add, VQ Login, Passwords
+  Menu, Menu, Add, Kilgore, Passwords
+}
+LMS_Env(){
+  menu, menu, add, &Login, LMS_Env
+  menu, menu, add, &Production Server, LMS_Env
+  menu, menu, add, &Test Server, LMS_Env
+  menu, menu, add, 
+}
+
+Heavy_meatals(){
+  Menu, Menu, Add, USP Heavy Metal,Heavy_metals
+  Menu, Menu, Add, Canada Heavy Metal,Heavy_metals
+  Menu, Menu, Add, Prop65 Heavy Metal,Heavy_metals
+  Menu, Menu, Add, Report Only Heavy Metal,Heavy_metals
+
+}
+remote_desktop(){
+  global
+  Menu, Menu, Add, TESTING LMS, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+  Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+  menu, Menu, Add, Other Servers, Remote_desktop
+  Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+  Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+  Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+  Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+  Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+  Menu, SubMenu, Add, SDMS, Remote_desktop
+  Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+  Menu, SubMenu, Add, Empower, Remote_desktop
+  menu, Menu, add, Other Servers, :SubMenu
+  menu, menu, add,	
+}
+}
+
 Menu(n:=0){
   Global
   try menu, menu, deleteAll
@@ -22,7 +125,6 @@ Menu(n:=0){
     
   Menu, Menu, Show,
   return
-
 }
 
 default(){
@@ -96,6 +198,8 @@ Tests(){
     menu,Menu,add,Test_&2,Tests
     menu,Menu,add,Spec Table,Tests
     menu,Menu,add,Ingredient Table,Tests
+    menu,Menu,add,Rotation Table,Tests
+    
     menu,menu,add
     return
     
@@ -108,6 +212,8 @@ Tests:
       ProductTab_Table()
     else if A_thismenuItem contains Spec Table
       SpecTab_Table()
+    else if A_thismenuItem contains Rotation Table
+      Rotation_GetTable()
     else 
       menu, menu, deleteAll
   return

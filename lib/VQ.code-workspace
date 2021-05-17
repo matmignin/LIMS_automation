@@ -5,7 +5,7 @@
 		}
 	],
 	"settings": {
-		"autoHide.autoHidePanel": true,
-		"autoHide.autoHideSideBar": true
+		"autoHide.autoHidePanel": false,
+		"autoHide.autoHideSideBar": false
 	}
 }

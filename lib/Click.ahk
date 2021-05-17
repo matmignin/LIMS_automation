@@ -1,52 +1,109 @@
 class click{
 
 
-  SearchBar(Code:=0,PostCmd:="",Source:=0){ 
+  SearchBar(Code:=0,PostCmd:="",FilterBox:=0){ 
     Global
+            CoordMode, mouse, Window
+    ; If code Contains Product
+      ; A_Code:=Product
+    ; If code Contains Batch
+      ; A_Code:=Batch
+    ; If code Contains lot
+      ; A_Code:=lot
     ControlGetText, Batch, Static1, VarBar
+    ControlGetText, Lot, Static2, VarBar
     ControlGetText, Product, Edit1, VarBar                          
     ProductFilter:=FilterBox_X
     BatchFilter:=FilterBox_X+60
     LotFilter:=BatchFilter+100
+    SampleSearch_y:=Filterbox_Y-60
+    samplesearch_X:=Filterbox_X+80
+    ProductSearch_X:=Filterbox_X+130
+    ProductSearch_Y:=Filterbox_Y-90
+    
     blockinput on
-  ;  if (Source ="xl")
-    ;  excel.connect()
-  ;  else if (Source= "clip")
-    ;  clip()
+    
+    WinActivate, ahk_exe WFICA32.EXE
+    DetectTab()
+    if Tab contains Product_Spec
+    {
+      send, {Click %ProductSearch_X%,%ProductSearch_Y%, 2}^a%Product%^a 
+      return
+    }
+    else if tab contains Document
+      {
+      msgbox, document
+            return
+    }
+    else 
+      if Filterbox:=0
+      {
+        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a ;%Code%^a
+              return
+    }
+      else
+        if (Code:=Product)
+        {
+          Send, {Click %ProductFilter%, %Filterbox_Y%,2}^a ;%Code%^a
+                return
+    }
+        else if (Code:=Batch)
+        {
+          Send, {Click %BatchFilter%, %Filterbox_Y%,2}^a ; %Code%^a
+                return
+    }
+        else (Code:=Lot)
+        {
+          Send, {Click %LotFilter%, %Filterbox_Y%,2}^a ;%Code%^a
+                return
+    }
+          
+    ; if tab contains sample
+        ; Sendinput, {Click %Code%%Filter%, %Filterbox_Y%,2}^a%A_Code%^a
+    ; if tab contains Request
+        ; Sendinput, {Click %Code%%Filter%, %Filterbox_Y%,2}^a%A_Code%^a
+      
+      
+  ;  If WinActive("NuGenesis LMS - \\Remote")
+  ;   {   
+  ;     if code contains Product
+  ;     {
+  ;     WinActivate, NuGenesis LMS - \\Remote
+  ;       CoordMode, Pixel, Window
+  ;       PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
+  ;       If ErrorLevel = 0 ; Work Tab
+  ;         Sendinput, {Click %ProductFilter%, %Filterbox_Y%,2}^a%Product%^a
+  ;       If ErrorLevel  ;Product/Spec Tab
+  ;         sendinput, {Click 520, 97, 2}^a%Product%^a   
+  ;     }
+  ;     else if code contains Batch
+  ;     {
+  ;     WinActivate, NuGenesis LMS - \\Remote
+  ;             Click 360, 45
+  ;             sleep 200
+  ;         send, {Click %BatchFilter%, %FilterBox_Y%}^a%batch%^a
+  ;     }
+  ;     else if code contains Lot
+  ;     {
+  ;     WinActivate, NuGenesis LMS - \\Remote
+  ;         Click 360, 45
+  ;         sleep 200
+  ;         send, {Click %lotFilter%, %FilterBox_Y%}^a%lot%^a
+  ;     }
+  ;  }
+  ;  
     if winactive("Select methods tests - \\Remote")
       click, 246,77, 2  
     else If winactive("Register new samples - \\Remote")
-        sendinput, {click 180, 103, 2}%Product%{enter}  
-    else if code contains Product
-    {
-    WinActivate, NuGenesis LMS - \\Remote
-      CoordMode, Pixel, Window
-      PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
-      If ErrorLevel = 0 ; Work Tab
-        Sendinput, {Click %ProductFilter%, %Filterbox_Y%,2}%Product%^a
-      If ErrorLevel  ;Product/Spec Tab
-        sendinput, {Click 520, 97, 2}%Product%^a   
-    }
-    else if code contains Batch
-    {
-    WinActivate, NuGenesis LMS - \\Remote
-            Click 360, 45
-            sleep 200
-        send, {Click %BatchFilter%, %FilterBox_Y%}^a%batch%^a
-    }
-    else if code contains Lot
-    {
-    WinActivate, NuGenesis LMS - \\Remote
-        Click 360, 45
-        sleep 200
-        send, {Click %lotFilter%, %FilterBox_Y%}^a%lot%^a
-    }
+        send, {click 180, 103, 2}%Product%{enter}  
     else
-      Send, ^a%Product%
-    Send, {%postCMD%}
+      return
+      ; Send, ^a%Product%
+    ; Send, {%postCMD%}
     	blockinput off
-
-    return
+      return
+  
+  
   }
   
   

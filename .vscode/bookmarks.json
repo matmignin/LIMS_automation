@@ -9,6 +9,26 @@
 					"label": "Rotation_table"
 				}
 			]
+		},
+		{
+			"path": "lib/SpecTab.ahk",
+			"bookmarks": [
+				{
+					"line": 153,
+					"column": 5,
+					"label": "Paste"
+				}
+			]
+		},
+		{
+			"path": "lib/TrackPad.ahk",
+			"bookmarks": [
+				{
+					"line": 16,
+					"column": 5,
+					"label": "TouchPad"
+				}
+			]
 		}
 	]
 }

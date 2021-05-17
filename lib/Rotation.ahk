@@ -6,7 +6,7 @@ return
   3::
   4::
   5::
-    EnvGet, GetRotationTable, GetRotationTable
+   ; EnvGet, GetRotationTable, GetRotationTable
     ; sleep 100
     if (GetRotationTable:=1)
       Rotation_GetTable(0)
@@ -70,20 +70,20 @@ return
       return
   }
 
-  Rotation_GetTable(showTable=1){ 
+  Rotation_GetTable(showTable:=1){ 
     Global
     Excel.Connect()
     Chemicals:=[]
     ;RotationOrder:=[]
     loop % Xl.Range("V6").Value 
     {
-    ; while (Xl.Range("M" . A_Index).Value != "|") || (Xl.Range("M" . A_Index).Value != "Method"){
+    ; while (Xl.Range("O" . A_Index).Value != "|") {|| (Xl.Range("O" . A_Index).Value != "Method"){}
       ;RotationOrder[A_index]:=Xl.Range("P" . A_Index+1).Text
       Chemicals[A_index]:=Xl.Range("S" . A_Index).Value
       Total_rows:=A_index
       Cycle:=A_Index
     }	
-    loop, %Cycle%,
+    loop, %Cycle%
     {
       loopcycle := Chemicals[A_index]
       ChemicalRotation:= A_index " `t " StrReplace(loopcycle, "|", "         ", ChemicalRotation)

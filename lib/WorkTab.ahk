@@ -12,23 +12,20 @@ ifwinactive, Register new samples - \\Remote
   sendinput, ^a%Batch%{tab}^a
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote 
   {
-    sendinput ^a%Lot%
-    send, {tab 3} 
+    sendinput, {CtrlDown}{a}{Ctrlup}%Lot%
+    send, {tab 3}
     sleep 100
-    sendinput, ^a%Coated%
+    sendinput, {CtrlDown}{a}{Ctrlup}%Coated%
     sleep 100
     send, +{tab 2}
   }
   sleep 140
-  AbsSelection:=Abs(ShipTo)-1
-  if (ShipTo > 0)
-    sendinput, {home}{right %ShipTo%}
-  if (ShipTo < 0)
-    Sendinput, {end}{left %Absselection%}
+  WorkTab_DropdownSelect(ShipTo)
   sleep 300
   send, {enter}
     return
 }
+
 Worktab_CheckDepartment(){
   global 
   ;clipboard:=
@@ -52,6 +49,13 @@ else {
 }
 }
 
+WorkTab_DropdownSelect(A_ShipTo){
+  AbsSelection:=Abs(A_ShipTo)-1
+  if (a_ShipTo > 0)
+    sendinput, {home}{right %A_ShipTo%}
+  if (a_ShipTo < 0)
+    Sendinput, {end}{left %Absselection%}
+  }
 Worktab_CheckDepartment2(){
   global 
   click, 32, 176

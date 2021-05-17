@@ -27,12 +27,13 @@ Clip(input:=0){
 	sleep 20
 	send, ^c
 	clipwait, 1
+		Traytip, %Clipboard%,,2
 	ProductClipboard:=Clipboard
 	BatchClipboard:=Clipboard
 	If (Input = "S")
 			{
-					Clipboard:=""
-						Send, ^c
+					; Clipboard:=""
+						; Send, ^c
 						clipwait, 1
 					Selection:=StrReplace(Clipboard, "`r`n")
 						TrayTip, Copy, %Selection%,,
@@ -80,10 +81,11 @@ Clip(input:=0){
 	{
   send, ^c
 	sleep 100
-	;tooltip(Clipboard)
 	; return %clipboard%
 	}
+	tooltip(Clipboard,2000)
 	;Varbar.Update()
+
 	return
 }
 
