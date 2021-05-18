@@ -138,7 +138,7 @@ Get_Current_row(){
 	LV_GetText(Name, Current_row,2)
 	LV_GetText(LabelClaim, Current_row,3)
 	LV_GetText(LabelName, Current_row,4)
-	LV_GetText(DropdownCount, Curent_row,5)
+	LV_GetText(DropdownCount, Current_row,5)
 	;LV_Modify(Current_row, "Check")
 	sleep 100
 	return

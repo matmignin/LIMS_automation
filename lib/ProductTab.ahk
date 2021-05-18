@@ -45,7 +45,7 @@ ProductTab_Table(){
   LV_ModifyCol(4,0)
   sleep 100		
   CoordMode,mouse,screen
-  Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product%
+  Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w420,%Product%
   CoordMode,mouse,window
   return	
 }
@@ -57,7 +57,7 @@ Ingredient_Table:
     Current_Row:=A_EventInfo
     Loop % Rows_left {
       Excel.Get_Current_row()
-      ProductTab_EditIngredient(LabelName,LabelClaim,Position)
+      ProductTab_EditIngredient(LabelName,LabelClaim,Position,DropdownCount)
       if WinExist("Duplicate ingredient ID - \\Remote")
         break 
 
@@ -66,7 +66,24 @@ Ingredient_Table:
   }
 return
 
-ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
+ProductTab_DropdownSelect(A_DropdownCount){
+  global
+      click, 150, 73
+  tooltip, %Ingredient_Name%
+  AbsSelection:=Abs(A_DropdownCount)
+  if (a_DropdownCount > 0)
+    sendinput, {tab}{home}{right %A_DropdownCount%}
+  if (a_DropdownCount < 0)
+    Sendinput, {tab}{end}{left %Absselection%}
+  if (a_DropdownCount = ""){
+    ProductTab_DropDown_Ingredient()
+    ;exit
+  }
+    sleep 200
+  }
+
+
+ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
   Global
   Excel.Get_Current_row()
   Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
@@ -77,7 +94,8 @@ ProductTab_EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position){
     WinActivate,Composition - \\Remote
     Mouse_Click("add_Composition")
     sleep 100
-    ProductTab_Select_Ingredient()
+    ProductTab_DropdownSelect(Dropdown_Count)
+    ; ProductTab_Select_Ingredient()
   ; tooltip, %Ingredient_Name%
   }
   if Winexist("Edit Ingredient - \\Remote")
@@ -607,97 +625,81 @@ Formulation_Hotstrings:
      ; Menu,IngredientMenu,Add,Quercetin Dihydrate,IngredientMenuHandler
      ; Menu,IngredientMenu,Add,Taurine,IngredientMenuHandler
       Menu,IngredientMenu,Add,Total Probiotic,IngredientMenuHandler
+      Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
       Menu,IngredientMenu,Show,
       return
 
       IngredientMenuHandler:
       Click 150, 73
+      ; click, 150, 73
         if (A_ThisMenuItem ="Generic Ingredient &A.1") 
-          Sendinput,{tab}{right 57}
+          Sendinput,{tab}{Home}{right 56}
         else if (A_ThisMenuItem ="Generic Ingredient &B.1") 
-          Sendinput,{tab}{right 63}
+          Sendinput,{tab}{Home}{right 62}
         else if (A_ThisMenuItem ="Generic Ingredient &C.1") 
-          Sendinput,{tab}{right 69}
+          Sendinput,{tab}{Home}{right 68}
         else if (A_ThisMenuItem ="Generic Ingredient &D.1") 
-          Sendinput,{tab}{right 75}
+          Sendinput,{tab}{home}{right 74}
         else if (A_ThisMenuItem ="Generic Ingredient &E.1") 
-          Sendinput,{tab}{right 81}
+          Sendinput,{tab}{Home}{right 80}
         else if (A_ThisMenuItem ="Generic Ingredient &F.1") 
-          Sendinput,{tab}{right 87}
+          Sendinput,{tab}{Home}{right 86}
         else if (A_ThisMenuItem ="Generic Ingredient &G") 
-          Sendinput,{tab}{right 93}
+          Sendinput,{tab}{Home}{right 92}
         else if (A_ThisMenuItem ="Generic Ingredient &H") 
-          Sendinput,{tab}{right 94}
+          Sendinput,{tab}{Home}{right 94}
         else if (A_ThisMenuItem ="Generic Ingredient &I") 
-          Sendinput,{tab}{right 96}
+          Sendinput,{tab}{Home}{right 95}
         else if (A_ThisMenuItem ="Generic Ingredient &J") 
-          Sendinput,{tab}{right 98}
+          Sendinput,{tab}{Home}{right 97}
         else if (A_ThisMenuItem ="Generic Ingredient &K") 
-          Sendinput,{tab}{right 100}
+          Sendinput,{tab}{Home}{right 99}
         else if (A_ThisMenuItem ="Generic Ingredient &L") 
-          Sendinput,{tab}{right 101}
+          Sendinput,{tab}{Home}{right 100}
         else if (A_ThisMenuItem ="Generic Ingredient &M") 
-          Sendinput,{tab}{right 102}
+          Sendinput,{tab}{Home}{right 101}
         else if (A_ThisMenuItem ="Generic Ingredient &N") 
-          Sendinput,{tab}{right 103}
+          Sendinput,{tab}{Home}{right 102}
         else if (A_ThisMenuItem ="Generic Ingredient &O") 
-          Sendinput,{tab}{right 104}
+          Sendinput,{tab}{Home}{right 103}
         else if (A_ThisMenuItem ="Generic Ingredient &P") 
-          Sendinput,{tab}{right 105}
+          Sendinput,{tab}{Home}{right 104}
         else if (A_ThisMenuItem ="Generic Ingredient &Q") 
-          Sendinput,{tab}{right 106}
+          Sendinput,{tab}{Home}{right 105}
         else if (A_ThisMenuItem ="Generic Ingredient &R") 
-          Sendinput,{tab}{right 107}
+          Sendinput,{tab}{Home}{right 106}
         else if (A_ThisMenuItem ="Generic Ingredient &S") 
-          Sendinput,{tab}{right 108}
+          Sendinput,{tab}{Home}{right 107}
         else if (A_ThisMenuItem ="Generic Ingredient &T") 
-          Sendinput,{tab}{right 109}
+          Sendinput,{tab}{Home}{right 108}
         else if (A_ThisMenuItem ="Generic Ingredient &U") 
-          Sendinput,{tab}{right 110}
+          Sendinput,{tab}{Home}{right 109}
         else if (A_ThisMenuItem ="Generic Ingredient &V") 
-          Sendinput,{tab}{right 111}
+          Sendinput,{tab}{Home}{right 110}
         else if (A_ThisMenuItem ="Generic Ingredient &W") 
-          Sendinput,{tab}{right 112}
+          Sendinput,{tab}{Home}{right 111}
         else if (A_ThisMenuItem ="Generic Ingredient &X") 
-          Sendinput,{tab}{right 113}
+          Sendinput,{tab}{Home}{right 112}
         else if (A_ThisMenuItem ="Generic Ingredient &Y") 
-          Sendinput,{tab}{right 114}
+          Sendinput,{tab}{Home}{right 113}
         else if (A_ThisMenuItem ="Generic Ingredient &Z") 
-          Sendinput,{tab}{right 115}
+          Sendinput,{tab}{Home}{right 114}
         else if (A_ThisMenuItem ="Glucosamine") 
-          Sendinput,{tab}{right 127}
+          Sendinput,{tab}{Home}{right 126}
         else if (A_ThisMenuItem ="Glycine") 
-          Sendinput,{tab}{right 131}
+          Sendinput,{tab}{Home}{right 130}
         else if (A_ThisMenuItem ="Ingredient Note 1") 
-          Sendinput,{tab}{right 140}
+          Sendinput,{tab}{Home}{right 139}
         else if (A_ThisMenuItem ="Ingredient Note 2") 
-          Sendinput,{tab}{right 142}
+          Sendinput,{tab}{Home}{right 141}
         else if (A_ThisMenuItem ="Ingredient Note 3") 
-          Sendinput,{tab}{right 143}
-        else if (A_ThisMenuItem ="Inositol") 
-          Sendinput,{tab}{right 149}
-        else if (A_ThisMenuItem ="Lead") 
-          Sendinput,{tab}{right 167}
-        else if (A_ThisMenuItem ="L-Tyrosine") 
-          Sendinput,{tab}{right 181}
-        else if (A_ThisMenuItem ="Malic Acid") 
-          Sendinput,{tab}{right 186}
-        else if (A_ThisMenuItem ="Mercury") 
-          Sendinput,{tab}{right 188}
-        else if (A_ThisMenuItem ="Methylsulfonylmethane (MSM)") 
-          Sendinput,{tab}{right 191}
-        else if (A_ThisMenuItem ="Molybdenum") 
-          Sendinput,{tab}{right 195}
-        else if (A_ThisMenuItem ="PABA") 
-          Sendinput,{tab}{right 206}
-        else if (A_ThisMenuItem ="Protein") 
-          Sendinput,{tab}{right 220}
+          Sendinput,{tab}{Home}{right 142}
         else if (A_ThisMenuItem ="Quercetin Dihydrate") 
-          Sendinput,{tab}{right 224}
-        else if (A_ThisMenuItem ="Taurine") 
-          Sendinput,{tab}{right 247}
+          Sendinput,{tab}{Home}{right 224}
         else if (A_ThisMenuItem ="Total Probiotic") 
-          Sendinput,{tab}{right 258}
+          Sendinput,{tab}{Home}{right 258}
+        else if (A_ThisMenuItem ="STOP") 
+          exit
         else
           return
       return
