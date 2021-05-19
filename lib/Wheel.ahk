@@ -9,9 +9,17 @@
 		}
   ifwinactive, Test Definition Editor - \\Remote
 		{
-			click, 466, 437
-			; mousemove, 463, 302,0	
-			sleep 100
+			click, 466, 490,2
+			;mousemove, 229, 244
+			sleep 300
+		return
+		}	
+  ifwinactive, Edit Formulation - \\Remote
+		{
+			click, 450, 460,2
+			click 403, 349
+			MouseMove, 250, 286
+			sleep 300
 		return
 		}	
 	N=1

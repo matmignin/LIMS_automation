@@ -2,10 +2,17 @@
 ProductTab_Table(){
   Global
   try GUI ingredient_table:destroy
-  ; Iniread,Varbar_X,data.ini,Locations,varbar_X
-  ; Iniread,Varbar_Y,data.ini,Locations,VarBar_Y
-  ProductTable_Y:=Varbar_Y + 40
-  Producttable_X:=Varbar_X + 100
+   CoordMode, mouse, Window
+  ;  CoordMode, , Screen
+   	WinActivate, ahk_exe WFICA32.EXE
+  WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+    ProductTable_X:= LMS_w+LMS_X
+    ProductTable_Y:= LMS_Y+100
+    
+  ; Iniread,ProductTable_X,data.ini,Locations,ProductTable_X
+  ; Iniread,ProductTable_Y,data.ini,Locations,ProductTable_Y
+  ; ProductTable_Y:=Varbar_Y + 40
+  ; Producttable_X:=Varbar_X + 100
   Excel.Connect()
   Name:=		  	[]
   LabelClaim:=	[]
@@ -27,8 +34,8 @@ ProductTab_Table(){
   Table_Height:=Table_height-Sub_table_Height
   Gui,Ingredient_Table:Default
   Gui,Ingredient_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu 
-  GUI,Ingredient_Table:Font,s11 cBlack arial ;Consolas
-  Gui,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W500 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
+  GUI,Ingredient_Table:Font,s10 cBlack arial ;Consolas
+  Gui,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W400 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
   loop,%Total_Rows% {
     if Position[A_index] =""
     {
@@ -43,9 +50,10 @@ ProductTab_Table(){
   LV_ModifyCol(2,200)
   LV_ModifyCol(3,180)			
   LV_ModifyCol(4,0)
+  LV_ModifyCol(5,0)
   sleep 100		
   CoordMode,mouse,screen
-  Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w420,%Product%
+  Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product%
   CoordMode,mouse,window
   return	
 }
@@ -53,32 +61,39 @@ ProductTab_Table(){
 Ingredient_Table:
   if (A_GuiEvent = "DoubleClick") {
     Gui,Ingredient_Table:submit,NoHide
+    send, {space}
     Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
     Current_Row:=A_EventInfo
     Loop % Rows_left {
       Excel.Get_Current_row()
       ProductTab_EditIngredient(LabelName,LabelClaim,Position,DropdownCount)
-      if WinExist("Duplicate ingredient ID - \\Remote")
-        break 
-
+      if Winactive("Duplicate ingredient ID - \\Remote") || Winactive("NuGenesis LMS - \\Remote") || WinActive("Edit Formulation - \\Remote") || winactive("Warning - \\Remote")
+        break
       sleep 300
     }
   }
 return
 
+  
 ProductTab_DropdownSelect(A_DropdownCount){
   global
-      click, 150, 73
-  tooltip, %Ingredient_Name%
+    ; if Winactive("Duplicate ingredient ID - \\Remote") || winactive("Warning - \\Remote") || winactive("Composition - \\Remote")
+    ; {
+      ; exit
+      ; return
+    ; }
+  click, 150, 73
+  ;tooltip, %Ingredient_Name%
   AbsSelection:=Abs(A_DropdownCount)
   if (a_DropdownCount > 0)
     sendinput, {tab}{home}{right %A_DropdownCount%}
   if (a_DropdownCount < 0)
     Sendinput, {tab}{end}{left %Absselection%}
-  if (a_DropdownCount = ""){
+  if (a_DropdownCount = "-0")
+    Sendinput, {tab}{end}
+  if (a_DropdownCount = "")
     ProductTab_DropDown_Ingredient()
     ;exit
-  }
     sleep 200
   }
 
@@ -118,7 +133,13 @@ return
 }
 
 Ingredient_TableGuiClose:
+  ;coordmode, mouse, Screen
+;WinGetPos, ProductTable_X, ProductTable_Y, %Product%
+	sleep 100
+;	IniWrite, %ProductTable_X%, data.ini, Locations, ProductTable_X
+;	IniWrite, %ProductTable_y%, data.ini, Locations, ProductTable_Y
   GUI,Ingredient_Table:destroy
+  ;coordmode, mouse, window
 return
 
 ProductTab_Select_Ingredient(){
@@ -699,7 +720,7 @@ Formulation_Hotstrings:
         else if (A_ThisMenuItem ="Total Probiotic") 
           Sendinput,{tab}{Home}{right 258}
         else if (A_ThisMenuItem ="STOP") 
-          exit
+          Reload
         else
           return
       return

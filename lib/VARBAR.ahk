@@ -9,11 +9,14 @@ KEY_Varbar:
   Wheeldown::Varbar.SubIteration()
   F7::Excel.NextSheet()
   F6::Excel.previoussheet()
-  Mbutton & WheelDown::varbar.Move()
+  Mbutton & WheelDown::Varbar.Follow()
   mbutton::Varbar.LaunchTable()
-  Rbutton & F6::ProductTab_Table()
-  Rbutton & F7::SpecTab_Table()
-  Rbutton::Excel.connect()
+  Xbutton1 & F6::ProductTab_Table()
+  Xbutton1 & F7::SpecTab_Table()
+  Rbutton::
+	Menu.Tables()   ; Excel.connect()
+	menu.show()
+	return
 	F8::ReloadScript()
   ; Lbutton::MouseClick, Right,,,1, 0, U
   #if
@@ -39,8 +42,11 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	}
 	If (X=0)
 	{
-		Varbar_X:=1
-		varbar_y:=1
+	coordmode, mouse, Screen
+	MouseGetPos,MousePos_X,MousePos_Y,w,h
+	coordmode, mouse, Window
+		Varbar_X:=MousePos_X
+		varbar_y:=MousePos_Y-10
 	}
 	if (Destroy:="Reset")
 		GUI, VarBar:destroy
@@ -109,11 +115,11 @@ return
 }
 
 
-Move(){
+Follow(){
 	global
-	  SetTimer, CheckActive, 800
+	  SetTimer, CheckActive, 600
 		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
-	VarWin_X := LMS_X+(LMS_W/2)-100
+	VarWin_X := LMS_X+(LMS_W/2)-400
 	VarWin_Y := LMS_Y 
   WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
 	return
@@ -170,7 +176,7 @@ If Var contains NotBatch
 
 LaunchTable(){
 		global
-    if WinExist("Result Editor - \\Remote") || WinExist("Test Definition Editor - \\Remote") || winexist("Results Definition - \\Remote")
+    if winactive("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
       SpecTab_Table()
     else
       ProductTab_Table()
@@ -200,44 +206,44 @@ get(Category:="All"){
 }
 
 Sendinput(Category:="",PostOutput:="")
-{
-	Global
-	BlockInput, on
-	sleep 100
-	if WinActive("Select Product - \\Remote")
 	{
-		send, {click 106, 64}%Product%{enter}{enter}
-		exit
+		Global
+		BlockInput, on
+		sleep 100
+		if WinActive("Select Product - \\Remote")
+		{
+			send, {click 106, 64}%Product%{enter}{enter}
+			exit
+			}
+		if WinActive("NuGenesis LMS - \\Remote") 
+		{
+				SearchBar("Product")
 		}
-	if WinActive("NuGenesis LMS - \\Remote") 
-	{
-			SearchBar("Product")
-	}
-	if winactive("Register new samples - \\Remote")
-		send, {click 182, 103}%Product%
-	If Category contains Product
-		output:=product
-	else If Category contains Batch
-		output:=Batch	
-	else If Category contains Lot
-		output:=Lot
-	else If Category contains Coated
-		output:=Coated
-	else If Category contains Name
-		output:=Name
-	else If Category contains Customer
-		output:=Customer
-	else If Category contains Iteration
-		output:=Iteration
-	Send, %output%%PostOutput%
-	sleep 100
-if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
-		sendinput, ^a^c{enter}	
-		blockinput off
-if winactive("Find and Replace")
-		send, !i
-	sleep 400
-	return
+		if winactive("Register new samples - \\Remote")
+			send, {click 182, 103}%Product%
+		If Category contains Product
+			output:=product
+		else If Category contains Batch
+			output:=Batch	
+		else If Category contains Lot
+			output:=Lot
+		else If Category contains Coated
+			output:=Coated
+		else If Category contains Name
+			output:=Name
+		else If Category contains Customer
+			output:=Customer
+		else If Category contains Iteration
+			output:=Iteration
+		Send, %output%%PostOutput%
+			sleep 100
+		if WinActive("NuGenesis LMS - \\Remote") || WinActive("Select Product - \\Remote") || winactive("ahk_exe explorer.exe")
+				sendinput, ^a^c{enter}	
+				blockinput off
+		if winactive("Find and Replace")
+			send, !i
+		sleep 400
+		return
 }
 
 
@@ -258,20 +264,20 @@ Search(input){
 
 AddIteration(){
 	global Iteration
-GuiControl, Varbar:Text, iteration, %iteration%
-Iteration+=1
-sleep 50
-tooltip(Iteration)
-return
-}
+	GuiControl, Varbar:Text, iteration, %iteration%
+	Iteration+=1
+	sleep 50
+	tooltip(Iteration)
+	return
+	}
 SubIteration(){
 	global Iteration
-GuiControl, Varbar:Text, iteration, %iteration%
-Iteration-=1
-sleep 50
-tooltip(Iteration)
-return
-}
+	GuiControl, Varbar:Text, iteration, %iteration%
+	Iteration-=1
+	sleep 50
+	tooltip(Iteration)
+	return
+	}
 
 
 Reset()
@@ -281,10 +287,10 @@ Reset()
 	coordmode, mouse, Screen
 	MouseGetPos,MousePos_X,MousePos_Y,w,h
 	coordmode, mouse, Window
-	IniWrite, "0", data.ini, Locations, ProductTable_X
-	IniWrite, "0", data.ini, Locations, ProductTable_Y
-	IniWrite, "0", data.ini, Locations, SpecTable_X
-	IniWrite, "0", data.ini, Locations, SpecTable_Y
+	IniWrite, MousePos_X+50, data.ini, Locations, ProductTable_X
+	IniWrite, MousePos_Y+50, data.ini, Locations, ProductTable_Y
+	IniWrite, MousePos_X+50, data.ini, Locations, SpecTable_X
+	IniWrite, MousePos_Y+50, data.ini, Locations, SpecTable_Y
 	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
 	VarBar.show(0)
 	return

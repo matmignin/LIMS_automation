@@ -14,6 +14,7 @@ KEY_Excel:
       wheelleft::sendinput, #{left}
       return
   #ifwinactive, ahk_exe EXCEL.EXE
+    ~$rbutton::return
   +Enter::sendinput, !{enter}
   $Enter::sendinput, {enter}
   F8::Excel.Search()
@@ -35,6 +36,7 @@ KEY_Excel:
   return
   return::sendinput, !{i}
   rbutton & Lbutton::sendinput, !{i}
+
 
 KEY_OUTLOOK:
   #IfWinActive, ahk_exe OUTLOOK.EXE 

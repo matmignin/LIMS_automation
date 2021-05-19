@@ -14,9 +14,9 @@ Delete(){
 
 LMS(){
   if winactive("NuGenesis LMS - \\Remote")
-    menu, menu, add, Copy Spec Template, autofill
-    menu, menu, add, Copy Spec Results, Autofill   
-    menu, menu, add, Paste Spec Results, Autofill
+    menu, menu, add, Copy Spec &Template, autofill
+    menu, menu, add, &Copy Spec Results, Autofill   
+    menu, menu, add, &Paste Spec Results, Autofill
   if winactive("Edit specification - \\Remote") {
     Menu, Menu, add, Analytical, AutoFill
     Menu, Menu, add, Physical, AutoFill
@@ -48,9 +48,16 @@ Variable(){
 tests(){
     menu,Menu,add,Test_&1,Tests
     menu,Menu,add,Test_&2,Tests
-    menu,Menu,add,Spec Table,Tests
-    menu,Menu,add,Ingredient Table,Tests
     menu,menu,add
+    
+}
+
+Tables(){
+    menu,Menu,add,&Spec Table,Tests
+    menu,Menu,add,&Ingredient Table,Tests
+    menu,Menu,add,&Rotation Table,Tests
+    menu,menu,show
+    ; menu,menu,add
 }
 
 VScode(){
@@ -131,20 +138,20 @@ default(){
   global
   if Testing contains 1
     Tests()
-    If Winactive("ahk_exe WFICA32.EXE"){
-      menu, Menu, add, &Variables, Variable
-  Menu, Variables, Add, &Product `t %Product%, Variable
-  Menu, Variables, Add, &Batch `t %Batch%, Variable
-  Menu, Variables, Add, &Lot `t %Lot%, Variable
-  Menu, Variables, Add, &Name `t %name%, Variable
-  Menu, Variables, Add, Cus&tomer `t %Customer%, Variable
-  Menu, Variables, Add, C&oated `t %Coated%, Variable
-  Menu, Variables, Add, &Color `t %Color%, Variable
-  Menu, Variables, Add, &ShapeSize `t %ShapeSize%, Variable
-  Menu, Variables, Add, &Weight `t %Weight%, Variable
-  menu, menu, add, &Variables, :Variables
-    Menu, Menu, Add,
-  }
+    ; If Winactive("ahk_exe WFICA32.EXE"){
+  ;     menu, Menu, add, &Variables, Variable
+  ; Menu, Variables, Add, &Product `t %Product%, Variable
+  ; Menu, Variables, Add, &Batch `t %Batch%, Variable
+  ; Menu, Variables, Add, &Lot `t %Lot%, Variable
+  ; Menu, Variables, Add, &Name `t %name%, Variable
+  ; Menu, Variables, Add, Cus&tomer `t %Customer%, Variable
+  ; Menu, Variables, Add, C&oated `t %Coated%, Variable
+  ; Menu, Variables, Add, &Color `t %Color%, Variable
+  ; Menu, Variables, Add, &ShapeSize `t %ShapeSize%, Variable
+  ; Menu, Variables, Add, &Weight `t %Weight%, Variable
+  ; menu, menu, add, &Variables, :Variables
+  ;   Menu, Menu, Add,
+  ; }
   If Winactive("NuGenesis LMS - \\Remote")
     Menu, Menu, add, New &Request, AutoFill
   if WinActive("ahk_exe explorer.exe") || Winactive("ahk_exe OUTLOOK.EXE")
@@ -196,9 +203,9 @@ Tests(){
   Global
     menu,Menu,add,Test_&1,Tests
     menu,Menu,add,Test_&2,Tests
-    menu,Menu,add,Spec Table,Tests
-    menu,Menu,add,Ingredient Table,Tests
-    menu,Menu,add,Rotation Table,Tests
+    menu,Menu,add,&Spec Table,Tests
+    menu,Menu,add,&Ingredient Table,Tests
+    menu,Menu,add,&Rotation Table,Tests
     
     menu,menu,add
     return
@@ -208,11 +215,11 @@ Tests:
       Test()
     else if A_thismenuItem contains Test_&2
       Test_2()
-    else if A_thismenuitem contains Ingredient Table
+    else if A_thismenuitem contains &Ingredient Table
       ProductTab_Table()
-    else if A_thismenuItem contains Spec Table
+    else if A_thismenuItem contains &Spec Table
       SpecTab_Table()
-    else if A_thismenuItem contains Rotation Table
+    else if A_thismenuItem contains &Rotation Table
       Rotation_GetTable()
     else 
       menu, menu, deleteAll
@@ -293,8 +300,9 @@ LMS_autofill(){
   menu, menu, add,
   ;Excel.Connect()
     menu, menu, add, Copy Spec Template, autofill
-    menu, menu, add, Copy Spec Results, Autofill   
-    menu, menu, add, Paste Spec Results, Autofill
+  menu, menu, add,
+    menu, menu, add, Copy Specs, Autofill   
+    menu, menu, add, Paste Specs, Autofill
   if winactive("Edit specification - \\Remote") {
   Menu, Menu, add, Analytical, AutoFill
   Menu, Menu, add, Physical, AutoFill
@@ -310,8 +318,8 @@ return
 
 Autofill:
   if A_thismenuitem contains Analytical  
-    SpecTab_Edit_Analytical()
-  else if A_thismenuitem contains Coated_Retain
+    SpecTab_Edit_Analytical() 
+    else if A_thismenuitem contains Coated_Retain
     SpecTab_Edit_CoatedRetain()
   else if A_thismenuitem contains Coated_Physical
     SpecTab_Edit_CoatedPhysical()
@@ -321,11 +329,11 @@ Autofill:
     SpecTab_Edit_Micro() ; copy micro spec tests
   else if A_thismenuitem contains Physical
     SpecTab_Edit_Physical()  
-  else if A_thismenuitem contains Copy Spec Results
+  else if A_thismenuitem contains &Copy Specs
     SpecTab_TestSpecs.Copy()  
-  else if A_thismenuitem contains Paste Spec Results
+  else if A_thismenuitem contains &Paste Specs
     SpecTab_TestSpecs.Paste()
-  else if A_thismenuitem contains Copy Spec Template
+  else if A_thismenuitem contains Copy Spec &Template
     SpecTab_CopySpecTemplate()
   else if A_thismenuitem contains New &Request
   {

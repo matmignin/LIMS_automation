@@ -47,15 +47,9 @@ return
 
 
 Test(){
-  A_dropdowncount=34
-      click, 150, 73
-  tooltip, %Ingredient_Name%
-  AbsSelection:=Abs(A_DropdownCount)
-  if (a_DropdownCount > 0)
-    sendinput, {tab}{home}{right %A_DropdownCount%}
-  if (a_DropdownCount < 0)
-    Sendinput, {tab}{end}{left %Absselection%}
-    sleep 200
+  global
+WinSet, AlwaysOnTop, Toggle, ahk_exe WFICA32.EXE
+return
 }
 
 

@@ -101,8 +101,8 @@
 				sleep 200
 				WinWaitNotActive, Error - \\Remote
 				sleep 200
-				winactivate, Register new samples - \\Remote
-				varbar.Sendinput("Product","{enter}")
+				click.RegisterNewSamples()
+				sleep 300
 				return
 			}
 

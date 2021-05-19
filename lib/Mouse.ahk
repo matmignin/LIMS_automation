@@ -10,7 +10,8 @@ Mouse_RbuttonUP(){
 	#inputlevel 1
 	suspend, On
 	sleep 50
-Click, Right
+	; send, {AppsKey}
+ Click, Right
 ; send, {rbutton}
 	; sleep 200
   ; MouseClick, Right,,,1, 0, U

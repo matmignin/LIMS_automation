@@ -5,8 +5,19 @@ KEY_LMS:
   Xbutton2 & WheelLeft::sendinput, {Click 354, 44}
 
   
-  F6::Click.SearchBar(Product,"enter")
-  F7::Click.SearchBar(Lot,"enter") 
+  
+  
+  F6::Click.SearchBar("Product","enter")
+  left::Click.SearchBar("Product","enter")
+
+  F7::Click.SearchBar("Batch","enter") 
+  right::Click.SearchBar(Batch,"enter") 
+
+
+  Mbutton & Wheelup::
+  excel.connect()
+  Click.SearchBar(Product,"enter")
+  return
   ;F7::Click.SearchBar("Lot","enter") 
   ; F9::Click.SearchBar("Batch") 
   F20 & F19::Click.SearchBar(Product) 
@@ -29,9 +40,17 @@ KEY_LMS:
 #Ifwinactive, Select methods tests - \\Remote
   F7::Methods()
   F19 & space::AutoFill()
+  F6::esc
+#IfWinActive, Composition - \\Remote
+  F6::esc
+  F7::enter
+#IfWinActive, Test Definition Editor - \\Remote
+  F6::esc
+  F7::click 330, 619 ;click save
 #IfWinActive, Results Definition - \\Remote
+  F6::esc
+  F7::enter
   wheelup::Mouse_click("Edit")
-  F6::wheel("{esc}",1000)
   WheelDown::
   Click, 1330, 592
   sleep 100
@@ -39,26 +58,28 @@ KEY_LMS:
   Return
 #ifwinactive, Edit test (Field Configuration:
   F6::Autofill()
+F6::esc
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
   Rbutton::WorkTab_ChangeTestResults("toggle")	
   F6::WorkTab_ChangeTestResults("toggle")
   ;F6::WorkTab_ChangeTestResults("toggle")
   F7::WorkTab_ChangeTestResults()
   ;F7::WorkTab_ChangeTestResults()
+F6::esc
   
 #ifwinactive, Register new samples - \\Remote
   Xbutton1 & wheelup::Click.Searchbar()
-  ;Mbutton::send, {Click 181, 105,2}%Product%{enter}
   Mbutton::Autofill()
   F8::Autofill()
+F6::esc
 #ifwinactive, Select samples for test:
   F7::sendinput % MouseSave() "{click 504, 324}" MouseReturn ; add test. 
+F6::esc
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-
 F19 & space::sendinput, %Product% 
 F20 & space::Sendinput, %Batch%
 F8::Mouse_CloseWindow()
-
+$Rbutton::Mouse_RbuttonUP()
 
   Xbutton2 & WheelUp::Varbar.AddIteration()
   Xbutton2 & wheeldown::Varbar.SubIteration()
@@ -70,9 +91,9 @@ F8::Mouse_CloseWindow()
 
  
 Scroll_Fix:
-  #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote")
-  wheeldown::Wheel_scroll("100")
-  wheelup::Wheel_scroll("-100")
+  #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote") ||
+  wheeldown::Wheel_scroll("130")
+  wheelup::Wheel_scroll("-130")
   #if
   
   
@@ -83,8 +104,9 @@ Scroll_Fix:
 DetectTab(){
   global
   Tab:=
-  CoordMode, Pixel, Window
-  WinActivate, NuGenesis LMS - \\Remote
+  
+  if WinActive("NuGenesis LMS - \\Remote")
+  {
     PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB 
         If ErrorLevel  ;Product/Spec Tab?
           Tab="Product_Spec"
@@ -102,6 +124,7 @@ DetectTab(){
               Tab:="Request" 
             }        
           }
-      Tooltip(Tab,1000)
+  }
+  else
     return
   }

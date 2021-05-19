@@ -90,15 +90,17 @@ ReadSpecIntoDataBase:
 
 
 CheckActive:
-  If WinActive("NuGenesis LMS - \\Remote") || Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
+  If WinActive("NuGenesis LMS - \\Remote") ;|| Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
+  ; If WinActive("ahk_exe WFICA32.EXE") ;|| Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
   {
-    varbar.move()
+    Varbar.Follow()
     return
     }
   Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
     exit
   else
-    WinMove, VarBar ahk_class AutoHotkeyGUI,, 1500, 0
+  return
+    ; WinMove, VarBar ahk_class AutoHotkeyGUI,, %VarBar_X%, %VarBar_Y%
   Return
 
 
@@ -135,19 +137,19 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
 #IfWinActive,
 
 Xbutton2 & Xbutton1::send, {Ctrldown}{Altdown}{tab}{CtrlUp}{AltUp}
+Xbutton1 & Xbutton2::WinActivate, ahk_exe WFICA32.EXE
 
 
 
 KEY_DEFAULT:
   <^;::sendinput, %Timestring%{space} 
 ; ^tab::Test()
-  !f::Open_Firefox()
-  !v::Open_vsCode()
+
   Capslock & `::QuickCode()
-  $mbutton up::
-  sendlevel 1
-  sendinput, {Rctrl up}{Lctrl up}{Alt Up}{Shift Up}
-  sendlevel 0
+  ; $*mbutton up::
+  ; sendlevel 1
+  ; sendinput, {Rctrl up}{Lctrl up}{Alt Up}{Shift Up}
+  ; sendlevel 0
   return
   Mbutton & Xbutton1::SendPassword()
   Mbutton & Lbutton::sendinput, {CtrlDown}{Lbutton}{CtrlUp}
@@ -156,7 +158,7 @@ KEY_DEFAULT:
   Rbutton & F13::sendinput, {F21}
   Mbutton & F7::Wheel_Right()
   Mbutton & F6::Wheel_left()
-  $Mbutton::send, {ctrl down}
+  ; $Mbutton::send, {ctrl down}
   Rbutton & Wheelup::Wheel_cut() 
   Rbutton & Wheeldown::Wheel_paste()
   Rbutton & Xbutton2::Get_WindowInfo()
@@ -165,7 +167,7 @@ KEY_DEFAULT:
   Rbutton up::Mouse_RbuttonUP()
  
 
-  Xbutton1 & F8::Clip("OCR") 
+  Xbutton1 & Mbutton::Clip("OCR") 
   Xbutton1 & LButton::Sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup} ;screenshot"
   Xbutton1 & RButton::Sendinput,  {shiftdown}{ctrldown}3{CtrlUp}{shiftup};screenshot"
   Xbutton1 & WheelUp::Wheel(Product)
@@ -174,8 +176,8 @@ KEY_DEFAULT:
   Xbutton1 & wheelright::Excel.NextSheet()
   Xbutton1 & F7::Excel.NextSheet()
   Xbutton1 & F6::Excel.PreviousSheet()
-  ; Xbutton2 & Rbutton::Get_WindowInfo()
-  Xbutton1 & Mbutton::Varbar.reset()
+  Xbutton2 & Rbutton::Get_WindowInfo()
+  Xbutton2 & Mbutton::VarBar.Reset()
   Xbutton2 & wheelDown::Mouse_CloseWindow()
   ; F8 & Wheelup::!^tab
   ; Xbutton2 & Lbutton::Sendinput, #{down}
@@ -195,17 +197,29 @@ F20::menu()
 
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
+  F19::Clip()
   ; enter::enter
 ; capslock::esc
-
+OpenApps:
+!f::Open_Firefox()
+!v::Open_vsCode()
 !c::open_Clickup()
 !e::send, {LWinDown}{e}{lwinup}
 !+v::open_VPN()
+!o::open_Outlook()
+!d::open_Display()
+!w::open_Workbook()
+!l::open_LMS()
 Xbutton2::menu()
+#If (A_PriorHotKey = "xbutton1" AND A_TimeSincePriorHotkey < 300) || (A_PriorHotKey = "F19" AND A_TimeSincePriorHotkey < 300)
+  xbutton1::sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup}
+  F19::sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup}
+  F20::Clip("OCR")
+
+  
+    #If
 Xbutton1::Clip()
 
-
-    #If
 
 
   
@@ -248,6 +262,28 @@ Methods() {
   return
 }	
 
+WindowNames() {
+  global
+    Loop, Read, WindowNames.ini
+  {
+    If A_Index = 1
+      Continue
+    WindowName := StrSplit(A_LoopReadLine, "=") 
+    ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
+    Selection:= % WindowName[1]
+    ; Group:= % MethodGroup[2]
+    Menu, WindowNameMenu, add, %Selection%, WindowNameMenu
+  }
+    Menu, WindowNameMenu, Show,
+  return
+
+  WindowNameMenu:
+  sleep 200
+  InputVar:=A_ThisMenuItem
+    IniRead,vOutput, WindowNames.ini, WindowNames, %InputVar%
+    Sendinput, %vOutput%{enter}
+  return
+}	
 
 
 
@@ -323,6 +359,14 @@ Menu, Tray, ToggleCheck, Testing
       IniWrite, 0, data.ini, Locations, Testing
       send, {esc}
 return
+run_Follow:
+Menu, Tray, ToggleCheck, follow
+    If  follow:= !follow
+      IniWrite, 1, data.ini, Locations, follow
+     else 
+      IniWrite, 0, data.ini, Locations, follow
+      send, {esc}
+return
 FilterBox_Location:
     CoordMode, mouse, window
     KeyWait, Lbutton, D
@@ -335,8 +379,8 @@ FilterBox_Location:
     tooltip(FilterBoxLocation)
     MouseClick, Right,,,1, 0, U
     return
-run_VIM:
-  Run, ViM.Ahk
+Run_Listlines:
+  ListLines
   return
 WindowSpySub: 
   Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
@@ -394,9 +438,9 @@ EnvGet, lot, lot
   ; Menu, tray, NoStandard
 ; Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
 ;Menu, tray, Default, &Settings
-  ; Menu, Tray, Add, Vim, Run_Vim
+  Menu, Tray, Add, List Lines, Run_ListLines
   Menu, Tray, Add, windowSpy, WindowSpySub 
-  Menu, Tray, Default, ResetVarbar
+  Menu, Tray, Default, List Lines ;Run_Listlines
   ; SetBatchLines, 0ms
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
@@ -410,10 +454,10 @@ EnvGet, lot, lot
   ; settitlematchmode, Slow
  #MaxHotkeysPerInterval 400
  #HotkeyModifierTimeout 10
-  #maxthreadsperhotkey, 3
+  #maxthreadsperhotkey, 5
    SetKeyDelay, 0, 0
   setwindelay,500
-  send, {CtrlUp}{AltUp}{shiftup}{LWinUp}
+  sendinput, {CtrlUp}{AltUp}{shiftup}{LWinUp}
   AutoTrim, On
   Main:="NuGenesis LMS - \\Remote"
   FormatTime, TimeString,, d/M/yy 
@@ -432,6 +476,7 @@ EnvGet, lot, lot
     Menu, Tray, Check, Testing
   if (testing = 0)
     Menu, Tray, unCheck, Testing
+  ; Varbar.Follow()
   
   StartTest()
   

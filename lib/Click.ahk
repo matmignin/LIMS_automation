@@ -23,39 +23,48 @@ class click{
     
     blockinput on
     
+      mousesave()
     WinActivate, ahk_exe WFICA32.EXE
-    DetectTab()
-    if Tab contains Product_Spec
+    if Code contains Batch
+        {
+          Send, {Click %BatchFilter%, %Filterbox_Y%,2}^a%Batch%^a%mouseReturn%
+          return
+        }
+    else if winactive("Select methods tests - \\Remote")
+      click, 246,77, 2  
+    else If winactive("Register new samples - \\Remote")
+        send, {click 180, 103, 2}%Product%{enter}%mouseReturn% 
+    else 
     {
-      send, {Click %ProductSearch_X%,%ProductSearch_Y%, 2}^a%Product%^a 
+      DetectTab()
+    if Tab contains Product_Spec
+
+    {
+      send, {Click %ProductSearch_X%,%ProductSearch_Y%, 2}^a%Product%^a{enter}%mouseReturn% 
       return
     }
-    else if tab contains Document
+    else if tab contains Request
       {
-      msgbox, document
+        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%Code%{enter}%mouseReturn%
             return
-    }
+      }
     else 
       if Filterbox:=0
       {
-        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a ;%Code%^a
+        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%mouseReturn% ;%Code%^a
               return
     }
       else
         if (Code:=Product)
         {
-          Send, {Click %ProductFilter%, %Filterbox_Y%,2}^a ;%Code%^a
-                return
-    }
-        else if (Code:=Batch)
-        {
-          Send, {Click %BatchFilter%, %Filterbox_Y%,2}^a ; %Code%^a
+          Send, {Click %ProductFilter%, %Filterbox_Y%,2}^a%product%%mouseReturn% ;%Code%^a
                 return
     }
         else (Code:=Lot)
         {
-          Send, {Click %LotFilter%, %Filterbox_Y%,2}^a ;%Code%^a
+          Send, {Click %LotFilter%, %Filterbox_Y%,2}^a%lot%%mouseReturn% ;%Code%^a
                 return
+    }
     }
           
     ; if tab contains sample
@@ -92,15 +101,12 @@ class click{
   ;     }
   ;  }
   ;  
-    if winactive("Select methods tests - \\Remote")
-      click, 246,77, 2  
-    else If winactive("Register new samples - \\Remote")
-        send, {click 180, 103, 2}%Product%{enter}  
-    else
-      return
       ; Send, ^a%Product%
     ; Send, {%postCMD%}
+    sleep 300
     	blockinput off
+      
+      sleep 300
       return
   
   
@@ -198,6 +204,22 @@ class click{
     WinActivate, NuGenesis LMS - \\Remote
     click 103, 325
     return
+  }
+  RegisterNewSamples(){
+    WinActivate, Register new samples - \\Remote
+      click 181, 103, 
+      sleep 50
+      ; click 181, 103,
+      sleep 300
+      sendinput, %product%{enter}
+      sleep 300
+      return
+  }
+  TestDefinitionEditor_Results(){
+    winactivate, Test Definition Editor - \\Remote
+    			click 236, 246 ;click resulst
+          sleep 200
+          return
   }
   EditSampleTemplate(){
     WinActivate, NuGenesis LMS - \\Remote

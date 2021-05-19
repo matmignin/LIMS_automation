@@ -33,7 +33,8 @@ Send, ^c
 sleep 200
 if (Regexmatch(Clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
     Department:="Analytical"
-else if (Regexmatch(Clipboard, "Micro \(Finished\)",Micr) > 0) ; || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
+else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0) ; || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
+; else if (Regexmatch(Clipboard, "\bMicro\b",Micr) > 0) 
     Department:="Micro"
 else if (Regexmatch(Clipboard, "\bI, Retain\b", Retain) > 0)
     Department:="Retain"
@@ -51,9 +52,13 @@ else {
 
 WorkTab_DropdownSelect(A_ShipTo){
   AbsSelection:=Abs(A_ShipTo)-1
-  if (a_ShipTo > 0)
+  if (a_shipto = "-1")
+    Sendinput, {end}
+  else if (a_shipto = "1")
+    Sendinput, {home}
+  else if (a_ShipTo > 1)
     sendinput, {home}{right %A_ShipTo%}
-  if (a_ShipTo < 0)
+  else if (a_ShipTo < 1)
     Sendinput, {end}{left %Absselection%}
   }
 Worktab_CheckDepartment2(){

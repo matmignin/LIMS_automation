@@ -2,11 +2,16 @@
 SpecTab_Table(){
 	Global
 	Try GUI, Spec_Table:destroy 
-	Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
-	Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
-		;CoordMode, mouse, screen
-	; SpecTable_Y:=Varbar_Y + 10
-	; SpecTable_X:=A_screenwidth-800
+   CoordMode, mouse, Window
+  ;  CoordMode, , Screen
+	WinActivate, ahk_exe WFICA32.EXE
+  WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+	; Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
+	; Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
+		; CoordMode, mouse, window
+		; CoordMode, mouse, screen
+	SpecTable_X:=LMS_w+LMS_X
+	SpecTable_Y:=LMS_Y+100
 	Excel.Connect()
 	SpecTab_GetExcelData()
 		Spectab_CreateGUI()
@@ -35,9 +40,9 @@ SpecTab_Table(){
 	
 	SpecTab_ShowGUI(){
 		global
-		CoordMode, mouse, screen
-		Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
+		; CoordMode, mouse, screen
 		CoordMode, mouse, window
+		Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
 		return			
 		}
 Spectab_CreateGUI(){
@@ -77,12 +82,14 @@ Spectab_CreateGUI(){
 
 SpecTab_CopySpecTemplate(){
   global
-  click 728, 191
+  ;click 728, 191
   department:= ;Clip()
   Clipboard:=
   sleep 200
-  WinActivate, NuGenesis LMS - \\Remote
-  ;send, ^c
+  ; WinActivate, NuGenesis LMS - \\Remote
+	; click
+	; clip()
+  send, ^c
   sleep 200
   ; clipwait; Tooltip, %Clipboard%
 	sleep 100
@@ -112,6 +119,7 @@ Class SpecTab_TestSpecs{
   Copy(){
     global
     WinActivate, NuGenesis LMS - \\Remote
+		BlockInput, on
       click 57, 715 ; edit Test
     ; click 57, 750 ; edit results
     winwaitactive, Test Definition Editor - \\Remote
@@ -119,15 +127,15 @@ Class SpecTab_TestSpecs{
       send, ^a^c
       sleep 200
       Description:=Clipboard
-      sleep 200
+       sleep 200
 			Wheel_scroll("100")
-			click 240, 488 ;click resulst
 			sleep 200
+			click.TestDefinitionEditor_Results()
 			WinActivate, Results Definition - \\Remote
 			WinWaitActive, Results Definition,,0.25
 				if errorlevel
 					WinActivate, Results Definition
-      WinWaitActive, Results Definition - \\Remote
+      WinActivate, Results Definition - \\Remote
       click 282, 121 ; click row
         sleep 100
     send, ^c
@@ -145,8 +153,9 @@ Class SpecTab_TestSpecs{
     Percision:=Parsedspecs[19]
     Requirement:=Parsedspecs[20]
     Units:=Parsedspecs[21]
-    tooltip(Requirement)
+    ;tooltip(Requirement)
 		sleep 200
+		blockinput off
 		send {esc}
     Return
     }
@@ -195,7 +204,7 @@ SpecTab_AutoFill(){
 				blockinput, on
 			If Winactive("NuGenesis LMS - \\Remote") 
 				{
-					sendinput, {click, 565, 692}^a%Name%{enter}{click r, 416, 996}+{tab 2}{enter}
+					;sendinput, {click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
 					sleep 200
 					click, 57, 719 ;click Edit Test
 					Sleep 200
@@ -208,12 +217,14 @@ SpecTab_AutoFill(){
 				SpecTab_TestDefinitionEditor(Description) ; the pre window
 				sleep 200
 					Wheel_scroll("100")
-					click 240, 488 ;click resulst
+					; click 236, 246
+					click.TestDefinitionEditor_Results()
 					sleep 200
 					WinActivate, Results Definition - \\Remote
-					WinWaitActive, Results Definition - \\Remote,,0.25
-						if errorlevel
-							WinActivate, Results Definition 
+					; WinWaitActive, Results Definition - \\Remote,,0.25
+						; if errorlevel
+						; sleep 200
+							; WinActivate, Results Definition - \\Remote
 					; Mouse_click("edit")
 					; sleep 300
 					; SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1)
@@ -221,18 +232,18 @@ SpecTab_AutoFill(){
 			}
 			if winactive("Results Definition - \\Remote") ;Selection window
 			{	
-				WinActivate, Results Definition - \\Remote
-					sleep 200
+				; WinActivate, Results Definition - \\Remote
+					; sleep 200
 					WinActivate, Results Definition - \\Remote
 					If Method contains ICP-MS 231	
 						send, {click 217, 141}
-					send, {click 80, 66}
+					send, {click 80, 66} ;click edit
 					sleep 200
 					winwaitactive, Result Editor - \\Remote,,0.5
 						if !errorlevel
 					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,0)
 					blockinput, off
-					sleep 500
+					sleep 400
 					; if (method!="ICP-MS 231") {
 						; exit
 					; }
@@ -243,7 +254,6 @@ SpecTab_AutoFill(){
 					; 		sleep 100
 					; 			click 330, 621
 								
-					return
 			}
 			If Winactive("Result Editor - \\Remote") ;the editing window
 				{
@@ -422,7 +432,7 @@ SpecTab_TestDefinitionEditor(The_Description) {
 	if The_description is space
 		{
 				Wheel_scroll("100")
-				click 240, 488 ;click resulst
+				click.TestDefinitionEditor_Results()
 		return
 		}
 	else	
@@ -566,25 +576,25 @@ SpecTab_InsertDescription(){
 	} 
 
 SpecTab_HM_ReportOnly() {
-	click 125,120 ;click 1st row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,140 ;click 2nd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,180 ;click 3rd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,200 ;click 4th row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
@@ -593,25 +603,28 @@ SpecTab_HM_ReportOnly() {
 	}
 
 SpecTab_HM_USP() {
-	click 125,120 ;click 1st row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,140 ;click 2nd row
+	click 125,130 ;click 1st row
+	; click 125,150 ;click 2nd row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,180 ;click 3rd row
+	click 125,130 ;click 1st row
+	; click 125,190 ;click 3rd row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,200 ;click 4th row
+	click 125,130 ;click 1st row
+	; click 125,210 ;click 4th row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
@@ -620,25 +633,25 @@ SpecTab_HM_USP() {
 	}
 
 SpecTab_HM_Canada() {
-	click 125,120 ;click 2nd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,140 ;click 2nd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,180 ;click 3rd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,200 ;click 4th row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
@@ -646,7 +659,7 @@ SpecTab_HM_Canada() {
 	return
 	}
 SpecTab_HM_Prop65() {
-	click 125,120 ;click 1st row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winactivate, Result Editor - \\Remote
 	winwaitactive, Result Editor - \\Remote,,4
@@ -658,7 +671,7 @@ SpecTab_HM_Prop65() {
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	winactivate, Result Definition - \\Remote
-	click 125,140 ;click 2nd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 12}{space}{tab 2}^a
@@ -669,7 +682,7 @@ SpecTab_HM_Prop65() {
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	winactivate, Result Definition - \\Remote
-	click 125,180 ;click 3rd row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 12}{space}{tab 2}^a
@@ -680,7 +693,7 @@ SpecTab_HM_Prop65() {
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	winactivate, Result Definition - \\Remote
-	click 125,200 ;click 4th row
+	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	winwaitactive, Result Editor - \\Remote,,4
 	sendinput, {tab 12}{space}{tab 2}^a
@@ -696,11 +709,11 @@ SpecTab_HM_Prop65() {
 
 
 Spec_TableGuiClose:
-	coordmode, mouse, Screen
+	; coordmode, mouse, Screen
 	; ,WinGetPos,VarBar_X,Varbar_Y,w,h
-		WinGetPos, SpecTable_X, SpecTable_Y, %Product%
-	IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
-	IniWrite, %SpecTable_y%, data.ini, Locations, SpecTable_Y
+	;	WinGetPos, SpecTable_X, SpecTable_Y, %Product%
+	;IniWrite, %SpecTable_X%, data.ini, Locations, SpecTable_X
+	;IniWrite, %SpecTable_y%, data.ini, Locations, SpecTable_Y
 	GUI, Spec_Table:destroy
 	coordmode, mouse, window
 	return

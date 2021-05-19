@@ -1,13 +1,13 @@
 eat it
 now eat this
 
-#Ifwinactive, NuGenesis LMS - \\Remote 
-#Ifwinactive, Select methods tests - \\Remote
-#IfWinActive, Results Definition - \\Remote
-#ifwinactive, Edit test (Field Configuration:
-#Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window  
-#ifwinactive, Register new samples - \\Remote
-#IfWinActive, ahk_exe WFICA32.EXE
+NuGenesis LMS - \\Remote 
+Select methods tests - \\Remote
+Results Definition - \\Remote
+Edit test (Field Configuration:
+Result Entry - \\Remote
+Register new samples - \\Remote
+ahk_exe WFICA32.EXE
 Because in the QC log and LMS they are 
 05/05/21	MARKET AMERICA, INC.	F230	TIMELESS PRESCRIPTION OXYGEN EXTREME 60S	104-0593	0619D1 04/23
 05/05/21	MARKET AMERICA, INC.	F230	TIMELESS PRESCRIPTION OXYGEN EXTREME SG 60S	104-0593	0617D1 04/23

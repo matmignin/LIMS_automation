@@ -2,12 +2,14 @@ return
 	F20 & \::Sendinput, mmignin{tab}Kilgore7744
 	F19 & \::Sendinput, ?Kilgore7744
   $F12::Reload 
+  F1::help
   F2::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-  
+  lctrl & Capslock::return
   ; $F3::ListLines, On
   $^F12::ListLines,
   $+F12::ListLines,
   Media_Play_Pause::send, {F5}
+  ^esc::return
 ;	#!\::Login()
 
 return 
@@ -21,10 +23,11 @@ return
     F19 & j::sendinput, {ShiftDown}{altDown}{Ctrldown}{left}{shiftUp}{altup}
     F19 & l::sendinput, {ShiftDown}{altDown}{Ctrldown}{right}{shiftUp}{altup}
     F19 & -::sendinput, {CtrlDown}{-}{Ctrlup}
-    F19 & =::sendinput, {CtrlDown}{-}{Ctrlup}
-    
+    F19 & =::sendinput, {CtrlDown}{=}{Ctrlup}
+    F19 & backspace::Delete
+    F19 & w::Windownames()
 
-    ^n::sendinput, {ShiftDown}{altDown}{pgdn}{altup}{ShiftUp}
+
     F20::menu()
   F19 & `::sendinput, ~
 
@@ -62,9 +65,9 @@ VsCode_:
     Mbutton up::sendinput, {CtrlDown}{f}{Ctrlup} ;search
     F8 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
     F19::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
-    capslock up::send,{esc}
-
-
+    $*capslock up::send,{esc}{
+    ~*Lbutton up::send, {ctrlup}
+    ; ~*lctrl up::send, {ctrlup}
     F6::sendinput, {altDown}{left}{altup}
     F7::sendinput, {altDown}{right}{altup}
     
@@ -205,11 +208,3 @@ return
     
     
 
-open_VScode(){
-  ifwinnotexist,ahk_exe Code.exe
-    run, Code.exe, "C:\Program Files\Microsoft VS Code\" 
-  else 
-    WinActivate, ahk_exe Code.exe
-
-  return
-  }
