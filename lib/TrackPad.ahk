@@ -1,6 +1,6 @@
 /* 
 3Tap    mbutton
-3up     F8
+3up     F8 'or thumb mouse
 3down   f9
 3right  f7
 3left   f6
@@ -36,30 +36,25 @@
   l::Open_LMS()
 
 
-#If (A_PriorHotKey = "lbutton" AND A_TimeSincePriorHotkey < 500)
+#If (A_PriorHotKey = "lbutton" AND A_TimeSincePriorHotkey < 300)
     Space::clip()
 	  F8::send, ^x
     F9::send, ^v
     ;F8::clip()
-    wheelup::msgbox, %A_ThisHotkey%
-    wheeldown::msgbox, %A_ThisHotkey%
-    F7::msgbox, %A_ThisHotkey%
+    wheelup::^x
+    wheeldown::^v
+    F7::^y
+    F6::^z
     F19::send, {F21}     
     #if
 
 
-#If (A_PriorHotKey = "Media_Prev" AND A_TimeSincePriorHotkey < 800) ;4 finger swipe down
-    Media_Prev::send {down}{enter}
-#If (A_PriorHotKey = "Browser_Forward" AND A_TimeSincePriorHotkey < 5000) ;4 finger swipe down
-    Browser_Back::send {CtrlDown}{k}{Ctrlup}
-#If (A_PriorHotKey = "Browser_back" AND A_TimeSincePriorHotkey < 5000) ;4 finger swipe down
-    Browser_Back::send {CtrlDown}{k}{Ctrlup}
+
 #If (A_PriorHotKey = "Media_Next" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
     Browser_forward::send, #{right} ;4right
     Browser_back::send, #{left} ;4left
-    Media_Next::Mouse_CloseWindow() ;4down
+    Media_Next::Mouse_CloseWindow() ;4down clear filter
     Media_Prev::send, #{up} ;4up
-    Wheelup::msgbox, yo, wheelup
     lbutton::send, ^{click}
     F10::WinMaximize, A
     F9::send, ^j
@@ -89,7 +84,7 @@
     ; sendlevel 0
     ; return
   
-    #IfWinActive, ahk_exe Code.exe
+#IfWinActive, ahk_exe Code.exe
     $F9::ToggleDefinition()
     F19 & F9::send, {CtrlDown}{F9}{Ctrlup}
     <^F9::^j
@@ -97,6 +92,13 @@
     Browser_Back::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
     Browser_Forward::send {CtrlDown}{j}{Ctrlup}
     media_prev::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
+    #If (A_PriorHotKey = "Media_Prev" AND A_TimeSincePriorHotkey < 800) ;4 finger swipe down
+    Media_Prev::send {down}{enter}
+#If (A_PriorHotKey = "Browser_Forward" AND A_TimeSincePriorHotkey < 2000) ;4 finger swipe down
+    Browser_Back::send {CtrlDown}{k}{Ctrlup}
+#If (A_PriorHotKey = "Browser_back" AND A_TimeSincePriorHotkey < 2000) ;4 finger swipe down
+    Browser_Back::send {CtrlDown}{k}{Ctrlup}
+    #if
 ;  $Media_Prev::sendinput, {ctrldown}{p}{ctrlUp} ;4fringer up
 ; #If (A_PriorHotKey = "Media_next" AND A_TimeSincePriorHotkey < 1000)
 ;   Media_next::menu() ; Tooltip("Swipe",2000)  ;4finger up

@@ -3,9 +3,9 @@ return
 
 open_Clickup(){
   ifwinnotexist, ahk_exe ClickUp.exe
-    run, ClickUp.exe, C:\Program Files\
-  else 
     WinActivate, ahk_exe ClickUp.exe
+  else 
+    run, ClickUp.exe, C:\Program Files\ClickUp\
 
   return
   }

@@ -1,11 +1,22 @@
-
-
-
-
 StartTest(){
-
+    if winexist("Result Editor - \\Remote") || Winexist("Test Definition Editor - \\Remote") || winexist("Results Definition - \\Remote")
+    {
+      WinActivate
+      SpecTab_Table()
+    }
+    if WinExist("Composition - \\Remote") || Winexist("Edit Ingredient - \\Remote")
+    {
+      WinActivate
+      ProductTab_Table()
+    }
+      else
+    return
 }
 return
+
+
+
+
 
 Test_3(){
 global

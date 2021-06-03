@@ -5,6 +5,7 @@ return
   F1::help
   F2::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
   lctrl & Capslock::return
+  ^Capslock::return
   ; $F3::ListLines, On
   $^F12::ListLines,
   $+F12::ListLines,
@@ -28,7 +29,7 @@ return
     F19 & w::Windownames()
 
 
-    F20::menu()
+    F19::menu()
   F19 & `::sendinput, ~
 
 VsCode_:
@@ -50,11 +51,11 @@ VsCode_:
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",2000)
     Rbutton & Xbutton2::Get_WindowInfo()
     
-    Xbutton2 & F6::
-    Xbutton2 & F7::
+    Xbutton2 & F7::sendinput, {CtrlDown}{]}{Ctrlup}
+    Xbutton2 & F6::sendinput, {CtrlDown}{[}{Ctrlup}
     Xbutton2 & wheeldown::sendinput, {ctrl down}{down}{ctrl up}
     Xbutton2 & wheelup::sendinput, {ctrl down}{up}{ctrl up}
-    $Rbutton::Click right
+    $Rbutton up::Mouse_RbuttonUP()
     Xbutton2 & Lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
     Media_Play_Pause::F8
     ; Xbutton1 & Lbutton::^+4
@@ -64,8 +65,8 @@ VsCode_:
     F8 & wheeldown::ToggleDefinition() ;next search
     Mbutton up::sendinput, {CtrlDown}{f}{Ctrlup} ;search
     F8 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
-    F19::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
-    $*capslock up::send,{esc}{
+    F20::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
+    ;$*capslock up::send,{esc}{
     ~*Lbutton up::send, {ctrlup}
     ; ~*lctrl up::send, {ctrlup}
     F6::sendinput, {altDown}{left}{altup}
@@ -132,7 +133,7 @@ return
 
     ReloadScript(){
     global iteration
-      ControlGetText, Iteration, Edit2, VarBar
+      ControlGetText, Iteration, Edit3, VarBar
       tooltip("Reload")
       if (iteration = -1)
       {

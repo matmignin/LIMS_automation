@@ -11,6 +11,7 @@ Class Excel{
 Connect(reload:=0){
 	Global
 	Gui VarBar:+LastFound 
+	envget, PrevProduct, PrevProduct
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook.xlsb")
@@ -26,12 +27,17 @@ Connect(reload:=0){
 	Try {
 		XL := ComObjActive("Excel.Application")
 		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
-		XL.Visible := True		
+		XL.Visible := True	
+		sht := XL.ActiveSheet.Name
+	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2")
+			xl.sheets(PrevProduct).select
 	}
 	Catch {
 		Tooltip("no excel workbook open", 4000)
 		exit
 	}	
+
+			
 	; For sheet in xl.ActiveWorkbook.Worksheets 
 	; 	Products.insert(Sheet.Name)
 	; Products.remove(1)
@@ -49,7 +55,10 @@ Connect(reload:=0){
 ;	While (Regexmatch(XL.Range("B7").Value, "[ADEGLHKJI]\d{3}", ExcelSheet) = 0)
 	;			Excel.NextSheet()
 	Product:=XL.Range("B7").Value
+	{
 		GuiControl, Varbar:Text, Product, %Product%
+		EnvSet, PrevProduct, %Product%	
+	}
 	Batch:=XL.Range("C4").Value
 		GuiControl, Varbar:Text, Batch, %Batch%
 	Lot:=XL.Range("E4").Value

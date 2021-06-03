@@ -19,7 +19,7 @@ IfWinActive, NuGenesis LMS - \\Remote
 	}  
 	; Input := Trim((Input, "`r`n"))
 	sleep 100
-	ControlGetText, Batch, Static1, VarBar
+	ControlGetText, Batch, Edit2, VarBar
 	ControlGetText, Product, Edit1, VarBar
 	if input contains Batch
 		Send, ^a%Batch%{enter}

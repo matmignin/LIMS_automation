@@ -30,17 +30,18 @@ Worktab_CheckDepartment(){
   global 
   ;clipboard:=
 Send, ^c
-sleep 200
-if (Regexmatch(Clipboard, "\bAnalytical\s\(In Process\)", Anal) > 0)
+sleep 300
+if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process Analytical\b)", Anal) > 0)
     Department:="Analytical"
-else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0) ; || (Regexmatch(Clipboard, "\bF, Micro\b",Micr) > 0)
-; else if (Regexmatch(Clipboard, "\bMicro\b",Micr) > 0) 
+else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)
     Department:="Micro"
-else if (Regexmatch(Clipboard, "\bI, Retain\b", Retain) > 0)
+else if (Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b)", Retain) > 0)
     Department:="Retain"
-else if (Regexmatch(Clipboard, "\bPhysical\b", Phys) > 0) ; || (Regexmatch(Clipboard, "\bI, Physical\b",Phys) > 0)
+else if (Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", Phys) > 0)
     Department:="Physical"
-else if (Regexmatch(Clipboard, "\bCT, Retain\b", CTRetain) > 0)
+else if (Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", CTPhys) > 0) 
+    Department:="CTPhysical"
+else if (Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", CTRetain) > 0)
     Department:="CTRetain"
 else {
   Tooltip(nope)
@@ -61,26 +62,7 @@ WorkTab_DropdownSelect(A_ShipTo){
   else if (a_ShipTo < 1)
     Sendinput, {end}{left %Absselection%}
   }
-Worktab_CheckDepartment2(){
-  global 
-  click, 32, 176
-  sleep 400
-  If Winactive("Edit sample (Field Configuration: F, Micro) - \\Remote")
-    Department:="Micro"
-  if winactive("Edit sample (Field Configuration: I, Analytical) - \\Remote")
-    Department:="Analytical"
-  if winactive("Edit sample (Field Configuration: I, Physical) - \\Remote")
-    Department:="Physical"
-  if winactive("Edit sample `(Field Configuration: CT`, Retain`) - \\Remote")
-    Department:="CTRetain"
-  else
-  Tooltip(De)
-  exit
-  send, {esc}
-  sleep 200
-  Tooltip(Department)
-return
-}
+
 
  
  
@@ -142,7 +124,51 @@ WorkTab_NewRequest(){
 }
 
 WorkTab_ChangeTestResults(Checkbox_Toggle:=0) {
-  global 
+  global
+  if (Iteration = "ERROR")
+    InputBox, Iteration, enter iteration, number please,, , , , , , , 1
+      if errorlevel
+        reload   
+  ;Tooltip(iteration, 5000) 
+  ;winactivate, Result Entry - \\Remote
+   if checkbox_toggle contains loop
+  {
+   if keep_running = y
+      {
+        keep_running = n ;signal other thread to stop
+        return
+      }
+    keep_running = y
+    winactivate, Result Entry - \\Remote
+    MouseGetPos, xpos, ypos
+    loop 25,
+      {
+        blockinput on
+        if keep_running = n ;another signal to stop
+        return
+        click
+        Mouse_Click("Orient_ResultEntry")
+      if keep_running = n ;another signal to stop
+        return
+        send, {tab}{Space}{tab}{Space}
+        send, {tab 10}^a 
+        sleep 100
+        send, %Iteration%
+      if keep_running = n ;another signal to stop
+        return
+        sleep 100
+        ypos:=ypos+26
+      if keep_running = n ;another signal to stop
+        return
+        mousemove, xpos, ypos,0
+        sleep 200
+        blockinput off
+      }
+      if keep_running = n ;another signal to stop
+        return
+      click
+      return
+  }  
   MouseGetPos, xpos, ypos
   click
   Mouse_Click("Orient_ResultEntry")

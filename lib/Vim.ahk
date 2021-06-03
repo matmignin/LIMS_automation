@@ -58,14 +58,15 @@ VIM:
     5::sendinput, ^m^c
     4::Vim.key("y$")
     y::vim.key("yy")
-    w::vim.key("byw")
+    w::send, {ShiftDown}{altDown}{Ctrldown}{s}{altup}{ShiftUp}{c}{Ctrlup}
     0::Vim.key("y0") ;sendinput, +{home}^c
+  #If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
+    w::send, {ShiftDown}{altDown}{Ctrldown}{s}{CtrlUp}{altup}{ShiftUp}
   #If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
     g::Send, ^{home}
   #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
     ; p::Sendinput, {~}p{esc}
   #If Getkeystate("Capslock","p") 
-	s::send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
     p::vim.key("p")
     1::F1
     2::F2
@@ -74,6 +75,9 @@ VIM:
     j::down
     ; j::down
     k::Up
+
+    s::send, {ShiftDown}{altDown}{Ctrldown}{s}{CtrlUp}{altup}{ShiftUp}
+    +s::send, {ShiftDown}{altDown}{Ctrldown}{e}{CtrlUp}{altup}{ShiftUp}
     ; k::Up
     h::left
     ; h::left
@@ -168,7 +172,7 @@ $CapsLock::esc
 
 
    #if
- $capslock::esc
+; $capslock::esc
 
 
 #If WinActive("ahk_exe Code.exe") && Getkeystate("Capslock","p") ;editor

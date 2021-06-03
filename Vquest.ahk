@@ -6,9 +6,7 @@ return
 
 
 QuickCode(){
-  gLOBAL
-gosub,  ReadSpecIntoDataBase
-  
+LMS.removecoaspace()
 }
 
 F19 & left::Test()
@@ -29,6 +27,8 @@ MouseSave(){
 	Global
 MouseGetPos, mx, my, mw,
 MouseReturn:="{click " Mx ", " My ",0}"
+NextY:=My+26
+Next:="{click " Mx ", " Nexty ",0}"
 return 
 }
 
@@ -164,12 +164,12 @@ KEY_DEFAULT:
   Rbutton & Xbutton2::Get_WindowInfo()
   Rbutton & F6::Backspace
   Rbutton & Lbutton::Enter
-  Rbutton up::Mouse_RbuttonUP()
+  Rbutton::Mouse_RbuttonUP()
  
 
-  Xbutton1 & Mbutton::Clip("OCR") 
-  Xbutton1 & LButton::Sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup} ;screenshot"
-  Xbutton1 & RButton::Sendinput,  {shiftdown}{ctrldown}3{CtrlUp}{shiftup};screenshot"
+  Xbutton1 & Rbutton::Clip("OCR") 
+  ; Xbutton1 & LButton::Sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup} ;screenshot"
+  Xbutton1 & lButton::Sendinput,  {shiftdown}{ctrldown}3{CtrlUp}{shiftup};screenshot"
   Xbutton1 & WheelUp::Wheel(Product)
   Xbutton1 & WheelDown::Wheel(Batch)
   Xbutton1 & wheelleft::Excel.PreviousSheet()
@@ -189,15 +189,22 @@ KEY_DEFAULT:
   F8 & F6::
   F19 & Space::Sendinput, %Product%{enter}
   F20 & Space::Sendinput, %batch%{enter}
-F20::menu()
- F20 & Right::send, #{right}
+  F20 & b::Sendinput, %batch%
+  F20 & c::Sendinput, %Coated%
+  F20 & p::Sendinput, %Product%
+  F20 & l::Sendinput, %Lot%
+  F20 & n::Sendinput, %Name%
+  F20 & u::Sendinput, %Customer%
+  
+  F20::Clip()
+  F20 & Right::send, #{right}
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
   F20 & Down::send, #{Down}
 
   F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   F20 & f19::WinActivate, ahk_exe WFICA32.EXE
-  F19::Clip()
+  F19::menu()
   ; enter::enter
 ; capslock::esc
 OpenApps:
@@ -211,10 +218,10 @@ OpenApps:
 !w::open_Workbook()
 !l::open_LMS()
 Xbutton2::menu()
-#If (A_PriorHotKey = "xbutton1" AND A_TimeSincePriorHotkey < 300) || (A_PriorHotKey = "F19" AND A_TimeSincePriorHotkey < 300)
+#If (A_PriorHotKey = "xbutton1" AND A_TimeSincePriorHotkey < 500) || (A_PriorHotKey = "F19" AND A_TimeSincePriorHotkey < 400)
   xbutton1::sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup}
-  F19::sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup}
-  F20::Clip("OCR")
+  F20::sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup}
+  F19::Clip("OCR")
 
   
     #If
@@ -231,36 +238,6 @@ Xbutton1::Clip()
 
 
 
-  
-Methods() {
-  global
-    ; Mouse_Click("searchBar_SelectMethodsTest")
-    WinActivate, Select methods tests - \\Remote
-    click, 229, 72,2
-    send, ^a
-    Loop, Read, Methods.ini
-  {
-    If A_Index = 1
-      Continue
-    Method := StrSplit(A_LoopReadLine, "=") 
-    ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
-    Selection:= % Method[1]
-    ; Group:= % MethodGroup[2]
-    Menu, Methodmenu, add, %Selection%, Methods
-  }
-    Menu, MethodMenu, Show,
-  return
-
-  Methods:
-  sleep 200
-  InputVar:=A_ThisMenuItem
-    IniRead,vOutput, Methods.ini, Methods, %InputVar%
-    Sendinput, %vOutput%{enter}
-    sleep 300
-    click 506, 341
-    Methods() 
-  return
-}	
 
 WindowNames() {
   global
@@ -425,7 +402,9 @@ VQuest_Start:
 EnvGet, Product, Product
 EnvGet, Batch, Batch
 EnvGet, lot, lot
-
+EnvGet, Coated, Coated
+EnvGet, Iteration, Iteration
+envget, PrevProduct, PrevProduct
 
 
   ; #WinActivateForce
@@ -441,26 +420,26 @@ EnvGet, lot, lot
   Menu, Tray, Add, List Lines, Run_ListLines
   Menu, Tray, Add, windowSpy, WindowSpySub 
   Menu, Tray, Default, List Lines ;Run_Listlines
-  ; SetBatchLines, 0ms
+  ;SetBatchLines, 30ms
   Setnumlockstate Alwayson
   setCapslockstate alwaysoff
   SetscrolllockState, alwaysOff
-  	CoordMode, mouse, Window
+  CoordMode, mouse, Window
 
-    SetMouseDelay, 5
+  SetMouseDelay, 5
   SetDefaultMouseSpeed, 1
   ; detecthiddenwindows, on
   SetTitleMatchMode, 2
   ; settitlematchmode, Slow
- #MaxHotkeysPerInterval 400
+ #MaxHotkeysPerInterval 800
  #HotkeyModifierTimeout 10
-  #maxthreadsperhotkey, 5
+  #maxthreadsperhotkey, 1
    SetKeyDelay, 0, 0
-  setwindelay,500
+  setwindelay,400
   sendinput, {CtrlUp}{AltUp}{shiftup}{LWinUp}
   AutoTrim, On
   Main:="NuGenesis LMS - \\Remote"
-  FormatTime, TimeString,, d/M/yy 
+  FormatTime, TimeString,, M/d/yy 
   Menu, Tray, Icon, Robot.ico
     Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
     Iniread, FilterBox_Y, data.ini, Locations, FilterBox_Y

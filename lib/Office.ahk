@@ -4,20 +4,24 @@ KEY_Excel:
   #IfWinActive, LMS Workbook.xlsb
   F8::Excel.Connect(1)
   MButton::Excel.Connect(1)
+  F19 & backspace::delete
+  F19 & down::^down
+  F19 & up::^up
+  F19 & left::^left
+  F19 & right::^right
   F13 & F6::Click.SearchBar(2,"Product","xl") 
-  F13 & F7::Click.SearchBar("Batch","enter","xl") 
-  #ifwinactive, Book4
-    F7::
+  F13 & F7::Click.SearchBar("Batch","{enter}","xl") 
+#ifwinactive, Book
+      F7::sendinput, #{right}
       wheelright::sendinput, #{right}
-      return
-    F6::
+      F6::sendinput, #{left}
       wheelleft::sendinput, #{left}
-      return
-  #ifwinactive, ahk_exe EXCEL.EXE
-    ~$rbutton::return
+#ifwinactive, ahk_exe EXCEL.EXE
+    $rbutton::Mouse_RbuttonUP()
   +Enter::sendinput, !{enter}
   $Enter::sendinput, {enter}
-  F8::Excel.Search()
+  F10::send, ^f!t!h{right}{enter}!s{right}!t!n
+;  Excel_Search()
   ; Mbutton::Excel.Connect(1)
   F6::wheel("{wheelleft}",80)
   F7::wheel("{wheelRight}",80)
@@ -25,7 +29,7 @@ KEY_Excel:
   ; Mbutton & Wheeldown::^wheeldown
   Xbutton2 & F7::^PgDN ;Excel.NextSheet()
   Xbutton2 & F6::^PgUp ;Excel.PreviousSheet()
-  #ifwinactive, Find and Replace,
+#ifwinactive, Find and Replace,
   Xbutton1 & WheelUp::
   Send, !{n}%Product%
   sleep 400
@@ -47,7 +51,7 @@ KEY_OUTLOOK:
   Xbutton2 & WheelDown::Mouse_CloseWindow() ; searchbar("batch")
   Xbutton2 & Wheelup::searchBar("Product")
   Xbutton1::Clip()
-
+  F20 & Space::sendinput % Trim(Batch, OmitChars = " `n")
   Xbutton1 & Wheelright::Varbar.AddIteration()
   Xbutton1 & wheelleft::Varbar.SubIteration()
   F8::LMS_Search()

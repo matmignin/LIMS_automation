@@ -10,7 +10,7 @@ class click{
       ; A_Code:=Batch
     ; If code Contains lot
       ; A_Code:=lot
-    ControlGetText, Batch, Static1, VarBar
+    ControlGetText, Batch, Edit2, VarBar
     ControlGetText, Lot, Static2, VarBar
     ControlGetText, Product, Edit1, VarBar                          
     ProductFilter:=FilterBox_X
@@ -18,7 +18,7 @@ class click{
     LotFilter:=BatchFilter+100
     SampleSearch_y:=Filterbox_Y-60
     samplesearch_X:=Filterbox_X+80
-    ProductSearch_X:=Filterbox_X+130
+    ProductSearch_X:=Filterbox_X+35
     ProductSearch_Y:=Filterbox_Y-90
     
     blockinput on
@@ -33,36 +33,36 @@ class click{
     else if winactive("Select methods tests - \\Remote")
       click, 246,77, 2  
     else If winactive("Register new samples - \\Remote")
-        send, {click 180, 103, 2}%Product%{enter}%mouseReturn% 
+        send, {click 180, 103, 2}%Product%%mouseReturn% 
     else 
     {
-      DetectTab()
+      LMS.DetectTab()
     if Tab contains Product_Spec
 
     {
-      send, {Click %ProductSearch_X%,%ProductSearch_Y%, 2}^a%Product%^a{enter}%mouseReturn% 
+      send, {Click %ProductSearch_X%,%ProductSearch_Y%, 2}^a%Product%^a%PostCMD%%mouseReturn% 
       return
     }
     else if tab contains Request
       {
-        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%Code%{enter}%mouseReturn%
+        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%Code%^a%mouseReturn%
             return
       }
     else 
       if Filterbox:=0
       {
-        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%mouseReturn% ;%Code%^a
+        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%Code%^a%mouseReturn% ;
               return
     }
       else
         if (Code:=Product)
         {
-          Send, {Click %ProductFilter%, %Filterbox_Y%,2}^a%product%%mouseReturn% ;%Code%^a
+          Send, {Click %ProductFilter%, %Filterbox_Y%,2}^a%product%^a%mouseReturn%
                 return
     }
         else (Code:=Lot)
         {
-          Send, {Click %LotFilter%, %Filterbox_Y%,2}^a%lot%%mouseReturn% ;%Code%^a
+          Send, {Click %LotFilter%, %Filterbox_Y%,2}^a%lot%^a%mouseReturn%
                 return
     }
     }
@@ -102,7 +102,7 @@ class click{
   ;  }
   ;  
       ; Send, ^a%Product%
-    ; Send, {%postCMD%}
+    Send, %postCMD%
     sleep 300
     	blockinput off
       

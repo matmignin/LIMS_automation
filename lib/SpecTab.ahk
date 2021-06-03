@@ -110,8 +110,8 @@ If Department Contains Retain
 If Department Contains CTRetain
   SpecTab_Edit_CoatedRetain()
 sleep 500
-excel.NextSheet()
-Tooltip(Product)
+;excel.NextSheet()
+;Tooltip(Product)
   return
   }
 Class SpecTab_TestSpecs{
@@ -136,7 +136,7 @@ Class SpecTab_TestSpecs{
 				if errorlevel
 					WinActivate, Results Definition
       WinActivate, Results Definition - \\Remote
-      click 282, 121 ; click row
+      click 282, 141 ; click row
         sleep 100
     send, ^c
     sleep 200
@@ -170,7 +170,7 @@ Class SpecTab_TestSpecs{
 				SpecTab_TestDefinitionEditor(Description) ; the pre window
 				sleep 200
 					Wheel_scroll("100")
-					click 240, 488 ;click resulst
+					click 232, 244 ;click resulst
 					sleep 200
 					WinActivate, Results Definition - \\Remote
 					WinWaitActive, Results Definition,,0.25
@@ -493,7 +493,7 @@ SpecTab_Edit_CoatedRetain(){
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel 
 		click.EditSampleTemplate()
-		sendinput, {tab}{delete 4}%Product%`, {Shift down}C{shift up}oated{tab 3}{tab 4}
+		sendinput, {tab}^{a}%Product%`, {Shift down}C{shift up}oated`, {shift down}R{shift Up}etain
 	return
 	}
 SpecTab_Edit_CoatedPhysical(){
@@ -508,7 +508,7 @@ SpecTab_Edit_CoatedPhysical(){
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel 
 click.EditSampleTemplate()
-		sendinput, {tab}{delete 16}%Product%`, {Shift down}C{shift up}oated{tab 3}{left 4}
+		sendinput, {tab}^{a}%Product%`, {Shift down}C{shift up}oated`, {shift down}P{shift Up}hysical
 	return
 	}		
 SpecTab_Edit_Retain(){

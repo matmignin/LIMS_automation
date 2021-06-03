@@ -13,9 +13,7 @@ KEY_Varbar:
   mbutton::Varbar.LaunchTable()
   Xbutton1 & F6::ProductTab_Table()
   Xbutton1 & F7::SpecTab_Table()
-  Rbutton::
-	Menu.Tables()   ; Excel.connect()
-	menu.show()
+  Rbutton::Menu.Tables()   ; Excel.connect()
 	return
 	F8::ReloadScript()
   ; Lbutton::MouseClick, Right,,,1, 0, U
@@ -58,18 +56,19 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	; Varbar_Y := LMS_Y
 	Gui, VarBar:color, 21a366
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
-	Gui, VarBar:Add, edit, vProduct gproductVarBar left ReadOnly h30 x0 y0 w62, %product% ;|%DDLProducts%	
-	GUI, VarBar:Font, s12 cBlack Bold, Consolas
-	Gui, VarBar:add, Text, vBatch x68 y0 w100, %Batch%
+	Gui, VarBar:Add, edit, vProduct gproductVarBar left  h30 x0 y0 w62, %product% ;|%DDLProducts%	
+	GUI, VarBar:Font, s10 cBlack Bold, Consolas
+	Gui, VarBar:add, Text, vBatch2 x68 y0 w100, %Batch2%
+	Gui, VarBar:add, Edit, vBatch gbatchVarbar H18 x62 y-3 w70, %Batch%
 	GUI, VarBar:Font, s9 cBlack , Arial Narrow
 	Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
 	GUI, VarBar:Font, s7 cBlack , arial
-	Gui, VarBar:add, Text, vCoated x120 y18 w50, %Coated%
+	Gui, VarBar:add, Text, vCoated -wrap Right x100 y17 w80, %Coated%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
 	Gui, VarBar:add, Text, vname  x160 -wrap y0 w160, %Name%
-	Gui, VarBar:add, Text, vcustomer  x210 -wrap y16 w160, %Customer%
+	Gui, VarBar:add, Text, vcustomer  x200 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
-	Gui, VarBar:add, Text, vColor x120 wrap y18 w80, %Color%
+	Gui, VarBar:add, Text, vColor x190 wrap y18 w90, %Color%
 	GUI, VarBar:Font, s11 cBlack Bold, Consolap
 	; Gui, VarBar:Add, text, gIterationVarBar vIteration left x300 h30 y0 w70,
 	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
@@ -89,7 +88,10 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 ProductVarBar:
 sleep 100
 Gui, VarBar:submit,NoHide
-
+return
+BatchVarBar:
+sleep 100
+Gui, VarBar:submit,NoHide
 return
 IterationVarBar:
 	; sleep 600
@@ -131,8 +133,10 @@ Relocate(){
 	PostMessage, 0xA1, 2 
 	 keywait, Lbutton, U
 	 wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+	 Excel.Connect()
 	IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 	IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+	
 	sleep 300
 	return
 }
@@ -141,7 +145,7 @@ Clear(Var:="NotProduct"){
 	global
 	If Var contains NotProduct
 	{
-		ControlsetText, Static1,, VarBar
+		ControlsetText, Edit2,, VarBar
 		ControlsetText, Static2,, VarBar
 		ControlsetText, Static3,, VarBar
 		ControlsetText, Static4,, VarBar
@@ -176,10 +180,14 @@ If Var contains NotBatch
 
 LaunchTable(){
 		global
+		try GUI ingredient_table:destroy
+		try GUI Spec_table:destroy
     if winactive("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
       SpecTab_Table()
-    else
+    if winactive("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
       ProductTab_Table()
+		else 
+			Menu.Tables()	
   return
   }
 
@@ -265,17 +273,19 @@ Search(input){
 AddIteration(){
 	global Iteration
 	GuiControl, Varbar:Text, iteration, %iteration%
+	CoordMode, tooltip, screen
 	Iteration+=1
-	sleep 50
-	tooltip(Iteration)
+	sleep 150
+	tooltip(Iteration, 2000,(Varbar_x+20),Varbar_y)
 	return
 	}
 SubIteration(){
 	global Iteration
+	CoordMode, tooltip, screen
 	GuiControl, Varbar:Text, iteration, %iteration%
 	Iteration-=1
-	sleep 50
-	tooltip(Iteration)
+	sleep 150
+	tooltip(Iteration,2000,((Varbar_x+20)),Varbar_y)
 	return
 	}
 
