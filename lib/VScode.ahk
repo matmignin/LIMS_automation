@@ -27,7 +27,7 @@ return
     F19 & =::sendinput, {CtrlDown}{=}{Ctrlup}
     F19 & backspace::Delete
     F19 & w::Windownames()
-    F19::menu()
+    F19::menu.vscode()
     F19 & `::sendinput, ~
     F19 & m::sendinput, %MousePosition%
     F19 & t::sendinput, %wintitle%
