@@ -74,10 +74,23 @@ Tables(){
 }
 
 VScode(){
+  global
   menu.delete()
+  menu, Menu, Add, Search Hotkeys, vscode
+  Menu, hotkeyMenu, Add, Xbutton1, vscode
+  Menu, hotkeyMenu, Add, Numlock, vscode
+  Menu, hotkeyMenu, Add, Xbutton3, vscode
+  Menu, hotkeyMenu, Add, F15, vscode
+  Menu, hotkeyMenu, Add, F6, vscode
+  Menu, hotkeyMenu, Add, F7, vscode
+  Menu, hotkeyMenu, Add, F8, vscode
+  Menu, hotkeyMenu, Add, Mbutton, vscode
+  Menu, hotkeyMenu, Add, Rbutton, vscode
+  Menu, hotkeyMenu, Add, Wheel, vscode
+  menu, Menu, add, Search Hotkeys, :HotkeyMenu
   Menu, menu, Add, &Mouse `t %MousePosition%, vscode
   Menu, menu, Add, &Title `t %WinTitle%, vscode
-  Menu, menu, Add, P&rocess `t %WinProcess%, vscode
+  Menu, menu, Add, &Process `t %WinProcess%, vscode
   Menu, menu, Add, &Control `t %WinControl%, vscode
 menu.show()
 
@@ -141,7 +154,7 @@ Menu(n:=0){
   If winactive("Results Definition - \\Remote")
     Heavy_meatals()
   if WinActive("ahk_exe Code.exe")
-    VScode()
+    menu.VScode()
   If WinActive("Remote Desktop Connection") 
     remote_desktop()
 
@@ -349,7 +362,7 @@ Autofill:
   else if A_thismenuitem contains New &Request
   {
     MouseGetPos, MX, MY, MWin,, 
-    WorkTab_NewRequest()
+    WorkTab.NewRequest()
     winwaitactive, NuGenesis LMS - \\Remote
     Click, MX, Y+25,
   }
@@ -381,29 +394,6 @@ Autofill:
     menu, menu, deleteAll
 return
 }
-
-VScode(){
-  Global
-  try menu, menu, deleteAll
-  menu, Menu, Add, Search Hotkeys, vscode
-  Menu, hotkeyMenu, Add, Xbutton1, vscode
-  Menu, hotkeyMenu, Add, Numlock, vscode
-  Menu, hotkeyMenu, Add, Xbutton3, vscode
-  Menu, hotkeyMenu, Add, F15, vscode
-  Menu, hotkeyMenu, Add, F6, vscode
-  Menu, hotkeyMenu, Add, F7, vscode
-  Menu, hotkeyMenu, Add, F8, vscode
-  Menu, hotkeyMenu, Add, Mbutton, vscode
-  Menu, hotkeyMenu, Add, Rbutton, vscode
-  Menu, hotkeyMenu, Add, Wheel, vscode
-  menu, Menu, add, Search Hotkeys, :HotkeyMenu
-  Menu, menu, Add, &Mouse `t %MousePosition%, vscode
-  Menu, menu, Add, &Title `t %WinTitle%, vscode
-  Menu, menu, Add, P&rocess `t %WinProcess%, vscode
-  Menu, menu, Add, &Control `t %WinControl%, vscode
-  menu, menu, add,
-  default()
-return
 
 VScode:
   if (A_thismenuitem = "Xbutton1")
@@ -439,7 +429,7 @@ VScode:
                 else 
                   menu, menu, deleteAll
               return
-            }
+            
 
             remote_desktop(){
               global

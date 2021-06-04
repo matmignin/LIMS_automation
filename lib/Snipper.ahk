@@ -8,7 +8,7 @@ KEY_Snipper:
   F8::excel.PasteValues("snip")
   #IfWinActive, Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
   F8 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
-  F8::send, {esc}
+  Media_Next::send, {esc}
   Xbutton1::sendinput, ^c
   F7::sendinput, ^+{+}
   F6::sendinput, ^+{-}

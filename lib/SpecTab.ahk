@@ -93,7 +93,7 @@ SpecTab_CopySpecTemplate(){
   sleep 200
   ; clipwait; Tooltip, %Clipboard%
 	sleep 100
-Worktab_CheckDepartment()
+	LMS.CheckDepartment()
   sleep 400
   tooltip(department)
   click.CopySpecTemplate()
@@ -178,7 +178,7 @@ Class SpecTab_TestSpecs{
 							WinActivate, Results Definition
       Mouse_Click("edit")
       winwaitactive, Result Editor - \\Remote
-      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement,"False")
+      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
       return
     }
     

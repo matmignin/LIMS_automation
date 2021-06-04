@@ -12,6 +12,7 @@ Connect(reload:=0){
 	Global
 	Gui VarBar:+LastFound 
 	envget, PrevProduct, PrevProduct
+	; envget, iteration, Iteration
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook.xlsb")

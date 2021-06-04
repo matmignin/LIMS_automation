@@ -13,7 +13,7 @@
 
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
 		excel.connect()
-		WorkTab_NewRequest()
+		WorkTab.NewRequest()
 		return ;click, 79, 440
 
 	} Else If Winactive("ahk_exe EXCEL.EXE") {
@@ -83,7 +83,7 @@
 
 		;SampleTab -------------------------------------------------------------------
 	} Else If winactive("Result Entry - \\Remote"){
-		WorkTab_ChangeTestResults("toggle")	
+		WorkTab.ChangeTestResults("toggle")	
 	} else if winexist("Reason For Change - \\Remote"){
 		winactivate, Reason For Change - \\Remote	
 		sendinput, {click 143, 118}Fixing Rotation{click 240, 239}
@@ -91,7 +91,7 @@
 				return
 	} else if Winactive("Register new samples - \\Remote"){
 			If Option = 0
-				WorkTab_EditSample()
+				WorkTab.EditSample()
 			else {
 				sendinput, {Click 200, 134} 
 				sleep 300 ;register new sample
@@ -109,7 +109,7 @@
 
 		;================================================================== make a method
 	} Else if winactive("Edit sample (Field Configuration:") {
-		WorkTab_EditSample() ;
+		WorkTab.EditSample() ;
 	
 	} Else If winactive("Find and Replace") {
 		sendinput, %Product%
@@ -138,15 +138,15 @@
 		winactivate,
 		sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
 	} Else If winactive("Edit test (Field Configuration:"){
-			WorkTab_AddTestDescription("(on sample log)")
-			;WorkTab_AddTestDescription("(Send Out Eurofins)")
+			WorkTab.AddTestDescription("(on sample log)")
+			;WorkTab.AddTestDescription("(Send Out Eurofins)")
 	} Else If winactive("Register new samples - \\Remote ") {
 		Sendinput, {tab 2}{space}
 		winwaitactive, Error - \\Remote, , 4
 		sendinput, {enter}
 		sleep 400
 		send, {click 180, 105, 2}^a%product%{enter}
-		;WorkTab_EditSample()
+		;WorkTab.EditSample()
 		return
 		
 		
@@ -169,8 +169,6 @@
 		return
 }
 
-	WorkTab_AddTestDescription(Text){
-		sendinput, {click 305, 294}{end}%TEXT%{click 330, 617}
-	}
+
 	
 	

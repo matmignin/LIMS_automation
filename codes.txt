@@ -5447,3 +5447,10 @@ K237
 " K427"
 K427
 K427
+
+K194
+000-2222
+k277
+Status	Batch	Formulation ID	Type	Sample Id	Submission Id	Product	Product Trade Name	Pkg Lot #	Blister Lot #	Date Created	Ship To	Date Received	Created By	Department	Shape/Size	Description/Color	Description	Product Alternate ID 1	Product Label Claim	Alternate ID 1 Text	Category	Received By	Canceled By	Owner	Storage Location	Sample Guid	Stage	Document	Reason For Change	Orientation	Specification	Sample Template	Connector Status	Connector Status Description	
+200	000-2225	K154	Physical (Coated)	S20210604-014		K154, Macular Shield AREDS2 OHHSC-32	Macular Shield AREDS2 OHHSC-32	000000BA		6/4/2021 2:29:32 AM	111Skin Limited	6/4/2021 2:29:32 AM	mmignin	Analytical	#0 capsule / 0.854" x 0.300"	White with red speckled powder fill in clear capsule		K154			QC	mmignin			Analytical Lab	a79c495c-c1e2-4d10-85d4-9326b238c013							0	
+

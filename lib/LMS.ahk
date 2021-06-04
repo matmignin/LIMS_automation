@@ -55,16 +55,16 @@ KEY_LMS:
   F6::Autofill()
 F6::esc
 #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window
-  Rbutton::WorkTab_ChangeTestResults("toggle")	
-  F6::WorkTab_ChangeTestResults("toggle")
+  Rbutton::WorkTab.ChangeTestResults("toggle")	
+  F6::WorkTab.ChangeTestResults("toggle")
   #MaxThreadsPerHotkey 2
   ;setwindelay,10
-    F8::WorkTab_ChangeTestResults("loop")
+    F8::WorkTab.ChangeTestResults("loop")
   ;setwindelay,500
   #MaxThreadsPerHotkey 1
-  ; F8::WorkTab_ChangeTestResults("loop")
-  F7::WorkTab_ChangeTestResults()
-  ;F7::WorkTab_ChangeTestResults()
+  ; F8::WorkTab.ChangeTestResults("loop")
+  F7::WorkTab.ChangeTestResults()
+  ;F7::WorkTab.ChangeTestResults()
 F6::esc
   
 #ifwinactive, Register new samples - \\Remote
@@ -75,6 +75,9 @@ F6::esc
   F9::Send, {click 194, 188}^a
   
 F6::esc
+#IfWinActive, Select tests for request: R
+Mbutton::quickcode()
+
 #ifwinactive, Select samples for test:
   F7::sendinput % MouseSave() "{click 504, 324}" MouseReturn ; add test. 
 F6::esc
@@ -155,7 +158,30 @@ Methods() {
 
 }	
   
+CheckDepartment(){
+  global 
+  ;clipboard:=
+Send, ^c
+sleep 300
+if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", Anal) > 0)
+    Department:="Analytical"
+else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)
+    Department:="Micro"
+else if (Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b)", Retain) > 0)
+    Department:="Retain"
+else if (Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", Phys) > 0)
+    Department:="Physical"
+else if (Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", CTPhys) > 0) 
+    Department:="CTPhysical"
+else if (Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", CTRetain) > 0)
+    Department:="CTRetain"
+else {
+  Tooltip(nope)
   
+  sleep 300
+  exit
+}
+}  
   
 DeleteRetain(){
   gLOBAL

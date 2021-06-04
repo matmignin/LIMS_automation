@@ -69,8 +69,8 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	Gui, VarBar:add, Text, vcustomer  x200 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
 	Gui, VarBar:add, Text, vColor x190 wrap y18 w90, %Color%
-	GUI, VarBar:Font, s11 cBlack Bold, Consolap
-	; Gui, VarBar:Add, text, gIterationVarBar vIteration left x300 h30 y0 w70,
+	GUI, VarBar:Font, s12 cBlack Bold, Consolap
+	Gui, VarBar:Add, text, vIteration x285 y0 w70, %iteration%
 	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
 	OnMessage(0x203, "VarBar.Relocate")
 	CoordMode, mouse, screen
@@ -93,7 +93,7 @@ BatchVarBar:
 sleep 100
 Gui, VarBar:submit,NoHide
 return
-IterationVarBar:
+; IterationVarBar:
 	; sleep 600
 	; Gui, VarBar:Submit,Nohide
 	; ControlGetText, Iteration, Edit2, VarBar
@@ -151,7 +151,7 @@ Clear(Var:="NotProduct"){
 		ControlsetText, Static4,, VarBar
 		ControlsetText, Static5,, VarBar
 		ControlsetText, Static6,, VarBar
-		ControlsetText, Static7,, VarBar
+		
 		ControlsetText, Static8,, VarBar
 	}
 If Var contains NotBatch
@@ -272,20 +272,24 @@ Search(input){
 
 AddIteration(){
 	global Iteration
-	GuiControl, Varbar:Text, iteration, %iteration%
+	; GuiControl, Varbar:Text, iteration, %iteration%
 	CoordMode, tooltip, screen
 	Iteration+=1
 	sleep 150
-	tooltip(Iteration, 2000,(Varbar_x+20),Varbar_y)
+	ControlsetText, Static7,%Iteration%,VarBar
+	envset, iteration, %iteration%
+	; tooltip(Iteration, 3000,(Varbar_x+80),Varbar_y)
 	return
 	}
 SubIteration(){
 	global Iteration
 	CoordMode, tooltip, screen
-	GuiControl, Varbar:Text, iteration, %iteration%
+	; GuiControl, Varbar:Text, iteration, %iteration%
 	Iteration-=1
-	sleep 150
-	tooltip(Iteration,2000,((Varbar_x+20)),Varbar_y)
+	sleep 150	
+	ControlsetText, Static7,%Iteration%,VarBar
+	envset, iteration, %iteration%
+	; tooltip(Iteration,3000,((Varbar_x+80)),Varbar_y)
 	return
 	}
 

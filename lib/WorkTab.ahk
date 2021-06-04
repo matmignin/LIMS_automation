@@ -1,57 +1,49 @@
-WorkTab_EditSample(){
+Class WorkTab {
+
+EditSample(){
   global		
-  ;EnvGet, ShipTo, ShipTo
-  ; excel.connect()
-ifwinactive, Register new samples - \\Remote
-  click 2
-  sleep 200
-  winwaitactive, Edit sample (Field Configuration
-  sendinput, {tab 2}{right}{click 277, 139}{tab 6}
-  IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-    sendinput, {tab}^a
-  sendinput, ^a%Batch%{tab}^a
-  IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote 
+  mx:=
+  my:=
+  if Iteration=""
+    iteration=1
+  ifwinactive, Register new samples - \\Remote
+  MouseGetPos, mx, my
+  loop %iteration%
   {
-    sendinput, {CtrlDown}{a}{Ctrlup}%Lot%
-    send, {tab 3}
-    sleep 100
-    sendinput, {CtrlDown}{a}{Ctrlup}%Coated%
-    sleep 100
-    send, +{tab 2}
-  }
-  sleep 140
-  WorkTab_DropdownSelect(ShipTo)
-  sleep 300
-  send, {enter}
-    return
-}
-
-Worktab_CheckDepartment(){
-  global 
-  ;clipboard:=
-Send, ^c
-sleep 300
-if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process Analytical\b)", Anal) > 0)
-    Department:="Analytical"
-else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)
-    Department:="Micro"
-else if (Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b)", Retain) > 0)
-    Department:="Retain"
-else if (Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", Phys) > 0)
-    Department:="Physical"
-else if (Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", CTPhys) > 0) 
-    Department:="CTPhysical"
-else if (Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", CTRetain) > 0)
-    Department:="CTRetain"
-else {
-  Tooltip(nope)
-  
-  sleep 300
-  exit
+    click 2
+    sleep 200
+    winwaitactive, Edit sample (Field Configuration,,2
+      if ErrorLevel
+        exit
+    sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+    IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
+      sendinput, {tab}^a
+    sendinput, ^a%Batch%{tab}^a
+    IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote 
+    {
+      sendinput, {CtrlDown}{a}{Ctrlup}%Lot%
+      send, {tab 3}
+      sleep 100
+      sendinput, {CtrlDown}{a}{Ctrlup}%Coated%
+      sleep 100
+      send, +{tab 2}
+    }
+    sleep 140
+    WorkTab.DropdownSelect(ShipTo)
+    sleep 300
+    send, {enter}
+    sleep 400
+    winactivate, Register new samples - \\Remote
+    my:=my+26
+    MouseMove, mx, my
+    sleep 200
+      ; retrn
 }
 }
 
-WorkTab_DropdownSelect(A_ShipTo){
+
+
+DropdownSelect(A_ShipTo){
   AbsSelection:=Abs(A_ShipTo)-1
   if (a_shipto = "-1")
     Sendinput, {end}
@@ -66,7 +58,7 @@ WorkTab_DropdownSelect(A_ShipTo){
 
  
  
-WorkTab_NewRequest(){
+NewRequest(){
   global
   department:= ; Clip()
   Clipboard:=
@@ -76,7 +68,7 @@ WorkTab_NewRequest(){
   sleep 200
 
   sleep 50
-  Worktab_CheckDepartment()
+  LMS.CheckDepartment()
   sleep 400
   tooltip, %department%
   click 64, 300 ;click Assign To New rewuest link
@@ -123,7 +115,7 @@ WorkTab_NewRequest(){
 
 }
 
-WorkTab_ChangeTestResults(Checkbox_Toggle:=0) {
+ChangeTestResults(Checkbox_Toggle:=0) {
   global
   if (Iteration = "ERROR")
     InputBox, Iteration, enter iteration, number please,, , , , , , , 1
@@ -185,7 +177,7 @@ WorkTab_ChangeTestResults(Checkbox_Toggle:=0) {
 
 }
 
-WorkTab_AddSampleLog(count) 
+AddSampleLog(count) 
 {
   global
   ;MouseGetPos, xpos, ypos
@@ -205,10 +197,17 @@ WorkTab_AddSampleLog(count)
   return
 }
 
-WorkTab_Main_EditResults() 
+Main_EditResults() 
 {
   sendinput, {click}{click 77, 751} ;edit results
   winwaitactive, Results Definition - \\Remote
   return
 }
+	AddTestDescription(Text){
+		sendinput, {click 305, 294}{end}%TEXT%{click 330, 617}
+	}
 
+
+
+
+}

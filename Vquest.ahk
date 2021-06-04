@@ -6,8 +6,31 @@ return
 
 
 QuickCode(){
-
+global
+MouseGetPos, mx, my
+click
+; {
+  lms.CheckDepartment()
+  click 647, 75
+  winwait, Select samples for test
+  sleep 600
+  click 463, 71
+  send, {click 244, 69}
+  sleep 200
+  send, {click 205, 184}
+  sleep 200
+  send, {click 171, 127}^{a}%department%{enter}{tab}^a{click 506, 323}
+  ; if (department="Analytical")
+    ; send, 
+    ; my:=my+26
+    ; MouseMove, mx, my
+    ; sleep 200
+return
 }
+
+
+
+
 
 F19 & left::Test()
 F19 & right::Test_2()
@@ -191,6 +214,8 @@ KEY_DEFAULT:
   ~lbutton & b::send, {f21}
 
   F19 & Space::Sendinput, %Product%{enter}
+  F19 & backspace::send, {delete}
+  F20 & backspace::run, Taskmgr.exe
   F19 & lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
   F19::menu()
   F20 & Space::Sendinput, %batch%{enter}
@@ -201,11 +226,30 @@ KEY_DEFAULT:
   F20 & n::Sendinput, %Name%
   F20 & u::Sendinput, %Customer%
   
+  
   F20 & Right::send, #{right}
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
   F20 & Down::send, #{Down}
-  F20::Clip()
+  F20::
+	KeyWait,F20
+	KeyWait,F20,D T0.6
+	If ErrorLevel
+		clip()
+	else
+		Clip("OCR")
+return
+ 
+; F20::
+; Critical
+; KeyWait, F20
+; KeyWait,F20,D T0.6
+; If !ErrorLevel
+;   Clip("OCR")
+; Clip()
+; Sleep 200
+; Return
+  ; F20::Clip()
 
   ; F19 & f20::WinActivate, ahk_exe WFICA32.EXE
   ; F20 & f19::WinActivate, ahk_exe WFICA32.EXE
@@ -410,7 +454,8 @@ EnvGet, Product, Product
 EnvGet, Batch, Batch
 EnvGet, lot, lot
 EnvGet, Coated, Coated
-EnvGet, Iteration, Iteration
+; EnvGet, Iteration, Iteration
+iteration=1
 envget, PrevProduct, PrevProduct
 trackpadhints=
 (
@@ -461,8 +506,8 @@ right `t browswer forward `t (xbutton1)
   Main:="NuGenesis LMS - \\Remote"
   FormatTime, TimeString,, M/d/yy 
   Menu, Tray, Icon, Robot.ico
-    Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
-    Iniread, FilterBox_Y, data.ini, Locations, FilterBox_Y
+  Iniread, FilterBox_X, data.ini, Locations, FilterBox_X
+  Iniread, FilterBox_Y, data.ini, Locations, FilterBox_Y
   Iniread, Iteration, data.ini, SavedVariables, Iteration
   Iniread, VarBar_X, data.ini, Locations, VarBar_x
   Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
@@ -471,6 +516,7 @@ right `t browswer forward `t (xbutton1)
   Products:=[]
   Lots:=[]
   Excel.Connect(1)
+  ControlsetText, Static7,1,VarBar
   if (testing = 1)
     Menu, Tray, Check, Testing
   if (testing = 0)

@@ -4,12 +4,13 @@ return
   $F12::Reload 
   F1::help
   F2::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+  F19 & Media_Play_Pause::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
   lctrl & Capslock::return
   ^Capslock::return
   ; $F3::ListLines, On
   $^F12::ListLines,
   $+F12::ListLines,
-  Media_Play_Pause::send, {F5}
+  Media_Play_Pause::listlines,
   ^esc::return
 ;	#!\::Login()
 
@@ -27,6 +28,12 @@ return
     F19 & =::sendinput, {CtrlDown}{=}{Ctrlup}
     F19 & backspace::Delete
     F19 & w::Windownames()
+    F19 & down::^down
+    F19 & up::^up
+    lctrl & j::^down
+    lctrl & k::^up
+    F19 & left::^left
+    F19 & right::^right
     F19::menu.vscode()
     F19 & `::sendinput, ~
     F19 & m::sendinput, %MousePosition%
@@ -37,7 +44,7 @@ VsCode_:
     ; mbutton::wheel_2("^m",2000)
     Tab & f:: sendinput, {ShiftDown}{altDown}{Ctrldown}{]}{CtrlUp}{altup}{ShiftUp}
     tab::tab
-    !t::tooltip(trackpadhints,9000)
+    !t::tooltip(trackpadhints,5000)
     <^r::ReloadScript()
     Mbutton & F7::Sendinput, {Ctrldown}]{CtrlUp}
     Mbutton & F6::sendinput,{Ctrldown}[{CtrlUp}
@@ -93,7 +100,7 @@ return
         WinGetTitle, winTitle, A
         WinGetClass, Winclass, A
         WinGet, WinProcess, ProcessName, A			
-        MousePosition:="click" MousePosX "`, " MousePosY
+        MousePosition:="click " MousePosX "`, " MousePosY
         Sleep, 100
         Tooltip(MousePosition "`n Title: " winTitle " `n Process:  " WinProcess " `n Control:  "winControl " `n Class:  " winclass )
 				Process:= "ahk_exe " WinProcess
@@ -116,7 +123,7 @@ return
         WinGetClass, Winclass, A
         WinGet, WinProcess, ProcessName, A			
         Sleep, 100
-        MousePosition:=MousePosX "`, " MousePosY
+        MousePosition:= "click " MousePosX "`, " MousePosY
         Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
 				Process:="ahk_exe " WinProcess
 
