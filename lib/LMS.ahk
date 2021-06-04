@@ -4,6 +4,8 @@ KEY_LMS:
   F8::Mouse_CloseWindow()
   Xbutton2 & WheelRight::sendinput, {click, 743, 41}
   Xbutton2 & WheelLeft::sendinput, {Click 354, 44}
+  F19 & lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
+  rshift & lbutton::sendinput, {shiftDown}{click}{shiftup}
   F19 & space::sendinput % RTrim((Product, "`r`n")) "{enter}"
   F20 & space::Sendinput, % RTrim((Batch, "`r`n")) "{enter}"
   F6::Click.SearchBar(Product,"{enter}")

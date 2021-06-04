@@ -151,7 +151,7 @@ Class SpecTab_TestSpecs{
     MinLimit:=Parsedspecs[17]
     MaxLimit:=Parsedspecs[18]
     Percision:=Parsedspecs[19]
-    Requirement:=Parsedspecs[20]
+    FullRequirements:=Parsedspecs[20]
     Units:=Parsedspecs[21]
     ;tooltip(Requirement)
 		sleep 200
@@ -178,7 +178,7 @@ Class SpecTab_TestSpecs{
 							WinActivate, Results Definition
       Mouse_Click("edit")
       winwaitactive, Result Editor - \\Remote
-      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+      SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement,"False")
       return
     }
     
@@ -389,42 +389,38 @@ SpecTab_Create_Template:
 			}			
 
 
-SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,The_Requirements:="") {
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:="True") {
 		Global
-		; If (The_Requirements:="")
+		If (CreateRequirements:="True")
 			Requirement= %Min_Limit% - %Max_Limit% %The_Units% 
-			; else
-			; Requirement:= The_Requirements
+		else 
+			Requirement:= CreateRequirements
 			;normal
-			sleep 200
-			click, 250, 140 ; click id box to orient
-			; tooltip(Requirement)
-			; tooltip(Requirement,4000,260,160)
-			sleep 200
-			;if (Allergen = 1)
-			;send, {tab 2}%The_units%{tab}^a%The_Percision%{tab 2}{Space}{Tab 3}{space}{Tab 3}^a%Max_Limit%{tab 5}^a
-			;else
-			if (Uselimitsbox := 0)
-				send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 7}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-			send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
-			sleep 200
-			If (UseLimitsBox:=1)
-				send, {space}
-			sleep 200
-			send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-			if (Max_limit = "")
-				sendinput, NLT %Min_Limit% %The_Units%
-			else if (Min_limit = "<")
-				sendinput, %min_limit%%Max_Limit% %The_Units%
-			else if (Min_limit = "")
-				sendinput, NMT %Max_Limit% %The_Units%
-			Else
-				Sendinput, %Requirement%
-			sleep 100
-			click 350, 660 ; click okay
-			; WinWaitClose, Results Definition,, 6
-				; if errorlevel
-					; return
+		sleep 200
+		click, 250, 140 ; click id box to orient
+
+		sleep 200
+		if (Uselimitsbox := 0)
+			send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 7}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
+		sleep 200
+		If (UseLimitsBox:=1)
+			send, {space}
+		sleep 200
+		send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		if (Max_limit = "")
+			sendinput, NLT %Min_Limit% %The_Units%
+		else if (Min_limit = "<")
+			sendinput, %min_limit%%Max_Limit% %The_Units%
+		else if (Min_limit = "")
+			sendinput, NMT %Max_Limit% %The_Units%
+		Else
+			Sendinput, %Requirement%
+		sleep 100
+		click 350, 660 ; click okay
+		; WinWaitClose, Results Definition,, 6
+			; if errorlevel
+				; return
 	}
 
 SpecTab_TestDefinitionEditor(The_Description) {

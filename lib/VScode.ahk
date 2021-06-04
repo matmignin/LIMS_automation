@@ -27,16 +27,17 @@ return
     F19 & =::sendinput, {CtrlDown}{=}{Ctrlup}
     F19 & backspace::Delete
     F19 & w::Windownames()
-
-
     F19::menu()
-  F19 & `::sendinput, ~
+    F19 & `::sendinput, ~
+    F19 & m::sendinput, %MousePosition%
+    F19 & t::sendinput, %wintitle%
 
 VsCode_:
-
     ; Mbutton & Wheeldown::Wheel_2("!d",1000)
     ; mbutton::wheel_2("^m",2000)
-    
+    Tab & f:: sendinput, {ShiftDown}{altDown}{Ctrldown}{]}{CtrlUp}{altup}{ShiftUp}
+    tab::tab
+    !t::tooltip(trackpadhints,9000)
     <^r::ReloadScript()
     Mbutton & F7::Sendinput, {Ctrldown}]{CtrlUp}
     Mbutton & F6::sendinput,{Ctrldown}[{CtrlUp}
@@ -71,7 +72,9 @@ VsCode_:
     ; ~*lctrl up::send, {ctrlup}
     F6::sendinput, {altDown}{left}{altup}
     F7::sendinput, {altDown}{right}{altup}
-    
+    ; capslock up::send, {esc}
+    capslock & n::send, {numpaddiv}
+    capslock & tab::send, {ShiftDown}{altDown}{Ctrldown}{]}{CtrlUp}{altup}{ShiftUp}
 
 return
   
@@ -86,29 +89,28 @@ return
     getWindowInfo(){
       global
         CoordMode, mouse, window
-        KeyWait, Space,
-        sleep 100
-        ; click
+        MouseGetPos, MousePosX, MousePosY, ,WinControl
         WinGetTitle, winTitle, A
         WinGetClass, Winclass, A
         WinGet, WinProcess, ProcessName, A			
+        MousePosition:="click" MousePosX "`, " MousePosY
         Sleep, 100
-        MousePosition:=MousePosX "`, " MousePosY
-        Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
-				Process:="ahk_exe " WinProcess
-      SetTimer, RemoveToolTip, -2000
+        Tooltip(MousePosition "`n Title: " winTitle " `n Process:  " WinProcess " `n Control:  "winControl " `n Class:  " winclass )
+				Process:= "ahk_exe " WinProcess
+      ; SetTimer, RemoveToolTip, -2000
         
     }
       
     Get_WindowInfo() {
       global
       CoordMode, mouse, window
-      MouseClick, right,,, 1, 0, D ; Hold down the right mouse button.
+      MouseGetPos, MousePosX, MousePosY, , WinControl
+      ; MouseClick, right,,, 1, 0, D ; Hold down the right mouse button.
       Loop
       {
         if !GetKeyState("Rbutton", "P") ; The key has been released, so break out of the loop.
           break
-        MouseGetPos, MousePosX, MousePosY, , WinControl
+        MouseGetPos, MousePosX, MousePosY, ,WinControl
         sleep 20
         WinGetTitle, winTitle, A
         WinGetClass, Winclass, A
@@ -123,7 +125,7 @@ return
       SetTimer, RemoveToolTip, -2000
       Winclass:=Winclass
      ; WinGet, WinProcess, ProcessName, A	
-      MouseClick, Right,,, 1, 0, U ; Release the mouse button.
+      ; MouseClick, Right,,, 1, 0, U ; Release the mouse button.
       ;clipboard:=MousePosition
       ;mouseclick, right
       ;sendinput, {esc}

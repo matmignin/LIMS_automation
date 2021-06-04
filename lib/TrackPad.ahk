@@ -26,35 +26,36 @@
   F20::Send, {F21}
   .::getWindowInfo()
   /::varbar.reset()
-  c::open_Clickup()
+  c::OpenApp.Clickup()
   e::send, {LWinDown}{e}{lwinup}
-  o::open_Outlook()
-  v::open_VScode()
-  d::open_Display()
-  f::Open_firefox()
-  w::open_Workbook()
-  l::Open_LMS()
+  o::OpenApp.Outlook()
+  v::OpenApp.VScode()
+  d::OpenApp.Display()
+  f::OpenApp.firefox()
+  w::OpenApp.Workbook()
+  l::OpenApp.LMS()
 
 
-#If (A_PriorHotKey = "lbutton" AND A_TimeSincePriorHotkey < 300)
-    Space::clip()
-	  F8::send, ^x
-    F9::send, ^v
-    ;F8::clip()
-    wheelup::^x
-    wheeldown::^v
-    F7::^y
-    F6::^z
-    F19::send, {F21}     
-    #if
+; #If (A_PriorHotKey = "lbutton" AND A_TimeSincePriorHotkey < 300)
+;     Space::clip()
+; 	  F8::send, ^x
+;     F9::send, ^v
+;     ;F8::clip()
+;     wheelup::^x
+;     wheeldown::^v
+;     F7::^y
+;     F6::^z
+;     F19::send, {F21}     
+;     #if
+
 
 
 
 #If (A_PriorHotKey = "Media_Next" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
-    Browser_forward::send, #{right} ;4right
-    Browser_back::send, #{left} ;4left
+    Browser_back::send, +#{left} ;4left
+    Browser_forward::send, +#{right}
     Media_Next::Mouse_CloseWindow() ;4down clear filter
-    Media_Prev::send, #{up} ;4up
+    Media_Prev::send, #{up 2} ;4up
     lbutton::send, ^{click}
     F10::WinMaximize, A
     F9::send, ^j
@@ -85,12 +86,29 @@
     ; return
   
 #IfWinActive, ahk_exe Code.exe
+    ; Browser_forward::
+    ; if (A_TimeSincePriorHotkey < 1000)
+    ; {
+    ;   tooltip("Over")
+    ;   if
+    ;   sleep 1100
+    ;   send, #+{right}
+    ; }
+    ;   else
+    ;   {
+    ;   tooltip("Under")
+    ;   sleep 400
+    ;   ; send, #{right}
+
+    ;   }
+    ;   return
     $F9::ToggleDefinition()
     F19 & F9::send, {CtrlDown}{F9}{Ctrlup}
     <^F9::^j
     <^F8::^k
+    F8::send, {ShiftDown}{Ctrldown}{f}{CtrlUp}{ShiftUp}
     Browser_Back::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
-    Browser_Forward::send {CtrlDown}{j}{Ctrlup}
+    Browser_Forward::send {CtrlDown}{f}{Ctrlup}
     media_prev::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
     #If (A_PriorHotKey = "Media_Prev" AND A_TimeSincePriorHotkey < 800) ;4 finger swipe down
     Media_Prev::send {down}{enter}

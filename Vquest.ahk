@@ -6,7 +6,7 @@ return
 
 
 QuickCode(){
-LMS.removecoaspace()
+
 }
 
 F19 & left::Test()
@@ -35,7 +35,6 @@ return
 
 
 
-!n::run, notes.ahk, %A_ScriptDir%\lib
 
 Ingredients() {
   global
@@ -165,7 +164,6 @@ KEY_DEFAULT:
   Rbutton & F6::Backspace
   Rbutton & Lbutton::Enter
   Rbutton::Mouse_RbuttonUP()
- 
 
   Xbutton1 & Rbutton::Clip("OCR") 
   ; Xbutton1 & LButton::Sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup} ;screenshot"
@@ -181,13 +179,20 @@ KEY_DEFAULT:
   Xbutton2 & wheelDown::Mouse_CloseWindow()
   ; F8 & Wheelup::!^tab
   ; Xbutton2 & Lbutton::Sendinput, #{down}
-
   ; F8 & Wheeldown::+^!tab
   F8 & Lbutton::sendinput, {Ctrldown}{Click}{CtrlUp}
   F8 & Rbutton::sendinput, {shiftdown}{Click}{shiftup}
   F8 & F7::
   F8 & F6::
+  rshift & lbutton::sendinput, {shiftDown}{click}{shiftup}
+  ~lbutton & v::send, ^v
+  ; ~lbutton & c::send, ^c
+  ; ~lbutton & x::sendinput, ^x
+  ~lbutton & b::send, {f21}
+
   F19 & Space::Sendinput, %Product%{enter}
+  F19 & lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
+  F19::menu()
   F20 & Space::Sendinput, %batch%{enter}
   F20 & b::Sendinput, %batch%
   F20 & c::Sendinput, %Coated%
@@ -196,27 +201,29 @@ KEY_DEFAULT:
   F20 & n::Sendinput, %Name%
   F20 & u::Sendinput, %Customer%
   
-  F20::Clip()
   F20 & Right::send, #{right}
   F20 & Left::send, #{Left}
   F20 & UP::send, #{UP}
   F20 & Down::send, #{Down}
+  F20::Clip()
 
-  F19 & f20::WinActivate, ahk_exe WFICA32.EXE
-  F20 & f19::WinActivate, ahk_exe WFICA32.EXE
-  F19::menu()
+  ; F19 & f20::WinActivate, ahk_exe WFICA32.EXE
+  ; F20 & f19::WinActivate, ahk_exe WFICA32.EXE
   ; enter::enter
 ; capslock::esc
 OpenApps:
-!f::Open_Firefox()
-!v::Open_vsCode()
-!c::open_Clickup()
-!e::send, {LWinDown}{e}{lwinup}
-!+v::open_VPN()
-!o::open_Outlook()
-!d::open_Display()
-!w::open_Workbook()
-!l::open_LMS()
+  !f::OpenApp.Firefox()
+  !v::OpenApp.vsCode()
+  !c::OpenApp.Clickup()
+  !e::send, {LWinDown}{e}{lwinup}
+  !+v::OpenApp.VPN()
+  !o::OpenApp.Outlook()
+  !d::OpenApp.Display()
+  ; !n::run, notes.ahk, %A_ScriptDir%\lib
+  !n::openApp.stickyNotes()
+  !w::OpenApp.Workbook()
+
+  !l::OpenApp.LMS()
 Xbutton2::menu()
 #If (A_PriorHotKey = "xbutton1" AND A_TimeSincePriorHotkey < 500) || (A_PriorHotKey = "F19" AND A_TimeSincePriorHotkey < 400)
   xbutton1::sendinput, {shiftdown}{ctrldown}4{CtrlUp}{shiftup}
@@ -282,15 +289,15 @@ WindowNames() {
 
 
 
-Open_in_Notepad(){
-    click
-    WinGetClass class, % " ahk_id " WinExist("A")
-    for Window in ComObjCreate("Shell.Application").Windows 
-      Selection := Window.Document.SelectedItems
-    for Items in Selection
-      Path_to_Selection := Items.path		
-    Run C:\Windows\system32\Notepad.exe %Path_to_Selection%
-  }
+; OpenApp.in_Notepad(){
+;     click
+;     WinGetClass class, % " ahk_id " WinExist("A")
+;     for Window in ComObjCreate("Shell.Application").Windows 
+;       Selection := Window.Document.SelectedItems
+;     for Items in Selection
+;       Path_to_Selection := Items.path		
+;     Run C:\Windows\system32\Notepad.exe %Path_to_Selection%
+;   }
 
 Snip_groupChange(){
   Wheel("{ctrl down}22{Ctrl up}")
@@ -348,7 +355,7 @@ FilterBox_Location:
     CoordMode, mouse, window
     KeyWait, Lbutton, D
     sleep 200
-    ; KeyWait, Lbutton, D
+    ; KeyWait, Lbutton, D,
     MouseGetPos, FilterBox_X, FilterBox_Y,
   	IniWrite, %FilterBox_X%, data.ini, Locations, FilterBox_X
   	IniWrite, %FilterBox_Y%, data.ini, Locations, FilterBox_Y
@@ -405,8 +412,21 @@ EnvGet, lot, lot
 EnvGet, Coated, Coated
 EnvGet, Iteration, Iteration
 envget, PrevProduct, PrevProduct
-
-
+trackpadhints=
+(
+___________________[3]________________________
+Tap `t mbutton
+up `t F8 `t (thumb mouse)
+down `t f9
+left `t f6 `t (wheel left)
+right `t f7 `t (wheel_right)
+__________________[4]_________________________
+tap `t F10
+up `t Media_Prev
+down `t Media_Next
+left `t browser back   `t`t (xbutton2)
+right `t browswer forward `t (xbutton1)
+)
   ; #WinActivateForce
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add, CL3, Run_cl3

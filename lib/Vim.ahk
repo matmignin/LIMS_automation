@@ -2,20 +2,22 @@
 class Vim{
 	
 	find(){
-  send, ~ 
-  input, letter, L1
-		    send, f
-		send, %letter%{esc}
-		send, {esc}
+  send, {ShiftDown}{Ctrldown}{f}{CtrlUp}{ShiftUp}
+  ; sleep 200
+  input, letter, V,{enter}{lbutton}{lcontrol}{Rcontrol}{return}
+		    send, {esc}
+		; send, %letter%{a}
+    ; keywait, enter, d
+		; send, {esc}
 		return
   }
 	
 		
 	Line(LeaderKey){
-  send, {~} 
+  send, {esc} 
   Input, Numbers, L3,,{enter}
 			send, {:}%Numbers%{enter}
-	send, {esc}
+	send, {a}
   return
   }
   
@@ -106,7 +108,7 @@ VIM:
     Shift & ,::sendinput, !{,}
     left::sendinput, {CtrlDown}{[}{Ctrlup}
     right::sendinput, {CtrlDown}{]}{Ctrlup}
-    ; f::sendinput, {CtrlDown}{f}{Ctrlup}
+    ; f::sendinput, {esc}{CtrlDown}{f}{Ctrlup}
     *shift::
       while GetKeyState("Capslock","p")
       sendinput, {Shift down}
@@ -156,7 +158,7 @@ VIM:
   m::sendinput, {ShiftDown}{altDown}{right}{altup}{ShiftUp}
   u::sendinput, {ShiftDown}{altDown}{left}{altup}{ShiftUp}
   ; u::+!up ;pselect revious instance of line
-  n::+!n ;select next instance of line
+;select next instance of line
   up::sendinput, {Altdown}{shiftdown}{Ctrldown}{up}{shiftup}{CtrlUp}{AltUp}
   down::sendinput, {Altdown}{shiftdown}{Ctrldown}{down}{shiftup}{CtrlUp}{AltUp}
   `;::+!g 

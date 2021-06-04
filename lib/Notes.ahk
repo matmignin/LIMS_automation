@@ -1,16 +1,19 @@
 
-Class Notes{
+
+
+Class Notes {
 
 WindowNames(){
 	FileRead, WindowNames, WindowNames.ini
 	gui, notes:add, edit, r5 vWindowNames
 	gui, Notes:add, button, default, Add
 }
-return
+
 
 Show(){
 	gui, Notes:show
 	WinSet, AlwaysOnTop, on, A
+	return
 }
 
 

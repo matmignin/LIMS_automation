@@ -1,7 +1,7 @@
 return
+class OpenApp {
 
-
-open_Clickup(){
+Clickup(){
   ifwinnotexist, ahk_exe ClickUp.exe
     WinActivate, ahk_exe ClickUp.exe
   else 
@@ -10,7 +10,7 @@ open_Clickup(){
   return
   }
   
-open_Outlook(){
+Outlook(){
   ifwinnotexist, ahk_exe OUTLOOK.exe
     Run, OUTLOOK.exe, C:\Program Files\Microsoft Office\root\Office16\
   else 
@@ -18,7 +18,7 @@ open_Outlook(){
   return
   }	
   
-	open_Explorer(){
+	Explorer(){
   ifwinnotexist, ahk_exe explorer.exe
     send, {LWinDown}{e}{lwinup}
   IfWinNotActive,ahk_exe explorer.exe
@@ -27,7 +27,7 @@ open_Outlook(){
     send, {altDown}{tab}{altup}
   return
   }	
-	open_Firefox(){
+	Firefox(){
   ifwinnotexist, ahk_exe firefox.exe 
     run, firefox.exe, "C:\Program Files\Mozilla Firefox\"
   else
@@ -40,7 +40,7 @@ open_Outlook(){
   return
   }
   
-	open_VPN(){
+	VPN(){
   ifwinnotexist, ahk_exe explorer.exe
     run, https://remote.vitaquest.com/cgi-bin/welcome
 		  WinWait, ahk_exe firefox.exe,,2
@@ -51,7 +51,7 @@ open_Outlook(){
     run, http://vqhq-prdcitrix1.vitaquest.int/Citrix/StoreWeb/
   return
   }		
-  open_LMS(){
+  LMS(){
   IfWinActive, ahk_exe WFICA32.EXE 
     send, {altDown}{tab}{altup}
   ifwinnotexist, ahk_exe WFICA32.EXE 
@@ -69,12 +69,12 @@ open_Outlook(){
     
   return
   }	
-  open_Display(){
+  Display(){
     run, ms-settings:display
   return
   }	
   
-  open_RemoteDesktop(){
+  RemoteDesktop(){
   IfWinActive, ahk_exe mstsc.exe
     send, {altDown}{tab}{altup}
   ifwinnotexist, ahk_exe mstsc.exe
@@ -84,7 +84,7 @@ open_Outlook(){
   return
   }
   
-    open_workbook(){
+    workbook(){
   IfWinActive, LMS Workbook.xlsb - Excel
     send, {altDown}{tab}{altup}
   ifwinnotexist, LMS Workbook.xlsb - Excel
@@ -93,14 +93,23 @@ open_Outlook(){
     WinActivate, LMS Workbook.xlsb - Excel
   return
   }
-  open_VScode(){
+  VScode(){
   IfWinActive, ahk_exe Code.exe
     send, {altDown}{tab}{altup}
   ifwinnotexist,ahk_exe Code.exel
     send, {altDown}{Ctrldown}{v}{CtrlUp}{altup}
-    ; run, Visual Studio Code.lnk, "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Visual Studio Code\" 
   IfWinNotActive,ahk_exe Code.exe
     WinActivate, ahk_exe Code.exe
-
   return
   }
+StickyNotes(){
+  IfWinActive, ahk_exe stickynot.exe
+    send, {altDown}{tab}{altup}
+  ifwinnotexist, ahk_exe stickynot.exe
+    Run, Stickynot.exe, C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Accessories\
+    ; Run, stickynot.exe
+  IfWinNotActive, ahk_exe stickynot.exe
+    WinActivate, ahk_exe stickynot.exe
+  return
+  }
+}
