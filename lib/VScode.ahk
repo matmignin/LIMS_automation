@@ -1,16 +1,14 @@
 return
-	F20 & \::Sendinput, mmignin{tab}Kilgore7744
-	F19 & \::Sendinput, ?Kilgore7744
   $F12::Reload 
-  F1::help
+  +F1::help
   F2::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
   F19 & Media_Play_Pause::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-  lctrl & Capslock::return
+lctrl & Capslock::return
   ^Capslock::return
   ; $F3::ListLines, On
   $^F12::ListLines,
   $+F12::ListLines,
-  Media_Play_Pause::listlines,
+
   ^esc::return
 ;	#!\::Login()
 
@@ -19,25 +17,32 @@ return
 
 
 #IfWinActive, ahk_exe Code.exe
-    F19 & space::sendinput, {Ctrldown}{shiftdown}p{shiftup}{CtrlUp}
-    F19 & h::sendinput, {ShiftDown}{altDown}{left}{altup}{ShiftUp}
+  Media_Play_Pause::send, {ShiftDown}{altDown}{d}{altup}{ShiftUp}
+F20 & Right::WinMove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
+    ; F19 & space::sendinput, {Ctrldown}{shiftdown}p{shiftup}{CtrlUp}
+    F19 & h::sendinput, {altDown}{left}{altup}
     F19 & k::sendinput, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
     F19 & j::sendinput, {ShiftDown}{altDown}{Ctrldown}{left}{shiftUp}{altup}
-    F19 & l::sendinput, {ShiftDown}{altDown}{Ctrldown}{right}{shiftUp}{altup}
+    F19 & l::sendinput, {altDown}{Ctrldown}{right}{altup}
     F19 & -::sendinput, {CtrlDown}{-}{Ctrlup}
     F19 & =::sendinput, {CtrlDown}{=}{Ctrlup}
     F19 & backspace::Delete
     F19 & w::Windownames()
     F19 & down::^down
     F19 & up::^up
-    lctrl & j::^down
-    lctrl & k::^up
+    <^j::^down
+    <^k::^up
+    $<^l::sendinput, {Ctrldown}]{CtrlUp}
+    $<^right::sendinput, {Ctrldown}]{CtrlUp}
+    $<^h::sendinput, {Ctrldown}[{CtrlUp}
+    $<^left::sendinput, {Ctrldown}[{CtrlUp}
     F19 & left::^left
     F19 & right::^right
     F19::menu.vscode()
     F19 & `::sendinput, ~
     F19 & m::sendinput, %MousePosition%
     F19 & t::sendinput, %wintitle%
+    Enter::send, {enter}
 
 VsCode_:
     ; Mbutton & Wheeldown::Wheel_2("!d",1000)
@@ -51,16 +56,21 @@ VsCode_:
     Mbutton & wheelUP::sendinput, {ctrl down}{u}{ctrl up}
     Mbutton & WheelDOWN::sendinput, {ctrl down}{m}{ctrl up}
     Mbutton & Rbutton::sendinput, {shiftdown}{altDown}{Ctrldown}m{CtrlUp}{altup}{shiftup} ; toggle bookmark
-
+    ~Rshift & Lshift::send, {CtrlDown}{tab}{Ctrlup}
+    ~Lshift & rshift::send, {ShiftDown}{Ctrldown}{tab}{CtrlUp}{ShiftUp}
+    ~LCtrl & F19::send, {CtrlDown}{]}{Ctrlup}
+    F19 & lctrl::send, {CtrlDown}{[}{Ctrlup}
+    ~Rshift & space::send, {ShiftDown}{altDown}{Ctrldown}{s}{CtrlUp}{altup}{ShiftUp} 
+    ~Lshift & space::send, {ShiftDown}{altDown}{Ctrldown}{e}{CtrlUp}{altup}{ShiftUp}
     Rbutton & F7::Wheel_2("!{right}",10)
-    Rbutton & F6::Wheel_2("!{left}",10)
+        Rbutton & F6::Wheel_2("!{left}",10)
 	  Rbutton & Lbutton::sendinput, {Shiftdown}{click}{ShiftUp}
     Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",2000)
     Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",2000)
-    Rbutton & Xbutton2::Get_WindowInfo()
+    Rbutton & Xbutton2::WindowInfo()
     
-    Xbutton2 & F7::sendinput, {CtrlDown}{]}{Ctrlup}
     Xbutton2 & F6::sendinput, {CtrlDown}{[}{Ctrlup}
+    Xbutton2 & F7::sendinput, {CtrlDown}{]}{Ctrlup}
     Xbutton2 & wheeldown::sendinput, {ctrl down}{down}{ctrl up}
     Xbutton2 & wheelup::sendinput, {ctrl down}{up}{ctrl up}
     $Rbutton up::Mouse_RbuttonUP()
@@ -73,76 +83,83 @@ VsCode_:
     F8 & wheeldown::ToggleDefinition() ;next search
     Mbutton up::sendinput, {CtrlDown}{f}{Ctrlup} ;search
     F8 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
-    F20::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
-    ;$*capslock up::send,{esc}{
+
+
     ~*Lbutton up::send, {ctrlup}
     ; ~*lctrl up::send, {ctrlup}
     F6::sendinput, {altDown}{left}{altup}
     F7::sendinput, {altDown}{right}{altup}
-    ; capslock up::send, {esc}
+    ; capslock up::send, +{enter}
     capslock & n::send, {numpaddiv}
-    capslock & tab::send, {ShiftDown}{altDown}{Ctrldown}{]}{CtrlUp}{altup}{ShiftUp}
+    capslock & tab::send, {Ctrldown}{]}{CtrlUp}
+
 
 return
   
 ;FUNCTIONS-----------------------------------------------------------
 
-  Login(){
-      sendinput, 4130220009588038
-      trayTip, ,11/21  127
-      return
-    }
+; GetWindowPosition(){
+;   Global
+;   WinGetPos,wX,wY,wW,wH,A
+;   tooltip(wX ", " wY ", " wW ", " wH)
+;   keywait, enter, U
+;   send % "WinMove, ahk_exe notepad.exe, , " wX ", " wY ", " wW ", " wH
+;   }
 
-    getWindowInfo(){
+
+    WindowInfo(){
       global
         CoordMode, mouse, window
-        MouseGetPos, MousePosX, MousePosY, ,WinControl
+        MouseGetPos, mX, mY, ,WinControl
+        WinGetPos,wX,wY,wW,wH, A
         WinGetTitle, winTitle, A
         WinGetClass, Winclass, A
         WinGet, WinProcess, ProcessName, A			
-        MousePosition:="click " MousePosX "`, " MousePosY
+        MousePosition:=mX "`, " mY
         Sleep, 100
-        Tooltip(MousePosition "`n Title: " winTitle " `n Process:  " WinProcess " `n Control:  "winControl " `n Class:  " winclass )
+        Tooltip % MousePosition "`n Title: " winTitle " `n Process:  " WinProcess " `n Control:  "winControl " `n Class:  " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH
 				Process:= "ahk_exe " WinProcess
+        wMove:="WinMove, WINtITE, , " wX ", " wY ", " wW ", " wH
+        keywait, F20, U
+        sleep 400
+        Tooltip,
       ; SetTimer, RemoveToolTip, -2000
-        
     }
       
-    Get_WindowInfo() {
-      global
-      CoordMode, mouse, window
-      MouseGetPos, MousePosX, MousePosY, , WinControl
-      ; MouseClick, right,,, 1, 0, D ; Hold down the right mouse button.
-      Loop
-      {
-        if !GetKeyState("Rbutton", "P") ; The key has been released, so break out of the loop.
-          break
-        MouseGetPos, MousePosX, MousePosY, ,WinControl
-        sleep 20
-        WinGetTitle, winTitle, A
-        WinGetClass, Winclass, A
-        WinGet, WinProcess, ProcessName, A			
-        Sleep, 100
-        MousePosition:= "click " MousePosX "`, " MousePosY
-        Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
-				Process:="ahk_exe " WinProcess
-
-      }
-      winTitle:=Wintitle
-      SetTimer, RemoveToolTip, -2000
-      Winclass:=Winclass
-     ; WinGet, WinProcess, ProcessName, A	
-      ; MouseClick, Right,,, 1, 0, U ; Release the mouse button.
-      ;clipboard:=MousePosition
-      ;mouseclick, right
-      ;sendinput, {esc}
-      ;MouseClick, left,,, 1, 0,
-      return
-    }
+    ; WindowInfo() {
+    ;   global
+    ;   CoordMode, mouse, window
+    ;   MouseGetPos, MousePosX, MousePosY, , WinControl
+    ;   ; MouseClick, right,,, 1, 0, D ; Hold down the right mouse button.
+    ;   Loop
+    ;   {
+    ;     if !GetKeyState("Rbutton", "P") ; The key has been released, so break out of the loop.
+    ;       break
+    ;     MouseGetPos, MousePosX, MousePosY, ,WinControl
+    ;     sleep 20
+    ;     WinGetTitle, winTitle, A
+    ;     WinGetClass, Winclass, A
+    ;     WinGet, WinProcess, ProcessName, A			
+    ;     Sleep, 100
+    ;     MousePosition:= "click " MousePosX "`, " MousePosY
+    ;     Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
+		; 		Process:="ahk_exe " WinProcess
+    ;   }
+    ;   winTitle:=Wintitle
+    ;   SetTimer, RemoveToolTip, -2000
+    ;   Winclass:=Winclass
+    ;  ; WinGet, WinProcess, ProcessName, A	
+    ;   ; MouseClick, Right,,, 1, 0, U ; Release the mouse button.
+    ;   ;clipboard:=MousePosition
+    ;   ;mouseclick, right
+    ;   ;sendinput, {esc}
+    ;   ;MouseClick, left,,, 1, 0,
+    ;   return
+    ; }
 
     ReloadScript(){
     global iteration
-      ControlGetText, Iteration, Edit3, VarBar
+      ControlGetText, Iteration, Static5, VarBar
       tooltip("Reload")
       if (iteration = -1)
       {
@@ -194,8 +211,12 @@ return
     sendraw, {shiftDown}{}{shiftup}
     sendinput, {left 10}
     return
+    :*R:asc\::
+    :*R:acs\::
     :*R:sac\::
+    :*R:sca\::
     :*R:cas\::
+    :*R:csa\::
     sendraw, {ShiftDown}{altDown}{Ctrldown}{}{CtrlUp}{altup}{ShiftUp}
     sendinput, {left 25}
     return

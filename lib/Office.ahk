@@ -9,8 +9,8 @@ KEY_Excel:
   F19 & up::^up
   F19 & left::^left
   F19 & right::^right
-  F13 & F6::Click.SearchBar(2,"Product","xl") 
-  F13 & F7::Click.SearchBar("Batch","{enter}","xl") 
+  F13 & F6::Click.SearchBar(2,Product,"xl") 
+  F13 & F7::Click.SearchBar(Batch,"{enter}","xl") 
 #ifwinactive, Book
       F7::sendinput, #{right}
       wheelright::sendinput, #{right}
@@ -20,7 +20,8 @@ KEY_Excel:
     $rbutton::Mouse_RbuttonUP()
   +Enter::sendinput, !{enter}
   $Enter::sendinput, {enter}
-  F10::send, ^f!t!h{right}{enter}!s{right}!t!n
+  F10::Excel.SearchWorkbook()
+
 ;  Excel_Search()
   ; Mbutton::Excel.Connect(1)
   F6::wheel("{wheelleft}",80)
@@ -48,13 +49,14 @@ KEY_OUTLOOK:
   Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
   Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
   Rbutton & F7::Varbar.Sendinput("Batch"," is updated.")
-  Xbutton2 & WheelDown::Mouse_CloseWindow() ; searchbar("batch")
-  Xbutton2 & Wheelup::searchBar("Product")
+  Xbutton2 & WheelDown::Mouse_CloseWindow() 
+  Xbutton2 & Wheelup::click.Searchbar(Product)
   Xbutton1::Clip()
-  F20 & Space::sendinput % Trim(Batch, OmitChars = " `n")
+  F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"
   Xbutton1 & Wheelright::Varbar.AddIteration()
   Xbutton1 & wheelleft::Varbar.SubIteration()
-  F8::LMS_Search()
+  F8::LMS.Search()
+  F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, ,1683, -1080, 1484, 1080
 
 
 KEY_OneNote:
@@ -65,7 +67,10 @@ KEY_OneNote:
   F8::send, {AltDown}{w}{i}{Altup}
   F6::sendinput, {wheelleft 20}
   F7::sendinput, {Wheelright 10}
-	mbutton::ctrl
+	^1::send, {altDown}{Ctrldown}{1}{CtrlUp}{altup}
+	^2::send, {altDown}{Ctrldown}{2}{CtrlUp}{altup}
+	^3::send, {altDown}{Ctrldown}{3}{CtrlUp}{altup}
+	^4::send, {Ctrldown}{1}{CtrlUp}
   $mbutton up::sendinput, {ctrlup}
   Xbutton1 up::PasteScreenshot()
     PasteScreenshot(){

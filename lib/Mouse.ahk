@@ -59,13 +59,27 @@ Mouse_CloseWindow() {
 		sleep 400
 		return
 	}
+	else if winactive("Adobe Acrobat Reader") {
+		send, ^q
+		sleep 400
+	}
 	else
 		return
 	return
 }
 
+
+Clk(x,y,window:=""){
+	MouseGetPos, mx, my, mw,
+	if (window!="")
+		winactivate, %window%
+	send, {click %x%,%y%,0}{click %mx%, %my%, 0}
+	winactivate, %mw%
+}
+
 Mouse_Click(Link) {
 	global
+	MouseSave()
 	if Link contains Save_ProductTab_EditProduct 
 		click 275, 578	
 else If link contains Results_Definition_edit
@@ -164,9 +178,9 @@ else If link contains Mywork_Searchbar
 		}
 		Return
 	}
-
 	else
 		msgbox, yo
+		send, %mouseReturn%
 	return
 }
 

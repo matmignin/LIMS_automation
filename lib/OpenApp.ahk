@@ -1,4 +1,22 @@
 return
+#IfWinActive,
+OpenApps:
+  !f::OpenApp.Firefox()
+  !v::OpenApp.vsCode()
+  !c::OpenApp.Clickup()
+  !e::send, {LWinDown}{e}{lwinup}
+  !+v::OpenApp.VPN()
+  !o::OpenApp.Outlook()
+  !d::OpenApp.Display()
+  ; !n::run, notes.ahk, %A_ScriptDir%\lib
+  f20 & n::
+  !n::openApp.stickyNotes()
+  !w::OpenApp.Workbook()
+
+  !l::OpenApp.LMS()
+
+
+
 class OpenApp {
 
 Clickup(){
@@ -12,7 +30,11 @@ Clickup(){
   
 Outlook(){
   ifwinnotexist, ahk_exe OUTLOOK.exe
+  {
     Run, OUTLOOK.exe, C:\Program Files\Microsoft Office\root\Office16\
+    winactivate, ahk_exe OUTLOOK.EXE
+    WinMove, ahk_exe OUTLOOK.EXE, ,1683, -1080, 1484, 1080
+  }
   else 
 	WinActivate, ahk_exe OUTLOOK.exe
   return
@@ -96,12 +118,39 @@ Outlook(){
   VScode(){
   IfWinActive, ahk_exe Code.exe
     send, {altDown}{tab}{altup}
-  ifwinnotexist,ahk_exe Code.exel
+  ifwinnotexist,ahk_exe Code.exe 
+  {
     send, {altDown}{Ctrldown}{v}{CtrlUp}{altup}
+    winactivate, ahk_exe Code.exe
+    WinMove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
+  }
   IfWinNotActive,ahk_exe Code.exe
     WinActivate, ahk_exe Code.exe
   return
   }
+  Notepad(){
+  IfWinActive, ahk_exe notepad.exe
+    send, {altDown}{tab}{altup}
+  ifwinnotexist,ahk_exe notepad.exe 
+  {
+    run, C:\Windows\system32\Notepad.exe
+    winactivate, ahk_exe notepad.exe
+    WinMove, ahk_exe notepad.exe, ,-292, -1200, 974, 584, 
+  }
+  IfWinNotActive,ahk_exe notepad.exe
+    WinActivate, ahk_exe notepad.exe
+  return
+  }
+  
+; OpenApp.in_Notepad(){
+;     click
+;     WinGetClass class, % " ahk_id " WinExist("A")
+;     for Window in ComObjCreate("Shell.Application").Windows 
+;       Selection := Window.Document.SelectedItems
+;     for Items in Selection
+;       Path_to_Selection := Items.path		
+;     Run C:\Windows\system32\Notepad.exe %Path_to_Selection%
+;   }
 StickyNotes(){
   IfWinActive, ahk_exe stickynot.exe
     send, {altDown}{tab}{altup}

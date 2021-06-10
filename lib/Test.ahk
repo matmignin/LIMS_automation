@@ -1,4 +1,4 @@
-StartTest(){
+StartTest_1(){
     if winexist("Result Editor - \\Remote") || Winexist("Test Definition Editor - \\Remote") || winexist("Results Definition - \\Remote")
     {
       WinActivate
@@ -11,27 +11,32 @@ StartTest(){
     }
       else
     return
-}
+  }
+  return
+
+
+;------------------------------------------------------TEST 1------------------------------------------------------------
+
+Test_1(){
+global
+lms.SearchBar(Product)
 return
+}
+;------------------------------------------------------TEST 2------------------------------------------------------------
 
-
-
-
+Test_2(){
+  Global
+WindowInfo()
+return    
+}
+;------------------------------------------------------TEST 3------------------------------------------------------------
 
 Test_3(){
 global
-clip()
-sleep 300
-    ParsedSpecs:=[]
-    Loop, parse, Clipboard, `t 
-    ParsedSpecs.insert(A_LoopField)
-    MinLimit:=Parsedspecs[17]
-    MaxLimit:=Parsedspecs[18]
-    Percision:=Parsedspecs[19]
-    Requirement:=Parsedspecs[20]
-    Units:=Parsedspecs[21]
-    tooltip(Requirement)
-    msgbox %  Units "`n" Requirement "`n" Percision
+Varbar.Follow()
+send % wX ", " wY ", " wW ", " wH ", "
+
+
 return
 }
 
@@ -39,29 +44,16 @@ return
 
 
 
-Test_2(){
-  Global 
-  ; MouseGetPos, mx, my, mw, 
-  sleep 100
-  click.edit()
-  WinWaitActive, Edit Ingredient, 1
-  send, {Click, 382, 343}{end}{enter 2}{tab 2}{enter}
-  sleep 100
-  ; WinActivate, Composition - \\Remote
-  ; WinWaitActive, Composition
-  ; mousemove, %MX%, %MY%-25
-return    
-
-}
 
 
 
 
-Test(){
-  global
-WinSet, AlwaysOnTop, Toggle, ahk_exe WFICA32.EXE
-return
-}
+
+
+
+
+
+
 
 
 Test_4(){
@@ -158,7 +150,7 @@ TestScriptFillOut:
   return
   
   
-  ToggleFilter_Test(){
+  ToggleFilter_Test_1(){
     WinActivate, NuGenesis LMS - \\Remote
     click 489, 836, R
     sendinput, {down 2}{enter}
@@ -166,9 +158,9 @@ TestScriptFillOut:
   
   FilterSearch_Test(TestName:="", MethodName:=""){
     WinActivate, NuGenesis LMS - \\Remote
-    click 1230, 648 ;click name filterbox
+    click 1230, 648 ;click name Divider
     send, ^a%TestName%{enter}
-    click 1067, 647 ; click method ID Filterbox
+    click 1067, 647 ; click method ID Divider
     send, ^a%MethodName%{enter}{tab 4}
   }
   

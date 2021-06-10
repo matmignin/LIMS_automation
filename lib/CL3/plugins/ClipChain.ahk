@@ -1,5 +1,7 @@
 ﻿/*
 
+
+
 Plugin            : ClipChain
 Purpose           : Cycle through a predefined clipboard history on each paste
 Version           : 1.6
@@ -97,25 +99,113 @@ Gosub, ClipChainCheckboxes
 ClipChainLvHandle := New LV_Rows(HLV)
 
 Return
-
+#IfWinActive, CL3ClipChain Insert text
++Enter::gosub, ClipChainInsertGuiOK
 #IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
-~LButton::
-If ClipChainPause
-	Return
-If (A_TimeSincePriorHotkey<400) and (A_TimeSincePriorHotkey<>-1)
-	{ ; check if you doubleclicked on the listview if so move away focus from listview otherwise we couldn't set the new active item by double clicking in the LV
-	 ControlGetFocus, CL3ClipChainListview, CL3ClipChain ahk_class AutoHotkeyGUI
-	 If (CL3ClipChainListview = "SysListView321")
-	 	{
-	 	 ControlFocus, Button12, CL3ClipChain ahk_class AutoHotkeyGUI ; Button12 is Close ClipChain
-	 	 Return
-	 	}
-	 Gosub, ClipChainPasteDoubleClick
-	}
-Return
+#v::Gosub, ClipChainPasteDoubleClick
+Lwin & Lbutton::
+Xbutton1 & Lbutton::
+click
+Gosub, ClipChainPasteDoubleClick
+return
+; ~Mbutton::
+; If ClipChainPause
+; 	Return
+; If (A_TimeSincePriorHotkey<400) and (A_TimeSincePriorHotkey<>-1)
+; 	{ ; check if you doubleclicked on the listview if so move away focus from listview otherwise we couldn't set the new active item by double clicking in the LV
+; 	 ControlGetFocus, CL3ClipChainListview, CL3ClipChain ahk_class AutoHotkeyGUI
+; 	 If (CL3ClipChainListview = "SysListView321")
+; 	 	{
+; 	 	 ControlFocus, Button12, CL3ClipChain ahk_class AutoHotkeyGUI ; Button12 is Close ClipChain
+; 	 	 Return
+; 	 	}
+; 	 Gosub, ClipChainPasteDoubleClick
+; 	}
+; Return
+
+#x::
+clipboard:=
+send, ^{c}
+clipwait, 1
+clipboard:=Trim(Clipboard, "`n")
+Gosub, ClipChainInsertGui
+gosub, ClipChainLoad
+return
 #IfWinActive
 
+ClickText(button:="")
+	{
+		mousegetpos, mousex, mousey
+		SetDefaultMouseSpeed, 0
+		Click, %A_CaretX% %A_caretY%, %button%
+		mousemove, %mousex%, %mousey%, 0
+		return
+	}
+
 #If ClipChainActive()
+Lwin & space::
+ClickText(2)
+Xbutton1::
+capslock & c::
+Lwin::
+clipboard:=
+send, ^c
+clipwait, 1
+If (ClipChainGuiTitle = "")
+	ClipChainGuiTitle:="CL3ClipChain Insert text"
+ClipChainInsertCounter:=1
+ClipChainPauseStore:=ClipChainPause
+ClipChainPause:=1
+GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
+
+ClipChainIns:=Clipboard
+ClipChainDataIndex:=""
+Gui, ClipChain:Default
+Gui, ClipChain:Submit, NoHide
+LVCGIndex := LV_GetNext()
+If (LVCGIndex = 0)
+	LVCGIndex = 1
+LV_GetText(ClipChainDataIndex, LVCGIndex, 3)
+If (ClipChainDataIndex = "")
+	{
+	 ClipChainDataIndex:=1
+	 ClipChainInsertCounter:=0
+	}
+If (ClipChainInsEdit = 1)
+	ClipChainIns:=ClipChainData[ClipChainDataIndex]
+
+If (ClipChainIns = "")
+	{
+	 ClipChainPause:=ClipChainPauseStore
+	 ClipChainPauseStore:=""
+	 GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
+
+	 Return
+	}
+If (ClipChainInsEdit = 1)	
+	{
+	 ClipChainData[ClipChainDataIndex]:=ClipChainIns
+	 If (ClipChainInsertCounter = 0)
+	 	LV_Add(1,,,,1)
+	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns)) 
+	}
+else
+	{
+	 ClipChainData.InsertAt(ClipChainDataIndex+ClipChainInsertCounter,ClipChainIns)
+	 LV_Insert(ClipChainDataIndex+0, , , ClipChainHelper(ClipChainIns))
+	}
+Gosub, ClipChainUpdateIDX
+ClipChainInsEdit:=0	
+
+ClipChainPause:=ClipChainPauseStore
+ClipChainPauseStore:=""
+GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
+ClipChainGuiTitle:=""
+Gosub, ClipChainSet
+XMLSave("ClipChainData")
+gosub, ClipChainInsertGuiOK
+Return
+
 
 ;$^v::
 ClipChainPasteDoubleClick:
@@ -214,7 +304,7 @@ ClipChainPauseStore:=ClipChainPause
 ClipChainPause:=1
 GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
 
-ClipChainIns:=""
+ClipChainIns:=Clipboard
 ClipChainDataIndex:=""
 Gui, ClipChain:Default
 Gui, ClipChain:Submit, NoHide

@@ -1,7 +1,7 @@
 class click{
 
 
-  SearchBar(Code:=0,PostCmd:="",FilterBox:=0){ 
+  SearchBar(Code:=0,PostCmd:="",Divider:=0){ 
     Global
             CoordMode, mouse, Window
     ; If code Contains Product
@@ -9,17 +9,11 @@ class click{
     ; If code Contains Batch
       ; A_Code:=Batch
     ; If code Contains lot
-      ; A_Code:=lot
+    ; A_Code:=lot
     ControlGetText, Batch, Edit2, VarBar
-    ControlGetText, Lot, Static2, VarBar
+    ControlGetText, Lot, Edit3, VarBar
     ControlGetText, Product, Edit1, VarBar                          
-    ProductFilter:=FilterBox_X
-    BatchFilter:=FilterBox_X+60
-    LotFilter:=BatchFilter+100
-    SampleSearch_y:=Filterbox_Y-60
-    samplesearch_X:=Filterbox_X+80
-    ProductSearch_X:=Filterbox_X+35
-    ProductSearch_Y:=Filterbox_Y-90
+
     
     blockinput on
     
@@ -27,7 +21,7 @@ class click{
     WinActivate, ahk_exe WFICA32.EXE
     if Code contains Batch
         {
-          Send, {Click %BatchFilter%, %Filterbox_Y%,2}^a%Batch%^a%mouseReturn%
+          Send, {Click %BatchFilter%, %yDivider%,2}^a%Batch%^a%mouseReturn%
           return
         }
     else if winactive("Select methods tests - \\Remote")
@@ -40,37 +34,37 @@ class click{
     if Tab contains Product_Spec
 
     {
-      send, {Click %ProductSearch_X%,%ProductSearch_Y%, 2}^a%Product%^a%PostCMD%%mouseReturn% 
+      send, {Click %xProductSearch%,%yProductSearch%, 2}^a%Product%^a%PostCMD%%mouseReturn% 
       return
     }
     else if tab contains Request
       {
-        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%Code%^a%mouseReturn%
+        send, {Click %xSampleSearch%,%ySampleSearch%, 2}^a%Code%^a%mouseReturn%
             return
       }
     else 
-      if Filterbox:=0
+      if Divider:=0
       {
-        send, {Click %SampleSearch_X%,%SampleSearch_Y%, 2}^a%Code%^a%mouseReturn% ;
+        send, {Click %xSampleSearch%,%ySampleSearch%, 2}^a%Code%^a%mouseReturn% ;
               return
     }
       else
         if (Code:=Product)
         {
-          Send, {Click %ProductFilter%, %Filterbox_Y%,2}^a%product%^a%mouseReturn%
+          Send, {Click %ProductFilter%, %yDivider%,2}^a%product%^a%mouseReturn%
                 return
     }
         else (Code:=Lot)
         {
-          Send, {Click %LotFilter%, %Filterbox_Y%,2}^a%lot%^a%mouseReturn%
+          Send, {Click %LotFilter%, %yDivider%,2}^a%lot%^a%mouseReturn%
                 return
     }
     }
           
     ; if tab contains sample
-        ; Sendinput, {Click %Code%%Filter%, %Filterbox_Y%,2}^a%A_Code%^a
+        ; Sendinput, {Click %Code%%Filter%, %yDivider%,2}^a%A_Code%^a
     ; if tab contains Request
-        ; Sendinput, {Click %Code%%Filter%, %Filterbox_Y%,2}^a%A_Code%^a
+        ; Sendinput, {Click %Code%%Filter%, %yDivider%,2}^a%A_Code%^a
       
       
   ;  If WinActive("NuGenesis LMS - \\Remote")
@@ -81,7 +75,7 @@ class click{
   ;       CoordMode, Pixel, Window
   ;       PixelSearch, FoundX, FoundY, 11, 66, 15, 72, 0xF8FBFE, 10, Fast RGB
   ;       If ErrorLevel = 0 ; Work Tab
-  ;         Sendinput, {Click %ProductFilter%, %Filterbox_Y%,2}^a%Product%^a
+  ;         Sendinput, {Click %ProductFilter%, %yDivider%,2}^a%Product%^a
   ;       If ErrorLevel  ;Product/Spec Tab
   ;         sendinput, {Click 520, 97, 2}^a%Product%^a   
   ;     }
@@ -90,14 +84,14 @@ class click{
   ;     WinActivate, NuGenesis LMS - \\Remote
   ;             Click 360, 45
   ;             sleep 200
-  ;         send, {Click %BatchFilter%, %FilterBox_Y%}^a%batch%^a
+  ;         send, {Click %BatchFilter%, %yDivider%}^a%batch%^a
   ;     }
   ;     else if code contains Lot
   ;     {
   ;     WinActivate, NuGenesis LMS - \\Remote
   ;         Click 360, 45
   ;         sleep 200
-  ;         send, {Click %lotFilter%, %FilterBox_Y%}^a%lot%^a
+  ;         send, {Click %lotFilter%, %yDivider%}^a%lot%^a
   ;     }
   ;  }
   ;  
@@ -113,6 +107,60 @@ class click{
   }
   
   
+OKay(){
+  global
+    if winactive("Results Definition")
+      clk(1336,592)
+    else If WinActive("Result Editor")
+      clk(370,660)
+    else if Edit Ingredient
+      clk(265, 561)
+    else if winactive("Result Entry")
+      clk(1028, 808)
+    else if winActive("Results Definition - \\Remote")
+      clk(951, 751)
+    else if winActive("Microsoft Excel Security Notice - \\Remote")
+      send, !y  
+    else if winActive("Reason For Change - \\Remote")
+      clk(229, 236)
+      
+    ; else if winActive("")
+      
+    ; else if winActive("")
+      
+    ; else if winActive("")
+      
+    ; else if winexist("")
+      
+    else if winexist("Change Configuration - \\Remote")
+      clk(131, 296,"Change Configuration - \\Remote")
+    Else
+      send, {enter}
+      return
+  }
+  
+  esc(){
+    ; if winactive("Results Definition")
+      ; click 1336,592
+    ; else If WinActive("Result Editor")
+      ; click 370,660
+    ; else if Edit Ingredient
+      ; click 265, 561
+    ; else if winactive("Result Entry")
+      ; click, 1028, 808
+; #Ifwinactive, NuGenesis LMS - \\Remote 
+; #Ifwinactive, Select methods tests - \\Remote
+; #IfWinActive, Results Definition - \\Remote
+; #ifwinactive, Edit test (Field Configuration:
+; #Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window  
+; #ifwinactive, Register new samples - \\Remote
+; #IfWinActive, ahk_exe WFICA32.EXE
+    if winexist("Change Configuration - \\Remote")
+      click 342, 296
+    Else
+      send, {esc}
+      return
+  }
   
   
   
@@ -140,18 +188,6 @@ class click{
       click 45, 65
     return
   }
-  okay(){
-    if winactive("Results Definition")
-      click 1336,592
-    else If WinActive("Result Editor")
-      click 370,660
-    else if Edit Ingredient
-      click 265, 561
-    else if winactive("Result Entry")
-      click, 1028, 808
-    Else
-      return
-  }
   Requests_tab(){
     click 865,83
     return
@@ -164,7 +200,7 @@ class click{
     click 500,127, 2
     return
   }
-  EditTest(){
+  EditTest_1(){
     WinActivate, NuGenesis LMS - \\Remote
     Send, {click, 56, 784 }
     return
@@ -174,7 +210,7 @@ class click{
     click 74, 900
     return
   }
-  MoveOverTest(){
+  MoveOverTest_1(){
     if winactive("Select Methods Tests")
       Send, {Click}{click 506, 341}
     Else

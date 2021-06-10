@@ -35,7 +35,8 @@
 
 	} Else If winactive("New Document - \\Remote"){
 		sendinput, %Product%
-						
+	} else if winactive("Microsoft Excel Security Notice - \\Remote") {
+      send, !y
 
 		;------------------------------------------
 	} Else If winactive("Edit Product - \\Remote"){
@@ -140,13 +141,13 @@
 	} Else If winactive("Edit test (Field Configuration:"){
 			WorkTab.AddTestDescription("(on sample log)")
 			;WorkTab.AddTestDescription("(Send Out Eurofins)")
-	} Else If winactive("Register new samples - \\Remote ") {
-		Sendinput, {tab 2}{space}
-		winwaitactive, Error - \\Remote, , 4
-		sendinput, {enter}
-		sleep 400
-		send, {click 180, 105, 2}^a%product%{enter}
-		;WorkTab.EditSample()
+	; } Else If winactive("Register new samples - \\Remote ") {
+		; Sendinput, {tab 2}{space}
+		; winwaitactive, Error - \\Remote, , 4
+		; sendinput, {enter}
+		; sleep 400
+		; send, {click 180, 105, 2}^a%product%{enter}
+		WorkTab.EditSample()
 		return
 		
 		

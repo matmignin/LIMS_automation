@@ -5,7 +5,22 @@
 		}
 	],
 	"settings": {
-		"autoHide.autoHidePanel": true,
-		"autoHide.autoHideSideBar": true
+		"autoHide.autoHidePanel": false,
+		"autoHide.autoHideSideBar": false
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+		
+			{
+				"type": "ahkdbg",
+				"request": "launch",
+				"name": "AHKDebug",
+				"program": "${file}",
+				"stopOnEntry": true,
+				"captureStreams": true,
+				"AhkExecutable": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk"
+			}
+		]
 	}
 }

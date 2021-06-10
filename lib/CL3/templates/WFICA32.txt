@@ -1,0 +1,1 @@
+﻿ahk_exe WFICA32.EXE

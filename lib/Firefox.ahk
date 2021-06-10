@@ -12,7 +12,7 @@
   F7::!right
   ; Xbutton2 & wheelUP::Browser_Forward
   Mbutton::Mbutton ;sendinput, ^{click}
-  Rbutton::return
+  Rbutton up::send, {click r}
   
   
 

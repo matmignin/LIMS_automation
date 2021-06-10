@@ -13,28 +13,36 @@
  */
 
 #IfWinActive, 
-~wheelup::return
+  ~wheelup::return
   TrouchPad:
 #If Getkeystate("lbutton","p")
-  Xbutton1::send, {shiftdown}{Ctrldown}{4}{CtrlUp}{shiftup}
-  space::clip()
-  left::send, %Product%
-  right::send, %batch%
-  F19::sendinput, {F21}
-  up::send, %Lot%
-  down::send, %Lot%
-  F20::Send, {F21}
-  .::getWindowInfo()
+  space::send, ^{a}^{v}
+
+	; left::send, %Product%
+	; Down::send, %batch%
+	; right::send, %Lot%
+	; up::send, %SampleID%
+  F19::send, {F21}
+  F20::WindowInfo()
   /::varbar.reset()
-  c::OpenApp.Clickup()
   e::send, {LWinDown}{e}{lwinup}
   o::OpenApp.Outlook()
-  v::OpenApp.VScode()
-  d::OpenApp.Display()
+  d::LMS.Orient()
   f::OpenApp.firefox()
   w::OpenApp.Workbook()
   l::OpenApp.LMS()
 
+SetDivider(){
+global
+    CoordMode, mouse, window
+    MouseGetPos, xDivider, yDivider,
+    sleep 100
+  	IniWrite, %xDivider%, data.ini, Locations, xDivider
+  	IniWrite, %yDivider%, data.ini, Locations, yDivider
+    DividerLocation:=xDivider ", " yDivider
+    tooltip("Divider Location Set: " DividerLocation)
+    return
+    }
 
 ; #If (A_PriorHotKey = "lbutton" AND A_TimeSincePriorHotkey < 300)
 ;     Space::clip()
@@ -47,9 +55,6 @@
 ;     F6::^z
 ;     F19::send, {F21}     
 ;     #if
-
-
-
 
 #If (A_PriorHotKey = "Media_Next" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
     Browser_back::send, +#{left} ;4left
@@ -64,51 +69,38 @@
     rbutton::send % "{shiftDown}{click}{shiftup}" Mouse_RbuttonUP()
    #If
     Media_Next::Tooltip("     `n`t`n`t      ",1000)  ;4tap
- ~lbutton::return
-    
-  $Browser_Back::
-    sendlevel 1
-    send, {xbutton2}
-	tooltip(Clipboard)
-    sendlevel 0
-    return
-  $Browser_Forward::
-    sendlevel 1
-    send, {xbutton1}
-    tooltip(Clipboard)
-    sendlevel 0
-    return
-    ;   $Media_next::
-    ; sendlevel 1
-    ; send, {F8}
-    ; ;Tooltip("4Tap",1000)  ;4tap
-    ; sendlevel 0
-    ; return
-  
-#IfWinActive, ahk_exe Code.exe
-    ; Browser_forward::
-    ; if (A_TimeSincePriorHotkey < 1000)
-    ; {
-    ;   tooltip("Over")
-    ;   if
-    ;   sleep 1100
-    ;   send, #+{right}
-    ; }
-    ;   else
-    ;   {
-    ;   tooltip("Under")
-    ;   sleep 400
-    ;   ; send, #{right}
 
-    ;   }
-    ;   return
+
+#If (A_PriorHotKey = "F10" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
+    Browser_back::send, {esc} ;4left
+    Browser_forward::send, {enter} ;4right
+    Media_Next::send, {esc} ;4down 
+    Media_Prev:: ;4Up
+    lbutton::send, ^{click}
+    F10::Wheel_Copy() ;4tap
+    F9::wheel_paste() ;3down
+    F8::wheel_cut()   ;3up
+    F7::send, ^y      ;3right
+    F6::send, ^z      ;3left
+    mbutton::send, +{click}
+    rbutton::send % "{shiftDown}{click}{shiftup}" Mouse_RbuttonUP()
+   #If
+    F10::Tooltip("[4 Finger Tap]",800)  ;4tap
+
+   
+   
+ ~lbutton::return
+
+#IfWinActive, ahk_exe Code.exe
+    Browser_back::send, {CtrlDown}{tab}{Ctrlup} ;4left
+    Browser_forward::send, {shiftDown}{enter}{shiftup} ;4right
     $F9::ToggleDefinition()
     F19 & F9::send, {CtrlDown}{F9}{Ctrlup}
     <^F9::^j
     <^F8::^k
-    F8::send, {ShiftDown}{Ctrldown}{f}{CtrlUp}{ShiftUp}
-    Browser_Back::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
-    Browser_Forward::send {CtrlDown}{f}{Ctrlup}
+    F8::send, {Ctrldown}{t}{CtrlUp}
+    F10::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
+    
     media_prev::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
     #If (A_PriorHotKey = "Media_Prev" AND A_TimeSincePriorHotkey < 800) ;4 finger swipe down
     Media_Prev::send {down}{enter}

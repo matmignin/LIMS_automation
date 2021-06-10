@@ -1,0 +1,12 @@
+﻿Select methods tests - \\Remote
+Select Product - \\Remote	
+Test Definition Editor - \\Remote
+Edit test (Field	
+Edit specification - \\Remote	
+Edit Product - \\Remote							
+Edit Ingredient - \\Remote							
+Edit Formulation - \\Remote						
+Edit sample template - \\Remote
+Results Definition - \\Remote	
+Result Entry - \\Remote							
+Register new samples - \\Remote			

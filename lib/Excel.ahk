@@ -18,7 +18,7 @@ Connect(reload:=0){
 	if WinExist("LMS Workbook.xlsb")
 		ControlSend,ahk_parent, {esc}, LMS Workbook.xlsb
 	else {
-		tooltip("no notebook open",500,10,1000)
+		tooltip("no notebook open",500)
 			; msgbox,4,,open LMS Workbook?
 			; IfMsgBox, Yes
 			; IfMsgBox,No
@@ -30,12 +30,13 @@ Connect(reload:=0){
 		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True	
 		sht := XL.ActiveSheet.Name
-	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2")
+	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code")
 			xl.sheets(PrevProduct).select
+			; tooltip("[ " Product " ] `t" Batch "`t" lot)
 	}
 	Catch {
-		Tooltip("no excel workbook open", 4000)
-		exit
+		Tooltip("no excel workbook open", 1000)
+		return
 	}	
 
 			
@@ -75,15 +76,19 @@ Connect(reload:=0){
 	GuiControl, Varbar:Text, iteration, %iteration%
 		ShapeAndSize:=XL.Range("B5").Value	
 GuiControl, varbar:text, ShapeSize, %shapeSize%
-		Color:=XL.Range("B6").value	
+		Color:=XL.Range("B5").value	
 GuiControl, varbar:text, Color, %Color%
-	weight:=XL.Range("D6").Text	
+	weight:=XL.Range("B6").Text	
 GuiControl, varbar:text, weight, %weight%
 	GuiControl, +redraw, varbar
 	if (Reload = 1)
 		VarBar.show()
 		; excel.MatchColor()
 	return
+}
+
+SearchWorkbook(SearchWord:=""){
+	send, ^f!t!h{right}{enter}!s{right}!t!n%searchWord%
 }
 
 

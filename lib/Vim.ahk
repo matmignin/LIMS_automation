@@ -4,9 +4,10 @@ class Vim{
 	find(){
   send, {ShiftDown}{Ctrldown}{f}{CtrlUp}{ShiftUp}
   ; sleep 200
-  input, letter, V,{enter}{lbutton}{lcontrol}{Rcontrol}{return}
+  input, letter, V,{enter}{lbutton}{lcontrol}{Rcontrol}{return}1234567890
+  sleep 200
 		    send, {esc}
-		; send, %letter%{a}
+		; , %letter%{a}
     ; keywait, enter, d
 		; send, {esc}
 		return
@@ -22,8 +23,7 @@ class Vim{
   }
   
   key(key){
-      Sendinput, {esc}%key%{a}
-
+      Send, {esc}%key%{a}
   }
 }
 
@@ -77,7 +77,7 @@ VIM:
     j::down
     ; j::down
     k::Up
-
+    t::!down
     s::send, {ShiftDown}{altDown}{Ctrldown}{s}{CtrlUp}{altup}{ShiftUp}
     +s::send, {ShiftDown}{altDown}{Ctrldown}{e}{CtrlUp}{altup}{ShiftUp}
     ; k::Up
@@ -91,17 +91,19 @@ VIM:
     0::home ;Send 
     y::return
     d::return ; Send, {home 2}+{end}^x{delete}
+    +^j::send, {ShiftDown}{altDown}{Ctrldown}{down}{CtrlUp}{altup}{ShiftUp}
+    +^k::send, {ShiftDown}{altDown}{Ctrldown}{up}{CtrlUp}{altup}{ShiftUp}
     *w::Sendinput, {CtrlDown}{right 2}{CtrlUp}
-    ; +w::Sendinput, {CtrlDown}{right 2}{CtrlUp}
-    e::vim.key("e") ;Send ^{right}
+        ; +w::Sendinput, {CtrlDown}{right 2}{CtrlUp}
+    e::Sendinput, ^{right}
   ;  u::Send ^z
     up::+up
     down::+down
     right::+right
     left::+left
-    b::vim.key()
+    b::sendinput, {CtrlDown}{left}{Ctrlup}
     Shift & o::sendinput, {home}{enter}{up}
-    backspace::sendinput, {CtrlDown}{backspace}{Ctrlup}
+    ; backspace::sendinput, {CtrlDown}{backspace}{Ctrlup}
     Capslock & o::Send, {end}{enter}
     o::Sendinput, {end}{enter}
     +o::Sendinput, {Home}{enter}
@@ -109,13 +111,20 @@ VIM:
     left::sendinput, {CtrlDown}{[}{Ctrlup}
     right::sendinput, {CtrlDown}{]}{Ctrlup}
     ; f::sendinput, {esc}{CtrlDown}{f}{Ctrlup}
+      v::
+      while GetKeyState("Capslock","p")
+      sendinput, {Shift down}
+      sleep 200
+      send, {shift up}
+      sleep 500
+      return
+      
     *shift::
       while GetKeyState("Capslock","p")
       sendinput, {Shift down}
       sleep 200
       send, {shift up}
       sleep 500
-      send, {right}{left}
       return
     *ctrl::
       while GetKeyState("Capslock","p")
@@ -132,18 +141,14 @@ VIM:
 
   ,::sendinput, {Altdown}{Ctrldown}{/}{CtrlUp}{AltUp}
   $a::sendinput, {ShiftDown}{altDown}{a}{shiftUp}{altup}
-  Tab::sendinput, {CtrlDown}{i}{Ctrlup}
+
   f::Vim.find("f")
   +5::
     sendraw,`%
     send, {CtrlDown}{right}{Ctrlup}
     sendraw,`%
     return
-    '::
-    sendraw,"
-    send, {CtrlDown}{right}{Ctrlup}
-    sendraw,"
-    return
+    '::"
   [::
     sendraw,{
     send, {CtrlDown}{right}{Ctrlup}
@@ -155,22 +160,28 @@ VIM:
     sendraw,{
     return
 ;   3::+F3{
-  m::sendinput, {ShiftDown}{altDown}{right}{altup}{ShiftUp}
-  u::sendinput, {ShiftDown}{altDown}{left}{altup}{ShiftUp}
+  m::sendinput, {ShiftDown}{CtrlDown}{altDown}{]}{Ctrlup}{altup}{ShiftUp}
+  u::sendinput, {ShiftDown}{CtrlDown}{altDown}{[}{altup}{Ctrlup}{ShiftUp}
+  ^m::sendinput, {ShiftDown}{altDown}{right}{altup}{ShiftUp}
+  ^u::sendinput, {ShiftDown}{altDown}{left}{altup}{ShiftUp}
   ; u::+!up ;pselect revious instance of line
 ;select next instance of line
   up::sendinput, {Altdown}{shiftdown}{Ctrldown}{up}{shiftup}{CtrlUp}{AltUp}
   down::sendinput, {Altdown}{shiftdown}{Ctrldown}{down}{shiftup}{CtrlUp}{AltUp}
   `;::+!g 
   i::sendinput, {CtrlDown}{i}{Ctrlup}
- 5::sendinput, {shiftDown}{Ctrldown}/{CtrlUp}{shiftup}
+  5::sendinput, {shiftDown}{Ctrldown}{/}{CtrlUp}{shiftup}
    r::^+!r
        Enter::sendinput, {shiftDown}{enter}{shiftup}
-$CapsLock::esc
+$CapsLock::send, {esc}{shiftup}{Ctrlup}{altup}
     $<^k::sendinput, {Ctrldown}{up}{CtrlUp}
-    $<^l::sendinput, {Ctrldown}]{CtrlUp}
-    $<^h::sendinput, {Ctrldown}[{CtrlUp}
-    $<^j::sendinput, {Ctrldown}{down}{CtrlUp}
+    $<^up::sendinput, {Ctrldown}{up}{CtrlUp}
+    $<^l::sendinput, {Ctrldown}{]}{CtrlUp}
+    $<^right::sendinput, {Ctrldown}{]}{CtrlUp}
+    $<^h::sendinput, {Ctrldown}{[}{CtrlUp}
+    $<^left::send, {Ctrldown}{[}{CtrlUp}
+    $<^j::send, {Ctrldown}{down}{CtrlUp}
+    $<^down::send, {Ctrldown}{down}{CtrlUp}
 
 
    #if
@@ -209,8 +220,9 @@ PsudoNumlock:
     b::down
     /::numpaddot
     p::numpadmult
-    =::sendinput, {CtrlDown}{=}{Ctrlup}
-    -::sendinput, {CtrlDown}{-}{Ctrlup}
+    =::sendinput, {=}
+    -::sendinput, {-}
+    n::sendinput, {-}
     '::right
     F20::send, {F21}
     RShift::sendinput, {Tab}

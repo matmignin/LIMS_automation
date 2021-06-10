@@ -4,7 +4,8 @@ EditSample(){
   global		
   mx:=
   my:=
-  if Iteration=""
+  
+  ; if Iteration=""
     iteration=1
   ifwinactive, Register new samples - \\Remote
   MouseGetPos, mx, my
@@ -12,7 +13,7 @@ EditSample(){
   {
     click 2
     sleep 200
-    winwaitactive, Edit sample (Field Configuration,,2
+    winwaitactive, Edit sample (Field Configuration
       if ErrorLevel
         exit
     sendinput, {tab 2}{right}{click 277, 139}{tab 6}
@@ -37,8 +38,8 @@ EditSample(){
     my:=my+26
     MouseMove, mx, my
     sleep 200
-      ; retrn
-}
+      return
+  }
 }
 
 
@@ -209,5 +210,29 @@ Main_EditResults()
 
 
 
+
+
+SelectTestSample(){
+global
+MouseGetPos, mx, my
+click
+; {
+  lms.CheckDepartment()
+  click 647, 75
+  winwait, Select samples for test
+  sleep 600
+  click 463, 71
+  send, {click 244, 69}
+  sleep 200
+  send, {click 205, 184}
+  sleep 200
+  send, {click 171, 127}^{a}%department%{enter}{tab}^a{click 506, 323}
+  ; if (department="Analytical")
+    ; send, 
+    ; my:=my+26
+    ; MouseMove, mx, my
+    ; sleep 200
+return
+}
 
 }

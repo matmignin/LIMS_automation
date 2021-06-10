@@ -29,7 +29,7 @@ SpecTab_Table(){
 		if (A_GuiEvent = "DoubleClick" ) {	
 			sendinput,{space}
 			
-		; Spec_Test()
+		; Spec_Test_1()
 		SpecTab_GetRowText()
 		
 		SpecTab_AutoFill()
@@ -85,13 +85,13 @@ SpecTab_CopySpecTemplate(){
   ;click 728, 191
   department:= ;Clip()
   Clipboard:=
-  sleep 200
+  ; sleep 200
   ; WinActivate, NuGenesis LMS - \\Remote
 	; click
 	; clip()
   send, ^c
-  sleep 200
-  ; clipwait; Tooltip, %Clipboard%
+  ; sleep 200
+  clipwait,2 ; Tooltip, %Clipboard%
 	sleep 100
 	LMS.CheckDepartment()
   sleep 400
@@ -120,14 +120,15 @@ Class SpecTab_TestSpecs{
     global
     WinActivate, NuGenesis LMS - \\Remote
 		BlockInput, on
+		clipboard:=
       click 57, 715 ; edit Test
     ; click 57, 750 ; edit results
     winwaitactive, Test Definition Editor - \\Remote
       click 418, 202
       send, ^a^c
-      sleep 200
+Clipwait,1
       Description:=Clipboard
-       sleep 200
+      sleep 200
 			Wheel_scroll("100")
 			sleep 200
 			click.TestDefinitionEditor_Results()
@@ -377,7 +378,8 @@ SpecTab_Create_Template:
 				global
 				winactivate, Edit specification - \\Remote
 				sendinput, {click 376, 87}{home}
-				sendinput, %Product%`, {Shift down}I{Shift up}n {Shift down}P{Shift up}rocess`, {Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
+				sendinput, %Product%`, {Shift down}I{Shift up}n {Shift down}P{Shift up}rocess`, {Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
+				send, {right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
 				click, 340, 622 ;click okay
 				winwaitactive, NuGenesis LMS - \\Remote, ,8
 				if !ErrorLevel 
@@ -389,25 +391,21 @@ SpecTab_Create_Template:
 			}			
 
 
-SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:="True") {
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:="1") {
 		Global
-		If (CreateRequirements:="True")
-			Requirement= %Min_Limit% - %Max_Limit% %The_Units% 
-		else 
-			Requirement:= CreateRequirements
-			;normal
+		tooltip(CreateRequirements)
+			; normal
 		sleep 200
 		click, 250, 140 ; click id box to orient
-
 		sleep 200
 		if (Uselimitsbox := 0)
 			send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 7}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-		send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
+										send, {tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
 		sleep 200
 		If (UseLimitsBox:=1)
 			send, {space}
 		sleep 200
-		send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+										send, {tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 		if (Max_limit = "")
 			sendinput, NLT %Min_Limit% %The_Units%
 		else if (Min_limit = "<")
@@ -415,7 +413,13 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0
 		else if (Min_limit = "")
 			sendinput, NMT %Max_Limit% %The_Units%
 		Else
-			Sendinput, %Requirement%
+			{
+				If CreateRequirements="1"
+					sendinput, %Min_Limit% - %Max_Limit% %The_Units% 
+				else if CreateRequirements!="1") 
+					Sendinput, %CreateRequirements%
+			; Sendinput, %Requirement%
+			}
 		sleep 100
 		click 350, 660 ; click okay
 		; WinWaitClose, Results Definition,, 6

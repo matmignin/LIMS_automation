@@ -1,6 +1,3 @@
-
-
-
 KEY_Varbar:
   #If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI") 
   wheelleft::Excel.PreviousSheet()
@@ -9,7 +6,7 @@ KEY_Varbar:
   Wheeldown::Varbar.SubIteration()
   F7::Excel.NextSheet()
   F6::Excel.previoussheet()
-  Mbutton & WheelDown::Varbar.Follow()
+  F20::Varbar.Follow()
   mbutton::Varbar.LaunchTable()
   Xbutton1 & F6::ProductTab_Table()
   Xbutton1 & F7::SpecTab_Table()
@@ -20,22 +17,17 @@ KEY_Varbar:
   #if
   
   
-
-
-
-
-
-
-
-
 Class VarBar{
 
 Show(X:=1, Y:=1, Destroy:="Reset"){ 
 	Global
+	EnvGet, Iteration, Iteration
+	if Iteration is not digit
+		iteration:=1 
 	try Gui,VarBar:Destroy
 	If (X<>0)
 	{
-		 Iniread, VarBar_X, data.ini, Locations, VarBar_X
+		Iniread, VarBar_X, data.ini, Locations, VarBar_X
 		Iniread, VarBar_Y, data.ini, Locations, Varbar_Y	
 	}
 	If (X=0)
@@ -53,23 +45,24 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
 	; Varbar_X := LMS_X+1000
 	WinSet, Transparent, 200
-	; Varbar_Y := LMS_Y
 	Gui, VarBar:color, 21a366
+	; Varbar_Y := LMS_Y
 	GUI, VarBar:Font, s16 cBlack Bold, Consolas
 	Gui, VarBar:Add, edit, vProduct gproductVarBar left  h30 x0 y0 w62, %product% ;|%DDLProducts%	
 	GUI, VarBar:Font, s10 cBlack Bold, Consolas
 	Gui, VarBar:add, Text, vBatch2 x68 y0 w100, %Batch2%
 	Gui, VarBar:add, Edit, vBatch gbatchVarbar H18 x62 y-3 w70, %Batch%
-	GUI, VarBar:Font, s9 cBlack , Arial Narrow
-	Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
+	GUI, VarBar:Font, s10 cBlack , Consolas 
+	; Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
+	Gui, VarBar:add, Edit, vlot gLotVarbar x130 H18 y-3 w60, %Lot%
 	GUI, VarBar:Font, s7 cBlack , arial
 	Gui, VarBar:add, Text, vCoated -wrap Right x100 y17 w80, %Coated%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
-	Gui, VarBar:add, Text, vname  x160 -wrap y0 w160, %Name%
-	Gui, VarBar:add, Text, vcustomer  x200 -wrap y16 w160, %Customer%
+	Gui, VarBar:add, Text, vname  x65 -wrap y16 w160, %Name%
+	; Gui, VarBar:add, Text, vcustomer  x200 -wrap y16 w160, %Customer%
 	GUI, VarBar:Font, s8 cBlack , arial Narrow
 	Gui, VarBar:add, Text, vColor x190 wrap y18 w90, %Color%
-	GUI, VarBar:Font, s12 cBlack Bold, Consolap
+	GUI, VarBar:Font, s12 cBlack Bold, Consolas
 	Gui, VarBar:Add, text, vIteration x285 y0 w70, %iteration%
 	; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
 	OnMessage(0x203, "VarBar.Relocate")
@@ -90,6 +83,10 @@ sleep 100
 Gui, VarBar:submit,NoHide
 return
 BatchVarBar:
+sleep 100
+Gui, VarBar:submit,NoHide
+return
+LotVarBar:
 sleep 100
 Gui, VarBar:submit,NoHide
 return
@@ -146,17 +143,17 @@ Clear(Var:="NotProduct"){
 	If Var contains NotProduct
 	{
 		ControlsetText, Edit2,, VarBar
-		ControlsetText, Static2,, VarBar
-		ControlsetText, Static3,, VarBar
-		ControlsetText, Static4,, VarBar
-		ControlsetText, Static5,, VarBar
-		ControlsetText, Static6,, VarBar
+		; ControlsetText, Static2,, VarBar
+		; ControlsetText, Static3,, VarBar
+		; ControlsetText, Static4,, VarBar
+		; ControlsetText, Static5,, VarBar
+		; ControlsetText, Static6,, VarBar
 		
 		ControlsetText, Static8,, VarBar
 	}
 If Var contains NotBatch
 	{
-		ControlsetText, Static2,, VarBar
+		; ControlsetText, Static2,, VarBar
 		ControlsetText, Static3,, VarBar
 		ControlsetText, Static4,, VarBar
 		ControlsetText, Static5,, VarBar
@@ -225,7 +222,7 @@ Sendinput(Category:="",PostOutput:="")
 			}
 		if WinActive("NuGenesis LMS - \\Remote") 
 		{
-				SearchBar("Product")
+				click.Searchbar(Product)
 		}
 		if winactive("Register new samples - \\Remote")
 			send, {click 182, 103}%Product%
@@ -237,10 +234,10 @@ Sendinput(Category:="",PostOutput:="")
 			output:=Lot
 		else If Category contains Coated
 			output:=Coated
-		else If Category contains Name
-			output:=Name
-		else If Category contains Customer
-			output:=Customer
+		; else If Category contains Name
+			; output:=Name
+		; else If Category contains Customer
+			; output:=Customer
 		else If Category contains Iteration
 			output:=Iteration
 		Send, %output%%PostOutput%
@@ -262,7 +259,7 @@ Search(input){
 	; WinActivate, NuGenesis LMS - \\Remote
 	; click 746, 47
 	; sleep 200
-	SearchBar(input)
+	click.SearchBar(input)
 	; Varbar.sendinput("Batch")
 	return
 }
@@ -276,7 +273,8 @@ AddIteration(){
 	CoordMode, tooltip, screen
 	Iteration+=1
 	sleep 150
-	ControlsetText, Static7,%Iteration%,VarBar
+	ControlsetText, Static5,%Iteration%,VarBar
+	; sleep 200
 	envset, iteration, %iteration%
 	; tooltip(Iteration, 3000,(Varbar_x+80),Varbar_y)
 	return
@@ -284,10 +282,11 @@ AddIteration(){
 SubIteration(){
 	global Iteration
 	CoordMode, tooltip, screen
-	; GuiControl, Varbar:Text, iteration, %iteration%
+	; 3GuiControl, Varbar:Text, iteration, %iteration%
 	Iteration-=1
 	sleep 150	
-	ControlsetText, Static7,%Iteration%,VarBar
+	ControlsetText, Static5,%Iteration%,VarBar
+	; sleep 200
 	envset, iteration, %iteration%
 	; tooltip(Iteration,3000,((Varbar_x+80)),Varbar_y)
 	return
@@ -305,11 +304,11 @@ Reset()
 	IniWrite, MousePos_Y+50, data.ini, Locations, ProductTable_Y
 	IniWrite, MousePos_X+50, data.ini, Locations, SpecTable_X
 	IniWrite, MousePos_Y+50, data.ini, Locations, SpecTable_Y
-	;Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
+	Gui, VarBar:Show, h30 x%VarBar_X% y%VarBar_y%  w390 ;  NoActivate
 	VarBar.show(0)
+	Varbar.Relocate()
 	return
 }
-
 
 update(){
 	Global
@@ -318,9 +317,9 @@ update(){
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Coated, %coated%
 	GuiControl, Varbar:Text, name, %name%
-	GuiControl, Varbar:Text, customer, %Customer%
+	; GuiControl, Varbar:Text, customer, %Customer%
 	GuiControl, Varbar:Text, iteration, %iteration%
-	GuiControl, varbar:text, ShapeSize, %shapeSize%
+	; GuiControl, varbar:text, ShapeSize, %shapeSize%
 	GuiControl, varbar:text, Color, %Color%
 }
 }

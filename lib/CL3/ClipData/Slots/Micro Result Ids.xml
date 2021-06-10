@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Slots>
+	<Invalid_Name id="0" ahk="True">#Ifwinactive, NuGenesis LMS - \\Remote 
+#Ifwinactive, Select methods tests - \\Remote
+#IfWinActive, Results Definition - \\Remote
+#ifwinactive, Edit test (Field Configuration:
+#Ifwinactive, Result Entry - \\Remote  ;Enter Test Results window  
+#ifwinactive, Register new samples - \\Remote
+#IfWinActive, ahk_exe WFICA32.EXE</Invalid_Name>
+	<Invalid_Name id="1" ahk="True">Total Probiotic</Invalid_Name>
+	<Invalid_Name id="2" ahk="True">Bacillus coagulans presence
+</Invalid_Name>
+	<Invalid_Name id="3" ahk="True">Probiotic presence</Invalid_Name>
+	<Invalid_Name id="4" ahk="True">Lactobacillus GG</Invalid_Name>
+	<Invalid_Name id="5" ahk="True">Total Yeast &amp; Molds</Invalid_Name>
+	<Invalid_Name id="6" ahk="True">Yeast and Molds</Invalid_Name>
+	<Invalid_Name id="7" ahk="True">Total aerobic microbial count</Invalid_Name>
+	<Invalid_Name id="8" ahk="True">Total Aerobic Plate Count</Invalid_Name>
+	<Invalid_Name id="9" ahk="True"></Invalid_Name>
+</Slots>

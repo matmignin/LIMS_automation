@@ -5454,3 +5454,111 @@ k277
 Status	Batch	Formulation ID	Type	Sample Id	Submission Id	Product	Product Trade Name	Pkg Lot #	Blister Lot #	Date Created	Ship To	Date Received	Created By	Department	Shape/Size	Description/Color	Description	Product Alternate ID 1	Product Label Claim	Alternate ID 1 Text	Category	Received By	Canceled By	Owner	Storage Location	Sample Guid	Stage	Document	Reason For Change	Orientation	Specification	Sample Template	Connector Status	Connector Status Description	
 200	000-2225	K154	Physical (Coated)	S20210604-014		K154, Macular Shield AREDS2 OHHSC-32	Macular Shield AREDS2 OHHSC-32	000000BA		6/4/2021 2:29:32 AM	111Skin Limited	6/4/2021 2:29:32 AM	mmignin	Analytical	#0 capsule / 0.854" x 0.300"	White with red speckled powder fill in clear capsule		K154			QC	mmignin			Analytical Lab	a79c495c-c1e2-4d10-85d4-9326b238c013							0	
 
+104-0519
+103-0926
+G654
+g654
+Thickness
+QC 045
+
+ExtraFolate
+G555
+G553
+G653
+G655
+G654
+K521
+K541
+104-1198
+103-0115
+j585
+I047
+i047
+i047
+K415 
+K415
+I047
+I047
+103-1248
+103-1246
+103-0181
+101-0181
+103-1250
+K437
+000-0000
+K299
+K229
+K444
+K444
+5/31/2021
+012-1303
+S20210608-015	000-E478	E478	0E478T1
+S20210608-014	000-D825	D825	0D825T1
+S20210608-013	000-J226	J226	0101T0
+S20210608-012	000-K120	K120	0K120T1
+S20210608-011	000-K120	K120	
+S20210608-010	000-K218	K218	0K218T1
+S20210608-009	000-i860	I860	0i860T1
+S20210608-008	000-D682	D682	0D682T1
+S20210608-007	000-I966	I966	0I966T1
+S20210608-006	000-J974	J974	0J974T1
+S20210608-005	000-I299	I299	0I299T1
+S20210608-004	000-F804	F804	0F804T1
+S20210608-003	102-TEST	0000	0102T0
+S20210608-002	101-TEST	0000	0101T0
+S20210331-035	102-0786	I860	
+
+H580
+J201
+104-0935
+
+H580
+H580
+H580
+104-0854
+104-0852
+H580
+J201
+H580
+103-1320
+104-0570
+104-0570
+G654
+G654
+104-0854
+104-0852
+104-0935
+H508
+H580
+k406
+K406
+K316
+103-1472
+104-0854
+104-0852
+104-0852
+105-0107
+K406
+K609
+210609_Micro_0011
+0000
+105-1475 
+105-0876
+I350
+101-0721
+K250
+104-0898
+K512
+K512
+K512
+K521
+K521
+Probiotic
+Probiotic assay
+Test Id	Formulation ID	Batch	Date Created	Request Id	Status	Method	Submission Id	Category	Product	Description	Assigned To	Complete Date	Finished By	Created By	Test Group	Finished Date	Department	
+Probiotics	I258	104-0812	5/19/2021 1:35:14 PM	R20210519-083	1000	VQ 230 (1)		QC	I258, PrePro Green Biotics (Morning Complete)		tsmushko	5/24/2021 11:00:59 AM	wcai	aarellan	Ingredient	5/24/2021 11:16:25 AM	Micro
+
+K512
+K512
+K512
+K299
