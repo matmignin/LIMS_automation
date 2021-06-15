@@ -1,136 +1,98 @@
-; Clip() {
-; 	global
-; 	;PreClip:=ClipboardAll
-; 	Clipboard:=
-; 	sleep 50
-; 	Send, ^c    
-; 	clipwait, 1
-; 	;Clipboard := StrReplace(Clipboard, "`r`n")
-; 	sleep 50
-; 	;ToolTip(Selection, 1000)
-; 	Selection:=Clipboard
-; 	; clipwait, 0.25
-; 	;Clipboard:=Preclip
-; 	; clipwait, 0.25
-; 	return %Selection%
-; }
-
 Clip(input=0){
-	global
-If Input contains OCR
-	OCR()
-clipboard:=	
-cProduct:=
-cBatch:=
-cLot:=
-send, ^c
-clipwait,1
-sleep 20
-RegExMatch(Clipboard, "\b[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
-RegExMatch(Clipboard, "\b\d{3}-\d{4}\b", cBatch)
-RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
-Sleep 20
-if cProduct || cBatch || cLot
-  tooltip(cProduct "`n" cBatch "`n" clot,1500,,,3)
-If cProduct
-GuiControl,Varbar:Text, Product, %cProduct%
-If cBatch
-  GuiControl,Varbar:Text, Batch, %cBatch%
-If cLot
-  GuiControl,Varbar:Text, lot, %clot%
+  global
+  ClipboardSaved:=Clipboard
+  If Input contains OCR
+  {
+  ;  FlashScreen()
+    OCR()
+    return
+  }
+  clipboard:=
+  sleep 20
+  cProduct:=
+  cBatch:=
+  cLot:=
+  cSampleID:=
+  cAnalytical:=
+  cMicro:=
+  cRetain:=
+  cPhysical:=
+  cCTPhysical:=
+  cCTRetain:=
+  send, ^c
+  clipwait,0.75
+  if errorlevel
+  {
+    clipboard:=ClipboardSaved
+    if (A_PriorKey != "F20")
+      exit
+    tooltip(Clipboard,1000,,,3)
+      send, ^v
+    exit
+  }
+  
+  CoordMode, Tooltip, Screen
+  Tooltip(Clipboard,2000,10,(A_screenheight/4)+2*(A_screenheight/4))
+  CoordMode, Tooltip, Relative
+  sleep 20
+  RegExMatch(Clipboard, "[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
+  RegExMatch(Clipboard, "\b\d{3}-\d{4}\b", cBatch)
+  RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+  RegExMatch(Clipboard, "\b[Ss]\d{8}-\d{3}\b", cSampleID)
+  Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+  Regexmatch(Clipboard, "((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+  Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+  Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+  Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+  Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+  Sleep 20
 
-}
-; Clip(input:=0){
-; 	global
-; 	; clipboard:=
-; 	Gui VarBar:+LastFound ; +AlwaysOnTop  -Caption  +ToolWindow +owner ; +E0x20 
-; 	If Input contains OCR
-; 		OCR()
-; 	Else		
-; 		clipboard:=
-; 	sleep 20
-; 	send, ^c
-; 	clipwait, 1
-; 		; Traytip, %Clipboard%,,2
-; 	ProductClipboard:=Clipboard
-; 	BatchClipboard:=Clipboard
-; 	If (Input = "S")
-; 			{
-; 					; Clipboard:=""
-; 						; Send, ^c
-; 						; clipwait, 1
-; 					Selection:=StrReplace(Clipboard, "`r`n")
-; 						; TrayTip, Copy, %Selection%,,
-; 					return %Selection%
-; 			}
-; 	If (Regexmatch(ProductCLIPBOARD, "\b[ADEFGLHKJIadefglhkji]\d{3}\b", Product) > 0) 	
-; 	{
-; 		; Varbar.Clear("NotProduct)
-; 		GuiControl, Varbar:Text, Product, %Product%
-; 		ControlGetText, Batch, Edit2, VarBar
-; 		ControlGetText, lot, Static2, VarBar
-; 		GuiControl, Varbar:Text, Name,
-; 		GuiControl, Varbar:Text, Customer,
-; 		;FileAppend, %Product%`n, codes.txt
-; 		envset, Product, %Product%
-; 		Gui, VarBar:color, 847545 ;brown
-; 		Found:=Product " | " found
-; 		; tooltip(Found,2000)
-; 	}
-; 	if (Regexmatch(BatchClipboard, "\b\d{3}-\d{4}\b", Batch) > 0)
-; 	{
-; 		GuiControl, Varbar:Text, Batch, %Batch%
-; 		ControlGetText, Product, Edit1, VarBar
-; 		ControlGetText, lot, Static2, VarBar
-; 		ControlGetText, Coated, Static3, VarBar
-; 		GuiControl, Varbar:Text, Name,
-; 		GuiControl, Varbar:Text, Customer,
-		
-; 		;FileAppend, %Batch%`n, codes.txt
-; 		; if input contains Coated
-; 			; Coated:=Batch
-; 		; else
-; 		; GuiControl, Varbar:Text, Coated, %Coated%
-; 		envset, Batch, %Batch%
-; 		Found:=Batch " | " found
-; 		Gui, VarBar:color, 847545 ;brown
-; 	}
-; 		if (Regexmatch(Clipboard, "(\bCt\#\d{3}-\d{4}\b|\bCt\d{3}-\d{4}\b)", Coated) > 0)
-; 	{
-; 		Coated:=trim(Coated,"Ct#")
-; 		ControlGetText, Batch, Edit2, VarBar
-; 		GuiControl, Varbar:Text, Batch, %Batch%
-; 		GuiControl, Varbar:Text, Coated, %Coated%
-; 		ControlGetText, Product, Edit1, VarBar
-; 		ControlGetText, lot, Static2, VarBar
-; 		;FileAppend, %Lot%`n, codes.txt
-; 		envset, Coated, %Coated%
-; 				Found:=Coated " | " found
-; 		Gui, VarBar:color, 847545 ;brown
-; 	}
-; 	if (Regexmatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", lot) > 0)
-; 	{
-; 		GuiControl, Varbar:Text, Lot, %Lot%
-; 		ControlGetText, Product, Edit1, VarBar
-; 		ControlGetText, Batch, Edit2, VarBar
-; 		GuiControl, Varbar:Text, Name,
-; 		GuiControl, Varbar:Text, Customer,
-; 		;FileAppend, %Lot%`n, codes.txt
-; 		envset, lot, %lot%
-; 				Found:=Lot " | " found
-; 		Gui, VarBar:color, 847545 ;brown
-; 	}
-; 	else if input conains 0
-; 	{
-; 	clipboard:=
-;   send, ^c
-; 	clipwait, 1
-; 	sleep 100
-; 	; tooltip(Clipboard,2000)
-; 	; return %clipboard%
-; 	}
-; 	;Varbar.Update()
+    ; tooltip(cProduct "`n" cBatch "`n" clot,1500,,,3)
+  If cProduct
+  GuiControl,Varbar:Text, Product, %cProduct%
+  If cBatch
+    GuiControl,Varbar:Text, Batch, %cBatch%
+  If cLot
+    GuiControl,Varbar:Text, lot, %clot%
+  If cSample
+    GuiControl,Varbar:text, SampleID, %cSampleID%
+  If cAnalytical
+    Department=Analytical
+  If cMicro
+    Department=Micro
+  If cRetain
+    Department=Retain
+  If cCTRetain
+    Department=CTRetain
+  If cPhysical
+    Department=Physical
+  If cCTPhysical
+    Department=CTPhysical
+  If cCTRetain
+    Department=CTRetain
+  GuiControl,Varbar:Text, Department, %Department%
+    if cProduct || cBatch || cLot || cSample || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain
+    Tooltip(cProduct "  " cBatch "  " cLot "  " cSample "`n " Department,4000,,,3)
+  }
 
-; 	return
-; }
+clip_Key(){
+  Global
+    KeyWait, F20, T0.45
+    If ErrorLevel
+    {
+        Tooltip("CUT",1000)
+        KeyWait, F20,U T3
+        If !ErrorLevel
+        {
+          send, ^x
+        }
+        KeyWait, F20,
+        exit
+    }
+    Clip()
+    ; tooltip(Clipboard,,0,0,3)
+    ; if (A_ThisHotkey != "F20")
+    ;     exit
+ }
 
+return

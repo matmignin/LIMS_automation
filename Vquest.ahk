@@ -1,305 +1,200 @@
 ﻿gosub, vquest_start
 
 return
-; OnClipboardChange:
-; ToolTip(Clipboard,3000,0,0,3)
-; cProduct:=
-; cBatch:=
-; cLot:=
-; RegExMatch(Clipboard, "\b[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
-; RegExMatch(Clipboard, "\b\d{3}-\d{4}\b", cBatch)
-; RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
-; Sleep 100
-; if cProduct || cBatch || cLot 
-;   tooltip(cProduct "`n" cBatch "`n" clot,1500,,,3)
-; If cProduct
-; GuiControl,Varbar:Text, Product, %cProduct%
-; If cBatch
-;   GuiControl,Varbar:Text, Batch, %cBatch%
-; If cLot
-;   GuiControl,Varbar:Text, lot, %clot%
+Starting_test:
+return
+; Lwin::Test_3()
+
+
+
+
+
+F13 & Lbutton::Click()
+
+Click(){
+  KeyWait, lbutton, T0.25
+    If ErrorLevel
+    {
+       KeyWait, Lbutton, D
+        If !ErrorLevel
+          send, ^{click 3}
+        exit
+    }
+    send, ^{Click 2}
+    return
+}
+
+
+Test_3(Code:=""){
+Global
+	WinActivate, ahk_exe WFICA32.EXE
+	ControlGetText, Batch, Edit2, VarBar
+	ControlGetText, Lot, Edit3, VarBar
+	ControlGetText, Product, Edit1, VarBar
+	blockinput on
+	lms.FilterStatus()
+    LMS.DetectTab()
+   Tooltip(Code " " Product "`n" Tab)
+		if (Tab="Products")
+			clk(xProductsFilter,yMyWorkFilter)
+		else if (Tab="Specs")
+      clk(xSpecsFilter,yMyWorkFilter)
+		else if (Tab="Requests")
+      clk(xRequestsFilter,yMyWorkFilter)
+		else if (Tab="Documents")
+      clk(xDocumentsFilter,yWoryMyWorkFilterkTabFilter)
+		else if (Tab="Samples" AND Code==Product)
+            clk(xFormulationFilter,yMyWorkFilter)
+		else if (Tab="Samples" AND Code==Batch)
+            clk(xBatchFilter,yMyWorkFilter)
+		else if (Tab="Samples" AND Code==lot)
+            clk(xLotFilter,yMyWorkFilter)
+		else if (Tab="Results")
+      clk(xResultsFilter,yMyWorkFilter)
+		else if (Tab="Tests")
+      clk(xTestsFilter,yMyWorkFilter)
+    else
+		send, ^{a}%Code%^{a}
+		sleep 200
+		send, %PostCMD%
+	sleep 300
+	blockinput off
+	return
+}
+
+return
+;------------------------------------------------------TEST 2------------------------------------------------------------
+
+Test_2(){
+ Global
+ LMS.OrientBoxes()
+mousemove, %XDivider%, 500
+ return
+}
+;------------------------------------------------------TEST 3------------------------------------------------------------
+
+Test_1(){  ;array - remove duplicates (case insensitive)
+ global
+ oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
+
+oArray2 := [], oTemp := {}
+for vKey, vValue in oArray
+{
+	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+	{
+		if !ObjHasKey(oTemp, vValue+0)
+			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
+	}
+	else
+	{
+		if !ObjHasKey(oTemp, "" vValue)
+			oArray2.Push("" vValue), oTemp["" vValue] := ""
+	}
+}
+vOutput := ""
+for vKey, vValue in oArray2
+	vOutput .= vKey " " vValue "`r`n"
+MsgBox, % vOutput
 return
 
+ return
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-blockRepeat(time=200){
-	SetTimer, BlockInput, -%time%
-	return
 }
-
-BlockInput:
-	N=0
-	return
-
-MouseSave(){
-  Global
-  MouseGetPos, mx, my, mw,
-  MouseReturn:="{click " Mx ", " My ",0}"
-  PrevY:=My-26
-  NextY:=My+26
-  Next:="{click " Mx ", " NextY ",0}"
-  Prev:="{click " Mx ", " PrevY ",0}"
-  return 
-  }
-
-
-
-
-
-Ingredients() {
-  global
-    IniRead,vSelect, Ingredients.ini, Ingredients, %vIngredient%
-    ; Loop, Read, Ingredients.ini
-  ; {
-    ; If A_Index = 1
-      ; Continue
-    ; Ingredients := StrSplit(A_LoopReadLine, "=") 
-    ; Selection:= % Ingredient[1]
-    ; Menu, Ingredientmenu, add, %Selection%, Ingredients
-  ; }
-    msgbox % vSelect
-  ConvertIngredientSelection(vSelect)
-  return
-
-
-  }	
-ConvertIngredientSelection(IngredientSelection){
-  
-  sleep 140
-  AbsSelection:=Abs(IngredientSelection)-1
-  if (IngredientSelection > 0)
-    msgbox, %ingredientSelection% ; sendinput, {home}{right %IngredientSelection%}
-  if (IngredientSelection < 0)
-    msgbox, %AbsSelection% ;Sendinput, {tab}{end}{left %Absselection%}
-  sleep 300
-  ; send, {enter}
-    return
-}
-
 
 ReadSpecIntoDataBase:
-  iniread, full, data.ini, %Product%,
-  Test_Specs:= strsplit(Full,"=")
-  Test:=Test_Specs[1]
-  Specs:= strsplit(Test_Specs[2],"|")
-  msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+ iniread, full, data.ini, %Product%,ecc738
+ Test_Specs:= strsplit(Full,"=")
+ Test:=Test_Specs[1]
+ Specs:= strsplit(Test_Specs[2],"|")
+ msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
 
-  LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-  Return  
-
-
+ LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+Return
 
 
+ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 
-
-
-
-
-
-
-
-CheckActive:
-  If WinActive("NuGenesis LMS - \\Remote") ;|| Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
-  ; If WinActive("ahk_exe WFICA32.EXE") ;|| Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe") 
-  {
-    Varbar.Follow()
-    return
-    }
-  Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
-    exit
-  else
-  return
-    ; WinMove, VarBar ahk_class AutoHotkeyGUI,, %VarBar_X%, %VarBar_Y%
-  Return
-
-
-
-
-
-
-
-ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:="") {
-  
-  ;GuiControlGet, OutputVar , , %CtrlHwnd%,
-  IniRead,vOutput, Customers.ini, Customers, %OutputVar%
-  msgbox, %vOutput%
-  }
-
-
-FlashScreen(){
-  send, #^{c}
-  sleep 20
-  send, #^{c}
-  return
+ ;GuiControlGet, OutputVar , , %CtrlHwnd%,
+ IniRead,vOutput, Customers.ini, Customers, %OutputVar%
+ msgbox, %vOutput%
 }
 
 
-#if winactive("Remote Desktop") || WinExist("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-  Mbutton::Sendpassword()
-  #if
-
-
-
-  SendPassword(){
-    if winactive("Remote Desktop")
-      sendinput, ?+{K}ilgore7744{enter}
-    if WinExist("ahk_exe ONENOTE.EXE Protected Section") {
-      winactivate
-      sendinput, +{K}ilgore7744{enter}
-      }
-    if WinExist("Login - \\Remote") {
-      winactivate
-      sendinput, mmignin{tab}+{K}ilgore7744{enter}
-      }
-    Else If Winexist("Sign :") {
-      winactivate,
-      sendinput, {tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
-      }
-    else if winexist("Windows Security") {
-      winactivate,
-      sendinput, Kilgore7744{enter}
-    }
-    else if winexist("CredentialUIBroker.exe") {
-      winactivate,
-      sendinput, Kilgore7744{enter}
-    }
-    else
-      sendinput, +{K}ilgore7744{enter}
-    return
-  }
-
-  CreditCard(){
-      sendinput, 4130220009588038
-      ToolTip("11/21  127",5000)
-      return
-    }
 #IfWinActive,
 
-
-
-  
-
-  
-  
 ;___________________________________________________________________________
 
+WindowNames(){
+ global
+ Loop, Read, WindowNames.ini
+ {
+  If A_Index = 1
+   Continue
+  WindowName := StrSplit(A_LoopReadLine, "=")
+  ; MethodGroup := StrSplit(A_LoopReadLine, "|")
+  Selection:= % WindowName[1]
+  ; Group:= % MethodGroup[2]
+  Menu, WindowNameMenu, add, %Selection%, WindowNameMenu
+ }
+ Menu, WindowNameMenu, Show,
+return
 
+WindowNameMenu:
+ sleep 200
+ InputVar:=A_ThisMenuItem
+ IniRead,vOutput, WindowNames.ini, WindowNames, %InputVar%
+ Sendinput, %vOutput%{enter}
+return
+}
 
-
-
-WindowNames() {
-  global
-    Loop, Read, WindowNames.ini
-  {
-    If A_Index = 1
-      Continue
-    WindowName := StrSplit(A_LoopReadLine, "=") 
-    ; MethodGroup := StrSplit(A_LoopReadLine, "|") 
-    Selection:= % WindowName[1]
-    ; Group:= % MethodGroup[2]
-    Menu, WindowNameMenu, add, %Selection%, WindowNameMenu
-  }
-    Menu, WindowNameMenu, Show,
-  return
-
-  WindowNameMenu:
-  sleep 200
-  InputVar:=A_ThisMenuItem
-    IniRead,vOutput, WindowNames.ini, WindowNames, %InputVar%
-    Sendinput, %vOutput%{enter}
-  return
-}	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-StopSub: 
-  exitapp
-  Return
+StopSub:
+exitapp
+Return
 VarBar_ResetSub:
-  VarBar.Reset()
-  return
+ VarBar.Reset()
+return
 Run_Display:
-  run, Display.url, C:\Users\mmignin\Desktop\
+ run, Display.url, C:\Users\mmignin\Desktop\
 Run_CL3:
-  Run, cl3.Ahk, lib\CL3
-  return
+ Run, cl3.Ahk, lib\CL3
+ return
+Run_CodeAlt:
+ Run, Coding.ahk
+return
 run_Inverted:
-Menu, Tray, ToggleCheck, Inverted
-  If Inverted := !Inverted
-    IniWrite, 1, data.ini, Locations, Inverted
-  else 
-    IniWrite, 0, data.ini, Locations, Inverted
-    send, {esc}
-  return
+ Menu, Tray, ToggleCheck, Inverted
+ If Inverted := !Inverted
+  IniWrite, 1, data.ini, Locations, Inverted
+ else
+  IniWrite, 0, data.ini, Locations, Inverted
+ send,{esc}
+return
 run_Follow:
-Menu, Tray, ToggleCheck, VarbarFollow
-    If  follow:= !follow
-      IniWrite, 1, data.ini, Locations, follow
-     else 
-      IniWrite, 0, data.ini, Locations, follow
-      send, {esc}
-    return
-;Divider_Location:
-;     KeyWait, Lbutton, D
-;     ; KeyWait, Lbutton, D,
-;     CoordMode, mouse, window
-;     sleep 200
-;     MouseGetPos, xDivider, yDivider,
-;   	IniWrite, %xDivider%, data.ini, Locations, xDivider
-;   	IniWrite, %yDivider%, data.ini, Locations, yDivider
-;     DividerLocation:=xDivider ", " yDivider
-;     tooltip(DividerLocation)
-;     MouseClick, Right,,,1, 0, U
-;     return
+ Menu, Tray, ToggleCheck, VarbarFollow
+ If follow:= !follow
+  IniWrite, 1, data.ini, Locations, follow
+ else
+  IniWrite, 0, data.ini, Locations, follow
+ send,{esc}
+return
 Run_Listlines:
-  ListLines
-  return
-WindowSpySub: 
-  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-  return
-ExitSub: 
-    exitapp
-  return
-  
+ ListLines
+return
+WindowSpySub:
+ Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+return
+ExitSub:
+exitapp
+return
+
 #IfWinActive,
 #include <TrackPad>
 #include <KEYS>
 #Include <Firefox>
+#Include <clip>
 #Include <Office>
 #Include <LMS>
 #Include <explorer>
-#Include <clip>
 #Include <Snipper>
 #Include <OpenApp>
 #Include <AutoFill>
@@ -307,120 +202,85 @@ ExitSub:
 #include <ProductTab>
 #include <WorkTab>
 #include <SpecTab>
+#include <menu>
 #include <Rotation>
 #include <Excel>
 #include <vis2>
 #include <wheel>
 #include <mouse>
 #include <click>
-#include <test>
-#include <Vim>  
+#include <Vim>
 #include <VScode>
 
 
-
 VQuest_Start:
-  #Persistent 
-  #NoEnv
-  #SingleInstance,Force
-  #KeyHistory 400
-  #InstallKeybdHook
-  #InstallMouseHook
-clipboard:=
-EnvGet, Product, Product
-EnvGet, Batch, Batch
-EnvGet, lot, lot
-EnvGet, Coated, Coated
-EnvGet, Sample, Sample
-EnvGet, Iteration, Iteration
-
-; iteration=1
-envget, PrevProduct, PrevProduct
-trackpadhints=
-(
-  ___________________[3]________________________
-  Tap `t mbutton
-  up `t F8 `t (thumb mouse)
-  down `t f9
-  left `t f6 `t (wheel left)
-  right `t f7 `t (wheel_right)
-  __________________[4]_________________________
-  tap `t F10
-  up `t Media_Prev
-  down `t Media_Next
-  left `t browser back   `t`t (xbutton2)
-  right `t browswer forward `t (xbutton1)
-  _____________[Window Names]____________________
-  ahk_exe WFICA32.EXE				
-  NuGenesis LMS - \\Remote 
-)
-  ; #WinActivateForce
-  SetWorkingDir, %A_ScriptDir%
-  Menu, Tray, Add, CL3, Run_cl3
-  Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
-  Menu, Tray, Add, VarbarFollow, Run_Follow
-  ; menu, tray, add, Display settings, DoubleTrayClick
-  menu, tray, add, Inverted, Run_Inverted
-  ; Menu, Tray, Add, Set Divider Location, Divider_Location
-  Menu, tray, NoStandard
-; Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
-;Menu, tray, Default, &Settings
-  Menu, Tray, Add, List Lines, Run_ListLines
-  Menu, Tray, Add, windowSpy, WindowSpySub 
-  Menu, Tray, Add, Exit, ExitSub 
-  Menu, Tray, Default, VarbarFollow ;Run_Listlines
-  ;SetBatchLines, 30ms
-  Setnumlockstate Alwayson
-  setCapslockstate alwaysoff
-  SetscrolllockState, alwaysOff
-  CoordMode, mouse, Window
-
-  SetMouseDelay, 5
-  SetDefaultMouseSpeed, 1
-  ; detecthiddenwindows, on
-  SetTitleMatchMode, 2
-  
-  ; settitlematchmode, Slow
- #MaxHotkeysPerInterval 900
- #HotkeyModifierTimeout 10
-  #maxthreadsperhotkey, 1
-   SetKeyDelay, 0, 0
-  setwindelay,400
-  ; sendinput, {CtrlUp}{AltUp}{shiftup}{LWinUp}
-  ;AutoTrim, off
-  LMSMain:="NuGenesis LMS - \\Remote"
-  LMSWindow:="ahk_exe WFICA32.EXE"
-  FormatTime, TimeString,, M/d/yy
-  Run, cl3.Ahk, lib\CL3
-  try 
-    Menu, Tray, Icon, Robot.ico
-  ; Iniread, xDivider, data.ini, Locations, xDivider
-  ; Iniread, yDivider, data.ini, Locations, yDivider
-  Iniread, Iteration, data.ini, SavedVariables, Iteration
-  Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-  Iniread, VarBar_X, data.ini, Locations, VarBar_x
-  Iniread, Inverted, data.ini, Locations, Inverted
-
-  Batches:=[]
-  Products:=[]
-  Lots:=[]
-  Excel.Connect(1)
-    ; LMS.OrientBoxes()
-  ControlsetText, Static5,1,VarBar
-  if (Inverted = 1)
-    Menu, Tray, Check, Inverted
-  if (Inverted = 0)
-    Menu, Tray, unCheck, Inverted
-  if (Follow = 1)
-  {
-    Menu, Tray, Check, VarbarFollow
-    Varbar.Follow()
-  }
-  if (Follow = 0)
-    Menu, Tray, unCheck, VarbarFollow
-  
-  StartTest_1()
-  
+ #Persistent
+ #NoEnv
+ #SingleInstance,Force
+ #KeyHistory 400
+ #InstallKeybdHook
+ #InstallMouseHook
+;  clipboard:=
+ EnvGet, Product, Product
+ EnvGet, Batch, Batch
+ EnvGet, lot, lot
+ EnvGet, Coated, Coated
+ EnvGet, Sample, Sample
+ EnvGet, Iteration, Iteration
+ envget, PrevProduct, PrevProduct
 
 
+ ; #WinActivateForce
+ SetWorkingDir, %A_ScriptDir%
+ Menu, Tray, Add, CL3, Run_cl3
+ Menu, Tray, Add, CodeAlt, Run_CodeAlt
+ Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
+ Menu, Tray, Add, VarbarFollow, Run_Follow
+ menu, tray, add, Inverted, Run_Inverted
+ Menu, tray, NoStandard
+ ; Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
+ Menu, Tray, Add, List Lines, Run_ListLines
+ Menu, Tray, Add, windowSpy, WindowSpySub
+ Menu, Tray, Add, Exit, ExitSub
+ Menu, Tray, Default, VarbarFollow ;Run_Listlines
+
+ SetNumlockState Alwayson
+ setcapslockstate alwaysoff
+ SetscrolllockState, alwaysOff
+ CoordMode, mouse, Window
+ SetMouseDelay, 5
+ SetDefaultMouseSpeed, 1
+ SetTitleMatchMode, 2
+ #MaxHotkeysPerInterval 90
+;  #HotkeyModifierTimeout 500
+ #maxthreadsperhotkey, 1
+ SetKeyDelay, 0, 0
+ setwindelay,400
+
+ FormatTime, TimeString,, M/d/yy
+ Run, cl3.Ahk, lib\CL3
+ try
+ Menu, Tray, Icon, Robot.ico
+ Iniread, Iteration, data.ini, SavedVariables, Iteration
+ Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
+ Iniread, VarBar_X, data.ini, Locations, VarBar_x
+ Iniread, Inverted, data.ini, Locations, Inverted
+ CopyPasteToggle=0
+ Batches:=[]
+ Products:=[]
+ Lots:=[]
+ Excel.Connect(1)
+ ControlsetText, Static5,1,VarBar
+ if (Inverted = 1)
+  Menu, Tray, Check, Inverted
+ if (Inverted = 0)
+  Menu, Tray, unCheck, Inverted
+ if (Follow = 1)
+ {
+  Menu, Tray, Check, VarbarFollow
+  Varbar.Follow()
+ }
+ if (Follow = 0)
+  Menu, Tray, unCheck, VarbarFollow
+gosub, Starting_test
 

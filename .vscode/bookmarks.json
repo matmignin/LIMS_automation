@@ -14,7 +14,7 @@
 			"path": "lib/SpecTab.ahk",
 			"bookmarks": [
 				{
-					"line": 163,
+					"line": 166,
 					"column": 5,
 					"label": "Paste"
 				}
@@ -24,9 +24,9 @@
 			"path": "lib/TrackPad.ahk",
 			"bookmarks": [
 				{
-					"line": 16,
-					"column": 5,
-					"label": "TouchPad"
+					"line": 18,
+					"column": 1,
+					"label": ""
 				}
 			]
 		}

@@ -1,119 +1,99 @@
-/* 
-3Tap    mbutton
-3up     F8 'or thumb mouse
-3down   f9
-3right  f7
-3left   f6
-
-4tap    F10
-4up     Media_Prev
-4down   Media_Next
-4right  browswer forward :xbutton1
-4left   browser back     :xbutton2
- */
-
-#IfWinActive, 
-  ~wheelup::return
-  TrouchPad:
-#If Getkeystate("lbutton","p")
-  space::send, ^{a}^{v}
-
-	; left::send, %Product%
-	; Down::send, %batch%
-	; right::send, %Lot%
-	; up::send, %SampleID%
-  F19::send, {F21}
-  F20::WindowInfo()
-  /::varbar.reset()
-  e::send, {LWinDown}{e}{lwinup}
-  o::OpenApp.Outlook()
-  d::LMS.Orient()
-  f::OpenApp.firefox()
-  w::OpenApp.Workbook()
-  l::OpenApp.LMS()
-
-SetDivider(){
-global
-    CoordMode, mouse, window
-    MouseGetPos, xDivider, yDivider,
-    sleep 100
-  	IniWrite, %xDivider%, data.ini, Locations, xDivider
-  	IniWrite, %yDivider%, data.ini, Locations, yDivider
-    DividerLocation:=xDivider ", " yDivider
-    tooltip("Divider Location Set: " DividerLocation)
-    return
-    }
-
-; #If (A_PriorHotKey = "lbutton" AND A_TimeSincePriorHotkey < 300)
-;     Space::clip()
-; 	  F8::send, ^x
-;     F9::send, ^v
-;     ;F8::clip()
-;     wheelup::^x
-;     wheeldown::^v
-;     F7::^y
-;     F6::^z
-;     F19::send, {F21}     
-;     #if
-
-#If (A_PriorHotKey = "Media_Next" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
-    Browser_back::send, +#{left} ;4left
-    Browser_forward::send, +#{right}
-    Media_Next::Mouse_CloseWindow() ;4down clear filter
-    Media_Prev::send, #{up 2} ;4up
-    lbutton::send, ^{click}
-    F10::WinMaximize, A
-    F9::send, ^j
-    F8::send, ^k
-    mbutton::WinMinimize, A
-    rbutton::send % "{shiftDown}{click}{shiftup}" Mouse_RbuttonUP()
-   #If
-    Media_Next::Tooltip("     `n`t`n`t      ",1000)  ;4tap
 
 
-#If (A_PriorHotKey = "F10" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
-    Browser_back::send, {esc} ;4left
-    Browser_forward::send, {enter} ;4right
-    Media_Next::send, {esc} ;4down 
-    Media_Prev:: ;4Up
-    lbutton::send, ^{click}
-    F10::Wheel_Copy() ;4tap
-    F9::wheel_paste() ;3down
-    F8::wheel_cut()   ;3up
-    F7::send, ^y      ;3right
-    F6::send, ^z      ;3left
-    mbutton::send, +{click}
-    rbutton::send % "{shiftDown}{click}{shiftup}" Mouse_RbuttonUP()
-   #If
-    F10::Tooltip("[4 Finger Tap]",800)  ;4tap
+#IfWinActive,
+  #If (A_PriorHotKey = "Numlock" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
+  F6::send, {F6} 
+  F7::send, {F7} 
+  F8::send, {F8} 
+  F9::send, {F9} 
+  numpadsub::send, {NumpadSub}
+  numpadadd::send, {NumpadAdd}
+  numpadmult::send, {numpadmult} 
+  numpaddiv::send, {numpaddiv}  ;4down clear filter
+  lbutton::send, {Lbutton}
+  ; Numlock::Send, +#{right}
+  mbutton::send, {shiftDown}{click}{shiftup}
+  ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
+  #If
+ ; ~wheelup::return
+ TrouchPad:
+#If getkeystate("lbutton","p")
+ space::click
+ ;F19::send, {F21}
+ .::VS_Code_WindowInfo()
+ Lwin::^x
+;  F20::Wheel_Paste()
+ /::varbar.reset()
+ e::send,{LWinDown}{e}{lwinup}
+ o::OpenApp.Outlook()
+ d::LMS.Orient()
+;  f::OpenApp.firefox()
+ w::OpenApp.Workbook()
+;  l::OpenApp.LMS()
+#if
+#IfWinActive,
 
-   
-   
- ~lbutton::return
+#If (A_PriorHotKey = "NumpadDiv" AND A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
+  F6::send, #{left} ;4left
+  F7::send, #{right}
+  F8::send, ^{home}
+  F9::send, {altDown}{Ctrldown}{tab}{CtrlUp}{altup}
+  numpadsub::send, +#{left} ;4left
+  numpadadd::send, +#{right}
+  numpadmult::send, +#{up} ;4up
+  numpaddiv::Mouse_CloseWindow() ;4down clear filter
+  lbutton::send, ^{click}
+  ; Numlock::Send, +#{right}
+  mbutton::send, {shiftDown}{click}{shiftup}
+  ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
+  #If
+
+  Numlock:: ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+     tooltip(A_ThisHotkey,1000,,,2)
+     Input, Akey, T0.75 ,{NumpadAdd}{Numpadsub}{Numpadmult}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}
+      If ErrorLevel = TimeOut
+      {
+        tooltip("Fill Screen")
+          send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+          ; send, {numlock}
+          exit
+      }
+      If InStr(ErrorLevel, "EndKey:")
+      {
+        If InStr(ErrorLevel, "NumpadAdd")
+          send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
+        If InStr(ErrorLevel, "NumpadSub")
+          send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
+        If InStr(ErrorLevel, "NumpadMult")
+          send, {altDown}{lwindown}{Shiftdown}{up}{ShiftUp}{lwinup}{altup}
+        If InStr(ErrorLevel, "NumpadDiv")
+          send, {altDown}{lwindown}{Shiftdown}{down}{ShiftUp}{lwinup}{altup}
+        If InStr(ErrorLevel, "F6")
+          send, {altDown}{lwindown}{o}{lwinup}{altup}
+        If InStr(ErrorLevel, "F7")
+          send, {altDown}{lwindown}{F7}{lwinup}{altup}
+        exit
+      }
+      else
+        msgbox % A_ThisHotkey " | " A_PriorHotkey " | " A_PriorKey "`n" Akey 
+      return
+      
+
+  numpaddiv::Tooltip(A_ThisHotkey,1000) ;4tap
 
 #IfWinActive, ahk_exe Code.exe
-    Browser_back::send, {CtrlDown}{tab}{Ctrlup} ;4left
-    Browser_forward::send, {shiftDown}{enter}{shiftup} ;4right
-    $F9::ToggleDefinition()
-    F19 & F9::send, {CtrlDown}{F9}{Ctrlup}
-    <^F9::^j
-    <^F8::^k
-    F8::send, {Ctrldown}{t}{CtrlUp}
-    F10::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
-    
-    media_prev::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
-    #If (A_PriorHotKey = "Media_Prev" AND A_TimeSincePriorHotkey < 800) ;4 finger swipe down
-    Media_Prev::send {down}{enter}
-#If (A_PriorHotKey = "Browser_Forward" AND A_TimeSincePriorHotkey < 2000) ;4 finger swipe down
-    Browser_Back::send {CtrlDown}{k}{Ctrlup}
-#If (A_PriorHotKey = "Browser_back" AND A_TimeSincePriorHotkey < 2000) ;4 finger swipe down
-    Browser_Back::send {CtrlDown}{k}{Ctrlup}
-    #if
-;  $Media_Prev::sendinput, {ctrldown}{p}{ctrlUp} ;4fringer up
-; #If (A_PriorHotKey = "Media_next" AND A_TimeSincePriorHotkey < 1000)
-;   Media_next::menu() ; Tooltip("Swipe",2000)  ;4finger up
-;Sendlevel 0
-
   
+  Mbutton::sendinput, {CtrlDown}{f}{Ctrlup} ;search
+  F7::send, {altDown}{right}{altup} ;4right
+  F8::pgdn
+  F9::pgup
+  numpadadd::ToggleDefinition()
+  numpaddiv::Tooltip(A_ThisHotkey,1000) ;4tap
+; $numlock::send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+  numpadsub::sendinput, {ShiftDown}{Ctrldown}{p}{CtrlUp}{ShiftUp}
+  numpadmult::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
 
-  
+#ifwinactive
+
+ ~lbutton::return
+

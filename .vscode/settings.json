@@ -23,5 +23,7 @@
         "lib/Vis2.ahk": true,
         "**/.vimrc": true
     },
-    "explorerExclude.backup": null
+    "explorerExclude.backup": null,
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.hover.delay": 500
 }

@@ -1,18 +1,17 @@
-  
-  
-  
-  
-  
-  
-  
-  #IfWinActive, ahk_exe firefox.exe
-  Xbutton2 & WheelDown::Wheel("^w")
-  F6::sendinput, !{left}
-  ; Xbutton1 & WheelDOWN::Browser_Back
-  F7::!right
-  ; Xbutton2 & wheelUP::Browser_Forward
-  Mbutton::Mbutton ;sendinput, ^{click}
-  Rbutton up::send, {click r}
-  
-  
+
+
+
+
+
+
+
+ #IfWinActive, ahk_exe firefox.exe
+;  F19 & WheelDown::Wheel("^w")
+ F6::sendinput, !{left}
+ F7::send, !{right}
+
+ Mbutton::send,{CtrlDown}{click}{Ctrlup} ;sendinput, ^{click}
+ Rbutton up::send,{click r}
+
+
 

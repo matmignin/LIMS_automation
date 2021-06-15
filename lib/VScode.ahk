@@ -1,241 +1,276 @@
-return
-  $F12::Reload 
-  +F1::help
-  F2::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-  F19 & Media_Play_Pause::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-lctrl & Capslock::return
-  ^Capslock::return
-  ; $F3::ListLines, On
-  $^F12::ListLines,
-  $+F12::ListLines,
-
-  ^esc::return
-;	#!\::Login()
-
-return 
-
 
 
 #IfWinActive, ahk_exe Code.exe
-  Media_Play_Pause::send, {ShiftDown}{altDown}{d}{altup}{ShiftUp}
-F20 & Right::WinMove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
-    ; F19 & space::sendinput, {Ctrldown}{shiftdown}p{shiftup}{CtrlUp}
-    F19 & h::sendinput, {altDown}{left}{altup}
-    F19 & k::sendinput, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
-    F19 & j::sendinput, {ShiftDown}{altDown}{Ctrldown}{left}{shiftUp}{altup}
-    F19 & l::sendinput, {altDown}{Ctrldown}{right}{altup}
-    F19 & -::sendinput, {CtrlDown}{-}{Ctrlup}
-    F19 & =::sendinput, {CtrlDown}{=}{Ctrlup}
-    F19 & backspace::Delete
-    F19 & w::Windownames()
-    F19 & down::^down
-    F19 & up::^up
-    <^j::^down
-    <^k::^up
-    $<^l::sendinput, {Ctrldown}]{CtrlUp}
-    $<^right::sendinput, {Ctrldown}]{CtrlUp}
-    $<^h::sendinput, {Ctrldown}[{CtrlUp}
-    $<^left::sendinput, {Ctrldown}[{CtrlUp}
-    F19 & left::^left
-    F19 & right::^right
-    F19::menu.vscode()
-    F19 & `::sendinput, ~
-    F19 & m::sendinput, %MousePosition%
-    F19 & t::sendinput, %wintitle%
-    Enter::send, {enter}
-
-VsCode_:
-    ; Mbutton & Wheeldown::Wheel_2("!d",1000)
-    ; mbutton::wheel_2("^m",2000)
-    Tab & f:: sendinput, {ShiftDown}{altDown}{Ctrldown}{]}{CtrlUp}{altup}{ShiftUp}
-    tab::tab
-    !t::tooltip(trackpadhints,5000)
-    <^r::ReloadScript()
-    Mbutton & F7::Sendinput, {Ctrldown}]{CtrlUp}
-    Mbutton & F6::sendinput,{Ctrldown}[{CtrlUp}
-    Mbutton & wheelUP::sendinput, {ctrl down}{u}{ctrl up}
-    Mbutton & WheelDOWN::sendinput, {ctrl down}{m}{ctrl up}
-    Mbutton & Rbutton::sendinput, {shiftdown}{altDown}{Ctrldown}m{CtrlUp}{altup}{shiftup} ; toggle bookmark
-    ~Rshift & Lshift::send, {CtrlDown}{tab}{Ctrlup}
-    ~Lshift & rshift::send, {ShiftDown}{Ctrldown}{tab}{CtrlUp}{ShiftUp}
-    ~LCtrl & F19::send, {CtrlDown}{]}{Ctrlup}
-    F19 & lctrl::send, {CtrlDown}{[}{Ctrlup}
-    ~Rshift & space::send, {ShiftDown}{altDown}{Ctrldown}{s}{CtrlUp}{altup}{ShiftUp} 
-    ~Lshift & space::send, {ShiftDown}{altDown}{Ctrldown}{e}{CtrlUp}{altup}{ShiftUp}
-    Rbutton & F7::Wheel_2("!{right}",10)
-        Rbutton & F6::Wheel_2("!{left}",10)
-	  Rbutton & Lbutton::sendinput, {Shiftdown}{click}{ShiftUp}
-    Rbutton & wheeldown::Wheel_2("{ctrl down}v{ctrl up}",2000)
-    Rbutton & Wheelup::Wheel_2("{ctrl down}x{ctrl up}",2000)
-    Rbutton & Xbutton2::WindowInfo()
-    
-    Xbutton2 & F6::sendinput, {CtrlDown}{[}{Ctrlup}
-    Xbutton2 & F7::sendinput, {CtrlDown}{]}{Ctrlup}
-    Xbutton2 & wheeldown::sendinput, {ctrl down}{down}{ctrl up}
-    Xbutton2 & wheelup::sendinput, {ctrl down}{up}{ctrl up}
-    $Rbutton up::Mouse_RbuttonUP()
-    Xbutton2 & Lbutton::sendinput, {CtrlDown}{click}{Ctrlup}
-    Media_Play_Pause::F8
-    ; Xbutton1 & Lbutton::^+4
-		F8 & F6::return
-    ; Xbutton1 & F8::F5
-		F8 & F7::return
-    F8 & wheeldown::ToggleDefinition() ;next search
-    Mbutton up::sendinput, {CtrlDown}{f}{Ctrlup} ;search
-    F8 & wheelup::wheel_2("{ShiftDown}{altdown}{up}{altUp}{ShiftUp}",50) ;projects
 
 
-    ~*Lbutton up::send, {ctrlup}
-    ; ~*lctrl up::send, {ctrlup}
-    F6::sendinput, {altDown}{left}{altup}
-    F7::sendinput, {altDown}{right}{altup}
-    ; capslock up::send, +{enter}
-    capslock & n::send, {numpaddiv}
-    capslock & tab::send, {Ctrldown}{]}{CtrlUp}
+
+F19 & left::send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
+F19 & up::send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
+F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
+F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
+F19 & F20::send, {shiftdown}{lwindown}{altdown}{home}{altup}{lwinup}{shiftup}
+; lwin::
+; winactivate, ahk_exe WFICA32.EXE
+; Test_3()
+; return
 
 
-return
-  
+
+Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
+; f20 & right::winmove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
+; f19 & space::sendinput,{ctrldown}{shiftdown}p{shiftup}{ctrlup}
+<^j::^down
+<^k::^up
+; $<^l::sendinput,{ctrldown}]{ctrlup}
+; $<^h::sendinput,{ctrldown}[{ctrlup}
+; $<^right::sendinput,{ctrldown}]{ctrlup}
+; $<^left::sendinput,{ctrldown}[{ctrlup}
+; enter::send,{enter}
+tab & f:: sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
+tab::tab
+!t::tooltip(trackpadhints,5000)
+<^r::reloadscript()
+; f19 & lctrl::send,{ctrldown}{tab}{ctrlup}
+
+; ~lctrl & f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+
+~rshift & lshift::sendinput,{altdown}{left}{altup}
+~lshift & rshift::sendinput,{altdown}{right}{altup}
+
+~rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
+~lshift & space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
+;~lshift::f16
+;~rshift::f17
+rbutton & f7::wheel_2("!{right}",10)
+rbutton & f6::wheel_2("!{left}",10)
+rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}
+rbutton & wheeldown::wheel_2("{ctrl down}v{ctrl up}",2000)
+rbutton & wheelup::wheel_2("{ctrl down}x{ctrl up}",2000)
+rbutton & f19::vs_code_windowinfo()
+
+$rbutton up::mouse_rbuttonup()
+media_play_pause::f9
+; f20 & lbutton::^+4
+f9 & f6::return
+; f20 & f9::f5
+f9 & wheeldown::toggledefinition() ;next search
+
+f9 & wheelup::wheel_2("{shiftdown}{altdown}{up}{altup}{shiftup}",50)
+
+f19 & h::send,{altdown}{left}{altup}
+f19 & k::send,{shiftdown}{altdown}{up}{altup}{shiftup}
+f19 & j::send,{shiftdown}{altdown}{ctrldown}{left}{shiftup}{altup}{ctrlup}
+f19 & l::send,{altdown}{ctrldown}{right}{altup}{ctrlup}
+f19 & backspace::delete
+; f19 & down::^down
+; f19 & up::^up
+; f19 & left::^left
+; f19 & right::^right
+f19 & `::send, ~
+f19 & p::send, %process%
+f19 & m::send, %mouseposition%
+f19 & t::send, %wintitle%
+f19 & w::send, %wininfo%
+f19 & f6::send,{ctrldown}{[}{ctrlup}
+f19 & f7::send,{ctrldown}{]}{ctrlup}
+f19 & wheeldown::send,{ctrl down}{down}{ctrl up}
+f19 & wheelup::send,{ctrl down}{up}{ctrl up}
+f19 & lbutton::send,{ctrldown}{click}{ctrlup}
+
+; #If WinActive("ahk_exe Code.exe") && Getkeystate("F13","p") ;editor
+
+
+
+F13::send, {esc}
 ;FUNCTIONS-----------------------------------------------------------
+#IfWinActive, 
 
-; GetWindowPosition(){
-;   Global
-;   WinGetPos,wX,wY,wW,wH,A
-;   tooltip(wX ", " wY ", " wW ", " wH)
-;   keywait, enter, U
-;   send % "WinMove, ahk_exe notepad.exe, , " wX ", " wY ", " wW ", " wH
-;   }
+VS_Code_WindowInfo(){
+	global
+	CoordMode, mouse, window
+	MouseGetPos, mX, mY, ,WinControl
+	WinGetPos,wX,wY,wW,wH, A
+	WinGetTitle, winTitle, A
+	WinGetClass, Winclass, A
+	WinGet, WinProcess, ProcessName, A
+	MousePosition:=mX "`, " mY
+	Sleep, 100
+	Tooltip % MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH
+	Process:= "ahk_exe " WinProcess
+	WinInfo:="WinMove, WINtITE, , " wX ", " wY ", " wW ", " wH
+	keywait, F20, U
+	sleep 400
+	Tooltip,
+	; SetTimer, RemoveToolTip, -2000
+}
+
+ReloadScript(){
+global iteration
+ControlGetText, Iteration, Static5, VarBar
+tooltip("Reload")
+if (iteration = -1)
+{
+sendinput,{F5}
+IniWrite, -2, data.ini, SavedVariables, Iteration
+}
+else if (iteration = -2)
+sendinput,{F4}
+else
+{
+sendinput, ^s
+sleep 200
+run, VQuest.ahk
+}
+send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
+}
+
+ToggleDefinition(){
+global
+If toggle := !toggle
+sendinput ^d
+else
+sendinput, +{esc}
+return
+}
+
+VSCODE_Hotstrings:
+:*r:cd\::{ctrldown}
+:*r:cu\::{ctrlup}
+:*r:ad\::{altdown}
+:*r:au\::{altup}
+:*r:sd\::{shiftdown}
+:*r:su\::{shiftup}
+:*r:wd\::{lwindown}
+:*r:wu\::{lwinup}
+Modifier_Hotstrings:
+:*R:c\::
+sendraw,{ctrldown}{}{ctrlup}
+sendinput,{left 9}
+return
+:*r:a\::
+sendraw,{altdown}{}{altup}
+sendinput,{left 8}
+return
+:*r:s\::
+sendraw,{shiftdown}{}{shiftup}
+sendinput,{left 10}
+return
+:*r:asc\::
+:*r:acs\::
+:*r:sac\::
+:*r:sca\::
+:*r:cas\::
+:*r:csa\::
+sendraw,{shiftdown}{altdown}{ctrldown}{}{ctrlup}{altup}{shiftup}
+sendinput,{left 25}
+return
+:*r:sc\::
+:*r:cs\::
+sendraw,{shiftdown}{ctrldown}{}{ctrlup}{shiftup}
+sendinput,{left 18}
+return
+:*r:sa\::
+:*r:as\::
+sendraw,{shiftdown}{altdown}{}{altup}{shiftup}
+sendinput,{left 17}
+return
+:*r:ca\::
+:*r:ac\::
+sendraw,{altdown}{ctrldown}{}{ctrlup}{altup}
+sendinput,{left 16}
+return
+:*R:main\::NuGenesis LMS - \\Remote
+:*R:lms\::ahk_exe WFICA32.EXE
+:*R:bb\::numpadsub
+:*R:bf\::numpadadd
+:*R:mp\::numpadmult
+:*R:mn\::numpaddiv
+:*R:wa\::winactivate,{space}
+:*R:ifw\::ifwinactive,{space}  
+:*R:ifwe\::ifwinexists,{space}  
+:*R:#ifw\::#ifwinactive,{space}  
+
+#ifwinactive,
+
+F2::Run, WindowSpy.ahk, C:\Program Files\AutoHotkey\
+$+F12::ListLines
+;:HelpFile:
+#ifwinactive, C:\Users\mmignin\Documents\VQuest\Vquest.ahk - AutoHotkey
+Media_Play_Pause::F5
 
 
-    WindowInfo(){
-      global
-        CoordMode, mouse, window
-        MouseGetPos, mX, mY, ,WinControl
-        WinGetPos,wX,wY,wW,wH, A
-        WinGetTitle, winTitle, A
-        WinGetClass, Winclass, A
-        WinGet, WinProcess, ProcessName, A			
-        MousePosition:=mX "`, " mY
-        Sleep, 100
-        Tooltip % MousePosition "`n Title: " winTitle " `n Process:  " WinProcess " `n Control:  "winControl " `n Class:  " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH
-				Process:= "ahk_exe " WinProcess
-        wMove:="WinMove, WINtITE, , " wX ", " wY ", " wW ", " wH
-        keywait, F20, U
-        sleep 400
-        Tooltip,
-      ; SetTimer, RemoveToolTip, -2000
-    }
-      
-    ; WindowInfo() {
-    ;   global
-    ;   CoordMode, mouse, window
-    ;   MouseGetPos, MousePosX, MousePosY, , WinControl
-    ;   ; MouseClick, right,,, 1, 0, D ; Hold down the right mouse button.
-    ;   Loop
-    ;   {
-    ;     if !GetKeyState("Rbutton", "P") ; The key has been released, so break out of the loop.
-    ;       break
-    ;     MouseGetPos, MousePosX, MousePosY, ,WinControl
-    ;     sleep 20
-    ;     WinGetTitle, winTitle, A
-    ;     WinGetClass, Winclass, A
-    ;     WinGet, WinProcess, ProcessName, A			
-    ;     Sleep, 100
-    ;     MousePosition:= "click " MousePosX "`, " MousePosY
-    ;     Tooltip, %MousePosition%`n Title: %winTitle% `n Process: %WinProcess% `n Control: %winControl% `n Class: %winclass%
-		; 		Process:="ahk_exe " WinProcess
-    ;   }
-    ;   winTitle:=Wintitle
-    ;   SetTimer, RemoveToolTip, -2000
-    ;   Winclass:=Winclass
-    ;  ; WinGet, WinProcess, ProcessName, A	
-    ;   ; MouseClick, Right,,, 1, 0, U ; Release the mouse button.
-    ;   ;clipboard:=MousePosition
-    ;   ;mouseclick, right
-    ;   ;sendinput, {esc}
-    ;   ;MouseClick, left,,, 1, 0,
-    ;   return
-    ; }
 
-    ReloadScript(){
-    global iteration
-      ControlGetText, Iteration, Static5, VarBar
-      tooltip("Reload")
-      if (iteration = -1)
-      {
-        sendinput, {F5}
-        IniWrite, -2, data.ini, SavedVariables, Iteration
-      }
-      else if (iteration = -2)
-        sendinput, {F4}
-      else
-      {
-        sendinput, ^s
-        sleep 200
-        run, VQuest.ahk
-      }
-      send, {altup}{CtrlUp}{ShiftUp}{LWinUp}
-    }
+VScode_menu(){
+ global
+Menu.delete()
+Menu, Menu, Add, Search Hotkeys, vscode
+  Menu, hotkeyMenu, Add, F20, vscode
+  Menu, hotkeyMenu, Add, Ins, vscode
+  Menu, hotkeyMenu, Add, Xbutton3, vscode
+  Menu, hotkeyMenu, Add, F15, vscode
+  Menu, hotkeyMenu, Add, numpadsub, vscode
+  Menu, hotkeyMenu, Add, numpadadd, vscode
+  Menu, hotkeyMenu, Add, F9, vscode
+  Menu, hotkeyMenu, Add, Mbutton, vscode
+  Menu, hotkeyMenu, Add, Rbutton, vscode
+  Menu, hotkeyMenu, Add, Wheel, vscode
+Menu, Menu, add, Search Hotkeys, :HotkeyMenu
+  Menu,Menu, Add, &Mouse `t %MousePosition%, vscode
+  Menu,Menu, Add, &Window Info, vscode
+  Menu,Menu, Add, &Title `t %WinTitle%, vscode
+  Menu,Menu, Add, &Process `t %WinProcess%, vscode
+  Menu,Menu, Add, &Control `t %WinControl%, vscode
+		 Menu,Menu,add,Test_&1,Tests
+   Menu,Menu,add,Test_&2,Tests
+   Menu,Menu,add,Test_&3,Tests
+Menu.show()
 
-  ToggleDefinition(){
-      global
-      If toggle := !toggle
-        sendinput  ^d
-      else 
-        sendinput, +{esc}
-      return
-      return
-    }
-    
-    
-    
-    
-      
-    VSCODE_Hotstrings:
-    :*R:cd\::{CtrlDown}
-    :*R:cu\::{Ctrlup}
-    :*R:ad\::{altDown}
-    :*R:au\::{altup}
-    :*R:sd\::{shiftDown}
-    :*R:su\::{shiftup}
-  Modifier_Hotstrings: 
-    :*R:c\::
-    sendraw, {CtrlDown}{}{Ctrlup}
-    sendinput, {left 9}
-    return
-    :*R:a\::
-    sendraw, {altDown}{}{altup}
-    sendinput, {left 8}
-    return
-    :*R:s\::
-    sendraw, {shiftDown}{}{shiftup}
-    sendinput, {left 10}
-    return
-    :*R:asc\::
-    :*R:acs\::
-    :*R:sac\::
-    :*R:sca\::
-    :*R:cas\::
-    :*R:csa\::
-    sendraw, {ShiftDown}{altDown}{Ctrldown}{}{CtrlUp}{altup}{ShiftUp}
-    sendinput, {left 25}
-    return
-    :*R:sc\::
-    :*R:cs\::
-    sendraw, {ShiftDown}{Ctrldown}{}{CtrlUp}{ShiftUp}
-    sendinput, {left 18}
-    return
-    :*R:sa\::
-    :*R:as\::
-    sendraw, {ShiftDown}{altDown}{}{altup}{ShiftUp}
-    sendinput, {left 17}
-    return
-    :*R:ca\::
-    :*R:ac\::
-    sendraw, {altDown}{Ctrldown}{}{CtrlUp}{altup}
-    sendinput, {left 16}
-    return
-    
-    
-    
+ }
+
+
+
+	VScode:
+ if (A_thismenuitem = "F20")
+ Sendinput, ^{f}F20`:`:{Tab 6}{down 2}
+	else if (A_thismenuitem = "Numlock")
+ Sendinput, ^f_Psudo Numpad{Tab 6}{down 2}
+	else if (A_thismenuitem = "Xbutton3")
+ Sendinput, ^fXbutton3`:`:{Tab 6}{down 2}
+ else if (A_thismenuitem = "F15")
+  Sendinput, ^fF15`:`:{Tab 6}{down 2}
+   else if (A_thismenuitem = "numpadsub")
+  Sendinput, ^fnumpadsub`:`:{Tab 6}{down 2}
+   else if (A_thismenuitem = "numpadadd")
+   Sendinput, ^fnumpadadd`:`:{Tab 6}{down 2}
+   else if (A_thismenuitem = "F19")
+   Sendinput, ^fF19`:`:{Tab 6}{down 2}
+   else if (A_thismenuitem = "F20")
+    Sendinput, ^fF20`:`:{Tab 6}{down 2}
+   else if (A_thismenuitem = "Mbutton")
+    Sendinput, ^fMbutton{Tab 6}{down 2}
+   else if (A_thismenuitem = "Rbutton")
+    Sendinput, ^fRbutton{Tab 6}{down 2}
+   else if (A_thismenuitem = "Wheel")
+    Sendinput, ^fWheel{Tab 6}{down 2}
+   else if A_thismenuItem contains &Mouse `t %MousePosition%
+    sendinput, %MousePosition%
+   else if A_thismenuItem contains &Window Info
+    sendinput, %WinInfo%
+   else if A_thismenuItem contains &Title `t %WinTitle%
+    Sendinput, %WinTitle%
+   else if A_thismenuItem contains &Process `t %WinProcess%
+    sendinput, ahk_exe %WinProcess%
+   else if A_thismenuItem Contains &Control `t %WinControl%
+    sendinput, %WinControl%
+   else
+    Menu,Menu, deleteAll
+   return
+
+
+			FlashScreen(){
+ send, #^{c}
+ sleep 20
+ send, #^{c}
+return
+}
 
