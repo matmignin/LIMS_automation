@@ -36,13 +36,26 @@ return
 
 
 	
-	
+	/*
+; Needed....,Please Ctrl+Left Click on the contact name field.
+Test_%iteration%:
+		
+*/
 
+return
+Test_4:
+Needed....,Please Ctrl+Left Click on the contact name field.
+		Loop
+		{
+			Sleep, 1
+			GetKeyState, KeyState, Numbpadadd, D
+			if KeyState = D
 
-
-
-
-
+					break
+		}
+		MouseGetPos, ContactNamePosX, ContactNamePosy
+		Send {Ctrl Up}{LButton Up}
+	}
 
 
 
