@@ -116,7 +116,9 @@ KEY_OneNote:
 
 
 		KEY_Remote_DESKTOP:
-
+#IfWinActive, Remote Desktop Connection
+Mbutton::menu.Remote_Desktop()
+F13::tooltip("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 		#ifwinactive, ahk_class #32770
 			Mbutton::menu.Remote_Login()
 			F19::menu.Remote_Login()

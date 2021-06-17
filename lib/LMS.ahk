@@ -1,4 +1,94 @@
 
+ 
+;KEY_LMS:
+return
+ #Ifwinactive, NuGenesis LMS - \\Remote
+  F20 & Left::WinMove, A, , -283, -1196, 1662, 952
+  F6::LMS.SearchBar(Product,"{enter}")
+  F7::LMS.SearchBar(Batch,"{enter}")
+  F8::LMS.FilterBar(Product)
+  F9::LMS.ViewCoa()
+  
+  rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
+  F20 & space::send, %Batch%{enter}
+  ~Lbutton & F19::send,{enter}
+  F19 & space::Send, %Product%{enter}
+  Mbutton::menu.LMS()
+  Enter::LMS.SaveCode()
+ #Ifwinactive, Select methods tests - \\Remote
+  F7::LMS.Methods()
+  F6::esc
+  #Ifwinactive, Edit Product - \\Remote
+    Mbutton::ProductTab_EditProduct()
+#ifwinactive, Edit Formulation - \\Remote
+  Mbutton::send, {tab}%product%{Tab 23}
+ #IfWinActive, Composition - \\Remote
+  F6::esc
+  F7::enter
+  numpaddiv::Mouse_Closewindow()
+  Mbutton::Autofill()
+ #IfWinActive, Test Definition Editor - \\Remote
+  F6::esc
+  F7::click 330, 619 ;click save
+ #IfWinActive, Results Definition - \\Remote
+  F6::esc
+  F7::enter
+  wheelup::Mouse_click("Edit")
+  WheelDown::
+   Click, 1330, 592
+   sleep 100
+   click, 338, 619
+   Return
+ #IfWinActive, Edit specification - \\Remote
+ #ifwinactive, PDF Preview - \\Remote
+  numpaddiv::Mouse_CloseWindow()
+ #ifwinactive, Edit test (Field Configuration:
+  F9::Autofill()
+  F6::esc
+ #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
+  Rbutton::WorkTab.ChangeTestResults("toggle")
+  F6::WorkTab.ChangeTestResults("toggle")
+ #MaxThreadsPerHotkey 2
+  F9::WorkTab.ChangeTestResults("loop")
+ #MaxThreadsPerHotkey 1
+  F7::WorkTab.ChangeTestResults()
+  F6::esc
+ #ifwinactive, Register new samples - \\Remote
+  F20 & wheelup::LMS.SearchBar()
+  Mbutton::Autofill()
+  F9::LMS.SearchBar(Product,"{enter}")
+  F7::send, % Mouse_Save() "{click 502, 354}" Next
+    F8::Send,{click 194, 188}^a
+  F6::esc
+ #IfWinActive, Select tests for request: R
+  Mbutton::WorkTab.SelectTestSample()
+ #ifwinactive, Select samples for test:
+  F7::sendinput % Mouse_Save() "{click 504, 324}" MouseReturn ; add test.
+  F6::esc
+ #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
+  F20 & Space::send, %Batch%
+  F19 & space::send, %Product%
+  F19 & F20::menu.Variables()
+  F19 & up::send, %sampleID%
+  F19 & left::send, %lot%
+  F19 & right::send, %coated%
+  F8::send,{enter}
+  $Rbutton up::Mouse_RbuttonUP()
+  Mbutton::autofill()
+  enter::click.okay()
+  esc::click.esc()
+  left::left
+  Down::down
+  right::right
+  up::up
+  <^r::ReloadScript()
+  
+#IfWinActive,
+  ; sendlevel 1
+ pause::reload
+ ` & esc::Pause
+
+
 
 
 

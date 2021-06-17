@@ -9,7 +9,7 @@ F19 & left::send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 F19 & up::send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
-; F19 & F20::menu.vscode()
+F19 & F20::vscode_menu()
 ; lwin::
 ; winactivate, ahk_exe WFICA32.EXE
 ; Test_3()
@@ -68,7 +68,7 @@ f19 & backspace::delete
 ; f19 & down::^down
 ; f19 & up::^up
 ; f19 & left::^left
-; f19 & right::^right
+; f19 & right::^rightVariable()
 f19 & `::send, ~
 f19 & p::send, %process%
 f19 & m::send, %mouseposition%
@@ -79,7 +79,7 @@ f19 & f7::send,{ctrldown}{]}{ctrlup}
 f19 & wheeldown::send,{ctrl down}{down}{ctrl up}
 f19 & wheelup::send,{ctrl down}{up}{ctrl up}
 f19 & lbutton::send,{ctrldown}{click}{ctrlup}
-~Lctrl & Space::menu.vscode()
+~Lctrl & Space::vscode_menu()
 
 ; #If WinActive("ahk_exe Code.exe") && Getkeystate("F13","p") ;editor
 

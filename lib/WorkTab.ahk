@@ -9,17 +9,17 @@ EditSample(){
  ControlGetText, Iteration, Static5, VarBar
  ifwinactive, Register new samples - \\Remote
  MouseGetPos, mx, my
- loop %iteration%
- {
+;  loop %iteration%
+;  {
   click 2
   sleep 200
-  winwaitactive, Edit sample (Field Configuration
+  winwaitactive, Edit sample (Field Configuration,, 3
    if ErrorLevel
     exit
   sendinput,{tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
    sendinput,{tab}^a
-  sendinput, ^a%Batch%{tab}^a
+  sendinput, ^{a}%Batch%{tab}^{a}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
   {
    sendinput,{CtrlDown}{a}{Ctrlup}%Lot%
@@ -30,20 +30,21 @@ EditSample(){
    send, +{tab 2}
   }
   sleep 140
-  WorkTab.DropdownSelect(ShipTo)
+  if ShipTo
+    WorkTab.DropdownSelect(ShipTo)
   sleep 300
-  send,{enter}
+  send, {enter}
   sleep 400
   winactivate, Register new samples - \\Remote
-  my:=my+26
+  ; my:=my+26
   sleep 200
-  click mx, my, 2
-  ; MouseMove, mx, my
+  ; click mx, my, 2
+  MouseMove, mx, my
   ; click 2
   sleep 500
    return
- }
-}
+ 
+  }
 
 
 
@@ -69,13 +70,11 @@ NewRequest(){
 ;  sleep 100
  WinActivate, NuGenesis LMS - \\Remote
  ; send, ^c
- 
-
  clip()
  sleep 50
 ;  LMS.CheckDepartment()
  sleep 400
- tooltip, %department%
+;  tooltip, %department%
  click 64, 300 ;click Assign To New rewuest link
  winwaitactive, Edit request - \\Remote,,3
    if !Errorlevel
@@ -105,7 +104,7 @@ NewRequest(){
  sleep 100
  WinActivate, Select tests for request
  click 854, 657 ; click okay
- winwaitclose, Select tests for request,,10
+ winwaitclose, Select tests for request,,3
   if !Errorlevel
   WinWaitActive, Edit request
  While GetKeyState("Lbutton", "p")
@@ -115,7 +114,7 @@ NewRequest(){
  Sleep 100
   winactivate, Edit request
   send,{tab}{enter}
-  tooltip,
+  ; tooltip,
  return
 
 }
@@ -191,9 +190,9 @@ AddSampleLog(count)
   click 46, 877
   ;Click, xpos, ypos, 2
   ;ypos:= ypos+26
-  winwaitactive, Edit test (Field Configuration: I`, Analytical) - \\Remote
+  winwaitactive, Edit test (Field Configuration: I`, Analytical) - \\Remote,, 3
   sendinput,{Click, 402, 284}{end}(on sample log){click, 334, 618}
-  winwaitactive, NuGenesis LMS - \\Remote
+  winwaitactive, NuGenesis LMS - \\Remote,,3
   sleep 300
   winactivate, NuGenesis LMS - \\Remote
   sleep 500
@@ -205,7 +204,7 @@ AddSampleLog(count)
 Main_EditResults()
 {
  sendinput,{click}{click 77, 751} ;edit results
- winwaitactive, Results Definition - \\Remote
+ winwaitactive, Results Definition - \\Remote,,3
  return
 }
 	AddTestDescription(Text){
@@ -225,7 +224,7 @@ click
   clip()
   sleep 200
  click 647, 75
- winwait, Select samples for test
+ winwait, Select samples for test,,3
  sleep 600
  click 463, 71
  send,{click 244, 69}

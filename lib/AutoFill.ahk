@@ -3,7 +3,7 @@
 
 ;LMS ------------------------------------------------------------------------
 	If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote"){
-		Menu.Show()
+		Menu.LMS()
 
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
 		excel.connect()
@@ -78,7 +78,7 @@
 					if !ErrorLevel
 						Send,{enter}
 				sleep 200
-				WinWaitNotActive, Error - \\Remote
+				WinWaitNotActive, Error - \\Remote,,3
 				sleep 200
 				click.RegisterNewSamples()
 				sleep 300

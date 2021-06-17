@@ -195,7 +195,7 @@ Iniread, Inverted, data.ini, Locations, Inverted
  Products:=[]
  Lots:=[]
  Excel.Connect(1)
- 
+ -
  if (Inverted = 1)
   Menu, Tray, Check, Inverted
  if (Inverted = 0)

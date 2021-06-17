@@ -68,17 +68,28 @@ LMS(){
 
 Variable(){
  global
-Menu, Menu, add, &Variables, Variable
-  Menu, Variables, Add, &Product `t %Product%, Variable
-  Menu, Variables, Add, &Batch `t %Batch%, Variable
-  Menu, Variables, Add, &Lot `t %Lot%, Variable
-  Menu, Variables, Add, &Name `t %name%, Variable
-  Menu, Variables, Add, Cus&tomer `t %Customer%, Variable
-  Menu, Variables, Add, C&oated `t %Coated%, Variable
-  Menu, Variables, Add, &Color `t %Color%, Variable
-  Menu, Variables, Add, &ShapeSize `t %ShapeSize%, Variable
-  Menu, Variables, Add, &Weight `t %Weight%, Variable
-Menu,Menu, add, &Variables, :Variables
+; Menu, Menu, add, &Variables, Variable
+  if Product
+    Menu, menu, Add, &Product `t %Product%, Variable
+  if Batch
+    Menu, menu, Add, &Batch `t %Batch%, Variable
+  if Lot
+    Menu, menu, Add, &Lot `t %Lot%, Variable
+  if SampleID
+    Menu, menu, Add, &SampleID `t %SampleID%, Variable
+  if Name
+    Menu, menu, Add, &Name `t %name%, Variable
+  if Customer
+    Menu, menu, Add, Cus&tomer `t %Customer%, Variable
+  if Coated
+    Menu, menu, Add, &Coated `t %Coated%, Variable
+  if Color
+    Menu, menu, Add, C&olor `t %Color%, Variable
+  if ShapeSize
+    Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
+  if Weight
+    Menu, menu, Add, &Weight `t %Weight%, Variable
+; Menu,Menu, add, &Variables, :Variables
 Menu.show()
  }
 
@@ -132,23 +143,25 @@ return
 
    Variable:
     if A_thismenuItem contains &Product `t %Product%,
-    Sendinput % Product
+    send % Product
    else if A_thismenuItem contains &Batch `t %Batch%
-    sendinput % Batch
+    send % Batch
    else if A_thismenuItem contains &name `t %name%
-    sendinput % Name
+    send % Name
+   else if A_thismenuItem contains &SampleID `t %SampleID%
+    send % SampleID
    else if A_thismenuItem contains &lot `t %Lot%
-    sendinput % Lot
-   else if A_thismenuItem contains C&oated `t %Coated%
-    Clip("Coated")
+    send % Lot
+   else if A_thismenuItem contains &Coated `t %Coated%
+    send % Coated
    else if A_thismenuItem contains Cus&tomer `t %Customer%
-    sendinput % Customer
-   else if A_thismenuItem contains &Color `t %Color%
-    sendinput % Color
-   else if A_thismenuItem contains &ShapeSize `t %ShapeSize%
-    sendinput % shapesize
+    send % Customer
+   else if A_thismenuItem contains C&olor `t %Color%
+    send % Color
+   else if A_thismenuItem contains Sha&peSize `t %ShapeSize%
+    send % shapesize
    else if A_thismenuItem contains &Weight `t %Weight%
-    sendinput % Weight
+    send % Weight
    else if A_ThisMenuItem is digit
     {
     Iteration:=A_Thismenuitem
@@ -272,7 +285,7 @@ return
    Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
     sendinput,{Click 182, 97}10.1.2.153{enter}
-    winwaitactive, Windows Security,,1
+    winwaitactive, Windows Security,,2
     if !errorlevel
     sendinput, Kilgore7744{enter}
     ; return
@@ -283,7 +296,7 @@ return
    else if (A_thisMenuItem = "TEST_SDMS")
     sendinput,{Click 182, 97}10.1.2.149{enter}
    else if (A_thisMenuItem = "PRD_Citrix_One")
-    sendinput,{Click 182, 97}10.1.2.134{enter}
+    send,{Click 182, 97}10.1.2.134{enter}
    else if (A_thisMenuItem = "PRD_Citrix_Two")
     sendinput,{Click 182, 97}10.1.2.226{enter}
    else if (A_thisMenuItem = "PRD_Citrix_Three")
@@ -324,4 +337,6 @@ return
     sleep 200 ; WinwaitActive, Login - \\Remote ahk_class Transparent Windows Client
     Send,{Enter}
   }
+
+
 

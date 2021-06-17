@@ -650,3 +650,23 @@ S20210608-010
 S20210608-006
 Total Aerobic Microbial Count
 K134
+S20210608-005
+S20210608-005
+S20210608-005
+S20210608-005
+I966
+Status	Batch	Formulation ID	Type	Sample Id	Submission Id	Product	Product Trade Name	Pkg Lot #	Blister Lot #	Date Created	Ship To	Date Received	Created By	Department	Shape/Size	Description/Color	Description	Canceled By	Reason For Change	
+200	806-0634	I966	Retain (In Process)	S20181010-152	SU20181010-069	I966, Ultimate Pet Nutrition Nutra Thrive	Ultimate Pet Nutrition Nutra Thrive			10/11/2018 10:11:52 AM	California Pet Partners	10/11/2018 10:11:52 AM	vnicholl	Retain	Blend	Light greenish-brown powder			
+
+004-
+044-
+044-
+K277
+I375
+
+G656
+G654
+G653
+G655
+G655
+

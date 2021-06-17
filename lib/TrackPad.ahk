@@ -1,7 +1,7 @@
 
 
 #IfWinActive,
-  #If (A_PriorHotKey = "Numlock" || A_PriorHotkey = "Mbutton" && A_TimeSincePriorHotkey < 1000) ;4 finger swipe down
+  #If (A_PriorHotKey = "Numlock" || A_PriorHotkey = "Mbutton" && A_TimeSincePriorHotkey < 500) ;4 finger swipe down
   F6::send, {F6} 
   F7::send, {F7} 
   F8::send, {F8} 
@@ -54,6 +54,7 @@
   sleep 450
   if (A_TimeSincePriorHotkey > 450)
     send, {altDown}{lwindown}{Shiftdown}{down}{ShiftUp}{lwinup}{altup}
+    sleep 200
   return
 
 
@@ -78,6 +79,7 @@
   sleep 450
   if (A_TimeSincePriorHotkey > 450)
     send, {altDown}{lwindown}{Shiftdown}{up}{ShiftUp}{lwinup}{altup}
+    sleep 200
   return
   
   
@@ -97,7 +99,7 @@
 
 4_Tap(){
      tooltip(A_ThisHotkey,650,,,2)
-     Input, Akey, V T0.65 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}
+     Input, Akey, V T0.45 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}
       If InStr(ErrorLevel, "EndKey:")
       {
         If InStr(ErrorLevel, "NumpadAdd")
@@ -125,8 +127,6 @@
           ; send, {numlock}
           exit
       }
-      else
-        msgbox % A_ThisHotkey " | " A_PriorHotkey " | " A_PriorKey "`n" Akey 
       return
 }
 

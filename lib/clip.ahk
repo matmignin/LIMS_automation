@@ -29,7 +29,7 @@ Clip(input=0){
     if (A_PriorKey != "F20")
       exit
     tooltip(Clipboard,1000,,,3)
-      send, ^v
+      menu.variable()
     exit
   }
   
@@ -39,8 +39,8 @@ Clip(input=0){
   sleep 20
   RegExMatch(Clipboard, "[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
   RegExMatch(Clipboard, "\b(?!Ct#)\d{3}-\d{4}\b", cBatch)
-  RegExMatch(Clipboard, "Ct#\d{3}-\d{4}\b", ccCoated)
-  RegExMatch(ccCoated, "\d{3}-\d{4}\b", cCoated)
+  RegExMatch(Clipboard, "(?<=Ct#\d{3}-\d{4}\b", cCoated)
+  RegExMatch(cCoated, "\d{3}-\d{4}\b", cCoated)
   RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
   RegExMatch(Clipboard, "\b[Ss]\d{8}-\d{3}\b", cSampleID)
   Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
@@ -60,7 +60,7 @@ Clip(input=0){
     GuiControl,Varbar:Text, Coated, %cCoated%
   If cLot
     GuiControl,Varbar:Text, lot, %clot%
-  If cSample
+  If cSampleID
     GuiControl,Varbar:text, SampleID, %cSampleID%
   If cAnalytical
     Department=Analytical
@@ -77,8 +77,8 @@ Clip(input=0){
   If cCTRetain
     Department=CTRetain
   GuiControl,Varbar:Text, Department, %Department%
-    if cProduct || cBatch || cLot || cCoated ||cSample || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain
-    Tooltip(cProduct " " cBatch " " cLot " " cCoated " " cSample "`n`t " Department,4000,,,3)
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain
+    Tooltip(cProduct " " cBatch " " cLot " " cCoated " " cSampleID "`n`t " Department,4000,,,3)
   }
 
 Clip_C(){
@@ -100,10 +100,13 @@ Clip_C(){
           clipwait
           Tooltip(clipboard,1000)
           return
-        }
+        }if (A_PriorKey!="F20")
           KeyWait, F20,
         exit
     }
+    ; if (A_PriorKey contains F19)
+      ; exit
+    ; if (A_PriorhotKey contains F19)
     Clip()
     ; tooltip(Clipboard,,0,0,3)
     ; if (A_ThisHotkey != "F20")
@@ -129,6 +132,9 @@ clip_v(){
           KeyWait, F19,
            exit
       }
+      sleep 200
+          ; if GetKeyState(F20, "P")
+          ;   exit
         wheel_paste()
     }
     ; tooltip(Clipboard,,0,0,3)
