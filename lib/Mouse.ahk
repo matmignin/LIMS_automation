@@ -97,9 +97,13 @@ Mouse_CloseWindow(){
 }
 
 
-Clk(x,y,Button:="Left",n:=0,window:=""){
+Clk(x,y,Button:="Left",n:=1,window:=""){
 	global
+	mx:=
+	my:=
+	mw:=
 	MouseGetPos, mx, my, mw,
+	sleep 45
 	if (window!="")
 		winactivate, %window%
 	mouseclick, %Button%, %x%,%y%,%n%,0

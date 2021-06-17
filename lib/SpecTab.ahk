@@ -246,7 +246,7 @@ SpecTab_AutoFill(){
 					sleep 200
 					winwaitactive, Result Editor - \\Remote,,0.5
 						if !errorlevel
-					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,0)
+					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 					blockinput, off
 					sleep 400
 					; if (method!="ICP-MS 231"){
@@ -263,7 +263,7 @@ SpecTab_AutoFill(){
 			If Winactive("Result Editor - \\Remote") ;the editing window
 				{
 				winactivate, Result Editor - \\Remote
-					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision)
+					SpecTab_ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
 					blockinput, off
 					return
 			}
@@ -365,7 +365,7 @@ SpecTab_Create_Template:
 				sleep 2000
 				sendinput,{Enter}
 				return
-					sendinput, %Product%`,{shift down}I{shift Up}n{shift down}P{shift Up}rocess`,{shift down}A{shift Up}nalytical
+					sendinput, %Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}A{shift Up}nalytical
 					Sendinput,{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{tab}{right}
 				return
 
@@ -373,8 +373,10 @@ SpecTab_Create_Template:
 			SpecTab_EditSampleTemplate_A(){
 				global
 				winactivate, Edit sample template - \\Remote
-				sendinput,{click 377, 82}{home}%Product%`,{Shift down}I{Shift up}n{Shift down}P{Shift up}rocess`,{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
-				; WinWaitActive, NuGenesis LMS - \\Remote,,1
+				sendinput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
+				WinWaitActive, NuGenesis LMS - \\Remote,,8
+				if !errorlevel
+					click, 73, 562
 				return
 			}
 
@@ -382,7 +384,7 @@ SpecTab_Create_Template:
 				global
 				winactivate, Edit specification - \\Remote
 				sendinput,{click 376, 87}{home}
-				sendinput, %Product%`,{Shift down}I{Shift up}n{Shift down}P{Shift up}rocess`,{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
+				sendinput, %Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
 				send,{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
 				click, 340, 622 ;click okay
 				winwaitactive, NuGenesis LMS - \\Remote, ,8
@@ -395,7 +397,7 @@ SpecTab_Create_Template:
 			}
 
 
-SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:="1"){
+SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1){
 		Global
 		tooltip(CreateRequirements)
 			; normal
@@ -424,9 +426,9 @@ SpecTab_ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0
 			}
 		Else
 			{
-				If CreateRequirements="1"
+				If CreateRequirements=1
 					sendinput, %Min_Limit% - %Max_Limit% %The_Units%
-				else if CreateRequirements!="1")
+				else if CreateRequirements!=1)
 					Sendinput, %CreateRequirements%
 			; Sendinput, %Requirement%
 			}
@@ -465,7 +467,7 @@ SpecTab_Edit_Physical(){
 	Global
 	winactivate, Edit specification - \\Remote
 	sendinput,{click 376, 87}{home}
-	send,%Product%`,{shift down}I{shift Up}n{shift down}P{shift Up}rocess`,{shift down}P{shift Up}hysical{tab 3}^a{backspace}
+	send,%Product%`,{space}{shift down}I{shift Up}n{shift down}{space}P{shift Up}rocess`,{space}{shift down}P{shift Up}hysical{tab 3}^a{backspace}
 	send,{tab}^a%Product%{tab 2}
 	Sleep 200
 	send,{Space}
@@ -495,7 +497,7 @@ SpecTab_Edit_CoatedRetain(){
 	global
 	winactivate, Edit specification - \\Remote
 	sendinput,{click 376, 87}{home}
-	send,%Product%`,{shift down}C{shift Up}oated`,{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
 	send,{tab}{right}
 	sleep 200
@@ -503,14 +505,14 @@ SpecTab_Edit_CoatedRetain(){
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel
 		click.EditSampleTemplate()
-		sendinput,{tab}^{a}%Product%`,{Shift down}C{shift up}oated`,{shift down}R{shift Up}etain
+		sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift Up}etain
 	return
 	}
 SpecTab_Edit_CoatedPhysical(){
 	global
 	winactivate, Edit specification - \\Remote
 	sendinput,{click 376, 87}{home}
-	send,%Product%`,{shift down}C{shift Up}oated`,{shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
 	send,{tab}{right}
 	sleep 200
@@ -518,14 +520,14 @@ SpecTab_Edit_CoatedPhysical(){
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel
 click.EditSampleTemplate()
-		sendinput,{tab}^{a}%Product%`,{Shift down}C{shift up}oated`,{shift down}P{shift Up}hysical
+		sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift Up}hysical
 	return
 	}
 SpecTab_Edit_Retain(){
 	Global
 	winactivate, Edit specification - \\Remote
 	sendinput,{click 376, 87}{home}
-	send,%Product%`,{shift down}I{shift Up}n{shift down}P{shift Up}rocess`,{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	send,%Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 200
 	send,{tab}{right}
 	sleep 400
@@ -558,7 +560,7 @@ SpecTab_Edit_Micro(){
 	Global
 	winactivate, Edit specification - \\Remote
 	sendinput,{click 376, 87}{home}
-	send,%Product%`,{shift down}F{shift Up}inished`,{shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
+	send,%Product%`,{space}{shift down}F{shift Up}inished`,{space}{shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
 	Sleep 200
 	send,{Space}
 	sleep 200

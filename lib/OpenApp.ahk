@@ -33,9 +33,10 @@ Clickup(){
 
 PhoneApp(){
  ifwinnotexist, Your Phone
-  WinActivate, Your Phone
+  send, {lwindown}{s}{lwinup}y ;our{enter}
  else
-  run, YourPhone.exe, ‪C:\Program Files\WindowsApps
+  WinActivate, Your Phone
+  ; run, YourPhone.exe, ‪C:\Program Files\WindowsApps
 
  return
  }
@@ -132,6 +133,7 @@ Outlook(){
   send,{altDown}{tab}{altup}
  ifwinnotexist,ahk_exe Code.exe
  {
+   run, Code.exe, C:\Program Files\Microsoft VS Code
   send,{altDown}{Ctrldown}{v}{CtrlUp}{altup}
   winactivate, ahk_exe Code.exe
   WinMove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,

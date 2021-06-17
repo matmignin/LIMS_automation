@@ -26,7 +26,6 @@ SetNumlockState Alwayson
 #Include <Firefox>
 #Include <Office>
 ; #Include <LMS>
-#Include <explorer>
 #Include <clip>
 #Include <Snipper>
 #Include <OpenApp>

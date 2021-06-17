@@ -21,6 +21,8 @@ Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
 ; f19 & space::sendinput,{ctrldown}{shiftdown}p{shiftup}{ctrlup}
 <^j::^down
 <^k::^up
+<!k::+^up
+<!j::+^down
 ; $<^l::sendinput,{ctrldown}]{ctrlup}
 ; $<^h::sendinput,{ctrldown}[{ctrlup}
 ; $<^right::sendinput,{ctrldown}]{ctrlup}
@@ -81,7 +83,7 @@ f19 & lbutton::send,{ctrldown}{click}{ctrlup}
 
 
 
-F13::send, {esc}
+F13::send, {esc}{ctrlup}{altup}
 ;FUNCTIONS-----------------------------------------------------------
 #IfWinActive, 
 

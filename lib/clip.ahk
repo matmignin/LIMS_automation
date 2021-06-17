@@ -19,6 +19,7 @@ Clip(input=0){
   cPhysical:=
   cCTPhysical:=
   cCTRetain:=
+  Department:=
   send, ^c
   clipwait,0.75
   if errorlevel
@@ -72,7 +73,7 @@ Clip(input=0){
     Department=CTRetain
   GuiControl,Varbar:Text, Department, %Department%
     if cProduct || cBatch || cLot || cSample || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain
-    Tooltip(cProduct "  " cBatch "  " cLot "  " cSample "`n " Department,4000,,,3)
+    Tooltip(cProduct " " cBatch " " cLot " " cSample "`n`t " Department,4000,,,3)
   }
 
 clip_Key(){

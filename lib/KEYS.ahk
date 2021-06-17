@@ -1,18 +1,18 @@
 KEY_LMS:
 return
  #Ifwinactive, NuGenesis LMS - \\Remote
-  F6::Test_3(Product)
-  F7::Test_3(Batch)
-  F8::Test_3(Lot)
+  F6::LMS.SearchBar(Product,"{enter}")
+  F7::LMS.SearchBar(Batch,"{enter}")
+  F8::LMS.FilterBar(Product)
   F9::LMS.ViewCoa()
   
   rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
   F20 & space::send, %Batch%{enter}
   ~Lbutton & Rbutton::send,{enter}
-  F20 & WheelUp::Click.SearchBar(Product,"{enter}")
-  F20 & WheelDown::Click.SearchBar(Batch,"{enter}")
-  F20 & F6::Click.SearchBar(Product,"{enter}",1)
-  F20 & F7::Click.SearchBar(Batch,"{enter}",1)
+  F20 & WheelUp::LMS.SearchBar(Product,"{enter}")
+  F20 & WheelDown::LMS.SearchBar(Batch,"{enter}")
+  F20 & F6::LMS.SearchBar(Product,"{enter}",1)
+  F20 & F7::LMS.SearchBar(Batch,"{enter}",1)
   F19 & wheeldown::Varbar.SubIteration()
   F19 & space::Send, %Product%{enter}
   Mbutton::menu.LMS()
@@ -21,6 +21,10 @@ return
  #Ifwinactive, Select methods tests - \\Remote
   F7::LMS.Methods()
   F6::esc
+  #Ifwinactive, Edit Product - \\Remote
+    Mbutton::ProductTab_EditProduct()
+#ifwinactive, Edit Formulation - \\Remote
+  Mbutton::send, {tab}%product%{Tab 23}
  #IfWinActive, Composition - \\Remote
   F6::esc
   F7::enter
@@ -53,9 +57,9 @@ return
   F7::WorkTab.ChangeTestResults()
   F6::esc
  #ifwinactive, Register new samples - \\Remote
-  F20 & wheelup::Click.Searchbar()
+  F20 & wheelup::LMS.SearchBar()
   Mbutton::Autofill()
-  F9::Click.Searchbar(Product,"{enter}")
+  F9::LMS.SearchBar(Product,"{enter}")
   F7::send, % Mouse_Save() "{click 502, 354}" Next
     F8::Send,{click 194, 188}^a
   F6::esc

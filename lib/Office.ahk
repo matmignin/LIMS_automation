@@ -1,6 +1,17 @@
+#IfWinActive, ahk_exe explorer.exe
+ Mbutton::send, {enter}
+ F9::send, {lwindown}{e}{lwinup}
+ F6::send, {lwindown}{s}{lwinup}
+ Media_Play_Pause::send,{space}
+ F19 & Browser_Forward::Excel.NextSheet()
+ F19 & Browser_Back::Excel.PreviousSheet()
+ F7::
+ send,{CtrlDown}{e}{Ctrlup}
+ sleep 200
+ sendinput, %product%{enter}
+ return
 
 
-KEY_Excel:
 	#IfWinActive, LMS Workbook.xlsb
 	F9::Excel.Connect(1)
 	MButton::Excel.Connect(1)
@@ -43,13 +54,19 @@ KEY_OUTLOOK:
 	Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
 	Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
 	F19 & WheelDown::Mouse_CloseWindow()
-	F19 & Wheelup::click.Searchbar(Product)
+	F19 & Wheelup::LMS.SearchBar(Product)
 	F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"
 	F20 & Wheelright::Varbar.AddIteration()
 	F20 & wheelleft::Varbar.SubIteration()
 	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, ,1683, -1080, 1484, 1080
-
-#ifwinactive, ahk_exe ApplicationFrameHost.exe OneNote
+	Mbutton::
+	Click 3
+	clip()
+	return
+	
+	
+	
+#ifwinactive, OneNote for Windows 10
 	Mbutton & Wheelup::Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
 	Mbutton & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
 	^1::send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}

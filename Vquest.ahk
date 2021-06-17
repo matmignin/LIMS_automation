@@ -2,6 +2,7 @@
 
 return
 Starting_test:
+; Test_2()
 return
 ; Lwin::Test_3()
 
@@ -9,9 +10,9 @@ return
 
 
 
-F13 & Lbutton::Click()
+F13 & Lbutton::F13Click()
 
-Click(){
+F13Click(){
   KeyWait, lbutton, T0.25
     If ErrorLevel
     {
@@ -25,81 +26,6 @@ Click(){
 }
 
 
-Test_3(Code:=""){
-Global
-	WinActivate, ahk_exe WFICA32.EXE
-	ControlGetText, Batch, Edit2, VarBar
-	ControlGetText, Lot, Edit3, VarBar
-	ControlGetText, Product, Edit1, VarBar
-	blockinput on
-	lms.FilterStatus()
-    LMS.DetectTab()
-   Tooltip(Code " " Product "`n" Tab)
-		if (Tab="Products")
-			clk(xProductsFilter,yMyWorkFilter)
-		else if (Tab="Specs")
-      clk(xSpecsFilter,yMyWorkFilter)
-		else if (Tab="Requests")
-      clk(xRequestsFilter,yMyWorkFilter)
-		else if (Tab="Documents")
-      clk(xDocumentsFilter,yWoryMyWorkFilterkTabFilter)
-		else if (Tab="Samples" AND Code==Product)
-            clk(xFormulationFilter,yMyWorkFilter)
-		else if (Tab="Samples" AND Code==Batch)
-            clk(xBatchFilter,yMyWorkFilter)
-		else if (Tab="Samples" AND Code==lot)
-            clk(xLotFilter,yMyWorkFilter)
-		else if (Tab="Results")
-      clk(xResultsFilter,yMyWorkFilter)
-		else if (Tab="Tests")
-      clk(xTestsFilter,yMyWorkFilter)
-    else
-		send, ^{a}%Code%^{a}
-		sleep 200
-		send, %PostCMD%
-	sleep 300
-	blockinput off
-	return
-}
-
-return
-;------------------------------------------------------TEST 2------------------------------------------------------------
-
-Test_2(){
- Global
- LMS.OrientBoxes()
-mousemove, %XDivider%, 500
- return
-}
-;------------------------------------------------------TEST 3------------------------------------------------------------
-
-Test_1(){  ;array - remove duplicates (case insensitive)
- global
- oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
-
-oArray2 := [], oTemp := {}
-for vKey, vValue in oArray
-{
-	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-	{
-		if !ObjHasKey(oTemp, vValue+0)
-			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
-	}
-	else
-	{
-		if !ObjHasKey(oTemp, "" vValue)
-			oArray2.Push("" vValue), oTemp["" vValue] := ""
-	}
-}
-vOutput := ""
-for vKey, vValue in oArray2
-	vOutput .= vKey " " vValue "`r`n"
-MsgBox, % vOutput
-return
-
- return
-
-}
 
 ReadSpecIntoDataBase:
  iniread, full, data.ini, %Product%,ecc738
@@ -194,7 +120,6 @@ return
 #Include <clip>
 #Include <Office>
 #Include <LMS>
-#Include <explorer>
 #Include <Snipper>
 #Include <OpenApp>
 #Include <AutoFill>
@@ -229,7 +154,7 @@ VQuest_Start:
  EnvGet, Iteration, Iteration
  envget, PrevProduct, PrevProduct
 
-
+AutoTrim, On
  ; #WinActivateForce
  SetWorkingDir, %A_ScriptDir%
  Menu, Tray, Add, CL3, Run_cl3

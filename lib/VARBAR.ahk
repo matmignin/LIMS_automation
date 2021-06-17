@@ -160,7 +160,7 @@ Class VarBar{
 	; WinActivate, NuGenesis LMS - \\Remote
 	; click 746, 47
 	; sleep 200
-	click.SearchBar(input)
+	LMS.SearchBar(input)
 	return
 }
 

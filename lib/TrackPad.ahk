@@ -50,7 +50,7 @@
 
   Numlock:: ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
      tooltip(A_ThisHotkey,1000,,,2)
-     Input, Akey, T0.75 ,{NumpadAdd}{Numpadsub}{Numpadmult}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}
+     Input, Akey, T0.55 ,{NumpadAdd}{Numpadsub}{Numpadmult}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}
       If ErrorLevel = TimeOut
       {
         tooltip("Fill Screen")
