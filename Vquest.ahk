@@ -186,16 +186,16 @@ AutoTrim, On
  Run, cl3.Ahk, lib\CL3
  try
  Menu, Tray, Icon, Robot.ico
- Iniread, Iteration, data.ini, SavedVariables, Iteration
- Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
- Iniread, VarBar_X, data.ini, Locations, VarBar_x
- Iniread, Inverted, data.ini, Locations, Inverted
+Iniread, Iteration, data.ini, SavedVariables, Iteration
+Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
+Iniread, VarBar_X, data.ini, Locations, VarBar_x
+Iniread, Inverted, data.ini, Locations, Inverted
  CopyPasteToggle=0
  Batches:=[]
  Products:=[]
  Lots:=[]
  Excel.Connect(1)
- ControlsetText, Static5,1,VarBar
+ 
  if (Inverted = 1)
   Menu, Tray, Check, Inverted
  if (Inverted = 0)

@@ -64,15 +64,16 @@ DropdownSelect(A_ShipTo){
 
 NewRequest(){
  global
- department:= ; Clip()
- Clipboard:=
- sleep 100
+;  department:= ; Clip()
+;  Clipboard:=
+;  sleep 100
  WinActivate, NuGenesis LMS - \\Remote
  ; send, ^c
- sleep 200
+ 
 
+ clip()
  sleep 50
- LMS.CheckDepartment()
+;  LMS.CheckDepartment()
  sleep 400
  tooltip, %department%
  click 64, 300 ;click Assign To New rewuest link
@@ -220,7 +221,9 @@ global
 MouseGetPos, mx, my
 click
 ;{
- lms.CheckDepartment()
+;  lms.CheckDepartment()
+  clip()
+  sleep 200
  click 647, 75
  winwait, Select samples for test
  sleep 600

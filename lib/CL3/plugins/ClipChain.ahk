@@ -147,7 +147,7 @@ ClickText(2)
 F20 & F19::InsertToClipChain("x")
 Xbutton1::InsertToClipChain("c")
 F20::InsertToClipChain("c")
-
+return
 InsertToClipChain(CopyOrCut){
 	global
 	clipboard:=
@@ -163,14 +163,14 @@ InsertToClipChain(CopyOrCut){
 	ClipChainIns:=Clipboard
 	ClipChainDataIndex:=""
 	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, NoHide
+	Gui, ClipChain:Submit, 
 	LVCGIndex := LV_GetNext()
 	If (LVCGIndex = 0)
 		LVCGIndex = 1
 	LV_GetText(ClipChainDataIndex, LVCGIndex, 3)
 	If (ClipChainDataIndex = "")
 		{
-		ClipChainDataIndex:=1
+		ClipChainDataIndex:=0
 		ClipChainInsertCounter:=0
 		}
 	If (ClipChainInsEdit = 1)
@@ -216,7 +216,7 @@ If ClipChainPause
 	Return
 If (ClipChainIndex > ClipChainData.MaxIndex())
 	{
-	 ClipChainIndex:=1
+	 ClipChainIndex:=0
 	}
 If ClipChainNoHistory
 	OnClipboardChange("FuncOnClipboardChange", 0)

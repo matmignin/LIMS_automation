@@ -253,10 +253,10 @@ return
     SpecTab_CopySpecTemplate()
    else if A_thismenuitem contains New &Request
     {
-   MouseGetPos, MX, MY, MWin,,
+  ;  MouseGetPos, MX, MY, MWin,,
     WorkTab.NewRequest()
-    winwaitactive, NuGenesis LMS - \\Remote
-    Click, MX, Y+25,
+    ; winwaitactive, NuGenesis LMS - \\Remote
+    ; Click, MX, Y+25,
     }
    else if (A_ThisMenuItem = "&USP Heavy Metal")
     SpecTab_HM_USP()
@@ -305,7 +305,7 @@ return
 
    LMS_Env:
     sleep 200
-    Send,Mmignin{tab}Kilgore7744
+    Send,mmignin{tab}Kilgore7744
     if A_thismenuItem contains &Login
     send,{enter}
    else if A_thismenuItem contains &Production Server

@@ -97,19 +97,20 @@ Mouse_CloseWindow(){
 }
 
 
-Clk(x,y,Button:="Left",n:=1,window:=""){
+Clk(x,y,Button:="Left",n=1,window:=""){
 	global
-	mx:=
-	my:=
-	mw:=
+	; mx:=
+	; my:=
+	; mw:=
 	MouseGetPos, mx, my, mw,
 	sleep 45
 	if (window!="")
 		winactivate, %window%
 	mouseclick, %Button%, %x%,%y%,%n%,0
+	sleep 50
 	mousemove,%mx%,%my%,0
+	if (window!="")
 	 winactivate, %mw%
-	sleep 100
 }
 
 Mouse_Click(Link){
@@ -233,7 +234,7 @@ SendPassword(){
  }
  if WinExist("Login - \\Remote"){
   winactivate
-  sendinput, mmignin{tab}+{K}ilgore7744{enter}
+  sendinput, mmignin{tab}{K}ilgore7744{enter}
  }
  Else If Winexist("Sign :"){
   winactivate,

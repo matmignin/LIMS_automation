@@ -1,14 +1,15 @@
 
 
 #IfWinActive, ahk_exe Code.exe
+; Sendinput, %Batch%
 
-
-
+F20 & Right::WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+F20 & Down::WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 F19 & left::send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 F19 & up::send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
-F19 & F20::send, {shiftdown}{lwindown}{altdown}{home}{altup}{lwinup}{shiftup}
+; F19 & F20::menu.vscode()
 ; lwin::
 ; winactivate, ahk_exe WFICA32.EXE
 ; Test_3()
@@ -78,6 +79,7 @@ f19 & f7::send,{ctrldown}{]}{ctrlup}
 f19 & wheeldown::send,{ctrl down}{down}{ctrl up}
 f19 & wheelup::send,{ctrl down}{up}{ctrl up}
 f19 & lbutton::send,{ctrldown}{click}{ctrlup}
+~Lctrl & Space::menu.vscode()
 
 ; #If WinActive("ahk_exe Code.exe") && Getkeystate("F13","p") ;editor
 
@@ -106,23 +108,20 @@ VS_Code_WindowInfo(){
 	; SetTimer, RemoveToolTip, -2000
 }
 
+
+#IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
+  Mbutton::WinClose, ahk_exe AutoHotkey.exe Vquest.ahk
+#ifwinactive,
+
 ReloadScript(){
 global iteration
 ControlGetText, Iteration, Static5, VarBar
 tooltip("Reload")
-if (iteration = -1)
-{
-sendinput,{F5}
-IniWrite, -2, data.ini, SavedVariables, Iteration
-}
-else if (iteration = -2)
-sendinput,{F4}
-else
-{
+IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
+  WinActivate, ahk_exe AutoHotkey.exe
 sendinput, ^s
 sleep 200
 run, VQuest.ahk
-}
 send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
 }
 
@@ -187,10 +186,11 @@ return
 :*R:bf\::numpadadd
 :*R:mp\::numpadmult
 :*R:mn\::numpaddiv
-:*R:wa\::winactivate,{space}
-:*R:ifw\::ifwinactive,{space}  
-:*R:ifwe\::ifwinexists,{space}  
-:*R:#ifw\::#ifwinactive,{space}  
+:*R:wa\::winactivate,
+:*R:ifw\::ifwinactive,  
+:*R:ifwe\::ifwinexists, 
+:*R:#ifw\::#ifwinactive, 
+:*R:iel\::if ErrorLevel, 
 
 #ifwinactive,
 

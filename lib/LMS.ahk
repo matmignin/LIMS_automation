@@ -26,14 +26,15 @@ OrientBoxes(){
 	xResultsTab:=(Ww/3)+(Ww/3)-50
 	yWorkTabs:=74
 	xDivider:=(Ww/5)
-	xTab2:=358
-	xTab3:=358+200
-	xTab4:=358+400
-	xTab5:=358+600
-	xTab6:=358+800
-	xTab7:=358+1000
-	xTab8:=358+1200
-	xTab9:=358+1400
+	xTab2=350
+	xtab3=550
+	xtab4=750
+	xtab5=950
+	xtab6=1150
+	xtab7=1550
+	xtab8=358+1000
+	xtab9=358+1200
+	xtab10=358+1400
 	yTabs:=36
 		
 	xWorkTab:=334, 47 ;1st
@@ -94,9 +95,8 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
-		LMS.OrientBoxes()
+		; LMS.OrientBoxes()
 		blockinput on
-		Mouse_Save()
 		if winactive("Select methods tests - \\Remote")
 			clk(246,77, 2)
 		else If winactive("Register new samples - \\Remote") {
@@ -105,19 +105,19 @@ SearchBar(Code:="",PostCmd:=""){
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
 			LMS.DetectTab()
-			if (Tab:="Products")
+			if (Tab="Products")
 				clk(xProductsSearch,yProductsSearch)
-			if (Tab:="Specs")
-				clk(xProductsSearch,yProductsSearch)
-			if (Tab:="Requests")
+			if (Tab="Specs")
+				clk(xSpecSearch,yProductsSearch)
+			if (Tab="Requests")
 				clk(xRequestsSearch,yWorkTabSearch)
-			if (Tab:="Documents")
+			if (Tab="Documents")
 				clk(xDocumentsSearch,yWorkTabSearch)
-			if (Tab:="Samples")
+			if (Tab="Samples")
 				clk(xSamplesSearch,yWorkTabSearch)
-			if (Tab:="Results")
+			if (Tab="Results")
 				clk(xResultsSearch,yWorkTabSearch)
-			if (Tab:="Tests")
+			if (Tab="Tests")
 				clk(xTestsSearch,yWorkTabSearch)
 			else
 				msgbox, no dice
@@ -175,37 +175,37 @@ DetectTab(){
 	LMS.OrientBoxes()
 	winactivate, ahk_exe WFICA32.EXE
 	if WinActive("NuGenesis LMS - \\Remote")
-	PixelSearch, Tab1, FoundY, xTab1, yTabs, xTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PixelSearch, Tab1, FoundY, xTab2, yTabs, XTab2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab1 {
 				Tab=MyWork
 				return
 				}
-	PIXELSEARCH, Tab2, FoundY, XTab2, YTabS, XTab2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PIXELSEARCH, Tab2, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab2 {
 				Tab=Product
 				return
 				}
-	PIXELSEARCH, Tab3, FoundY, XTab3, YTabS, XTab3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PIXELSEARCH, Tab3, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab3 { 
 				Tab=Specs
 				return
 				}
-	PIXELSEARCH, Tab4, FoundY, XTab4, YTabS, XTab4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PIXELSEARCH, Tab4, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab4 {
 				Tab=Tab4
 				return
 				}
-	PIXELSEARCH, Tab5, FoundY, XTab5, YTabS, XTab5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PIXELSEARCH, Tab5, FoundY, XTAB6, YTabS, XTAB6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab5 {
 				Tab=Tab5
 				return
 				}
-	PIXELSEARCH, Tab6, FoundY, XTab6, YTabS, XTab6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PIXELSEARCH, Tab6, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab6 {
 				Tab=Tab6
 				return
 				}
-	PIXELSEARCH, Tab7, FoundY, XTab7, YTabS, XTab7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PIXELSEARCH, Tab7, FoundY, XTAB8, YTabS, XTAB8+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab7 {
 				Tab=Tab7
 				return
@@ -350,11 +350,13 @@ Methods() {
 	return
 }
 
+
 CheckDepartment(){
 	global
-	;clipboard:=
+	clipboard:=
 Send, ^c
-sleep 300
+; sleep 300
+clipwait
 if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", Anal) > 0)
 	Department:="Analytical"
 else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)

@@ -93,7 +93,8 @@ SpecTab_CopySpecTemplate(){
  ; sleep 200
  clipwait,2 ; Tooltip, %Clipboard%
 	sleep 100
-	LMS.CheckDepartment()
+	clip()
+	; LMS.CheckDepartment()
  sleep 400
  tooltip(department)
  click.CopySpecTemplate()

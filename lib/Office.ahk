@@ -1,5 +1,9 @@
 #IfWinActive, ahk_exe explorer.exe
  Mbutton::send, {enter}
+ F20 & up::WinMove, ahk_exe explorer.exe, , 668, -1200, 974, 577
+ F20 & left::WinMove, ahk_exe explorer.exe, , -292, -943, 1175, 904
+ F20 & down::WinMove, ahk_exe explorer.exe, , 1162, 427, 1405, 1140
+ F20 & right::WinMove, ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
  F9::send, {lwindown}{e}{lwinup}
  F6::send, {lwindown}{s}{lwinup}
  Media_Play_Pause::send,{space}
@@ -36,6 +40,7 @@
 	F7::wheel("{wheelRight}",80)
 	F19 & F7::^F8 ;Excel.NextSheet()
 	F19 & F6::^F9 ;Excel.PreviousSheet()
+	F20 & down::WinMove, ahk_exe EXCEL.EXE, , 0, 0, 1942, 1547
 #ifwinactive, Find and Replace,
 	F20 & WheelUp::
 	Send, !{n}%Product%
@@ -53,12 +58,9 @@ KEY_OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
 	Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
-	F19 & WheelDown::Mouse_CloseWindow()
-	F19 & Wheelup::LMS.SearchBar(Product)
-	F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"
-	F20 & Wheelright::Varbar.AddIteration()
-	F20 & wheelleft::Varbar.SubIteration()
-	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, ,1683, -1080, 1484, 1080
+	F19 & enter::send, {ctrldown}{enter}{ctrlup}
+	F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, ,1635, -1080, 1564, 1080 
 	Mbutton::
 	Click 3
 	clip()
@@ -71,7 +73,7 @@ KEY_OUTLOOK:
 	Mbutton & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
 	^1::send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
 	^2::send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
-	^3::send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
+	^3::send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 	^4::send,{Ctrldown}{1}{CtrlUp}
 	^5::send,{Ctrldown}{3}{CtrlUp}
 	^`::send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}

@@ -1,6 +1,9 @@
-KEY_LMS:
+
+ 
+;KEY_LMS:
 return
  #Ifwinactive, NuGenesis LMS - \\Remote
+  F20 & Left::WinMove, A, , -283, -1196, 1662, 952
   F6::LMS.SearchBar(Product,"{enter}")
   F7::LMS.SearchBar(Batch,"{enter}")
   F8::LMS.FilterBar(Product)
@@ -8,15 +11,9 @@ return
   
   rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
   F20 & space::send, %Batch%{enter}
-  ~Lbutton & Rbutton::send,{enter}
-  F20 & WheelUp::LMS.SearchBar(Product,"{enter}")
-  F20 & WheelDown::LMS.SearchBar(Batch,"{enter}")
-  F20 & F6::LMS.SearchBar(Product,"{enter}",1)
-  F20 & F7::LMS.SearchBar(Batch,"{enter}",1)
-  F19 & wheeldown::Varbar.SubIteration()
+  ~Lbutton & F19::send,{enter}
   F19 & space::Send, %Product%{enter}
   Mbutton::menu.LMS()
-  ; numpadadd::send % Mouse_Save() "{click 54, 747}{click 831, 689,0}" MouseReturn
   Enter::LMS.SaveCode()
  #Ifwinactive, Select methods tests - \\Remote
   F7::LMS.Methods()
@@ -69,11 +66,15 @@ return
   F7::sendinput % Mouse_Save() "{click 504, 324}" MouseReturn ; add test.
   F6::esc
  #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  F20 & F19::Sendinput, %Batch%
-  F20 & space::Sendinput, %Product%
+  F20 & Space::Sendinput, %Batch%
+  F19 & space::Sendinput, %Product%
+  F19 & F20::Sendinput, %Batch%
+  F19 & up::sendinput, %sampleID%
+  F19 & left::sendinput, %lot%
+  F19 & right::sendinput, %coated%
   F8::send,{enter}
   $Rbutton up::Mouse_RbuttonUP()
-  Mbutton::Menu.LMS()
+  Mbutton::autofill()
   enter::click.okay()
   esc::click.esc()
   left::left
@@ -81,13 +82,11 @@ return
   right::right
   up::up
   <^r::ReloadScript()
+  
 #IfWinActive,
   ; sendlevel 1
  pause::reload
  ` & esc::Pause
- 
-;  sendlevel 0
-
 
 
 
@@ -101,7 +100,7 @@ KEY_DEFAULT:
  ` & 1::Test_1()
  ` & 2::Test_2()
  ` & 3::Test_3()
- F13 & `::gosub, Test_%iteration% 
+ F13 & `::Test(iteration)
  `::`
 ;  Numlock::reload
 
@@ -122,25 +121,24 @@ KEY_DEFAULT:
  Rbutton & F6::Backspace
  Rbutton & Lbutton::Enter
  Rbutton::Mouse_RbuttonUP()
- Lctrl & Space::send,{F21}
+ Lctrl & Space::menu.LMS()
  F9 & Lbutton::sendinput,{Ctrldown}{Click}{CtrlUp}
  F9 & Rbutton::sendinput,{shiftdown}{Click}{shiftup}
-
+  #If (A_PriorHotKey = "F19 & Space" && A_TimeSincePriorHotkey < 600) 
+  F19 & space::send, {enter}
+  F20 & Space::send, {enter}
+#if
 ;[_F19 & F20_]
  F19 & \::CreditCard()
  F19 & Space::send, %product%
+ F20 & Space::Sendinput, %batch%
  F19 & backspace::send,{delete}
  F19 & lbutton::send,{shiftDown}{click}{shiftup}
- F20 & F19::WinActivate, ahk_exe WFICA32.EXE
+ F20 & F19::Menu.LMS()
  F19 & Rbutton::Clip("OCR")
- F20 & WheelUp::Wheel(Product)
- F20 & WheelDown::Wheel(Batch)
- F20 & wheelleft::Excel.PreviousSheet()
- F20 & wheelright::Excel.NextSheet()
  F20 & F7::Excel.NextSheet()
  F20 & F6::Excel.PreviousSheet()
  F20 & backspace::run, Taskmgr.exe
- F20 & Space::Sendinput, %batch%
  F20 & Right::send, #{right}
  F20 & Left::send, #{Left}
  F20 & UP::send, #{UP}
@@ -154,9 +152,9 @@ KEY_DEFAULT:
  F20 & =::sendinput,{CtrlDown}{=}{Ctrlup}
  F20 & -::sendinput,{CtrlDown}{-}{Ctrlup}
  F20 & l::OpenApp.LMS()
- ~F20::Clip_key()
-;  ~F19::F21
-
+F19 & F20::return
+ ~F20::Clip_C()
+ ~F19::Clip_V()
 
 ; F19::DoubleTab_Copy()
 

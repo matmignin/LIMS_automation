@@ -11,7 +11,6 @@ KEY_Varbar:
 	F20 & F6::ProductTab_Table()
 	F20 & F7::SpecTab_Table()
 	Rbutton::Menu.Tables() ; Excel.connect()
-return
 F9::ReloadScript()
 #if
 
@@ -19,10 +18,12 @@ Class VarBar{
 
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 		Global
-		EnvGet, Iteration, Iteration
 		try Gui,VarBar:Destroy
 		; If (X<>0)
 		; {
+		; EnvGet, iteration, Iteration
+			Iniread, Iteration, data.ini, SavedVariables, Iteration
+
 			Iniread, VarBar_X, data.ini, Locations, VarBar_X
 			Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
 		; }
@@ -46,22 +47,28 @@ Class VarBar{
 		Gui, VarBar:color, 21a366
 		; Varbar_Y := LMS_Y
 		GUI, VarBar:Font, s14 cBlack Bold, Consolas
-		Gui, VarBar:Add, edit, vProduct gproductVarBar left h24 x-2 y-3 w62, %product%
+		Gui, VarBar:Add, edit, vProduct gproductVarBar left h24 x0 y0 w62, %product%
 		GUI, VarBar:Font, s10 cBlack Bold, Consolas
 		Gui, VarBar:add, Text, vBatch2 x68 y0 w100, %Batch2%
-		Gui, VarBar:add, Edit, vBatch gbatchVarbar H19 x62 y-3 w70, %Batch%
+		Gui, VarBar:add, Edit, vBatch gbatchVarbar H19 x62 y-2 w70, %Batch%
 		GUI, VarBar:Font, s10 cBlack , Consolas
 		; Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
-		Gui, VarBar:add, Edit, vlot gLotVarbar x130 H19 y-3 w60, %Lot%
+		Gui, VarBar:add, Edit, vlot gLotVarbar x132 H19 y-2 w60, %Lot%
+		GUI, VarBar:Font, s7 cBlack , Consolas
+		Gui, VarBar:add, Edit, vSampleID gSampleIDVarbar x193 H19 y-2 w90, %SampleID%
 		GUI, VarBar:Font, s7 cBlack , arial
-		Gui, VarBar:add, Text, vCoated -wrap Right x100 y17 w80, %Coated%
+		Gui, VarBar:add, Text, vCoated -wrap Right x132 y15 w80, %Coated%
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
-		Gui, VarBar:add, Text, vname x65 -wrap y16 w160, %Name%
+		Gui, VarBar:add, Text, vname x65 -wrap y15 w160, %Name%
 		; Gui, VarBar:add, Text, vcustomer x200 -wrap y16 w160, %Customer%
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:add, Text, vColor x190 -wrap y18 w90, %Color%
+		GUI, VarBar:Font, s7 cBlack , arial
+			; If Coated
+				; Gui, VarBar:add, Edit, vCoated gCoatedVarbar x132 H19 y15 w60, %Coated%
+		GUI, VarBar:Font, s8 cBlack , Consolas
 		GUI, VarBar:Font, s12 cBlack Bold, Consolas
-		Gui, VarBar:Add, text, vIteration x300 y-1 w70, %iteration%
+				Gui, VarBar:Add, text, vIteration x310 y-1 w70, 
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:Add, text, vDepartment x320 right y3 w80, %Department%
 		; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
@@ -70,7 +77,7 @@ Class VarBar{
 		; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
 		; varbar_x:= Varbar_x +100
 		try
-			Gui, VarBar:Show, h20 x%VarBar_X% y%VarBar_y% w330 NoActivate, VarBar
+			Gui, VarBar:Show, h28 x%VarBar_X% y%VarBar_y% w330 NoActivate, VarBar
 		; Gui, VarBar:Show, h30 x%offset_X% y%offset_y% w320 NoActivate, VarBar
 		catch
 		{
@@ -78,6 +85,7 @@ Class VarBar{
 			IniWrite, 1, data.ini, Locations, VarBar_Y
 		}
 		CoordMode, mouse, window
+		ControlsetText, Static5, %Iteration%,VarBar
 		return
 
 		ProductVarBar:
@@ -92,11 +100,18 @@ Class VarBar{
 			sleep 100
 			Gui, VarBar:submit,NoHide
 		return
+		SampleIDVarBar:
+			sleep 100
+			Gui, VarBar:submit,NoHide
+		return
+		CoatedVarBar:
+			sleep 100
+			Gui, VarBar:submit,NoHide
+		return
 		; IterationVarBar:
 		; sleep 600
 		; Gui, VarBar:Submit,Nohide
-		; ControlGetText, Iteration, Edit2, VarBar
-
+		; ; ControlGetText, Iteration, Edit2, VarBar
 		; sleep 100
 		; IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		; return
@@ -107,6 +122,7 @@ Class VarBar{
 			; Varbar_X := LMS_X+1000
 			; Varbar_Y := LMS_Y
 			sleep 100
+			IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 			IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 			coordmode, mouse, Window
@@ -174,6 +190,7 @@ Class VarBar{
 	sleep 550
 	; sleep 200
 	; envset, iteration, %iteration%
+	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 	; tooltip(Iteration, 3000,(Varbar_x+80),Varbar_y)
 	return
 }
@@ -187,6 +204,7 @@ Class VarBar{
 	sleep 550
 	; sleep 200
 	; envset, iteration, %iteration%
+	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 	; tooltip(Iteration,3000,((Varbar_x+80)),Varbar_y)
 	return
 }

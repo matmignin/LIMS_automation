@@ -1,4 +1,15 @@
-
+Test(n){
+	global
+	if n=1
+		test_1()
+	else if n=2
+		test_2()
+	else if n=3
+		test_3()
+	else
+		test_%n%()
+		return
+		}
 
 
 ;------------------------------------------------------------------------------------------------------------------------
@@ -40,23 +51,23 @@ return
 ; Needed....,Please Ctrl+Left Click on the contact name field.
 Test_%iteration%:
 		
+
 */
+Test_4:
+
+		; Loop
+		; {
+		; 	Sleep, 1
+		; 	GetKeyState, KeyState, Numbpadadd, D
+		; 	if KeyState = D
+
+		; 			break
+		; }
+		; MouseGetPos, ContactNamePosX, ContactNamePosy
+		; Send {Ctrl Up}{LButton Up}
+;	}
 
 return
-Test_4:
-Needed....,Please Ctrl+Left Click on the contact name field.
-		Loop
-		{
-			Sleep, 1
-			GetKeyState, KeyState, Numbpadadd, D
-			if KeyState = D
-
-					break
-		}
-		MouseGetPos, ContactNamePosX, ContactNamePosy
-		Send {Ctrl Up}{LButton Up}
-	}
-
 
 
 
@@ -102,7 +113,7 @@ Test_3(Code:=""){
 Global
 
 
-
+msgbox, yo
 
 
 

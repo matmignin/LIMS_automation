@@ -10,7 +10,7 @@ n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
 tab::send,{ctrldown}{]}{ctrlup}
 f20::pgdn
 	;#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
-	v::return
+	
 
 	#If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
 	d::Send,{home}+{end}{Delete}
@@ -46,7 +46,7 @@ f20::pgdn
 	j::down
 	space::F17
 	^space::send,{altDown}{ctrldown}{a}{ctrlup}{altup}
-	; j::down
+	v::send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
 	k::Up
 	t::!down
 	s::send,{shiftdown}{altDown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
