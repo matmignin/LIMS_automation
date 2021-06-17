@@ -101,6 +101,7 @@ KEY_DEFAULT:
  ` & 1::Test_1()
  ` & 2::Test_2()
  ` & 3::Test_3()
+ F13 & `::gosub, Test_%iteration% 
  `::`
 ;  Numlock::reload
 
