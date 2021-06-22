@@ -110,7 +110,9 @@ Clk(x,y,Button:="Left",n=1,window:=""){
 	sleep 50
 	mousemove,%mx%,%my%,0
 	if (window!="")
-	 winactivate, %mw%
+		winactivate, %mw%
+	; sleep 50
+	;  return, {Click, %x%,%y%,}
 }
 
 Mouse_Click(Link){

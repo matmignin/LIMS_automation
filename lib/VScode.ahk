@@ -60,10 +60,10 @@ f9 & wheeldown::toggledefinition() ;next search
 
 f9 & wheelup::wheel_2("{shiftdown}{altdown}{up}{altup}{shiftup}",50)
 
-f19 & h::send,{altdown}{left}{altup}
-f19 & k::send,{shiftdown}{altdown}{up}{altup}{shiftup}
-f19 & j::send,{shiftdown}{altdown}{ctrldown}{left}{shiftup}{altup}{ctrlup}
-f19 & l::send,{altdown}{ctrldown}{right}{altup}{ctrlup}
+f19 & h::send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+f19 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+f19 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+f19 & l::send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
 f19 & backspace::delete
 ; f19 & down::^down
 ; f19 & up::^up
@@ -71,6 +71,8 @@ f19 & backspace::delete
 ; f19 & right::^rightVariable()
 f19 & `::send, ~
 f19 & p::send, %process%
+
+
 f19 & m::send, %mouseposition%
 f19 & t::send, %wintitle%
 f19 & w::send, %wininfo%
@@ -148,6 +150,10 @@ Modifier_Hotstrings:
 sendraw,{ctrldown}{}{ctrlup}
 sendinput,{left 9}
 return
+:*R:w\::
+sendraw,{lwindown}{}{lwinup}
+sendinput,{left 9}
+return
 :*r:a\::
 sendraw,{altdown}{}{altup}
 sendinput,{left 8}
@@ -155,6 +161,15 @@ return
 :*r:s\::
 sendraw,{shiftdown}{}{shiftup}
 sendinput,{left 10}
+return
+:*r:asw\::
+:*r:aws\::
+:*r:saw\::
+:*r:swa\::
+:*r:was\::
+:*r:wsa\::
+sendraw,{shiftdown}{altdown}{lwindown}{}{lwinup}{altup}{shiftup}
+sendinput,{left 25}
 return
 :*r:asc\::
 :*r:acs\::
@@ -170,6 +185,11 @@ return
 sendraw,{shiftdown}{ctrldown}{}{ctrlup}{shiftup}
 sendinput,{left 18}
 return
+:*r:sw\::
+:*r:ws\::
+sendraw,{shiftdown}{lwindown}{}{lwinup}{shiftup}
+sendinput,{left 18}
+return
 :*r:sa\::
 :*r:as\::
 sendraw,{shiftdown}{altdown}{}{altup}{shiftup}
@@ -178,6 +198,11 @@ return
 :*r:ca\::
 :*r:ac\::
 sendraw,{altdown}{ctrldown}{}{ctrlup}{altup}
+sendinput,{left 16}
+return
+:*r:wa\::
+:*r:aw\::
+sendraw,{altdown}{lwindown}{}{lwinup}{altup}
 sendinput,{left 16}
 return
 :*R:main\::NuGenesis LMS - \\Remote

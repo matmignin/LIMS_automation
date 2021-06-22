@@ -1,80 +1,90 @@
 
  
+ 
+ 
+ 
 ;KEY_LMS:
 return
  #Ifwinactive, NuGenesis LMS - \\Remote
   F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-  F6::LMS.SearchBar(Product,"{enter}")
-  F7::LMS.SearchBar(Batch,"{enter}")
-  F8::LMS.FilterBar(Product)
-  F9::LMS.ViewCoa()
+  ; F6::LMS.SearchBar(Product,"{enter}")
+  ; F7::LMS.SearchBar(Batch,"{enter}")
+	; F8::LMS.FilterBar(Product)
+  ; F9::LMS.ViewCoa()
   
   rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
   F20 & space::send, %Batch%{enter}
+  F19 & ,::send, %Batch%{enter}
   ~Lbutton & F19::send,{enter}
   F19 & space::Send, %Product%{enter}
-  Mbutton::menu.LMS()
+  ; Mbutton::menu.LMS()
   Enter::LMS.SaveCode()
+	F19::
+	lms.OrientBoxes()
+	;lms.detectTab()
+	; tooltip(Tab)
+	return
  #Ifwinactive, Select methods tests - \\Remote
-  F7::LMS.Methods()
-  F6::esc
+  ; F7::LMS.Methods()
+  ; F6::esc
   #Ifwinactive, Edit Product - \\Remote
-    Mbutton::ProductTab_EditProduct()
+	; Mbutton::ProductTab_EditProduct()
 #ifwinactive, Edit Formulation - \\Remote
-  Mbutton::send, {tab}%product%{Tab 23}
+  ; Mbutton::send, {tab}%product%{Tab 23}
  #IfWinActive, Composition - \\Remote
-  F6::esc
-  F7::enter
+  ; F6::esc
+  ; F7::enter
   numpaddiv::Mouse_Closewindow()
-  Mbutton::Autofill()
- #IfWinActive, Test Definition Editor - \\Remote
-  F6::esc
-  F7::click 330, 619 ;click save
+  ; Mbutton::Autofill()
+;  #IfWinActive, Test Definition Editor - \\Remote
+  ; F6::esc
+  ; F7::click 330, 619 ;click save
  #IfWinActive, Results Definition - \\Remote
-  F6::esc
-  F7::enter
+  ; F6::esc
+  ; F7::enter
   wheelup::Mouse_click("Edit")
   WheelDown::
    Click, 1330, 592
    sleep 100
    click, 338, 619
    Return
- #IfWinActive, Edit specification - \\Remote
+;  #IfWinActive, Edit specification - \\Remote
  #ifwinactive, PDF Preview - \\Remote
   numpaddiv::Mouse_CloseWindow()
- #ifwinactive, Edit test (Field Configuration:
-  F9::Autofill()
-  F6::esc
+;  #ifwinactive, Edit test (Field Configuration:
+  ; F9::Autofill()
+  ; F6::esc
+  ; Rbutton::WorkTab.ChangeTestResults("toggle")
+  ; F6::WorkTab.ChangeTestResults("toggle")
+  ; F7::WorkTab.ChangeTestResults()
+ #ifwinactive, Register new samples - \\Remote
+  F20 & wheelup::LMS.SearchBar()
+  ; Mbutton::Autofill()
+  ; F9::LMS.SearchBar(Product,"{enter}")
+  ; F7::send, % Mouse_Save() "{click 502, 354}" Next
+	; F8::Send,{click 194, 188}^a
+  ; F6::esc
+;  #IfWinActive, Select tests for request: R
+;  F9::clk(638, 70)
+  ; Mbutton::WorkTab.SelectTestSample()
+;  #ifwinactive, Selectsamples for test:
+  ; F7::Clk(504, 324) ; add test.
+  ; F8::Clk(853, 657) ; click okay.
+  ; F9::send % Clk(250, 70) "{up}" ; click okay.
+  ; F6::esc
  #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
-  Rbutton::WorkTab.ChangeTestResults("toggle")
-  F6::WorkTab.ChangeTestResults("toggle")
  #MaxThreadsPerHotkey 2
   F9::WorkTab.ChangeTestResults("loop")
  #MaxThreadsPerHotkey 1
-  F7::WorkTab.ChangeTestResults()
-  F6::esc
- #ifwinactive, Register new samples - \\Remote
-  F20 & wheelup::LMS.SearchBar()
-  Mbutton::Autofill()
-  F9::LMS.SearchBar(Product,"{enter}")
-  F7::send, % Mouse_Save() "{click 502, 354}" Next
-    F8::Send,{click 194, 188}^a
-  F6::esc
- #IfWinActive, Select tests for request: R
-  Mbutton::WorkTab.SelectTestSample()
- #ifwinactive, Select samples for test:
-  F7::sendinput % Mouse_Save() "{click 504, 324}" MouseReturn ; add test.
-  F6::esc
  #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
+  F19 & ,::send, %Batch%
   F20 & Space::send, %Batch%
   F19 & space::send, %Product%
   F19 & F20::menu.Variables()
   F19 & up::send, %sampleID%
   F19 & left::send, %lot%
   F19 & right::send, %coated%
-  F8::send,{enter}
   $Rbutton up::Mouse_RbuttonUP()
-  Mbutton::autofill()
   enter::click.okay()
   esc::click.esc()
   left::left
@@ -82,7 +92,11 @@ return
   right::right
   up::up
   <^r::ReloadScript()
-  
+  Mbutton::LMS.3Tap()
+  F9::lms.3up()
+  F8::lms.3Down()
+  F7::LMS.3Right()
+  F6::LMS.3left()
 #IfWinActive,
   ; sendlevel 1
  pause::reload
@@ -94,6 +108,127 @@ return
 
 Class LMS {
 	
+3Right(){
+	global
+	If winactive("Result Entry - \\Remote")
+		WorkTab.ChangeTestResults()
+	else If winactive("NuGenesis LMS - \\Remote")
+		LMS.SearchBar(Batch,"{enter}")
+	else If winactive("Select methods tests - \\Remote")
+		LMS.Methods()
+	else If WinActive("Composition - \\Remote")
+		send, {enter}
+	else If WinActive("Test Definition Editor - \\Remote")
+		clk(330, 619) ;click save
+	else If WinActive("Results Definition - \\Remote")
+		send, {enter}
+	else if winactive("Register new samples - \\Remote")
+		clk(502, 354)
+	else if winactive("Select samples for test:")
+		send % Clk(504, 324) "{click, 849, 661}"  ; add test.
+	else	
+		send, {WheelRight}
+	return
+}
+
+3left(){
+		global
+	If winactive("NuGenesis LMS - \\Remote")
+		send, {LMS.SearchBar(Product,"{enter}")}
+	else If winactive("Select methods tests - \\Remote")
+		send, {esc}
+	else If WinActive("Composition - \\Remote")
+		send, {esc}
+	else If WinActive("Test Definition Editor - \\Remote")
+		send, {esc}
+	else If WinActive("Results Definition - \\Remote")
+		send, {esc}
+	else if winactive("Edit test (Field Configuration:")
+		send, {esc}
+	else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
+		send, {WorkTab.ChangeTestResults("toggle")}
+	else if winactive("Register new samples - \\Remote")
+		send, {esc}
+	else if winactive("Select samples for test:")
+		send, {esc}
+	else 
+		send, {wheelleft}
+	return
+}
+
+3Down(){
+	global
+	If winactive("NuGenesis LMS - \\Remote")
+		LMS.FilterBar(Product)
+	else if winactive("Select samples for test:")
+		Clk(853, 657) ; click okay.
+	; else If winactive("Select methods tests - \\Remote")
+	; else if winactive("Edit Formulation - \\Remote")
+	; else If WinActive("Composition - \\Remote")
+	; else If WinActive("Results Definition - \\Remote")
+	; else if winactive("PDF Preview - \\Remote")
+	; else if winactive("Edit test (Field Configuration:")
+	; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
+	; else if winactive("Register new samples - \\Remote")
+		; Send,{click 194, 188}^a
+	; else If WinActive("Select tests for request: R")
+	else
+		return
+	return
+		
+}
+
+3up(){
+	global
+	If winactive("NuGenesis LMS - \\Remote")
+		LMS.ViewCoa()
+	else if winactive("Edit test (Field Configuration:")
+		Autofill()
+	else if winactive("Register new samples - \\Remote")
+		LMS.SearchBar(Product,"{enter}")
+	else If WinActive("Select tests for request: R")
+		clk(638, 70)
+	else if winactive("Select samples for test:")
+		send % Clk(250, 70) "{up}" ; click okay.
+	; else If winactive("Result Entry - \\Remote")  ;Enter Test Results window
+	; else If winactive("Select methods tests - \\Remote")
+	; else if winactive("Edit Formulation - \\Remote")
+	; else If WinActive("Composition - \\Remote")
+	; else If WinActive("Results Definition - \\Remote")
+	; else if winactive("PDF Preview - \\Remote")
+	else
+		return
+	return
+	
+}
+
+3tap(){
+global
+	If winactive("NuGenesis LMS - \\Remote")
+		Menu.LMS()
+	else if winactive("Edit Formulation - \\Remote")
+		send, {tab}%product%{Tab 23}
+	else if winactive("Edit Product - \\Remote")
+		ProductTab_EditProduct()
+	; else if winactive("Register new samples - \\Remote")
+		; Autofill()
+	else If WinActive("Select tests for request: R")
+		WorkTab.SelectTestSample()
+	; else If WinActive("Composition - \\Remote")
+	; else If WinActive("Results Definition - \\Remote")
+	; else If winactive("Select methods tests - \\Remote")
+	; else if winactive("PDF Preview - \\Remote")
+	; else if winactive("Edit test (Field Configuration:")
+	; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
+	; else if winactive("Select samples for test:")
+	Else
+		Autofill()
+	return
+
+	
+}
+
+
 OrientBoxes(){
 	global
 	Ifwinactive, NuGenesis LMS - \\Remote
@@ -108,14 +243,16 @@ OrientBoxes(){
 	Tab5:=
 	Tab6:=
 	WinGetPos,wX,wY,wW,wH, NuGenesis LMS - \\Remote
-	xTabSelect:=WW-5
+	xTabSelect:=WW-10
 	yTabSelect:=75
 	xSamplesTab:=(Ww/2)-80
 	xRequestsTab:=(Ww/2)+20
 	xDocumentsTab:=(Ww/3)+(Ww/3)-50
-	xResultsTab:=(Ww/3)+(Ww/3)-50
+	xTestsTab:=(Ww/3)+(Ww/3)-220
+	xResultsTab:=(Ww/3)+(Ww/3)-150
 	yWorkTabs:=74
 	xDivider:=(Ww/5)
+	xTab1=150
 	xTab2=350
 	xtab3=550
 	xtab4=750
@@ -168,6 +305,7 @@ OrientBoxes(){
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
+	MouseMove, %xResultsTab%, %yWorktabs% 
 	}
 
 ClearFilter(){
@@ -209,8 +347,8 @@ SearchBar(Code:="",PostCmd:=""){
 				clk(xResultsSearch,yWorkTabSearch)
 			if (Tab="Tests")
 				clk(xTestsSearch,yWorkTabSearch)
-			else
-				msgbox, no dice
+			; else
+				; msgbox, no dice
 			send, ^{a}%Code%^{a}
 			if PostCmd!=""
 				send % PostCmd
@@ -261,76 +399,131 @@ FilterBar(){
 
 DetectTab(){
 	global
-
+tab:=
+FoundSamples:=
+FoundRequests:=
+FoundDocuments:=
+FoundResults:=
+FoundTests:=
+FoundSpecs:=
+Tab1:=
+TAB2:=
+TAB3:=
+TAB4:=
+TAB5:=
+TAB6:=
+TAB7:=
 	LMS.OrientBoxes()
 	winactivate, ahk_exe WFICA32.EXE
 	if WinActive("NuGenesis LMS - \\Remote")
-	PixelSearch, Tab1, FoundY, xTab2, yTabs, XTab2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	PixelSearch, Tab1, FoundY, xTab1, yTabs, XTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab1 {
-				Tab=MyWork
+				Tab=Welcome
 				return
 				}
-	PIXELSEARCH, Tab2, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab2 {
-				Tab=Product
+			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+				if Tab2 {
+					PixelSearch, FoundSamples, FoundY, xsamplesTab, yWorkTabs, xsamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
+					if FoundSamples {
+						Tab=Samples 
+						return
+					}
+					PixelSearch, FoundRequests, FoundY, xRequestsTab, yWorkTabs, xRequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					If FoundRequests {
+						Tab=Requests 
+						return 
+					}
+					PixelSearch, FoundDocuments, FoundY, xDocumentsTab, yWorkTabs, xDocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					If FoundDocuments {
+						Tab=Documents 
+						return
+					}
+					PixelSearch, FoundResults, FoundY, xResultsTab, yWorkTabs, xResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					If FoundResults {
+						Tab=Results
+						return
+					}
+					PixelSearch, FoundTests, FoundY, xTestsTab, yWorkTabs, xTestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					If FoundTests {
+						Tab=Tests
+						return
+					}
+					if Errorlevel
+						Tab=SomethingElse
 				return
 				}
-	PIXELSEARCH, Tab3, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+				; }
+		PIXELSEARCH, Tab3, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab3 { 
-				Tab=Specs
+					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+						If FoundSpecs
+							tab=Specs
+						else	
+							Tab=Products
 				return
 				}
-	PIXELSEARCH, Tab4, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+		PIXELSEARCH, Tab4, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab4 {
-				Tab=Tab4
+					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+						If FoundSpecs
+							tab=Specs
+						else	
+							Tab=Products
 				return
 				}
-	PIXELSEARCH, Tab5, FoundY, XTAB6, YTabS, XTAB6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+		PIXELSEARCH, Tab5, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab5 {
 				Tab=Tab5
 				return
 				}
-	PIXELSEARCH, Tab6, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+		PIXELSEARCH, Tab6, FoundY, XTAB6, YTabS, XTAB6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab6 {
 				Tab=Tab6
 				return
 				}
-	PIXELSEARCH, Tab7, FoundY, XTAB8, YTabS, XTAB8+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+		PIXELSEARCH, Tab7, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if Tab7 {
 				Tab=Tab7
 				return
 				}
 			else
 				Tab=SomethingElse
-			return
+			; reMyWorkturn
 	return
 			; else
 			; PixelSearch, FoundX, FoundY, xTab1, yTabs, xTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			; if !Errorlevel
-If Tab=MyWork
-			{ 
-				errorlevel:= ; is work Tab?
+; If (Tab:="MyWork")
+; 			{ 
+; 				; errorlevel:= ; is work Tab?
 
-				PixelSearch, FoundX, FoundY, xsamplesTab, yWorkTabs, xsamplesTab+2, yWorkTabs+2, 0xfff8e3, 10, Fast RGB
-				If !ErrorLevel
-					Tab=Samples 
-					PixelSearch, FoundX, FoundY, xRequestsTab, yWorkTabs, xRequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-					If !ErrorLevel
-						Tab=Requests 
-					PixelSearch, FoundX, FoundY, xDocumentsTab, yWorkTabs, xDocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-					If !ErrorLevel
-						Tab=Documents 
-					; PixelSearch, FoundX, FoundY, xResultsTab, yWorkTabs, xResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-					; If !ErrorLevel
-					; 	Tab=Results
-				; else 
-				; 	PixelSearch, FoundX, FoundY, xTab, yWorkTabs, xTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				; 	If !ErrorLevel
-				; 		Tab=
-					if Errorlevel
-						Tab=SomethingElse
-				return
-			}
+; 				PixelSearch, SamplesX, FoundY, xsamplesTab, yWorkTabs, xsamplesTab+2, yWorkTabs+2, 0xfff8e3, 10, Fast RGB
+; 					if SamplesX {
+; 						Tab=Samples 
+; 						return
+; 					}
+; 					PixelSearch, RequestsX, FoundY, xRequestsTab, yWorkTabs, xRequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+; 					If Requestsx {
+; 						Tab=Requests 
+; 						return 
+; 					}
+; 					PixelSearch, DocumentsX, FoundY, xDocumentsTab, yWorkTabs, xDocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+; 					If DocumentsX {
+; 						Tab=Documents 
+; 						return
+; 					}
+; 					; PixelSearch, FoundX, FoundY, xResultsTab, yWorkTabs, xResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+; 					; If !ErrorLevel
+; 					; 	Tab=Results
+; 				; else 
+; 				; 	PixelSearch, FoundX, FoundY, xTab, yWorkTabs, xTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+; 				; 	If !ErrorLevel
+; 				; 		Tab=
+; 					if Errorlevel
+; 						Tab=SomethingElse
+; 				return
+; 			}
+			msgbox, %tab%
 		return
 }
 

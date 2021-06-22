@@ -5,20 +5,19 @@
 	#If Getkeystate("F13","p")
 
 	lbutton::vscode_menu()
-n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
-; ^n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
-tab::send,{ctrldown}{]}{ctrlup}
-f20::pgdn
+	n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
+	; ^n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
+	tab::send,{ctrldown}{]}{ctrlup}
+	f20::pgdn
 	;#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
-	
 
-	#If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
+#If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
 	d::Send,{home}+{end}{Delete}
 	w::send, {F17}{delete}
 	4::send, +{end}^{x}
 	5::send, ^{m}^{x}
 	0::send, +{home}^{x}
-	#If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
+#If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
 	d::Send,{home 2}+{end}^c
 	; w::sendinput,{right}{ctrldown}{left}{shiftdown}{right}{shiftup}{c}{Ctrlup}
 	5::sendinput, ^m^c
@@ -26,14 +25,14 @@ f20::pgdn
 	y::sendinput,{home}+{end}^c{esc}
 	w::sendinput,{shiftdown}{altDown}{ctrldown}{s}{altup}{shiftup}{c}{Ctrlup}{esc}
 	0::sendinput, +{home}^c{esc}
-	#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
+#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
 	w::send,{F17}
-	#If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
+#If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
 	g::Send, ^{home}
 	; #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
 	; p::send,{end}{enter}^v
-	#If Getkeystate("F13","p")
-; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
+#If Getkeystate("F13","p")
+	; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
 	p::Vim.Paste()
 	1::F1
 	2::F2
@@ -66,12 +65,11 @@ f20::pgdn
 	d::return ; Send,{home 2}+{end}^x{delete}
 	; +^j::send,{shiftdown}{altDown}{ctrldown}{down}{ctrlup}{altup}{shiftup}
 	; +^k::send,{shiftdown}{altDown}{ctrldown}{up}{ctrlup}{altup}{shiftup}
-
 	; *w::Sendinput,{ctrldown}{right}{ctrlup}
-; F13 & Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
+	; F13 & Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
 	; +w::Sendinput,{ctrldown}{right 2}{ctrlup}
 	; u::Send ^z
-	F13 & Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
+	~Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
 	up::+up
 	down::+down
 	right::+right
@@ -92,24 +90,21 @@ f20::pgdn
 	'::"
 	m::sendinput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
 	u::sendinput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup}
-<^j::send,{shiftdown}{down}{shiftup}
-<^l::send,{shiftdown}{right}{shiftup}
-<^h::send,{shiftdown}{left}{shiftup}
-<^k::send,{shiftdown}{up}{shiftup}
-<^w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-$<^0::send,{shiftdown}{end}{shiftup}
-$<^4::send,{shiftdown}{home}{shiftup}
+	<^j::send,{shiftdown}{down}{shiftup}
+	<^l::send,{shiftdown}{right}{shiftup}
+	<^h::send,{shiftdown}{left}{shiftup}
+	<^k::send,{shiftdown}{up}{shiftup}
+	<^w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	$<^0::send,{shiftdown}{Home}{shiftup}
+	$<^4::send,{shiftdown}{end}{shiftup}
 	Lctrl & m::send,{shiftdown}{altDown}{right}{altup}{shiftup}
 	lctrl & u::send,{shiftdown}{altDown}{left}{altup}{shiftup}
-	; u::+!up ;pselect revious instance of line
-		;select next instance of line
 	up::sendinput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
 	down::sendinput,{Altdown}{shiftdown}{ctrldown}{down}{shiftup}{ctrlup}{altup}
 	`;::vim.GoToLine() ;+!g
 	i::sendinput,{ctrldown}{i}{Ctrlup}
 	5::sendinput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
 	r::Vim.ChangeSelection()
-
 	Enter::sendinput,{shiftdown}{enter}{shiftup}
 	; $F13::send,{esc}{shiftup}{Ctrlup}{altup}
 	; $<^k::sendinput,{ctrldown}{up}{ctrlup}
@@ -120,9 +115,26 @@ $<^4::send,{shiftdown}{home}{shiftup}
 	$<^left::send,{ctrldown}{[}{ctrlup}
 	; $<^j::send,{ctrldown}{down}{ctrlup}
 	$<^down::send,{ctrldown}{down}{ctrlup}
-
+	~lctrl::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+	$F19::
+	sleep 100
+	While GetKeyState("F13", "p") {
+		If GetKeyState("F19", "p") {
+			send, {altdown}{down}
+			sleep 150
+		}
+		If GetKeyState("Lctrl", "p") {
+			send, {altdown}{up}
+			sleep 150
+		}
+		sleep 50	; 
+		; KeyWait, F19, U 
+			; sleep 200
+	}
+	send, {altup}
 	#if
-	; $F13::esc
+
+; $F13::esc
 Media_Next::F17
 Media_Prev::F16
 

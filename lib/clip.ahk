@@ -117,7 +117,7 @@ Clip_C(){
 
 clip_v(){
   Global
-    KeyWait, F19, T0.30
+    KeyWait, F19, T0.20
     If ErrorLevel
     {
         ; tooltip(":CUT:")
@@ -127,18 +127,19 @@ clip_v(){
         if (A_PriorKey="F19")
         {
           send, {F21}
-          return
+          exit
         }
           KeyWait, F19,
-           exit
+          exit
       }
+    if Errorlevel = 0
+    KeyWait, F19, T0.60
+      if !ErrorLevelErrorLevelerrorlevel
+        
+            wheel_paste()
       sleep 200
-          ; if GetKeyState(F20, "P")
-          ;   exit
-        wheel_paste()
+          
+        return
     }
-    ; tooltip(Clipboard,,0,0,3)
-    ; if (A_ThisHotkey != "F20")
-    ;     exit
 
 return

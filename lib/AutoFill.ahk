@@ -25,7 +25,8 @@
 		sendinput,{click 106, 64}%Product%{enter}{enter}
 		return
 	} Else If winactive("Edit specification - \\Remote"){
-		ProductTab_EditProduct()
+		; ProductTab_EditProduct()
+		menu.LMS()
 
 	} Else If winactive("New Document - \\Remote"){
 		sendinput, %Product%
@@ -70,7 +71,7 @@
 				return
 	} else if Winactive("Register new samples - \\Remote"){
 			If Option = 0
-				WorkTab.EditSample()
+				WorkTab.registerNewSamples()
 			else{
 				sendinput,{Click 200, 134}
 				sleep 300 ;register new sample
@@ -88,7 +89,7 @@
 
 		;================================================================== make a method
 	} Else if winactive("Edit sample (Field Configuration:"){
-		WorkTab.EditSample() ;
+		WorkTab.registerNewSamples() ;
 
 	} Else If winactive("Find and Replace"){
 		sendinput, %Product%

@@ -82,19 +82,12 @@ Spectab_CreateGUI(){
 
 SpecTab_CopySpecTemplate(){
  global
- ;click 728, 191
- department:= ;Clip()
+ department:= 
  Clipboard:=
- ; sleep 200
- ; WinActivate, NuGenesis LMS - \\Remote
-	; click
-	; clip()
  send, ^c
- ; sleep 200
  clipwait,2 ; Tooltip, %Clipboard%
 	sleep 100
 	clip()
-	; LMS.CheckDepartment()
  sleep 400
  tooltip(department)
  click.CopySpecTemplate()

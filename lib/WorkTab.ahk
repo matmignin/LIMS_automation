@@ -1,6 +1,6 @@
 Class WorkTab{
 
-EditSample(){
+registerNewSamples(){
  global
  mx:=
  my:=
@@ -39,7 +39,7 @@ EditSample(){
   ; my:=my+26
   sleep 200
   ; click mx, my, 2
-  MouseMove, mx, my
+  ;MouseMove, mx, my
   ; click 2
   sleep 500
    return
