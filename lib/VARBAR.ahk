@@ -9,7 +9,7 @@ KEY_Varbar:
 	F20::Varbar.Follow()
 	mbutton::Varbar.LaunchTable()
 	F20 & F6::ProductTab_Table()
-	F20 & F7::SpecTab_Table()
+	F20 & F7::SpecTab.Table()
 	Rbutton::Menu.Tables() ; Excel.connect()
 F9::ReloadScript()
 #if
@@ -159,7 +159,7 @@ Class VarBar{
 		try GUI ingredient_table:destroy
 		try GUI Spec_table:destroy
 		if winactive("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
-			SpecTab_Table()
+			SpecTab.Table()
 		if winactive("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
 			ProductTab_Table()
 		else

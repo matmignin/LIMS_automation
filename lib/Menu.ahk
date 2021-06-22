@@ -178,7 +178,7 @@ return
    if A_thismenuitem contains &Ingredient Table
     ProductTab_Table()
    else if A_thismenuItem contains &Spec Table
-    SpecTab_Table()
+    SpecTab.Table()
    else if A_thismenuItem contains &Rotation Table
     Rotation_GetTable()
    else
@@ -212,13 +212,13 @@ return
    ; return
    Heavy_metals:
     if (A_ThisMenuItem = "USP Heavy Metal")
-    SpecTab_HM_USP()
+    SpecTab.HM_USP()
    else if (A_ThisMenuItem = "Canada Heavy Metal")
-    SpecTab_HM_Canada()
+    SpecTab.HM_Canada()
    else if (A_ThisMenuItem = "Prop65 Heavy Metal")
-    SpecTab_HM_Prop65()
+    SpecTab.HM_Prop65()
    else if (A_ThisMenuItem = "Report Only Heavy Metal")
-    SpecTab_HM_ReportOnly()
+    SpecTab.HM_ReportOnly()
    else
     Menu,Menu, deleteAll
    return
@@ -247,23 +247,23 @@ return
 
    Autofill:
     if A_thismenuitem contains &Analytical
-    SpecTab_Edit_Analytical()
+    SpecTab.Edit_Analytical()
    else if A_thismenuitem contains &Coated_Retain
-    SpecTab_Edit_CoatedRetain()
+    SpecTab.Edit_CoatedRetain()
    else if A_thismenuitem contains &Coated_Physical
-    SpecTab_Edit_CoatedPhysical()
+    SpecTab.Edit_CoatedPhysical()
    else if A_thismenuitem contains &Retain
-    SpecTab_Edit_Retain()
+    SpecTab.Edit_Retain()
    else if A_thismenuitem contains &Micro
-    SpecTab_Edit_Micro() ; copyMicro spec tests
+    SpecTab.Edit_Micro() ; copyMicro spec tests
    else if A_thismenuitem contains &Physical
-    SpecTab_Edit_Physical()
+    SpecTab.Edit_Physical()
    else if A_thismenuitem contains Copy &Specs
-    SpecTab_TestSpecs.Copy()
+    SpecTab.copy()
    else if A_thismenuitem contains Paste &Specs
-    SpecTab_TestSpecs.Paste()
+    SpecTab.Paste()
    else if A_thismenuitem contains Copy &Template
-    SpecTab_CopySpecTemplate()
+    SpecTab.CopySpecTemplate()
    else if A_thismenuitem contains New &Request
     {
   ;  MouseGetPos, MX, MY, MWin,,
@@ -272,13 +272,13 @@ return
     ; Click, MX, Y+25,
     }
    else if (A_ThisMenuItem = "&USP Heavy Metal")
-    SpecTab_HM_USP()
+    SpecTab.HM_USP()
    else if (A_ThisMenuItem = "&Canada Heavy Metal")
-    SpecTab_HM_Canada()
+    SpecTab.HM_Canada()
    else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
-    SpecTab_HM_Prop65()
+    SpecTab.HM_Prop65()
    else if (A_ThisMenuItem = "&Report Only Heavy Metal")
-    SpecTab_HM_ReportOnly()
+    SpecTab.HM_ReportOnly()
     Menu,Menu, deleteAll
    return
 

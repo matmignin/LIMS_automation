@@ -162,9 +162,9 @@ else If link contains Mywork_Searchbar
 		click, 73, 280
 	else if Link contains AddNewSampleTemplate
 		click 103, 325
-	else if Link contains Orient_SpecTab_TestDefinitionEditor
+	else if Link contains Orient_SpecTab.TestDefinitionEditor
 		Click, 187, 200
-	else if Link contains Save_SpecTab_TestDefinitionEditor
+	else if Link contains Save_SpecTab.TestDefinitionEditor
 		Click 341, 618
 	else if Link contains Select_TestsForRequests
 	{

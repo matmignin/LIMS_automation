@@ -115,7 +115,7 @@
 	$<^left::send,{ctrldown}{[}{ctrlup}
 	; $<^j::send,{ctrldown}{down}{ctrlup}
 	$<^down::send,{ctrldown}{down}{ctrlup}
-	~lctrl::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+	; ~lctrl::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	$F19::
 	sleep 100
 	While GetKeyState("F13", "p") {

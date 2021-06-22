@@ -92,7 +92,7 @@ Wheel_Right(){
 	} else if winactive("Edit Ingredient - \\Remote"){
 		ProductTab_DropDown_Ingredient()
 	} Else If winactive("Test Definition Editor - \\Remote "){
-		SpecTab_TestDefinitionEditor(Description)
+		SpecTab.TestDefinitionEditor(Description)
 	} Else If winactive("Results Definition - \\Remote "){
 		Mouse_Click("Add")
 	} Else If winactive("Paster - Snipaste ahk_exe Snipaste.exe"){

@@ -48,7 +48,7 @@
 
 		;SpecTab -------------------------------------------------------------------
 	} Else If winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote"){
-		SpecTab_Table()
+		SpecTab.Table()
 	} Else If winactive("Edit sample template - \\Remote"){
 		sendinput,{tab}{delete 4}%Product%{enter}
 	} Else If winactive("Select methods tests - \\Remote"){
