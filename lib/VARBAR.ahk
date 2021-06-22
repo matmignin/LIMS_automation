@@ -1,6 +1,6 @@
 KEY_Varbar:
 	#If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI")
-		wheelleft::Excel.PreviousSheet()
+	wheelleft::Excel.PreviousSheet()
 	wheelRight::excel.Nextsheet()
 	WheelUp::Varbar.AddIteration()
 	Wheeldown::Varbar.SubIteration()
@@ -8,10 +8,13 @@ KEY_Varbar:
 	F6::Excel.previoussheet()
 	F20::Varbar.Follow()
 	mbutton::Varbar.LaunchTable()
-	F20 & F6::ProductTab_Table()
+	F20 & F6::ProductTab.Table()
 	F20 & F7::SpecTab.Table()
 	Rbutton::Menu.Tables() ; Excel.connect()
 F9::ReloadScript()
+	; #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+	; 	~wheelright::msgbox, %A_ThisHotkey%
+	; 	~wheelleft::msgbox, %A_ThisHotkey%
 #if
 
 Class VarBar{
@@ -161,9 +164,17 @@ Class VarBar{
 		if winactive("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
 			SpecTab.Table()
 		if winactive("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
-			ProductTab_Table()
-		else
-			Menu.Tables()
+			ProductTab.Table()
+		else {
+		winactivate, ahk_exe WFICA32.EXE
+		lms.DetectTab()
+			If (Tab="Products")
+				ProductTab.Table()
+			else If (Tab="Specs")
+				SpecTab.Table()
+			else	
+				Menu.Tables()
+		}
 		return
 	}
 
@@ -191,7 +202,7 @@ Class VarBar{
 	; sleep 200
 	; envset, iteration, %iteration%
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-	; tooltip(Iteration, 3000,(Varbar_x+80),Varbar_y)
+	; TT(Iteration, 3000,(Varbar_x+80),Varbar_y)
 	return
 }
 	SubIteration(){
@@ -205,7 +216,7 @@ Class VarBar{
 	; sleep 200
 	; envset, iteration, %iteration%
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-	; tooltip(Iteration,3000,((Varbar_x+80)),Varbar_y)
+	; TT(Iteration,3000,((Varbar_x+80)),Varbar_y)
 	return
 }
 

@@ -29,7 +29,7 @@ KEY_Snipper:
 
 	Snip_groupChange(){
  Wheel("{ctrl down}22{Ctrl up}")
- tooltip("Snip Group Changed",2000)
+ TT("Snip Group Changed",2000)
  return
  }
 

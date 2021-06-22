@@ -12,6 +12,7 @@ return
 }
 
 Mouse_IsOver(WinTitle){
+	Global
 	MouseGetPos,,, Win
 	Return WinExist(WinTitle . " ahk_id " . Win)
 }
@@ -34,67 +35,64 @@ Mouse_RbuttonUP(){
 
 
 
-Mouse_CloseWindow(){
-	global
- if WinActive("Inbox - mmignin@vitaquest.com - Outlook") ; || winactive("ahk_exe OUTLOOK.EXE")
-  Return
-	else if winexist("PDF Preview - \\Remote"){
-		winactivate
-		clk(944, 11)
-		sleep 400
-	}
-	else if winactive("Composition - \\Remote"){
-		clk(841, 895)
-		sleep 50
-		clk(946, 896)
-		sleep 400
-	}
-	else If winactive("NuGenesis LMS - \\Remote")
-		LMS.ClearFilter()
-	else If WinActive("ahk_exe WFICA32.EXE")
-	{
-		send,{esc}
-		sleep 400
-		return
-	}
-	else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") 
-	{
-		send, ^w
-		sleep 400
-		return
-	}
-	else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE") 
-	{
-		sendinput, !{F4}
-		sleep 400
-		return
-	}
-	; else if winactive("ahk_exe Code.exe")
-	; {
-	; 	sendinput, ^{F4}
-	; 	sleep 400
-	; 	return
-	; }
-	else if winactive("Settings ahk_class ApplicationFrameWindow")
-	{
-		winclose
-		sleep 400
-		return
-	}
-	else if winactive("ahk_exe mstsc.exe") || winactive("ahk_exe EXCEL.EXE")
-	{
-		Send, ^v
-		sleep 400
-		return
-	}
-	else if winactive("Adobe Acrobat Reader"){
-		send, ^q
-		sleep 400
-	}
-	else
-		return
-	return
-}
+; CloseWindow(){
+; 	global
+; 	if WinActive("Inbox - mmignin@vitaquest.com - Outlook") ; || winactive("ahk_exe OUTLOOK.EXE")
+; 		Return
+; 	else if winexist("PDF Preview - \\Remote"){
+; 		winactivate
+; 		clk(944, 11)
+; 		sleep 400
+; 	}
+; 	; else if winactive("Composition - \\Remote"){
+; 	; 	clk(841, 895)
+; 	; 	sleep 50
+; 	; 	clk(946, 896)
+; 	; 	sleep 400
+; 	; }
+; 	else If winactive("NuGenesis LMS - \\Remote")
+; 		LMS.FilterClear()
+; 	; else If WinActive("ahk_exe WFICA32.EXE")
+; 	; {
+; 	; 	send,{esc}
+; 	; 	sleep 400
+; 	; 	return
+; 	; }
+; 	else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") {
+; 		send, ^{w}
+; 		sleep 400
+; 		return
+; 	}
+; 	else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for Windows 10") {
+; 		sendinput, !{F4}
+; 		sleep 400
+; 		return
+; 	}
+; 	; else if winactive("ahk_exe Code.exe")
+; 	; {
+; 	; 	sendinput, ^{F4}
+; 	; 	sleep 400
+; 	; 	return
+; 	; }
+; 	else if winactive("Settings ahk_class ApplicationFrameWindow"){
+; 		winclose
+; 		sleep 400
+; 		return
+; 	}
+; 	; else if winactive("ahk_exe mstsc.exe") 
+; 	else if winactive("ahk_exe EXCEL.EXE"){
+; 		Send, {ctrldown}{down}{ctrlup}
+; 		sleep 400
+; 		return
+; 	}
+; 	else if winactive("Adobe Acrobat Reader"){
+; 		send, ^q
+; 		sleep 400
+; 	}
+; 	else
+; 		return
+; 	return
+; }
 
 
 Clk(x,y,Button:="Left",n=1,window:=""){
@@ -103,11 +101,11 @@ Clk(x,y,Button:="Left",n=1,window:=""){
 	; my:=
 	; mw:=
 	MouseGetPos, mx, my, mw,
-	sleep 45
+	; sleep 25
 	if (window!="")
 		winactivate, %window%
 	mouseclick, %Button%, %x%,%y%,%n%,0
-	sleep 50
+	sleep 25
 	mousemove,%mx%,%my%,0
 	if (window!="")
 		winactivate, %mw%
@@ -118,7 +116,7 @@ Clk(x,y,Button:="Left",n=1,window:=""){
 Mouse_Click(Link){
 	global
 	Mouse_Save()
-	if Link contains Save_ProductTab_EditProduct
+	if Link contains Save_ProductTab.EditProduct
 		click 275, 578
 else If link contains Results_Definition_edit
 	click 78,63
@@ -136,7 +134,7 @@ else If link contains Mywork_Searchbar
 		click 1236, 888
 	else if Link contains Save_Composition
 		click
-	else if Link Contains OK_ProductTab_EditIngredient
+	else if Link Contains OK_ProductTab.EditIngredient
 		click 265, 561
 	else if Link contains OK_ResultEntry
 		click, 1028, 808
@@ -146,7 +144,7 @@ else If link contains Mywork_Searchbar
 		click 74, 776
 	else if Link contains ScrollDown_EditFormulation
 		click 453, 444
-	else if Link contains Dropdown_ProductTab_EditIngredient
+	else if Link contains Dropdown_ProductTab.EditIngredient
 		click 272, 67
 	else if Link contains SearchBar_SelectMethodsTests
 		click 225, 69, 2
@@ -257,7 +255,7 @@ return
 
 CreditCard(){
  sendinput, 4130220009588038
- ToolTip("11/21 127",5000)
+ TT("11/21 127",5000)
 return
 }
 

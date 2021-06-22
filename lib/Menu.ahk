@@ -176,7 +176,7 @@ return
 
    Tests:
    if A_thismenuitem contains &Ingredient Table
-    ProductTab_Table()
+    ProductTab.Table()
    else if A_thismenuItem contains &Spec Table
     SpecTab.Table()
    else if A_thismenuItem contains &Rotation Table

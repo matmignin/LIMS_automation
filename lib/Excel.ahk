@@ -46,7 +46,7 @@ Connect(reload:=0){
 	if WinExist("LMS Workbook.xlsb")
 		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
 	else{
-		tooltip("no notebook open",500,0,0,1)
+		TT("no notebook open",500,0,0,1)
 				; VarBar.show()
 		; 		return
 		}
@@ -61,7 +61,7 @@ Connect(reload:=0){
 	}
 	Catch{
 		; Excel.PreviousSheet()
-		Tooltip("Didnt connect to workbook", 500,0,0,1)
+		TT("Didnt connect to workbook", 500,0,0,1)
 		; excel.connect()
 		; return
 	}

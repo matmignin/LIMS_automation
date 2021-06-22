@@ -25,7 +25,7 @@
 		sendinput,{click 106, 64}%Product%{enter}{enter}
 		return
 	} Else If winactive("Edit specification - \\Remote"){
-		; ProductTab_EditProduct()
+		; ProductTab.EditProduct()
 		menu.LMS()
 
 	} Else If winactive("New Document - \\Remote"){
@@ -36,13 +36,13 @@
 		;------------------------------------------
 	} Else If winactive("Edit Product - \\Remote"){
 		;iniread, Product, data.ini, Products, 1
-		ProductTab_EditProduct()
+		ProductTab.EditProduct()
 	} Else If winactive("Edit Formulation - \\Remote"){
 		sendinput,{tab}%Product%+{tab 7}
 	} Else If winactive("Composition - \\Remote"){
-		ProductTab_Table()
+		ProductTab.Table()
 	} Else If winactive("Edit Ingredient - \\Remote"){
-		ProductTab_Table()
+		ProductTab.Table()
 
 
 
@@ -67,7 +67,7 @@
 	} else if winexist("Reason For Change - \\Remote"){
 		winactivate, Reason For Change - \\Remote
 		sendinput,{click 143, 118}Fixing Rotation{click 240, 239}
-		tooltip("Fixing Rotation",2000)
+		TT("Fixing Rotation",2000)
 				return
 	} else if Winactive("Register new samples - \\Remote"){
 			If Option = 0

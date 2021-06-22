@@ -14,10 +14,10 @@ F19 & F20::vscode_menu()
 ; winactivate, ahk_exe WFICA32.EXE
 ; Test_3()
 ; return
+; Tooltip()
 
 
-
-Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
+; Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
 ; f20 & right::winmove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
 ; f19 & space::sendinput,{ctrldown}{shiftdown}p{shiftup}{ctrlup}
 <^j::^down
@@ -31,17 +31,57 @@ Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
 ; enter::send,{enter}
 tab & f:: sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 tab::tab
-!t::tooltip(trackpadhints,5000)
+!t::TT(trackpadhints,5000)
 <^r::reloadscript()
 ; f19 & lctrl::send,{ctrldown}{tab}{ctrlup}
 
 ; ~lctrl & f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 
-~rshift & lshift::sendinput,{altdown}{left}{altup}
-~lshift & rshift::sendinput,{altdown}{right}{altup}
 
-~rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-~lshift & space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
+rshift & lshift::send, {pgup}
+lshift & rshift::send, {pgdn}
+Lshift::
+If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300) ;if double click
+{
+send,{altdown}{left}{altup}
+tt("Forward")
+	; Send {F20}
+}
+Else
+{
+	return
+}
+Return
+
+Rshift::
+If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300) ;if double click
+{
+send,{altdown}{right}{altup}
+tt("Back")
+	; Send {F20}
+}
+Else
+{
+	return
+}
+Return
+LCtrl::
+If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300) ;if double click
+{
+send,{altdown}{right}{altup}
+tt("Back")
+	; Send {F20}
+}
+Else
+{
+	return
+}
+Return
+lshift & Appskey::Return
+rshift & Appskey::return
+Lctrl & Appskey::return
+rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
+lshift & space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 ;~lshift::f16
 ;~rshift::f17
 rbutton & f7::wheel_2("!{right}",10)
@@ -118,7 +158,7 @@ VS_Code_WindowInfo(){
 ReloadScript(){
 global iteration
 ControlGetText, Iteration, Static5, VarBar
-tooltip("Reload")
+TT("Reload")
 IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
   WinActivate, ahk_exe AutoHotkey.exe
 sendinput, ^s
@@ -207,10 +247,6 @@ sendinput,{left 16}
 return
 :*R:main\::NuGenesis LMS - \\Remote
 :*R:lms\::ahk_exe WFICA32.EXE
-:*R:bb\::numpadsub
-:*R:bf\::numpadadd
-:*R:mp\::numpadmult
-:*R:mn\::numpaddiv
 :*R:wa\::winactivate,
 :*R:ifw\::ifwinactive,  
 :*R:ifwe\::ifwinexists, 
@@ -294,10 +330,29 @@ Menu.show()
    return
 
 
-			FlashScreen(){
+FlashScreen(){
  send, #^{c}
- sleep 20
+ sleep 40
  send, #^{c}
 return
 }
 
+TT(msg, time=1500, X:="",Y:="",W:="") {
+	global
+	tooltip, %msg%, %X%, %Y%,%W%
+	SetTimer, RemoveToolTip%W%, -%time%
+return
+RemoveToolTip:
+ToolTip
+return
+RemoveToolTip1:
+ToolTip,,,,1
+return
+RemoveToolTip2:
+ToolTip,,,,2
+return
+RemoveToolTip3:
+ToolTip,,,,3
+return
+N=0
+}

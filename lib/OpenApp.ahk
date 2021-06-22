@@ -86,21 +86,22 @@ Outlook(){
   run, http://vqhq-prdcitrix1.vitaquest.int/Citrix/StoreWeb/
  return
  }
- LMS(){
- IfWinActive, ahk_exe WFICA32.EXE
-  send,{altDown}{tab}{altup}
- ifwinnotexist, ahk_exe WFICA32.EXE
- {
-  run, http://vqhq-prdcitrix1.vitaquest.int/Citrix/StoreWeb/
-		 WinWait, ahk_exe firefox.exe,,2
-			sleep 500
-  ControlSend, Control, down, ahk_exe firefox.exe
-  ControlSend, Control, down, ahk_exe firefox.exe
-  ControlSend, Control, enter, ahk_exe firefox.exe
-		sleep 1000
- }
- IfWinNotActive, ahk_exe WFICA32.EXE
-  WinActivate, ahk_exe WFICA32.EXE
+ 
+  LMS(){
+  IfWinActive, ahk_exe WFICA32.EXE
+    send,{altDown}{tab}{altup}
+  ifwinnotexist, ahk_exe WFICA32.EXE
+  {
+    run, http://vqhq-prdcitrix1.vitaquest.int/Citrix/StoreWeb/
+      WinWait, ahk_exe firefox.exe,,2
+        sleep 500
+    ControlSend, Control, down, ahk_exe firefox.exe
+    ControlSend, Control, down, ahk_exe firefox.exe
+    ControlSend, Control, enter, ahk_exe firefox.exe
+      sleep 1000
+  }
+  IfWinNotActive, ahk_exe WFICA32.EXE
+    WinActivate, ahk_exe WFICA32.EXE
 
  return
  }

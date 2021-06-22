@@ -168,6 +168,20 @@ AutoTrim, On
  Menu, Tray, Add, windowSpy, WindowSpySub
  Menu, Tray, Add, Exit, ExitSub
  Menu, Tray, Default, VarbarFollow ;Run_Listlines
+On:="On"
+Off:="Off"
+Clear:="Clear"
+yo:="yo"
+ye:="ye"
+
+Pk:=A_Priorkey
+Phk:=A_PriorHotkey
+Thk:=A_ThisHotkey
+tsThk:=A_TimesinceThisHotkey
+tThk:=A_TimesinceThisHotkey
+tsPhk:=A_TimesincePriorHotkey
+tPhk:=A_TimesincePriorHotkey
+
 
  SetNumlockState Alwayson
  setcapslockstate alwaysoff
@@ -195,7 +209,8 @@ Iniread, Inverted, data.ini, Locations, Inverted
  Products:=[]
  Lots:=[]
  Excel.Connect(1)
- -
+ IfWinExist, ahk_exe WFICA32.EXE
+  LMS.Orient()
  if (Inverted = 1)
   Menu, Tray, Check, Inverted
  if (Inverted = 0)

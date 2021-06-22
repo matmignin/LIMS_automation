@@ -43,12 +43,13 @@
 	^e::Sendinput, +^{right}
 	`::esc
 	j::down
-	space::F17
+	; space::F17
 	^space::send,{altDown}{ctrldown}{a}{ctrlup}{altup}
 	v::send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
 	k::Up
 	t::!down
 	s::send,{shiftdown}{altDown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
+	space::send,{shiftdown}{altDown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 	a::send,{shiftdown}{altDown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 	; k::Up
 	h::left
@@ -88,7 +89,7 @@
 	Lctrl & Space::sendinput,{shiftdown}{altDown}{a}{shiftup}{altup}
 	f::Vim.find("f")
 	'::"
-	m::sendinput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
+	m::Sendinput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
 	u::sendinput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup}
 	<^j::send,{shiftdown}{down}{shiftup}
 	<^l::send,{shiftdown}{right}{shiftup}
@@ -102,6 +103,7 @@
 	up::sendinput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
 	down::sendinput,{Altdown}{shiftdown}{ctrldown}{down}{shiftup}{ctrlup}{altup}
 	`;::vim.GoToLine() ;+!g
+	`::send, {shiftdown}{altdown}{ctrldown}{i}{ctrlup}{altup}{shiftup} ;+!g
 	i::sendinput,{ctrldown}{i}{Ctrlup}
 	5::sendinput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
 	r::Vim.ChangeSelection()

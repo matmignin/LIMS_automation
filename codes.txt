@@ -1262,3 +1262,24 @@ F230
 F230
 F230
 F230
+xTabSelect:=WW-10
+F230
+K573
+K573
+		PixelSearch, FilterOn, FoundY, %xFilterIcon%, %yFilterIcon%, %xFilterIcon%+2, %YFilterIcon%+2, 0xf9e681, 10, Fast RGB
+			if FilterOn
+				Return "On"
+			else 
+				Return "Off" 
+aa
+aa
+aa
+77
+fdgfd
+fdgfd
+fgd
+ds
+ds
+K573
+105-1147
+105-1147

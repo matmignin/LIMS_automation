@@ -28,13 +28,13 @@ Clip(input=0){
     clipboard:=ClipboardSaved
     if (A_PriorKey != "F20")
       exit
-    tooltip(Clipboard,1000,,,3)
+    TT(Clipboard,1000,,,3)
       menu.variable()
     exit
+  ; TT(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))
   }
   
   CoordMode, Tooltip, Screen
-  Tooltip(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))
   CoordMode, Tooltip, Relative
   sleep 20
   RegExMatch(Clipboard, "[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
@@ -51,7 +51,7 @@ Clip(input=0){
   Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
   Sleep 20
 
-    ; tooltip(cProduct "`n" cBatch "`n" clot,1500,,,3)
+    ; TT(cProduct "`n" cBatch "`n" clot,1500,,,3)
   If cProduct
   GuiControl,Varbar:Text, Product, %cProduct%
   If cBatch
@@ -69,28 +69,30 @@ Clip(input=0){
   If cRetain
     Department=Retain
   If cCTRetain
-    Department=CTRetain
+    Department:="Retain (Coated)"
   If cPhysical
     Department=Physical
   If cCTPhysical
-    Department=CTPhysical
+    Department:="Physical (Coated)"
   If cCTRetain
     Department=CTRetain
   GuiControl,Varbar:Text, Department, %Department%
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain
-    Tooltip(cProduct " " cBatch " " cLot " " cCoated " " cSampleID "`n`t " Department,4000,,,3)
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain && Winactive("ahk_exe WFICA32.EXE") 
+      TT(cProduct " " cBatch " " cLot " " cCoated " " cSampleID "`n`t " Department,4000,,,3)
+    else 
+      TT(Clipboard,1000,,,3)
   }
 
-Clip_C(){
+Clip_C2(){
   Global
     KeyWait, F20, T0.45
     If ErrorLevel
     {
-        tooltip(":CUT:")
+        TT(":CUT:")
         KeyWait, F20,U 
         if (A_PriorKey!="F20")
         {
-          tooltip("")
+          TT("")
           exit
         }
         if (A_PriorKey="F20")
@@ -98,7 +100,7 @@ Clip_C(){
           clipboard:=
           send, ^x
           clipwait
-          Tooltip(clipboard,1000)
+          TT(clipboard,1000)
           return
         }if (A_PriorKey!="F20")
           KeyWait, F20,
@@ -108,10 +110,38 @@ Clip_C(){
       ; exit
     ; if (A_PriorhotKey contains F19)
     Clip()
-    ; tooltip(Clipboard,,0,0,3)
+    ; TT(Clipboard,,0,0,3)
     ; if (A_ThisHotkey != "F20")
     ;     exit
  }
+clip_c(){
+  Global
+    KeyWait, F20, T0.20
+    If ErrorLevel
+    {
+        KeyWait, F20, T2
+        if (A_PriorKey!="F20")
+          exit
+        if (A_PriorKey="F20")
+        If !ErrorLevel
+        {
+          wheel_cut()
+          Return
+        }
+          KeyWait, F20,
+          Return
+      }
+    if Errorlevel = 0
+    KeyWait, F20, T0.60
+      if !ErrorLevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
+            Clip()
+          Else
+            return
+      }
+      return
+    }
 
 
 
@@ -120,26 +150,28 @@ clip_v(){
     KeyWait, F19, T0.20
     If ErrorLevel
     {
-        ; tooltip(":CUT:")
-        KeyWait, F19,U 
+        KeyWait, F19, T2
         if (A_PriorKey!="F19")
           exit
         if (A_PriorKey="F19")
+        If !ErrorLevel
         {
           send, {F21}
-          exit
+          Return
         }
           KeyWait, F19,
-          exit
+          Return
       }
     if Errorlevel = 0
     KeyWait, F19, T0.60
-      if !ErrorLevelErrorLevelerrorlevel
-        
+      if !ErrorLevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
             wheel_paste()
-      sleep 200
-          
-        return
+          Else
+            return
+      }
+      return
     }
 
 return

@@ -6,7 +6,7 @@
  F20 & right::WinMove, ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
  F9::send, {lwindown}{e}{lwinup}
  F6::send, {lwindown}{s}{lwinup}
- Media_Play_Pause::send,{space}
+;  Media_Play_Pause::send,{space}
  F19 & Browser_Forward::Excel.NextSheet()
  F19 & Browser_Back::Excel.PreviousSheet()
  F7::
@@ -118,7 +118,7 @@ KEY_OneNote:
 		KEY_Remote_DESKTOP:
 #IfWinActive, Remote Desktop Connection
 Mbutton::menu.Remote_Desktop()
-F13::tooltip("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
+F13::TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 		#ifwinactive, ahk_class #32770
 			Mbutton::menu.Remote_Login()
 			F19::menu.Remote_Login()

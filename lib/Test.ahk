@@ -19,7 +19,7 @@ Test(n){
 
 Test_1(){  ;array - remove duplicates (case insensitive)
 	global
-	; LMS.OrientBoxes()
+	; LMS.Orient()
 	LMS.DetectTab()
 	;  mousemove,% %xTabSelect%, 40
 		; winactivate, NuGenesis LMS - \\Remote
@@ -39,7 +39,7 @@ Test_1(){  ;array - remove duplicates (case insensitive)
 			click, 1550,40
 			; sleep 200
 			else
-		tooltip(Tab) 
+		TT(Tab) 
 		; send,   {tab %tabstomove%}{enter}
 return
 			; tabsToMove=
@@ -89,14 +89,14 @@ Test_2(){
  Global
  LMS.DetectTab()
  sleep 200
- tooltip(Tab)
-;  LMS.OrientBoxes()
+ TT(Tab)
+;  LMS.Orient()
 ;  sleep 200
 ;  clipboard:=
 ;  MouseGetPos, xt, Yt,
 ; xtest:= xt - XDivider
 ; xtest:= xt - XDivider
-; tooltip(Xtest " " xt)
+; TT(Xtest " " xt)
 ; clipboard:=xtest
 ; mousemove % xSamplesTab, YWorkTabs
  return

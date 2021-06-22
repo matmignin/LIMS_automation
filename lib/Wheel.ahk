@@ -90,7 +90,7 @@ Wheel_Right(){
 		Mouse_Click("Edit")
 
 	} else if winactive("Edit Ingredient - \\Remote"){
-		ProductTab_DropDown_Ingredient()
+		ProductTab.DropDown_Ingredient()
 	} Else If winactive("Test Definition Editor - \\Remote "){
 		SpecTab.TestDefinitionEditor(Description)
 	} Else If winactive("Results Definition - \\Remote "){
@@ -148,12 +148,12 @@ Wheel_Paste()
 		Clipboard := Trim((Clipboard, "`r`n"))
 		sleep 200
 		send, %Clipboard%
-		tooltip("Paste")
+		TT("Paste")
 	}
 	else
 	send, ^v
 		blockinput off
-	ToolTip("Paste")
+	TT("Paste")
 		; sendlevel 0
    ; send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
 			sleep 300
@@ -168,7 +168,7 @@ Wheel_Cut()
 	Send, ^x
 
 	clipwait, 1
-	 ToolTip(clipboard)
+	 TT(clipboard)
 	sleep 400
 	; sendlevel 0
   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
@@ -184,7 +184,7 @@ Wheel_Copy()
 	clipwait, 1
 	; sleep 100
 	; sendlevel 0
-	ToolTip(clipboard)
+	TT(clipboard)
 	sleep 400
   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
 	return

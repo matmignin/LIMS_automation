@@ -125,7 +125,7 @@ ChangeTestResults(Checkbox_Toggle:=0){
   InputBox, Iteration, enter iteration, number please,, , , , , , , 1
    if errorlevel
     reload
- ;Tooltip(iteration, 5000)
+ ;TT(iteration, 5000)
  ;winactivate, Result Entry - \\Remote
   if checkbox_toggle contains loop
  {

@@ -1,4 +1,4 @@
-
+#Ifwinactive,
 
 
 KEY_DEFAULT:
@@ -14,10 +14,12 @@ F20 & /::send, %SampleID%
  ` & 1::Test_1()
  ` & 2::Test_2()
  ` & 3::Test_3()
- F13 & `::Test(iteration)
+ Media_Play_Pause::Test(iteration)
  `::`
  /::/
-;  Numlock::reload
+ 
+ 
+
 
 ;[_Mbutton_]
  rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}

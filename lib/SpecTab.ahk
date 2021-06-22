@@ -75,7 +75,7 @@ CopySpecTemplate(){
 	sleep 100
 	clip()
 	sleep 400
-	tooltip(department)
+	TT(department)
 	click.CopySpecTemplate()
 	If Department Contains Analytical
 		SpecTab.Edit_Analytical()
@@ -91,7 +91,7 @@ CopySpecTemplate(){
 		SpecTab.Edit_CoatedRetain()
 	sleep 500
 	;excel.NextSheet()
-	;Tooltip(Product)
+	;TT(Product)
 	return
  }
  
@@ -339,7 +339,7 @@ EditSpecification_Analytical(){
 
 ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1){
 	Global
-	tooltip(CreateRequirements)
+	TT(CreateRequirements)
 		; normal
 	sleep 200
 	click, 250, 140 ; click id box to orient
