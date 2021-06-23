@@ -3,6 +3,8 @@
 #IfWinActive, ahk_exe Code.exe
 ; Sendinput, %Batch%
 
+
+
 F20 & Right::WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
 F20 & Down::WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 F19 & left::send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
@@ -40,43 +42,19 @@ tab::tab
 
 rshift & lshift::send, {pgup}
 lshift & rshift::send, {pgdn}
-Lshift::
-If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300) ;if double click
-{
-send,{altdown}{left}{altup}
-tt("Forward")
-	; Send {F20}
-}
-Else
-{
-	return
-}
-Return
+Lshift::DoublePress("{altdown}{left}{altup}","Backf")
+Rshift::DoublePress("{altdown}{right}{altup}","Forward")
+LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
 
-Rshift::
-If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300) ;if double click
-{
-send,{altdown}{right}{altup}
-tt("Back")
-	; Send {F20}
+DoublePress(action, ToolTip:=""){
+  If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
+    send, %action%
+    tt(ToolTip)
+  }
+  Else
+    Return
 }
-Else
-{
-	return
-}
-Return
-LCtrl::
-If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300) ;if double click
-{
-send,{altdown}{right}{altup}
-tt("Back")
-	; Send {F20}
-}
-Else
-{
-	return
-}
-Return
+
 lshift & Appskey::Return
 rshift & Appskey::return
 Lctrl & Appskey::return
@@ -153,6 +131,8 @@ VS_Code_WindowInfo(){
 
 #IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
   Mbutton::WinClose, ahk_exe AutoHotkey.exe Vquest.ahk
+  #ifwinexists,C:\Users\mmignin\Documents\VQuest\Vquest.ahk - AutoHotkey 
+    Media_Play_Pause::Send, {F5}
 #ifwinactive,
 
 ReloadScript(){

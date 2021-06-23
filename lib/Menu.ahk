@@ -1,141 +1,143 @@
 class Menu{
 
-show(){
- global
-Menu,menu,show
- }
-
-Delete(){
- global
- try Menu,Menu, deleteAll
- }
- add(Item:="",group:="MenuHandle"){
- global
-Menu,menu,add,%item%,%group%
- }
-
-LMS(){
- Global
- Menu.delete()
- if winactive("NuGenesis LMS - \\Remote"){
-  Menu, Menu, add, New &Request, AutoFill
-  Menu,Menu, add, Copy &Template, autofill
- If CopyPasteToggle=1
-  Menu,Menu, add, Paste &Specs, Autofill
- If CopyPasteToggle=0
-  Menu,Menu, add, Copy &Specs, Autofill
- Menu.show()
- }
- if winactive("Edit specification - \\Remote"){
-  Menu, Menu, add, &Analytical, AutoFill
-  Menu, Menu, add, &Physical, AutoFill
-  Menu, Menu, add, &Micro, AutoFill
-  Menu, Menu, add, &Retain, AutoFill
-  Menu, Menu, add, &Coated_Physical, AutoFill
-  Menu, Menu, add, &Coated_Retain, AutoFill
- Menu.show()
- }
- if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
- Menu.add("&Spec Table","Tests")
-  Menu,Menu, add
-  Menu, Menu, Add, &USP Heavy Metal,Autofill
-  Menu, Menu, Add, &Canada Heavy Metal,Autofill
-  Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
-  Menu, Menu, Add, &Report Only Heavy Metal,Autofill
- Menu.show()
- }
- if winactive("Edit specification - \\Remote"){
-  Menu,Menu, add, Departments, Autofill
-  Menu, DepartmentsMenu, add, Analytical, AutoFill
-  Menu, DepartmentsMenu, add, Physical, AutoFill
-  Menu, DepartmentsMenu, add, Micro, AutoFill
-  Menu, DepartmentsMenu, add, Retain, AutoFill
-  Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
-  Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
-  Menu,Menu, add, departments, :DepartmentsMenu
- Menu.show()
- }
- if Winactive("Login - \\Remote"){
-  Menu,Menu, add, &Login, LMS_Env
-  Menu,Menu, add, &Production Server, LMS_Env
-  Menu,Menu, add, &Test Server, LMS_Env
- Menu.show()
- }
- else
-  return
-
- }
-
-Variable(){
- global
-; Menu, Menu, add, &Variables, Variable
-  if Product
-    Menu, menu, Add, &Product `t %Product%, Variable
-  if Batch
-    Menu, menu, Add, &Batch `t %Batch%, Variable
-  if Lot
-    Menu, menu, Add, &Lot `t %Lot%, Variable
-  if SampleID
-    Menu, menu, Add, &SampleID `t %SampleID%, Variable
-  if Name
-    Menu, menu, Add, &Name `t %name%, Variable
-  if Customer
-    Menu, menu, Add, Cus&tomer `t %Customer%, Variable
-  if Coated
-    Menu, menu, Add, &Coated `t %Coated%, Variable
-  if Color
-    Menu, menu, Add, C&olor `t %Color%, Variable
-  if ShapeSize
-    Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
-  if Weight
-    Menu, menu, Add, &Weight `t %Weight%, Variable
-; Menu,Menu, add, &Variables, :Variables
-Menu.show()
- }
-
-Tables(){
- try
-Menu.delete()
-Menu,Menu,add,&Spec Table,Tests
-Menu,Menu,add,&Ingredient Table,Tests
- ;menu,Menu,add,&Rotation Table,Tests
-Menu.show()
- ;Menu,menu,add
- }
-
-
-
-passwords(){
- global
-Menu.delete()
-  Menu, Menu, Add, VQ Login, Passwords
-  Menu, Menu, Add, Kilgore, Passwords
-Menu.show()
- }
-
-Remote_desktop(){
- global
- try
-Menu.delete()
-  Menu, Menu, Add, TESTING LMS, Remote_desktop
-  Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
-  Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
-  Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
-Menu, Menu, Add, Other Servers, Remote_desktop
-  Menu, SubMenu, Add, TEST_LMS, Remote_desktop
-  Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
-  Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
-  Menu, SubMenu, Add, LMS_PRD, Remote_desktop
-  Menu, SubMenu, Add, NuGenesis, Remote_desktop`
-  Menu, SubMenu, Add, SDMS, Remote_desktop
-  Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
-  Menu, SubMenu, Add,empower, Remote_desktop
-Menu, Menu, add, Other Servers, :SubMenu
-  Menu, Menu, Add, &LMS Login, Passwords
-  Menu, Menu, Add, &VQ Login, Passwords
-  Menu, Menu, Add,&Kilgore, Passwords
-Menu.show()
- }
+  show(){
+  global
+  Menu,menu,show
+  }
+  
+  Delete(){
+  global
+  try Menu,Menu, deleteAll
+  }
+  
+  add(Item:="",group:="MenuHandle"){
+  global
+  Menu,menu,add,%item%,%group%
+  }
+  
+  LMS(){
+  Global
+  try Menu.delete()
+  if winactive("NuGenesis LMS - \\Remote"){
+  LMS.DetectTab()
+  if (Tab="Samples")
+    Menu, Menu, add, New &Request, AutoFill
+  if (Tab="Specs") {
+      Menu,Menu, add, Copy &Template, autofill
+    If CopyPasteToggle=1
+      Menu,Menu, add, Paste &Specs, Autofill
+    If CopyPasteToggle=0
+      Menu,Menu, add, Copy &Specs, Autofill
+  }
+  if (Tab="Tests")
+    Menu,Menu, add, &Delete Retain, Autofill
+    
+  Menu.show()
+  }
+  
+  if winactive("Edit specification - \\Remote"){
+    Menu, Menu, add, &Analytical, AutoFill
+    Menu, Menu, add, &Physical, AutoFill
+    Menu, Menu, add, &Micro, AutoFill
+    Menu, Menu, add, &Retain, AutoFill
+    Menu, Menu, add, &Coated_Physical, AutoFill
+    Menu, Menu, add, &Coated_Retain, AutoFill
+  Menu.show()
+  }
+  if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
+  Menu.add("&Spec Table","Tests")
+    Menu,Menu, add
+    Menu, Menu, Add, &USP Heavy Metal,Autofill
+    Menu, Menu, Add, &Canada Heavy Metal,Autofill
+    Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
+    Menu, Menu, Add, &Report Only Heavy Metal,Autofill
+  Menu.show()
+  }
+  if winactive("Edit specification - \\Remote"){
+    Menu,Menu, add, Departments, Autofill
+    Menu, DepartmentsMenu, add, Analytical, AutoFill
+    Menu, DepartmentsMenu, add, Physical, AutoFill
+    Menu, DepartmentsMenu, add, Micro, AutoFill
+    Menu, DepartmentsMenu, add, Retain, AutoFill
+    Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
+    Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
+    Menu,Menu, add, departments, :DepartmentsMenu
+  Menu.show()
+  }
+  if Winactive("Login - \\Remote"){
+    Menu,Menu, add, &Login, LMS_Env
+    Menu,Menu, add, &Production Server, LMS_Env
+    Menu,Menu, add, &Test Server, LMS_Env
+  Menu.show()
+  }
+  else
+    return
+  }
+  Variable(){
+  global
+  ; Menu, Menu, add, &Variables, Variable
+    if Product
+      Menu, menu, Add, &Product `t %Product%, Variable
+    if Batch
+      Menu, menu, Add, &Batch `t %Batch%, Variable
+    if Lot
+      Menu, menu, Add, &Lot `t %Lot%, Variable
+    if SampleID
+      Menu, menu, Add, &SampleID `t %SampleID%, Variable
+    if Name
+      Menu, menu, Add, &Name `t %name%, Variable
+    if Customer
+      Menu, menu, Add, Cus&tomer `t %Customer%, Variable
+    if Coated
+      Menu, menu, Add, &Coated `t %Coated%, Variable
+    if Color
+      Menu, menu, Add, C&olor `t %Color%, Variable
+    if ShapeSize
+      Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
+    if Weight
+      Menu, menu, Add, &Weight `t %Weight%, Variable
+  ; Menu,Menu, add, &Variables, :Variables
+  Menu.show()
+  }
+  Tables(){
+  try
+  Menu.delete()
+  Menu,Menu,add,&Spec Table,Tests
+  Menu,Menu,add,&Ingredient Table,Tests
+  ;menu,Menu,add,&Rotation Table,Tests
+  Menu.show()
+  ;Menu,menu,add
+  }
+  passwords(){
+  global
+  Menu.delete()
+    Menu, Menu, Add, VQ Login, Passwords
+    Menu, Menu, Add, Kilgore, Passwords
+  Menu.show()
+  }
+  Remote_desktop(){
+  global
+  try
+  Menu.delete()
+    Menu, Menu, Add, TESTING LMS, Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+  Menu, Menu, Add, Other Servers, Remote_desktop
+    Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+    Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+    Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+    Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+    Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+    Menu, SubMenu, Add, SDMS, Remote_desktop
+    Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+    Menu, SubMenu, Add,empower, Remote_desktop
+  Menu, Menu, add, Other Servers, :SubMenu
+    Menu, Menu, Add, &LMS Login, Passwords
+    Menu, Menu, Add, &VQ Login, Passwords
+    Menu, Menu, Add,&Kilgore, Passwords
+  Menu.show()
+  }
 }
 return
 
@@ -203,13 +205,6 @@ return
     Menu,Menu, deleteAll
    return
 
-  ; Heavy_meatals(){
-   ; Global
-    ; Menu, Menu, Add, USP Heavy Metal,Heavy_metals
-    ; Menu, Menu, Add, Canada Heavy Metal,Heavy_metals
-    ; Menu, Menu, Add, Prop65 Heavy Metal,Heavy_metals
-    ; Menu, Menu, Add, Report Only Heavy Metal,Heavy_metals
-   ; return
    Heavy_metals:
     if (A_ThisMenuItem = "USP Heavy Metal")
     SpecTab.HM_USP()
@@ -223,96 +218,73 @@ return
     Menu,Menu, deleteAll
    return
 
-  ; LMS_autofill(){
-   ; Global
-   ; Menu,Menu, add,
-   ; ;Excel.Connect()
-   ; Menu,Menu, add, Copy Spec Template, autofill
-   ; Menu,Menu, add,
-   ; Menu,Menu, add, Copy Specs, Autofill
-   ; Menu,Menu, add, Paste Specs, Autofill
-   ; if winactive("Edit specification - \\Remote"){
-    ; Menu,Menu, add, Departments, Autofill
-    ;  Menu, DepartmentsMenu, add, Analytical, AutoFill
-    ;  Menu, DepartmentsMenu, add, Physical, AutoFill
-    ;  Menu, DepartmentsMenu, add, Micro, AutoFill
-    ;  Menu, DepartmentsMenu, add, Retain, AutoFill
-    ;  Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
-    ;  Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
-    ; Menu,Menu, add, departments, :DepartmentsMenu
-   ; }
-   ;	Menu, Menu, Show,
-   ;Excel.Connect()
 
 
    Autofill:
     if A_thismenuitem contains &Analytical
-    SpecTab.Edit_Analytical()
-   else if A_thismenuitem contains &Coated_Retain
-    SpecTab.Edit_CoatedRetain()
-   else if A_thismenuitem contains &Coated_Physical
-    SpecTab.Edit_CoatedPhysical()
-   else if A_thismenuitem contains &Retain
-    SpecTab.Edit_Retain()
-   else if A_thismenuitem contains &Micro
-    SpecTab.Edit_Micro() ; copyMicro spec tests
-   else if A_thismenuitem contains &Physical
-    SpecTab.Edit_Physical()
-   else if A_thismenuitem contains Copy &Specs
-    SpecTab.copy()
-   else if A_thismenuitem contains Paste &Specs
-    SpecTab.Paste()
-   else if A_thismenuitem contains Copy &Template
-    SpecTab.CopySpecTemplate()
-   else if A_thismenuitem contains New &Request
-    {
-  ;  MouseGetPos, MX, MY, MWin,,
-    WorkTab.NewRequest()
-    ; winwaitactive, NuGenesis LMS - \\Remote
-    ; Click, MX, Y+25,
-    }
-   else if (A_ThisMenuItem = "&USP Heavy Metal")
-    SpecTab.HM_USP()
-   else if (A_ThisMenuItem = "&Canada Heavy Metal")
-    SpecTab.HM_Canada()
-   else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
-    SpecTab.HM_Prop65()
-   else if (A_ThisMenuItem = "&Report Only Heavy Metal")
-    SpecTab.HM_ReportOnly()
+      SpecTab.Edit_Analytical()
+    else if A_thismenuitem contains &Coated_Retain
+      SpecTab.Edit_CoatedRetain()
+    else if A_thismenuitem contains &Coated_Physical
+      SpecTab.Edit_CoatedPhysical()
+    else if A_thismenuitem contains &Retain
+      SpecTab.Edit_Retain()
+    else if A_thismenuitem contains &Micro
+      SpecTab.Edit_Micro() ; copyMicro spec tests
+    else if A_thismenuitem contains &Physical
+      SpecTab.Edit_Physical()
+    else if A_thismenuitem contains Copy &Specs
+      SpecTab.copy()
+    else if A_thismenuitem contains Paste &Specs
+      SpecTab.Paste()
+    else if A_thismenuitem contains Copy &Template
+      SpecTab.CopySpecTemplate()
+    else if A_thismenuitem contains New &Request
+      WorkTab.NewRequest()
+    else if (A_ThisMenuItem = "&USP Heavy Metal")
+      SpecTab.HM_USP()
+    else if (A_ThisMenuItem = "&Canada Heavy Metal")
+      SpecTab.HM_Canada()
+    else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
+      SpecTab.HM_Prop65()
+    else if (A_ThisMenuItem = "&Report Only Heavy Metal")
+      SpecTab.HM_ReportOnly()
+    else if (A_ThisMenuItem = "&Delete Retain")
+      WorkTab.DeleteRetain()
     Menu,Menu, deleteAll
    return
 
-   Remote_Desktop:
+Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
     sendinput,{Click 182, 97}10.1.2.153{enter}
     winwaitactive, Windows Security,,2
     if !errorlevel
     sendinput, Kilgore7744{enter}
     ; return
-   else if (A_thisMenuItem = "TEST_LMS")
-    sendinput,{Click 182, 97}10.1.2.152{enter}
-   else if (A_thisMenuItem = "TEST_NuGen")
-    sendinput,{Click 182, 97}10.1.2.150{enter}
-   else if (A_thisMenuItem = "TEST_SDMS")
-    sendinput,{Click 182, 97}10.1.2.149{enter}
-   else if (A_thisMenuItem = "PRD_Citrix_One")
-    send,{Click 182, 97}10.1.2.134{enter}
-   else if (A_thisMenuItem = "PRD_Citrix_Two")
-    sendinput,{Click 182, 97}10.1.2.226{enter}
-   else if (A_thisMenuItem = "PRD_Citrix_Three")
-    sendinput,{Click 182, 97}10.1.2.227{enter}
-   else if (A_thisMenuItem = "LMS_PRD")
-    sendinput,{Click 182, 97}10.1.2.138{enter}
-   else if (A_thisMenuItem = "NuGenesis")
-    sendinput,{Click 182, 97}10.1.2.164{enter}
-   else if (A_thisMenuItem = "SDMS")
-    sendinput,{Click 182, 97}10.1.2.142{enter}
-   else if (A_thisMenuItem = "PRD_EMPCitrix")
-    sendinput,{Click 182, 97}10.1.2.242{enter}
-   else if (A_thisMenuItem = "Empower")
-    sendinput,{Click 182, 97}10.1.2.228{enter}
-   else
-    Menu,Menu, deleteAll
+    if (A_thisMenuItem = "TEST_LMS")
+      sendinput,{Click 182, 97}10.1.2.152{enter}
+    if (A_thisMenuItem = "TEST_NuGen")
+      sendinput,{Click 182, 97}10.1.2.150{enter}
+    if (A_thisMenuItem = "TEST_SDMS")
+      sendinput,{Click 182, 97}10.1.2.149{enter}
+    if (A_thisMenuItem = "PRD_Citrix_One")
+      sendinput,{Click 182, 97}10.1.2.134{enter}
+    if (A_thisMenuItem = "PRD_Citrix_Two")
+      sendinput,{Click 182, 97}10.1.2.226{enter}
+    if (A_thisMenuItem = "PRD_Citrix_Three")
+      sendinput,{Click 182, 97}10.1.2.227{enter}
+    if (A_thisMenuItem = "LMS_PRD")
+      sendinput,{Click 182, 97}10.1.2.138{enter}
+    if (A_thisMenuItem = "NuGenesis")
+      sendinput,{Click 182, 97}10.1.2.164{enter}
+    if (A_thisMenuItem = "SDMS")
+      sendinput,{Click 182, 97}10.1.2.142{enter}
+    if (A_thisMenuItem = "PRD_EMPCitrix")
+      sendinput,{Click 182, 97}10.1.2.242{enter}
+    if (A_thisMenuItem = "Empower")
+      sendinput,{Click 182, 97}10.1.2.228{enter}
+    else
+      Menu,Menu, deleteAll
     return
     }
 

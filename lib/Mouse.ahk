@@ -227,10 +227,11 @@ else If link contains Mywork_Searchbar
 
 SendPassword(){
  if winactive("Remote Desktop")
-  sendinput, ?+{K}ilgore7744{enter}
+  sendinput, mmignin{tab}{K}ilgore7744{enter}
+  ; sendinput, ?+{K}ilgore7744{enter}
  if WinExist("ahk_exe ONENOTE.EXE Protected Section"){
   winactivate
-  sendinput, +{K}ilgore7744{enter}
+  sendinput, {K}ilgore7744{enter}
  }
  if WinExist("Login - \\Remote"){
   winactivate

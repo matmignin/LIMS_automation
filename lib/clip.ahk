@@ -33,9 +33,10 @@ Clip(input=0){
     exit
   ; TT(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))
   }
+
   
-  CoordMode, Tooltip, Screen
-  CoordMode, Tooltip, Relative
+  ; CoordMode, Tooltip, Screen
+  ; CoordMode, Tooltip, Relative
   sleep 20
   RegExMatch(Clipboard, "[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
   RegExMatch(Clipboard, "\b(?!Ct#)\d{3}-\d{4}\b", cBatch)
@@ -77,10 +78,14 @@ Clip(input=0){
   If cCTRetain
     Department=CTRetain
   GuiControl,Varbar:Text, Department, %Department%
+  if (Input==0) {
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain && Winactive("ahk_exe WFICA32.EXE") 
       TT(cProduct " " cBatch " " cLot " " cCoated " " cSampleID "`n`t " Department,4000,,,3)
     else 
       TT(Clipboard,1000,,,3)
+    }
+  else
+    return 
   }
 
 Clip_C2(){

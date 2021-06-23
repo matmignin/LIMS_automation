@@ -13,6 +13,7 @@ registerNewSamples(){
 ;  {
   click 2
   sleep 200
+  Breaking.Point()
   winwaitactive, Edit sample (Field Configuration,, 3
    if ErrorLevel
     exit
@@ -29,10 +30,12 @@ registerNewSamples(){
    sleep 100
    send, +{tab 2}
   }
+  Breaking.Point()
   sleep 140
   if ShipTo
     WorkTab.DropdownSelect(ShipTo)
   sleep 300
+  Breaking.Point()
   send, {enter}
   sleep 400
   winactivate, Register new samples - \\Remote
@@ -52,7 +55,7 @@ DropdownSelect(A_ShipTo){
  AbsSelection:=Abs(A_ShipTo)-1
  if (a_shipto = "-1")
   Sendinput,{end}
- else if (a_shipto = "1")
+ else if (a_%shipto% = "1")
   Sendinput,{home}
  else if (a_ShipTo > 1)
   sendinput,{home}{right %A_ShipTo%}
@@ -60,7 +63,31 @@ DropdownSelect(A_ShipTo){
   Sendinput,{end}{left %Absselection%}
  }
 
-
+DeleteRetain(){
+	gLOBAL
+  Breaking.Preamble()
+Winactivate, NuGenesis LMS - \\Remote
+	MouseGetPos, mx, mY  
+; InputBox, n, number of retains to delte, , , , , mx, my,,,50
+  n:=Iteration*10
+  loop %n%,
+  {
+    TT(n,800)
+    Breaking.Point()
+    Winactivate, NuGenesis LMS - \\Remote
+		sleep 100
+		; send, {click 61, 258}
+		clk(61, 258)
+		sleep 300
+		; winwait, Delete Tests - \\Remote
+		sleep 100
+    winactivate, Delete Tests - \\Remote
+		send, {enter}
+		sleep 800
+    n--
+      Breaking.Point()
+  }
+}
 
 
 NewRequest(){
@@ -76,21 +103,25 @@ NewRequest(){
  sleep 400
 ;  tooltip, %department%
  click 64, 300 ;click Assign To New rewuest link
+ Breaking.Point()
  winwaitactive, Edit request - \\Remote,,3
    if !Errorlevel
  sleep 200
  WinActivate, Edit request - \\Remote,
  click 238, 622 ;pick test
+ Breaking.Point()
  winwaitactive, Select tests for request,,3
   if !Errorlevel
   sleep 100
  click, right, 264, 590 ; click to show filer
  sleep 100
+ Breaking.Point()
  send,{up}{enter}
  sleep 100
  click, 97, 125 ; click filter
  send, %Department%{enter}{tab 2}
  sleep 100
+ Breaking.Point()
  send, %product%{enter}
  ;click 152, 195
  send,{tab}{CtrlDown}{a}{Ctrlup}
@@ -103,16 +134,19 @@ NewRequest(){
  WinActivate, Select tests for request
  sleep 100
  WinActivate, Select tests for request
+ Breaking.Point()
  click 854, 657 ; click okay
  winwaitclose, Select tests for request,,3
   if !Errorlevel
   WinWaitActive, Edit request
+  Breaking.Point()
  While GetKeyState("Lbutton", "p")
  sleep 100
  IfWinnotActive, Edit request
   exit
  Sleep 100
   winactivate, Edit request
+  Breaking.Point()
   send,{tab}{enter}
   ; tooltip,
  return
@@ -160,6 +194,7 @@ ChangeTestResults(Checkbox_Toggle:=0){
     sleep 200
     blockinput off
    }
+   Breaking.Point()
    if keep_running = n ;another signal to stop
     return
    click
@@ -227,10 +262,12 @@ click
  winwait, Select samples for test,,3
  sleep 600
  click 463, 71
+ Breaking.Point()
  send,{click 244, 69}
  sleep 200
  send,{click 205, 184}
  sleep 200
+ Breaking.Point()
  send,{click 171, 127}^{a}%department%{enter}{tab}^a{click 506, 323}
  ; if (department="Analytical")
   ; send,

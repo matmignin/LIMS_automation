@@ -11,7 +11,26 @@ Test(n){
 		return
 		}
 
-
+class Breaking {
+	Point(){
+		Global
+		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") {	
+		TT("Broke")
+			exit
+		}
+		if keep_running = n ;another signal to stop
+				Exit
+	}
+	Preamble(){
+		Global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			exit
+		}
+		keep_running = y
+	}
+	}
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------TEST 1------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
@@ -19,32 +38,25 @@ Test(n){
 
 Test_1(){  ;array - remove duplicates (case insensitive)
 	global
-	; LMS.Orient()
-	LMS.DetectTab()
-	;  mousemove,% %xTabSelect%, 40
-		; winactivate, NuGenesis LMS - \\Remote
-	 	; send, {click %xTabSelect%,45} 
-		;  sleep 400
-		if Tab in Samples,Requests,Documents,Results,Tests,MyWork
-			click, 550,40
-		else if Tab:="Products"
-			click, 750,40
-		else if Tab:="Specs"
-			click, 950,40
-		else if Tab:="Tab5"
-			click, 1150,40
-		else if Tab:="Tab6"
-			click, 1350,40
-		else if Tab:="Tab5"
-			click, 1550,40
-			; sleep 200
-			else
-		TT(Tab) 
-		; send,   {tab %tabstomove%}{enter}
+; WorkTab.DeleteRetain()
+Breaking.Preamble()
+
+	MouseGetPos, mx, mY  
+  loop 8,
+  {
+Breaking.Point()
+		sleep 100
+		send, {click 61, 258}
+		sleep 300
+		; winwait, Delete Tests - \\Remote
+		sleep 100
+		send, {enter}
+		sleep 800
+Breaking.Point()
+ }
 return
 			; tabsToMove=
-
-
+}
 
 	
 	/*
@@ -78,7 +90,7 @@ return
 
 
 
-}
+
 
 return
 ;------------------------------------------------------------------------------------------------------------------------
@@ -112,39 +124,16 @@ Test_2(){
 Test_3(Code:=""){
 Global
 
-
-msgbox, yo
-
-
-
-
-
-
-
-
-
-;                      creating an array and resorting without duplicates
-;  oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
-
-; oArray2 := [], oTemp := {}
-; for vKey, vValue in oArray
-; {
-; 	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-; 	{
-; 		if !ObjHasKey(oTemp, vValue+0)
-; 			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
-; 	}
-; 	else
-; 	{
-; 		if !ObjHasKey(oTemp, "" vValue)
-; 			oArray2.Push("" vValue), oTemp["" vValue] := ""
-; 	}
-; }
-; vOutput := ""
-; for vKey, vValue in oArray2
-; 	vOutput .= vKey " " vValue "`r`n"
-; MsgBox, % vOutput
-; return
+; Loop, Read, Batch.Txt
+	
+; 	; If A_Index = 1
+; 		; Continue
+; 	Batches := StrSplit(A_LoopReadLine, "`n")
+; ; loop, read, Batch.txt
+; 	; loop, parse, A_LoopReadLine,
+; 		; Batches.insert(A_LoopField)
+		
+; 		Msgbox % Batches[0]
 
 
 
@@ -152,6 +141,13 @@ msgbox, yo
 
 
 
+
+
+
+
+
+
+; 	; }
 }
 
 

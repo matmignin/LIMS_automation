@@ -67,6 +67,7 @@ DropdownSelect(A_DropdownCount){
   ; }
  click, 150, 73
  sleep 300
+ Breaking.Point()
  ;tooltip, %Ingredient_Name%
  AbsSelection:=Abs(A_DropdownCount)
  if (A_DropdownCount > 0)
@@ -77,6 +78,7 @@ DropdownSelect(A_DropdownCount){
   Sendinput, {tab}{end}
  if (a_DropdownCount = "")
   ProductTab.DropDown_Ingredient()
+  Breaking.Point()
   sleep 200
   return
  }
@@ -90,8 +92,10 @@ EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_cou
  ifWinnotexist, Edit Ingredient - \\Remote
  {
   WinActivate,Composition - \\Remote
+  Breaking.Point()
   Mouse_Click("add_Composition")
   sleep 200
+  Breaking.Point()
   ProductTab.DropdownSelect(Dropdown_count)
   ; ProductTab.Select_Ingredient()
  ; tooltip, %Ingredient_Name%
@@ -110,12 +114,34 @@ EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_cou
  send,%Ingredient_Claim%
  Sleep 400
  Current_Row:= Current_Row+1
+ Breaking.Point()
  send,{enter}
  Tooltip,
 return
 }
 
 
+
+AddCOASpace(){
+	Global
+	ControlGetText, Iteration, Static5, VarBar
+	; WinActivate, Composition - \\Remote
+	click
+	Mouse_Save()
+	click 74, 64
+	sleep 200
+	WinActivate, Edit Ingredient - \\Remote
+	if (Iteration > 0)
+		 sendinput, {Tab 7}{pgdn 2}{end}{enter}{click 283, 559}
+	if (Iteration < 0)
+		sendinput, {tab 7}{pgdn 2}{end}{backspace}{click 283, 559}
+		sleep 200
+	WinActivate, Composition - \\Remote
+	send %mouseReturn%
+	MouseMove, 0, 36, 0, r
+	sleep 200
+	return
+}
 
 
 Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
@@ -148,23 +174,27 @@ EditProduct(){
    WinActivate, NuGenesis LMS - \\Remote
    click, 67, 283
    sleep 200
+   Breaking.Point()
    ; Mouse_Click("Add_Formulation")
    winactivate, Edit Formulation - \\Remote,
    send, {tab}%product%
 			sendinput, {Tab 23}
    return
+   Breaking.Point()
   }
   HM_ReportOnly(){ ;testing out
    click 125,120 ;click 1st row
    Mouse_Click("add")
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 11} ;arsenic
+   Breaking.Point()
 
    WinWaitClose, Edit Ingredient - \\Remote,,4
    click 125,140 ;click 2nd row
    Mouse_Click("add")
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 167} ;lead
+   Breaking.Point()
 
    click 390, 659	;click okay
    WinWaitClose, Edit Ingredient - \\Remote,,4
@@ -172,6 +202,7 @@ EditProduct(){
    Mouse_Click("add")
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 23} ;cadmium
+   Breaking.Point()
 
    click 390, 659	;click okay
    WinWaitClose, Edit Ingredient - \\Remote,,4
@@ -179,6 +210,7 @@ EditProduct(){
    Mouse_Click("add")
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 189} ;mercury
+   Breaking.Point()
 
    click 390, 659	;click okay
    return

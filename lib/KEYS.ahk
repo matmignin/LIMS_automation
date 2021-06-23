@@ -11,14 +11,15 @@ F20 & /::send, %SampleID%
 / & Down::send, %Coated%
 / & right::send, %Lot%
 / & up::send, %SampleID%
+; #MaxThreadsPerHotkey 2
  ` & 1::Test_1()
  ` & 2::Test_2()
  ` & 3::Test_3()
+;  ~esc::esc
+; #MaxThreadsPerHotkey 1
  Media_Play_Pause::Test(iteration)
  `::`
  /::/
- 
- 
 
 
 ;[_Mbutton_]
@@ -83,7 +84,7 @@ F19 & F20::menu.Variables()
   KeyWait,%A_ThisHotKey%,D T0.15
   If ErrorLevel
   {
-   clip()
+   clip()d
    sleep 300
    return
  }

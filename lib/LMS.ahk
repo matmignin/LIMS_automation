@@ -6,7 +6,7 @@ class TouchPad {
 		else If winactive("Result Entry - \\Remote")
 			WorkTab.ChangeTestResults()
 		else If winactive("Select methods tests - \\Remote")
-			LMS.Methods()
+			SpecTab.Methods()
 		else If WinActive("Composition - \\Remote")
 			send, {enter}
 		else If WinActive("Test Definition Editor - \\Remote")
@@ -38,7 +38,7 @@ class TouchPad {
 		else if winactive("Edit test (Field Configuration:")
 			send, {esc}
 		else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
-			send, {WorkTab.ChangeTestResults("toggle")}
+			WorkTab.ChangeTestResults("toggle")
 		else if winactive("Register new samples - \\Remote")
 			send, {esc}
 		else if winactive("Select samples for test:")
@@ -87,7 +87,8 @@ class TouchPad {
 		; else If winactive("Result Entry - \\Remote")  ;Enter Test Results window
 		; else If winactive("Select methods tests - \\Remote")
 		; else if winactive("Edit Formulation - \\Remote")
-		; else If WinActive("Composition - \\Remote")
+		else If WinActive("Composition - \\Remote")
+			ProductTab.AddCOASpace()
 		; else If WinActive("Results Definition - \\Remote")
 		; else if winactive("PDF Preview - \\Remote")
 		else
@@ -99,8 +100,15 @@ class TouchPad {
 
 	3tap(){
 		global
-		If winactive("NuGenesis LMS - \\Remote")
-			Menu.LMS()
+		If winactive("NuGenesis LMS - \\Remote") {
+			LMS.Detecttab()
+			if (Tab="Requests")
+				clk(61, 635) ;enter results
+			if (Tab="Products" )
+				clk(86, 443) ;edit composition
+			else
+				Menu.LMS()
+		}
 		else if winactive("Edit Formulation - \\Remote")
 			send, {tab}%product%{Tab 23}
 		else if winactive("Edit Product - \\Remote")
@@ -207,11 +215,11 @@ class TouchPad {
 return
 #Ifwinactive, NuGenesis LMS - \\Remote
   F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-  rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
+  ; rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
   ; F20 & space::send, %Batch%{enter}
   F19 & space::Send, %Product%{enter}
   F20 & space::Send, %Batch%{enter}
-  F19 & ,::send, %Batch%{enter}
+  ; F19 & ,::send, %Batch%{enter}
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
 	; F19:: ; msgbox % lms.DetectTab() " " tab
@@ -220,10 +228,28 @@ return
 		; ~wheelleft::msgbox, %A_ThisHotkey%
 	return
   numpaddiv::CloseWindow()
-; #Ifwinactive, Select methods tests - \\Remote
-; #Ifwinactive, Edit Product - \\Remote
-; #ifwinactive, Edit Formulation - \\Remote
-; #IfWinActive, Composition - \\Remote
+
+~Wheelleft::
+var++
+If var>=39
+   {
+   click 326, 120
+   }
+SetTimer, clearVar, -40
+return
+~wheelright::
+var++
+If var>=35
+   {
+   click 21, 115
+   }
+SetTimer, clearVar, -40
+return
+ 
+clearVar:
+var:=0
+return
+
 #IfWinActive, Results Definition - \\Remote
   wheelup::Mouse_click("Edit")
   WheelDown::
@@ -237,9 +263,9 @@ return
 ; #ifwinactive, Register new samples - \\Remote
 	; wheelup::LMS.SearchBar()
 #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
-	#MaxThreadsPerHotkey 2
+	; #MaxThreadsPerHotkey 2
 		F9::WorkTab.ChangeTestResults("loop")
-	#MaxThreadsPerHotkey 1 
+	; #MaxThreadsPerHotkey 1 
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
   F19 & F20::menu.Variables()
   F19 & space::send, %Product%
@@ -260,8 +286,8 @@ return
   F8::TouchPad.3Down()
   F7::TouchPad.3Right()
   F6::TouchPad.3Left()
-  ~Wheelleft::TouchPad.2left()
-  ~Wheelright::TouchPad.2right()
+  ; ~Wheelleft::TouchPad.2left()
+  ; ~Wheelright::TouchPad.2right()
   Mbutton::TouchPad.3Tap()
 	; numlock::LMS.Movetab("Home")
 	numpadMult::LMS.Movetab("Home")
@@ -334,6 +360,7 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
+
 		; LMS.Orient()
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
@@ -671,64 +698,51 @@ CoA(){
 }
 
 SaveCode(){
-		Send, {CtrlDown}{a}{c}{Ctrlup}
-		sleep 100
-		send, {enter}
-		FileAppend, %Clipboard%`n, Codes.txt
-		return
-}
-
-
-
-
-AddCOASpace(){
-	Global
-	WinActivate, Composition - \\Remote
-	click
-	Mouse_Save()
-	click 74, 64
-	sleep 200
-	send, {click 354, 336}{end}{enter}{click 283, 559}
-	WinActivate, Composition - \\Remote
-	send %mouseReturn%
-	MouseMove, 0, 36, 0, r
-	sleep 200
-	return
-}
-RemoveCOASpace(){
-	Global
-	WinActivate, Composition - \\Remote
-	click
-	Mouse_Save()
-	click 74, 64
-	sleep 200
-	send, {click 354, 336}{F8 2}{backspace}{click 283, 559}
-	WinActivate, Composition - \\Remote
-	send %mouseReturn%
-	MouseMove, 0, 36, 0, r
-	sleep 200
-	return
-}
-
-Methods() {
 	global
-	; Mouse_Click("searchBar_SelectMethodsTest")
-	WinActivate, Select methods tests - \\Remote
-	click, 229, 72,2
-	send, ^a
-	Loop, Read, Methods.ini
-	{
-	If A_Index = 1
-		Continue
-	Method := StrSplit(A_LoopReadLine, "=")
-	; MethodGroup := StrSplit(A_LoopReadLine, "|")
-	Selection:= % Method[1]
-	; Group:= % MethodGroup[2]
-	Menu, Methodmenu, add, %Selection%, Methods
-	}
-	Menu, MethodMenu, Show,
-	return
+	Batches:=[]
+		Send, {CtrlDown}{a}{Ctrlup}
+		clip(1)
+		sleep 200
+		send, {enter}
+		FileAppend, %Batch% `n, Batch.txt
+		FileAppend, %product% `n, Product.txt
+		iniwrite, %Batch%, Codes.ini, Batch,
+		iniwrite, %Product%, Codes.ini, Product, 
+		return
+		                    ;  creating an array and resorting without duplicates
+;  oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
+
+		; Batches:= StrSplit(A_LoopReadLine, "`n") 
+
+
+; oArray2 := [], oTemp := {}
+; for vKey, vValue in oArray
+; {
+; 	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+; 	{
+; 		if !ObjHasKey(oTemp, vValue+0)
+; 			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
+; 	}
+; 	else
+; 	{
+; 		if !ObjHasKey(oTemp, "" vValue)
+; 			oArray2.Push("" vValue), oTemp["" vValue] := ""
+; 	}
+; }
+; vOutput := ""
+; for vKey, vValue in oArray2
+; 	vOutput .= vKey " " vValue "`r`n"
+; MsgBox, % vOutput
+; return
+
+		
+		
 }
+
+
+
+
+
 
 
 CheckDepartment(){
@@ -757,21 +771,7 @@ else {
 }
 }
 
-DeleteRetain(){
-	gLOBAL
-	MouseGetPos, mx, mY
-	InputBox, n, number of retains to delte, , , , , mx, my,
-	loop %n%
-	{
-	sleep 100
-	send, {click 61, 258}
-	winwait, Delete Tests - \\Remote
-	sleep 100
-	send, {enter}
-	sleep 800
-	}
-	return
-}
+
 
 
 Orient(){
@@ -865,15 +865,7 @@ Orient(){
 
 
 
-Methods:
-	sleep 200
-	InputVar:=A_ThisMenuItem
-	IniRead,vOutput, Methods.ini, Methods, %InputVar%
-	Sendinput, %vOutput%{enter}
-	sleep 300
-	click 506, 341
-	LMS.Methods()
-	return
+
 
 
 	Scroll_Fix:

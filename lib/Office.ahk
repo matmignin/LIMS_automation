@@ -56,14 +56,26 @@
 
 KEY_OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
-	Rbutton & Wheelup::Wheel("{ctrl down}x{ctrl up}")
-	Rbutton & wheeldown::Wheel("{ctrl down}v{ctrl up}")
+
 	F19 & enter::send, {ctrldown}{enter}{ctrlup}
 	F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, ,1635, -1080, 1564, 1080 
+	F19 & ,::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, , 1205, -1080, 1620, 1080 
+	F20::Clip()
 	Mbutton::
 	Click 3
 	clip()
+	F7::
+	winactivate, NuGenesis LMS - \\Remote
+	sleep 200
+	lms.searchbar(Batch)
+	return
+	F6::
+	winactivate, NuGenesis LMS - \\Remote
+	sleep 200
+	lms.searchbar(Product)
+	return
+	
 	return
 	
 	

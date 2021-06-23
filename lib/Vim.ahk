@@ -70,7 +70,7 @@
 	; F13 & Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
 	; +w::Sendinput,{ctrldown}{right 2}{ctrlup}
 	; u::Send ^z
-	~Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
+	Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
 	up::+up
 	down::+down
 	right::+right
@@ -166,8 +166,9 @@ Media_Prev::F16
 	'::right
 	; F20::send,{F21}
 	RShift::sendinput,{Tab}
+	Backspace::sendinput,{backspaceTemplateTemplate}
 	ENTER::sendinput,{enter}
-	space::SendInput, 0
+	; space::SendInput, 0
 		;sendlevel 0
 	#if
 
