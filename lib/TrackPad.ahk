@@ -18,7 +18,10 @@
   wheelup::send, {WheelUp}
   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
   #If
- TrouchPad:
+ 
+ 
+ 
+ 
 #If getkeystate("lbutton","p")
   space::click
   F19::send, {altdown}{ctrldown}{4}{ctrlup}{altup}
@@ -32,14 +35,18 @@
   d::LMS.Orient()
   ;  f::OpenApp.firefox()
   w::OpenApp.Workbook()
+  left::#left
+  right::#right
+  up::#up
+  down::#down
 #If
 #IfWinActive,
 ;  [TrackPad]
 numpadsub::#left
 numpadadd::#right
 numpadMult::#up
-  Numlock::4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
 numpaddiv::#down
+  Numlock::4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
 return
 ; #If (A_PriorHotKey = "NumpadDiv" AND A_TimeSincePriorHotkey < 450) ;4 finger swipe down
 ; ;   F6::send, #{left} ;4left
@@ -142,9 +149,9 @@ return
       If InStr(ErrorLevel, "EndKey:")
       {
         If InStr(ErrorLevel, "NumpadAdd")
-          send, {altdown}{ctrldown}{right}{ctrlup}{altup}
+          send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
         If InStr(ErrorLevel, "NumpadSub")
-          send, {shiftdown}{altdown}{F3}{altup}{shiftup}
+          send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
         If InStr(ErrorLevel, "NumpadMult")
           send, {altdown}{ctrldown}{up}{ctrlup}{altup}
         If InStr(ErrorLevel, "Numpaddiv") {
@@ -165,7 +172,7 @@ return
       If ErrorLevel = TimeOut
       {
           ; TT("Previous ",800)
-          send, {altdown}{down}{altup}
+          send, {ctrldown}{f}{ctrlup}
           exit
       }
       return
@@ -174,8 +181,8 @@ return
   F7::send, {altDown}{right}{altup}
   F8::ToggleDefinition()
   F9::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
-  numpadadd::send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
-  numpadsub::send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
+  numpadadd::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+  numpadsub::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
   ; numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{ShiftUp}{lwinup}{altup}
   
   

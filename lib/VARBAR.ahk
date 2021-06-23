@@ -25,8 +25,14 @@ Class VarBar{
 		; If (X<>0)
 		; {
 		; EnvGet, iteration, Iteration
+		if !WinExist("LMS Workbook.xlsb"){
+			Iniread, Batch, data.ini, SavedVariables, Batch
+			Iniread, Product, data.ini, SavedVariables, Product
+			Iniread, SampleID, data.ini, SavedVariables, SampleID
+			Iniread, Lot, data.ini, SavedVariables, Lot
+			Iniread, Coated, data.ini, SavedVariables, Coated
+		}
 			Iniread, Iteration, data.ini, SavedVariables, Iteration
-
 			Iniread, VarBar_X, data.ini, Locations, VarBar_X
 			Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
 		; }
@@ -49,23 +55,23 @@ Class VarBar{
 		WinSet, Transparent, 200
 		Gui, VarBar:color, 21a366
 		; Varbar_Y := LMS_Y
-		GUI, VarBar:Font, s14 cBlack Bold, Consolas
-		Gui, VarBar:Add, edit, vProduct gproductVarBar left h24 x0 y0 w62, %product%
 		GUI, VarBar:Font, s10 cBlack Bold, Consolas
 		Gui, VarBar:add, Text, vBatch2 x68 y0 w100, %Batch2%
-		Gui, VarBar:add, Edit, vBatch gbatchVarbar H19 x62 y-2 w70, %Batch%
-		GUI, VarBar:Font, s10 cBlack , Consolas
-		; Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
-		Gui, VarBar:add, Edit, vlot gLotVarbar x132 H19 y-2 w60, %Lot%
-		GUI, VarBar:Font, s7 cBlack , Consolas
-		Gui, VarBar:add, Edit, vSampleID gSampleIDVarbar x193 H19 y-2 w90, %SampleID%
-		GUI, VarBar:Font, s7 cBlack , arial
 		Gui, VarBar:add, Text, vCoated -wrap Right x132 y15 w80, %Coated%
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:add, Text, vname x65 -wrap y15 w160, %Name%
 		; Gui, VarBar:add, Text, vcustomer x200 -wrap y16 w160, %Customer%
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:add, Text, vColor x190 -wrap y18 w90, %Color%
+		GUI, VarBar:Font, s14 cBlack Bold, Consolas
+		Gui, VarBar:Add, edit, vProduct gproductVarBar left h24 x0 y0 w62, %product%
+		GUI, VarBar:Font, s7 cBlack , Consolas
+		Gui, VarBar:add, Edit, vBatch gbatchVarbar H19 x62 y-2 w70, %Batch%
+		GUI, VarBar:Font, s10 cBlack , Consolas
+		; Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
+		Gui, VarBar:add, Edit, vlot gLotVarbar x132 H19 y-2 w60, %Lot%
+		GUI, VarBar:Font, s7 cBlack , arial
+		Gui, VarBar:add, Edit, vSampleID gSampleIDVarbar x192 H19 y-2 w90, %SampleID%
 		GUI, VarBar:Font, s7 cBlack , arial
 			; If Coated
 				; Gui, VarBar:add, Edit, vCoated gCoatedVarbar x132 H19 y15 w60, %Coated%
@@ -136,6 +142,7 @@ Class VarBar{
 
 	Follow(){
 		global
+		winactivate, 
 		SetTimer, CheckActive, 600
 		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
 		VarWin_X := LMS_X+(LMS_W/2)-400
@@ -191,28 +198,28 @@ Class VarBar{
 	return
 }
 
-	AddIteration(){
+	AddIteration(speed:=550){
 	global Iteration
 	; GuiControl, Varbar:Text, iteration, %iteration%
 	sleep 20
 	; CoordMode, tooltip, screen
 	Iteration+=1
 	ControlsetText, Static5,%Iteration%,VarBar
-	sleep 550
+	sleep %Speed%
 	; sleep 200
 	; envset, iteration, %iteration%
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 	; TT(Iteration, 3000,(Varbar_x+80),Varbar_y)
 	return
 }
-	SubIteration(){
+	SubIteration(speed:=550){
 	global Iteration
 	sleep 10
 	; CoordMode, tooltip, screen
 	; 3GuiControl, Varbar:Text, iteration, %iteration%
 	Iteration-=1
 	ControlsetText, Static5,%Iteration%,VarBar
-	sleep 550
+	sleep %speed%
 	; sleep 200
 	; envset, iteration, %iteration%
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration

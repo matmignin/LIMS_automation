@@ -164,9 +164,9 @@ Media_Prev::F16
 	-::-
 	n::sendinput,{-}
 	'::right
+	Backspace::backspace
 	; F20::send,{F21}
 	RShift::sendinput,{Tab}
-	Backspace::sendinput,{backspaceTemplateTemplate}
 	ENTER::sendinput,{enter}
 	; space::SendInput, 0
 		;sendlevel 0

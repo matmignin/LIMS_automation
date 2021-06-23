@@ -17,7 +17,22 @@ F19 & F20::vscode_menu()
 ; Test_3()
 ; return
 ; Tooltip()
-
+~Wheelleft::send, {altdown}{left}{altup}
+  var++
+  If var>=2
+  {
+    send, {altdown}{left}{altup}
+  }
+  SetTimer, clearVar, -100
+  return
+~wheelright::send, {altdown}{right}{altup}
+  var++
+  If var>=2
+    {
+      send, {altdown}{right}{altup}
+    }
+  SetTimer, clearVar, -100
+return
 
 ; Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
 ; f20 & right::winmove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
@@ -44,15 +59,17 @@ rshift & lshift::send, {pgup}
 lshift & rshift::send, {pgdn}
 Lshift::DoublePress("{altdown}{left}{altup}","Backf")
 Rshift::DoublePress("{altdown}{right}{altup}","Forward")
-LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
+; ~LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
 
 DoublePress(action, ToolTip:=""){
+
   If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
     send, %action%
     tt(ToolTip)
   }
   Else
-    Return
+    sendinput, {shiftup}{altup}{ctrlup}
+  Return
 }
 
 lshift & Appskey::Return
@@ -65,8 +82,8 @@ lshift & space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 rbutton & f7::wheel_2("!{right}",10)
 rbutton & f6::wheel_2("!{left}",10)
 rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}
-rbutton & wheeldown::wheel_2("{ctrl down}v{ctrl up}",2000)
-rbutton & wheelup::wheel_2("{ctrl down}x{ctrl up}",2000)
+rbutton & wheeldown::wheel_2("{ctrldown}v{ctrlup}",2000)
+rbutton & wheelup::wheel_2("{ctrldown}x{ctrlup}",2000)
 rbutton & f19::vs_code_windowinfo()
 
 $rbutton up::mouse_rbuttonup()
@@ -96,8 +113,8 @@ f19 & t::send, %wintitle%
 f19 & w::send, %wininfo%
 f19 & f6::send,{ctrldown}{[}{ctrlup}
 f19 & f7::send,{ctrldown}{]}{ctrlup}
-f19 & wheeldown::send,{ctrl down}{down}{ctrl up}
-f19 & wheelup::send,{ctrl down}{up}{ctrl up}
+f19 & wheeldown::send,{ctrldown}{down}{ctrlup}
+f19 & wheelup::send,{ctrldown}{up}{ctrlup}
 f19 & lbutton::send,{ctrldown}{click}{ctrlup}
 ~Lctrl & Space::vscode_menu()
 
@@ -258,14 +275,24 @@ Menu, Menu, Add, Search Hotkeys, vscode
   Menu, hotkeyMenu, Add, Rbutton, vscode
   Menu, hotkeyMenu, Add, Wheel, vscode
 Menu, Menu, add, Search Hotkeys, :HotkeyMenu
-  Menu,Menu, Add, &Mouse `t %MousePosition%, vscode
-  Menu,Menu, Add, &Window Info, vscode
-  Menu,Menu, Add, &Title `t %WinTitle%, vscode
-  Menu,Menu, Add, &Process `t %WinProcess%, vscode
-  Menu,Menu, Add, &Control `t %WinControl%, vscode
-		 Menu,Menu,add,Test_&1,Tests
-   Menu,Menu,add,Test_&2,Tests
-   Menu,Menu,add,Test_&3,Tests
+    Menu,Menu, Add, &NeGenesis, vscode
+    Menu,Menu, Add, &LMS, vscode
+  
+  
+  if MousePosition
+    Menu,Menu, Add, &Mouse `t %MousePosition%, vscode
+  if WinInfo
+    Menu,Menu, Add, &Window Info, vscode
+  if WinTitle
+    Menu,Menu, Add, &Title `t %WinTitle%, vscode
+  if WinProcess
+    Menu,Menu, Add, &Process `t %WinProcess%, vscode
+  if WinControl
+    Menu,Menu, Add, &Control `t %WinControl%, vscode
+
+	;   Menu,Menu,add,Test_&1,Tests
+  ;  Menu,Menu,add,Test_&2,Tests
+  ;  Menu,Menu,add,Test_&3,Tests
 Menu.show()
 
  }
@@ -305,6 +332,10 @@ Menu.show()
     sendinput, ahk_exe %WinProcess%
    else if A_thismenuItem Contains &Control `t %WinControl%
     sendinput, %WinControl%
+   else if A_thismenuItem Contains &NuGenesis
+    sendinput, NuGenesis LMS - \\Remote
+   else if A_thismenuItem Contains &LMS
+    sendinput, ahk_exe WFICA32.EXE
    else
     Menu,Menu, deleteAll
    return

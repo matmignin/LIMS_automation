@@ -4,6 +4,10 @@ registerNewSamples(){
  global
  mx:=
  my:=
+ If Coated = "ERROR"
+  Coated:=
+If Lot = "ERROR"
+  lot:=
  ; if Iteration=""
   ; iteration=1
  ControlGetText, Iteration, Static5, VarBar
@@ -26,6 +30,7 @@ registerNewSamples(){
    sendinput,{CtrlDown}{a}{Ctrlup}%Lot%
    send,{tab 3}
    sleep 100
+  if Coated
    sendinput,{CtrlDown}{a}{Ctrlup}%Coated%
    sleep 100
    send, +{tab 2}
@@ -34,6 +39,10 @@ registerNewSamples(){
   sleep 140
   if ShipTo
     WorkTab.DropdownSelect(ShipTo)
+  else {
+    WorkTab.DropdownSelect(200)
+    return
+  }
   sleep 300
   Breaking.Point()
   send, {enter}

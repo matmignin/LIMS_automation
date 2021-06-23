@@ -101,7 +101,8 @@ run_Follow:
   IniWrite, 1, data.ini, Locations, follow
  else
   IniWrite, 0, data.ini, Locations, follow
- send,{esc}
+Varbar.Follow()
+;  send,{esc}
 return
 Run_Listlines:
  ListLines
@@ -146,12 +147,12 @@ VQuest_Start:
  #InstallKeybdHook
  #InstallMouseHook
 ;  clipboard:=
- EnvGet, Product, Product
- EnvGet, Batch, Batch
- EnvGet, lot, lot
- EnvGet, Coated, Coated
- EnvGet, Sample, Sample
- EnvGet, Iteration, Iteration
+;  EnvGet, Product, Product
+;  EnvGet, Batch, Batch
+;  EnvGet, lot, lot
+;  EnvGet, Coated, Coated
+;  EnvGet, Sample, Sample
+;  EnvGet, Iteration, Iteration
  envget, PrevProduct, PrevProduct
 
 AutoTrim, On
@@ -201,9 +202,15 @@ tPhk:=A_TimesincePriorHotkey
  try
  Menu, Tray, Icon, Robot.ico
 Iniread, Iteration, data.ini, SavedVariables, Iteration
+Iniread, Batch, data.ini, SavedVariables, Batch
+Iniread, Product, data.ini, SavedVariables, Product
+Iniread, SampleID, data.ini, SavedVariables, SampleID
+Iniread, Lot, data.ini, SavedVariables, Lot
+Iniread, Coated, data.ini, SavedVariables, Coated
 Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
 Iniread, Inverted, data.ini, Locations, Inverted
+Iniread, Follow, data.ini, Locations, Follow
  CopyPasteToggle=0
  Batches:=[]
  Products:=[]
@@ -215,10 +222,9 @@ Iniread, Inverted, data.ini, Locations, Inverted
   Menu, Tray, Check, Inverted
  if (Inverted = 0)
   Menu, Tray, unCheck, Inverted
- if (Follow = 1)
- {
-  Menu, Tray, Check, VarbarFollow
+ if (Follow = 1) {
   Varbar.Follow()
+  Menu, Tray, Check, VarbarFollow
  }
  if (Follow = 0)
   Menu, Tray, unCheck, VarbarFollow

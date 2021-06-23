@@ -53,16 +53,26 @@ Clip(input=0){
   Sleep 20
 
     ; TT(cProduct "`n" cBatch "`n" clot,1500,,,3)
-  If cProduct
+  If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
-  If cBatch
+				IniWrite, %cProduct%, data.ini, SavedVariables, Product
+  }
+  If cBatch {
     GuiControl,Varbar:Text, Batch, %cBatch%
-  If cCoated
+				IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+    }
+  If cCoated {
     GuiControl,Varbar:Text, Coated, %cCoated%
-  If cLot
+				IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+    }
+  If cLot {
     GuiControl,Varbar:Text, lot, %clot%
-  If cSampleID
+				IniWrite, %cLot%, data.ini, SavedVariables, Lot
+    }
+  If cSampleID {
     GuiControl,Varbar:text, SampleID, %cSampleID%
+				IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
+    }
   If cAnalytical
     Department=Analytical
   If cMicro
@@ -90,6 +100,7 @@ Clip(input=0){
 
 Clip_C2(){
   Global
+    sendinput, {ctrlup}{altup}
     KeyWait, F20, T0.45
     If ErrorLevel
     {
@@ -121,6 +132,7 @@ Clip_C2(){
  }
 clip_c(){
   Global
+      sendinput, {ctrlup}{altup}
     KeyWait, F20, T0.20
     If ErrorLevel
     {

@@ -269,7 +269,7 @@ return
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
   F19 & F20::menu.Variables()
   F19 & space::send, %Product%
-  F19 & ,::send, %Batch%
+  ; F19 & ,::send, %Batch%
   F19 & up::send, %sampleID%
   F19 & left::send, %lot%
   F19 & right::send, %coated%
@@ -293,6 +293,8 @@ return
 	numpadMult::LMS.Movetab("Home")
 	Numpadadd::lms.MoveTab("Right")
 	NumpadSub::lms.MoveTab("Left")
+	Media_Next::varbar.SubIteration(20)
+	Media_Prev::Varbar.AddIteration(20)
 	; Move
 	; WinGetPos,wX,wY,wW,wH, NuGenesis LMS - \\Remote
 	; xTabSelect:=WW-10
