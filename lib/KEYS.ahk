@@ -33,9 +33,9 @@ F20 & /::send, %SampleID%
  Mbutton & F6::Wheel_left()
 
 ;[_Rbutton_]
- Rbutton & Wheelup::Wheel_cut()
+ Rbutton & Wheelup::Wheel_cut() 
  Rbutton & Wheeldown::Wheel_paste()
- Rbutton & F19::VS_Code_WindowInfo()
+ Rbutton & F19::VS_Code_WindowInfo() 
  Rbutton & F6::Backspace
  Rbutton & Lbutton::Enter
  Rbutton::Mouse_RbuttonUP()
@@ -45,7 +45,7 @@ F20 & /::send, %SampleID%
   #If (A_PriorHotKey = "F19 & Space" && A_TimeSincePriorHotkey < 600) 
   F19 & space::send, {enter}
   F20 & Space::send, {enter}
-#if
+#if 
 ;[_F19 & F20_]
  F19 & \::CreditCard()
  F19 & Space::send, %product%

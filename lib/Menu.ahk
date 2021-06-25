@@ -1,8 +1,10 @@
+
+return
 class Menu{
 
   show(){
   global
-  Menu,menu,show
+  Try Menu,menu,show
   }
   
   Delete(){
@@ -73,6 +75,8 @@ class Menu{
   else
     return
   }
+  
+  
   Variable(){
   global
   ; Menu, Menu, add, &Variables, Variable
@@ -137,6 +141,7 @@ class Menu{
     Menu, Menu, Add, &VQ Login, Passwords
     Menu, Menu, Add,&Kilgore, Passwords
   Menu.show()
+  return
   }
 }
 return
@@ -256,11 +261,12 @@ return
 
 Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
-    sendinput,{Click 182, 97}10.1.2.153{enter}
-    winwaitactive, Windows Security,,2
-    if !errorlevel
-    sendinput, Kilgore7744{enter}
-    ; return
+      sendinput,{Click 182, 97}10.1.2.153{enter}
+      winwaitactive, Windows Security,,2
+      if !errorlevel
+      sendinput, Kilgore7744{enter}
+      return
+      }
     if (A_thisMenuItem = "TEST_LMS")
       sendinput,{Click 182, 97}10.1.2.152{enter}
     if (A_thisMenuItem = "TEST_NuGen")
@@ -284,9 +290,10 @@ Remote_Desktop:
     if (A_thisMenuItem = "Empower")
       sendinput,{Click 182, 97}10.1.2.228{enter}
     else
-      Menu,Menu, deleteAll
+      Try Menu,Menu, deleteAll
     return
-    }
+    
+    
 
    LMS_Env:
     sleep 200

@@ -14,13 +14,13 @@
   numpaddiv::send, {numpadDiv}  ;4down clear filter
   lbutton::send, {Lbutton}
   Numlock::Send, {Numlock}
-  mbutton::send, {mbutton}
+  ; mbutton::send,< {mbutton}
   wheelup::send, {WheelUp}
+  ; mbutton::send, {mbutton}
   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
   #If
  
- 
- 
+
  
 #If getkeystate("lbutton","p")
   space::click
@@ -47,7 +47,8 @@ numpadadd::#right
 numpadMult::#up
 numpaddiv::#down
   Numlock::4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
-return
+  
+
 ; #If (A_PriorHotKey = "NumpadDiv" AND A_TimeSincePriorHotkey < 450) ;4 finger swipe down
 ; ;   F6::send, #{left} ;4left
 ; ;   F7::send, #{right}-
@@ -100,7 +101,7 @@ return
   
 4_Tap(){
      TT(A_ThisHotkey,450,,,2)
-     Input, Akey, T0.45 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}{numlock}
+     Input, Akey, T0.95 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}{numlock}
       If InStr(ErrorLevel, "EndKey:")
       {
         If InStr(ErrorLevel, "NumpadAdd")

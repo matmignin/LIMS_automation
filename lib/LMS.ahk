@@ -1,4 +1,21 @@
-class TouchPad {
+		; else if winactive("Edit Formulation - \\Remote")
+			; send, {tab}%product%{Tab 23}
+		; else if winactive("Edit Product - \\Remote")
+			; ProductTab.EditProduct()
+		; else if winactive("Register new samples - \\Remote")
+			; Autofill()
+		; else If WinActive("Select tests for request: R")
+			; WorkTab.SelectTestSample()
+		; else If WinActive("Composition - \\Remote")
+		; else If WinActive("Results Definition - \\Remote")
+		; else If winactive("Select methods tests - \\Remote")
+		; else if winactive("PDF Preview - \\Remote")
+		; else if winactive("Edit test (Field Configuration:")
+		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
+		; else if winactive("Select samples for test:")
+ 
+ 
+ class TouchPad {
 	3Right(){
 		global
 		If winactive("NuGenesis LMS - \\Remote")
@@ -55,16 +72,6 @@ class TouchPad {
 			LMS.Filter(Clear)
 		else if winactive("Select samples for test:")
 			Clk(853, 657) ; click okay.
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("Edit Formulation - \\Remote")
-		; else If WinActive("Composition - \\Remote")
-		; else If WinActive("Results Definition - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
-		; else if winactive("Edit test (Field Configuration:")
-		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
-		; else if winactive("Register new samples - \\Remote")
-			; Send,{click 194, 188}^a
-		; else If WinActive("Select tests for request: R")
 		else
 			return
 		return
@@ -84,13 +91,8 @@ class TouchPad {
 			clk(638, 70)
 		else if winactive("Select samples for test:")
 			send % Clk(250, 70) "{up}" ; click okay.
-		; else If winactive("Result Entry - \\Remote")  ;Enter Test Results window
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("Edit Formulation - \\Remote")
 		else If WinActive("Composition - \\Remote")
 			ProductTab.AddCOASpace()
-		; else If WinActive("Results Definition - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
 		else
 			return
 		return
@@ -113,17 +115,8 @@ class TouchPad {
 			send, {tab}%product%{Tab 23}
 		else if winactive("Edit Product - \\Remote")
 			ProductTab.EditProduct()
-		; else if winactive("Register new samples - \\Remote")
-			; Autofill()
 		else If WinActive("Select tests for request: R")
 			WorkTab.SelectTestSample()
-		; else If WinActive("Composition - \\Remote")
-		; else If WinActive("Results Definition - \\Remote")
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
-		; else if winactive("Edit test (Field Configuration:")
-		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
-		; else if winactive("Select samples for test:")
 		Else
 			Autofill()
 		return
@@ -135,46 +128,17 @@ class TouchPad {
 		global
 		If winactive("NuGenesis LMS - \\Remote")
 			lms.MoveTab("Home")
-		; else if winactive("Edit Formulation - \\Remote")
-			; send, {tab}%product%{Tab 23}
-		; else if winactive("Edit Product - \\Remote")
-			; ProductTab.EditProduct()
-		; else if winactive("Register new samples - \\Remote")
-			; Autofill()
-		; else If WinActive("Select tests for request: R")
-			; WorkTab.SelectTestSample()
-		; else If WinActive("Composition - \\Remote")
-		; else If WinActive("Results Definition - \\Remote")
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
-		; else if winactive("Edit test (Field Configuration:")
-		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
-		; else if winactive("Select samples for test:")
 		Else
 			Autofill()
 		return
 		}
 
 
+
 	2right(){
 		global
 		If winactive("NuGenesis LMS - \\Remote")
 			lms.SearchBar(Batch,"{enter}")
-		; else if winactive("Edit Formulation - \\Remote")
-			; send, {tab}%product%{Tab 23}
-		; else if winactive("Edit Product - \\Remote")
-			; ProductTab.EditProduct()
-		; else if winactive("Register new samples - \\Remote")
-			; Autofill()
-		; else If WinActive("Select tests for request: R")
-			; WorkTab.SelectTestSample()
-		; else If WinActive("Composition - \\Remote")
-		; else If WinActive("Results Definition - \\Remote")
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
-		; else if winactive("Edit test (Field Configuration:")
-		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
-		; else if winactive("Select samples for test:")
 		Else
 			send, %batch%
 		return
@@ -185,21 +149,6 @@ class TouchPad {
 		global
 		If winactive("NuGenesis LMS - \\Remote")
 			lms.SearchBar(Product,"{enter}")
-		; else if winactive("Edit Formulation - \\Remote")
-			; send, {tab}%product%{Tab 23}
-		; else if winactive("Edit Product - \\Remote")
-			; ProductTab.EditProduct()
-		; else if winactive("Register new samples - \\Remote")
-			; Autofill()
-		; else If WinActive("Select tests for request: R")
-			; WorkTab.SelectTestSample()
-		; else If WinActive("Composition - \\Remote")
-		; else If WinActive("Results Definition - \\Remote")
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
-		; else if winactive("Edit test (Field Configuration:")
-		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
-		; else if winactive("Select samples for test:")
 		Else
 			send, %Product%
 		return
@@ -210,24 +159,17 @@ class TouchPad {
  
  
  
- 
 ;KEY_LMS:
 return
 #Ifwinactive, NuGenesis LMS - \\Remote
   F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-  ; rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
-  ; F20 & space::send, %Batch%{enter}
   F19 & space::Send, %Product%{enter}
   F20 & space::Send, %Batch%{enter}
-  ; F19 & ,::send, %Batch%{enter}
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
-	; F19:: ; msgbox % lms.DetectTab() " " tab
-	; lms.Filter(Clear)
-			; ~wheelright::msgbox, %A_ThisHotkey%
-		; ~wheelleft::msgbox, %A_ThisHotkey%
-	return
   numpaddiv::CloseWindow()
+
+
 
 ~Wheelleft::
 var++
@@ -258,22 +200,17 @@ return
 		click, 338, 619
 		TT("wheeldown pressed")
 		Return
-; #IfWinActive, Edit specification - \\Remote
-; #ifwinactive, PDF Preview - \\Remote
-; #ifwinactive, Register new samples - \\Remote
-	; wheelup::LMS.SearchBar()
 #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
-	; #MaxThreadsPerHotkey 2
+	#MaxThreadsPerHotkey 2
 		F9::WorkTab.ChangeTestResults("loop")
-	; #MaxThreadsPerHotkey 1 
+	#MaxThreadsPerHotkey 1 
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
   F19 & F20::menu.Variables()
   F19 & space::send, %Product%
-  ; F19 & ,::send, %Batch%
   F19 & up::send, %sampleID%
   F19 & left::send, %lot%
   F19 & right::send, %coated%
-  ; F20 & Space::send, %Batch%
+  F20 & Space::send, %Batch%
   $Rbutton up::Mouse_RbuttonUP()
   enter::click.okay()
   esc::click.esc()
@@ -295,10 +232,6 @@ return
 	NumpadSub::lms.MoveTab("Left")
 	Media_Next::varbar.SubIteration(20)
 	Media_Prev::Varbar.AddIteration(20)
-	; Move
-	; WinGetPos,wX,wY,wW,wH, NuGenesis LMS - \\Remote
-	; xTabSelect:=WW-10
-	; lms.DetectTab()
 	numlock::return
 #IfWinActive,
 	pause::reload
@@ -309,61 +242,13 @@ return
 
 
 Class LMS {
-	
 
-
-; SearchBar(Code:="",PostCmd:=""){
-; 		Global
-; 		WinActivate, ahk_exe WFICA32.EXE
-; 		ControlGetText, Batch, Edit2, VarBar
-; 		ControlGetText, Lot, Edit3, VarBar
-; 		ControlGetText, Product, Edit1, VarBar
-; 		; LMS.Orient()
-; 		If Code:=Product
-; 			Filtercode:="Product"
-; 		If Code:=Batch
-; 			Filtercode:="Batch"
-; 		If Code:=Lot
-; 			Filtercode:="Lot"
-; 		if winactive("Select methods tests - \\Remote")
-; 			clk(246,77, 2)
-; 		else If winactive("Register new samples - \\Remote") {
-; 			Clk(180, 103, 2)
-; 			send, %Product%
-; 		}
-; 		else if winactive("NuGenesis LMS - \\Remote") {
-; 			LMS.DetectTab()
-; 			if (Tab="Products" || Tab="Specs") {
-; 				clk(x%Tab%Search,yProductsSearch)
-; 							send, ^{a}%Product%^{a}
-; 							if PostCmd!=""
-; 								send % PostCmd
-; 				exit
-; 			}
-; 			If (Tab="Requests" || Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
-				
-; 				if (Lms.Filter()=Off){
-; 					clk(x%Tab%SearchDefault,yWorkTabSearch,,2)
-; 					; clk(x%Tab%Search,yWorkTabSearch)
-; 				}
-; 				if (Lms.Filter()=On) {
-; 					clk(x%FilterCode%Filter,yWorkTabFilter)
-; 				}
-; 				send, ^{a}%Code%^{a}
-; 				if PostCmd!=""
-; 					send % PostCmd
-; 				exit
-; 			}
-; 		}
-; }
 SearchBar(Code:="",PostCmd:=""){
 		Global
 		WinActivate, ahk_exe WFICA32.EXE
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
-
-		; LMS.Orient()
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 			exit
@@ -839,17 +724,13 @@ Orient(){
 	xProductFilter:=xDivider+75
 	xBatchFilter:=xDivider+168
 	xLotFilter:=xDivider+229
-	; xBatchFilter:=xDivider+60
-	; xLotFilter:=xDivider+100
+
 	yMyWorkTabFilter:=182
 	yMyWorkFilter:=182
-	; yWorkTabFilter:=82
 	yWorkTabFilter:=182
 	
 	xDocumentsFilter:=xDivider+68
-	; yDocumentsFilter:=300
-	; xProductSearch:=xDivider+35
-	
+
 	xEdit_Composition:=76
 	yEdit_Composition:=443 
 	xAdd_methods:=74
