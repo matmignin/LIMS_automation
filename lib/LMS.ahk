@@ -230,8 +230,8 @@ return
 	numpadMult::LMS.Movetab("Home")
 	Numpadadd::lms.MoveTab("Right")
 	NumpadSub::lms.MoveTab("Left")
-	Media_Next::varbar.SubIteration(20)
-	Media_Prev::Varbar.AddIteration(20)
+	Media_Prev::varbar.SubIteration(20)
+	Media_next::Varbar.AddIteration(20)
 	numlock::return
 #IfWinActive,
 	pause::reload

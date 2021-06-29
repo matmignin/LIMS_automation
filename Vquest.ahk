@@ -139,6 +139,7 @@ return
 #include <VScode>
 
 
+
 VQuest_Start:
  #Persistent
  #NoEnv
@@ -182,7 +183,8 @@ tsThk:=A_TimesinceThisHotkey
 tThk:=A_TimesinceThisHotkey
 tsPhk:=A_TimesincePriorHotkey
 tPhk:=A_TimesincePriorHotkey
-
+;#Warn, All, OutputDebug
+#Warn UseUnsetLocal, OutputDebug
 
  SetNumlockState Alwayson
  setcapslockstate alwaysoff

@@ -140,7 +140,7 @@
 Media_Next::F17
 Media_Prev::F16
 
-	PsudoIns:
+	PsudoNumpad:
 	#If Getkeystate("F19","p")
 	0::sendinput,{ctrldown}{0}{Ctrlup}
 		;sendlevel 1
@@ -158,8 +158,8 @@ Media_Prev::F16
 	n::Numpaddiv
 	y::up
 	b::down
-	/::.
-	p::*
+	/::numpad0
+	p::numpad0
 	=::=
 	-::-
 	n::sendinput,{-}

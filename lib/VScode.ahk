@@ -12,6 +12,7 @@ F19 & up::send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 F19 & F20::vscode_menu()
+
 ; lwin::
 ; winactivate, ahk_exe WFICA32.EXE
 ; Test_3()
@@ -138,12 +139,13 @@ VS_Code_WindowInfo(){
 	Sleep, 100
 	Tooltip % MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH
 	Process:= "ahk_exe " WinProcess
-	WinInfo:="WinMove, WINtITE, , " wX ", " wY ", " wW ", " wH
+	WinInfo:="WinMove, " Wintitle ", , " wX ", " wY ", " wW ", " wH
 	keywait, F20, U
 	sleep 400
 	Tooltip,
 	; SetTimer, RemoveToolTip, -2000
 }
+
 
 
 #IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
@@ -153,11 +155,11 @@ VS_Code_WindowInfo(){
 #ifwinactive,
 
 ReloadScript(){
-global iteration
-ControlGetText, Iteration, Static5, VarBar
+; global iteration
+; ControlGetText, Iteration, Static5, VarBar
 TT("Reload")
 IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
-  WinActivate, ahk_exe AutoHotkey.exe
+  WinActivate,
 sendinput, ^s
 sleep 200
 run, VQuest.ahk
@@ -363,6 +365,9 @@ RemoveToolTip2:
 ToolTip,,,,2
 return
 RemoveToolTip3:
+ToolTip,,,,3
+return
+RemoveToolTip4:
 ToolTip,,,,3
 return
 N=0

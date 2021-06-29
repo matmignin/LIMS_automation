@@ -17,6 +17,7 @@ History:
 - 1.1 Added minor fix for "non-empty" empty lines?
 
 */
+#include <Tooltip>
 
 ClipChainInit:
 IniRead, ClipChainX          , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX, 100
@@ -61,7 +62,7 @@ Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 
 Gui, ClipChain:Default
 Gui, ClipChain:Font, % dpi("s8")
-Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate
+Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate 
 Gui, ClipChain:Add, Listview, % dpi("x0 y0 w185 h350 NoSortHdr grid vLVCGIndex gClipChainClicked hwndHLV"),?|ClipChain|IDX
 LV_ModifyCol(1,dpi()*25)
 LV_ModifyCol(2,dpi()*160)
@@ -76,12 +77,12 @@ Gui, ClipChain:Add, Button, % dpi("xp+8  yp+18 w26 h26   gClipChainMoveUp   vBut
 Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
 Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
 Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
-Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
+Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil) 
 Gui, ClipChain:font
 Gui, ClipChain:font, % dpi("s12 bold")
 Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
 Gui, ClipChain:font
-Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
+Gui, ClipChain:font,% dpi("s11") ; " Wingdings " 
 Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
 Gui, ClipChain:font
 Gui, ClipChain:font,% dpi("s8")
@@ -102,12 +103,15 @@ Return
 #IfWinActive, CL3ClipChain Insert text
 +Enter::gosub, ClipChainInsertGuiOK
 #IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
-#v::Gosub, ClipChainPasteDoubleClick
-Xbutton1 & Lbutton::
+sendlevel 3
+F19::clipChain_v()
+^v::Gosub, ClipChainPasteDoubleClick
+sendlevel 0
+Lwin & Lbutton::
 click
 Gosub, ClipChainPasteDoubleClick
 return
-; ~Mbutton::
+; ~Lbutton::
 ; If ClipChainPause
 ; 	Return
 ; If (A_TimeSincePriorHotkey<400) and (A_TimeSincePriorHotkey<>-1)
@@ -121,8 +125,74 @@ return
 ; 	 Gosub, ClipChainPasteDoubleClick
 ; 	}
 ; Return
+clipChain_v(){
+  Global
+  	Errorlevel = 0
+    KeyWait, F19, T0.20
+    If ErrorLevel
+    {
+        KeyWait, F19, T2
+        if (A_PriorKey!="F19")
+          exit
+        if (A_PriorKey="F19")
+        If !ErrorLevel
+        {
+        Gosub, ClipChainPasteDoubleClick
+						IfWinActive, ahk_exe WINWORD.EXE
+							send, {down}
+						ifwinactive, ahk_exe WFICA32.EXE
+							send, {tab}
+						ifwinactive, ahk_exe WFICA32.EXE
+							send, {enter}
+						exit
+        }
+          KeyWait, F19,
+          Return
+      }
+    if Errorlevel = 0
+    KeyWait, F19, T0.60
+      if !ErrorLevel
+			{
+					Gosub, ClipChainPasteDoubleClick
+					; tooltip(ClipChainData[2])
+      }
+      return
+    }
 
-#z::   ; this opens up the input box
+clipChain_c(){
+  Global
+      sendinput, {ctrlup}{altup}
+    KeyWait, F20, T0.20
+    If ErrorLevel
+    {
+        KeyWait, F20,
+        if (A_PriorKey!="F20")
+          exit
+        if (A_PriorKey="F20")
+        If !ErrorLevel
+        {
+						send, {home}+{end}^c
+          ClipChainInsert()
+          exit
+        }
+          KeyWait, F20,
+          Return
+      }
+    if Errorlevel = 0
+    KeyWait, F20, T0.60
+      if !ErrorLevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
+						ClickText(3)
+          Else
+            ClipChainInsert()
+            return
+      }
+      return
+    }
+
+F22::
+#x::
 clipboard:=
 send, ^{c}
 clipwait, 1
@@ -142,70 +212,73 @@ ClickText(button:="")
 	}
 
 #If ClipChainActive()
-Lwin & space::
-ClickText(2)
-F20 & F19::InsertToClipChain("x")
-Xbutton1::InsertToClipChain("c")
-F20::InsertToClipChain("c")
-return
-InsertToClipChain(CopyOrCut){
-	global
-	clipboard:=
-	send, ^{%copyOrCut%}
-	clipwait, 1
-	If (ClipChainGuiTitle = "")
-		ClipChainGuiTitle:="CL3ClipChain Insert text"
-	ClipChainInsertCounter:=1
-	ClipChainPauseStore:=ClipChainPause
-	ClipChainPause:=1
-	GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
+F20 & F19::
+F20::clipChain_c()
+^c::
+ClipChainInsert(){
+global
+clipboard:=
+send, ^c
+clipwait, 0.4
+if errorlevel
+{
+	send, ^{left}+^{right}^c
+	clipwait, 0.5
+}
+If (ClipChainGuiTitle = "")
+	ClipChainGuiTitle:="CL3ClipChain Insert text"
+ClipChainInsertCounter:=1
+ClipChainPauseStore:=ClipChainPause
+ClipChainPause:=1
+GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
 
-	ClipChainIns:=Clipboard
-	ClipChainDataIndex:=""
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, 
-	LVCGIndex := LV_GetNext()
-	If (LVCGIndex = 0)
-		LVCGIndex = 1
-	LV_GetText(ClipChainDataIndex, LVCGIndex, 3)
-	If (ClipChainDataIndex = "")
-		{
-		ClipChainDataIndex:=0
-		ClipChainInsertCounter:=0
-		}
-	If (ClipChainInsEdit = 1)
-		ClipChainIns:=ClipChainData[ClipChainDataIndex]
+ClipChainIns:=Clipboard
+ClipChainDataIndex:=""
+Gui, ClipChain:Default
+Gui, ClipChain:Submit, NoHide
+LVCGIndex := LV_GetNext()
+If (LVCGIndex = 0)
+	LVCGIndex = 1
+LV_GetText(ClipChainDataIndex, LVCGIndex, 3)
+If (ClipChainDataIndex = "")
+	{
+	 ClipChainDataIndex:=1
+	 ClipChainInsertCounter:=0
+	}
+If (ClipChainInsEdit = 1)
+	ClipChainIns:=ClipChainData[ClipChainDataIndex]
 
-	If (ClipChainIns = "")
-		{
-			ClipChainPause:=ClipChainPauseStore
-			ClipChainPauseStore:=""
-			GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
-			Return
-		}
-	If (ClipChainInsEdit = 1)
-		{
-			ClipChainData[ClipChainDataIndex]:=ClipChainIns
-			If (ClipChainInsertCounter = 0)
-				LV_Add(1,,,,1)
-		LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns))
-		}
-	else
-		{
-			ClipChainData.InsertAt(ClipChainDataIndex+ClipChainInsertCounter,ClipChainIns)
-			LV_Insert(ClipChainDataIndex+0, , , ClipChainHelper(ClipChainIns))
-		}
-	Gosub, ClipChainUpdateIDX
-	ClipChainInsEdit:=0
+If (ClipChainIns = "")
+	{
+	 ClipChainPause:=ClipChainPauseStore
+	 ClipChainPauseStore:=""
+	 GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
 
-	ClipChainPause:=ClipChainPauseStore
-	ClipChainPauseStore:=""
-	GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
-	ClipChainGuiTitle:=""
-	Gosub, ClipChainSet
-	XMLSave("ClipChainData")
-	gosub, ClipChainInsertGuiOK
-	Return
+	 Return
+	}
+If (ClipChainInsEdit = 1)	
+	{
+	 ClipChainData[ClipChainDataIndex]:=ClipChainIns
+	 If (ClipChainInsertCounter = 0)
+	 	LV_Add(1,,,,1)
+	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns)) 
+	}
+else
+	{
+	 ClipChainData.InsertAt(ClipChainDataIndex+ClipChainInsertCounter,ClipChainIns)
+	 LV_Insert(ClipChainDataIndex+0, , , ClipChainHelper(ClipChainIns))
+	}
+Gosub, ClipChainUpdateIDX
+ClipChainInsEdit:=0	
+
+ClipChainPause:=ClipChainPauseStore
+ClipChainPauseStore:=""
+GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
+ClipChainGuiTitle:=""
+Gosub, ClipChainSet
+XMLSave("ClipChainData")
+gosub, ClipChainInsertGuiOK
+Return
 }
 
 ;$^v::
@@ -216,7 +289,7 @@ If ClipChainPause
 	Return
 If (ClipChainIndex > ClipChainData.MaxIndex())
 	{
-	 ClipChainIndex:=0
+	 ClipChainIndex:=1
 	}
 If ClipChainNoHistory
 	OnClipboardChange("FuncOnClipboardChange", 0)
@@ -228,8 +301,10 @@ If ClipChainNoHistory
 	OnClipboardChange("FuncOnClipboardChange", 1)
 stats.clipchain++
 ClipChainIndex++
+nextclip:=ClipChainData[ClipChainIndex]
+tooltip(NextClip,3000)
 Gosub, ClipChainUpdateIndicator
-Return
+return
 #If
 
 ;^#F11::
@@ -241,7 +316,7 @@ else
 	 Gosub, ClipChainSaveWindowPosition
 	 Gui, ClipChain:Hide
  	}
-Gosub, ClipChainCheckboxes
+Gosub, ClipChainCheckboxes	
 Return
 
 ClipChainMenu:
@@ -285,13 +360,13 @@ ClipChainData:=[]
 ClipChainData:=ClipChainDataNew
 ClipChainDataNew:=[]
 Gosub, ClipChainUpdateIDX
-Gosub, ClipChainUpdateIndicator
+Gosub, ClipChainUpdateIndicator	
 Return
 
 ClipChainUpdateIDX:
 Loop, % LV_GetCount()
 	LV_Modify(A_Index,"Col3",A_Index)
-Return
+Return	
 
 ClipChainEdit: ; falls through to Insert
 ClipChainGuiTitle:="CL3ClipChain Edit text"
@@ -328,12 +403,12 @@ If (ClipChainIns = "")
 	 GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
 	 Return
 	}
-If (ClipChainInsEdit = 1)
+If (ClipChainInsEdit = 1)	
 	{
 	 ClipChainData[ClipChainDataIndex]:=ClipChainIns
 	 If (ClipChainInsertCounter = 0)
 	 	LV_Add(1,,,,1)
-	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns))
+	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns)) 
 	}
 else
 	{
@@ -341,7 +416,7 @@ else
 	 LV_Insert(ClipChainDataIndex+1, , , ClipChainHelper(ClipChainIns))
 	}
 Gosub, ClipChainUpdateIDX
-ClipChainInsEdit:=0
+ClipChainInsEdit:=0	
 
 ClipChainPause:=ClipChainPauseStore
 ClipChainPauseStore:=""
@@ -365,7 +440,7 @@ Gui, ClipChainInsertGui:Add, Button, xp+120 gClipChainInsertGuiCancel w100, Canc
 Gui, ClipChainInsertGui:Show, , %ClipChainGuiTitle%
 	While (ClipChainInsertActive = 0)
 		{
-		 Sleep 20
+		 Sleep 20 
 		}
 Return
 
@@ -419,7 +494,7 @@ If (Asc(SubStr(ClipChainData,1,1)) = 65279) ; fix: remove BOM char from first en
 StringReplace,ClipChainData,ClipChainData,`r`n`r`n, % Chr(7), All
 #Include *i %A_ScriptDir%\plugins\ClipChainPRIVATERULES.ahk
 ClipChainData:=StrSplit(ClipChainData,Chr(7))
-
+ 
 ClipChainListview:
 Gui, ClipChain:Default
 LV_Delete()
@@ -476,7 +551,7 @@ ClipChainMoveUp:
 ClipChainLvHandle.Move(1) ; Move selected rows up.
 Gosub, ClipChainSet
 return
-
+ 
 ClipChainMoveDown:
 ClipChainLvHandle.Move() ; Move selected rows down.
 Gosub, ClipChainSet

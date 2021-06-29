@@ -20,8 +20,10 @@ OKay(){
    send, !y
   else if winActive("Reason For Change - \\Remote")
    clk(229, 236)
-
-  ; else if winActive("")
+  else if winactive("New Document - \\Remote")
+    clk(415, 360)
+  else if winActive("Edit specification - \\Remote")
+    clk(323, 621)
 
   ; else if winActive("")
 

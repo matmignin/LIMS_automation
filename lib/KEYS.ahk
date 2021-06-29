@@ -21,7 +21,6 @@ F20 & /::send, %SampleID%
  `::`
  /::/
 
-
 ;[_Mbutton_]
  rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
  Mbutton & F20::SendPassword()
@@ -52,7 +51,8 @@ F20 & /::send, %SampleID%
  F20 & Space::Sendinput, %batch%
  F19 & backspace::send,{delete}
  F19 & lbutton::send,{shiftDown}{click}{shiftup}
- F20 & F19::Menu.LMS()
+;  F20 & F19::Menu.LMS()
+
  F19 & Rbutton::Clip("OCR")
  F20 & F7::Excel.NextSheet()
  F20 & F6::Excel.PreviousSheet()
@@ -70,6 +70,7 @@ F20 & /::send, %SampleID%
  F20 & =::sendinput,{CtrlDown}{=}{Ctrlup}
  F20 & -::sendinput,{CtrlDown}{-}{Ctrlup}
  F20 & l::OpenApp.LMS()
+ F20 & F19::send, {F22}
 F19 & F20::menu.Variables()
  ~F20::Clip_C()
  ~F19::Clip_V()

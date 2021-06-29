@@ -21,16 +21,19 @@ Clip(input=0){
   cCTPhysical:=
   cCTRetain:=
   Department:=
-  send, ^c
-  clipwait,0.95
+  if (input=="cut")
+    send, ^x
+  else
+    send, ^c
+  clipwait,0.65
   if errorlevel
   {
     clipboard:=ClipboardSaved
     if (A_PriorKey != "F20")
       exit
-    TT(Clipboard,1000,,,3)
-      menu.variable()
-    exit
+    ; TT(Clipboard,1000,,,3)
+    send, ^{left}+^{right}^c
+    ; clipwait
   ; TT(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))
   }
 
@@ -38,7 +41,7 @@ Clip(input=0){
   ; CoordMode, Tooltip, Screen
   ; CoordMode, Tooltip, Relative
   sleep 20
-  RegExMatch(Clipboard, "[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
+  RegExMatch(Clipboard, "[ABDEFGLHKJIabdefglhkji]\d{3}\b", cProduct)
   RegExMatch(Clipboard, "\b(?!Ct#)\d{3}-\d{4}\b", cBatch)
   RegExMatch(Clipboard, "(?<=Ct#\d{3}-\d{4}\b", cCoated)
   RegExMatch(cCoated, "\d{3}-\d{4}\b", cCoated)
@@ -97,7 +100,7 @@ Clip(input=0){
   else
     return 
   }
-
+  
 Clip_C2(){
   Global
     sendinput, {ctrlup}{altup}
@@ -136,29 +139,26 @@ clip_c(){
     KeyWait, F20, T0.20
     If ErrorLevel
     {
-        KeyWait, F20, T2
-        if (A_PriorKey!="F20")
+        KeyWait, F20, T0.75
+        tt("Clipchain")
+        if (A_PriorKey!="F20") ;allows for other key combos
           exit
-        if (A_PriorKey="F20")
+        if (A_PriorKey="F20") {  
         If !ErrorLevel
         {
-          wheel_cut()
+          Clip("cut") ; will trigger less 1 sec
           Return
         }
-          KeyWait, F20,
+        Else ;will trigger after 1 sec
+          send, {F22}
+          ; KeyWait, F20,
           Return
       }
-    if Errorlevel = 0
-    KeyWait, F20, T0.60
-      if !ErrorLevel
-      {
-        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-            Clip()
-          Else
-            return
-      }
-      return
     }
+      Clip()
+      return
+}
+
 
 
 

@@ -1,26 +1,13 @@
 {
-		"folders": [
-		{
-			"path": "C:\\Users\\mmignin\\Documents\\VQuest"
-		}
-	],
-	"settings": {
-		"autoHide.autoHidePanel": false,
-		"autoHide.autoHideSideBar": false,
-		"BracketHighlighter.backgroundColor": "coral"
-	},
-	"launch": {		
+	"launch": {
 		"version": "0.2.0",
 		"configurations": [
-		
 			{
-				"type": "ahkdbg",
+				"type": "ahk",
 				"request": "launch",
-				"name": "AHKDebug",
+				"name": "AutoHotkey Debugger",
 				"program": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk",
-				"stopOnEntry": true,
-				"captureStreams": true,
-				"AhkExecutable": "C:\\Program Files\\Autohotkey\\AutoHotkey.exe"
+				"stopOnEntry": true
 			}
 		]
 	}

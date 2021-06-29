@@ -1,11 +1,20 @@
 Test(n){
 	global
 	if n=1
+	{
 		test_1()
+		TT("test " n)
+	}
 	else if n=2
+	{
 		test_2()
+		TT("test " n)
+	}
 	else if n=3
+	{
 		test_3()
+		TT("test " n)
+	}
 	else
 		test_%n%()
 		return
@@ -38,22 +47,9 @@ class Breaking {
 
 Test_1(){  ;array - remove duplicates (case insensitive)
 	global
-; WorkTab.DeleteRetain()
-Breaking.Preamble()
 
-	MouseGetPos, mx, mY  
-  loop 8,
-  {
-Breaking.Point()
-		sleep 100
-		send, {click 61, 258}
-		sleep 300
-		; winwait, Delete Tests - \\Remote
-		sleep 100
-		send, {enter}
-		sleep 800
-Breaking.Point()
- }
+WinMove, PDF Preview - \\Remote, , 232, -1114, 960, 1110
+
 return
 			; tabsToMove=
 }

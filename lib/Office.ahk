@@ -30,6 +30,7 @@
 			F6::sendinput, #{left}
 			wheelleft::sendinput, #{left}
 #ifwinactive, ahk_exe EXCEL.EXE
+F9::excel.search()
 		$rbutton::Mouse_RbuttonUP()
 	+Enter::sendinput, !{enter}
 	$Enter::sendinput,{enter}
