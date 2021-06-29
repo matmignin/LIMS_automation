@@ -40,7 +40,8 @@ Clip(input=0){
   sleep 20
   RegExMatch(Clipboard, "[ADEFGLHKJIadefglhkji]\d{3}\b", cProduct)
   RegExMatch(Clipboard, "\b(?!Ct#)\d{3}-\d{4}\b", cBatch)
-  RegExMatch(Clipboard, "(?<=Ct#\d{3}-\d{4}\b", cCoated)
+  regExMatch(Clipboard, "(?<=([Cc][Tt]#?.|[cC]oated.?.)\d{3}-\d{4}\b", cCoated)
+  ;RegExMatch(Clipboard, "(?<=Ct#\d{3}-\d{4}\b", cCoated)
   RegExMatch(cCoated, "\d{3}-\d{4}\b", cCoated)
   RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
   RegExMatch(Clipboard, "\b[Ss]\d{8}-\d{3}\b", cSampleID)
