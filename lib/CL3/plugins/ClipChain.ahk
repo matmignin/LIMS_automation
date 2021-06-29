@@ -63,7 +63,7 @@ Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 Gui, ClipChain:Default
 Gui, ClipChain:Font, % dpi("s8")
 Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate 
-Gui, ClipChain:Add, Listview, % dpi("x0 y0 w185 h350 NoSortHdr grid vLVCGIndex gClipChainClicked hwndHLV"),?|ClipChain|IDX
+Gui, ClipChain:Add, Listview, % dpi("x0 y0 w185 h350 NoSortHdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
 LV_ModifyCol(1,dpi()*25)
 LV_ModifyCol(2,dpi()*160)
 LV_ModifyCol(3,*0)
@@ -72,40 +72,41 @@ LV_ModifyCol(3,*0)
 Gosub, ClipChainListview
 
 Gui, ClipChain:font,% dpi("s8")
-Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+355 w181 h50 vGbox1"), Chain(s)
-Gui, ClipChain:Add, Button, % dpi("xp+8  yp+18 w26 h26   gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
-Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
-Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
+; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+355 w181 h50 vGbox1"), Chain(s)
+; Gui, ClipChain:Add, Button, % dpi("xp+8  yp+18 w26 h26   gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
+; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
+; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
 Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
-Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil) 
+; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil) 
 Gui, ClipChain:font
 Gui, ClipChain:font, % dpi("s12 bold")
-Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
+; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
 Gui, ClipChain:font
 Gui, ClipChain:font,% dpi("s11") ; " Wingdings " 
-Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
+; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
 Gui, ClipChain:font
 Gui, ClipChain:font,% dpi("s8")
-Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
-Gui, ClipChain:Add, Checkbox, % dpi("xp+10 yp+18 w75 h24 vClipChainNoHistory gClipChainCheckboxes"), No History
-Gui, ClipChain:Add, Checkbox, % dpi("xp+80 yp    w85 h24 vClipChainTrans     gClipChainCheckboxes"), Transparent
-Gui, ClipChain:Add, Checkbox, % dpi("xp-80 yp+30 w75 h24 vClipChainPause     gClipChainCheckboxes"), Pause
-Gui, ClipChain:Add, Button  , % dpi("xp+80 yp    w85 h24 vClipChainGuiClose  gClipChainGuiClose"  ), Close ClipChain
+; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
+; Gui, ClipChain:Add, Checkbox, % dpi("xp+10 yp+18 w75 h24 vClipChainNoHistory gClipChainCheckboxes"), No History
+; Gui, ClipChain:Add, Checkbox, % dpi("xp+80 yp    w85 h24 vClipChainTrans     gClipChainCheckboxes"), Transparent
+; Gui, ClipChain:Add, Checkbox, % dpi("xp-80 yp+30 w75 h24 vClipChainPause     gClipChainCheckboxes"), Pause
+; Gui, ClipChain:Add, Button  , % dpi("xp+80 yp    w85 h24 vClipChainGuiClose  gClipChainGuiClose"  ), Close ClipChain
 
-GuiControl, ClipChain:, ClipChainNoHistory  , %ClipChainNoHistory%
-GuiControl, ClipChain:, ClipChainTrans      , %ClipChainTrans%
-GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
+; GuiControl, ClipChain:, ClipChainNoHistory  , %ClipChainNoHistory%
+; GuiControl, ClipChain:, ClipChainTrans      , %ClipChainTrans%
+; GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
 
 Gosub, ClipChainCheckboxes
 ClipChainLvHandle := New LV_Rows(HLV)
 
 Return
+
 #IfWinActive, CL3ClipChain Insert text
 +Enter::gosub, ClipChainInsertGuiOK
 #IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
 sendlevel 3
-F19::clipChain_v()
-^v::Gosub, ClipChainPasteDoubleClick
+
+; ^v::Gosub, ClipChainPasteDoubleClick
 sendlevel 0
 Lwin & Lbutton::
 click
@@ -127,36 +128,7 @@ return
 ; Return
 clipChain_v(){
   Global
-  	Errorlevel = 0
-    KeyWait, F19, T0.20
-    If ErrorLevel
-    {
-        KeyWait, F19, T2
-        if (A_PriorKey!="F19")
-          exit
-        if (A_PriorKey="F19")
-        If !ErrorLevel
-        {
-        Gosub, ClipChainPasteDoubleClick
-						IfWinActive, ahk_exe WINWORD.EXE
-							send, {down}
-						ifwinactive, ahk_exe WFICA32.EXE
-							send, {tab}
-						ifwinactive, ahk_exe WFICA32.EXE
-							send, {enter}
-						exit
-        }
-          KeyWait, F19,
-          Return
-      }
-    if Errorlevel = 0
-    KeyWait, F19, T0.60
-      if !ErrorLevel
-			{
-					Gosub, ClipChainPasteDoubleClick
-					; tooltip(ClipChainData[2])
-      }
-      return
+  gosub, ClipChainPasteDoubleClick
     }
 
 clipChain_c(){
@@ -179,15 +151,9 @@ clipChain_c(){
           Return
       }
     if Errorlevel = 0
-    KeyWait, F20, T0.60
+    KeyWait, F20,
       if !ErrorLevel
-      {
-        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-						ClickText(3)
-          Else
             ClipChainInsert()
-            return
-      }
       return
     }
 
@@ -212,9 +178,20 @@ ClickText(button:="")
 	}
 
 #If ClipChainActive()
+pgup::gosub, ClipchainMoveUp
+F20 & up::gosub, ClipchainMoveUp
+Pgdn::gosub, ClipchainMoveDown
+F20 & down::gosub, ClipchainMoveDown
+Delete::gosub, ClipChainDel
+^c::send, ^c
 F20 & F19::
+clipchaininsert()
+send, ^x
+return
+F19::clipChain_v()
+
+F19 & F20::gosub, clipchainmenu
 F20::clipChain_c()
-^c::
 ClipChainInsert(){
 global
 clipboard:=
@@ -222,12 +199,17 @@ send, ^c
 clipwait, 0.4
 if errorlevel
 {
-	send, ^{left}+^{right}^c
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
+						ClickText(3)
+          Else
+						ClickText(2)
+            ; ClipChainInsert(
+	send, ^c
 	clipwait, 0.5
 }
 If (ClipChainGuiTitle = "")
 	ClipChainGuiTitle:="CL3ClipChain Insert text"
-ClipChainInsertCounter:=1
+ClipChainInsertCounter:=0
 ClipChainPauseStore:=ClipChainPause
 ClipChainPause:=1
 GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%

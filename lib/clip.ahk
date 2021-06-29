@@ -42,9 +42,11 @@ Clip(input=0){
   ; CoordMode, Tooltip, Relative
   sleep 20
   RegExMatch(Clipboard, "[ABDEFGLHKJIabdefglhkji]\d{3}\b", cProduct)
-  RegExMatch(Clipboard, "\b(?!Ct#)\d{3}-\d{4}\b", cBatch)
-  RegExMatch(Clipboard, "(?<=Ct#\d{3}-\d{4}\b", cCoated)
-  RegExMatch(cCoated, "\d{3}-\d{4}\b", cCoated)
+  RegExMatch(Clipboard, "(?<!Coated: )\b\d{3}-\d{4}\b", cBatch)
+  ; RegExMatch(Clipboard, "(?<=Coated: )\b\d{3}-\d{4}\b", cCoated)
+  RegExMatch(Clipboard, "([Cc]oated: |[Cc][Tt]#|[Cc[Tt] |[Cc]oated)\d{3}-\d{4}\b", cCoated)
+  ; RegExMatch(Clipboard, "(?<=Ct# )|(?<=Coated.?)\b\d{3}-\d{4}\b", cCoated)
+  RegExMatch(cCoated, "\d{3}-\d{4}", cCoated)
   RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
   RegExMatch(Clipboard, "\b[Ss]\d{8}-\d{3}\b", cSampleID)
   Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
@@ -93,7 +95,7 @@ Clip(input=0){
   GuiControl,Varbar:Text, Department, %Department%
   if (Input==0) {
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain && Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cCoated " " cSampleID "`n`t " Department,4000,,,3)
+      TT(cProduct " " cBatch " " cLot " " cSampleID "`n`t " cCoated "`t " Department,4000,,,3)
     else 
       TT(Clipboard,1000,,,3)
     }
@@ -146,7 +148,7 @@ clip_c(){
         if (A_PriorKey="F20") {  
         If !ErrorLevel
         {
-          Clip("cut") ; will trigger less 1 sec
+          Clip("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick
           Return
         }
         Else ;will trigger after 1 sec
@@ -158,7 +160,6 @@ clip_c(){
       Clip()
       return
 }
-
 
 
 
