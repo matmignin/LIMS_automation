@@ -2,9 +2,10 @@
 
 KEY_Snipper:
  #IfWinActive, Snipper - Snipaste ; the capture screen
- numpadDiv::send, {esc}
+ numpadDiv::send, {altdown}{click}{altup}
  rbutton::send,{CtrlDown}{c}{Ctrlup}
  F8::send,{esc}
+ mbutton::send, {altdown}{click}{altup}
 
  ;WheelDown::wheel("^1")
  
@@ -29,7 +30,7 @@ KEY_Snipper:
  F6::sendinput, ^+{-}
 #If mouse_isover("Paster - Snipaste ahk_class")
  sendlevel 1
- numpadDiv::send, {esc}
+ numpadDiv::send, !{click}
   F8::send,{esc}
  sendlevel 0
  #if

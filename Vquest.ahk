@@ -10,6 +10,18 @@ return
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 F13 & Lbutton::F13Click()
 
 F13Click(){
@@ -135,9 +147,9 @@ return
 #include <mouse>
 #include <click>
 #include <Vim>
+#include <SaveWindow>
 #Include <Snipper>
 #include <VScode>
-
 
 
 VQuest_Start:
@@ -147,6 +159,13 @@ VQuest_Start:
  #KeyHistory 400
  #InstallKeybdHook
  #InstallMouseHook
+;  #SingleInstance, Force
+
+; SetTitleMatchMode, Fast		;Fast is default
+; DetectHiddenWindows, off	;Off is default
+;SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+CrLf=`r`n
+FileName:="lib/WinPos.txt"
 ;  clipboard:=
 ;  EnvGet, Product, Product
 ;  EnvGet, Batch, Batch
@@ -169,7 +188,7 @@ AutoTrim, On
  Menu, Tray, Add, List Lines, Run_ListLines
  Menu, Tray, Add, windowSpy, WindowSpySub
  Menu, Tray, Add, Exit, ExitSub
- Menu, Tray, Default, VarbarFollow ;Run_Listlines
+ Menu, Tray, Default, windowSpy ;Run_Listlines
 On:="On"
 Off:="Off"
 Clear:="Clear"
@@ -193,7 +212,7 @@ tPhk:=A_TimesincePriorHotkey
  SetMouseDelay, 5
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
- #MaxHotkeysPerInterval 90
+ #MaxHotkeysPerInterval 120
 ;  #HotkeyModifierTimeout 500
  #maxthreadsperhotkey, 1
  SetKeyDelay, 0, 0

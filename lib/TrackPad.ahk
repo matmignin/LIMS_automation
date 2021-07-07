@@ -14,7 +14,7 @@
   numpaddiv::send, {numpadDiv}  ;4down clear filter
   lbutton::send, {Lbutton}
   Numlock::Send, {Numlock}
-  ; mbutton::send,< {mbutton}
+  mbutton::send, {mbutton}
   wheelup::send, {WheelUp}
   ; mbutton::send, {mbutton}
   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()

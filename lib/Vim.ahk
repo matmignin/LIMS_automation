@@ -137,8 +137,8 @@
 	#if
 
 ; $F13::esc
-Media_Next::F17
-Media_Prev::F16
+; Media_Next::F17
+; Media_Prev::F16
 
 	PsudoNumpad:
 	#If Getkeystate("F19","p")

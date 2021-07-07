@@ -15,7 +15,7 @@ F19 & F20::vscode_menu()
 F19 & -::send, {ctrldown}{-}{ctrlup}
 F19 & =::send, {ctrldown}{=}{ctrlup}
 ; lwin::
-; winactivate, ahk_exe WFICA32.EXE
+; winactivate, ahk_exe WFICA32.EXE 
 ; Test_3()
 ; return
 ; Tooltip()

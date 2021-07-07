@@ -2,6 +2,8 @@
 
 
 KEY_DEFAULT:
+
+Media_Next::ControlSend, Chrome_RenderWidgetHostHWND1,"{F5}", Visual Studio Code,
  <^;::sendinput, %Timestring%{space}
  ~Lbutton & left::sendinput, %SampleID%
  ~Lbutton & Down::sendinput, %Coated%
@@ -53,8 +55,12 @@ F20 & /::send, %SampleID%
   ; F20 & Space::send, {enter}
   #If (A_PriorhotKey = "F19" || A_PriorHotKey = "F20" && A_TimeSincePriorHotkey < 600) 
   $rshift::send, {tab}
-  $space::send, {enter} J296
+  $space::send, {enter}
 #if 
+  ; #If (A_PriorhotKey = "F20 & 0" && A_TimeSincePriorHotkey < 600) 
+#if 
+F20 & 9::SaveWindow_Save()
+F20 & 0::SavedWindow_Restore()
 ;[_F19 & F20_]
  F19 & \::CreditCard()
  F19 & Space::send, %product%

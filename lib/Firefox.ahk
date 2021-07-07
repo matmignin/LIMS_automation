@@ -6,7 +6,7 @@
 
 
  #IfWinActive, ahk_exe firefox.exe
-;  F19 & WheelDown::Wheel("^w")
+ NumpadDiv::CloseWindow()
  F6::sendinput, !{left}
  F7::send, !{right}
 

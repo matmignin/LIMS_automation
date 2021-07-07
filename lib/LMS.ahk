@@ -106,7 +106,7 @@
 			LMS.Detecttab()
 			if (Tab="Requests")
 				clk(61, 635) ;enter results
-			if (Tab="Products" )
+			else if (Tab="Products")
 				clk(86, 443) ;edit composition
 			else
 				Menu.LMS()
@@ -233,12 +233,16 @@ return
   ; ~Wheelleft::TouchPad.2left()
   ; ~Wheelright::TouchPad.2right()
   Mbutton::TouchPad.3Tap()
+	\::
+	lms.detectTab()
+	tt(tab)
+	return
 	; numlock::LMS.Movetab("Home")
 	numpadMult::LMS.Movetab("Home")
 	Numpadadd::lms.MoveTab("Right")
 	NumpadSub::lms.MoveTab("Left")
-	Media_Prev::varbar.SubIteration(20)
-	Media_next::Varbar.AddIteration(20)
+	; Media_Prev::varbar.SubIteration(20)
+	; Media_next::Varbar.AddIteration(20)
 	numlock::return
 #IfWinActive,
 	pause::reload
@@ -419,10 +423,11 @@ TAB5:=
 TAB6:=
 TAB7:=
 	; LMS.Orient()
-	winactivate, ahk_exe WFICA32.EXE
-	if WinActive("NuGenesis LMS - \\Remote")
+	; winactivate, ahk_exe WFICA32.EXE
+	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 				if Tab2 {
+					
 					PixelSearch, FoundSamples, FoundY, xsamplesTab, yWorkTabs, xsamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
 					if FoundSamples {
 						Tab=Samples 
@@ -456,9 +461,10 @@ TAB7:=
 				exit
 				}
 				}
+				}
 				; }
 		PIXELSEARCH, Tab3, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab3 { 
+			 if Tab3 { 
 					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
 							tab=Specs
@@ -467,7 +473,7 @@ TAB7:=
 				return Tab
 				}
 		PIXELSEARCH, Tab4, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab4 {
+			 if Tab4 {
 					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
 							tab=Specs
@@ -476,7 +482,7 @@ TAB7:=
 				return %Tab%
 				}
 		PIXELSEARCH, Tab5, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab5 {
+			 if Tab5 {
 				Tab=Tab5
 				return
 				}
@@ -486,17 +492,17 @@ TAB7:=
 				return
 				}
 		PIXELSEARCH, Tab7, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab7 {
+			 if Tab7 {
 				Tab=Tab7
 				return
 				}
 	PixelSearch, Tab1, FoundY, xTab1, yTabs, XTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab1 {
+			 if Tab1 {
 				Tab=Welcome
 				return tab
-				}
+			}
 			else
-				Tab=SomethingElse
+				return
 			; reMyWorkturn
 	return
 			; msgbox, %tab%
