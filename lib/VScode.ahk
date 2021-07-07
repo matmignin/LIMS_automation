@@ -12,7 +12,8 @@ F19 & up::send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 F19 & F20::vscode_menu()
-
+F19 & -::send, {ctrldown}{-}{ctrlup}
+F19 & =::send, {ctrldown}{=}{ctrlup}
 ; lwin::
 ; winactivate, ahk_exe WFICA32.EXE
 ; Test_3()
@@ -355,20 +356,26 @@ TT(msg, time=1500, X:="",Y:="",W:="") {
 	tooltip, %msg%, %X%, %Y%,%W%
 	SetTimer, RemoveToolTip%W%, -%time%
 return
+
+
 RemoveToolTip:
 ToolTip
+N=0
 return
 RemoveToolTip1:
 ToolTip,,,,1
+N=0
 return
 RemoveToolTip2:
 ToolTip,,,,2
+N=0
 return
 RemoveToolTip3:
 ToolTip,,,,3
+N=0
 return
 RemoveToolTip4:
 ToolTip,,,,3
-return
 N=0
+return
 }

@@ -16,8 +16,8 @@ InfoLocations(){
 	Lot:=XL.Range("E4").Value
 	Coated:=xl.range("F4").value
 	Name:=XL.Range("B2").Value
-	Customer:=XL.Range("B3").Value
-	ShipTo:=XL.Range("E3").Value
+	Customer:=XL.Range("B3").text
+	ShipTo:=XL.Range("A3").Value
 	weight:=XL.Range("B6").Text
 	ShapeAndSize:=XL.Range("B5").Value
 	Color:=XL.Range("B5").value
@@ -55,7 +55,7 @@ Connect(reload:=0){
 		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True
 		sht := XL.ActiveSheet.Name
-	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code")
+	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
 			xl.sheets(PrevProduct).select
 			; Excel.PreviousSheet()
 	}

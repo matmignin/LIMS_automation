@@ -64,20 +64,30 @@ KEY_OUTLOOK:
 	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, , 1205, -1080, 1620, 1080 
 	F20::Clip()
 	Mbutton::
-	Click 3
-	clip()
+		Click 3
+		clip()
+		return
 	F7::
-	winactivate, NuGenesis LMS - \\Remote
-	sleep 200
-	lms.searchbar(Batch)
-	return
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
+		lms.searchbar(Batch)
+		return
 	F6::
-	winactivate, NuGenesis LMS - \\Remote
-	sleep 200
-	lms.searchbar(Product)
-	return
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
+		lms.searchbar(Product)
+		return
+	F8::
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
+		clk(xRequestsTab, yMyWorkTabs)
+		sleep 300
+		lms.searchbar(Batch)
+		send, {ctrlup}
+		return
 	
 	return
+	
 	
 	
 	
@@ -90,6 +100,7 @@ KEY_OUTLOOK:
 	^4::send,{Ctrldown}{1}{CtrlUp}
 	^5::send,{Ctrldown}{3}{CtrlUp}
 	^`::send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
+	F20 & right::WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
 KEY_OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
@@ -134,8 +145,8 @@ Mbutton::menu.Remote_Desktop()
 F13::TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 		#ifwinactive, ahk_class #32770
 			Mbutton::menu.Remote_Login()
-			F19::menu.Remote_Login()
+			; F19::menu.Remote_Login()
 		#ifwinactive, ahk_class TscShellContainerClass
-			F19::menu.Remote_Desktop()
+			; F19::menu.Remote_Desktop()
 			mbutton::menu.Remote_Desktop()
 

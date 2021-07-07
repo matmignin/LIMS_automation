@@ -13,7 +13,7 @@
 	} Else If Winactive("ahk_exe EXCEL.EXE"){
 		Excel.Search()
 	} Else If Winactive("Results Definition - \\Remote"){
-		Sendinput, ^{Lbutton}
+		menu.LMS()
 	} Else If Winexist("Delete Test - \\Remote "){
 		winactivate,
 		Sendinput,{enter}

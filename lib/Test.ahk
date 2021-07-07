@@ -48,7 +48,7 @@ class Breaking {
 Test_1(){  ;array - remove duplicates (case insensitive)
 	global
 
-WinMove, PDF Preview - \\Remote, , 232, -1114, 960, 1110
+worktab.DeleteRetain()
 
 return
 			; tabsToMove=

@@ -42,9 +42,9 @@ Clip(input=0){
   ; CoordMode, Tooltip, Relative
   sleep 20
   RegExMatch(Clipboard, "[ABDEFGLHKJIabdefglhkji]\d{3}\b", cProduct)
-  RegExMatch(Clipboard, "(?<!Coated: )\b\d{3}-\d{4}\b", cBatch)
+  RegExMatch(Clipboard, "(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
   ; RegExMatch(Clipboard, "(?<=Coated: )\b\d{3}-\d{4}\b", cCoated)
-  RegExMatch(Clipboard, "([Cc]oated: |[Cc][Tt]#|[Cc[Tt] |[Cc]oated)\d{3}-\d{4}\b", cCoated)
+  RegExMatch(Clipboard, "([Cc]oated: |/?[Cc][Tt]#|[Cc][Tt] |[Cc]oated)\d{3}-\d{4}\b", cCoated)
   ; RegExMatch(Clipboard, "(?<=Ct# )|(?<=Coated.?)\b\d{3}-\d{4}\b", cCoated)
   RegExMatch(cCoated, "\d{3}-\d{4}", cCoated)
   RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
@@ -141,8 +141,7 @@ clip_c(){
     KeyWait, F20, T0.20
     If ErrorLevel
     {
-        KeyWait, F20, T0.75
-        tt("Clipchain")
+        KeyWait, F20, T0.65
         if (A_PriorKey!="F20") ;allows for other key combos
           exit
         if (A_PriorKey="F20") {  

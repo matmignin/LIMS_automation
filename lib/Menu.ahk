@@ -47,7 +47,7 @@ class Menu{
   Menu.show()
   }
   if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
-  Menu.add("&Spec Table","Tests")
+    ; Menu.add("&Spec Table","Tests")
     Menu,Menu, add
     Menu, Menu, Add, &USP Heavy Metal,Autofill
     Menu, Menu, Add, &Canada Heavy Metal,Autofill
@@ -67,7 +67,7 @@ class Menu{
   Menu.show()
   }
   if Winactive("Login - \\Remote"){
-    Menu,Menu, add, &Login, LMS_Env
+    ; Menu,Menu, add, &Login, LMS_Env
     Menu,Menu, add, &Production Server, LMS_Env
     Menu,Menu, add, &Test Server, LMS_Env
   Menu.show()
@@ -238,7 +238,7 @@ return
       SpecTab.Edit_Micro() ; copyMicro spec tests
     else if A_thismenuitem contains &Physical
       SpecTab.Edit_Physical()
-    else if A_thismenuitem contains Copy &Specs
+    else if A_thismenuitem contains Copy &Specsex
       SpecTab.copy()
     else if A_thismenuitem contains Paste &Specs
       SpecTab.Paste()

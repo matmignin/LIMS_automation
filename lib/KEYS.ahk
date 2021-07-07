@@ -41,9 +41,19 @@ F20 & /::send, %SampleID%
  Lctrl & Space::menu.LMS()
  F9 & Lbutton::sendinput,{Ctrldown}{Click}{CtrlUp}
  F9 & Rbutton::sendinput,{shiftdown}{Click}{shiftup}
-  #If (A_PriorHotKey = "F19 & Space" && A_TimeSincePriorHotkey < 600) 
+  #If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F20 & Space" && A_TimeSincePriorHotkey < 600) 
   F19 & space::send, {enter}
+  $space::send, {enter} 
+  $rshift::send, {tab}
   F20 & Space::send, {enter}
+#If (A_PriorHotKey = "F19 & F20" && A_TimeSincePriorHotkey < 600) 
+  F19 & F20::send, {enter}
+  ; $space::send, {enter} 
+  ; $rshift::send, {tab}
+  ; F20 & Space::send, {enter}
+  #If (A_PriorhotKey = "F19" || A_PriorHotKey = "F20" && A_TimeSincePriorHotkey < 600) 
+  $rshift::send, {tab}
+  $space::send, {enter} J296
 #if 
 ;[_F19 & F20_]
  F19 & \::CreditCard()

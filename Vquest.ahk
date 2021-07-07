@@ -121,7 +121,6 @@ return
 #Include <clip>
 #Include <Office>
 #Include <LMS>
-#Include <Snipper>
 #Include <OpenApp>
 #Include <AutoFill>
 #include <varBar>
@@ -136,6 +135,7 @@ return
 #include <mouse>
 #include <click>
 #include <Vim>
+#Include <Snipper>
 #include <VScode>
 
 
@@ -231,4 +231,3 @@ Iniread, Follow, data.ini, Locations, Follow
  if (Follow = 0)
   Menu, Tray, unCheck, VarbarFollow
 gosub, Starting_test
-

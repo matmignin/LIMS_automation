@@ -25,8 +25,13 @@ OKay(){
   else if winActive("Edit specification - \\Remote")
     clk(323, 621)
 
-  ; else if winActive("")
-
+  else if winexist("Error - \\Remote") {
+    winactivate
+    clk(148, 104)
+    winactivate, Register new samples - \\Remote
+    clk(181, 104, 2)
+    send, %product%{enter}
+  }
   ; else if winActive("")
 
   ; else if winexist("")

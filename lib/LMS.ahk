@@ -200,12 +200,19 @@ return
 		click, 338, 619
 		TT("wheeldown pressed")
 		Return
+		#ifwinactive, Register new samples - \\Remote
+			F9::
+			ControlGetText, Product, Edit1, VarBar
+			clk(181, 104,2)
+			sleep 300
+			send, %Product%{enter}
+			return
 #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
 	#MaxThreadsPerHotkey 2
 		F9::WorkTab.ChangeTestResults("loop")
 	#MaxThreadsPerHotkey 1 
 #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  F19 & F20::menu.Variables()
+  F19 & F20::send, %Batch%
   F19 & space::send, %Product%
   F19 & up::send, %sampleID%
   F19 & left::send, %lot%
@@ -239,8 +246,6 @@ return
 
 
 
-
-
 Class LMS {
 
 SearchBar(Code:="",PostCmd:=""){
@@ -251,6 +256,7 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Product, Edit1, VarBar
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
+					send, {ctrlup}
 			exit
 		}
 		if winactive("Select methods tests - \\Remote")
@@ -266,6 +272,7 @@ SearchBar(Code:="",PostCmd:=""){
 							send, ^{a}%Product%^{a}
 							if PostCmd!=""
 								send % PostCmd
+									send, {ctrlup}	
 				exit
 			}
 			If (Tab="Requests" || Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents")
@@ -274,6 +281,7 @@ SearchBar(Code:="",PostCmd:=""){
 				send, ^{a}%Code%^{a}
 				if PostCmd!=""
 					send % PostCmd
+							send, {ctrlup}
 				exit
 			}
 }

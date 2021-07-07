@@ -23,7 +23,7 @@
 		return
 		}
 	N=1
-	SetTimer, RemoveToolTip, 600
+	SetTimer, RemoveToolTip, 800
 	return
 	}
 
@@ -39,7 +39,7 @@
 
 
 
-Wheel_2(commands,Sleeptime:=600)
+Wheel_2(commands,Sleeptime:=800)
 {
 	global
 	If (A_PriorKey!=A_ThisHotkey) || (A_TickCount-LastActivation > 400)
@@ -54,7 +54,7 @@ Wheel_2(commands,Sleeptime:=600)
 	return
 }
 
-Wheel(commands,Sleeptime:=200)
+Wheel(commands,Sleeptime:=800)
 {
 	BlockInput, On
 	send, %Commands%

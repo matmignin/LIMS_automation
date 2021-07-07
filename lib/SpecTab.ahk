@@ -88,12 +88,12 @@ CopySpecTemplate(){
 	global
 	department:= 
 	Clipboard:=
-	send, ^c
-	clipwait,2 ; Tooltip, %Clipboard%
-	sleep 100
+	; send, ^c
+	; clipwait,1 ; Tooltip, %Clipboard%
+	; sleep 100
 	clip()
-	sleep 400
-	TT(department)
+	; sleep 400
+	; TT(department)
 	Breaking.Point()
 	click.CopySpecTemplate()
 	If Department Contains Analytical
@@ -123,11 +123,14 @@ CopySpecTemplate(){
 Copy(){
 	global
 	WinActivate, NuGenesis LMS - \\Remote
-	BlockInput, on
+	; BlockInput, on
 	clipboard:=
 	click 57, 715 ; edit Test
 	; click 57, 750 ; edit results
-	winwaitactive, Test Definition Editor - \\Remote
+	winwaitactive, Test Definition Editor - \\Remote,,0.25
+	if errorlevel
+		WinActivate, Test Definition Editor - \\Remote
+	; sleep 400
 	click 418, 202
 	send, ^a^c
 	Clipwait,1
@@ -161,7 +164,7 @@ Copy(){
 	FullRequirements:=Parsedspecs[20]
 	Units:=Parsedspecs[21]
 	sleep 200
-	blockinput off
+	; blockinput off
 	send, {esc}
 	copypastetoggle=1
 	Return
@@ -171,11 +174,15 @@ Copy(){
 	Global
 	WinActivate, NuGenesis LMS - \\Remote
 	click 57, 715 ; edit Test
-	winwaitactive, Test Definition Editor - \\Remote
+	winwaitactive, Test Definition Editor - \\Remote,,0.25
+		if errorlevel
+			WinActivate, Test Definition Editor - \\Remote
+	sleep 400
 	click 418, 202
 	SpecTab.TestDefinitionEditor(Description) ; the pre window
 	sleep 200
 	Wheel_scroll("100")
+	sleep 200
 	click 232, 244 ;click resulst
 	sleep 200
 	WinActivate, Results Definition - \\Remote
@@ -183,7 +190,10 @@ Copy(){
 		if errorlevel
 			WinActivate, Results Definition
 	Mouse_Click("edit")
-	winwaitactive, Result Editor - \\Remote
+	winwaitactive, Result Editor - \\Remote,,0.25
+		if errorlevel
+			WinActivate, Result Editor - \\Remote
+	sleep 400
 	Breaking.Point()
 	SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 	CopyPasteToggle=0
@@ -193,7 +203,7 @@ Copy(){
 	AddMethod(MethodID){
 	WinActivate, NuGenesis LMS - \\Remote
 	click 67, 562 ; Add Methods
-	winwaitactive, Select methods tests - \\Remote
+	winwaitactive, Select methods tests - \\Remote,,0.25
 	click 227, 69. 2 ; method search bar
 	sendinput, %MethodID%{enter}^a{click 506, 337}{click 851, 656} ; add test and hit okay
 	sleep 200

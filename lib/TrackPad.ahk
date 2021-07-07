@@ -23,12 +23,13 @@
 
  
 #If getkeystate("lbutton","p")
-  space::click
-  F19::send, {altdown}{ctrldown}{4}{ctrlup}{altup}
+  space::send, ^{click}
+  F19::menu.LMS()
+  ; F19::menu.LMS()
   .::VS_Code_WindowInfo()
   ; Lwin::^x
   v::send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-  ;  F20::Wheel_Paste()
+   F20::send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
   /::varbar.reset()
   e::send,{LWinDown}{e}{lwinup}
   o::OpenApp.Outlook()

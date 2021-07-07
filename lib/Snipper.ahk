@@ -2,10 +2,14 @@
 
 KEY_Snipper:
  #IfWinActive, Snipper - Snipaste ; the capture screen
+ numpadDiv::send, {esc}
  rbutton::send,{CtrlDown}{c}{Ctrlup}
+ F8::send,{esc}
+
  ;WheelDown::wheel("^1")
+ 
  ;Wheelup::Wheel("^5")
- Mbutton::send, {Click, 2}
+;  Mbutton::send, {Click, 2}
 ; For sheet in xl.ActiveWorkbook.Worksheets
 												; 	Products.insert(Sheet.Name)
 												; Products.remove(1)
@@ -15,18 +19,19 @@ KEY_Snipper:
 												; 		break
 												; 	else
 												; 		DDLProducts .= "|" Products[A_index]
-#IfWinActive, Paster - Snipaste ahk_exe Snipaste.exe ; the floating window
- Mbutton::send, {Click, R}{e}
+#IfWinActive, Paster - Snipaste ; the floating window
+;  Mbutton::send, {Click, R}{e}
  F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
- Numpaddiv::send,{Mbutton}
+ F8::send,{esc}
+  Space::send, {esc}
  F19::sendinput, ^c
  F7::sendinput, ^+{+}
  F6::sendinput, ^+{-}
 #If mouse_isover("Paster - Snipaste ahk_class")
- ; sendlevel 1
- F9::Mbutton
-  Numpaddiv::send,{Mbutton}
- ; sendlevel 0
+ sendlevel 1
+ numpadDiv::send, {esc}
+  F8::send,{esc}
+ sendlevel 0
  #if
 
 	Snip_groupChange(){
