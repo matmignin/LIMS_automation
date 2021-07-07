@@ -206,20 +206,18 @@ CloseWindow(){
 		clk(944, 11)
 		sleep 400
 	}
+	else if winactive("Results Definition - \\Remote"){
+    send, {esc}
+    return
+	}
 	; else if winactive("Composition - \\Remote"){
-	; 	clk(841, 895)
-	; 	sleep 50
-	; 	clk(946, 896)
-	; 	sleep 400
-	; }
+    ; 	clk(841, 895)
+    ; 	sleep 50
+    ; 	clk(946, 896)
+    ; 	sleep 400
+    ; }
 	else If winactive("NuGenesis LMS - \\Remote")
 		LMS.FilterClear()
-	; else If WinActive("ahk_exe WFICA32.EXE")
-	; {
-	; 	send,{esc}
-	; 	sleep 400
-	; 	return
-	; }
 	else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") {
 		send, ^{w}
 		sleep 400
@@ -230,18 +228,11 @@ CloseWindow(){
 		sleep 400
 		return
 	}
-	; else if winactive("ahk_exe Code.exe")
-	; {
-	; 	sendinput, ^{F4}
-	; 	sleep 400
-	; 	return
-	; }
 	else if winactive("Settings ahk_class ApplicationFrameWindow"){
 		winclose
 		sleep 400
 		return
 	}
-	; else if winactive("ahk_exe mstsc.exe") 
 	else if winactive("ahk_exe EXCEL.EXE"){
 		Send, {ctrldown}{down}{ctrlup}
 		sleep 400

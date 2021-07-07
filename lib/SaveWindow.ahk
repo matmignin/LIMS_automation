@@ -3,6 +3,7 @@
 
 SavedWindow_Restore(){
   global
+	setwindelay,10
   WinGetActiveTitle, SavedActiveWindow
   ParmVals:="Title x y height width"
   SectionToFind:= SaveWindow_SectionHeader()
@@ -55,6 +56,7 @@ SavedWindow_Restore(){
 
   ;Restore window that was active at beginning of script
   WinActivate, %SavedActiveWindow%
+	setwindelay,400
 RETURN
 }
 
@@ -62,6 +64,7 @@ RETURN
 
 SaveWindow_Save(){
   global
+	setwindelay, 10
  MsgBox, 4,Dock Windows,Save window positions?
  IfMsgBox, NO, Return
 
@@ -107,6 +110,7 @@ SaveWindow_Save(){
 
   ;Restore active window
   WinActivate, %SavedActiveWindow%
+	setwindelay,400
 RETURN
 }
 ; -------
@@ -115,12 +119,13 @@ RETURN
 SaveWindow_SectionHeader()
 {
 	Global
+	setwindelay,10
 	SysGet, MonitorCount, MonitorCount
 	SysGet, MonitorPrimary, MonitorPrimary
 	line=SECTION: Monitors=%MonitorCount%,MonitorPrimary=%MonitorPrimary%
 
         WinGetPos, x, y, Width, Height, Program Manager
 	line:= line . "; Desktop size:" . x . "," . y . "," . width . "," . height
-
+setwindelay,400
 	Return %line%
 }

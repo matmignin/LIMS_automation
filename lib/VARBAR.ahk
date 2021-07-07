@@ -173,7 +173,8 @@ Class VarBar{
 		if winactive("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
 			ProductTab.Table()
 		else {
-		winactivate, ahk_exe WFICA32.EXE
+		ifwinnotactive, ahk_exe WFICA32.EXE 
+			winactivate, ahk_exe WFICA32.EXE
 		lms.DetectTab()
 			If (Tab="Products")
 				ProductTab.Table()

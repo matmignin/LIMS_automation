@@ -6,7 +6,8 @@ Table(){
   try GUI, Ingredient_table:destroy
   CoordMode, mouse, Window
   ; CoordMode, , Screen
-  WinActivate, ahk_exe WFICA32.EXE
+  ifwinnotactive, ahk_exe WFICA32.EXE 
+    WinActivate, ahk_exe WFICA32.EXE
   WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
   ProductTable_X:= LMS_w+LMS_X-50
   ProductTable_Y:= LMS_Y+100
@@ -130,12 +131,14 @@ AddCOASpace(){
 	Mouse_Save()
 	click 74, 64
 	sleep 200
+	ifwinnotactive, Edit Ingredient - \\Remote
 	WinActivate, Edit Ingredient - \\Remote
 	if (Iteration > 0)
 		 sendinput, {Tab 7}{pgdn 2}{end}{enter}{click 283, 559}
 	if (Iteration < 0)
 		sendinput, {tab 7}{pgdn 2}{end}{backspace}{click 283, 559}
 		sleep 200
+	ifwinnotactive, Composition - \\Remote
 	WinActivate, Composition - \\Remote
 	send %mouseReturn%
 	MouseMove, 0, 36, 0, r

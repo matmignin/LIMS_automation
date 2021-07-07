@@ -95,24 +95,169 @@ return
 
 Test_2(){
  Global
- LMS.DetectTab()
- sleep 200
- TT(Tab)
-;  LMS.Orient()
-;  sleep 200
-;  clipboard:=
-;  MouseGetPos, xt, Yt,
-; xtest:= xt - XDivider
-; xtest:= xt - XDivider
-; TT(Xtest " " xt)
-; clipboard:=xtest
-; mousemove % xSamplesTab, YWorkTabs
+/* 
+If !ActiveWindowID
+	WinGet, ActiveWindowID, ID, A
+cyclebackward:=1
+ClipCycleCounter:=1
+ClipCycleFirst:=1
+While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
+	{
+	 Indicator:=""
+	 If (ClipCycleCounter <> 0)
+		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
+	 else
+		ttext:="[cancelled]"
+	 If (oldttext <> ttext)
+		{
+		 ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+		 oldttext:=ttext
+		}
+	 Sleep 100
+	 KeyWait, %hk_cyclebackward% 
+	}
+ToolTip	
+If (ClipCycleCounter > 0)
+	{
+	 ClipText:=History[ClipCycleCounter].text
+	 Gosub, ClipHandler
+	 stats.cyclepaste++
+	 ClipCycleCounter:=1
+	}
+Return:=0
+Return
+
+
+
+ */
  return
 }
 ;------------------------------------------------------------------------------------------------------------------------
 ;---------------------------TEST 3 -----------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
+/* 
 
+ClipHandler:
+oldttext:="", ttext:="", ActiveWindowID:=""
+If (ClipText <> Clipboard)
+	{
+	 StrReplace(ClipText,"`n", "`n", Count)
+		IconExe:="res\" iconT
+	 History.Insert(1,{"text":ClipText,"icon": IconExe,"lines": Count+1})
+	}
+OnClipboardChange("clipFuncOnClipboardChange", 0)
+Clipboard:=ClipText
+OnClipboardChange("ClipFuncOnClipboardChange", 1)
+PasteIt()
+Gosub, CheckHistory
+MenuItemPos:=0
+Return
+
+
+ClipFuncOnClipboardChange() {
+ global
+
+; The built-in variable A_EventInfo contains:
+; 0 if @the clipboard is now empty;
+; 1 if it contains something that can be expressed as text (this includes files copied from an Explorer window);
+; 2 if it contains something entirely non-text such as a picture.
+
+If (A_EventInfo <> 1)
+	Return
+
+;ProcesshWnd:=DllCall("GetClipboardOwner", Ptr) ; may not work for all Executables
+WinGet, ClipboardOwnerProcessName, ProcessName, % "ahk_id " DllCall("GetClipboardOwner", Ptr)
+
+If (ClipboardOwnerProcessName = "")
+	WinGet, ClipboardOwnerProcessName, ProcessName, A
+
+StringLower, ClipboardOwnerProcessName, ClipboardOwnerProcessName ; just in case process has mixed case "KeePass.exe" - Exclude is set to lowercase after IniRead (lib\settings.ahk)
+
+if ClipboardOwnerProcessName in %Exclude%
+	{
+	 ClipboardOwnerProcessName:="",ClipboardPrivate:=1
+	 Return
+	}
+else
+	ClipboardOwnerProcessName:="", ClipboardPrivate:=0
+
+If CopyDelay
+	Sleep % CopyDelay
+
+WinGet, IconExe, ProcessPath , A
+If ((History.MaxIndex() = 0) or (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
+	History.Insert(1,{"text":"Text","icon": IconExe,"lines": 1})
+
+History_Save:=1
+
+; Skipping Excel.exe +
+; Skipping CF_METAFILEPICT avoids "This picture is too large and will be truncated" error MsgBox in Excel it seems
+; this allows the various formats to be stored (temporarily) so we can paste the formatted text which may have been changed by AutoReplace - this avoids the need to turn AR on/off to get something to paste
+If !WinActive("ahk_exe excel.exe")
+	{
+	 If (hk_BypassAutoReplace <> "")
+		{
+		 ClipboardByPass:=ClipboardAll
+		}
+	}
+else ; Excel is active; check CF_METAFILEPICT, if not present we can safely store ClipboardAll
+	If (DllCall("IsClipboardFormatAvailable", "Uint", 3) = 0)
+		ClipboardByPass:=ClipboardAll
+
+if (Clipboard = "") ; or (ScriptClipClipChain = 1) ; avoid empty entries or changes made by script which you don't want to keep
+	Return
+If (Clipboard == History[1].text) ; v1.95
+	{
+	 ClipText:=""
+	 Return
+	}
+ClipText=%Clipboard%
+StrReplace(ClipText, "`n", "`n", Count)
+History.Insert(1,{"text":ClipText,"icon": IconExe,"lines": Count+1})
+Gosub, clipCheckHistory
+stats.copieditems++
+ClipText:=""
+Return
+}
+
+
+ClipCheckHistory: ; check for duplicate entries
+newhistory:=[]
+for k, v in History
+	{
+	 check:=v.text
+	 icon:=v.icon
+	 lines:=v.lines
+	 new:=true
+	 for p, q in newhistory
+		{
+		 if (check == q.text)
+			{
+			 new:=false
+			}
+		}
+	 if new
+		newhistory.push({"text":check,"icon":icon,"lines":lines})
+	 if (A_Index >= MaxHistory)
+		break
+	}
+History:=newhistory
+check:="", new:="", icon:="", lines:=""
+newhistory:=[]
+Return
+
+
+
+
+
+
+
+
+
+
+
+
+ */
 
 
 
@@ -150,7 +295,8 @@ Global
 
 
 AddCanceled(){
- winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
+ ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
+ 	winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
  sendinput,{click 399, 219}{end}'(Canceled'){enter}
 }
 
@@ -160,12 +306,14 @@ blockRepeat(time=200){
 }
 
 ToggleFilter_Test_1(){
+ ifwinnotactive, NuGenesis LMS - \\Remote
  WinActivate, NuGenesis LMS - \\Remote
  click 489, 836, R
  sendinput,{down 2}{enter}
 }
 
 FilterSearch_Test(TestName:="", MethodName:=""){
+ ifwinnotactive, NuGenesis LMS - \\Remote
  WinActivate, NuGenesis LMS - \\Remote
  click 1230, 648 ;click name Divider
  send, ^a%TestName%{enter}

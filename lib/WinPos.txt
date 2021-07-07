@@ -48,3 +48,13 @@ Title="QC LIMS Administrator/ Laboratory Information Specialist",x=1273,y=0,widt
 Title="Wheel.ahk - VQuest - Visual Studio Code",x=-219,y=207,width=974,height=1161
 Title="Citrix Receiver — Mozilla Firefox",x=1881,y=972,width=970,height=1159
 
+SECTION: Monitors=3,MonitorPrimary=1; Desktop size:-609,-1200,3840,2400
+Title="NuGenesis LMS - \\Remote",x=-609,y=-1200,width=1920,height=1154
+Title="ProductTab.ahk - VQuest - Visual Studio Code",x=1622,y=-1080,width=1616,height=1087
+Title="Inbox - mmignin@vitaquest.com - Outlook",x=1311,y=-1080,width=1716,height=1080
+Title="LMS Workbook.xlsb - Excel",x=-8,y=-8,width=1936,height=1216
+Title="SAMPLE LOG 2021.xlsx  -  Read-Only - Excel",x=-8,y=-8,width=1936,height=1216
+Title="QC_Appearance Test.xlsx  -  Read-Only - Excel",x=-8,y=-8,width=1936,height=1216
+Title="Citrix Workspace",x=-32000,y=-32000,width=1085,height=795
+Title="Mozilla Firefox",x=863,y=41,width=970,height=1159
+

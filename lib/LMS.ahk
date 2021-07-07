@@ -126,8 +126,26 @@
 
 	4tap(){
 		global
-		If winactive("NuGenesis LMS - \\Remote")
-			lms.MoveTab("Home")
+		If winactive("NuGenesis LMS - \\Remote") {
+			LMS.Detecttab()
+			if (Tab="Requests")
+				{
+				clk(61, 635) ;enter results
+				Return
+				}
+			else if (Tab="Products")
+				{
+				clk(86, 443) ;edit composition
+				Return
+				}
+			else if (Tab="Specs")
+				{
+				clk(67, 754) ;edit results
+				Return
+				}
+			else
+				Menu.LMS()
+		}
 		Else
 			Autofill()
 		return
@@ -200,13 +218,15 @@ return
 		click, 338, 619
 		TT("wheeldown pressed")
 		Return
-		#ifwinactive, Register new samples - \\Remote
-			F9::
-			ControlGetText, Product, Edit1, VarBar
-			clk(181, 104,2)
-			sleep 300
-			send, %Product%{enter}
-			return
+		numlock::send, % clk(712, 663) "{esc}"
+	
+#ifwinactive, Register new samples - \\Remote
+	F9::
+		ControlGetText, Product, Edit1, VarBar
+		clk(181, 104,2)
+		sleep 300
+		send, %Product%{enter}
+		return
 #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
 	#MaxThreadsPerHotkey 2
 		F9::WorkTab.ChangeTestResults("loop")
@@ -225,6 +245,7 @@ return
   Down::down
   right::right
   up::up
+		numpaddiv::closeWindow()
   <^r::ReloadScript()
   F9::TouchPad.3up()
   F8::TouchPad.3Down()
@@ -233,17 +254,13 @@ return
   ; ~Wheelleft::TouchPad.2left()
   ; ~Wheelright::TouchPad.2right()
   Mbutton::TouchPad.3Tap()
-	\::
-	lms.detectTab()
-	tt(tab)
-	return
 	; numlock::LMS.Movetab("Home")
 	numpadMult::LMS.Movetab("Home")
 	Numpadadd::lms.MoveTab("Right")
 	NumpadSub::lms.MoveTab("Left")
 	; Media_Prev::varbar.SubIteration(20)
 	; Media_next::Varbar.AddIteration(20)
-	numlock::return
+	numlock::touchpad.4tap()
 #IfWinActive,
 	pause::reload
 	` & esc::Pause
@@ -254,7 +271,8 @@ Class LMS {
 
 SearchBar(Code:="",PostCmd:=""){
 		Global
-		WinActivate, ahk_exe WFICA32.EXE
+		ifwinnotactive, ahk_exe WFICA32.EXE 
+			WinActivate, ahk_exe WFICA32.EXE
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
@@ -370,7 +388,8 @@ SearchBar(Code:="",PostCmd:=""){
 
 FilterBar(Code:="",PostCmd:=""){
 	global
-	WinActivate, ahk_exe WFICA32.EXE
+	ifwinnotactive, ahk_exe WFICA32.EXE 
+		WinActivate, ahk_exe WFICA32.EXE
 	ControlGetText, Batch, Edit2, VarBar
 	ControlGetText, Lot, Edit3, VarBar
 	ControlGetText, Product, Edit1, VarBar
@@ -423,7 +442,8 @@ TAB5:=
 TAB6:=
 TAB7:=
 	; LMS.Orient()
-	; winactivate, ahk_exe WFICA32.EXE
+	ifwinnotactive, ahk_exe WFICA32.EXE
+		winactivate, ahk_exe WFICA32.EXE
 	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 				if Tab2 {
@@ -513,7 +533,8 @@ FilterStatus(){
  global
 	FilterOn:=
 	Filter:=
-	winactivate, ahk_exe WFICA32.EXE
+	ifwinnotactive, ahk_exe WFICA32.EXE 
+		winactivate, ahk_exe WFICA32.EXE
 	if WinActive("NuGenesis LMS - \\Remote")
 		PixelSearch, FilterOn, FoundY, %xFilterIcon%, %yFilterIcon%, %xFilterIcon%+2, %YFilterIcon%+2, 0xf9e681, 10, Fast RGB
 			if FilterOn

@@ -50,55 +50,52 @@ TemplateClip:=0
 ;CyclePluginClip:=0
 
 iconlist:="a,c,s,t,x,y,z"
-loop, parse, iconlist, CSV
-	icon%A_LoopField%:="icon-" A_LoopField ".ico"
+	loop, parse, iconlist, CSV
+		icon%A_LoopField%:="icon-" A_LoopField ".ico"
 
-Pause, Off
-Suspend, Off
+	Pause, Off
+	Suspend, Off
 
-Settings()
-Settings_Hotkeys()
+	Settings()
+	Settings_Hotkeys()
 
 ; tray menu
-Menu, Tray, Icon, res\cl3.ico, , 1
-Menu, tray, Tip , %name% %version% 
-Menu, tray, NoStandard
-Menu, tray, Add, %name% %version%     , DoubleTrayClick
-Menu, tray, Icon, %name% %version%    , res\cl3.ico
-Menu, tray, Default, %name% %version% 
-Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
-Menu, tray, Add, &Settings            , TrayMenuHandler
-Menu, tray, Icon,&Settings            , dsuiext.dll, 36
-
-Menu, tray, Add, 
-Menu, tray, Add, &AutoReplace Active  , TrayMenuHandler
-Menu, tray, Add, &FIFO Active         , TrayMenuHandler
-Menu, tray, Add, 
-Menu, tray, Add, &Usage statistics    , TrayMenuHandler
-Menu, tray, Icon,&Usage statistics    , shell32.dll, 278
-Menu, tray, Add, 
-
-Menu, tray, Add, 
-Menu, tray, Add, &Reload this script  , TrayMenuHandler
-Menu, tray, Icon,&Reload this script  , shell32.dll, 239
-Menu, tray, Add, &Edit this script    , TrayMenuHandler
-Menu, tray, Icon,&Edit this script    , comres.dll, 7
-Menu, tray, Add, 
-Menu, tray, Add, &Suspend Hotkeys     , TrayMenuHandler
-Menu, tray, Icon,&Suspend Hotkeys     , %A_AhkPath%, 3
-Menu, tray, Add, &Pause Script        , TrayMenuHandler
-Menu, tray, Icon,&Pause Script        , %A_AhkPath%, 4
-Menu, tray, Add, 
-Menu, tray, Add, &Pause clipboard history, TrayMenuHandler
-Menu, tray, Add, 
-Menu, tray, Add, Exit                 , SaveSettings
-Menu, tray, Icon, %MenuPadding%Exit   , shell32.dll, 132
-
-Menu, ClipMenu, Add, TempText, MenuHandler
-Menu, SubMenu1, Add, TempText, MenuHandler
-Menu, SubMenu2, Add, TempText, MenuHandler
-Menu, SubMenu3, Add, TempText, MenuHandler
-Menu, SubMenu4, Add, TempText, MenuHandler
+	Menu, Tray, Icon, res\cl3.ico, , 1
+	Menu, tray, Tip , %name% %version% 
+	Menu, tray, NoStandard
+	Menu, tray, Add, %name% %version%     , DoubleTrayClick
+	Menu, tray, Icon, %name% %version%    , res\cl3.ico
+	Menu, tray, Default, %name% %version% 
+	Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
+	Menu, tray, Add, &Settings            , TrayMenuHandler
+	Menu, tray, Icon,&Settings            , dsuiext.dll, 36
+	Menu, tray, Add, 
+	Menu, tray, Add, &AutoReplace Active  , TrayMenuHandler
+	Menu, tray, Add, &FIFO Active         , TrayMenuHandler
+	Menu, tray, Add, 
+	Menu, tray, Add, &Usage statistics    , TrayMenuHandler
+	Menu, tray, Icon,&Usage statistics    , shell32.dll, 278
+	Menu, tray, Add, 
+	Menu, tray, Add, 
+	Menu, tray, Add, &Reload this script  , TrayMenuHandler
+	Menu, tray, Icon,&Reload this script  , shell32.dll, 239
+	Menu, tray, Add, &Edit this script    , TrayMenuHandler
+	Menu, tray, Icon,&Edit this script    , comres.dll, 7
+	Menu, tray, Add, 
+	Menu, tray, Add, &Suspend Hotkeys     , TrayMenuHandler
+	Menu, tray, Icon,&Suspend Hotkeys     , %A_AhkPath%, 3
+	Menu, tray, Add, &Pause Script        , TrayMenuHandler
+	Menu, tray, Icon,&Pause Script        , %A_AhkPath%, 4
+	Menu, tray, Add, 
+	Menu, tray, Add, &Pause clipboard history, TrayMenuHandler
+	Menu, tray, Add, 
+	Menu, tray, Add, Exit                 , SaveSettings
+	Menu, tray, Icon, %MenuPadding%Exit   , shell32.dll, 132
+	Menu, ClipMenu, Add, TempText, MenuHandler
+	Menu, SubMenu1, Add, TempText, MenuHandler
+	Menu, SubMenu2, Add, TempText, MenuHandler
+	Menu, SubMenu3, Add, TempText, MenuHandler
+	Menu, SubMenu4, Add, TempText, MenuHandler
 
 ; load clipboard history and templates
 IfNotExist, %A_ScriptDir%\ClipData\History\History.xml
@@ -108,7 +105,7 @@ if (XA_Load( A_ScriptDir "\ClipData\History\History.xml") = 1) ; the name of the
 	Error:=1
 
 If (Error = 1)
-{
+	{
 	 FileCopy, res\history.bak.txt, %A_ScriptDir%\ClipData\History\History.xml, 1
 	 History:=[]
 	 XA_Load(A_ScriptDir "\ClipData\History\History.xml") ; the name of the variable containing the array is returned OR the value 1 in case of error

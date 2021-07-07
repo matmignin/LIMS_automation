@@ -5,6 +5,7 @@ Table(){
 	Try GUI, Spec_Table:destroy
   CoordMode, mouse, Window
  ; CoordMode, , Screen
+ ifwinnotactive, ahk_exe WFICA32.EXE 
 	WinActivate, ahk_exe WFICA32.EXE
  WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
 	; Iniread, SpecTable_X, data.ini, Locations, SpecTable_X

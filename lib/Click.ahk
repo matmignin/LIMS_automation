@@ -105,11 +105,13 @@ OKay(){
   return
  }
  EditTest_1(){
+  ifwinnotactive, NuGenesis LMS - \\Remote
   WinActivate, NuGenesis LMS - \\Remote
   Send,{click, 56, 784 }
   return
  }
  EnterResults(){
+  WinActivate, NuGenesis LMS - \\Remote
   WinActivate, NuGenesis LMS - \\Remote
   click 74, 900
   return

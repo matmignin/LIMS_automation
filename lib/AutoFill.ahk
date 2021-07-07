@@ -112,6 +112,7 @@
 		winactivate,
 		Send,{enter}
 		sleep 200
+		ifwinnotactive, Register new samples - \\Remote
 		winactivate, Register new samples - \\Remote
 	} Else If Winexist("Sign :"){
 		winactivate,

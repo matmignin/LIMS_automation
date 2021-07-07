@@ -61,22 +61,26 @@ rshift & lshift::send, {pgup}
 lshift & rshift::send, {pgdn}
 Lshift::DoublePress("{altdown}{left}{altup}","Backf")
 Rshift::DoublePress("{altdown}{right}{altup}","Forward")
-; ~LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
+LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
+Lalt::send, {altdown}{shiftdown}{up}{shiftup}{altup}
 
-DoublePress(action, ToolTip:=""){
+DoublePress(action,SecondAction:="", ToolTip:=""){
 
   If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
     send, %action%
     tt(ToolTip)
   }
   Else
-    sendinput, {shiftup}{altup}{ctrlup}
+    send % SecondAction "{shiftup}{altup}{ctrlup}"
   Return
 }
 
+
+
 lshift & Appskey::Return
 rshift & Appskey::return
-Lctrl & Appskey::return
+LCtrl & Appskey::return
+Lalt & Appskey::return
 rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 lshift & space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 ;~lshift::f16
