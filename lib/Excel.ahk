@@ -16,7 +16,7 @@ InfoLocations(){
 	Lot:=XL.Range("E4").Value
 	Coated:=xl.range("F4").value
 	Name:=XL.Range("B2").Value
-	Customer:=XL.Range("B3").text
+	Customer:=XL.Range("B3").Value
 	ShipTo:=XL.Range("A3").Value
 	weight:=XL.Range("B6").Text
 	ShapeAndSize:=XL.Range("B5").Value
@@ -24,7 +24,7 @@ InfoLocations(){
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
-	EnvSet, ShipTo, %ShipTo%
+	;EnvSet, ShipTo, %ShipTo%
 	GuiControl, Varbar:Text, Coated, %coated%
 	GuiControl, Varbar:Text, name, %name%
 	GuiControl, varbar:text, Color, %Color%

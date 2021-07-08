@@ -36,13 +36,13 @@ If Lot = "ERROR"
    send, +{tab 2}
   }
   Breaking.Point()
-  sleep 140
+  sleep 180
   if ShipTo
     WorkTab.DropdownSelect(ShipTo)
-  else {
-    WorkTab.DropdownSelect(200)
-    return
-  }
+  ; else {
+  ;   WorkTab.DropdownSelect(200)
+  ;   return
+  ; }
   sleep 300
   Breaking.Point()
   send, {enter}
@@ -64,7 +64,7 @@ DropdownSelect(A_ShipTo){
  AbsSelection:=Abs(A_ShipTo)-1
  if (a_shipto = "-1")
   Sendinput,{end}
- else if (a_%shipto% = "1")
+ else if (a_shipTo = "1")
   Sendinput,{home}
  else if (a_ShipTo > 1)
   sendinput,{home}{right %A_ShipTo%}
