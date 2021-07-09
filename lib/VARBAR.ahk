@@ -7,10 +7,10 @@ KEY_Varbar:
 	F7::Excel.NextSheet()
 	F6::Excel.previoussheet()
 	F20::Varbar.Follow()
-	mbutton::Varbar.LaunchTable()
+	Mbutton::Varbar.LaunchTable()
 	F20 & F6::ProductTab.Table()
 	F20 & F7::SpecTab.Table()
-	Rbutton::Menu.Tables() ; Excel.connect()
+	; Rbutton::Menu.Tables() ; Excel.connect()
 F9::ReloadScript()
 	; #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
 	; 	~wheelright::msgbox, %A_ThisHotkey%

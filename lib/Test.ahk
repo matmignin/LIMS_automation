@@ -41,18 +41,137 @@ class Breaking {
 	}
 	}
 ;------------------------------------------------------------------------------------------------------------------------
-;------------------------------------------------------TEST 1------------------------------------------------------------
+;------------------------------------------------------TEST 1---------------------------------------------- ABC898779849586 --------------
+;------------------------------------------------------TEST 1---------------------------------------------- ABC898779849586 --------------
+;------------------------------------------------------TEST 1---------------------------------------------- ABC898779849586 --------------
 ;------------------------------------------------------------------------------------------------------------------------
 
 
 Test_1(){  ;array - remove duplicates (case insensitive)
-	global
+global
 
-worktab.DeleteRetain()
+try, GUI, Notes:destroy
+
+MyArray:=[]
+	FileRead, LoadedNotes, lib/Notes.txt
+	MyArray := StrSplit(LoadedNotes,"`r`n")
+	LoadedNotes1:=MyArray[1]
+	LoadedNotes2:=MyArray[2]
+	LoadedNotes3:=MyArray[3]
+	LoadedNotes4:=MyArray[4]
+	gui, Notes:add, button, Hidden default gNotesButtonOK, OK {
+	; loop 4 {
+		; TempVar:="vMyEdit".A_index
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit1, %LoadedNotes1%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit2, %LoadedNotes2%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit3, %LoadedNotes3%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit4, %LoadedNotes4%
+OnMessage(0x84, "WM_NCHITTEST")
+OnMessage(0x83, "WM_NCCALCSIZE")
+gui, Notes:color, 836000
+OnMessage(0x203, "Notes_Relocate")
+Gui, Notes: -caption -ToolWindow +owner ;+resize MinSize200x200 maxsize400x400
+	gui, Notes:show,,Notes
+	WinSet, AlwaysOnTop, on, Notes
+	; WinSet, AlwaysOnTop, On5) [, WinTitle, WinText, ExcludeTitle, ExcludeText]
+	return
+	
+	
+	NotesGuiClose:
+	NotesGuiEscape:
+	gui, Notes:destroy
+	return
+	
+	NotesButtonOK:
+	gui, Notes:submit
+	Filedelete, lib/Notes.txt
+	sleep 300
+	; loop 4
+	Fileappend, %MyEdit1%`n, lib/Notes.txt
+	Fileappend, %MyEdit2%`n, lib/Notes.txt
+	Fileappend, %MyEdit3%`n, lib/Notes.txt
+	Fileappend, %MyEdit4%`n, lib/Notes.txt
+	gui, Notes:destroy
+	return
+	
 
 return
-			; tabsToMove=
+
 }
+Notes_Relocate(){
+		global
+		PostMessage, 0xA1, 2
+		keywait, Lbutton, U
+		wingetpos, Notes_x, Notes_y,W,H, Notes ahk_class AutoHotkeyGUI
+		; Excel.Connect()
+		IniWrite, %Notes_x%, data.ini, Locations, Notes_x
+		IniWrite, %Notes_y%, data.ini, Locations, Notes_y
+		sleep 300
+		return
+	}
+WM_NCCALCSIZE()
+{
+    if A_Gui
+        return 0    ; Sizes the client area to fill the entire window.
+}
+
+; Redefine where the sizing borders are.  This is necessary since
+; returning 0 for WM_NCCALCSIZE effectively gives borders zero size.
+
+
+WM_NCHITTEST(wParam, lParam)
+{
+    static border_size = 6
+    
+    if !A_Gui
+        return
+    
+    WinGetPos, gX, gY, gW, gH
+    
+    x := lParam<<48>>48, y := lParam<<32>>48
+    
+    hit_left    := x <  gX+border_size
+    hit_right   := x >= gX+gW-border_size
+    hit_top     := y <  gY+border_size
+    hit_bottom  := y >= gY+gH-border_size
+    
+    if hit_top
+    {
+        if hit_left
+            return 0xD
+        else if hit_right
+            return 0xE
+        else
+            return 0xC
+    }
+    else if hit_bottom
+    {
+        if hit_left
+            return 0x10
+        else if hit_right
+            return 0x11
+        else
+            return 0xF
+    }
+    else if hit_left
+        return 0xA
+    else if hit_right
+        return 0xB
+    
+    ; else let default hit-testing be done
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
 	/*
@@ -95,41 +214,17 @@ return
 
 Test_2(){
  Global
-/* 
-If !ActiveWindowID
-	WinGet, ActiveWindowID, ID, A
-cyclebackward:=1
-ClipCycleCounter:=1
-ClipCycleFirst:=1
-While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
+; WorkTab_PickCustomer(){
+	if !CustomerSelection 
 	{
-	 Indicator:=""
-	 If (ClipCycleCounter <> 0)
-		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
-	 else
-		ttext:="[cancelled]"
-	 If (oldttext <> ttext)
-		{
-		 ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-		 oldttext:=ttext
-		}
-	 Sleep 100
-	 KeyWait, %hk_cyclebackward% 
+		InputBox, CustomerSelection, what is the count?
+		return
 	}
-ToolTip	
-If (ClipCycleCounter > 0)
-	{
-	 ClipText:=History[ClipCycleCounter].text
-	 Gosub, ClipHandler
-	 stats.cyclepaste++
-	 ClipCycleCounter:=1
-	}
-Return:=0
-Return
+	else
+sendinput, {tab}{home}{right}{right %CustomerSelection%}{enter}
+return
 
-
-
- */
+ 
  return
 }
 ;------------------------------------------------------------------------------------------------------------------------

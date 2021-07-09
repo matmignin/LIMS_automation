@@ -58,3 +58,12 @@ Title="QC_Appearance Test.xlsx  -  Read-Only - Excel",x=-8,y=-8,width=1936,heigh
 Title="Citrix Workspace",x=-32000,y=-32000,width=1085,height=795
 Title="Mozilla Firefox",x=863,y=41,width=970,height=1159
 
+SECTION: Monitors=2,MonitorPrimary=2; Desktop size:0,0,2560,2640
+Title="Book17 - Excel - \\Remote",x=0,y=0,width=1280,height=1440
+Title="NuGenesis LMS - \\Remote",x=416,y=1486,width=1774,height=1128
+Title="VScode.ahk - VQuest - Visual Studio Code",x=-8,y=-8,width=2576,height=1456
+Title="Book18 - Excel - \\Remote",x=143,y=147,width=1920,height=1025
+Title="AHK | Vitaquest Workspace (List)",x=605,y=397,width=1257,height=797
+Title="Citrix Workspace",x=0,y=0,width=1,height=1
+Title="LMS Workbook.xlsb - Excel",x=-8,y=-8,width=2576,height=1456
+

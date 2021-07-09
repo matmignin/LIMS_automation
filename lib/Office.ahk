@@ -5,20 +5,20 @@
  F20 & down::WinMove, ahk_exe explorer.exe, , 1162, 427, 1405, 1140
  F20 & right::WinMove, ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
  F9::send, {lwindown}{e}{lwinup}
- F6::send, {lwindown}{s}{lwinup}
+ F7::send, {lwindown}{s}{lwinup}
 ;  Media_Play_Pause::send,{space}
  F19 & Browser_Forward::Excel.NextSheet()
  F19 & Browser_Back::Excel.PreviousSheet()
- F7::
+ F6::
  send,{CtrlDown}{e}{Ctrlup}
  sleep 200
- sendinput, %product%{enter}
+ send, %product%{enter}
  return
 
 
 	#IfWinActive, LMS Workbook.xlsb
 	F9::Excel.Connect(1)
-	MButton::Excel.Connect(1)
+	Mbutton::Excel.Connect(1)
 	F19 & backspace::delete
 	F19 & down::^down
 	F19 & up::^up
@@ -114,7 +114,7 @@ KEY_OneNote:
 	^2::send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
 	^3::send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
 	^4::send,{Ctrldown}{1}{CtrlUp}
-	$mbutton up::sendinput,{ctrlup}
+	$Mbutton up::sendinput,{ctrlup}
 	F20 up::PasteScreenshot()
 		PasteScreenshot(){
 		sleep 200
@@ -148,5 +148,5 @@ F13::TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 
 			; F19::menu.Remote_Login()
 		#ifwinactive, ahk_class TscShellContainerClass
 			; F19::menu.Remote_Desktop()
-			mbutton::menu.Remote_Desktop()
+			Mbutton::menu.Remote_Desktop()
 

@@ -2,11 +2,14 @@
 
 KEY_Snipper:
  #IfWinActive, Snipper - Snipaste ; the capture screen
- numpadDiv::send, {altdown}{click}{altup}
+ 
+ numpadDiv::send, !{click}
  rbutton::send,{CtrlDown}{c}{Ctrlup}
  F8::send,{esc}
- mbutton::send, {altdown}{click}{altup}
+; Mbutton::esc
 
+
+return
  ;WheelDown::wheel("^1")
  
  ;Wheelup::Wheel("^5")
@@ -21,17 +24,23 @@ KEY_Snipper:
 												; 	else
 												; 		DDLProducts .= "|" Products[A_index]
 #IfWinActive, Paster - Snipaste ; the floating window
-;  Mbutton::send, {Click, R}{e}
- F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
+; Mbutton::esc
+
+;  F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
  F8::send,{esc}
-  Space::send, {esc}
- F19::sendinput, ^c
+ 
+  
+;  F9::sendinput, ^c
  F7::sendinput, ^+{+}
+ numpadDiv::send, !{click}
  F6::sendinput, ^+{-}
 #If mouse_isover("Paster - Snipaste ahk_class")
  sendlevel 1
  numpadDiv::send, !{click}
   F8::send,{esc}
+; Mbutton::esc
+	
+
  sendlevel 0
  #if
 

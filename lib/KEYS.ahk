@@ -2,6 +2,23 @@
 
 
 KEY_DEFAULT:
+~<+rshift::alttab
+~>+lshift::ShiftAltTab
+
+
+; #ifwinactive, Task Switching ahk_exe explorer.exe
+; $lshift::left
+; $rshift::right
+; rshift & lshift::tab
+; lshift & rshift::+tab
+lshift & Appskey::Return
+rshift & Appskey::return
+; #IfWinActive, 
+; lshift & Appskey::Return
+; rshift & Appskey::return
+;#IfWinExist ahk_group AltTabWindow  ; Indicates that the alt-tab menu is present on the screen.
+;*space::AltTabMenuDismiss  ; The * prefix allows it to fire whether or not Alt is held down.
+;#If
 
  <^;::sendinput, %Timestring%{space}
  ~Lbutton & left::sendinput, %SampleID%
@@ -18,12 +35,11 @@ F20 & /::send, %SampleID%
  ` & 3::Test_3()
 ;  ~esc::esc
 ; #MaxThreadsPerHotkey 1
- Media_Play_Pause::Test(iteration)
  `::`
  /::/
 
 ;[_Mbutton_]
- rshift & lbutton::sendinput,{shiftDown}{click}{shiftup}
+ ~>+lbutton::sendinput,{shiftDown}{click}{shiftup}
  Mbutton & F20::SendPassword()
  Mbutton & Lbutton::sendinput,{CtrlDown}{Lbutton}{CtrlUp}
  Mbutton & WheelDown::sendinput,{ctrldown}{WheelDown}{CtrlUp}
@@ -31,7 +47,7 @@ F20 & /::send, %SampleID%
  ;Rbutton & F13::sendinput,{F21}
  Mbutton & F7::Wheel_Right()
  Mbutton & F6::Wheel_left()
-
+Mbutton::send, {Mbutton}
 ;[_Rbutton_]
  Rbutton & Wheelup::Wheel_cut() 
  Rbutton & Wheeldown::Wheel_paste()
@@ -39,7 +55,10 @@ F20 & /::send, %SampleID%
  Rbutton & F6::Backspace
  Rbutton & Lbutton::Enter
  Rbutton::Mouse_RbuttonUP()
- Lctrl & Space::menu.LMS()
+
+ 
+ 
+ <^Space::menu.LMS()
  F9 & Lbutton::sendinput,{Ctrldown}{Click}{CtrlUp}
  F9 & Rbutton::sendinput,{shiftdown}{Click}{shiftup}
   #If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F20 & Space" && A_TimeSincePriorHotkey < 2000) 
@@ -67,8 +86,8 @@ F20 & 0::SavedWindow_Restore()
  F19 & backspace::send,{delete}
  F19 & lbutton::send,{shiftDown}{click}{shiftup}
 ;  F20 & F19::Menu.LMS()
-
- F19 & Rbutton::Clip("OCR")
+ F20 & Rbutton::Clip("OCR")
+; Rbutton & Appskey::return
  F20 & F7::Excel.NextSheet()
  F20 & F6::Excel.PreviousSheet()
  F20 & backspace::run, Taskmgr.exe

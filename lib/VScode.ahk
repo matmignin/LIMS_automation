@@ -1,9 +1,54 @@
 
 
 #IfWinActive, ahk_exe Code.exe
-; Sendinput, %Batch%
 
 
+  ; $numpadMult:: send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}  ;4up
+ numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
+ numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
+
+~Space & Lctrl::Backspace
+  Mbutton:: 
+     TT(A_ThisHotkey,600,,,2)
+     Input, Akey, T0.6 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{numlock}
+      If InStr(ErrorLevel, "EndKey:")
+      {
+        If InStr(ErrorLevel, "NumpadAdd")
+          send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
+        If InStr(ErrorLevel, "NumpadSub")
+          send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
+        If InStr(ErrorLevel, "NumpadMult")
+          send, {altdown}{ctrldown}{up}{ctrlup}{altup}
+        If InStr(ErrorLevel, "Numpaddiv") {
+          send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+          TT("column select",3000)
+        }
+        If InStr(ErrorLevel, "F9")
+          send, {pgup}
+        If InStr(ErrorLevel, "F6")
+          send, {altDown}{lwindown}{o}{lwinup}{altup}
+        If InStr(ErrorLevel, "F7")
+          send, {ctrldown}{f}{ctrlup}
+        If InStr(ErrorLevel, "F8")
+        send, {pgdn}
+          
+        exit
+      }
+      If ErrorLevel = TimeOut
+      {
+          ; TT("Previous ",800)
+          send, {ctrldown}{f}{ctrlup}
+          exit
+      }
+      return
+  ; Mbutton::sendinput, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup} ;search
+  F6::send, {altDown}{left}{altup}
+  F7::send, {altDown}{right}{altup}
+  F8::ToggleDefinition()
+  F9::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
+  numpadadd::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+  numpadsub::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+  
 
 F20 & Right::WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
 F20 & Down::WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
@@ -17,32 +62,28 @@ F19 & =::send, {ctrldown}{=}{ctrlup}
 ; lwin::
 ; winactivate, ahk_exe WFICA32.EXE 
 ; Test_3()
-; return
+;  
 ; Tooltip()
-~Wheelleft::send, {altdown}{left}{altup}
-  var++
-  If var>=2
-  {
-    send, {altdown}{left}{altup}
-  }
-  SetTimer, clearVar, -100
-  return
-~wheelright::send, {altdown}{right}{altup}
-  var++
-  If var>=2
-    {
-      send, {altdown}{right}{altup}
-    }
-  SetTimer, clearVar, -100
-return
+; ~Wheelleft::send, {altdown}{left}{altup}
+;   var++
+;   If var>=2
+;   {
+;     send, {altdown}{left}{altup}
+;   }
+;   SetTimer, clearVar, -100
+;   return
+; ~wheelright::send, {altdown}{right}{altup}
+;   var++
+;   If var>=2
+;     {
+;       send, {altdown}{right}{altup}
+;     }
+;   SetTimer, clearVar, -100
+; return
 
-; Media_play_pause::send,{shiftdown}{altdown}{d}{altup}{shiftup}
-; f20 & right::winmove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
-; f19 & space::sendinput,{ctrldown}{shiftdown}p{shiftup}{ctrlup}
-<^j::^down
-<^k::^up
-<!k::+^up
-<!j::+^down
+
+; <!k::+^up
+; <!j::+^down
 ; $<^l::sendinput,{ctrldown}]{ctrlup}
 ; $<^h::sendinput,{ctrldown}[{ctrlup}
 ; $<^right::sendinput,{ctrldown}]{ctrlup}
@@ -54,35 +95,35 @@ tab::tab
 <^r::reloadscript()
 ; f19 & lctrl::send,{ctrldown}{tab}{ctrlup}
 
-; ~lctrl & f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+<^f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 
 
-rshift & lshift::send, {pgup}
-lshift & rshift::send, {pgdn}
-Lshift::DoublePress("{altdown}{left}{altup}","Backf")
-Rshift::DoublePress("{altdown}{right}{altup}","Forward")
+
+Lshift::DoublePress("{altdown}{left}{altup}",,"Backward")
+Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
 LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
-Lalt::send, {altdown}{shiftdown}{up}{shiftup}{altup}
+; Lalt::send, {altdown}{shiftdown}{up}{shiftup}{altup}
 
 DoublePress(action,SecondAction:="", ToolTip:=""){
 
   If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
-    send, %action%
+    send, %action%{shiftup}{altup}{ctrlup}{lwinup}
     tt(ToolTip)
   }
   Else
-    send % SecondAction "{shiftup}{altup}{ctrlup}"
+    send % SecondAction "{shiftup}{altup}{ctrlup}{lwinup}"
   Return
 }
 
 
 
-lshift & Appskey::Return
-rshift & Appskey::return
 LCtrl & Appskey::return
-Lalt & Appskey::return
+; Lalt & Appskey::return
+Lwin & Appskey::return
+Lwin::doublepress("{backspace}")
 rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-lshift & space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
+<^lwin::delete
+<+space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 ;~lshift::f16
 ;~rshift::f17
 rbutton & f7::wheel_2("!{right}",10)
@@ -91,8 +132,8 @@ rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}
 rbutton & wheeldown::wheel_2("{ctrldown}v{ctrlup}",2000)
 rbutton & wheelup::wheel_2("{ctrldown}x{ctrlup}",2000)
 rbutton & f19::vs_code_windowinfo()
-
-$rbutton up::mouse_rbuttonup()
+^s::sendinput, {ctrldown}{end}{ctrlup}
+; $rbutton up::mouse_rbuttonup()
 media_play_pause::f9
 ; f20 & lbutton::^+4
 f9 & f6::return
@@ -101,11 +142,15 @@ f9 & wheeldown::toggledefinition() ;next search
 
 f9 & wheelup::wheel_2("{shiftdown}{altdown}{up}{altup}{shiftup}",50)
 
-f19 & h::send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-f19 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-f19 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
-f19 & l::send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
-f19 & backspace::delete
+F20 & h::send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+F20 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+F20 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+F20 & l::send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
+F19 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+F19 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+F19 & l::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+F19 & h::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+F20 & backspace::delete
 ; f19 & down::^down
 ; f19 & up::^up
 ; f19 & left::^left
@@ -122,7 +167,7 @@ f19 & f7::send,{ctrldown}{]}{ctrlup}
 f19 & wheeldown::send,{ctrldown}{down}{ctrlup}
 f19 & wheelup::send,{ctrldown}{up}{ctrlup}
 f19 & lbutton::send,{ctrldown}{click}{ctrlup}
-~Lctrl & Space::vscode_menu()
+; ~Lctrl & Space::vscode_menu()
 
 ; #If WinActive("ahk_exe Code.exe") && Getkeystate("F13","p") ;editor
 

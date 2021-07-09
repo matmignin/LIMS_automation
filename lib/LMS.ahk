@@ -117,6 +117,11 @@
 			ProductTab.EditProduct()
 		else If WinActive("Select tests for request: R")
 			WorkTab.SelectTestSample()
+		else If WinActive("Paster - Snipaste") || WINACTIVE("Snipper - Snipaste") {
+			sendlevel 1
+			 send, {ctrldown}{7}{ctrlup}
+			 sendlevel 0
+		}
 		Else
 			Autofill()
 		return
@@ -189,22 +194,22 @@ return
 
 
 
-~Wheelleft::
-var++
-If var>=39
-   {
-   click 326, 120
-   }
-SetTimer, clearVar, -40
-return
-~wheelright::
-var++
-If var>=35
-   {
-   click 21, 115
-   }
-SetTimer, clearVar, -40
-return
+; Wheelleft::
+; var++
+; If var>=39
+;    {
+;    click 326, 120
+;    }
+; SetTimer, clearVar, -40
+; return
+; ~wheelright::
+; var++
+; If var>=35
+;    {
+;    click 21, 115
+;    }
+; SetTimer, clearVar, -40
+; return
  
 clearVar:
 var:=0

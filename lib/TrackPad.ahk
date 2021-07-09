@@ -14,9 +14,12 @@
   numpaddiv::send, {numpadDiv}  ;4down clear filter
   lbutton::send, {Lbutton}
   Numlock::Send, {Numlock}
-  mbutton::send, {mbutton}
+  Mbutton::send, {Mbutton}
   wheelup::send, {WheelUp}
-  ; mbutton::send, {mbutton}
+  wheelleft::send, {Wheelleft}
+  wheelright::send, {Wheelright}
+  
+  ; Mbutton::send, {Mbutton}
   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
   #If
  
@@ -61,7 +64,7 @@ numpaddiv::#down
 ; ;   ; numpadmult::send, +#{up} ;4up
 ; ;   lbutton::send, ^{click}
 ; ;   ; Numlock::Send, +#{right}
-; ;   mbutton::send, {shiftDown}{click}{shiftup}
+; ;   Mbutton::send, {shiftDown}{click}{shiftup}
 ; ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ; ;   #If
 ;   numpaddiv::
@@ -85,7 +88,7 @@ numpaddiv::#down
 ;   numpaddiv::CloseWindow() ;4down clear filter
 ;   lbutton::send, ^{click}
 ;   ; Numlock::Send, +#{right}
-;   mbutton::send, {shiftDown}{click}{shiftup}
+;   Mbutton::send, {shiftDown}{click}{shiftup}
 ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ;   #If
 ;   numpadmult::
@@ -121,6 +124,8 @@ numpaddiv::#down
           send, {ctrldown}{w}{ctrlup}
         If InStr(ErrorLevel, "F8")
           send, {ctrldown}{`}{ctrlup}
+        If InStr(ErrorLevel, "WheelLeft")
+          send, {ctrldown}{altdown}{h}{altup}{ctrlup}
         exit
       }
       If ErrorLevel = TimeOut
@@ -135,57 +140,6 @@ numpaddiv::#down
   
 
   
-  
-#IfWinActive, ahk_exe Code.exe
-
-  ; $numpadMult:: send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}  ;4up
- numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
- numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
-
-
-
-
-  Mbutton:: 
-     TT(A_ThisHotkey,600,,,2)
-     Input, Akey, T0.6 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{numlock}
-      If InStr(ErrorLevel, "EndKey:")
-      {
-        If InStr(ErrorLevel, "NumpadAdd")
-          send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
-        If InStr(ErrorLevel, "NumpadSub")
-          send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
-        If InStr(ErrorLevel, "NumpadMult")
-          send, {altdown}{ctrldown}{up}{ctrlup}{altup}
-        If InStr(ErrorLevel, "Numpaddiv") {
-          send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-          TT("column select",3000)
-        }
-        If InStr(ErrorLevel, "F9")
-          send, {pgup}
-        If InStr(ErrorLevel, "F6")
-          send, {altDown}{lwindown}{o}{lwinup}{altup}
-        If InStr(ErrorLevel, "F7")
-          send, {ctrldown}{f}{ctrlup}
-        If InStr(ErrorLevel, "F8")
-        send, {pgdn}
-          
-        exit
-      }
-      If ErrorLevel = TimeOut
-      {
-          ; TT("Previous ",800)
-          send, {ctrldown}{f}{ctrlup}
-          exit
-      }
-      return
-  ; Mbutton::sendinput, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup} ;search
-  F6::send, {altDown}{left}{altup}
-  F7::send, {altDown}{right}{altup}
-  F8::ToggleDefinition()
-  F9::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
-  numpadadd::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
-  numpadsub::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
-  ; numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{ShiftUp}{lwinup}{altup}
   
   
 

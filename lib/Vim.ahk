@@ -2,13 +2,20 @@
 
 
 	VIM:
+	#If !Getkeystate("F13","p") && Getkeystate("LControl","p")
+	j::^down
+	k::^up
+	h::^[
+	l::^]
 	#If Getkeystate("F13","p")
 
 	lbutton::vscode_menu()
 	n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
 	; ^n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
-	tab::send,{ctrldown}{]}{ctrlup}
+	tab::send, {shiftdown}{altdown}{q}{altup}{shiftup}
 	f20::pgdn
+		f::Vim.find("f")
+	
 	;#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
 
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
@@ -30,10 +37,25 @@
 #If (A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
 	g::Send, ^{home}
 	; #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
-	; p::send,{end}{enter}^v
-#If Getkeystate("F13","p")
+	; p::send,{end}{enter}^v && 
+#If Getkeystate("F13","p") && Getkeystate("LControl","p")
+j::send,{shiftdown}{down}{shiftup}
+l::send,{shiftdown}{right}{shiftup}
+h::send,{shiftdown}{left}{shiftup}
+k::send,{shiftdown}{up}{shiftup}
+w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+0::send,{shiftdown}{Home}{shiftup}
+4::send,{shiftdown}{end}{shiftup} 
+m::send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+u::send,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
+Space::send,{shiftdown}{altDown}{a}{shiftup}{altup}
+q::send, {shiftdown}{lwindown}{ctrldown}{q}{ctrlup}{lwinup}{shiftup}
+; f::send,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
+#If Getkeystate("F13","p") && !Getkeystate("LControl","p")
 	; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
 	p::Vim.Paste()
+	q::send, {altdown}{,}{altup}
+	
 	1::F1
 	2::F2
 	; 3::F3
@@ -42,10 +64,10 @@
 	e::Sendinput, ^{right}
 	^e::Sendinput, +^{right}
 	`::esc
-	j::down
 	; space::F17
 	^space::send,{altDown}{ctrldown}{a}{ctrlup}{altup}
 	v::send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+	j::down
 	k::Up
 	t::!down
 	s::send,{shiftdown}{altDown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
@@ -86,18 +108,13 @@
 	right::sendinput,{ctrldown}{]}{Ctrlup}
 	; f::sendinput,{esc}{ctrldown}{f}{Ctrlup}
 	,::sendinput,{Altdown}{ctrldown}{/}{ctrlup}{altup}
-	Lctrl & Space::sendinput,{shiftdown}{altDown}{a}{shiftup}{altup}
+
 	f::Vim.find("f")
+	; f::send, {shiftdown}{altdown}{f}{altup}{shiftup}
 	'::"
 	m::Sendinput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
 	u::sendinput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup}
-	<^j::send,{shiftdown}{down}{shiftup}
-	<^l::send,{shiftdown}{right}{shiftup}
-	<^h::send,{shiftdown}{left}{shiftup}
-	<^k::send,{shiftdown}{up}{shiftup}
-	<^w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-	$<^0::send,{shiftdown}{Home}{shiftup}
-	$<^4::send,{shiftdown}{end}{shiftup}
+
 	Lctrl & m::send,{shiftdown}{altDown}{right}{altup}{shiftup}
 	lctrl & u::send,{shiftdown}{altDown}{left}{altup}{shiftup}
 	up::sendinput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
