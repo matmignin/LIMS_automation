@@ -2,12 +2,15 @@
 
 #IfWinActive, ahk_exe Code.exe
 
-
+Tab & h::^[
+Tab & l::^]
+Tab & j::down
+Tab & k::up
+  
   ; $numpadMult:: send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}  ;4up
  numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
  numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
-
-~Space & Lctrl::Backspace
+; ~Space & Lctrl::Backspace
   Mbutton:: 
      TT(A_ThisHotkey,600,,,2)
      Input, Akey, T0.6 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{numlock}
@@ -124,8 +127,10 @@ Lwin::doublepress("{backspace}")
 rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 <^lwin::delete
 <+space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
-;~lshift::f16
-;~rshift::f17
+F13 & lshift::pgup
+F13 & rshift::pgdn
+$>+F13::pgup
+$<+F13::pgdn
 rbutton & f7::wheel_2("!{right}",10)
 rbutton & f6::wheel_2("!{left}",10)
 rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}
@@ -166,14 +171,14 @@ f19 & f6::send,{ctrldown}{[}{ctrlup}
 f19 & f7::send,{ctrldown}{]}{ctrlup}
 f19 & wheeldown::send,{ctrldown}{down}{ctrlup}
 f19 & wheelup::send,{ctrldown}{up}{ctrlup}
-f19 & lbutton::send,{ctrldown}{click}{ctrlup}
+f19 & lbutton::^lbutton
 ; ~Lctrl & Space::vscode_menu()
 
 ; #If WinActive("ahk_exe Code.exe") && Getkeystate("F13","p") ;editor
 
 
 
-F13::send, {esc}{ctrlup}{altup}
+F13 up::send, {esc}{ctrlup}{altup}
 ;FUNCTIONS-----------------------------------------------------------
 #IfWinActive, 
 
@@ -308,8 +313,7 @@ F2::Run, WindowSpy.ahk, C:\Program Files\AutoHotkey\
 $+F12::ListLines
 ;:HelpFile:
 #ifwinactive, C:\Users\mmignin\Documents\VQuest\Vquest.ahk - AutoHotkey
-Media_Play_Pause::F5
-
+Media_Play_Pause::test_1()
 
 
 VScode_menu(){
@@ -403,7 +407,7 @@ return
 TT(msg, time=1500, X:="",Y:="",W:="") {
 	global
 	tooltip, %msg%, %X%, %Y%,%W%
-	SetTimer, RemoveToolTip%W%, -%time%
+	SetTimer, RemoveToolTip%W%, -%time% 
 return
 
 
@@ -428,3 +432,9 @@ ToolTip,,,,3
 N=0
 return
 }
+
+; SetTitleMatchMode 2
+#IfWinActive Visual Studio Code
+    ; on LALT key-up, send ALT+SHIFT+I
+    lalt Up::SendInput !+i
+#IfWinActive

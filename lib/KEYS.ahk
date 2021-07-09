@@ -5,7 +5,6 @@ KEY_DEFAULT:
 ~<+rshift::alttab
 ~>+lshift::ShiftAltTab
 
-
 ; #ifwinactive, Task Switching ahk_exe explorer.exe
 ; $lshift::left
 ; $rshift::right
@@ -30,6 +29,7 @@ F20 & /::send, %SampleID%
 / & right::send, %Lot%
 / & up::send, %SampleID%
 ; #MaxThreadsPerHotkey 2
+ Media_Play_Pause::Test_1()
  ` & 1::Test_1()
  ` & 2::Test_2()
  ` & 3::Test_3()
@@ -84,7 +84,7 @@ F20 & 0::SavedWindow_Restore()
  F19 & Space::send, %product%
  F20 & Space::Sendinput, %batch%
  F19 & backspace::send,{delete}
- F19 & lbutton::send,{shiftDown}{click}{shiftup}
+ 
 ;  F20 & F19::Menu.LMS()
  F20 & Rbutton::Clip("OCR")
 ; Rbutton & Appskey::return
@@ -106,6 +106,7 @@ F20 & 0::SavedWindow_Restore()
  F20 & l::OpenApp.LMS()
  F20 & F19::send, {F22}
 F19 & F20::menu.Variables()
+F19 & lbutton::^Lbutton
  ~F20::Clip_C()
  ~F19::Clip_V()
 

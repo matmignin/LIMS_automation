@@ -213,7 +213,7 @@ tPhk:=A_TimesincePriorHotkey
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
  #MaxHotkeysPerInterval 120
-;  #HotkeyModifierTimeout 500
+ #HotkeyModifierTimeout 50
  #maxthreadsperhotkey, 1
  SetKeyDelay, 0, 0
  setwindelay,400

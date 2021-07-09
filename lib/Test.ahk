@@ -59,13 +59,25 @@ MyArray:=[]
 	LoadedNotes2:=MyArray[2]
 	LoadedNotes3:=MyArray[3]
 	LoadedNotes4:=MyArray[4]
+	LoadedNotes4:=MyArray[5]
+	LoadedNotes4:=MyArray[6]
+	LoadedNotes4:=MyArray[7]
+	LoadedNotes4:=MyArray[8]
+	LoadedNotes4:=MyArray[9]
+	LoadedNotes4:=MyArray[10]
 	gui, Notes:add, button, Hidden default gNotesButtonOK, OK {
 	; loop 4 {
 		; TempVar:="vMyEdit".A_index
-	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit1, %LoadedNotes1%
-	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit2, %LoadedNotes2%
-	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit3, %LoadedNotes3%
-	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyEdit4, %LoadedNotes4%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vmyEdit1, %LoadedNotes1%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit2, %LoadedNotes2%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit3, %LoadedNotes3%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit4, %LoadedNotes4%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit5, %LoadedNotes5%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit6, %LoadedNotes6%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit7, %LoadedNotes7%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit8, %LoadedNotes8%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit9, %LoadedNotes9%
+	gui, Notes:add, edit, w100 -Choose -VScroll +resize -WantReturn vMyedit10,%LoadedNotes10%
 OnMessage(0x84, "WM_NCHITTEST")
 OnMessage(0x83, "WM_NCCALCSIZE")
 gui, Notes:color, 836000
@@ -89,8 +101,14 @@ Gui, Notes: -caption -ToolWindow +owner ;+resize MinSize200x200 maxsize400x400
 	; loop 4
 	Fileappend, %MyEdit1%`n, lib/Notes.txt
 	Fileappend, %MyEdit2%`n, lib/Notes.txt
-	Fileappend, %MyEdit3%`n, lib/Notes.txt
-	Fileappend, %MyEdit4%`n, lib/Notes.txt
+	Fileappend, %Myedit3%`n, lib/Notes.txt
+	Fileappend, %Myedit4%`n, lib/Notes.txt
+	Fileappend, %Myedit5%`n, lib/Notes.txt
+	Fileappend, %Myedit6%`n, lib/Notes.txt
+	Fileappend, %Myedit7%`n, lib/Notes.txt
+	Fileappend, %Myedit8%`n, lib/Notes.txt
+	Fileappend, %Myedit9%`n, lib/Notes.txt
+	Fileappend, %Myedit10%`n, lib/Notes.txt
 	gui, Notes:destroy
 	return
 	

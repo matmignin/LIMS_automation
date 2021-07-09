@@ -47,7 +47,7 @@ Class VarBar{
 			IniWrite, %Varbar_y%, data.ini, Locations, VarBar_Y
 		}
 		if (Destroy:="Reset")
-			GUI, VarBar:destroy
+		GUI, VarBar:destroy
 		Gui Varbar:Default
 		Gui VarBar: +LastFound +AlwaysOnTop -Caption +ToolWindow +owner
 		; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
@@ -73,11 +73,11 @@ Class VarBar{
 		GUI, VarBar:Font, s7 cBlack , arial
 		Gui, VarBar:add, Edit, vSampleID gSampleIDVarbar x192 H19 y-2 w90, %SampleID%
 		GUI, VarBar:Font, s7 cBlack , arial
-			; If Coated
-				; Gui, VarBar:add, Edit, vCoated gCoatedVarbar x132 H19 y15 w60, %Coated%
+		; If Coated
+		; Gui, VarBar:add, Edit, vCoated gCoatedVarbar x132 H19 y15 w60, %Coated%
 		GUI, VarBar:Font, s8 cBlack , Consolas
 		GUI, VarBar:Font, s12 cBlack Bold, Consolas
-				Gui, VarBar:Add, text, vIteration x310 y-1 w70, 
+		Gui, VarBar:Add, text, vIteration x310 y-1 w70,
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:Add, text, vDepartment x320 right y3 w80, %Department%
 		; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%

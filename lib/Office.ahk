@@ -61,7 +61,7 @@ KEY_OUTLOOK:
 	F19 & enter::send, {ctrldown}{enter}{ctrlup}
 	F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, , 1205, -1080, 1620, 1080 
+	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::Clip()
 	Mbutton::
 		Click 3
@@ -136,6 +136,8 @@ KEY_OneNote:
 		send, ^v
 		return
 		}
+F20 & Right::WinMove, OneNote 10, , 1626, -1080, 1612, 1087
+
 #IfWinActive,
 
 

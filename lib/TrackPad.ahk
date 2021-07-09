@@ -24,7 +24,6 @@
   #If
  
 
- 
 #If getkeystate("lbutton","p")
   space::send, ^{click}
   F19::menu.LMS()

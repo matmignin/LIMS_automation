@@ -1,5 +1,5 @@
 Clip(input=0){
-  global
+  global  tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
   ClipboardSaved:=Clipboard
   If Input contains OCR
   {
@@ -8,19 +8,18 @@ Clip(input=0){
     return
   }
   clipboard:=
-  sleep 20
-  cProduct:=
-  cBatch:=
-  cLot:=
-  cCoated:=
-  cSampleID:=
-  cAnalytical:=
-  cMicro:=
-  cRetain:=
-  cPhysical:=
-  cCTPhysical:=
-  cCTRetain:=
-  Department:=
+  ; cProduct:=
+  ; cBatch:=
+  ; cLot:=
+  ; cCoated:=
+  ; cSampleID:=
+  ; cAnalytical:=
+  ; cMicro:=
+  ; cRetain:=
+  ; cPhysical:=
+  ; cCTPhysical:=
+  ; cCTRetain:=
+  ; Department:=
   if (input=="cut")
     send, ^x
   else
@@ -38,24 +37,24 @@ Clip(input=0){
   }
 
   
-  ; CoordMode, Tooltip, Screen
-  ; CoordMode, Tooltip, Relative
-  sleep 20
-  RegExMatch(Clipboard, "[ABDEFGLHKJIabdefglhkji]\d{3}\b", cProduct)
-  RegExMatch(Clipboard, "(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
+  ; CoordMode  , Tooltip, Screen
+  ; CoordMode  , Tooltip, Relative
+    sleep      20
+    RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", cProduct)
+    RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
   ; RegExMatch(Clipboard, "(?<=Coated: )\b\d{3}-\d{4}\b", cCoated)
-  RegExMatch(Clipboard, "([Cc]oated: |/?[Cc][Tt]#|[Cc][Tt] |[Cc]oated)\d{3}-\d{4}\b", cCoated)
+    RegExMatch(Clipboard, "i)(coated: |/?ct# |/?ct#|ct |coated )\d{3}-\d{4}\b", cCoated)
   ; RegExMatch(Clipboard, "(?<=Ct# )|(?<=Coated.?)\b\d{3}-\d{4}\b", cCoated)
-  RegExMatch(cCoated, "\d{3}-\d{4}", cCoated)
-  RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
-  RegExMatch(Clipboard, "\b[Ss]\d{8}-\d{3}\b", cSampleID)
-  Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-  Regexmatch(Clipboard, "((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-  Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-  Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-  Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-  Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
-  Sleep 20
+    RegExMatch(cCoated,   "\d{3}-\d{4}", cCoated)
+    RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+    RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
+    Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+    Regexmatch(Clipboard, "((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+    Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+    Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+    Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+    Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+    Sleep      20
 
     ; TT(cProduct "`n" cBatch "`n" clot,1500,,,3)
   If cProduct {
@@ -164,7 +163,7 @@ clip_c(){
 
 clip_v(){
   Global
-    KeyWait, F19, T0.20
+    KeyWait, F19, T0.30
     If ErrorLevel
     {
         KeyWait, F19, T2

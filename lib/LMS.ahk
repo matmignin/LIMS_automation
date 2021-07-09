@@ -108,6 +108,12 @@
 				clk(61, 635) ;enter results
 			else if (Tab="Products")
 				clk(86, 443) ;edit composition
+			else if (Tab="Welcome") {
+			Menu,Menu, add, &Production Server, LMS_Env
+			Menu,Menu, add, &Test Server, LMS_Env
+			Menu.show()
+				
+			}
 			else
 				Menu.LMS()
 		}

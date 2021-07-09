@@ -39,10 +39,10 @@
 	; #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
 	; p::send,{end}{enter}^v && 
 #If Getkeystate("F13","p") && Getkeystate("LControl","p")
-j::send,{shiftdown}{down}{shiftup}
-l::send,{shiftdown}{right}{shiftup}
-h::send,{shiftdown}{left}{shiftup}
-k::send,{shiftdown}{up}{shiftup}
+*j::send,{shiftdown}{down}{shiftup}
+*l::send,{shiftdown}{right}{shiftup}
+*h::send,{shiftdown}{left}{shiftup}
+*k::send,{shiftdown}{up}{shiftup}
 w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 0::send,{shiftdown}{Home}{shiftup}
 4::send,{shiftdown}{end}{shiftup} 
@@ -55,7 +55,12 @@ q::send, {shiftdown}{lwindown}{ctrldown}{q}{ctrlup}{lwinup}{shiftup}
 	; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
 	p::Vim.Paste()
 	q::send, {altdown}{,}{altup}
-	
+	rshift::pgdn
+	lshift::pgup
+	^j::send,{shiftdown}{down}{shiftup}
+^l::send,{shiftdown}{right}{shiftup}
+^h::send,{shiftdown}{left}{shiftup}
+^k::send,{shiftdown}{up}{shiftup}
 	1::F1
 	2::F2
 	; 3::F3
@@ -92,7 +97,7 @@ q::send, {shiftdown}{lwindown}{ctrldown}{q}{ctrlup}{lwinup}{shiftup}
 	; F13 & Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
 	; +w::Sendinput,{ctrldown}{right 2}{ctrlup}
 	; u::Send ^z
-	Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
+	; Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
 	up::+up
 	down::+down
 	right::+right
@@ -157,7 +162,7 @@ q::send, {shiftdown}{lwindown}{ctrldown}{q}{ctrlup}{lwinup}{shiftup}
 ; Media_Next::F17
 ; Media_Prev::F16
 
-	PsudoNumpad:
+PsudoNumpad:
 	#If Getkeystate("F19","p")
 	0::sendinput,{ctrldown}{0}{Ctrlup}
 		;sendlevel 1
