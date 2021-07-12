@@ -67,3 +67,16 @@ Title="AHK | Vitaquest Workspace (List)",x=605,y=397,width=1257,height=797
 Title="Citrix Workspace",x=0,y=0,width=1,height=1
 Title="LMS Workbook.xlsb - Excel",x=-8,y=-8,width=2576,height=1456
 
+SECTION: Monitors=3,MonitorPrimary=1; Desktop size:0,-1440,3840,2640
+Title="New Rotations - mmignin@vitaquest.com - Outlook",x=1920,y=0,width=1606,height=1080
+Title="AHK | Vitaquest Workspace (List)",x=2256,y=0,width=1529,height=1087
+Title="VScode.ahk - VQuest - Visual Studio Code",x=426,y=46,width=1501,height=1161
+Title="Edit request (Field Configuration: I, Analytical) - \\Remote",x=1265,y=-1171,width=496,height=653
+Title="NuGenesis LMS - \\Remote",x=644,y=-1392,width=1738,height=1096
+Title="LMS Workbook.xlsb - Excel",x=1844,y=-1400,width=1280,height=1400
+Title="Comments Section Verification V.2.0.0 (Mat).docx - Word",x=525,y=362,width=1440,height=879
+Title="10.1.2.227 - Remote Desktop Connection",x=713,y=-1392,width=1815,height=1167
+Title="Citrix Workspace",x=-32000,y=-32000,width=1085,height=795
+Title="U:\Verification Scripts\Document Library\Comment Section",x=0,y=46,width=1613,height=1154
+Title="10.1.2.226 - Remote Desktop Connection",x=637,y=-1366,width=1872,height=1145
+

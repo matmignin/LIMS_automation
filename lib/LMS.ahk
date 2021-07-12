@@ -287,6 +287,10 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
+		ControlGetText, Coated, Edit4, VarBar
+	ControlGetText, SampleId, Edit5, VarBar
+	ControlGetText, Note1, Edit6, VarBar
+	ControlGetText, Note2, Edit7, VarBar
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 					send, {ctrlup}
@@ -404,6 +408,10 @@ FilterBar(Code:="",PostCmd:=""){
 	ControlGetText, Batch, Edit2, VarBar
 	ControlGetText, Lot, Edit3, VarBar
 	ControlGetText, Product, Edit1, VarBar
+	ControlGetText, Coated, Edit4, VarBar
+	ControlGetText, SampleId, Edit5, VarBar
+	ControlGetText, Note1, Edit6, VarBar
+	ControlGetText, Note2, Edit7, VarBar
 	blockinput on
 	; lms.FilterStatus()
     LMS.DetectTab()

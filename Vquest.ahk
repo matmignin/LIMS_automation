@@ -234,6 +234,9 @@ Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
 Iniread, Inverted, data.ini, Locations, Inverted
 Iniread, Follow, data.ini, Locations, Follow
+
+OnExit("Varbar.Exit")
+
  CopyPasteToggle=0
  Batches:=[]
  Products:=[]

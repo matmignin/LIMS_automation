@@ -67,11 +67,11 @@ close(){
 	Fileappend, %MyEdit1%`n, lib/Notes.txt
 	Fileappend, %MyEdit2%`n, lib/Notes.txt
 	Fileappend, %Myedit3%`n, lib/Notes.txt
-	Fileappend, %Myedit4%`n, lib/Notes.txt
+	Fileappend,w2s %Myedit4%`n, lib/Notes.txt
 	Fileappend, %Myedit5%`n, lib/Notes.txt
 	gui, Notes:destroy
   return
-}
+} 
 
 	Save(){
 		global

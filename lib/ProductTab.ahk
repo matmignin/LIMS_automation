@@ -125,7 +125,7 @@ return
 
 AddCOASpace(){
 	Global
-	ControlGetText, Iteration, Static5, VarBar
+	ControlGetText, Iteration, Static1, VarBar
 	; WinActivate, Composition - \\Remote
 	click
 	Mouse_Save()

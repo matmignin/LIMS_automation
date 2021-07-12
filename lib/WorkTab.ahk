@@ -10,7 +10,7 @@ If Lot = "ERROR"
   lot:=
  ; if Iteration=""
   ; iteration=1
- ControlGetText, Iteration, Static5, VarBar
+ ControlGetText, Iteration, Static1, VarBar
  ifwinactive, Register new samples - \\Remote
  MouseGetPos, mx, my
 ;  loop %iteration%

@@ -86,7 +86,7 @@ F19 & =::send, {ctrldown}{=}{ctrlup}
 
 
 ; <!k::+^up
-; <!j::+^down
+; <!j::+^downa
 ; $<^l::sendinput,{ctrldown}]{ctrlup}
 ; $<^h::sendinput,{ctrldown}[{ctrlup}
 ; $<^right::sendinput,{ctrldown}]{ctrlup}
@@ -100,7 +100,7 @@ tab::tab
 
 <^f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 
-
+ 
 
 Lshift::DoublePress("{altdown}{left}{altup}",,"Backward")
 Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
@@ -210,7 +210,7 @@ VS_Code_WindowInfo(){
 
 ReloadScript(){
 ; global iteration
-; ControlGetText, Iteration, Static5, VarBar
+; ControlGetText, Iteration, Static1, VarBar
 TT("Reload")
 IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
   WinActivate,
@@ -254,6 +254,15 @@ return
 :*r:s\::
 sendraw,{shiftdown}{}{shiftup}
 sendinput,{left 10}
+return
+:*r:csw\::
+:*r:cws\::
+:*r:scw\::
+:*r:swc\::
+:*r:wcs\::
+:*r:wsc\::
+sendraw,{shiftdown}{ctrldown}{lwindown}{}{lwinup}{ctrlup}{shiftup}
+sendinput,{left 26}
 return
 :*r:asw\::
 :*r:aws\::
