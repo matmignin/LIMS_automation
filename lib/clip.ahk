@@ -136,7 +136,7 @@ Clip_C2(){
  }
 clip_c(){
   Global
-      sendinput, {ctrlup}{altup}
+      sendinput, {ctrlup}{altup}{shiftup}
     KeyWait, F20, T0.20
     If ErrorLevel
     {
@@ -189,5 +189,46 @@ clip_v(){
       }
       return
     }
+/* 
 
+c
+
+
+*/
 return
+clip_v2(){
+  Global
+      sendinput, {ctrlup}{altup}{shiftup}
+    KeyWait, F19, T0.35
+    if !Errorlevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<500){ ;if double clic
+        send, ^{left}+^{right}
+          wheel_paste()
+          exit
+        }
+        Else
+          return  
+      }
+    If ErrorLevel
+    {
+      errorlevel:=
+        KeyWait, F19, T0.55
+        if (A_PriorKey!="F19") ;allows for other key combos
+          exit
+        if (A_PriorKey="F19") {  
+        If !ErrorLevel
+        {
+          ; TT("triggerd after .85 sec",,,,2)
+          ; wheel_paste() ; will trigger less 1
+          return
+        }
+        Else ;will trigger after 1 sec
+          send, {F21}
+          ; KeyWait, F19,
+          exit
+      }
+    }
+      wheel_paste()
+      return
+}

@@ -104,7 +104,7 @@ tab::tab
 
 Lshift::DoublePress("{altdown}{left}{altup}",,"Backward")
 Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
-LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
+$LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
 ; Lalt::send, {altdown}{shiftdown}{up}{shiftup}{altup}
 
 DoublePress(action,SecondAction:="", ToolTip:=""){
@@ -127,8 +127,7 @@ Lwin::doublepress("{backspace}")
 rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 <^lwin::delete
 <+space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
-F13 & lshift::pgup
-F13 & rshift::pgdn
+
 $>+F13::pgup
 $<+F13::pgdn
 rbutton & f7::wheel_2("!{right}",10)

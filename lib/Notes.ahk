@@ -1,31 +1,175 @@
-
+  
 
 
 Class Notes{
 
-WindowNames(){
-	FileRead, WindowNames, WindowNames.ini
-	gui, notes:add, edit, r5 vWindowNames
-	gui, Notes:add, button, default, Add
+Show(){  ;array - remove duplicates (case insensitive)
+	global
+	try, GUI, Notes:destroy
+	Iniread, Notes_X, data.ini, Locations, Notes_X
+	Iniread, Notes_Y, data.ini, Locations, Notes_Y
+	my_screenwidth:=Notes_x
+	my_screenheight:=Notes_y
+	MyArray:=[]
+	FileRead, LoadedNotes, lib/Notes.txt
+	MyArray := StrSplit(LoadedNotes,"`r`n")
+	; loop % myarray.maxindex() {
+		; LoadedNotes1:=MyArray[A_index]
+	; }
+	LoadedNotes1:=MyArray[1]
+	; LoadedNotes2:=MyArray[2]
+	; LoadedNotes3:=MyArray[3]
+	; LoadedNotes4:=MyArray[4]
+	; LoadedNotes5:=MyArray[5]
+	; LoadedNotes6:=MyArray[6]
+	; LoadedNotes7:=MyArray[7]
+	; LoadedNotes8:=MyArray[8]
+	gui Notes:+LastFound +AlwaysOnTop -Caption -ToolWindow +owner
+	gui, Notes:add, button, Hidden default gNotesButtonOK, OK 
+	gui, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
+	; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
+	; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
+	loop % myarray.MaxIndex() {
+		n:=A_index + 1
+		Myedit=myedit%n%
+		Note:=myArray[n]
+		gui, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]	
+	}
+	; OnMessage(0x84, "WM_NCHITTEST")
+	; OnMessage(0x83, "WM_NCCALCSIZE")
+	gui, Notes:color, 836000
+	; OnMessage(0x203, "Notes.Relocate")
+	
+	gui, Notes:show, w 145 x%My_ScreenWidth% y%my_screenheight%,Notes
+	WinSet, Transparent, 180
+	return
+	
+}
+Add(){
+	global
+	; notes.close()
+	; notes.show
+	; n:=4
+	Myedit:="vmyedit4"
+	loadedNotes:="loadednotes4"
+		gui, Notes:add, edit, w140 -Choose -VScroll +resize %Myedit%, %LoadedNotes%
+	return
+	
+	
 }
 
+close(){
+	global
+		gui, Notes:submit, nohide
+  Filedelete, lib/Notes.txt
+	sleep 200
+	; loop 4
+	Fileappend, %MyEdit1%`n, lib/Notes.txt
+	Fileappend, %MyEdit2%`n, lib/Notes.txt
+	Fileappend, %Myedit3%`n, lib/Notes.txt
+	Fileappend, %Myedit4%`n, lib/Notes.txt
+	Fileappend, %Myedit5%`n, lib/Notes.txt
+	gui, Notes:destroy
+  return
+}
 
-Show(){
-	gui, Notes:show
-	WinSet, AlwaysOnTop, on, A
+	Save(){
+		global
+	gui, Notes:submit, nohide
+	Filedelete, lib/Notes.txt
+	sleep 200
+	Fileappend, %MyEdit1%`n, lib/Notes.txt
+	Fileappend, %MyEdit2%`n, lib/Notes.txt
+	Fileappend, %Myedit3%`n, lib/Notes.txt
+	Fileappend, %Myedit4%`n, lib/Notes.txt
+	Fileappend, %Myedit5%`n, lib/Notes.txt
+	Fileappend, %Myedit6%`n, lib/Notes.txt
+	Fileappend, %Myedit7%`n, lib/Notes.txt
+	; Fileappend, %Myedit8%`n, lib/Notes.txt
+	; Fileappend, %Myedit9%`n, lib/Notes.txt
+	; Fileappend, %Myedit10%`n, lib/Notes.txt
+	gui, Notes:destroy
 	return
 }
 
 
-
-
+Relocate(){
+		global
+		PostMessage, 0xA1, 2
+		keywait, Lbutton, U
+		wingetpos, Notes_x, Notes_y,W,H, Notes ahk_class AutoHotkeyGUI
+		; Excel.Connect()
+		IniWrite, %Notes_x%, data.ini, Locations, Notes_x
+		IniWrite, %Notes_y%, data.ini, Locations, Notes_y
+		sleep 300
+		return
+	}
+WM_NCCALCSIZE()
+{
+    if A_Gui
+        return 0    ; Sizes the client area to fill the entire window.
 }
 
+}
+; Redefine where the sizing borders are.  This is necessary since
+; returning 0 for WM_NCCALCSIZE effectively gives borders zero size.
 
-ButtonAdd:
-	gui, Notes:submit
-	sleep 100
-	Note:=RegExReplace(Note "`n", "m`a)(?=^\s*;).*\R") ; remove commented lines
-	Note:=RegExReplace(Note, "\R+\R", "`r`n")     ; remove empty lines
-	FileAppend, %Note%`n, WindowNames.ini
+
+; WM_NCHITTEST(wParam, lParam)
+	; {
+	;     static border_size = 6
+	;     if !A_Gui
+	;         return
+	;     WinGetPos, gX, gY, gW, gH
+	;     x := lParam<<48>>48, y := lParam<<32>>48
+	;     hit_left    := x <  gX+border_size
+	;     hit_right   := x >= gX+gW-border_size
+	;     hit_top     := y <  gY+border_size
+	;     hit_bottom  := y >= gY+gH-border_size
+	;     if hit_top
+	;     {
+	;         if hit_left
+	;             return 0xD
+	;         else if hit_right
+	;             return 0xE
+	;         else
+	;             return 0xC
+	;     }
+	;     else if hit_bottom
+	;     {
+	;         if hit_left
+	;             return 0x10
+	;         else if hit_right
+	;             return 0x11
+	;         else
+	;             return 0xF
+	;     }
+	;     else if hit_left
+	;         return 0xA
+	;     else if hit_right
+	;         return 0xB
+			
+	;     ; else let default hit-testing be done
+	; }
+
+
+
+
+
+
+; ButtonAdd:
+	; gui, Notes:submit
+	; sleep 100
+	; Note:=RegExReplace(Note "`n", "m`a)(?=^\s*;).*\R") ; remove commented lines
+	; Note:=RegExReplace(Note, "\R+\R", "`r`n")     ; remove empty lines
+NotesButtonOK:
+
+	notes.Save()
+	return
+	
+	NotesGuiClose:
+	NotesGuiEscape:
+	notes.Close()
+	; gui, Notes:submit, nohide
+	; gui, Notes:destroy
 	return

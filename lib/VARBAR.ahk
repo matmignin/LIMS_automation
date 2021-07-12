@@ -57,30 +57,33 @@ Class VarBar{
 		; Varbar_Y := LMS_Y
 		GUI, VarBar:Font, s10 cBlack Bold, Consolas
 		Gui, VarBar:add, Text, vBatch2 x68 y0 w100, %Batch2%
-		Gui, VarBar:add, Text, vCoated -wrap Right x132 y15 w80, %Coated%
+		If Coated
+		Gui, VarBar:add, Text, vCoated gCoatedVarbar -wrap Right x132 y15 w80, %Coated%
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:add, Text, vname x65 -wrap y15 w160, %Name%
 		; Gui, VarBar:add, Text, vcustomer x200 -wrap y16 w160, %Customer%
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:add, Text, vColor x190 -wrap y18 w90, %Color%
 		GUI, VarBar:Font, s14 cBlack Bold, Consolas
-		Gui, VarBar:Add, edit, vProduct gproductVarBar left h24 x0 y0 w62, %product%
+		Gui, VarBar:Add, edit, vProduct gproductVarBar left h26f x0 y0 w62, %product%
 		GUI, VarBar:Font, s7 cBlack , Consolas
 		Gui, VarBar:add, Edit, vBatch gbatchVarbar H19 x62 y-2 w70, %Batch%
 		GUI, VarBar:Font, s10 cBlack , Consolas
 		; Gui, VarBar:add, Text, vlot x70 y16 w70, %Lot%
 		Gui, VarBar:add, Edit, vlot gLotVarbar x132 H19 y-2 w60, %Lot%
 		GUI, VarBar:Font, s7 cBlack , arial
-		Gui, VarBar:add, Edit, vSampleID gSampleIDVarbar x192 H19 y-2 w90, %SampleID%
+		if sampleid
+			Gui, VarBar:add, Edit, vSampleID gSampleIDVarbar x192 H19 y-2 w85, %SampleID%
 		GUI, VarBar:Font, s7 cBlack , arial
-		; If Coated
 		; Gui, VarBar:add, Edit, vCoated gCoatedVarbar x132 H19 y15 w60, %Coated%
-		GUI, VarBar:Font, s8 cBlack , Consolas
 		GUI, VarBar:Font, s12 cBlack Bold, Consolas
-		Gui, VarBar:Add, text, vIteration x310 y-1 w70,
+		Gui, VarBar:Add, text, vIteration x310 y-3 w70,
 		GUI, VarBar:Font, s8 cBlack , arial Narrow
 		Gui, VarBar:Add, text, vDepartment x320 right y3 w80, %Department%
-		; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y0 w1 Range0-6, %Iteration%
+		; Gui, VarBar:Add, UpDown, vIterationUpDown x300 h30 y-2 w1 Range0-6, %Iteration%
+		GUI, VarBar:Font, s8 cBlack , Consolas
+			Gui, VarBar:add, Edit, vNote1 gNotevarbar x225 H19 y15 w50, %Note1%
+			Gui, VarBar:add, Edit, vNote2 gNotevarbar x275 H19 y15 w55, %Note2%
 		OnMessage(0x203, "VarBar.Relocate")
 		CoordMode, mouse, screen
 		; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
@@ -110,6 +113,11 @@ Class VarBar{
 			Gui, VarBar:submit,NoHide
 		return
 		SampleIDVarBar:
+			sleep 100
+			Gui, VarBar:submit,NoHide
+		return
+		
+		NoteVarBar:
 			sleep 100
 			Gui, VarBar:submit,NoHide
 		return

@@ -1,7 +1,41 @@
 #Ifwinactive,
+return
 
+#IfWinactive, Notes ahk_exe AutoHotkey.exe
+  ; ~Lbutton::return
+  Enter::
+  F13 & j::tab
+  F13 & k::+tab
+  Media_next::send, {tab}
+  Media_prev::send, `+{tab}
+  F13::send, {altdown}{tab}{altup}
+Media_Play_Pause::notes.Close() ;gosub, NotesGuiClose
 
+  
+  
+#IfWinExist, Notes ahk_exe AutoHotkey.exe
+Media_prev::
+Media_next::
+Media_Play_Pause::
+setwindelay,0
+winactivate, Notes ahk_exe AutoHotkey.exe
+setwindelay,400
+return  
+
+#IfWinExist
+#IfWinActive, 
+
+ media_next::
+ media_prev::
+ Media_Play_Pause::notes.show()
+ return
 KEY_DEFAULT:
+F19 & Media_Play_pause::
+my_screenwidth:=A_ScreenWidth-215
+my_screenheight:=A_Screenheight-115
+IniWrite, %my_screenwidth%, data.ini, Locations, Notes_x
+IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
+Return
 ~<+rshift::alttab
 ~>+lshift::ShiftAltTab
 
@@ -29,7 +63,6 @@ F20 & /::send, %SampleID%
 / & right::send, %Lot%
 / & up::send, %SampleID%
 ; #MaxThreadsPerHotkey 2
- Media_Play_Pause::Test_1()
  ` & 1::Test_1()
  ` & 2::Test_2()
  ` & 3::Test_3()

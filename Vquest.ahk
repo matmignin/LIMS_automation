@@ -150,6 +150,8 @@ return
 #include <SaveWindow>
 #Include <Snipper>
 #include <VScode>
+#include <Notes>
+
 
 
 VQuest_Start:

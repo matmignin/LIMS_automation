@@ -1,10 +1,5 @@
-123
-fix coated lot input
-fix register new sample search bar to add one more click
-
-
-
-
-
-
+asdfsdf
+eee
+eeeettt
+fff
 

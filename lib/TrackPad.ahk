@@ -114,7 +114,7 @@ numpaddiv::#down
         If InStr(ErrorLevel, "NumpadMult")
           send, {altdown}{ctrldown}{up}{ctrlup}{altup}
         If InStr(ErrorLevel, "NumpadDiv")
-          CloseWindow()
+          send, {shiftdown}{ctrldown}{p}{ctrlup}{shiftup}
         If InStr(ErrorLevel, "F6")
           send, {altDown}{lwindown}{o}{lwinup}{altup}
         If InStr(ErrorLevel, "F7")
