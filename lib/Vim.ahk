@@ -2,14 +2,7 @@
 
 
 	VIM:
-	#If !Getkeystate("F13","p") && Getkeystate("LControl","p")
-	$j::^down
-	$k::^up
-	h::^[
-	l::^]
-	m::send,{ctrldown}{m}{ctrlup}
-	u::send,{ctrldown}{u}{ctrlup}
-	; F13::return
+
 	#If Getkeystate("F13","p")
 	y::Clip_c()
 	lbutton::vscode_menu()
@@ -26,6 +19,8 @@
 	4::send, +{end}^{x}
 	5::send, ^{m}^{x}
 	0::send, +{home}^{x}
+	[::send, {shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
+	]::send, {shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 #If (A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
 	d::Send,{home 2}+{end}^c
 	; w::sendinput,{right}{ctrldown}{left}{shiftdown}{right}{shiftup}{c}{Ctrlup}
@@ -41,21 +36,21 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	; #If (A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
 	; p::send,{end}{enter}^v && 
 #If Getkeystate("F13","p") && Getkeystate("LControl","p")
-j::send,{shiftdown}{down}{shiftup}
-l::send,{shiftdown}{right}{shiftup}
-h::send,{shiftdown}{left}{shiftup}
-k::send,{shiftdown}{up}{shiftup}
-w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-0::send,{shiftdown}{Home}{shiftup}
-4::send,{shiftdown}{end}{shiftup} 
-	m::send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
-	u::send,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
+	<^j::send,{shiftdown}{down}{shiftup}
+	<^l::send,{shiftdown}{right}{shiftup}
+	<^h::send,{shiftdown}{left}{shiftup}
+	<^k::send,{shiftdown}{up}{shiftup}
+	w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	0::send,{shiftdown}{Home}{shiftup}
+	4::send,{shiftdown}{end}{shiftup} 
+	^m::send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	^u::send,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
 	; Lctrl & m::send,{shiftdown}{altDown}{right}{altup}{shiftup}
 	; lctrl & u::send,{shiftdown}{altDown}{left}{altup}{shiftup}
-Space::send,{shiftdown}{altDown}{a}{shiftup}{altup}
-q::send, {shiftdown}{lwindown}{ctrldown}{q}{ctrlup}{lwinup}{shiftup}
-g::send, {shiftdown}{lwindown}{g}{lwinup}{shiftup}
-; f::send,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
+	Space::send,{shiftdown}{altDown}{a}{shiftup}{altup}
+	q::send, {shiftdown}{lwindown}{ctrldown}{q}{ctrlup}{lwinup}{shiftup}
+	g::send, {shiftdown}{lwindown}{g}{lwinup}{shiftup}
+ f::send,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
 #If Getkeystate("F13","p") && !Getkeystate("LControl","p")
 	; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
 	p::Vim.Paste()
@@ -89,13 +84,13 @@ g::send, {shiftdown}{lwindown}{g}{lwinup}{shiftup}
 	l::right
 	; l::right
 	x::Delete
-	g::send, ^{end}
+	g::send, {ctrldown}{end}{ctrlup}
 	4::end
 	^4::+end
 	^0::+home ;Send
 	0::home ;Send
 	y::return
-	d::return ; Send,{home 2}+{end}^x{delete}
+	d::return
 	; +^j::send,{shiftdown}{altDown}{ctrldown}{down}{ctrlup}{altup}{shiftup}
 	; +^k::send,{shiftdown}{altDown}{ctrldown}{up}{ctrlup}{altup}{shiftup}
 	; *w::Sendinput,{ctrldown}{right}{ctrlup}
@@ -143,21 +138,31 @@ g::send, {shiftdown}{lwindown}{g}{lwinup}{shiftup}
 	$<^down::send,{ctrldown}{down}{ctrlup}
 	; ~lctrl::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	$F19::
-	sleep 100
-	While GetKeyState("F13", "p") {
-		If GetKeyState("F19", "p") {
-			send, {altdown}{down}
-			sleep 150
+		sleep 100
+		While GetKeyState("F13", "p") {
+			If GetKeyState("F19", "p") {
+				send, {altdown}{down}
+				sleep 150
+			}
+			If GetKeyState("Lctrl", "p") {
+				send, {altdown}{up}
+				sleep 150
+			}
+			sleep 50	; 
+			; KeyWait, F19, U 
+				; sleep 200
 		}
-		If GetKeyState("Lctrl", "p") {
-			send, {altdown}{up}
-			sleep 150
-		}
-		sleep 50	; 
-		; KeyWait, F19, U 
-			; sleep 200
-	}
-	send, {altup}
+		send, {altup}
+
+
+	#If !Getkeystate("F13","p") && Getkeystate("LControl","p")
+	$j::^down
+	$k::^up
+	h::^[
+	l::^]
+	m::send,{ctrldown}{m}{ctrlup}
+	u::send,{ctrldown}{u}{ctrlup}
+	; F13::return
 	#if
 
 ; $F13::esc

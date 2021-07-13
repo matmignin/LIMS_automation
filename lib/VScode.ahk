@@ -15,6 +15,7 @@ numpadsub::numpadsub
 numpadadd::numpadadd
 numpadmult::numpadmult
 numpaddiv::numpaddiv
+
   ; $numpadMult:: send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}  ;4up
 ;  numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
 ; ;  numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
@@ -452,5 +453,6 @@ return
 ; SetTitleMatchMode 2
 #IfWinActive Visual Studio Code
     ; on LALT key-up, send ALT+SHIFT+I
-    lalt Up::SendInput !+i
+  <!f::openapp.firefox()
+    $lalt Up::SendInput !+i
 #IfWinActive
