@@ -37,8 +37,8 @@ F9::excel.search()
 	; Numlock::Excel.SearchWorkbook(Product)
 	F8::send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
 	Media_Prev::send,{LWindown}{tab}{lwinup}
-	F6::wheel("{wheelleft}",80)
-	F7::wheel("{wheelRight}",80)
+	F6::lms.SearchBar(Product,"{enter}")
+	F7::lms.SearchBar(Batch,"{enter}")
 	F19 & F7::^F8 ;Excel.NextSheet()
 	F19 & F6::^F9 ;Excel.PreviousSheet()
 	F20 & down::WinMove, ahk_exe EXCEL.EXE, , 0, 0, 1942, 1547

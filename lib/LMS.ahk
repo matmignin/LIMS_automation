@@ -223,12 +223,12 @@ return
 
 #IfWinActive, Results Definition - \\Remote
   wheelup::Mouse_click("Edit")
-  WheelDown::
-		Click, 1330, 592
-		sleep 100
-		click, 338, 619
-		TT("wheeldown pressed")
-		Return
+  WheelDown::pgdn
+		; Click, 1330, 592
+		; sleep 100
+		; click, 338, 619
+		; TT("wheeldown pressed")
+		; Return
 		numlock::send, % clk(712, 663) "{esc}"
 	
 #ifwinactive, Register new samples - \\Remote
@@ -291,6 +291,8 @@ SearchBar(Code:="",PostCmd:=""){
 	ControlGetText, SampleId, Edit5, VarBar
 	ControlGetText, Note1, Edit6, VarBar
 	ControlGetText, Note2, Edit7, VarBar
+	if !winactive("ahk_exe WFICA32.EXE")
+		winactivate, ahk_exe WFICA32.EXE
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 					send, {ctrlup}
@@ -304,7 +306,7 @@ SearchBar(Code:="",PostCmd:=""){
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
 			LMS.DetectTab()
-			if (Tab="Products" || Tab="Specs") {
+			if (Tab="Products") {
 				clk(x%Tab%Search,yProductsSearch)
 							send, ^{a}%Product%^{a}
 							if PostCmd!=""
@@ -312,15 +314,34 @@ SearchBar(Code:="",PostCmd:=""){
 									send, {ctrlup}	
 				exit
 			}
-			If (Tab="Requests" || Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents")
+			if (Tab="Specs") {
+				clk(x%Tab%Search,yProductsSearch)
+							send, ^{a}%Product%^{a}
+							if PostCmd!=""
+								send % PostCmd
+									send, {ctrlup}	
+				exit
+			}
+			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 					clk(x%Tab%Search,yWorkTabSearch,,2)
 					; clk(x%Tab%Search,yWorkTabSearch)
-				send, ^{a}%Code%^{a}
+				send, ^{a}%Code%
 				if PostCmd!=""
 					send % PostCmd
 							send, {ctrlup}
 				exit
 			}
+			If (Tab="Requests") {
+					clk(x%Tab%Search-40,yWorkTabSearch,,2)
+					sleep 20
+					clk(x%Tab%Search,yWorkTabSearch)
+				send, ^{a}%Code%
+				if PostCmd!=""
+					send % PostCmd
+							send, {ctrlup}
+				exit
+			}
+		}
 }
 
 
@@ -465,7 +486,8 @@ TAB7:=
 		winactivate, ahk_exe WFICA32.EXE
 	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-				if Tab2 {
+				if !Tab1 {
+	
 					
 					PixelSearch, FoundSamples, FoundY, xsamplesTab, yWorkTabs, xsamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
 					if FoundSamples {
@@ -494,57 +516,64 @@ TAB7:=
 						return tab
 					}
 					else if Errorlevel
-						Tab=SomethingElse
-					else
-						return	
+					{
+					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+						If FoundSpecs
+							tab=Specs
+						else	
+							Tab=Products
+						return Tab	
+						}
+					else 
+				return
 				exit
 				}
 				}
 				}
-				; }
-		PIXELSEARCH, Tab3, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			 if Tab3 { 
-					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-						If FoundSpecs
-							tab=Specs
-						else	
-							Tab=Products
-				return Tab
-				}
-		PIXELSEARCH, Tab4, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			 if Tab4 {
-					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-						If FoundSpecs
-							tab=Specs
-						else	
-							Tab=Products
-				return %Tab%
-				}
-		PIXELSEARCH, Tab5, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			 if Tab5 {
-				Tab=Tab5
-				return
-				}
-		PIXELSEARCH, Tab6, FoundY, XTAB6, YTabS, XTAB6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if Tab6 {
-				Tab=Tab6
-				return
-				}
-		PIXELSEARCH, Tab7, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			 if Tab7 {
-				Tab=Tab7
-				return
-				}
-	PixelSearch, Tab1, FoundY, xTab1, yTabs, XTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			 if Tab1 {
-				Tab=Welcome
-				return tab
-			}
-			else
-				return
-			; reMyWorkturn
-	return
-			; msgbox, %tab%
+	; 			; }
+	; 	PIXELSEARCH, Tab3, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	; 		 if Tab3 { 
+	; 				PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+	; 					If FoundSpecs
+	; 						tab=Specs
+	; 					else	
+	; 						Tab=Products
+	; 			return Tab
+	; 			}
+	; 	PIXELSEARCH, Tab4, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	; 		 if Tab4 {
+	; 				PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+	; 					If FoundSpecs
+	; 						tab=Specs
+	; 					else	
+	; 						Tab=Products
+	; 			return %Tab%
+	; 			}
+	; 	PIXELSEARCH, Tab5, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	; 		 if Tab5 {
+	; 			Tab=Tab5
+	; 			return
+	; 			}
+	; 	PIXELSEARCH, Tab6, FoundY, XTAB6, YTabS, XTAB6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	; 		if Tab6 {
+	; 			Tab=Tab6
+	; 			return
+	; 			}
+	; 	PIXELSEARCH, Tab7, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	; 		 if Tab7 {
+	; 			Tab=Tab7
+	; 			return
+	; 			}
+	; PixelSearch, Tab1, FoundY, xTab1, yTabs, XTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+	; 		 if Tab1 {
+	; 			Tab=Welcome
+	; 			return tab
+	; 		}
+	; 		else
+	; 			return
+	; 		; reMyWorkturn
+	; return
+	; 		; msgbox, %tab%
 		return Tab
 }
 

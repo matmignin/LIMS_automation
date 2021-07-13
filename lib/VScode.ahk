@@ -6,7 +6,7 @@ Tab & l::^]
 Tab & j::down
 Tab & k::up
 Scrolllock::Scrolllock
-Numlock::Numlock
+$Numlock::Numlock
  F6::F6
  F7::F7
  F8::F8
@@ -15,7 +15,7 @@ numpadsub::numpadsub
 numpadadd::numpadadd
 numpadmult::numpadmult
 numpaddiv::numpaddiv
-
+$<^F13::send, {numpadsub}
   ; $numpadMult:: send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}  ;4up
 ;  numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
 ; ;  numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
@@ -139,6 +139,7 @@ rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 
 $>+F13::pgup
 $<+F13::pgdn
+
 rbutton & f7::wheel_2("!{right}",10)
 rbutton & f6::wheel_2("!{left}",10)
 rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}

@@ -11,6 +11,8 @@
 	tab::send, {shiftdown}{altdown}{q}{altup}{shiftup}
 	f20::pgdn
 		f::Vim.find("f")
+	$rshift::pgdn
+	$lshift::pgup
 	; d::return
 	;#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
@@ -55,8 +57,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
 	p::Vim.Paste()
 	q::send, {altdown}{,}{altup}
-	rshift::pgdn
-	lshift::pgup
+
 	^j::send,{shiftdown}{down}{shiftup}
 	^l::send,{shiftdown}{right}{shiftup}
 	^h::send,{shiftdown}{left}{shiftup}
@@ -94,7 +95,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	; +^j::send,{shiftdown}{altDown}{ctrldown}{down}{ctrlup}{altup}{shiftup}
 	; +^k::send,{shiftdown}{altDown}{ctrldown}{up}{ctrlup}{altup}{shiftup}
 	; *w::Sendinput,{ctrldown}{right}{ctrlup}
-	; F13 & Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
+	F13 & Rshift::pgdn
 	; +w::Sendinput,{ctrldown}{right 2}{ctrlup}
 	; u::Send ^z
 	; Rshift::send, {shiftdown}{lwindown}{ctrldown}{r}{ctrlup}{lwinup}{shiftup}
@@ -136,7 +137,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	$<^left::send,{ctrldown}{[}{ctrlup}
 	; $<^j::send,{ctrldown}{down}{ctrlup}
 	$<^down::send,{ctrldown}{down}{ctrlup}
-	; ~lctrl::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+	lctrl::send, {numpadadd}
 	$F19::
 		sleep 100
 		While GetKeyState("F13", "p") {
@@ -195,8 +196,8 @@ PsudoNumpad:
 	'::right
 	Backspace::backspace
 	; F20::send,{F21}
-	RShift::sendinput,{Tab}
 	ENTER::sendinput,{enter}
+	RShift::sendinput,{Tab}
 	; space::SendInput, 0
 		;sendlevel 0
 	#if

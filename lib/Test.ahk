@@ -53,7 +53,8 @@ class Breaking {
 
 Test_1(){
 	global
-	notes.Show()
+LMS.DetectTab()
+tt(tab)
 	return
 }
 
