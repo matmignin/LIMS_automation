@@ -264,14 +264,14 @@ return
   F6::TouchPad.3Left()
   ; ~Wheelleft::TouchPad.2left()
   ; ~Wheelright::TouchPad.2right()
-  Mbutton::TouchPad.3Tap()
+  Scrolllock::TouchPad.3Tap()
 	; numlock::LMS.Movetab("Home")
 	numpadMult::LMS.Movetab("Home")
 	Numpadadd::lms.MoveTab("Right")
 	NumpadSub::lms.MoveTab("Left")
 	; Media_Prev::varbar.SubIteration(20)
 	; Media_next::Varbar.AddIteration(20)
-	numlock::touchpad.4tap()
+	; numlock::touchpad.4tap()
 #IfWinActive,
 	pause::reload
 	` & esc::Pause

@@ -4,14 +4,15 @@ KEY_Varbar:
 	wheelRight::excel.Nextsheet()
 	WheelUp::Varbar.AddIteration()
 	Wheeldown::Varbar.SubIteration()
+	F9::Excel.connect()
 	F7::Excel.NextSheet()
 	F6::Excel.previoussheet()
 	F20::Varbar.Follow()
-	Mbutton::Varbar.LaunchTable()
+	Scrolllock::Varbar.LaunchTable()
 	F20 & F6::ProductTab.Table()
 	F20 & F7::SpecTab.Table()
 	; Rbutton::Menu.Tables() ; Excel.connect()
-F9::ReloadScript()
+; F9::ReloadScript()
 	; #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
 	; 	~wheelright::msgbox, %A_ThisHotkey%
 	; 	~wheelleft::msgbox, %A_ThisHotkey%
@@ -143,13 +144,21 @@ Class VarBar{
 
 	Relocate(){
 		global
+	
 		settimer, checkactive, off
 		PostMessage, 0xA1, 2
-		keywait, Lbutton, U
-		wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+		keywait, Lbutton, U T0.20
+			if !errorlevel
+			{
+				keywait, Lbutton, U
+				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+				IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+				IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+				return
+			}
+			send, {click 3}
+			
 		; Excel.Connect()
-		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 		sleep 300
 		return
 	}
@@ -213,6 +222,21 @@ Class VarBar{
 	return
 }
 
+Load(){
+	Global
+Iniread, Product, data.ini, SavedVariables, Product
+Iniread, Batch, data.ini, SavedVariables, Batch
+Iniread, Lot, data.ini, SavedVariables, Lot
+Iniread, Coated, data.ini, SavedVariables, Coated
+Iniread, SampleID, data.ini, SavedVariables, SampleID
+Iniread, Iteration, data.ini, SavedVariables, Iteration
+iniread, note1, data.ini, SavedVariables, note1
+Iniread, note2, data.ini, SavedVariables, note2
+Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
+Iniread, VarBar_X, data.ini, Locations, VarBar_x
+Iniread, Inverted, data.ini, Locations, Inverted
+Iniread, Follow, data.ini, Locations, Follow
+}
 
 exit(){
 global
@@ -228,7 +252,6 @@ iniwrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
 iniwrite, %Inverted%, data.ini, Locations, Inverted
 iniwrite, %Follow%, data.ini, Locations, Follow
-
 Notes.Save()
 	
 }

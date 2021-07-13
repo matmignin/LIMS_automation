@@ -3,23 +3,22 @@
 #IfWinActive,
   ; #If (A_PriorHotKey = "numpaddiv" && A_TimeSincePriorHotkey < 400)
   ;   numpaddiv::CloseWindow() ;4 finger swipe down
-  #If (A_PriorHotKey = "Numlock" || A_PriorHotkey = "Mbutton" && A_TimeSincePriorHotkey < 500) ;4 finger swipe down
-  F6::send, {F6} 
-  F7::send, {F7} 
-  F8::send, {F8} 
-  F9::send, {F9} 
-  numpadsub::send, {NumpadSub}
-  numpadadd::send, {NumpadAdd}
-  numpadmult::send, {numpadmult} 
-  numpaddiv::send, {numpadDiv}  ;4down clear filter
-  lbutton::send, {Lbutton}
-  Numlock::Send, {Numlock}
-  Mbutton::send, {Mbutton}
-  wheelup::send, {WheelUp}
-  wheelleft::send, {Wheelleft}
-  wheelright::send, {Wheelright}
+  ; #If (A_PriorHotKey = "Numlock" || A_PriorHotkey = "Scrolllock" && A_TimeSincePriorHotkey < 500) ;4 finger swipe down
+  ; F6::send, {F6} 
+  ; F7::send, {F7} 
+  ; F8::send, {F8} 
+  ; F9::send, {F9} 
+  ; numpadsub::send, {NumpadSub}
+  ; numpadadd::send, {NumpadAdd}
+  ; numpadmult::send, {numpadmult} 
+  ; numpaddiv::send, {numpadDiv}  ;4down clear filter
+  ; lbutton::send, {Lbutton}
+  ; Numlock::Send, {Numlock}
+  ; wheelup::send, {WheelUp}
+  ; wheelleft::send, {Wheelleft}
+  ; wheelright::send, {Wheelright}
   
-  ; Mbutton::send, {Mbutton}
+  ; Scrolllock::send, {Scrolllock}
   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
   #If
  
@@ -49,7 +48,7 @@ numpadsub::#left
 numpadadd::#right
 numpadMult::#up
 numpaddiv::#down
-  Numlock::4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+  ; Numlock::4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
   
 
 ; #If (A_PriorHotKey = "NumpadDiv" AND A_TimeSincePriorHotkey < 450) ;4 finger swipe down
@@ -63,7 +62,7 @@ numpaddiv::#down
 ; ;   ; numpadmult::send, +#{up} ;4up
 ; ;   lbutton::send, ^{click}
 ; ;   ; Numlock::Send, +#{right}
-; ;   Mbutton::send, {shiftDown}{click}{shiftup}
+; ;   Scrolllock::send, {shiftDown}{click}{shiftup}
 ; ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ; ;   #If
 ;   numpaddiv::
@@ -87,7 +86,7 @@ numpaddiv::#down
 ;   numpaddiv::CloseWindow() ;4down clear filter
 ;   lbutton::send, ^{click}
 ;   ; Numlock::Send, +#{right}
-;   Mbutton::send, {shiftDown}{click}{shiftup}
+;   Scrolllock::send, {shiftDown}{click}{shiftup}
 ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ;   #If
 ;   numpadmult::
@@ -102,38 +101,38 @@ numpaddiv::#down
   
   
   
-4_Tap(){
-     TT(A_ThisHotkey,450,,,2)
-     Input, Akey, T0.95 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}{numlock}
-      If InStr(ErrorLevel, "EndKey:")
-      {
-        If InStr(ErrorLevel, "NumpadAdd")
-          send, {altdown}{ctrldown}{right}{ctrlup}{altup}
-        If InStr(ErrorLevel, "NumpadSub")
-          send, {altdown}{ctrldown}{left}{ctrlup}{altup}
-        If InStr(ErrorLevel, "NumpadMult")
-          send, {altdown}{ctrldown}{up}{ctrlup}{altup}
-        If InStr(ErrorLevel, "NumpadDiv")
-          send, {shiftdown}{ctrldown}{p}{ctrlup}{shiftup}
-        If InStr(ErrorLevel, "F6")
-          send, {altDown}{lwindown}{o}{lwinup}{altup}
-        If InStr(ErrorLevel, "F7")
-          send, {altDown}{lwindown}{F7}{lwinup}{altup}
-        If InStr(ErrorLevel, "F9")
-          send, {ctrldown}{w}{ctrlup}
-        If InStr(ErrorLevel, "F8")
-          send, {ctrldown}{`}{ctrlup}
-        If InStr(ErrorLevel, "WheelLeft")
-          send, {ctrldown}{altdown}{h}{altup}{ctrlup}
-        exit
-      }
-      If ErrorLevel = TimeOut
-      {
-          send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
-          return
-      }
-      return
-}
+; 4_Tap(){
+    ;  TT(A_ThisHotkey,450,,,2)
+    ;  Input, Akey, T0.95 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Scrolllock}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Scrolllock}{numlock}
+      ; If InStr(ErrorLevel, "EndKey:")
+      ; {
+      ;   If InStr(ErrorLevel, "NumpadAdd")
+      ;     send, {altdown}{ctrldown}{right}{ctrlup}{altup}
+      ;   If InStr(ErrorLevel, "NumpadSub")
+      ;     send, {altdown}{ctrldown}{left}{ctrlup}{altup}
+      ;   If InStr(ErrorLevel, "NumpadMult")
+      ;     send, {altdown}{ctrldown}{up}{ctrlup}{altup}
+      ;   ; If InStr(ErrorLevel, "NumpadDiv")
+      ;     ; send, {shiftdown}{ctrldown}{p}{ctrlup}{shiftup}
+      ;   If InStr(ErrorLevel, "F6")
+      ;     send, {altDown}{lwindown}{o}{lwinup}{altup}
+      ;   If InStr(ErrorLevel, "F7")
+      ;     send, {altDown}{lwindown}{F7}{lwinup}{altup}
+      ;   If InStr(ErrorLevel, "F9")
+      ;     send, {ctrldown}{w}{ctrlup}
+      ;   If InStr(ErrorLevel, "F8")
+      ;     send, {ctrldown}{`}{ctrlup}
+      ;   If InStr(ErrorLevel, "WheelLeft")
+      ;     send, {ctrldown}{altdown}{h}{altup}{ctrlup}
+      ;   exit
+      ; }
+      ; If ErrorLevel = TimeOut
+      ; {
+          ; send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+          ; return
+      ; }
+      ; return
+; }
   
   
   

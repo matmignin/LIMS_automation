@@ -104,7 +104,8 @@ NextSheet(){
 	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
 	if (nextsheetname = "Finished")
-			XL.Sheets(3).activate
+			XL.Sheets(NextSheetname).activate
+			; XL.Sheets(3).activate
 	XL.Sheets(NextSheetname).activate
 	Excel.MatchColor()
 	excel.connect()
@@ -120,7 +121,7 @@ PreviousSheet(){
 		exit
 	Xl.Sheets(PreviousSheet).activate
 	Excel.MatchColor()
-	excel.connect()
+	excel.connect()d
 	; Excel.MatchColor()
 	;GuiControl, +redraw, varbar
 	}

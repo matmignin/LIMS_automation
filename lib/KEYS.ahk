@@ -71,16 +71,16 @@ F20 & /::send, %SampleID%
  `::`
  /::/
 
-;[_Mbutton_]
+;[_Scrolllock_]
  ~>+lbutton::sendinput,{shiftDown}{click}{shiftup}
- Mbutton & F20::SendPassword()
- Mbutton & Lbutton::sendinput,{CtrlDown}{Lbutton}{CtrlUp}
- Mbutton & WheelDown::sendinput,{ctrldown}{WheelDown}{CtrlUp}
- Mbutton & Wheelup::sendinput,{ctrldown}{Wheelup}{CtrlUp}
- ;Rbutton & F13::sendinput,{F21}
- Mbutton & F7::Wheel_Right()
- Mbutton & F6::Wheel_left()
-Mbutton::send, {Mbutton}
+;  Scrolllock & F20::SendPassword()
+;  Scrolllock & Lbutton::sendinput,{CtrlDown}{Lbutton}{CtrlUp}
+;  Scrolllock & WheelDown::sendinput,{ctrldown}{WheelDown}{CtrlUp}
+;  Scrolllock & Wheelup::sendinput,{ctrldown}{Wheelup}{CtrlUp}
+;  ;Rbutton & F13::sendinput,{F21}
+;  Scrolllock & F7::Wheel_Right()
+;  Scrolllock & F6::Wheel_left()
+; Scrolllock::Scrolllock
 ;[_Rbutton_]
  Rbutton & Wheelup::Wheel_cut() 
  Rbutton & Wheeldown::Wheel_paste()

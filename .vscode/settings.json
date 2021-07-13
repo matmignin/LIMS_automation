@@ -36,5 +36,5 @@
     "explorerExclude.backup": null,
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
-    "autoHide.autoHideSideBar": true
+    "autoHide.autoHideSideBar": false
 }

@@ -1,56 +1,64 @@
 
 
 #IfWinActive, ahk_exe Code.exe
-
 Tab & h::^[
 Tab & l::^]
 Tab & j::down
 Tab & k::up
-  
+Scrolllock::Scrolllock
+Numlock::Numlock
+ F6::F6
+ F7::F7
+ F8::F8
+ F9::F9
+numpadsub::numpadsub
+numpadadd::numpadadd
+numpadmult::numpadmult
+numpaddiv::numpaddiv
   ; $numpadMult:: send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}  ;4up
- numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
- numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
-; ~Space & Lctrl::Backspace
-  Mbutton:: 
-     TT(A_ThisHotkey,600,,,2)
-     Input, Akey, T0.6 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{numlock}
-      If InStr(ErrorLevel, "EndKey:")
-      {
-        If InStr(ErrorLevel, "NumpadAdd")
-          send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
-        If InStr(ErrorLevel, "NumpadSub")
-          send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
-        If InStr(ErrorLevel, "NumpadMult")
-          send, {altdown}{ctrldown}{up}{ctrlup}{altup}
-        If InStr(ErrorLevel, "Numpaddiv") {
-          send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-          TT("column select",3000)
-        }
-        If InStr(ErrorLevel, "F9")
-          send, {pgup}
-        If InStr(ErrorLevel, "F6")
-          send, {altDown}{lwindown}{o}{lwinup}{altup}
-        If InStr(ErrorLevel, "F7")
-          send, {ctrldown}{f}{ctrlup}
-        If InStr(ErrorLevel, "F8")
-        send, {pgdn}
+;  numpaddiv::send, {altDown}{lwindown}{Shiftdown}{down}{altup}{ShiftUp}{lwinup}
+; ;  numpadmult::send, {altDown}{lwindown}{Shiftdown}{UP}{ShiftUp}{altup}{lwinup}
+; ; ~Space & Lctrl::Backspace
+;   Scrolllock:: 
+;      TT(A_ThisHotkey,600,,,2)
+;      Input, Akey, T0.6 ,{NumpadAddf}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Scrolllock}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{numlock}
+;       If InStr(ErrorLevel, "EndKey:")
+;       {
+;         If InStr(ErrorLevel, "NumpadAdd")
+;           send, {altDown}{lwindown}{Shiftdown}{right}{ShiftUp}{lwinup}{altup}
+;         If InStr(ErrorLevel, "NumpadSub")
+;           send, {altDown}{lwindown}{Shiftdown}{left}{ShiftUp}{lwinup}{altup}
+;         If InStr(ErrorLevel, "NumpadMult")
+;           send, {altdown}{ctrldown}{up}{ctrlup}{altup}
+;         If InStr(ErrorLevel, "Numpaddiv") {
+;           send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+;           TT("column select",3000)
+;         }
+;         If InStr(ErrorLevel, "F9")
+;           send, {pgup}
+;         If InStr(ErrorLevel, "F6")
+;           send, {altDown}{lwindown}{o}{lwinup}{altup}
+;         If InStr(ErrorLevel, "F7")
+;           send, {ctrldown}{f}{ctrlup}
+;         If InStr(ErrorLevel, "F8")
+;         send, {pgdn}
           
-        exit
-      }
-      If ErrorLevel = TimeOut
-      {
-          ; TT("Previous ",800)
-          send, {ctrldown}{f}{ctrlup}
-          exit
-      }
-      return
-  ; Mbutton::sendinput, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup} ;search
-  F6::send, {altDown}{left}{altup}
-  F7::send, {altDown}{right}{altup}
-  F8::ToggleDefinition()
-  F9::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
-  numpadadd::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
-  numpadsub::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+;         exit
+;       }
+;       If ErrorLevel = TimeOut
+;       {
+;           ; TT("Previous ",800)
+;           send, {ctrldown}{f}{ctrlup}
+;           exit
+;       }
+;       return
+;   ; Scrolllock::sendinput, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup} ;search
+  ; F6::send, {altDown}{left}{altup}
+  ; F7::send, {altDown}{right}{altup}
+  ; F8::ToggleDefinition()
+  ; F9::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp}
+  ; numpadadd::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+  ; numpadsub::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
   
 
 F20 & Right::WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
@@ -138,13 +146,13 @@ rbutton & wheelup::wheel_2("{ctrldown}x{ctrlup}",2000)
 rbutton & f19::vs_code_windowinfo()
 ^s::sendinput, {ctrldown}{end}{ctrlup}
 ; $rbutton up::mouse_rbuttonup()
-media_play_pause::f9
+; media_play_pause::f9
 ; f20 & lbutton::^+4
 f9 & f6::return
 ; f20 & f9::f5
-f9 & wheeldown::toggledefinition() ;next search
+; f9 & wheeldown::toggledefinition() ;next search
 
-f9 & wheelup::wheel_2("{shiftdown}{altdown}{up}{altup}{shiftup}",50)
+; f9 & wheelup::wheel_2("{shiftdown}{altdown}{up}{altup}{shiftup}",50)
 
 F20 & h::send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 F20 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
@@ -176,8 +184,8 @@ f19 & lbutton::^lbutton
 ; #If WinActive("ahk_exe Code.exe") && Getkeystate("F13","p") ;editor
 
 
-
 F13 up::send, {esc}{ctrlup}{altup}
+#IfWinActive,
 ;FUNCTIONS-----------------------------------------------------------
 #IfWinActive, 
 
@@ -203,7 +211,7 @@ VS_Code_WindowInfo(){
 
 
 #IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
-  Mbutton::WinClose, ahk_exe AutoHotkey.exe Vquest.ahk
+  ; Scrolllock::WinClose, ahk_exe AutoHotkey.exe Vquest.ahk
   #ifwinexists,C:\Users\mmignin\Documents\VQuest\Vquest.ahk - AutoHotkey 
     Media_Play_Pause::Send, {F5}
 #ifwinactive,
@@ -335,7 +343,7 @@ Menu, Menu, Add, Search Hotkeys, vscode
   Menu, hotkeyMenu, Add, numpadsub, vscode
   Menu, hotkeyMenu, Add, numpadadd, vscode
   Menu, hotkeyMenu, Add, F9, vscode
-  Menu, hotkeyMenu, Add, Mbutton, vscode
+  Menu, hotkeyMenu, Add, Scrolllock, vscode
   Menu, hotkeyMenu, Add, Rbutton, vscode
   Menu, hotkeyMenu, Add, Wheel, vscode
 Menu, Menu, add, Search Hotkeys, :HotkeyMenu
@@ -380,8 +388,8 @@ Menu.show()
    Sendinput, ^fF19`:`:{Tab 6}{down 2}
    else if (A_thismenuitem = "F20")
     Sendinput, ^fF20`:`:{Tab 6}{down 2}
-   else if (A_thismenuitem = "Mbutton")
-    Sendinput, ^fMbutton{Tab 6}{down 2}
+   else if (A_thismenuitem = "Scrolllock")
+    Sendinput, ^fScrolllock{Tab 6}{down 2}
    else if (A_thismenuitem = "Rbutton")
     Sendinput, ^fRbutton{Tab 6}{down 2}
    else if (A_thismenuitem = "Wheel")

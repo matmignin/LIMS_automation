@@ -7,6 +7,8 @@
 	$k::^up
 	h::^[
 	l::^]
+	m::send,{ctrldown}{m}{ctrlup}
+	u::send,{ctrldown}{u}{ctrlup}
 	; F13::return
 	#If Getkeystate("F13","p")
 	y::Clip_c()
@@ -18,10 +20,9 @@
 		f::Vim.find("f")
 	; d::return
 	;#If (A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
-
 #If (A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
 	d::Send, {shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
-	w::send, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}{delete}
+	w::send, {shiftdown}{altdown}{ctrldown}{7}{ctrlup}{altup}{shiftup}
 	4::send, +{end}^{x}
 	5::send, ^{m}^{x}
 	0::send, +{home}^{x}
@@ -47,8 +48,8 @@ k::send,{shiftdown}{up}{shiftup}
 w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 0::send,{shiftdown}{Home}{shiftup}
 4::send,{shiftdown}{end}{shiftup} 
-m::send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
-u::send,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
+	m::send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	u::send,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
 	; Lctrl & m::send,{shiftdown}{altDown}{right}{altup}{shiftup}
 	; lctrl & u::send,{shiftdown}{altDown}{left}{altup}{shiftup}
 Space::send,{shiftdown}{altDown}{a}{shiftup}{altup}

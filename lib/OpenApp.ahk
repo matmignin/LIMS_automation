@@ -1,7 +1,7 @@
 return
 #IfWinActive,
 OpenApps:
- !f::OpenApp.Firefox()
+ !f::OpenApp.Firfefox()
  !v::OpenApp.vsCode()
  ; !c::OpenApp.Clickup()
  !e::send,{LWinDown}{e}{lwinup}

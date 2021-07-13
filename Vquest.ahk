@@ -38,7 +38,6 @@ F13Click(){
 }
 
 
-
 ReadSpecIntoDataBase:
  iniread, full, data.ini, %Product%,ecc738
  Test_Specs:= strsplit(Full,"=")
@@ -224,16 +223,7 @@ tPhk:=A_TimesincePriorHotkey
  Run, cl3.Ahk, lib\CL3
  try
  Menu, Tray, Icon, Robot.ico
-Iniread, Iteration, data.ini, SavedVariables, Iteration
-Iniread, Batch, data.ini, SavedVariables, Batch
-Iniread, Product, data.ini, SavedVariables, Product
-Iniread, SampleID, data.ini, SavedVariables, SampleID
-Iniread, Lot, data.ini, SavedVariables, Lot
-Iniread, Coated, data.ini, SavedVariables, Coated
-Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-Iniread, VarBar_X, data.ini, Locations, VarBar_x
-Iniread, Inverted, data.ini, Locations, Inverted
-Iniread, Follow, data.ini, Locations, Follow
+
 
 OnExit("Varbar.Exit")
 

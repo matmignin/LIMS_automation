@@ -222,7 +222,7 @@ else If link contains Mywork_Searchbar
 
 
 #if WinExist("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
- Mbutton::Sendpassword()
+ Scrolllock::Sendpassword()
 #if
 
 SendPassword(){
