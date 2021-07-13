@@ -14,6 +14,9 @@
  sleep 200
  send, %product%{enter}
  return
+#IfWinActive, Word ahk_exe WINWORD.EXE
+F19::Clip_v()
+
 
 
 	#IfWinActive, LMS Workbook.xlsb
@@ -59,7 +62,7 @@ KEY_OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 
 	F19 & enter::send, {ctrldown}{enter}{ctrlup}
-	F20 & Space::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	F19 & F20::sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::Clip()

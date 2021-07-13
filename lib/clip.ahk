@@ -1,5 +1,5 @@
 Clip(input=0){
-  global  tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
+  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
   ClipboardSaved:=Clipboard
   If Input contains OCR
   {
@@ -8,23 +8,11 @@ Clip(input=0){
     return
   }
   clipboard:=
-  ; cProduct:=
-  ; cBatch:=
-  ; cLot:=
-  ; cCoated:=
-  ; cSampleID:=
-  ; cAnalytical:=
-  ; cMicro:=
-  ; cRetain:=
-  ; cPhysical:=
-  ; cCTPhysical:=
-  ; cCTRetain:=
-  ; Department:=
   if (input=="cut")
     send, ^x
   else
     send, ^c
-  clipwait,0.65
+  clipwait,0.85
   if errorlevel
   {
     clipboard:=ClipboardSaved
@@ -46,36 +34,41 @@ Clip(input=0){
     RegExMatch(Clipboard, "i)(coated: |/?ct# |/?ct#|ct |coated )\d{3}-\d{4}\b", cCoated)
   ; RegExMatch(Clipboard, "(?<=Ct# )|(?<=Coated.?)\b\d{3}-\d{4}\b", cCoated)
     RegExMatch(cCoated,   "\d{3}-\d{4}", cCoated)
-    RegExMatch(Clipboard, "(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+    RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
     RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
-    Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-    Regexmatch(Clipboard, "((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-    Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-    Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-    Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-    Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+    Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+    Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+    Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+    Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+    Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+    Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
     Sleep      20
 
     ; TT(cProduct "`n" cBatch "`n" clot,1500,,,3)
   If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
+        	Fileappend, %cProduct%`n, lib/Product.txt
   }
   If cBatch {
     GuiControl,Varbar:Text, Batch, %cBatch%
 				IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+        	Fileappend, %cBatch%`n, lib/Batch.txt
     }
   If cCoated {
     GuiControl,Varbar:Text, Coated, %cCoated%
 				IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        	Fileappend, %cCoated%`n, lib/Coated.txt
     }
   If cLot {
     GuiControl,Varbar:Text, lot, %clot%
 				IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        	Fileappend, %cLot%`n, lib/Lot.txt
     }
   If cSampleID {
     GuiControl,Varbar:text, SampleID, %cSampleID%
 				IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
+        	Fileappend, %cSampleID%`n, lib/SampleID.txt
     }
   If cAnalytical
     Department=Analytical
@@ -96,7 +89,7 @@ Clip(input=0){
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain && Winactive("ahk_exe WFICA32.EXE") 
       TT(cProduct " " cBatch " " cLot " " cSampleID "`n`t " cCoated "`t " Department,4000,,,3)
     else 
-      TT(Clipboard,1000,,,3)
+      TT(Clipboard,200,,,3)
     }
   else
     return 
@@ -120,7 +113,7 @@ Clip_C2(){
           clipboard:=
           send, ^x
           clipwait
-          TT(clipboard,1000)
+          TT(clipboard,200)
           return
         }if (A_PriorKey!="F20")
           KeyWait, F20,
@@ -185,8 +178,9 @@ clip_v(){
         If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
             wheel_paste()
           Else
-            return
+          return
       }
+            ; Send, ^v
       return
     }
 /* 

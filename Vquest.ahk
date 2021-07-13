@@ -4,38 +4,6 @@ return
 Starting_test:
 ; Test_2()
 return
-; Lwin::Test_3()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-F13 & Lbutton::F13Click()
-
-F13Click(){
-  KeyWait, lbutton, T0.25
-    If ErrorLevel
-    {
-       KeyWait, Lbutton, D
-        If !ErrorLevel
-          send, ^{click 3}
-        exit
-    }
-    send, ^{Click 2}
-    return
-}
 
 
 ReadSpecIntoDataBase:
@@ -58,8 +26,21 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 
 
 #IfWinActive,
-
+On:="On"
+Off:="Off"
+Clear:="Clear"
+yo:="yo"
+ye:="ye"
+Pk:=A_Priorkey
+Phk:=A_PriorHotkey
+Thk:=A_ThisHotkey
+tsThk:=A_TimesinceThisHotkey
+tThk:=A_TimesinceThisHotkey
+tsPhk:=A_TimesincePriorHotkey
+tPhk:=A_TimesincePriorHotkey
 ;___________________________________________________________________________
+ `::send, ``
+ /::/
 
 WindowNames(){
  global
@@ -157,9 +138,10 @@ VQuest_Start:
  #Persistent
  #NoEnv
  #SingleInstance,Force
- #KeyHistory 400
+ #KeyHistory 300
  #InstallKeybdHook
  #InstallMouseHook
+ #MenuMaskKey vkE8
 ;  #SingleInstance, Force
 
 ; SetTitleMatchMode, Fast		;Fast is default
@@ -185,24 +167,12 @@ AutoTrim, On
  Menu, Tray, Add, VarbarFollow, Run_Follow
  menu, tray, add, Inverted, Run_Inverted
  Menu, tray, NoStandard
- ; Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
+;  Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
  Menu, Tray, Add, List Lines, Run_ListLines
  Menu, Tray, Add, windowSpy, WindowSpySub
  Menu, Tray, Add, Exit, ExitSub
  Menu, Tray, Default, windowSpy ;Run_Listlines
-On:="On"
-Off:="Off"
-Clear:="Clear"
-yo:="yo"
-ye:="ye"
 
-Pk:=A_Priorkey
-Phk:=A_PriorHotkey
-Thk:=A_ThisHotkey
-tsThk:=A_TimesinceThisHotkey
-tThk:=A_TimesinceThisHotkey
-tsPhk:=A_TimesincePriorHotkey
-tPhk:=A_TimesincePriorHotkey
 ;#Warn, All, OutputDebug
 #Warn UseUnsetLocal, OutputDebug
 
@@ -216,8 +186,9 @@ tPhk:=A_TimesincePriorHotkey
  #MaxHotkeysPerInterval 120
  #HotkeyModifierTimeout 50
  #maxthreadsperhotkey, 1
+;  #IfTimeout 500
  SetKeyDelay, 0, 0
- setwindelay,400
+ setwindelay,300
 
  FormatTime, TimeString,, M/d/yy
  Run, cl3.Ahk, lib\CL3

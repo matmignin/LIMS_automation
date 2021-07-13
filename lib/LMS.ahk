@@ -248,7 +248,6 @@ return
   F19 & up::send, %sampleID%
   F19 & left::send, %lot%
   F19 & right::send, %coated%
-  F20 & Space::send, %Batch%
   $Rbutton up::Mouse_RbuttonUP()
   enter::click.okay()
   esc::click.esc()

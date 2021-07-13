@@ -1672,4 +1672,3 @@ $F{COA_DATE}, $F{REPORT_DATE_FORMAT}, $P{LOCAL_TIME_NAME}, $P{REPORT_LOCALE})]]>
 		</band>
 	</noData>
 </jasperReport>
-~~

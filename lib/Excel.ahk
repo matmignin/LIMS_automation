@@ -25,7 +25,9 @@ InfoLocations(){
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
 	;EnvSet, ShipTo, %ShipTo%
-	GuiControl, Varbar:Text, Coated, %coated%
+	if Coated
+		GuiControl, Varbar:Text, Coated, %coated%
+	GuiControl, Varbar:Text, SampleID,
 	GuiControl, Varbar:Text, name, %name%
 	GuiControl, varbar:text, Color, %Color%
 	GuiControl, Varbar:Text, customer, %Customer%
@@ -47,8 +49,9 @@ Connect(reload:=0){
 		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
 	else{
 		TT("no notebook open",500,0,0,1)
-				; VarBar.show()
-		; 		return
+				VarBar.load()
+				varbar.show()
+				return
 		}
 	Try{
 		XL := ComObjActive("Excel.Application")

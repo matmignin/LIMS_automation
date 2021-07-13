@@ -68,8 +68,6 @@ F20 & /::send, %SampleID%
  ` & 3::Test_3()
 ;  ~esc::esc
 ; #MaxThreadsPerHotkey 1
- `::`
- /::/
 
 ;[_Scrolllock_]
  ~>+lbutton::sendinput,{shiftDown}{click}{shiftup}
@@ -142,6 +140,29 @@ F19 & F20::menu.Variables()
 F19 & lbutton::^Lbutton
  ~F20::Clip_C()
  ~F19::Clip_V()
+
+F13 & Lbutton::F13Click()
+
+
+
+
+
+
+
+
+
+F13Click(){
+  KeyWait, lbutton, T0.25
+    If ErrorLevel
+    {
+       KeyWait, Lbutton, D
+        If !ErrorLevel
+          send, ^{click 3}
+        exit
+    }
+    send, ^{Click 2}
+    return
+}
 
 ; F19::DoubleTab_Copy()
 

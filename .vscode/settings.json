@@ -15,7 +15,7 @@
         "bin/": true,
         "lib/plugins/": true,
         "lib/*.code-workspace": true,
-        "lib/CL3/*": true,
+        "lib/CL3/*": false,
         "lib/DebugWindow.AHK": true,
         "lib/Gdip_All.ahk": true,
         "lib/JSON.ahk": true,
@@ -27,8 +27,8 @@
         "*.json": true,
         "*.txt": true,
         "VBA Code/*": true,
-        "lib/CL3": true,
-        "lib/clip.ahk": true,
+        "lib/CL3": false,
+        "lib/clip.ahk": false,
         "lib/Studio.ahk": true,
         "lib/Tooltip.ahk": true,
         "**/.vimrc": true
@@ -36,6 +36,6 @@
     "explorerExclude.backup": null,
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
-    "autoHide.autoHideSideBar": true,
-    "autoHide.autoHidePanel": false
+    "autoHide.autoHideSideBar": false,
+    "autoHide.autoHidePanel": true
 }

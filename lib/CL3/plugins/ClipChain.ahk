@@ -277,14 +277,14 @@ If ClipChainNoHistory
 	OnClipboardChange("FuncOnClipboardChange", 0)
 Clipboard:=ClipChainData[ClipChainIndex]
 PasteIt()
-Sleep 100
+Sleep 50
 Clipboard:=History[1].text
 If ClipChainNoHistory
 	OnClipboardChange("FuncOnClipboardChange", 1)
 stats.clipchain++
 ClipChainIndex++
 nextclip:=ClipChainData[ClipChainIndex]
-tooltip(NextClip,3000)
+; tooltip(NextClip,3000,A_ScreenWidth/2,40)
 Gosub, ClipChainUpdateIndicator
 return
 #If
@@ -473,10 +473,10 @@ XMLSave("ClipChainData","-" A_Now)
 ClipChainData:=RegExReplace(Clipboard,"m)^\s+$") ; v1.1 remove white space from empty lines
 If (Asc(SubStr(ClipChainData,1,1)) = 65279) ; fix: remove BOM char from first entry, could mess up a filepath...
 	ClipChainData:=SubStr(ClipChainData,2)
-StringReplace,ClipChainData,ClipChainData,`r`n`r`n, % Chr(7), All
+; StringReplace,ClipChainData,ClipChainData,`r`n`r`n, % Chr(7), All
+StringReplace,ClipChainData,ClipChainData,`r`n, % Chr(7), All
 #Include *i %A_ScriptDir%\plugins\ClipChainPRIVATERULES.ahk
 ClipChainData:=StrSplit(ClipChainData,Chr(7))
- 
 ClipChainListview:
 Gui, ClipChain:Default
 LV_Delete()

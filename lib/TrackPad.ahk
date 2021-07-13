@@ -61,7 +61,7 @@ numpaddiv::#down
 ; ;   numpadmult::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp} ;4up
 ; ;   ; numpadmult::send, +#{up} ;4up
 ; ;   lbutton::send, ^{click}
-; ;   ; Numlock::Send, +#{right}
+; ;   ; m::Send, +#{right}
 ; ;   Scrolllock::send, {shiftDown}{click}{shiftup}
 ; ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ; ;   #If

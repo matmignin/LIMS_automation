@@ -51,10 +51,10 @@ class Breaking {
 
 
 
+
 Test_1(){
 	global
-LMS.DetectTab()
-tt(tab)
+varbar.focus("Edit4")
 	return
 }
 

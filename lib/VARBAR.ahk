@@ -17,7 +17,15 @@ KEY_Varbar:
 	; 	~wheelright::msgbox, %A_ThisHotkey%
 	; 	~wheelleft::msgbox, %A_ThisHotkey%
 #if
+#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
+enter::
+winactivate, %the_WinTitle%
+click, %caret_X%, %caret_y%
+return
+; Gui, VarBar:submit,NoHide
 
+; return
+#IfWinActive, 
 Class VarBar{
 
 	Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -104,9 +112,9 @@ Class VarBar{
 			sleep 100
 			Gui, VarBar:submit,NoHide
 		return
-		
 		NoteVarBar:
 			sleep 100
+			; keywait, enter
 			Gui, VarBar:submit,NoHide
 		return
 		CoatedVarBar:
@@ -130,6 +138,20 @@ Class VarBar{
 			GUI, VarBar:destroy
 		return
 	}
+Focus(Control){
+	global
+	WinGetTitle, the_WinTitle, A
+	caret_x:=A_CaretX
+	caret_y:=A_Carety
+	WinActivate, VarBar ahk_exe AutoHotkey.exe
+	GuiControl Varbar:Focus, %Control%, 
+	send, {ctrldown}{a}{ctrlup}
+	sleep 200
+
+	; GuiControl Varbar:Focus, Edit4, 
+	return
+}
+
 
 	Follow(){
 		global
@@ -191,25 +213,17 @@ Class VarBar{
 	Search(input){
 	global
 	Clip()
-	; WinActivate, NuGenesis LMS - \\Remote
-	; click 746, 47
-	; sleep 200
 	LMS.SearchBar(input)
 	return
 }
 
 	AddIteration(speed:=550){
 	global Iteration
-	; GuiControl, Varbar:Text, iteration, %iteration%
 	sleep 20
-	; CoordMode, tooltip, screen
 	Iteration+=1
 	ControlsetText, Static1,%Iteration%,VarBar`~
 	sleep %Speed%
-	; sleep 200
-	; envset, iteration, %iteration%
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-	; TT(Iteration, 3000,(Varbar_x+80),Varbar_y)
 	return
 }
 	SubIteration(speed:=550){
@@ -234,8 +248,6 @@ iniread, note1, data.ini, SavedVariables, note1
 Iniread, note2, data.ini, SavedVariables, note2
 Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
-Iniread, Inverted, data.ini, Locations, Inverted
-Iniread, Follow, data.ini, Locations, Follow
 }
 
 exit(){
@@ -250,8 +262,6 @@ IniWrite, %note1%, data.ini, SavedVariables, note1
 IniWrite, %note2%, data.ini, SavedVariables, note2
 iniwrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
-iniwrite, %Inverted%, data.ini, Locations, Inverted
-iniwrite, %Follow%, data.ini, Locations, Follow
 Notes.Save()
 	
 }
