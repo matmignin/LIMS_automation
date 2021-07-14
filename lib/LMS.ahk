@@ -117,8 +117,11 @@
 			else
 				Menu.LMS()
 		}
-		else if winactive("Edit Formulation - \\Remote")
-			send, {tab}%product%{Tab 23}
+		else if winactive("Edit Formulation - \\Remote"){
+			mouseclick, left, 455, 472,2,0
+			clk(250, 284)
+		return	
+		}
 		else if winactive("Edit Product - \\Remote")
 			ProductTab.EditProduct()
 		else If WinActive("Select tests for request: R")
@@ -223,7 +226,7 @@ return
 
 #IfWinActive, Results Definition - \\Remote
   wheelup::Mouse_click("Edit")
-  WheelDown::pgdn
+  ; WheelDown::pgdn
 		; Click, 1330, 592
 		; sleep 100
 		; click, 338, 619
@@ -287,11 +290,9 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Coated, Edit4, VarBar
-	ControlGetText, SampleId, Edit5, VarBar
-	ControlGetText, Note1, Edit6, VarBar
-	ControlGetText, Note2, Edit7, VarBar
-	if !winactive("ahk_exe WFICA32.EXE")
-		winactivate, ahk_exe WFICA32.EXE
+		ControlGetText, SampleId, Edit5, VarBar
+		if !winactive("ahk_exe WFICA32.EXE")
+			winactivate, ahk_exe WFICA32.EXE
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 					send, {ctrlup}
@@ -306,20 +307,34 @@ SearchBar(Code:="",PostCmd:=""){
 		else if winactive("NuGenesis LMS - \\Remote") {
 			LMS.DetectTab()
 			if (Tab="Products") {
+				If (Code=Product){
 				clk(x%Tab%Search,yProductsSearch)
 							send, ^{a}%Product%^{a}
 							if PostCmd!=""
 								send % PostCmd
 									send, {ctrlup}	
 				exit
+				}
+					If (Code=Batch) {
+					clk(40, 384)
+					sleep 200
+					clk(455, 472,,2)
+					exit
+				}
 			}
 			if (Tab="Specs") {
+				If (Code=Product) {
 				clk(x%Tab%Search,yProductsSearch)
 							send, ^{a}%Product%^{a}
 							if PostCmd!=""
 								send % PostCmd
 									send, {ctrlup}	
 				exit
+				}
+				If (Code=Batch) {
+					clk(53, 756)
+					exit
+				}
 			}
 			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 					clk(x%Tab%Search,yWorkTabSearch,,2)
@@ -341,6 +356,7 @@ SearchBar(Code:="",PostCmd:=""){
 				exit
 			}
 		}
+		
 }
 
 
@@ -842,6 +858,29 @@ Orient(){
 }
 
 
+ScrollDown(){
+	Global
+if winactive("Result Editor - \\Remote") {
+	clk(503, 574,1)
+	Sleep 800
+	return
+	}
+if winactive("Test Definition Editor - \\Remote") {
+	clk(464, 532,,2)
+	Sleep 800
+	return
+}
+if winactive("Edit Formulation - \\Remote") {
+	clk(452, 473,,2)
+		Sleep 800
+	return
+}
+else
+	return
+}
+
+
+
 }
 
 
@@ -852,33 +891,7 @@ Orient(){
 
 
 
-
 	Scroll_Fix:
-	#If mouse_isover("Result Editor - \\Remote")
-	wheelup::
-	clk(505, 77)
-		Sleep 800
-	return
-	wheeldown::
-	clk(503, 574)
-	Sleep 800
-	return
-	#If mouse_isover("Test Definition Editor - \\Remote")
-	wheelup::
-	clk(465, 260,,2)
-			Sleep 800
-	return
-	wheeldown::
-	clk(464, 532,,2)
-	Sleep 800
-	return
-	#If mouse_isover("Edit Formulation - \\Remote")
-	wheelup::
-	clk(313, 293)
-		Sleep 2000
-	return
-	wheeldown::
-	clk(452, 473,,2)
-		Sleep 800
-	return
-	#if
+#If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
+Wheeldown::LMS.ScrollDown()
+#if

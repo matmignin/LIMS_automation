@@ -95,20 +95,24 @@ Mouse_RbuttonUP(){
 ; }
 
 
-Clk(x,y,Button:="Left",n=1,window:=""){
+Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	global
 	; mx:=
 	; my:=
 	; mw:=
 	MouseGetPos, mx, my, mw,
+	MouseReturn:="{click " Mx ", " My ",0}"	
 	; sleep 25
 	if (window!="")
 		winactivate, %window%
 	mouseclick, %Button%, %x%,%y%,%n%,0
 	sleep 25
-	mousemove,%mx%,%my%,0
 	if (window!="")
 		winactivate, %mw%
+	If (ReturnMouse=0)	
+		Return 
+	else
+		mousemove,%mx%,%my%,0
 	; sleep 50
 	;  return, {Click, %x%,%y%,}
 }

@@ -182,7 +182,7 @@ CopySpecs(){
 	click 418, 202
 	SpecTab.TestDefinitionEditor(Description) ; the pre window
 	sleep 200
-MouseClick, left, 464, 532,2,0
+	MouseClick, left, 464, 532,2,0
 	sleep 200
 	click 232, 244 ;click resulst
 	sleep 200
