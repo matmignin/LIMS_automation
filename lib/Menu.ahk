@@ -238,7 +238,7 @@ return
       SpecTab.Edit_Micro() ; copyMicro spec tests
     else if A_thismenuitem contains &Physical
       SpecTab.Edit_Physical()
-    else if A_thismenuitem contains Copy &Specsex
+    else if A_thismenuitem contains Copy &Specs
       SpecTab.CopySpecs()
     else if A_thismenuitem contains Paste &Specs
       SpecTab.PasteSpecs()
