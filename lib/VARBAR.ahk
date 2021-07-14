@@ -1,21 +1,21 @@
 KEY_Varbar:
-	#If Mouse_IsOver("VarBar ahk_class AutoHotkeyGUI")
-	wheelleft::Excel.PreviousSheet()
+	#If Mouse_IsOver("VarBar ahk_exe AutoHotkey.exe")
+	wheelleft::Excel.PrevSheet()
 	wheelRight::excel.Nextsheet()
 	WheelUp::Varbar.AddIteration()
 	Wheeldown::Varbar.SubIteration()
 	F9::Excel.connect()
 	F7::Excel.NextSheet()
-	F6::Excel.previoussheet()
+	F6::Excel.PrevSheet()
 	F20::Varbar.Follow()
 	Scrolllock::Varbar.LaunchTable()
 	F20 & F6::ProductTab.Table()
 	F20 & F7::SpecTab.Table()
 	; Rbutton::Menu.Tables() ; Excel.connect()
 ; F9::ReloadScript()
-	; #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
-	; 	~wheelright::msgbox, %A_ThisHotkey%
-	; 	~wheelleft::msgbox, %A_ThisHotkey%
+	#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+		wheelright::msgbox, %A_ThisHotkey%
+		wheelleft::msgbox, %A_ThisHotkey%
 #if
 #IfWinActive, VarBar ahk_exe AutoHotkey.exe 
 enter::

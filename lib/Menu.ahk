@@ -239,9 +239,9 @@ return
     else if A_thismenuitem contains &Physical
       SpecTab.Edit_Physical()
     else if A_thismenuitem contains Copy &Specsex
-      SpecTab.copy()
+      SpecTab.CopySpecs()
     else if A_thismenuitem contains Paste &Specs
-      SpecTab.Paste()
+      SpecTab.PasteSpecs()
     else if A_thismenuitem contains Copy &Template
       SpecTab.CopySpecTemplate()
     else if A_thismenuitem contains New &Request

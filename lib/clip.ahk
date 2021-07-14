@@ -12,7 +12,7 @@ Clip(input=0){
     send, ^x
   else
     send, ^c
-  clipwait,0.85
+  clipwait,0.95
   if errorlevel
   {
     clipboard:=ClipboardSaved
@@ -36,6 +36,7 @@ Clip(input=0){
     RegExMatch(cCoated,   "\d{3}-\d{4}", cCoated)
     RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
     RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
+    
     Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
     Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
     Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)

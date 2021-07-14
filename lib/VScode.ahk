@@ -1,6 +1,7 @@
 
 
 #IfWinActive, ahk_exe Code.exe
+$Lwin Up::SendInput !+i
 Tab & h::^[
 Tab & l::^]
 Tab & j::down
@@ -115,16 +116,7 @@ Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
 LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
 ; Lalt::send, {altdown}{shiftdown}{up}{shiftup}{altup}
 
-DoublePress(action,SecondAction:="", ToolTip:=""){
 
-  If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
-    send, %action%{shiftup}{altup}{ctrlup}{lwinup}
-    tt(ToolTip)
-  }
-  Else
-    send % SecondAction "{shiftup}{altup}{ctrlup}{lwinup}"
-  Return
-}
 
 
 
@@ -170,8 +162,6 @@ F20 & backspace::delete
 ; f19 & right::^rightVariable()
 f19 & `::send, ~
 f19 & p::send, %process%
-
-
 f19 & m::send, %mouseposition%
 f19 & t::send, %wintitle%
 f19 & w::send, %wininfo%
@@ -190,26 +180,6 @@ F13 up::send, {esc}{ctrlup}{altup}
 ;FUNCTIONS-----------------------------------------------------------
 #IfWinActive, 
 
-VS_Code_WindowInfo(){
-	global
-	CoordMode, mouse, window
-	MouseGetPos, mX, mY, ,WinControl
-	WinGetPos,wX,wY,wW,wH, A
-	WinGetTitle, winTitle, A
-	WinGetClass, Winclass, A
-	WinGet, WinProcess, ProcessName, A
-	MousePosition:=mX "`, " mY
-	Sleep, 100
-	Tooltip % MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH
-	Process:= "ahk_exe " WinProcess
-	WinInfo:="WinMove, " Wintitle ", , " wX ", " wY ", " wW ", " wH
-	keywait, F20, U
-	sleep 400
-	Tooltip,
-	; SetTimer, RemoveToolTip, -2000
-}
-
-
 
 #IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
   ; Scrolllock::WinClose, ahk_exe AutoHotkey.exe Vquest.ahk
@@ -217,26 +187,6 @@ VS_Code_WindowInfo(){
     Media_Play_Pause::Send, {F5}
 #ifwinactive,
 
-ReloadScript(){
-; global iteration
-; ControlGetText, Iteration, Static1, VarBar
-TT("Reload")
-IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
-  WinActivate,
-sendinput, ^s
-sleep 200
-run, VQuest.ahk
-send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
-}
-
-ToggleDefinition(){
-global
-If toggle := !toggle
-sendinput ^d
-else
-sendinput, +{esc}
-return
-}
 
 VSCODE_Hotstrings:
 :*r:cd\::{ctrldown}
@@ -331,6 +281,40 @@ $+F12::ListLines
 ;:HelpFile:
 #ifwinactive, C:\Users\mmignin\Documents\VQuest\Vquest.ahk - AutoHotkey
 Media_Play_Pause::test_1()
+
+
+
+
+VS_Code_WindowInfo(){
+	global
+	CoordMode, mouse, window
+	MouseGetPos, mX, mY, ,WinControl
+	WinGetPos,wX,wY,wW,wH, A
+	WinGetTitle, winTitle, A
+	WinGetClass, Winclass, A
+	WinGet, WinProcess, ProcessName, A
+	MousePosition:=mX "`, " mY
+	Sleep, 100
+	Tooltip % MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH
+	Process:= "ahk_exe " WinProcess
+	WinInfo:="WinMove, " Wintitle ", , " wX ", " wY ", " wW ", " wH
+	keywait, F20, U
+	sleep 400
+	Tooltip,
+	; SetTimer, RemoveToolTip, -2000
+}
+
+DoublePress(action,SecondAction:="", ToolTip:=""){
+
+  If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
+    send, %action%{shiftup}{altup}{ctrlup}{lwinup}
+    tt(ToolTip)
+  }
+  Else
+    send % SecondAction "{shiftup}{altup}{ctrlup}{lwinup}"
+  Return
+}
+
 
 
 VScode_menu(){
@@ -450,9 +434,25 @@ N=0
 return
 }
 
+ReloadScript(){
+; global iteration
+; ControlGetText, Iteration, Static1, VarBar
+TT("Reload")
+IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
+  WinActivate,
+sendinput, ^s
+sleep 200
+run, VQuest.ahk
+send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
+}
+
+ToggleDefinition(){
+global
+If toggle := !toggle
+sendinput ^d
+else
+sendinput, +{esc}
+return
+}
+
 ; SetTitleMatchMode 2
-#IfWinActive Visual Studio Code
-    ; on LALT key-up, send ALT+SHIFT+I
-  <!f::openapp.firefox()
-    $lalt Up::SendInput !+i
-#IfWinActive

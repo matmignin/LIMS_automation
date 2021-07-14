@@ -61,6 +61,7 @@ Table(){
 
 DropdownSelect(A_DropdownCount){
  global
+ SetWinDelay, 450
   ; if Winactive("Duplicate ingredient ID - \\Remote") || winactive("Warning - \\Remote") || winactive("Composition - \\Remote")
   ; {
    ; exit
@@ -86,6 +87,7 @@ DropdownSelect(A_DropdownCount){
 
 EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
  Global
+  SetWinDelay, 450
  Excel.Get_Current_row()
  Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
  Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
@@ -125,6 +127,7 @@ return
 
 AddCOASpace(){
 	Global
+   SetWinDelay, 450
 	ControlGetText, Iteration, Static1, VarBar
 	; WinActivate, Composition - \\Remote
 	click
@@ -149,6 +152,7 @@ AddCOASpace(){
 
 Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
   global
+   SetWinDelay, 450
   winactivate, Edit Formulation - \\Remote
   click 450, 462, 3
   send, {click 385, 347}
@@ -167,6 +171,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
 
 EditProduct(){
    global
+    SetWinDelay, 450
    Excel.Connect()
    click 120,80 ;click product box
    Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
@@ -185,7 +190,9 @@ EditProduct(){
    return
    Breaking.Point()
   }
-  HM_ReportOnly(){ ;testing out
+
+  HM_ReportOnly(){ 
+  SetWinDelay, 450 ;testing out
    click 125,120 ;click 1st row
    Mouse_Click("add")
    winwaitactive, Edit Ingredient - \\Remote,,4
@@ -221,6 +228,7 @@ EditProduct(){
 
   DropDown_Ingredient(){
    global
+    SetWinDelay, 450
    ;Menu,IngredientMenu,Add,Creatine, IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &A.1,IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &B.1,IngredientMenuHandler
@@ -361,6 +369,7 @@ return
 Ingredient_TableGuiClose:
 sleep 100
  GUI,Ingredient_Table:destroy
+  SetWinDelay, 300
 return
 
 Formulation_Hotstrings:

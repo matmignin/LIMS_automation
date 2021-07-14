@@ -131,7 +131,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	; $<^j::send,{ctrldown}{down}{ctrlup}
 	$<^down::send,{ctrldown}{down}{ctrlup}
 
-	$F19::numpadadd
+	F19::numpadadd
 		; sleep 100
 		; While GetKeyState("F13", "p") {
 		; 	If GetKeyState("F19", "p") {

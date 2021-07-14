@@ -19,33 +19,63 @@ F19::Clip_v()
 
 
 
+	#If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 1000 AND winactive("LMS Workbook.xlsb"))
+	F6::
+		; excel.connect()
+		lms.SearchBar(Product,"{enter}")
+		sleep 200
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
+		send, {click, 87, 676, 0}
+		return
+	F7::
+		; excel.connect()
+		lms.SearchBar(Batch,"{enter}")
+		sleep 200
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
+		send, {click, 87, 676, 0}
+		return
+	#if
 	#IfWinActive, LMS Workbook.xlsb
-	F9::Excel.Connect(1)
+	F9::
+	winactivate, SAMPLE LOG 2021.xlsx
+	excel.search()
+	return
 	Scrolllock::Excel.Connect(1)
 	F19 & backspace::delete
 	F19 & down::^down
 	F19 & up::^up
 	F19 & left::^left
 	F19 & right::^right
+	F7::Excel.NextSheet()
+	F6::Excel.PrevSheet()
+	
 #ifwinactive, Book
-			F7::sendinput, #{right}
-			wheelright::sendinput, #{right}
-			F6::sendinput, #{left}
-			wheelleft::sendinput, #{left}
+			numpadadd::send, #{right}
+			numpadsub::send, #{left}
 #ifwinactive, ahk_exe EXCEL.EXE
-F9::excel.search()
+Scrolllock::
+F9::
+excel.search()
+sleep 200
+F7::send, {lwindown}{right}{lwinup}
+; MoveFindReplace()
+
+return
 		$rbutton::Mouse_RbuttonUP()
 	+Enter::sendinput, !{enter}
 	$Enter::sendinput,{enter}
 	; Numlock::Excel.SearchWorkbook(Product)
 	F8::send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
 	Media_Prev::send,{LWindown}{tab}{lwinup}
-	F6::lms.SearchBar(Product,"{enter}")
-	F7::lms.SearchBar(Batch,"{enter}")
+	
+	
 	F19 & F7::^F8 ;Excel.NextSheet()
-	F19 & F6::^F9 ;Excel.PreviousSheet()
-	F20 & down::WinMove, ahk_exe EXCEL.EXE, , 0, 0, 1942, 1547
-#ifwinactive, Find and Replace,
+	F19 & F6::^F9 ;Excel.PrevSheet()
+	; F20 & down::WinMove, Find and Replace, , A_ScreenWidth-466, A_ScreenHeight/2+633, 466, 633
+#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
+F7::MoveFindReplace()
 	F20 & WheelUp::
 	Send, !{n}%Product%
 	sleep 400
@@ -56,8 +86,15 @@ F9::excel.search()
 	return
 	return::sendinput, !{i}
 	rbutton & Lbutton::sendinput, !{i}
-
-
+	
+MoveFindReplace(){
+	; wina
+; WinGetPos, Win_X, win_Y, win_w, Win_H, "SAMPLE LOG 2021.xlsx"
+; EdgeofWindow:=A_ScreenWidth-466
+; BottomofWindow:=(A_Screenhight/3)+(A_Screenhight/3)
+; excel.Search()
+; winMove, Find and Replace, , %EdgeofWindow%, %BottomofWindow%, %EdgeofWindow%+466, %BottomofWindow%
+}
 KEY_OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 

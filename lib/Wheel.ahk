@@ -1,31 +1,31 @@
-﻿Wheel_scroll(direction){
-	global
-	if N=1
-		exit
-	ifwinactive, Result Editor - \\Remote
-		{
-			mousemove, 505, 200,0
-			mouseclickDrag, L,0, 0, 0, %Direction%,0,R	; mouseclick, %upOrDown%, ,,1,0	0
-		}
- ifwinactive, Test Definition Editor - \\Remote
-		{
-			click, 466, 490,2
-			;mousemove, 229, 244
-			sleep 300
-		return
-		}
- ifwinactive, Edit Formulation - \\Remote
-		{
-			click, 450, 460,2
-			click 403, 349
-			MouseMove, 250, 286
-			sleep 300
-		return
-		}
-	N=1
-	SetTimer, RemoveToolTip, 800
-	return
-	}
+﻿; Wheel_scroll(direction){
+; 	global
+; 	if N=1
+; 		exit
+; 	ifwinactive, Result Editor - \\Remote
+; 		{
+; 			mousemove, 505, 200,0
+; 			mouseclickDrag, L,0, 0, 0, %Direction%,0,R	; mouseclick, %upOrDown%, ,,1,0	0
+; 		}
+;  ifwinactive, Test Definition Editor - \\Remote
+; 		{
+; 			click, 466, 490,2
+; 			;mousemove, 229, 244
+; 			sleep 300
+; 		return
+; 		}
+;  ifwinactive, Edit Formulation - \\Remote
+; 		{
+; 			click, 450, 460,2
+; 			click 403, 349
+; 			MouseMove, 250, 286
+; 			sleep 300
+; 		return
+; 		}
+; 	N=1
+; 	SetTimer, RemoveToolTip, 800
+; 	return
+; 	}
 
 
 

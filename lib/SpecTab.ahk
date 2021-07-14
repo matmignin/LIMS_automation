@@ -121,7 +121,7 @@ CopySpecTemplate(){
  
  
 
-Copy(){
+CopySpecs(){
 	global
 	WinActivate, NuGenesis LMS - \\Remote
 	; BlockInput, on
@@ -137,7 +137,7 @@ Copy(){
 	Clipwait,1
 	Description:=Clipboard
 	sleep 200
-	Wheel_scroll("100")
+	MouseClick, left, 464, 532,2,0
 	sleep 150
 	click.TestDefinitionEditor_Results()
 	WinActivate, Results Definition - \\Remote
@@ -171,7 +171,7 @@ Copy(){
 	Return
 }
 
-  Paste(){
+  PasteSpecs(){
 	Global
 	WinActivate, NuGenesis LMS - \\Remote
 	click 57, 715 ; edit Test
@@ -182,7 +182,7 @@ Copy(){
 	click 418, 202
 	SpecTab.TestDefinitionEditor(Description) ; the pre window
 	sleep 200
-	Wheel_scroll("100")
+MouseClick, left, 464, 532,2,0
 	sleep 200
 	click 232, 244 ;click resulst
 	sleep 200
@@ -236,7 +236,7 @@ AutoFill(){
 		Breaking.Point()
 		SpecTab.TestDefinitionEditor(Description) ; the pre window
 		sleep 200
-			Wheel_scroll("100")
+		MouseClick, left, 464, 532,2,0
 			; click 236, 246
 			Breaking.Point()
 			click.TestDefinitionEditor_Results()
@@ -415,7 +415,7 @@ TestDefinitionEditor(The_Description){
 	Global
 	if The_description is space
 		{
-		Wheel_scroll("100")
+MouseClick, left, 464, 532,2,0
 		click.TestDefinitionEditor_Results()
 		return
 		}

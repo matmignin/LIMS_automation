@@ -718,26 +718,46 @@ CheckDepartment(){
 	global
 	clipboard:=
 Send, ^c
-; sleep 300
-clipwait
-if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", Anal) > 0)
-	Department:="Analytical"
-else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)
-	Department:="Micro"
-else if (Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b)", Retain) > 0)
-	Department:="Retain"
-else if (Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", Phys) > 0)
-	Department:="Physical"
-else if (Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", CTPhys) > 0)
-	Department:="CTPhysical"
-else if (Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", CTRetain) > 0)
-	Department:="CTRetain"
-else {
-	TT(nope)
+sleep 300
+clipwait, 1
 
+    Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+    Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+    Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+    Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+    Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+    Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+; if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", Anal) > 0)
+; 	Department:="Analytical"
+; else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)
+; 	Department:="Micro"
+; else if (Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b)", Retain) > 0)
+; 	Department:="Retain"
+; else if (Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", Phys) > 0)
+; 	Department:="Physical"
+; else if (Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", CTPhys) > 0)
+; 	Department:="CTPhysical"
+; else if (Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", CTRetain) > 0)
+; 	Department:="CTRetain"
+; else {
+	; TT(nope)
+  If cAnalytical
+    Department=Analytical
+  If cMicro
+    Department=Micro
+  If cRetain
+    Department=Retain
+  If cCTRetain
+    Department:="Retain (Coated)"
+  If cPhysical
+    Department=Physical
+  If cCTPhysical
+    Department:="Physical (Coated)"
+  If cCTRetain
+    Department=CTRetain
+		return Department
 	sleep 300
 	exit
-}
 }
 
 
@@ -834,10 +854,31 @@ Orient(){
 
 
 	Scroll_Fix:
-	#If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote") ||
+	#If mouse_isover("Result Editor - \\Remote")
+	wheelup::
+	clk(505, 77)
+		Sleep 800
+	return
 	wheeldown::
-	Mouse.Save()
-	Wheel_scroll("130")
-
-	wheelup::Wheel_scroll("-130")
+	clk(503, 574)
+	Sleep 800
+	return
+	#If mouse_isover("Test Definition Editor - \\Remote")
+	wheelup::
+	clk(465, 260,,2)
+			Sleep 800
+	return
+	wheeldown::
+	clk(464, 532,,2)
+	Sleep 800
+	return
+	#If mouse_isover("Edit Formulation - \\Remote")
+	wheelup::
+	clk(313, 293)
+		Sleep 2000
+	return
+	wheeldown::
+	clk(452, 473,,2)
+		Sleep 800
+	return
 	#if

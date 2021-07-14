@@ -12,6 +12,7 @@ SavedWindow_Restore(){
   {
     if !SectionFound
     {
+			Setwindelay, 300
       ;Read through file until correction section found
       If (A_LoopReadLine<>SectionToFind) 
 	Continue
@@ -38,6 +39,7 @@ SavedWindow_Restore(){
 				}
 				Win_%Var%:=Val  
 			}
+			Setwindelay, 300
 		}
 
 		If ( (StrLen(Win_Title) > 0) and WinExist(Win_Title) )
@@ -74,6 +76,7 @@ SaveWindow_Save(){
  if !IsObject(file)
  {
 	MsgBox, Can't open "%FileName%" for writing.
+	Setwindelay, 300
 	Return
  }
 
@@ -89,6 +92,7 @@ SaveWindow_Save(){
     WinGetPos, x, y, Width, Height, A ;Wintitle
     WinGetClass, this_class, ahk_id %this_id%
     WinGetTitle, this_title, ahk_id %this_id%
+		Setwindelay, 300
 		if (This_title = "VarBar")
 			Continue
 
@@ -102,6 +106,7 @@ SaveWindow_Save(){
 			; This_title:="ahk_exe ClickUp.exe"
 		line=Title="%this_title%"`,x=%x%`,y=%y%`,width=%width%`,height=%height%`r`n
 		file.Write(line)
+		Setwindelay, 300
   }
   }
 

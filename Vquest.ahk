@@ -109,6 +109,7 @@ return
 #IfWinActive,
 #include <TrackPad>
 #include <KEYS>
+#include <VScode>
 #Include <Firefox>
 #Include <clip>
 #Include <Office>
@@ -129,7 +130,6 @@ return
 #include <Vim>
 #include <SaveWindow>
 #Include <Snipper>
-#include <VScode>
 #include <Notes>
 
 
@@ -141,8 +141,7 @@ VQuest_Start:
  #KeyHistory 300
  #InstallKeybdHook
  #InstallMouseHook
- #MenuMaskKey vkE8
-;  #SingleInstance, Force
+;  #MenuMaskKey vkE8
 
 ; SetTitleMatchMode, Fast		;Fast is default
 ; DetectHiddenWindows, off	;Off is default
@@ -158,7 +157,7 @@ FileName:="lib/WinPos.txt"
 ;  EnvGet, Iteration, Iteration
  envget, PrevProduct, PrevProduct
 
-AutoTrim, On
+; AutoTrim, On
  ; #WinActivateForce
  SetWorkingDir, %A_ScriptDir%
  Menu, Tray, Add, CL3, Run_cl3
@@ -183,12 +182,12 @@ AutoTrim, On
  SetMouseDelay, 5
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
- #MaxHotkeysPerInterval 120
+ #MaxHotkeysPerInterval 100
  #HotkeyModifierTimeout 50
  #maxthreadsperhotkey, 1
 ;  #IfTimeout 500
  SetKeyDelay, 0, 0
- setwindelay,300
+ setwindelay,400
 
  FormatTime, TimeString,, M/d/yy
  Run, cl3.Ahk, lib\CL3

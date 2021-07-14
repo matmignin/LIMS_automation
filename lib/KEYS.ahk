@@ -120,7 +120,7 @@ F20 & 0::SavedWindow_Restore()
  F20 & Rbutton::Clip("OCR")
 ; Rbutton & Appskey::return
  F20 & F7::Excel.NextSheet()
- F20 & F6::Excel.PreviousSheet()
+ F20 & F6::Excel.PrevSheet()
  F20 & backspace::run, Taskmgr.exe
  F20 & Right::send, #{right}
  F20 & Left::send, #{Left}
@@ -134,12 +134,14 @@ F20 & 0::SavedWindow_Restore()
  F20 & ,::LMS.Orient()
  F20 & =::sendinput,{CtrlDown}{=}{Ctrlup}
  F20 & -::sendinput,{CtrlDown}{-}{Ctrlup}
+ F20 & Rshift::Test_2() 
+ 
  F20 & l::OpenApp.LMS()
  F20 & F19::send, {F22}
 F19 & F20::menu.Variables()
 F19 & lbutton::^Lbutton
- ~F20::Clip_C()
- ~F19::Clip_V()
+ F20::Clip_C()
+ F19::Clip_V()
 
 F13 & Lbutton::F13Click()
 

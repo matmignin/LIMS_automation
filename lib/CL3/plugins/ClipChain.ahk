@@ -62,7 +62,7 @@ Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 
 Gui, ClipChain:Default
 Gui, ClipChain:Font, % dpi("s8")
-Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate 
+Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate
 Gui, ClipChain:Add, Listview, % dpi("x0 y0 w185 h350 NoSortHdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
 LV_ModifyCol(1,dpi()*25)
 LV_ModifyCol(2,dpi()*160)
@@ -77,12 +77,12 @@ Gui, ClipChain:font,% dpi("s8")
 ; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
 ; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
 Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
-; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil) 
+; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
 Gui, ClipChain:font
 Gui, ClipChain:font, % dpi("s12 bold")
 ; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
 Gui, ClipChain:font
-Gui, ClipChain:font,% dpi("s11") ; " Wingdings " 
+Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
 ; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
 Gui, ClipChain:font
 Gui, ClipChain:font,% dpi("s8")
@@ -157,11 +157,19 @@ clipChain_c(){
       return
     }
 
+
+F20 & Space::
+clipboard:=
+send, ^{c}
+clipwait, 0.4
+gosub, ClipChainLoad
+return
+
 F22::
 #x::
 clipboard:=
 send, ^{c}
-clipwait, 1
+clipwait, 0.5
 clipboard:=Trim(Clipboard, "`n")
 Gosub, ClipChainInsertGui
 gosub, ClipChainLoad
@@ -238,12 +246,12 @@ If (ClipChainIns = "")
 
 	 Return
 	}
-If (ClipChainInsEdit = 1)	
+If (ClipChainInsEdit = 1)
 	{
 	 ClipChainData[ClipChainDataIndex]:=ClipChainIns
 	 If (ClipChainInsertCounter = 0)
 	 	LV_Add(1,,,,1)
-	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns)) 
+	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns))
 	}
 else
 	{
@@ -251,7 +259,7 @@ else
 	 LV_Insert(ClipChainDataIndex+0, , , ClipChainHelper(ClipChainIns))
 	}
 Gosub, ClipChainUpdateIDX
-ClipChainInsEdit:=0	
+ClipChainInsEdit:=0
 
 ClipChainPause:=ClipChainPauseStore
 ClipChainPauseStore:=""
@@ -298,7 +306,7 @@ else
 	 Gosub, ClipChainSaveWindowPosition
 	 Gui, ClipChain:Hide
  	}
-Gosub, ClipChainCheckboxes	
+Gosub, ClipChainCheckboxes
 Return
 
 ClipChainMenu:
@@ -342,13 +350,13 @@ ClipChainData:=[]
 ClipChainData:=ClipChainDataNew
 ClipChainDataNew:=[]
 Gosub, ClipChainUpdateIDX
-Gosub, ClipChainUpdateIndicator	
+Gosub, ClipChainUpdateIndicator
 Return
 
 ClipChainUpdateIDX:
 Loop, % LV_GetCount()
 	LV_Modify(A_Index,"Col3",A_Index)
-Return	
+Return
 
 ClipChainEdit: ; falls through to Insert
 ClipChainGuiTitle:="CL3ClipChain Edit text"
@@ -385,12 +393,12 @@ If (ClipChainIns = "")
 	 GuiControl, ClipChain:, ClipChainPause      , %ClipChainPause%
 	 Return
 	}
-If (ClipChainInsEdit = 1)	
+If (ClipChainInsEdit = 1)
 	{
 	 ClipChainData[ClipChainDataIndex]:=ClipChainIns
 	 If (ClipChainInsertCounter = 0)
 	 	LV_Add(1,,,,1)
-	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns)) 
+	 LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns))
 	}
 else
 	{
@@ -398,7 +406,7 @@ else
 	 LV_Insert(ClipChainDataIndex+1, , , ClipChainHelper(ClipChainIns))
 	}
 Gosub, ClipChainUpdateIDX
-ClipChainInsEdit:=0	
+ClipChainInsEdit:=0
 
 ClipChainPause:=ClipChainPauseStore
 ClipChainPauseStore:=""
@@ -422,7 +430,7 @@ Gui, ClipChainInsertGui:Add, Button, xp+120 gClipChainInsertGuiCancel w100, Canc
 Gui, ClipChainInsertGui:Show, , %ClipChainGuiTitle%
 	While (ClipChainInsertActive = 0)
 		{
-		 Sleep 20 
+		 Sleep 20
 		}
 Return
 
@@ -474,7 +482,7 @@ ClipChainData:=RegExReplace(Clipboard,"m)^\s+$") ; v1.1 remove white space from 
 If (Asc(SubStr(ClipChainData,1,1)) = 65279) ; fix: remove BOM char from first entry, could mess up a filepath...
 	ClipChainData:=SubStr(ClipChainData,2)
 ; StringReplace,ClipChainData,ClipChainData,`r`n`r`n, % Chr(7), All
-StringReplace,ClipChainData,ClipChainData,`r`n, % Chr(7), All
+StringReplace,ClipChainData,ClipChainData,`r`n, % Chr(7), All  ;i did this.
 #Include *i %A_ScriptDir%\plugins\ClipChainPRIVATERULES.ahk
 ClipChainData:=StrSplit(ClipChainData,Chr(7))
 ClipChainListview:
@@ -533,7 +541,7 @@ ClipChainMoveUp:
 ClipChainLvHandle.Move(1) ; Move selected rows up.
 Gosub, ClipChainSet
 return
- 
+
 ClipChainMoveDown:
 ClipChainLvHandle.Move() ; Move selected rows down.
 Gosub, ClipChainSet

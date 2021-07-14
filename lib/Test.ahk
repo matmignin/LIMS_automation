@@ -103,18 +103,26 @@ return
 ;------------------------------------------------------TEST 2 ------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
 
-Test_2(){
- Global
-; WorkTab_PickCustomer(){
-	if !CustomerSelection 
-	{
-		InputBox, CustomerSelection, what is the count?
-		return
-	}
-	else
-sendinput, {tab}{home}{right}{right %CustomerSelection%}{enter}
-return
-
+Test_2(){ 
+	Global
+WinGetTitle, the_WinTitle, A
+	caret_x:=A_CaretX
+	caret_y:=A_Carety
+	clipboard:=
+tt(Caret_x ", " caret_y,5000,Caret_x,caret_y,2)
+keywait, Lbutton, d
+MouseClick, left,,, 1, 0, D
+				keywait, Lbutton, U
+				MouseClick, left,,, 1, 0, U
+				send, ^c
+				clipwait, 0.8
+	sleep 200
+	winactivate, %The_wintitle%
+	; click, %caret_X%, %caret_y%
+	send, {click, %caret_x%, %caret_y%}^{v}
+ 
+ 
+ 
  
  return
 }

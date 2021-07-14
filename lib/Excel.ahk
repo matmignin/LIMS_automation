@@ -60,10 +60,10 @@ Connect(reload:=0){
 		sht := XL.ActiveSheet.Name
 	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
 			xl.sheets(PrevProduct).select
-			; Excel.PreviousSheet()
+			; Excel.PrevSheet()
 	}
 	Catch{
-		; Excel.PreviousSheet()
+		; Excel.PrevSheet()
 		TT("Didnt connect to workbook", 500,0,0,1)
 		; excel.connect()
 		; return
@@ -115,16 +115,18 @@ NextSheet(){
 	;GuiControl, +redraw, varbar
 }
 
-PreviousSheet(){
+PrevSheet(){
 	global
 	; Gui VarBar:+LastFound
 	;GuiControl, -redraw, varbar
-	PreviousSheet:=xl.ActiveWorkbook.Activesheet.index -1
-	if (PreviousSheet < 3)
-		exit
-	Xl.Sheets(PreviousSheet).activate
+	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
+	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
+	if (PrevSheetName = "Main")
+		Xl.Sheets(PrevSheet).activate
+		; exit
+	Xl.Sheets(PrevSheet).activate
 	Excel.MatchColor()
-	excel.connect()d
+	excel.connect()
 	; Excel.MatchColor()
 	;GuiControl, +redraw, varbar
 	}
