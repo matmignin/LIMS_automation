@@ -1,3 +1,4 @@
+explorer:
 #IfWinActive, ahk_exe explorer.exe
  Scrolllock::send, {enter}
  F20 & up::WinMove, ahk_exe explorer.exe, , 668, -1200, 974, 577
@@ -18,7 +19,7 @@
 F19::Clip_v()
 
 
-
+Excel:
 	#If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 1000 AND winactive("LMS Workbook.xlsb"))
 	F6::
 		; excel.connect()
@@ -95,7 +96,7 @@ MoveFindReplace(){
 ; excel.Search()
 ; winMove, Find and Replace, , %EdgeofWindow%, %BottomofWindow%, %EdgeofWindow%+466, %BottomofWindow%
 }
-KEY_OUTLOOK:
+OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 
 	F19 & enter::send, {ctrldown}{enter}{ctrlup}
@@ -142,7 +143,7 @@ KEY_OUTLOOK:
 	^`::send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 	F20 & right::WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
-KEY_OneNote:
+OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
 	Scrolllock & Wheelup::Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
 	Scrolllock & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
@@ -180,8 +181,7 @@ F20 & Right::WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 
 #IfWinActive,
 
-
-		KEY_Remote_DESKTOP:
+Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
 Scrolllock::menu.Remote_Desktop()
 F13::TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)

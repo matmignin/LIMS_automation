@@ -35,66 +35,6 @@ Mouse_RbuttonUP(){
 
 
 
-; CloseWindow(){
-; 	global
-; 	if WinActive("Inbox - mmignin@vitaquest.com - Outlook") ; || winactive("ahk_exe OUTLOOK.EXE")
-; 		Return
-; 	else if winexist("PDF Preview - \\Remote"){
-; 		winactivate
-; 		clk(944, 11)
-; 		sleep 400
-; 	}
-; 	; else if winactive("Composition - \\Remote"){
-; 	; 	clk(841, 895)
-; 	; 	sleep 50
-; 	; 	clk(946, 896)
-; 	; 	sleep 400
-; 	; }
-; 	else If winactive("NuGenesis LMS - \\Remote")
-; 		LMS.FilterClear()
-; 	; else If WinActive("ahk_exe WFICA32.EXE")
-; 	; {
-; 	; 	send,{esc}
-; 	; 	sleep 400
-; 	; 	return
-; 	; }
-; 	else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") {
-; 		send, ^{w}
-; 		sleep 400
-; 		return
-; 	}
-; 	else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for Windows 10") {
-; 		sendinput, !{F4}
-; 		sleep 400
-; 		return
-; 	}
-; 	; else if winactive("ahk_exe Code.exe")
-; 	; {
-; 	; 	sendinput, ^{F4}
-; 	; 	sleep 400
-; 	; 	return
-; 	; }
-; 	else if winactive("Settings ahk_class ApplicationFrameWindow"){
-; 		winclose
-; 		sleep 400
-; 		return
-; 	}
-; 	; else if winactive("ahk_exe mstsc.exe") 
-; 	else if winactive("ahk_exe EXCEL.EXE"){
-; 		Send, {ctrldown}{down}{ctrlup}
-; 		sleep 400
-; 		return
-; 	}
-; 	else if winactive("Adobe Acrobat Reader"){
-; 		send, ^q
-; 		sleep 400
-; 	}
-; 	else
-; 		return
-; 	return
-; }
-
-
 Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	global
 	; mx:=
@@ -110,7 +50,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	if (window!="")
 		winactivate, %mw%
 	If (ReturnMouse=0)	
-		Return 
+		Return MouseReturn
 	else
 		mousemove,%mx%,%my%,0
 	; sleep 50

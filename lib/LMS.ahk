@@ -1,285 +1,3 @@
-		; else if winactive("Edit Formulation - \\Remote")
-			; send, {tab}%product%{Tab 23}
-		; else if winactive("Edit Product - \\Remote")
-			; ProductTab.EditProduct()
-		; else if winactive("Register new samples - \\Remote")
-			; Autofill()
-		; else If WinActive("Select tests for request: R")
-			; WorkTab.SelectTestSample()
-		; else If WinActive("Composition - \\Remote")
-		; else If WinActive("Results Definition - \\Remote")
-		; else If winactive("Select methods tests - \\Remote")
-		; else if winactive("PDF Preview - \\Remote")
-		; else if winactive("Edit test (Field Configuration:")
-		; else If winactive("Result Entry - \\Remote") ;Enter Test Results window
-		; else if winactive("Select samples for test:")
- 
- 
- class TouchPad {
-	3Right(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.SearchBar(Batch,"{enter}")
-		else If winactive("Result Entry - \\Remote")
-			WorkTab.ChangeTestResults()
-		else If winactive("Select methods tests - \\Remote")
-			SpecTab.Methods()
-		else If WinActive("Composition - \\Remote")
-			send, {enter}
-		else If WinActive("Test Definition Editor - \\Remote")
-			clk(330, 619) ;click save
-		else If WinActive("Results Definition - \\Remote")
-			send, {enter}
-		else if winactive("Register new samples - \\Remote")
-			clk(502, 354)
-		else if winactive("Select samples for test:")
-			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
-		else	
-			send, {WheelRight}
-		return
-		}
-
-
-	3left(){
-			global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.SearchBar(Product,"{enter}")
-		else If winactive("Select methods tests - \\Remote")
-			send, {esc}
-		else If WinActive("Composition - \\Remote")
-			send, {esc}
-		else If WinActive("Test Definition Editor - \\Remote")
-			send, {esc}
-		else If WinActive("Results Definition - \\Remote")
-			send, {esc}
-		else if winactive("Edit test (Field Configuration:")
-			send, {esc}
-		else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
-			WorkTab.ChangeTestResults("toggle")
-		else if winactive("Register new samples - \\Remote")
-			send, {esc}
-		else if winactive("Select samples for test:")
-			send, {esc}
-		else 
-			send, {wheelleft}
-		return
-		}
-
-
-	3Down(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.Filter(Clear)
-		else if winactive("Select samples for test:")
-			Clk(853, 657) ; click okay.
-		else
-			return
-		return
-			
-		}
-
-
-	3up(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.ViewCoa()
-		else if winactive("Edit test (Field Configuration:")
-			Autofill()
-		else if winactive("Register new samples - \\Remote")
-			LMS.SearchBar(Product,"{enter}")
-		else If WinActive("Select tests for request: R")
-			clk(638, 70)
-		else if winactive("Select samples for test:")
-			send % Clk(250, 70) "{up}" ; click okay.
-		else If WinActive("Composition - \\Remote")
-			ProductTab.AddCOASpace()
-		else
-			return
-		return
-		
-		}
-
-
-	3tap(){
-		global
-		If winactive("NuGenesis LMS - \\Remote") {
-			LMS.Detecttab()
-			if (Tab="Requests")
-				clk(61, 635) ;enter results
-			else if (Tab="Products")
-				clk(86, 443) ;edit composition
-			else if (Tab="Welcome") {
-			Menu,Menu, add, &Production Server, LMS_Env
-			Menu,Menu, add, &Test Server, LMS_Env
-			Menu.show()
-				
-			}
-			else
-				Menu.LMS()
-		}
-		else if winactive("Edit Formulation - \\Remote"){
-			mouseclick, left, 455, 472,2,0
-			clk(250, 284)
-		return	
-		}
-		else if winactive("Edit Product - \\Remote")
-			ProductTab.EditProduct()
-		else If WinActive("Select tests for request: R")
-			WorkTab.SelectTestSample()
-		else If WinActive("Paster - Snipaste") || WINACTIVE("Snipper - Snipaste") {
-			sendlevel 1
-			 send, {ctrldown}{7}{ctrlup}
-			 sendlevel 0
-		}
-		Else
-			Autofill()
-		return
-		
-		}
-
-
-	4tap(){
-		global
-		If winactive("NuGenesis LMS - \\Remote") {
-			LMS.Detecttab()
-			if (Tab="Requests")
-				{
-				clk(61, 635) ;enter results
-				Return
-				}
-			else if (Tab="Products")
-				{
-				clk(86, 443) ;edit composition
-				Return
-				}
-			else if (Tab="Specs")
-				{
-				clk(67, 754) ;edit results
-				Return
-				}
-			else
-				Menu.LMS()
-		}
-		Else
-			Autofill()
-		return
-		}
-
-
-
-	2right(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			lms.SearchBar(Batch,"{enter}")
-		Else
-			send, %batch%
-		return
-		}
-
-
-	2Left(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			lms.SearchBar(Product,"{enter}")
-		Else
-			send, %Product%
-		return
-		}
-
-
-}
- 
- 
- 
-;KEY_LMS:
-return
-#Ifwinactive, NuGenesis LMS - \\Remote
-  F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-  F19 & space::Send, %Product%{enter}
-  F20 & space::Send, %Batch%{enter}
-  ~Lbutton & F19::send,{enter}
-  Enter::LMS.SaveCode()
-  numpaddiv::CloseWindow()
-
-
-
-; Wheelleft::
-; var++
-; If var>=39
-;    {
-;    click 326, 120
-;    }
-; SetTimer, clearVar, -40
-; return
-; ~wheelright::
-; var++
-; If var>=35
-;    {
-;    click 21, 115
-;    }
-; SetTimer, clearVar, -40
-; return
- 
-clearVar:
-var:=0
-return
-
-#IfWinActive, Results Definition - \\Remote
-  wheelup::Mouse_click("Edit")
-  ; WheelDown::pgdn
-		; Click, 1330, 592
-		; sleep 100
-		; click, 338, 619
-		; TT("wheeldown pressed")
-		; Return
-		numlock::send, % clk(712, 663) "{esc}"
-	
-#ifwinactive, Register new samples - \\Remote
-	F9::
-		ControlGetText, Product, Edit1, VarBar
-		clk(181, 104,2)
-		sleep 300
-		send, %Product%{enter}
-		return
-#Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
-	#MaxThreadsPerHotkey 2
-		F9::WorkTab.ChangeTestResults("loop")
-	#MaxThreadsPerHotkey 1 
-#IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  F19 & F20::send, %Batch%
-  F19 & space::send, %Product%
-  F19 & up::send, %sampleID%
-  F19 & left::send, %lot%
-  F19 & right::send, %coated%
-  $Rbutton up::Mouse_RbuttonUP()
-  enter::click.okay()
-  esc::click.esc()
-  left::left
-  Down::down
-  right::right
-  up::up
-		numpaddiv::closeWindow()
-  <^r::ReloadScript()
-  F9::TouchPad.3up()
-  F8::TouchPad.3Down()
-  F7::TouchPad.3Right()
-  F6::TouchPad.3Left()
-  ; ~Wheelleft::TouchPad.2left()
-  ; ~Wheelright::TouchPad.2right()
-  Scrolllock::TouchPad.3Tap()
-	; numlock::LMS.Movetab("Home")
-	numpadMult::LMS.Movetab("Home")
-	Numpadadd::lms.MoveTab("Right")
-	NumpadSub::lms.MoveTab("Left")
-	; Media_Prev::varbar.SubIteration(20)
-	; Media_next::Varbar.AddIteration(20)
-	; numlock::touchpad.4tap()
-#IfWinActive,
-	pause::reload
-	` & esc::Pause
-
-
-
 Class LMS {
 
 SearchBar(Code:="",PostCmd:=""){
@@ -545,50 +263,6 @@ TAB7:=
 				}
 				}
 				}
-	; 			; }
-	; 	PIXELSEARCH, Tab3, FoundY, XTAB3, YTabS, XTAB3+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-	; 		 if Tab3 { 
-	; 				PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-	; 					If FoundSpecs
-	; 						tab=Specs
-	; 					else	
-	; 						Tab=Products
-	; 			return Tab
-	; 			}
-	; 	PIXELSEARCH, Tab4, FoundY, XTAB4, YTabS, XTAB4+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-	; 		 if Tab4 {
-	; 				PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-	; 					If FoundSpecs
-	; 						tab=Specs
-	; 					else	
-	; 						Tab=Products
-	; 			return %Tab%
-	; 			}
-	; 	PIXELSEARCH, Tab5, FoundY, XTAB5, YTabS, XTAB5+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-	; 		 if Tab5 {
-	; 			Tab=Tab5
-	; 			return
-	; 			}
-	; 	PIXELSEARCH, Tab6, FoundY, XTAB6, YTabS, XTAB6+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-	; 		if Tab6 {
-	; 			Tab=Tab6
-	; 			return
-	; 			}
-	; 	PIXELSEARCH, Tab7, FoundY, XTAB7, YTabS, XTAB7+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-	; 		 if Tab7 {
-	; 			Tab=Tab7
-	; 			return
-	; 			}
-	; PixelSearch, Tab1, FoundY, xTab1, yTabs, XTab1+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-	; 		 if Tab1 {
-	; 			Tab=Welcome
-	; 			return tab
-	; 		}
-	; 		else
-	; 			return
-	; 		; reMyWorkturn
-	; return
-	; 		; msgbox, %tab%
 		return Tab
 }
 
@@ -731,32 +405,17 @@ SaveCode(){
 
 
 CheckDepartment(){
-	global
+	global Department
 	clipboard:=
-Send, ^c
-sleep 300
-clipwait, 1
-
-    Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-    Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-    Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-    Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-    Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-    Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
-; if (Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", Anal) > 0)
-; 	Department:="Analytical"
-; else if (Regexmatch(Clipboard, "(\bFinished, \bMicro\b|\bF, Micro\b|\bMicro \(Finished\)|\bMicro Lab\b)",Micr) > 0)
-; 	Department:="Micro"
-; else if (Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b)", Retain) > 0)
-; 	Department:="Retain"
-; else if (Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", Phys) > 0)
-; 	Department:="Physical"
-; else if (Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", CTPhys) > 0)
-; 	Department:="CTPhysical"
-; else if (Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", CTRetain) > 0)
-; 	Department:="CTRetain"
-; else {
-	; TT(nope)
+	Send, ^c
+	sleep 200
+	clipwait, 3
+	Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+	Regexmatch(Clipboard, "((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+	Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+	Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+	Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+	Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
   If cAnalytical
     Department=Analytical
   If cMicro
@@ -771,9 +430,7 @@ clipwait, 1
     Department:="Physical (Coated)"
   If cCTRetain
     Department=CTRetain
-		return Department
-	sleep 300
-	exit
+	return Department
 }
 
 
@@ -891,7 +548,4 @@ else
 
 
 
-	Scroll_Fix:
-#If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
-Wheeldown::LMS.ScrollDown()
-#if
+

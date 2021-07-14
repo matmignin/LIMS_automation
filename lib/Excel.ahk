@@ -49,7 +49,7 @@ Connect(reload:=0){
 		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
 	else{
 		TT("no notebook open",500,0,0,1)
-				VarBar.load()
+				; VarBar.load()
 				varbar.show()
 				return
 		}

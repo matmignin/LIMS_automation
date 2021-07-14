@@ -1,34 +1,7 @@
 #Ifwinactive,
 return
 
-#IfWinactive, Notes ahk_exe AutoHotkey.exe
-  ; ~Lbutton::return
-  Enter::
-  F13 & j::tab
-  F13 & k::+tab
-  Media_next::send, {tab}
-  Media_prev::send, `+{tab}
-  F13::send, {altdown}{tab}{altup}
-Media_Play_Pause::notes.Close() ;gosub, NotesGuiClose
 
-  
-  
-#IfWinExist, Notes ahk_exe AutoHotkey.exe
-Media_prev::
-Media_next::
-Media_Play_Pause::
-setwindelay,0
-winactivate, Notes ahk_exe AutoHotkey.exe
-setwindelay,400
-return  
-
-#IfWinExist
-#IfWinActive, 
-
- media_next::
- media_prev::
- Media_Play_Pause::notes.show()
- return
 KEY_DEFAULT:
 F19 & Media_Play_pause::
 my_screenwidth:=A_ScreenWidth-215
@@ -46,12 +19,6 @@ Return
 ; lshift & rshift::+tab
 lshift & Appskey::Return
 rshift & Appskey::return
-; #IfWinActive, 
-; lshift & Appskey::Return
-; rshift & Appskey::return
-;#IfWinExist ahk_group AltTabWindow  ; Indicates that the alt-tab menu is present on the screen.
-;*space::AltTabMenuDismiss  ; The * prefix allows it to fire whether or not Alt is held down.
-;#If
 
  <^;::sendinput, %Timestring%{space}
  ~Lbutton & left::sendinput, %SampleID%
@@ -71,15 +38,6 @@ F20 & /::send, %SampleID%
 
 ;[_Scrolllock_]
  ~>+lbutton::sendinput,{shiftDown}{click}{shiftup}
-;  Scrolllock & F20::SendPassword()
-;  Scrolllock & Lbutton::sendinput,{CtrlDown}{Lbutton}{CtrlUp}
-;  Scrolllock & WheelDown::sendinput,{ctrldown}{WheelDown}{CtrlUp}
-;  Scrolllock & Wheelup::sendinput,{ctrldown}{Wheelup}{CtrlUp}
-;  ;Rbutton & F13::sendinput,{F21}
-;  Scrolllock & F7::Wheel_Right()
-;  Scrolllock & F6::Wheel_left()
-; Scrolllock::Scrolllock
-;[_Rbutton_]
  Rbutton & Wheelup::Wheel_cut() 
  Rbutton & Wheeldown::Wheel_paste()
  Rbutton & F19::VS_Code_WindowInfo() 
@@ -151,55 +109,88 @@ F13 & Lbutton::F13Click()
 
 
 
-
-
-F13Click(){
-  KeyWait, lbutton, T0.25
-    If ErrorLevel
-    {
-       KeyWait, Lbutton, D
-        If !ErrorLevel
-          send, ^{click 3}
-        exit
-    }
-    send, ^{Click 2}
-    return
-}
-
-; F19::DoubleTab_Copy()
-
- DoubleTab_Copy(){
-  global
-  KeyWait,%A_ThisHotKey%,U T1
-   if errorlevel
-    clip("OCR")
-  KeyWait,%A_ThisHotKey%,D T0.15
-  If ErrorLevel
-  {
-   clip()d
-   sleep 300
-   return
- }
-  else
-  {
-   if (Inverted = 1)
-    send, ^#{c}
-   sleep 50
-   sendinput,{ShiftDown}{Ctrldown}{3}{CtrlUp}{ShiftUp}
-; keywait, Lbutton, d
-   sleep 50
-   keywait, Lbutton, l
-   sleep 50
-   if (Inverted = 1)
-    send, ^#{c}
-  }
- }
+	pause::reload
+	` & esc::Pause
 
 
 
+VarBar:
+#If Mouse_IsOver("VarBar ahk_exe AutoHotkey.exe")
+	wheelleft::Excel.PrevSheet()
+	wheelRight::excel.Nextsheet()
+	WheelUp::Varbar.AddIteration()
+	Wheeldown::Varbar.SubIteration()
+	F9::Excel.connect()
+	F7::Excel.NextSheet()
+	F6::Excel.PrevSheet()
+	F20::Varbar.Follow()
+	Scrolllock::Varbar.LaunchTable()
+	F20 & F6::ProductTab.Table()
+	F20 & F7::SpecTab.Table()
+	; Rbutton::Menu.Tables() ; Excel.connect()
+; F9::ReloadScript()
+	#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+		wheelright::msgbox, %A_ThisHotkey%
+		wheelleft::msgbox, %A_ThisHotkey%
+#if
+#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
+enter::
+  winactivate, %the_WinTitle%
+  click, %caret_X%, %caret_y%
+  return
 
 
 
-BlockInput:
- N=0
-return
+	
+Notes:	
+#IfWinactive, Notes ahk_exe AutoHotkey.exe
+  ; ~Lbutton::return
+  Enter::
+  F13 & j::tab
+  F13 & k::+tab
+  Media_next::send, {tab}
+  Media_prev::send, `+{tab}
+  F13::send, {altdown}{tab}{altup}
+Media_Play_Pause::notes.Close() ;gosub, NotesGuiClose
+
+  
+  
+#IfWinExist, Notes ahk_exe AutoHotkey.exe
+Media_prev::
+Media_next::
+Media_Play_Pause::
+setwindelay,0
+winactivate, Notes ahk_exe AutoHotkey.exe
+setwindelay,400
+return  
+
+#IfWinExist
+#IfWinActive, 
+ 
+ 
+ 
+ 
+ 
+ 
+
+class Breaking {
+	Point(){
+		Global
+		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") {	
+		TT("Broke")
+			exit
+		}
+		if keep_running = n ;another signal to stop
+				Exit
+	}
+	Preamble(){
+		Global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			exit
+		}
+		keep_running = y
+	}
+	}
+

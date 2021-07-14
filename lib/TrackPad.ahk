@@ -1,27 +1,6 @@
 
 
 #IfWinActive,
-  ; #If (A_PriorHotKey = "numpaddiv" && A_TimeSincePriorHotkey < 400)
-  ;   numpaddiv::CloseWindow() ;4 finger swipe down
-  ; #If (A_PriorHotKey = "Numlock" || A_PriorHotkey = "Scrolllock" && A_TimeSincePriorHotkey < 500) ;4 finger swipe down
-  ; F6::send, {F6} 
-  ; F7::send, {F7} 
-  ; F8::send, {F8} 
-  ; F9::send, {F9} 
-  ; numpadsub::send, {NumpadSub}
-  ; numpadadd::send, {NumpadAdd}
-  ; numpadmult::send, {numpadmult} 
-  ; numpaddiv::send, {numpadDiv}  ;4down clear filter
-  ; lbutton::send, {Lbutton}
-  ; Numlock::Send, {Numlock}
-  ; wheelup::send, {WheelUp}
-  ; wheelleft::send, {Wheelleft}
-  ; wheelright::send, {Wheelright}
-  
-  ; Scrolllock::send, {Scrolllock}
-  ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
-  #If
- 
 
 #If getkeystate("lbutton","p")
   space::send, ^{click}
@@ -197,4 +176,19 @@ CloseWindow(){
 	else
 		PostMessage, 0x112, 0xF060,,, A     ; ...so close window     
 	return
+}
+
+
+
+F13Click(){
+  KeyWait, lbutton, T0.25
+    If ErrorLevel
+    {
+       KeyWait, Lbutton, D
+        If !ErrorLevel
+          send, ^{click 3}
+        exit
+    }
+    send, ^{Click 2}
+    return
 }

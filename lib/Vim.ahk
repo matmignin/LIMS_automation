@@ -48,7 +48,6 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
  f::send,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
 #If Getkeystate("F13","p")
 	y::Clip_c()
-	lbutton::vscode_menu()
 	n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
 	; ^n::send, {altdown}{ctrldown}{g}{ctrlup}{altup}
 	tab::send, {shiftdown}{altdown}{q}{altup}{shiftup}

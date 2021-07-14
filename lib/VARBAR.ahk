@@ -1,31 +1,3 @@
-KEY_Varbar:
-	#If Mouse_IsOver("VarBar ahk_exe AutoHotkey.exe")
-	wheelleft::Excel.PrevSheet()
-	wheelRight::excel.Nextsheet()
-	WheelUp::Varbar.AddIteration()
-	Wheeldown::Varbar.SubIteration()
-	F9::Excel.connect()
-	F7::Excel.NextSheet()
-	F6::Excel.PrevSheet()
-	F20::Varbar.Follow()
-	Scrolllock::Varbar.LaunchTable()
-	F20 & F6::ProductTab.Table()
-	F20 & F7::SpecTab.Table()
-	; Rbutton::Menu.Tables() ; Excel.connect()
-; F9::ReloadScript()
-	#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
-		wheelright::msgbox, %A_ThisHotkey%
-		wheelleft::msgbox, %A_ThisHotkey%
-#if
-#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-enter::
-winactivate, %the_WinTitle%
-click, %caret_X%, %caret_y%
-return
-; Gui, VarBar:submit,NoHide
-
-; return
-#IfWinActive, 
 Class VarBar{
 
 	Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -41,9 +13,12 @@ Class VarBar{
 			Iniread, Lot, data.ini, SavedVariables, Lot
 			Iniread, Coated, data.ini, SavedVariables, Coated
 		}
+			iniread, note1, data.ini, SavedVariables, note1
+			Iniread, note2, data.ini, SavedVariables, note2
 			Iniread, Iteration, data.ini, SavedVariables, Iteration
 			Iniread, VarBar_X, data.ini, Locations, VarBar_X
 			Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
+			
 		; }
 		If (X=)
 		{
@@ -262,6 +237,8 @@ IniWrite, %note1%, data.ini, SavedVariables, note1
 IniWrite, %note2%, data.ini, SavedVariables, note2
 iniwrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
+iniwrite, %Follow%, data.ini, Locations, Follow
+iniwrite, %Inverted%, data.ini, Locations, Inverted
 Notes.Save()
 	
 }

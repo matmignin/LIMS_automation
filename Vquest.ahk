@@ -109,10 +109,12 @@ return
 #IfWinActive,
 #include <TrackPad>
 #include <KEYS>
+#include <LMS KEYS>
+#include <LMS TRACKPAD>
 #include <VScode>
 #Include <Firefox>
 #Include <clip>
-#Include <Office>
+#Include <Office KEYS>
 #Include <LMS>
 #Include <OpenApp>
 #Include <AutoFill>

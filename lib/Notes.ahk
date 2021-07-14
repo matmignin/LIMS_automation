@@ -1,5 +1,3 @@
-  
-
 
 Class Notes{
 
@@ -111,48 +109,6 @@ WM_NCCALCSIZE()
 }
 
 }
-; Redefine where the sizing borders are.  This is necessary since
-; returning 0 for WM_NCCALCSIZE effectively gives borders zero size.
-
-
-; WM_NCHITTEST(wParam, lParam)
-	; {
-	;     static border_size = 6
-	;     if !A_Gui
-	;         return
-	;     WinGetPos, gX, gY, gW, gH
-	;     x := lParam<<48>>48, y := lParam<<32>>48
-	;     hit_left    := x <  gX+border_size
-	;     hit_right   := x >= gX+gW-border_size
-	;     hit_top     := y <  gY+border_size
-	;     hit_bottom  := y >= gY+gH-border_size
-	;     if hit_top
-	;     {
-	;         if hit_left
-	;             return 0xD
-	;         else if hit_right
-	;             return 0xE
-	;         else
-	;             return 0xC
-	;     }
-	;     else if hit_bottom
-	;     {
-	;         if hit_left
-	;             return 0x10
-	;         else if hit_right
-	;             return 0x11
-	;         else
-	;             return 0xF
-	;     }
-	;     else if hit_left
-	;         return 0xA
-	;     else if hit_right
-	;         return 0xB
-			
-	;     ; else let default hit-testing be done
-	; }
-
-
 
 
 

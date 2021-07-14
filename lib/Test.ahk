@@ -20,26 +20,7 @@ Test(n){
 		return
 		}
 
-class Breaking {
-	Point(){
-		Global
-		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") {	
-		TT("Broke")
-			exit
-		}
-		if keep_running = n ;another signal to stop
-				Exit
-	}
-	Preamble(){
-		Global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			exit
-		}
-		keep_running = y
-	}
-	}
+
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------TEST 1------------------------------------------------------------
 ;------------------------------------------------------TEST 3------------------------------------------------------------
@@ -298,6 +279,11 @@ blockRepeat(time=200){
  SetTimer, BlockInput, -%time%
  return
 }
+
+BlockInput:
+ N=0
+return
+
 
 ToggleFilter_Test_1(){
  ifwinnotactive, NuGenesis LMS - \\Remote
