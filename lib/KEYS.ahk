@@ -79,9 +79,9 @@ KEY_DEFAULT:
 
 	F20 & l::OpenApp.LMS()
 	F20 & F19::send, {F22}
-	F19 & F20::menu.Variables()
+	; F19 & F20::menu.Variables()
 	F19 & lbutton::^Lbutton
-	lctrl up::Clip_Ctrl()
+	lctrl up::Clip()
 	F20::Clip_C()
 	; sendlevel 1
 	F19 up::Clip_V()
@@ -93,8 +93,8 @@ KEY_DEFAULT:
 	$space::send, {enter} 
 	$rshift::send, {tab}
 	F20 & Space::send, {enter}
-#If (A_PriorHotKey = "F19 & F20" && A_TimeSincePriorHotkey < 2000) 
-	F19 & F20::send, {enter}
+; #If (A_PriorHotKey = "F19 & F20" && A_TimeSincePriorHotkey < 2000) 
+	; F19 & F20::send, {enter}
 	; $space::send, {enter} 
 	; $rshift::send, {tab}
 	; F20 & Space::send, {enter}

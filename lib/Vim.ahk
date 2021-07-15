@@ -36,7 +36,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	j::send,{shiftdown}{down}{shiftup}
 	l::send,{shiftdown}{right}{shiftup}
 	h::send,{shiftdown}{left}{shiftup}
-	k::send,{shiftdown}{up}{shiftup}
+	k::send,{shiftdown}{up}{shiftup}`
 	w::send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	0::send,{shiftdown}{Home}{shiftup}
 	4::send,{shiftdown}{end}{shiftup} 
@@ -194,7 +194,7 @@ PsudoNumpad:
 	n::sendinput,{-}
 	'::right
 	Backspace::backspace
-	; F20::send,{F21}
+	
 	ENTER::sendinput,{enter}
 	RShift::sendinput,{Tab}
 	; space::SendInput, 0

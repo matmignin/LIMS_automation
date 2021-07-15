@@ -1,4 +1,4 @@
-Class VarBar{
+Class VarBar{	
 
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 		Global
@@ -108,6 +108,7 @@ Class VarBar{
 			IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 			IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+			IniWrite, %Follow%, data.ini, Locations, Follow
 			coordmode, mouse, Window
 			sleep 500
 			GUI, VarBar:destroy
@@ -123,7 +124,6 @@ Focus(Control){
 	send, {ctrldown}{a}{ctrlup}
 	sleep 200
 
-	; GuiControl Varbar:Focus, Edit4, 
 	return
 }
 

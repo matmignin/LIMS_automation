@@ -1,14 +1,25 @@
 #IfWinActive, ahk_exe Code.exe
-$Lwin Up::SendInput !+i
-Tab & h::^[
-Tab & l::^]
-Tab & j::down
-Tab & k::up
-Tab & f13::send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
-F14::F6
-F15::sendinput, {up 10}
-F16::sendinput, {down 10}
-F17::backspace
+  $Lwin Up::SendInput !+i
+  Tab & h::^[  
+  Tab & l::^]
+  Tab & j::down
+  Tab & k::up
+  Tab & f13::send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
+  Tab & 1::send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
+  Tab & 2::send, {shiftdown}{altdown}{lwindown}{2}{lwinup}{altup}{shiftup}
+  Tab & 3::send, {shiftdown}{altdown}{lwindown}{3}{lwinup}{altup}{shiftup}
+  Tab & `::send, {shiftdown}{altdown}{lwindown}{``}{lwinup}{altup}{shiftup}
+  Tab & F15::send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
+  F14::F6
+  F15::sendinput, {up 10}
+  F16::sendinput, {down 10}
+  F17::backspace
+  ` & Tab::send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
+  ; `::send, {``}
+  ^F::
+  tt("Find",200)
+  send, {ctrldown}{f}{ctrlup}
+  return
 ; Scrolllock::Scrolllock
 ; Numlock::Numlock
  F6::F6
@@ -26,7 +37,10 @@ F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 F19 & -::send, {ctrldown}{-}{ctrlup}
 F19 & =::send, {ctrldown}{=}{ctrlup}
 tab & f:: sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
+F19 & n::numpaddiv
+
 tab::tab
+`::send, {``}
 !t::TT(trackpadhints,5000)
 <^r::reloadscript()
 
@@ -64,7 +78,7 @@ F19 & h::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
 F20 & backspace::delete
 f19 & `::send, ~
 f19 & p::send, %process%
-f19 & m::send, %mouseposition%
+f19 & c::send, %mouseposition%
 f19 & t::send, %wintitle%
 f19 & w::send, %wininfo%
 f19 & f6::send,{ctrldown}{[}{ctrlup}
