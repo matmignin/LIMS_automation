@@ -4,16 +4,18 @@ Tab & h::^[
 Tab & l::^]
 Tab & j::down
 Tab & k::up
-Scrolllock::Scrolllock
-Numlock::Numlock
+Tab & f13::send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
+F14::F6
+F15::sendinput, {up 10}
+F16::sendinput, {down 10}
+F17::backspace
+; Scrolllock::Scrolllock
+; Numlock::Numlock
  F6::F6
  F7::F7
  F8::F8
  F9::F9
-numpadsub::numpadsub
-numpadadd::numpadadd
-numpadmult::numpadmult
-numpaddiv::numpaddiv
+
 
 F20 & Right::WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
 F20 & Down::WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
@@ -34,15 +36,14 @@ Lshift::DoublePress("{altdown}{left}{altup}",,"Backward")
 Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
 LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
 LCtrl & Appskey::return
-Lalt & Appskey::return
 Lwin & Appskey::return
+Lalt & Appskey::return
 Lwin::doublepress("{backspace}")
 rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 <^lwin::delete
 <+space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 
-$>+F13::pgup
-$<+F13::pgdn
+$<^F13::shift
 
 rbutton & f7::wheel_2("!{right}",10)
 rbutton & f6::wheel_2("!{left}",10)
@@ -72,11 +73,30 @@ f19 & wheeldown::send,{ctrldown}{down}{ctrlup}
 f19 & wheelup::send,{ctrldown}{up}{ctrlup}
 f19 & lbutton::^lbutton
 F13 up::send, {esc}{ctrlup}{altup}
-#IfWinActive,
 
-
-
-
+#If (A_PriorKey = "F19" AND A_TimeSincePriorkey < 950)
+numpadsub::numpadsub
+numpadadd::numpadadd
+numpadmult::send, {shiftdown}{altdown}{lwindown}{p}{lwinup}{altup}{shiftup}
+numpaddiv::send, {ctrldown}{w}{ctrlup}
+F8::send, {ctrldown}{F8}{ctrlup}
+F9::send, {ctrldown}{F9}{ctrlup}
+F7::send, {ctrldown}{F7}{ctrlup}
+F6::send, {ctrldown}{F6}{ctrlup}
+wheelup::Numpadmult
+wheeldown::tt(yo)
+#if
+#IfWinActive, ahk_exe Code.exe
+numpadsub::numpadsub
+numpadadd::numpadadd
+numpadmult::numpadmult
+numpaddiv::numpaddiv
+^numpaddiv::send, {ctrldown}{w}{ctrlup}
+F19 up::send, {F19}
+; ^f9::send, {shiftdown}{altdown}{Up}{altup}{shiftup}
+; ^f9::send, {shiftdown}{altdown}{F8}{altup}{shiftup}
+; ^f9::send, {shiftdown}{altdown}{F9}{altup}{shiftup}
+; ^f9::send, {shiftdown}{altdown}{Up}{altup}{shiftup}
 
 VSCODE_Hotstrings:
   :*r:cd\::{ctrldown}

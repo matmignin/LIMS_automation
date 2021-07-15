@@ -166,7 +166,36 @@ clip_v(){
         if (A_PriorKey="F19")
         If !ErrorLevel
         {
-          send, {F21}
+          ; send, {F21}
+          Return
+        }
+          KeyWait, F19,
+          Return
+      }
+    if Errorlevel = 0
+    KeyWait, F19, T0.60
+      if !ErrorLevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
+            wheel_paste()
+          Else
+          return
+      }
+            ; Send, ^v
+      return
+    }
+clip_ctrl(){
+  Global
+    KeyWait, F19, T0.30
+    If ErrorLevel
+    {
+        KeyWait, F19, T2
+        if (A_PriorKey!="F19")
+          exit
+        if (A_PriorKey="F19")
+        If !ErrorLevel
+        {
+          ; send, {F21}
           Return
         }
           KeyWait, F19,

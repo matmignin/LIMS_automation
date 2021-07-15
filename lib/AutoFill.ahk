@@ -1,15 +1,12 @@
 ﻿AutoFill(Option:=0){
 	global
-
-;LMS ------------------------------------------------------------------------
+	;LMS ------------------------------------------------------------------------
 	If Winexist("Password ahk_class bosa_sdm_XL9") || Winexist("Login - \\Remote"){
 		Menu.LMS()
-
 	} Else If Winactive("NuGenesis LMS - \\Remote"){
 		excel.connect()
 		WorkTab.NewRequest()
 		return ;click, 79, 440
-
 	} Else If Winactive("ahk_exe EXCEL.EXE"){
 		Excel.Search()
 	} Else If Winactive("Results Definition - \\Remote"){
@@ -20,19 +17,17 @@
 	} Else If Winexist("Select Iterations - \\Remote"){
 		winactivate,
 		send, +^v
-	}Else If winactive("Select Product - \\Remote"){
+	} Else If winactive("Select Product - \\Remote"){
 		Excel.Connect()
 		sendinput,{click 106, 64}%Product%{enter}{enter}
 		return
 	} Else If winactive("Edit specification - \\Remote"){
 		; ProductTab.EditProduct()
 		menu.LMS()
-
 	} Else If winactive("New Document - \\Remote"){
 		sendinput, %Product%
 	} else if winactive("Microsoft Excel Security Notice - \\Remote"){
 		send, !y
-
 		;------------------------------------------
 	} Else If winactive("Edit Product - \\Remote"){
 		;iniread, Product, data.ini, Products, 1

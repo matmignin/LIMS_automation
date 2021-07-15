@@ -20,20 +20,20 @@ F19::Clip_v()
 
 
 Excel:
-	#If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 1000 AND winactive("LMS Workbook.xlsb"))
+	#If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 6000 AND winactive("LMS Workbook.xlsb"))
 	F6::
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
 		; excel.connect()
 		lms.SearchBar(Product,"{enter}")
-		sleep 200
-		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
 		send, {click, 87, 676, 0}
 		return
 	F7::
+		winactivate, NuGenesis LMS - \\Remote
+		sleep 200
 		; excel.connect()
 		lms.SearchBar(Batch,"{enter}")
-		sleep 200
-		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
 		send, {click, 87, 676, 0}
 		return
@@ -185,10 +185,10 @@ Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
 Scrolllock::menu.Remote_Desktop()
 F13::TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
-		#ifwinactive, ahk_class #32770
-			Scrolllock::menu.Remote_Login()
-			; F19::menu.Remote_Login()
-		#ifwinactive, ahk_class TscShellContainerClass
-			; F19::menu.Remote_Desktop()
-			Scrolllock::menu.Remote_Desktop()
+#ifwinactive, ahk_class #32770
+	Scrolllock::menu.Remote_Login()
+	; F19::menu.Remote_Login()
+#ifwinactive, ahk_class TscShellContainerClass
+	; F19::menu.Remote_Desktop()
+	Scrolllock::menu.Remote_Desktop()
 

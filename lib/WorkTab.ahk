@@ -67,9 +67,9 @@ DropdownSelect(A_ShipTo){
  else if (a_shipTo = "1")
   Sendinput,{home}
  else if (a_ShipTo > 1)
-  sendinput,{home}{right %A_ShipTo%}
+  sendinput,{home}{right %A_ShipTo%}{right}
  else if (a_ShipTo < 1)
-  Sendinput,{end}{left %Absselection%}
+  Sendinput,{end}{left %Absselection%}{left}
  }
 
 DeleteRetain(){

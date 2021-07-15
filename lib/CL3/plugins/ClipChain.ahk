@@ -196,9 +196,10 @@ F20 & F19::
 clipchaininsert()
 send, ^x
 return
-F19::clipChain_v()
 
 F19 & F20::gosub, clipchainmenu
+F21::gosub, clipchainmenu
+F19::clipChain_v()
 F20::clipChain_c()
 ClipChainInsert(){
 global

@@ -24,7 +24,7 @@ InfoLocations(){
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
-	;EnvSet, ShipTo, %ShipTo%
+	EnvSet, ShipTo, %ShipTo%
 	if Coated
 		GuiControl, Varbar:Text, Coated, %coated%
 	GuiControl, Varbar:Text, SampleID,

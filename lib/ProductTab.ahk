@@ -60,94 +60,94 @@ Table(){
 
 
 DropdownSelect(A_DropdownCount){
- global
- SetWinDelay, 450
+  global
+  SetWinDelay, 450
   ; if Winactive("Duplicate ingredient ID - \\Remote") || winactive("Warning - \\Remote") || winactive("Composition - \\Remote")
   ; {
-   ; exit
-   ; return
+    ; exit
+    ; return
   ; }
- click, 150, 73
- sleep 300
- Breaking.Point()
- ;tooltip, %Ingredient_Name%
- AbsSelection:=Abs(A_DropdownCount)
- if (A_DropdownCount > 0)
+  click, 150, 73
+  sleep 300
+  Breaking.Point()
+  ;tooltip, %Ingredient_Name%
+  AbsSelection:=Abs(A_DropdownCount)
+  if (A_DropdownCount > 0)
   sendinput, {tab}{home}{right %A_DropdownCount%}
- if (A_DropdownCount < 0)
+  if (A_DropdownCount < 0)
   Sendinput, {tab}{end}{left %AbsSelection%}
- if (A_DropdownCount = "-0")
+  if (A_DropdownCount = "-0")
   Sendinput, {tab}{end}
- if (a_DropdownCount = "")
+  if (a_DropdownCount = "")
   ProductTab.DropDown_Ingredient()
   Breaking.Point()
   sleep 200
   return
- }
+  }
 
-EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
- Global
-  SetWinDelay, 450
- Excel.Get_Current_row()
- Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
- Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
- Ingredient_position:=Trim(Ingredient_Position,"`r`n")
- ifWinnotexist, Edit Ingredient - \\Remote
- {
-  WinActivate,Composition - \\Remote
-  Breaking.Point()
-  Mouse_Click("add_Composition")
-  sleep 200
-  Breaking.Point()
-  ProductTab.DropdownSelect(Dropdown_count)
-  ; ProductTab.Select_Ingredient()
- ; tooltip, %Ingredient_Name%
- }
- if Winexist("Edit Ingredient - \\Remote")
- {
-  Winactivate,
- }
- sleep 200
- send,{tab 6}^a%Ingredient_position%{tab}^a
- Sendinput,%Ingredient_Name%
- sleep 100
- If Ingredient_Claim contains Heavy Metal,Allergens
-  send,{tab}
- send,{tab 2}^a
- send,%Ingredient_Claim%
- Sleep 400
- Current_Row:= Current_Row+1
- Breaking.Point()
- send,{enter}
- Tooltip,
-return
-}
+  EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
+    Global
+    SetWinDelay, 450
+    Excel.Get_Current_row()
+    Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
+    Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
+    Ingredient_position:=Trim(Ingredient_Position,"`r`n")
+    ifWinnotexist, Edit Ingredient - \\Remote
+    {
+    WinActivate,Composition - \\Remote
+    Breaking.Point()
+    Mouse_Click("add_Composition")
+    sleep 200
+    Breaking.Point()
+    ProductTab.DropdownSelect(Dropdown_count)
+    ; ProductTab.Select_Ingredient()
+    ; tooltip, %Ingredient_Name%
+    }
+    if Winexist("Edit Ingredient - \\Remote")
+    {
+      Winactivate,
+    }
+    sleep 200
+    send,{tab 6}^a%Ingredient_position%{tab}^a
+    Sendinput,%Ingredient_Name%
+    sleep 100
+    If Ingredient_Claim contains Heavy Metal,Allergens
+    send,{tab}
+    send,{tab 2}^a
+    send,%Ingredient_Claim%
+    Sleep 400
+    Current_Row:= Current_Row+1
+    Breaking.Point()
+    send,{enter}
+    Tooltip,
+    return
+    }
 
 
 
-AddCOASpace(){
-	Global
-   SetWinDelay, 450
-	ControlGetText, Iteration, Static1, VarBar
-	; WinActivate, Composition - \\Remote
-	click
-	Mouse_Save()
-	click 74, 64
-	sleep 200
-	ifwinnotactive, Edit Ingredient - \\Remote
-	WinActivate, Edit Ingredient - \\Remote
-	if (Iteration > 0)
-		 sendinput, {Tab 7}{pgdn 2}{end}{enter}{click 283, 559}
-	if (Iteration < 0)
-		sendinput, {tab 7}{pgdn 2}{end}{backspace}{click 283, 559}
-		sleep 200
-	ifwinnotactive, Composition - \\Remote
-	WinActivate, Composition - \\Remote
-	send %mouseReturn%
-	MouseMove, 0, 36, 0, r
-	sleep 200
-	return
-}
+  AddCOASpace(){
+    Global
+    SetWinDelay, 450
+    ControlGetText, Iteration, Static1, VarBar
+    ; WinActivate, Composition - \\Remote
+    click
+    Mouse_Save()
+    click 74, 64
+    sleep 200
+    ifwinnotactive, Edit Ingredient - \\Remote
+    WinActivate, Edit Ingredient - \\Remote
+    if (Iteration > 0)
+      sendinput, {Tab 7}{pgdn 2}{end}{enter}{click 283, 559}
+    if (Iteration < 0)
+      sendinput, {tab 7}{pgdn 2}{end}{backspace}{click 283, 559}
+      sleep 200
+    ifwinnotactive, Composition - \\Remote
+    WinActivate, Composition - \\Remote
+    send %mouseReturn%
+    MouseMove, 0, 36, 0, r
+    sleep 200
+    return
+  }
 
 
 Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
@@ -169,27 +169,27 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
 
 
 
-EditProduct(){
-   global
+  EditProduct(){
+    global
     SetWinDelay, 450
-   Excel.Connect()
-   click 120,80 ;click product box
-   Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
-   sleep 200
-   sendinput,%Name%{tab 8}
-   sleep 400
-   winwaitactive,NuGenesis LMS - \\Remote,,10
-   WinActivate, NuGenesis LMS - \\Remote
-   click, 67, 283
-   sleep 200
-   Breaking.Point()
-   ; Mouse_Click("Add_Formulation")
-   winactivate, Edit Formulation - \\Remote,
-   send, {tab}%product%
-			sendinput, {Tab 23}
-   return
-   Breaking.Point()
-  }
+    Excel.Connect()
+    click 120,80 ;click product box
+    Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
+    sleep 200
+    sendinput,%Name%{tab 8}
+    sleep 400
+    winwaitactive,NuGenesis LMS - \\Remote,,10
+    WinActivate, NuGenesis LMS - \\Remote
+    click, 67, 283
+    sleep 200
+    Breaking.Point()
+    ; Mouse_Click("Add_Formulation")
+    winactivate, Edit Formulation - \\Remote,
+    send, {tab}%product%
+      sendinput, {Tab 23}
+    return
+    Breaking.Point()
+  } 
 
   HM_ReportOnly(){ 
   SetWinDelay, 450 ;testing out
@@ -280,74 +280,74 @@ EditProduct(){
 
 
 
-   IngredientMenuHandler:
-   Click 150, 73
-   ; click, 150, 73
-    if (A_ThisMenuItem ="Generic Ingredient &A.1")
-     Sendinput,{tab}{Home}{right 2}{right 56}
-    else if (A_ThisMenuItem ="Generic Ingredient &B.1")
-     Sendinput,{tab}{Home}{right 2}{right 62}
-    else if (A_ThisMenuItem ="Generic Ingredient &C.1")
-     Sendinput,{tab}{Home}{right 2}{right 68}
-    else if (A_ThisMenuItem ="Generic Ingredient &D.1")
-     Sendinput,{tab}{home}{right 2}{right 74}
-    else if (A_ThisMenuItem ="Generic Ingredient &E.1")
-     Sendinput,{tab}{Home}{right 2}{right 80}
-    else if (A_ThisMenuItem ="Generic Ingredient &F.1")
-     Sendinput,{tab}{Home}{right 2}{right 86}
-    else if (A_ThisMenuItem ="Generic Ingredient &G")
-     Sendinput,{tab}{Home}{right 2}{right 92}
-    else if (A_ThisMenuItem ="Generic Ingredient &H")
-     Sendinput,{tab}{Home}{right 2}{right 94}
-    else if (A_ThisMenuItem ="Generic Ingredient &I")
-     Sendinput,{tab}{Home}{right 2}{right 95}
-    else if (A_ThisMenuItem ="Generic Ingredient &J")
-     Sendinput,{tab}{Home}{right 2}{right 97}
-    else if (A_ThisMenuItem ="Generic Ingredient &K")
-     Sendinput,{tab}{Home}{right 2}{right 99}
-    else if (A_ThisMenuItem ="Generic Ingredient &L")
-     Sendinput,{tab}{Home}{right 2}{right 100}
-    else if (A_ThisMenuItem ="Generic Ingredient &M")
-     Sendinput,{tab}{Home}{right 2}{right 101}
-    else if (A_ThisMenuItem ="Generic Ingredient &N")
-     Sendinput,{tab}{Home}{right 2}{right 102}
-    else if (A_ThisMenuItem ="Generic Ingredient &O")
-     Sendinput,{tab}{Home}{right 2}{right 103}
-    else if (A_ThisMenuItem ="Generic Ingredient &P")
-     Sendinput,{tab}{Home}{right 2}{right 104}
-    else if (A_ThisMenuItem ="Generic Ingredient &Q")
-     Sendinput,{tab}{Home}{right 2}{right 105}
-    else if (A_ThisMenuItem ="Generic Ingredient &R")
-     Sendinput,{tab}{Home}{right 2}{right 106}
-    else if (A_ThisMenuItem ="Generic Ingredient &S")
-     Sendinput,{tab}{Home}{right 2}{right 107}
-    else if (A_ThisMenuItem ="Generic Ingredient &T")
-     Sendinput,{tab}{Home}{right 2}{right 108}
-    else if (A_ThisMenuItem ="Generic Ingredient &U")
-     Sendinput,{tab}{Home}{right 2}{right 109}
-    else if (A_ThisMenuItem ="Generic Ingredient &V")
-     Sendinput,{tab}{Home}{right 2}{right 110}
-    else if (A_ThisMenuItem ="Generic Ingredient &W")
-     Sendinput,{tab}{Home}{right 2}{right 111}
-    else if (A_ThisMenuItem ="Generic Ingredient &X")
-     Sendinput,{tab}{Home}{right 2}{right 112}
-    else if (A_ThisMenuItem ="Generic Ingredient &Y")
-     Sendinput,{tab}{Home}{right 2}{right 113}
-    else if (A_ThisMenuItem ="Generic Ingredient &Z")
-     Sendinput,{tab}{Home}{right 2}{right 114}
-    else if (A_ThisMenuItem ="Ingredient Note 1")
-     Sendinput,{tab}{Home}{right 2}{right 139}
-    else if (A_ThisMenuItem ="Ingredient Note 2")
-     Sendinput,{tab}{Home}{right 2}{right 141}
-    else if (A_ThisMenuItem ="Ingredient Note 3")
-     Sendinput,{tab}{Home}{right 2}{right 142}
-    else if (A_ThisMenuItem ="Total Probiotic")
-     Sendinput,{tab}{Home}{right 258}
-    else if (A_ThisMenuItem ="STOP")
-     Reload
-    else
-     return
-   return
+IngredientMenuHandler:
+Click 150, 73
+; click, 150, 73
+if (A_ThisMenuItem ="Generic Ingredient &A.1")
+  Sendinput,{tab}{Home}{right 2}{right 56}
+else if (A_ThisMenuItem ="Generic Ingredient &B.1")
+  Sendinput,{tab}{Home}{right 2}{right 62}
+else if (A_ThisMenuItem ="Generic Ingredient &C.1")
+  Sendinput,{tab}{Home}{right 2}{right 68}
+else if (A_ThisMenuItem ="Generic Ingredient &D.1")
+  Sendinput,{tab}{home}{right 2}{right 74}
+else if (A_ThisMenuItem ="Generic Ingredient &E.1")
+  Sendinput,{tab}{Home}{right 2}{right 80}
+else if (A_ThisMenuItem ="Generic Ingredient &F.1")
+  Sendinput,{tab}{Home}{right 2}{right 86}
+else if (A_ThisMenuItem ="Generic Ingredient &G")
+  Sendinput,{tab}{Home}{right 2}{right 92}
+else if (A_ThisMenuItem ="Generic Ingredient &H")
+  Sendinput,{tab}{Home}{right 2}{right 94}
+else if (A_ThisMenuItem ="Generic Ingredient &I")
+  Sendinput,{tab}{Home}{right 2}{right 95}
+else if (A_ThisMenuItem ="Generic Ingredient &J")
+  Sendinput,{tab}{Home}{right 2}{right 97}
+else if (A_ThisMenuItem ="Generic Ingredient &K")
+  Sendinput,{tab}{Home}{right 2}{right 99}
+else if (A_ThisMenuItem ="Generic Ingredient &L")
+  Sendinput,{tab}{Home}{right 2}{right 100}
+else if (A_ThisMenuItem ="Generic Ingredient &M")
+  Sendinput,{tab}{Home}{right 2}{right 101}
+else if (A_ThisMenuItem ="Generic Ingredient &N")
+  Sendinput,{tab}{Home}{right 2}{right 102}
+else if (A_ThisMenuItem ="Generic Ingredient &O")
+  Sendinput,{tab}{Home}{right 2}{right 103}
+else if (A_ThisMenuItem ="Generic Ingredient &P")
+  Sendinput,{tab}{Home}{right 2}{right 104}
+else if (A_ThisMenuItem ="Generic Ingredient &Q")
+  Sendinput,{tab}{Home}{right 2}{right 105}
+else if (A_ThisMenuItem ="Generic Ingredient &R")
+  Sendinput,{tab}{Home}{right 2}{right 106}
+else if (A_ThisMenuItem ="Generic Ingredient &S")
+  Sendinput,{tab}{Home}{right 2}{right 107}
+else if (A_ThisMenuItem ="Generic Ingredient &T")
+  Sendinput,{tab}{Home}{right 2}{right 108}
+else if (A_ThisMenuItem ="Generic Ingredient &U")
+  Sendinput,{tab}{Home}{right 2}{right 109}
+else if (A_ThisMenuItem ="Generic Ingredient &V")
+  Sendinput,{tab}{Home}{right 2}{right 110}
+else if (A_ThisMenuItem ="Generic Ingredient &W")
+  Sendinput,{tab}{Home}{right 2}{right 111}
+else if (A_ThisMenuItem ="Generic Ingredient &X")
+  Sendinput,{tab}{Home}{right 2}{right 112}
+else if (A_ThisMenuItem ="Generic Ingredient &Y")
+  Sendinput,{tab}{Home}{right 2}{right 113}
+else if (A_ThisMenuItem ="Generic Ingredient &Z")
+  Sendinput,{tab}{Home}{right 2}{right 114}
+else if (A_ThisMenuItem ="Ingredient Note 1")
+  Sendinput,{tab}{Home}{right 2}{right 139}
+else if (A_ThisMenuItem ="Ingredient Note 2")
+  Sendinput,{tab}{Home}{right 2}{right 141}
+else if (A_ThisMenuItem ="Ingredient Note 3")
+  Sendinput,{tab}{Home}{right 2}{right 142}
+else if (A_ThisMenuItem ="Total Probiotic")
+  Sendinput,{tab}{Home}{right 258}
+else if (A_ThisMenuItem ="STOP")
+  Reload
+else
+  return
+return
 
 
 Ingredient_table:

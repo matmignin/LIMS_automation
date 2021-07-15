@@ -4,8 +4,7 @@ return
 Starting_test:
 ; Test_2()
 return
-
-
+ 
 ReadSpecIntoDataBase:
  iniread, full, data.ini, %Product%,ecc738
  Test_Specs:= strsplit(Full,"=")
@@ -14,7 +13,7 @@ ReadSpecIntoDataBase:
  msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
 
  LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-Return
+Return 
 
 
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
@@ -39,9 +38,6 @@ tThk:=A_TimesinceThisHotkey
 tsPhk:=A_TimesincePriorHotkey
 tPhk:=A_TimesincePriorHotkey
 ;___________________________________________________________________________
- `::send, ``
- /::/
-
 WindowNames(){
  global
  Loop, Read, WindowNames.ini
@@ -143,20 +139,13 @@ VQuest_Start:
  #KeyHistory 300
  #InstallKeybdHook
  #InstallMouseHook
-;  #MenuMaskKey vkE8
+ #MenuMaskKey vkE8
 
-; SetTitleMatchMode, Fast		;Fast is default
-; DetectHiddenWindows, off	;Off is default
-;SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
 CrLf=`r`n
 FileName:="lib/WinPos.txt"
-;  clipboard:=
-;  EnvGet, Product, Product
-;  EnvGet, Batch, Batch
-;  EnvGet, lot, lot
-;  EnvGet, Coated, Coated
-;  EnvGet, Sample, Sample
-;  EnvGet, Iteration, Iteration
+
+
  envget, PrevProduct, PrevProduct
 
 ; AutoTrim, On
@@ -185,7 +174,7 @@ FileName:="lib/WinPos.txt"
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
  #MaxHotkeysPerInterval 100
- #HotkeyModifierTimeout 50
+ #HotkeyModifierTimeout 100
  #maxthreadsperhotkey, 1
 ;  #IfTimeout 500
  SetKeyDelay, 0, 0
