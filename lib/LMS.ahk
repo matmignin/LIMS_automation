@@ -199,7 +199,7 @@ FilterBar(Code:="",PostCmd:=""){
 }
 
 DetectTab(){
-	global
+global
 tab:=
 FoundSamples:=
 FoundRequests:=

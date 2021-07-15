@@ -66,75 +66,75 @@ Wheel(commands,Sleeptime:=800)
 
 
 
-Wheel_Right(){
-	global
-	If winactive("ahk_exe AHK-Studio.exe"){
+; Wheel_Right(){
+	; global
+	; If winactive("ahk_exe AHK-Studio.exe"){
 		sendinput, !{right}
-	} Else If winactive("ahk_exe explorer.exe"){
+	; } Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{right}
-	} Else If winactive("ahk_exe EXCEL.EXE"){
-		Wheel("{wheelleft}",0)
-	} Else If winactive("outlook"){
-		Send,{wheelright}
-	} Else If winactive("Result Entry - \\Remote"){
+	; } Else If winactive("ahk_exe EXCEL.EXE"){
+		; Wheel("{wheelleft}",0)
+	; } Else If winactive("outlook"){
+		; Send,{wheelright}
+	; } Else If winactive("Result Entry - \\Remote"){
 		WorkTab.ChangeTestResults("toggle")
-	} else if Winactive("Select tests for request"){
+	; } else if Winactive("Select tests for request"){
 		Mouse_Click("Select_TestsForRequests")
 		;LMS
-	} Else If winactive("NuGenesis LMS - \\Remote"){
-		WorkTab.Main_EditResults()
-		;ProductTab
-	} else if winactive("Edit Formulation - \\Remote"){
+	; } Else If winactive("NuGenesis LMS - \\Remote"){
+		; WorkTab.Main_EditResults()
+		; ProductTab
+	; } else if winactive("Edit Formulation - \\Remote"){
 		return
-	} else if winactive("Composition - \\Remote"){
-		Mouse_Click("Edit")
-
-	} else if winactive("Edit Ingredient - \\Remote"){
+	; } else if winactive("Composition - \\Remote"){
+		; Mouse_Click("Edit")
+; 
+	; } else if winactive("Edit Ingredient - \\Remote"){
 		ProductTab.DropDown_Ingredient()
-	} Else If winactive("Test Definition Editor - \\Remote "){
+	; } Else If winactive("Test Definition Editor - \\Remote "){
 		SpecTab.TestDefinitionEditor(Description)
-	} Else If winactive("Results Definition - \\Remote "){
+	; } Else If winactive("Results Definition - \\Remote "){
 		Mouse_Click("Add")
-	} Else If winactive("Paster - Snipaste ahk_exe Snipaste.exe"){
+	; } Else If winactive("Paster - Snipaste ahk_exe Snipaste.exe"){
 		sendinput, ^=^=
 		;=============================================================================
-	} Else if winactive("Edit sample (Field Configuration: I`, Physical) - \\Remote"){
-		Excel.Connect()
-		sendinput,{tab 2}{right}{click 277, 139}{tab 6}%Batch%
-		Send,{wheelright}
-	}
+	; } Else if winactive("Edit sample (Field Configuration: I`, Physical) - \\Remote"){
+		; Excel.Connect()
+		; sendinput,{tab 2}{right}{click 277, 139}{tab 6}%Batch%
+		; Send,{wheelright}
+	; }
 		return
 
-}
-
-
-Wheel_left(){
-global
-	If winactive("ahk_exe AHK-Studio.exe"){
+; }
+; 
+; 
+; Wheel_left(){
+; global
+	; If winactive("ahk_exe AHK-Studio.exe"){
 		sendinput, !{left}
-	} Else If winactive("ahk_exe explorer.exe"){
+	; } Else If winactive("ahk_exe explorer.exe"){
 		sendinput, !{left}
-	} Else If winactive("Result Entry - \\Remote"){
+	; } Else If winactive("Result Entry - \\Remote"){
 		WorkTab.ChangeTestResults()
 		;ProductTab
-} Else If winactive("ahk_exe EXCEL.EXE"){
-		Wheel("{wheelright}",0)
-	} Else If winactive("outlook"){
-		Send,{wheelleft}
-	} else if Winactive("Select tests for request"){
+; } Else If winactive("ahk_exe EXCEL.EXE"){
+		; Wheel("{wheelright}",0)
+	; } Else If winactive("outlook"){
+		; Send,{wheelleft}
+	; } else if Winactive("Select tests for request"){
 		Mouse_Click("Select_TestsForRequests")
 		;LMS
-	} Else If winactive("NuGenesis LMS - \\Remote"){
-		Mouse_click("Main_search")
-	} else if winactive("Edit Formulation - \\Remote"){
+	; } Else If winactive("NuGenesis LMS - \\Remote"){
+		; Mouse_click("Main_search")
+	; } else if winactive("Edit Formulation - \\Remote"){
 		return
-	} else if winactive("Composition - \\Remote"){
+	; } else if winactive("Composition - \\Remote"){
 		Mouse_Click("Add")
-	} else
+	; } else
 		Send,{wheelleft}
 		return
 
-}
+; }
 
 
 
