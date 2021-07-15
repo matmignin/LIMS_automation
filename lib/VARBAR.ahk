@@ -221,6 +221,7 @@ Iniread, SampleID, data.ini, SavedVariables, SampleID
 Iniread, Iteration, data.ini, SavedVariables, Iteration
 iniread, note1, data.ini, SavedVariables, note1
 Iniread, note2, data.ini, SavedVariables, note2
+iniread, Follow, data.ini, Locations, Follow
 Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 Iniread, VarBar_X, data.ini, Locations, VarBar_x
 }

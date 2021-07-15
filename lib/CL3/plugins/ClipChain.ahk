@@ -104,10 +104,10 @@ Return
 #IfWinActive, CL3ClipChain Insert text
 +Enter::gosub, ClipChainInsertGuiOK
 #IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
-sendlevel 3
+; sendlevel 3
 
 ; ^v::Gosub, ClipChainPasteDoubleClick
-sendlevel 0
+; sendlevel 0
 Lwin & Lbutton::
 click
 Gosub, ClipChainPasteDoubleClick

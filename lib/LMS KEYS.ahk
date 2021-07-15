@@ -109,16 +109,15 @@ class TouchPad {
 		else if winactive("Edit Formulation - \\Remote"){
 			mouseclick, left, 455, 472,2,0
 			clk(250, 284)
-		return	
 		}
 		else if winactive("Edit Product - \\Remote")
 			ProductTab.EditProduct()
 		else If WinActive("Select tests for request: R")
 			WorkTab.SelectTestSample()
 		else If WinActive("Paster - Snipaste") || WINACTIVE("Snipper - Snipaste") {
-			sendlevel 1
+			; sendlevel 1
         send, {ctrldown}{7}{ctrlup}
-      sendlevel 0
+      ; sendlevel 0
 		}
 		Else
 			Autofill()
@@ -158,22 +157,37 @@ class TouchPad {
 
 	2right(){
 		global
-		If winactive("NuGenesis LMS - \\Remote")
+		If winactive("NuGenesis LMS - \\Remote") {
+		lms.DetectTab()
+			if (Tab="Samples")
+				clk(83, 753)
+			if (Tab="Requests")
+				clk(56, 630)
+			else
 			lms.SearchBar(Batch,"{enter}")
+		}
+
 		Else
 			send, %batch%
+		sleep 700
 		return
 		}
 
 
 	2Left(){
 		global
-		If winactive("NuGenesis LMS - \\Remote")
-			lms.SearchBar(Product,"{enter}")
+		If winactive("NuGenesis LMS - \\Remote"){
+			lms.DetectTab()
+			if (Tab="Requests")
+				clk(xSamplesTab,yWorkTabs)
+			else If (Tab="Samples")
+				clk(70, 395)
 		Else
 			send, %Product%
+		sleep 700
 		return
 		}
+	}
 
 
 }
@@ -186,6 +200,9 @@ Main_Screen:
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
   numpaddiv::CloseWindow()
+  		wheelright::Touchpad.2right()
+  		wheelleft::Touchpad.2left()
+
 
 Results_Definition:
   #IfWinActive, Results Definition - \\Remote
@@ -228,8 +245,8 @@ LMS:
   F8::TouchPad.3Down()
   F7::TouchPad.3Right()
   F6::TouchPad.3Left()
-  ; ~Wheelleft::TouchPad.2left()
-  ; ~Wheelright::TouchPad.2right()
+
+
   Scrolllock::TouchPad.3Tap()
   ; numlock::LMS.Movetab("Home")
   numpadMult::LMS.Movetab("Home")
@@ -244,8 +261,8 @@ LMS:
 
 Scroll_Fix:
   ; #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
-  ; 		wheelright::send, {wheelright}
-  ; 		wheelleft::send, {wheelleft}
+
+
   #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
     Wheeldown::LMS.ScrollDown()
   #if

@@ -278,6 +278,9 @@ click
  sleep 200
  Breaking.Point()
  send,{click 171, 127}^{a}%department%{enter}{tab}^a{click 506, 323}
+ sleep 300
+ send, {click}{click 851, 660}
+ 
  ; if (department="Analytical")
   ; send,
   ; my:=my+26
