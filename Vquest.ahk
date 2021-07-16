@@ -174,7 +174,7 @@ FileName:="lib/WinPos.txt"
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
  #MaxHotkeysPerInterval 100
-;  #HotkeyModifierTimeout 100
+ #HotkeyModifierTimeout 100
  #maxthreadsperhotkey, 1
 ;  #IfTimeout 500
  SetKeyDelay, 0, 0
@@ -200,7 +200,8 @@ OnExit("Varbar.Exit")
  if (Inverted = 0)
   Menu, Tray, unCheck, Inverted
  if (Follow = 1) {
-  Varbar.Follow()
+  ; Varbar.Follow()
+  settimer, CheckActive, 500
   Menu, Tray, Check, VarbarFollow
  }
  if (Follow = 0)

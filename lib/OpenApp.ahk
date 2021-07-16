@@ -8,6 +8,7 @@ OpenApps:
  !+v::OpenApp.VPN()
  !o::OpenApp.Outlook()
  !p::OpenApp.YourPhone()
+ F20 & p::OpenApp.YourPhone()
  !d::OpenApp.Display()
  ; !n::run, notes.ahk, %A_ScriptDir%\lib
  f20 & n::
@@ -32,12 +33,12 @@ Clickup(){
 
 
 PhoneApp(){
+ sendlevel 1
  ifwinnotexist, Your Phone
-  send, {lwindown}{s}{lwinup}y ;our{enter}
+   send, {shiftdown}{altdown}{F8}{altup}{shiftup}
  else
   WinActivate, Your Phone
-  ; run, YourPhone.exe, ‪C:\Program Files\WindowsApps
-
+ sendlevel 0
  return
  }
 

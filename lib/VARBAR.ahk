@@ -31,7 +31,7 @@ Class VarBar{
 			IniWrite, %Varbar_y%, data.ini, Locations, VarBar_Y
 		}
 		if (Destroy:="Reset")
-		GUI, VarBar:destroy
+			GUI, VarBar:destroy
 		Gui Varbar:Default
 		Gui VarBar: +LastFound +AlwaysOnTop -Caption +ToolWindow +owner
 		; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
@@ -45,8 +45,8 @@ Class VarBar{
 			GUI,VarBar:Font,				s9 cBlack , Consolas
 			Gui,VarBar:add,Edit,	 	vlot 						gLotVarbar x60 center H18 y15 w70, 							%Lot% 		 ; edit3
 			GUI,VarBar:Font,				s8 cBlack,arial Narrow
-				If Coated
-			Gui,VarBar:add,Edit,	 	vCoated 				gCoatedVarbar x135 H18 y15 w60, 					%Coated%   ; edit4
+				; If Coated
+			Gui,VarBar:add,Edit,	 	vCoated 				gCoatedVarbar x131 H18 y15 w60, 					%Coated%   ; edit4
 			GUI,VarBar:Font,				s7 cBlack,arial
 				if sampleid
 			Gui,VarBar:add,Edit,	 	vSampleID 			gSampleIDVarbar x135 H18 y-3 w80, 				%SampleID%  ; edit5
@@ -68,6 +68,8 @@ Class VarBar{
 			IniWrite, 1, data.ini, Locations, VarBar_Y
 		}
 		CoordMode, mouse, window
+		if (Follow=1)
+			varbar.follow()
 		ControlsetText, Static1, %Iteration%,VarBar
 		return
 
@@ -125,17 +127,14 @@ Focus(Control){
 	sleep 200
 
 	return
-}
+}	
 
 
-	Follow(){
+	Follow(WindowSelection){
 		global
-		winactivate, 
-		SetTimer, CheckActive, 600
-		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
-		VarWin_X := LMS_X+(LMS_W/2)-400
-		VarWin_Y := LMS_Y
-		WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
+		; winactivate, 
+		SetTimer, CheckActive, 500
+	
 		return
 	}
 
@@ -153,7 +152,7 @@ Focus(Control){
 				IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 				return
 			}
-			send, {click 3}
+			send, {tab}
 			
 		; Excel.Connect()
 		sleep 300
@@ -268,15 +267,20 @@ Notes.Save()
 
 
 CheckActive:
- If WinActive("NuGenesis LMS - \\Remote") ;|| Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe")
+ If WinActive("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote") ;|| winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe")
   ; If WinActive("ahk_exe WFICA32.EXE") ;|| Winactive("ahk_exe EXCEL.EXE") || winactive("ahk_exe OUTLOOK.EXE") || winactive("ahk_exe Code.exe")
  {
-  Varbar.Follow()
-  return
+		; WinGetTitle, WinTitle, A
+		WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, A
+		VarWin_X := LMS_X+(LMS_W/2)-400
+		VarWin_Y := LMS_Y
+		WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
+  ; Varbar.Follow(Wintitle)
  }
- Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
-  exit
- else
-  return
+ return
+;  Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
+  ; exit
+;  else
+  ; return
  ; WinMove, VarBar ahk_class AutoHotkeyGUI,, %VarBar_X%, %VarBar_Y%
-Return
+; Return

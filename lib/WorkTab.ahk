@@ -1,39 +1,39 @@
 Class WorkTab{
 
 registerNewSamples(){
- global
- mx:=
- my:=
- If Coated = "ERROR"
-  Coated:=
-If Lot = "ERROR"
-  lot:=
- ; if Iteration=""
+  global
+  mx:=
+  my:=
+  If Coated = "ERROR"
+    Coated:=
+  If Lot = "ERROR"
+    lot:=
+  ; if Iteration=""
   ; iteration=1
- ControlGetText, Iteration, Static1, VarBar
- ifwinactive, Register new samples - \\Remote
- MouseGetPos, mx, my
-;  loop %iteration%
-;  {
+  ControlGetText, Iteration, Static1, VarBar
+  ifwinactive, Register new samples - \\Remote
+  MouseGetPos, mx, my
+  ;  loop %iteration%
+  ;  {
   click 2
   sleep 200
   Breaking.Point()
   winwaitactive, Edit sample (Field Configuration,, 3
-   if ErrorLevel
-    exit
+    if ErrorLevel
+      exit
   sendinput,{tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-   sendinput,{tab}^a
+    sendinput,{tab}^a
   sendinput, ^{a}%Batch%{tab}^{a}
   IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
   {
-   sendinput,{CtrlDown}{a}{Ctrlup}%Lot%
-   send,{tab 3}
-   sleep 100
+    sendinput,{CtrlDown}{a}{Ctrlup}%Lot%
+    send,{tab 3}
+    sleep 100
   if Coated
-   sendinput,{CtrlDown}{a}{Ctrlup}%Coated%
-   sleep 100
-   send, +{tab 2}
+    sendinput,{CtrlDown}{a}{Ctrlup}%Coated%
+    sleep 100
+    send, +{tab 2}
   }
   Breaking.Point()
   sleep 180
@@ -43,19 +43,17 @@ If Lot = "ERROR"
   ;   WorkTab.DropdownSelect(200)
   ;   return
   ; }
-  sleep 300
+  sleep 200
   Breaking.Point()
   send, {enter}
-  sleep 400
+  sleep 100
   winactivate, Register new samples - \\Remote
-  ; my:=my+26
-  sleep 200
-  ; click mx, my, 2
-  ;MouseMove, mx, my
+  my:=my+26
+  MouseMove, mx, my
   ; click 2
-  sleep 500
-   return
- 
+  ; sleep 200
+    return
+
   }
 
 
@@ -102,10 +100,11 @@ Winactivate, NuGenesis LMS - \\Remote
 NewRequest(){
  global
 ;  department:= ; Clip()
-;  Clipboard:=
+ Clipboard:=
 ;  sleep 100
  WinActivate, NuGenesis LMS - \\Remote
- ; send, ^c
+click 
+;  send, ^c
  clip()
  sleep 50
 ;  LMS.CheckDepartment()
@@ -258,7 +257,6 @@ Main_EditResults()
 
 
 
-
 SelectTestSample(){
 global
 MouseGetPos, mx, my
@@ -266,17 +264,19 @@ click
 ;{
 ;  lms.CheckDepartment()
   clip()
-  sleep 200
+  sleep 300
  click 647, 75
- winwait, Select samples for test,,3
  sleep 600
+;  winwait, Select samples for test,,3
+ if !Winactive("Select samples for test")
+  winactivate, Select samples for test
  click 463, 71
  Breaking.Point()
  send,{click 244, 69}
  sleep 200
  send,{click 205, 184}
  sleep 200
- Breaking.Point()
+ Breaking.Point() 
  send,{click 171, 127}^{a}%department%{enter}{tab}^a{click 506, 323}
  sleep 300
  send, {click}{click 851, 660}

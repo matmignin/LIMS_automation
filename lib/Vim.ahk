@@ -67,7 +67,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	; w::send, {altDown}{ctrldown}{L}{ctrlup}{altup}
 	p::Vim.Paste()
 	q::send, {altdown}{,}{altup}
-
+	
 	; <^m::send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
 	; <^u::send,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
 	; <^j::send,{shiftdown}{down}{shiftup}
@@ -118,7 +118,7 @@ g::send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 	right::sendinput,{ctrldown}{]}{Ctrlup}
 	,::sendinput,{Altdown}{ctrldown}{/}{ctrlup}{altup}
 	f::Vim.find("f")
-	'::"
+	'::send {shiftdown}{altdown}{ctrldown}{'}{ctrlup}{altup}{shiftup}
 	m::Sendinput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
 	u::sendinput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup}
 
@@ -188,7 +188,7 @@ PsudoNumpad:
 	y::up
 	b::down
 	/::numpad0
-	p::numpad0
+	p::numpaddot
 	=::=
 	-::-
 	n::sendinput,{-}

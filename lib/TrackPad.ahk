@@ -14,12 +14,8 @@
   e::send,{LWinDown}{e}{lwinup}
   o::OpenApp.Outlook()
   d::LMS.Orient()
-  ;  f::OpenApp.firefox()
   w::OpenApp.Workbook()
-  left::#left
-  right::#right
-  up::#up
-  down::#down
+
 #If
 #IfWinActive,
 ;  [TrackPad]

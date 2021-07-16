@@ -12,16 +12,15 @@ Clip(input=0){
     send, ^x
   else
     send, ^c
-  clipwait,0.35
+  clipwait,0.65
   if errorlevel
   {
     clipboard:=ClipboardSaved
-    if (A_PriorKey = "F20" || A_PriorKey = "Lcontrol")
-    keywait, Lcontrol, T0.7
-    if errorlevel
-      send, {F22} 
-    else
+    if (A_PriorKey != "F20")
       exit
+      send, {home}+{end}^{c}
+    ; clk(A_CaretX,A_CaretY,,2)
+    	
     ; TT(Clipboard,1000,,,3)
     ; clipwait
   ; TT(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))

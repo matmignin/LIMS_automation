@@ -8,8 +8,6 @@ explorer:
  F9::send, {lwindown}{e}{lwinup}
  F7::send, {lwindown}{s}{lwinup}
 ;  Media_Play_Pause::send,{space}
- F19 & Browser_Forward::Excel.NextSheet()
- F19 & Browser_Back::Excel.()
  F6::
  send,{CtrlDown}{e}{Ctrlup}
  sleep 200
@@ -20,10 +18,11 @@ F19::Clip_v()
 
 
 Excel:
-	#If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 6000 AND winactive("LMS Workbook.xlsb"))
+	; #If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
 	F6::
 		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
+		click, xTab3,yTabs
 		; excel.connect()
 		lms.SearchBar(Product,"{enter}")
 		sleep 200
@@ -32,8 +31,9 @@ Excel:
 	F7::
 		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
+		click, xTab4,yTabs
 		; excel.connect()
-		lms.SearchBar(Batch,"{enter}")
+		lms.SearchBar(Product,"{enter}")
 		sleep 200
 		send, {click, 87, 676, 0}
 		return
@@ -49,9 +49,9 @@ Excel:
 	F19 & up::^up
 	F19 & left::^left
 	F19 & right::^right
-	F7::Excel.NextSheet()
-	F6::Excel.PrevSheet()
-	
+	numpadadd::Excel.NextSheet()
+	numpadsub::Excel.PrevSheet()
+	numlock::send, {altdown}{down 2}{altup} 
 #ifwinactive, Book
 			numpadadd::send, #{right}
 			numpadsub::send, #{left}
@@ -100,7 +100,7 @@ OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 
 	F19 & enter::send, {ctrldown}{enter}{ctrlup}
-	F19 & F20::sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	F20 & F19::sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::Clip()

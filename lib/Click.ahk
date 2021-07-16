@@ -149,11 +149,11 @@ OKay(){
  }
  RegisterNewSamples(){
   WinActivate, Register new samples - \\Remote
-   click 181, 103,
+   click 181, 103, 2
    sleep 50
    ; click 181, 103,
    sleep 300
-   sendinput, %product%{enter}
+   send, %product%{enter}
    sleep 300
    return
  }

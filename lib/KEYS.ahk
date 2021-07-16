@@ -27,6 +27,7 @@ KEY_DEFAULT:
 	/ & Down::send, %Coated%
 	/ & right::send, %Lot%
 	/ & up::send, %SampleID%
+	/::send, /
 	; #MaxThreadsPerHotkey 2
 	` & 1::Test_1()
 	` & 2::Test_2()
@@ -88,9 +89,11 @@ KEY_DEFAULT:
 ; sendlevel 0
 	F13 & Lbutton::F13Click()
 
-#If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F20 & Space" && A_TimeSincePriorHotkey < 2000) 
+
+Double_press_For_Enter:
+#If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F20 & Space" && A_TimeSincePriorHotkey < 9000) 
 	F19 & space::send, {enter}
-	$space::send, {enter} 
+	; $space::send, {enter} 
 	$rshift::send, {tab}
 	F20 & Space::send, {enter}
 ; #If (A_PriorHotKey = "F19 & F20" && A_TimeSincePriorHotkey < 2000) 
@@ -122,10 +125,11 @@ KEY_DEFAULT:
 	F9::Excel.connect()
 	F7::Excel.NextSheet()
 	F6::Excel.PrevSheet()
-	F20::Varbar.Follow()
+	F20::settimer, CheckActive, 500
 	Scrolllock::Varbar.LaunchTable()
 	F20 & F6::ProductTab.Table()
 	F20 & F7::SpecTab.Table()
+	lbutton::send, {click}^{a}
 	; Rbutton::Menu.Tables() ; Excel.connect()
 	; F9::ReloadScript()
 

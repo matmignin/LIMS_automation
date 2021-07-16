@@ -10,7 +10,7 @@
   Tab & 3::send, {shiftdown}{altdown}{lwindown}{3}{lwinup}{altup}{shiftup}
   Tab & `::send, {shiftdown}{altdown}{lwindown}{``}{lwinup}{altup}{shiftup}
   Tab & F15::send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
-  F14::F6
+  F14::ReloadScript()
   F15::sendinput, {up 10}
   F16::sendinput, {down 10}
   F17::backspace
@@ -20,12 +20,10 @@
   tt("Find",200)
   send, {ctrldown}{f}{ctrlup}
   return
-; Scrolllock::Scrolllock
-; Numlock::Numlock
- F6::F6
- F7::F7
- F8::F8
- F9::F9
+  F6::F6
+  F7::F7
+  F8::F8
+  F9::F9
 
 
 F20 & Right::WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
@@ -36,57 +34,57 @@ F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 F19 & -::send, {ctrldown}{-}{ctrlup}
 F19 & =::send, {ctrldown}{=}{ctrlup}
+F19 & /::send, {shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
 tab & f:: sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
-F19 & n::numpaddiv
 
 tab::tab
 `::send, {``}
 !t::TT(trackpadhints,5000)
 <^r::reloadscript()
+  LCtrl & Appskey::return
 
-<^f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+  <^f19::send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+  Lshift::DoublePress("{altdown}{left}{altup}",,"Backward")
+  Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
+  LCtrl up::doublepress("{altdown}{shiftdown}{up}{shiftup}{altup}")
+  Lwin & Appskey::return
+  Lalt & Appskey::return
+  Lwin::doublepress("{altdown}{shiftdown}{up}{shiftup}{altup}+{2}")
+  rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
+  <^lwin::delete
+  <+space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 
-Lshift::DoublePress("{altdown}{left}{altup}",,"Backward")
-Rshift::DoublePress("{altdown}{right}{altup}",,"Forward")
-LCtrl::DoublePress("{altdown}{shiftdown}{up}{shiftup}{altup}")
-LCtrl & Appskey::return
-Lwin & Appskey::return
-Lalt & Appskey::return
-Lwin::doublepress("{backspace}")
-rshift & space::send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-<^lwin::delete
-<+space::send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
+  $<^F13::shift
 
-$<^F13::shift
-
-rbutton & f7::wheel_2("!{right}",10)
-rbutton & f6::wheel_2("!{left}",10)
-rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}
-rbutton & wheeldown::wheel_2("{ctrldown}v{ctrlup}",2000)
-rbutton & wheelup::wheel_2("{ctrldown}x{ctrlup}",2000)
-rbutton & f19::vs_code_windowinfo()
-^s::sendinput, {ctrldown}{end}{ctrlup}
-f9 & f6::return
-F20 & h::send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-F20 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-F20 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
-F20 & l::send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
-F19 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-F19 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
-F19 & l::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
-F19 & h::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
-F20 & backspace::delete
-f19 & `::send, ~
-f19 & p::send, %process%
-f19 & c::send, %mouseposition%
-f19 & t::send, %wintitle%
-f19 & w::send, %wininfo%
-f19 & f6::send,{ctrldown}{[}{ctrlup}
-f19 & f7::send,{ctrldown}{]}{ctrlup}
-f19 & wheeldown::send,{ctrldown}{down}{ctrlup}
-f19 & wheelup::send,{ctrldown}{up}{ctrlup}
-f19 & lbutton::^lbutton
-F13 up::send, {esc}{ctrlup}{altup}
+  rbutton & f7::wheel_2("!{right}",10)
+  rbutton & f6::wheel_2("!{left}",10)
+  rbutton & lbutton::sendinput,{shiftdown}{click}{shiftup}
+  rbutton & wheeldown::wheel_2("{ctrldown}v{ctrlup}",2000)
+  rbutton & wheelup::wheel_2("{ctrldown}x{ctrlup}",2000)
+  rbutton & f19::vs_code_windowinfo()
+  ^s::sendinput, {ctrldown}{end}{ctrlup}
+  f9 & f6::return
+  F20 & h::send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+  F20 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+  F20 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+  F20 & l::send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
+  F19 & k::send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+  F19 & j::send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+  F19 & l::send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+  F19 & h::send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+  F20 & backspace::delete
+  f19 & `::send, ~
+  f19 & r::send, %process%
+  f19 & n::send, {shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
+  f19 & c::send, %mouseposition%
+  f19 & t::send, %wintitle%
+  f19 & w::send, %wininfo%
+  f19 & f6::send,{ctrldown}{[}{ctrlup}
+  f19 & f7::send,{ctrldown}{]}{ctrlup}
+  f19 & wheeldown::send,{ctrldown}{down}{ctrlup}
+  f19 & wheelup::send,{ctrldown}{up}{ctrlup}
+  f19 & lbutton::^lbutton
+  F13 up::send, {esc}{ctrlup}{altup}
 
 #If (A_PriorKey = "F19" AND A_TimeSincePriorkey < 950)
 numpadsub::numpadsub
@@ -190,13 +188,30 @@ VSCODE_Hotstrings:
   sendraw,{altdown}{lwindown}{}{lwinup}{altup}
   sendinput,{left 16}
   return
-  :*R:main\::NuGenesis LMS - \\Remote
-  :*R:lms\::ahk_exe WFICA32.EXE
-  :*R:wa\::winactivate,
-  :*R:ifw\::ifwinactive,  
-  :*R:ifwe\::ifwinexists, 
-  :*R:#ifw\::#ifwinactive, 
-  :*R:iel\::if ErrorLevel, 
+  :*R:main\::
+  sendraw, NuGenesis LMS - \\Remote
+  return
+  :*R:lms\::
+  sendraw, ahk_exe WFICA32.EXE
+  return
+  :*R:wa\::
+  sendraw,  winactivate,
+  return
+  :*R:ifw\::
+  sendraw, ifwinactive,  
+  return
+  :*R:ifwe\::
+  sendraw, ifwinexists, 
+  return
+  :*R:#ifw\::
+  sendraw, #ifwinactive, 
+  return
+  :*R:iel\::
+  sendraw, if ErrorLevel,
+  return
+  :*R:rtn::Return
+  return
+   
 
 #ifwinactive,
 

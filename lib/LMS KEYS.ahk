@@ -96,30 +96,31 @@ class TouchPad {
 			if (Tab="Requests")
 				clk(61, 635) ;enter results
 			else if (Tab="Products")
-				clk(86, 443) ;edit composition
+				clk(67, 754) ;edit results
+			else if (Tab="Samples")
+					clk(107, 319) ;assign Requests
 			else if (Tab="Welcome") {
 			Menu,Menu, add, &Production Server, LMS_Env
 			Menu,Menu, add, &Test Server, LMS_Env
 			Menu.show()
-				
-			}
+			} 
 			else
 				Menu.LMS()
-		}
-		else if winactive("Edit Formulation - \\Remote"){
+		} 
+		if winactive("Edit Formulation - \\Remote") {
 			mouseclick, left, 455, 472,2,0
 			clk(250, 284)
-		}
-		else if winactive("Edit Product - \\Remote")
-			ProductTab.EditProduct()
-		else If WinActive("Select tests for request: R")
-			WorkTab.SelectTestSample()
-		else If WinActive("Paster - Snipaste") || WINACTIVE("Snipper - Snipaste") {
+		} else if Winactive("Register new samples - \\Remote"){
+				WorkTab.registerNewSamples()
+		} else if winactive("Edit Product - \\Remote") {
+			ProductTab.EditProduct() 
+		} else If WinActive("Select tests for request: R") {
+			WorkTab.SelectTestSample() 
+		} else If WinActive("Paster - Snipaste") || WINACTIVE("Snipper - Snipaste") {
 			; sendlevel 1
         send, {ctrldown}{7}{ctrlup}
       ; sendlevel 0
-		}
-		Else
+		} Else 
 			Autofill()
 		return
 		
@@ -132,6 +133,7 @@ class TouchPad {
 			LMS.Detecttab()
 			if (Tab="Requests")
 				{
+				click
 				clk(61, 635) ;enter results
 				Return
 				}
@@ -147,6 +149,7 @@ class TouchPad {
 				}
 			else if (Tab="Specs")
 				{
+				click
 				clk(67, 754) ;edit results
 				Return
 				}
@@ -165,11 +168,12 @@ class TouchPad {
 		If winactive("NuGenesis LMS - \\Remote") {
 		lms.DetectTab()
 			if (Tab="Samples")
-				clk(xResultsTab,yWorkTabs)
+				clk(xRequestsTab,yWorkTabs)
 			else if (Tab="Requests")
 				clk(56, 630)
 			else
-			lms.SearchBar(Batch,"{enter}")
+				lms.SearchBar(Batch,"{enter}")
+			sleep 800
 		}
 
 		Else
@@ -205,8 +209,10 @@ Main_Screen:
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
   numpaddiv::CloseWindow()
-  		wheelright::Touchpad.2right()
-  		wheelleft::Touchpad.2left()
+	wheelright::Touchpad.2right()
+	wheelleft::Touchpad.2left()
+	space & lbutton::send, +{click}
+	space up::sendinput, ^{click}
 
 
 Results_Definition:
@@ -232,7 +238,7 @@ Result_Entry:
 
 LMS:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  F19 & F20::send, %Batch%
+  F20 & Space::send, %Batch%
   F19 & space::send, %Product%
   F19 & up::send, %sampleID%
   F19 & left::send, %lot%
@@ -254,20 +260,31 @@ LMS:
 
   Scrolllock::TouchPad.3Tap()
   ; numlock::LMS.Movetab("Home")
-  numpadMult::LMS.Movetab("Home")
-  Numpadadd::lms.MoveTab("Right")
-  NumpadSub::lms.MoveTab("Left")
+	numpadMult::excel.connect()
+  ; Numpadadd::lms.MoveTab("Right")
+  ; NumpadSub::lms.MoveTab("Left")
+		numpadadd::Excel.NextSheet()
+		numpadsub::Excel.PrevSheet()
   ; Media_Prev::varbar.SubIteration(20)
   ; Media_next::Varbar.AddIteration(20)
-  ; numlock::touchpad.4tap()
+  numlock::touchpad.4tap()
 
 
 
 
 Scroll_Fix:
-  ; #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+#If Mouse_IsOver("LMS Workbook.xlsb")
+	numpadadd::Excel.NextSheet()
+	numpadsub::Excel.PrevSheet()
+#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+	Numlock::
+		click
+		sleep 300
+		touchpad.4tap()
+		return
+	space & lbutton::send, +{click}
 
-
+	space up::sendinput, ^{click}
   #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
     Wheeldown::LMS.ScrollDown()
   #if
