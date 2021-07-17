@@ -204,15 +204,17 @@ class TouchPad {
 Main_Screen:
   #Ifwinactive, NuGenesis LMS - \\Remote
   F20 & Left::WinMove, A, , -283, -1196, 1662, 952
+  F19 & F20::lms.searchBar("")
   F19 & space::Send, %Product%{enter}
   F20 & space::Send, %Batch%{enter}
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
   numpaddiv::CloseWindow()
-	wheelright::Touchpad.2right()
-	wheelleft::Touchpad.2left()
 	space & lbutton::send, +{click}
 	space up::sendinput, ^{click}
+	wheelright::Touchpad.2right()
+	wheelleft::Touchpad.2left()
+
 
 
 Results_Definition:
@@ -258,7 +260,7 @@ LMS:
   F6::TouchPad.3Left()
 
 
-  Scrolllock::TouchPad.3Tap()
+  Mbutton::TouchPad.3Tap()
   ; numlock::LMS.Movetab("Home")
 	numpadMult::excel.connect()
   ; Numpadadd::lms.MoveTab("Right")
@@ -285,6 +287,7 @@ Scroll_Fix:
 	space & lbutton::send, +{click}
 
 	space up::sendinput, ^{click}
+
   #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
     Wheeldown::LMS.ScrollDown()
   #if
