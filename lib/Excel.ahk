@@ -59,7 +59,8 @@ Connect(reload:=0){
 		XL.Visible := True
 		sht := XL.ActiveSheet.Name
 	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			xl.sheets(PrevProduct).select
+			; xl.sheets(PrevProduct).select
+			return
 			; Excel.PrevSheet()
 	}
 	Catch{
@@ -106,27 +107,23 @@ NextSheet(){
 	;GuiControl, -redraw, varbar
 	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
-	if (nextsheetname = "Finished")
-			XL.Sheets(NextSheetname).activate
-			; XL.Sheets(3).activate
 	XL.Sheets(NextSheetname).activate
+	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet")
+		excel.connect()
 	Excel.MatchColor()
-	excel.connect()
 	;GuiControl, +redraw, varbar
 }
 
 PrevSheet(){
 	global
-	; Gui VarBar:+LastFound
+	Gui VarBar:+LastFound
 	;GuiControl, -redraw, varbar
 	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
-	if (PrevSheetName = "Main")
-		Xl.Sheets(PrevSheet).activate
-		; exit
 	Xl.Sheets(PrevSheet).activate
+	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet")
+		excel.connect()
 	Excel.MatchColor()
-	excel.connect()
 	; Excel.MatchColor()
 	;GuiControl, +redraw, varbar
 	}

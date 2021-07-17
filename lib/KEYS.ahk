@@ -10,7 +10,7 @@ KEY_DEFAULT:
 	~<+rshift::alttab
 	~>+lshift::ShiftAltTab
 
-; #ifwinactive, Task Switching ahk_exe explorer.exe
+; #ifwinactive, Task Swi tching ahk_exe explorer.exe
 	; $lshift::left
 	; $rshift::right
 	; rshift & lshift::tab

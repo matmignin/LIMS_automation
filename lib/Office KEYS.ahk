@@ -1,25 +1,22 @@
 explorer:
 #IfWinActive, ahk_exe explorer.exe
- Mbutton::send, {enter}
- F20 & up::WinMove, ahk_exe explorer.exe, , 668, -1200, 974, 577
- F20 & left::WinMove, ahk_exe explorer.exe, , -292, -943, 1175, 904
- F20 & down::WinMove, ahk_exe explorer.exe, , 1162, 427, 1405, 1140
- F20 & right::WinMove, ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
- F9::send, {lwindown}{e}{lwinup}
- F7::send, {lwindown}{s}{lwinup}
+	Mbutton::			send, 		{enter}
+	F20 & up::		WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
+	F20 & left::	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
+	F20 & down::	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
+	F20 & right::	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
+	F9::					send, 		{lwindown}{e}{lwinup}
+	F7::					send, 		{lwindown}{s}{lwinup}
 ;  Media_Play_Pause::send,{space}
- F6::
- send,{CtrlDown}{e}{Ctrlup}
- sleep 200
- send, %product%{enter}
- return
+	F6::					Varbar.SearchExplorer()
+
 #IfWinActive, Word ahk_exe WINWORD.EXE
-F19::Clip_v()
-Mbutton::clippaste()
+F19::						Clip_v()
+Mbutton::				clippaste()
 
 
 Excel:
-	; #If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
+	#If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
 	F6::
 		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
@@ -41,17 +38,17 @@ Excel:
 	#if
 	#IfWinActive, LMS Workbook.xlsb
 	F9::
-	winactivate, SAMPLE LOG 2021.xlsx
-	excel.search()
-	return
+		winactivate, SAMPLE LOG 2021.xlsx
+		excel.search()
+		return
 	Mbutton::Excel.Connect(1)
 	F19 & backspace::delete
 	F19 & down::^down
 	F19 & up::^up
 	F19 & left::^left
 	F19 & right::^right
-	numpadadd::Excel.NextSheet()
-	numpadsub::Excel.PrevSheet()
+	F7::Excel.NextSheet()
+	F6::Excel.PrevSheet()
 	numlock::send, {altdown}{down 2}{altup} 
 #ifwinactive, Book
 			numpadadd::send, #{right}

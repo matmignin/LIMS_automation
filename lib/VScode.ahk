@@ -34,6 +34,7 @@ F19 & down::send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 F19 & right::send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 F19 & -::send, {ctrldown}{-}{ctrlup}
 F19 & =::send, {ctrldown}{=}{ctrlup}
+F19 & y::send, {ctrldown}{w}{ctrlup}
 F19 & /::send, {shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
 tab & f:: sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 
