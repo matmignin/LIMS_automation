@@ -3,7 +3,7 @@
 SetWorkingDir, %A_ScriptDir%
 SetNumlockState Alwayson
  setCapslockstate alwaysoff
- SetscrolllockState, alwaysOff
+ SetMbuttonState, alwaysOff
  CoordMode, mouse, Window
  SetMouseDelay, 5
  SetDefaultMouseSpeed, 1

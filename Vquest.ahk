@@ -105,7 +105,7 @@ return
 #IfWinActive,
 #include <TrackPad>
 #include <KEYS>
-#include <LMS KEYS>
+; #include <LMS KEYS>
 #include <LMS TRACKPAD>
 #include <VScode>
 #Include <Firefox>
@@ -174,7 +174,7 @@ FileName:="lib/WinPos.txt"
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
  #MaxHotkeysPerInterval 100
- #HotkeyModifierTimeout 100
+;  #HotkeyModifierTimeout 100
  #maxthreadsperhotkey, 1
 ;  #IfTimeout 500
  SetKeyDelay, 0, 0

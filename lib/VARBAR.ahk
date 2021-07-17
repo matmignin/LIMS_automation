@@ -195,7 +195,7 @@ Focus(Control){
 	global Iteration
 	sleep 20
 	Iteration+=1
-	ControlsetText, Static1,%Iteration%,VarBar`~
+	ControlsetText, Static1,%Iteration%,VarBar
 	sleep %Speed%
 	IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 	return

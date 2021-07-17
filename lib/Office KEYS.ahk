@@ -1,6 +1,6 @@
 explorer:
 #IfWinActive, ahk_exe explorer.exe
- Scrolllock::send, {enter}
+ Mbutton::send, {enter}
  F20 & up::WinMove, ahk_exe explorer.exe, , 668, -1200, 974, 577
  F20 & left::WinMove, ahk_exe explorer.exe, , -292, -943, 1175, 904
  F20 & down::WinMove, ahk_exe explorer.exe, , 1162, 427, 1405, 1140
@@ -15,10 +15,11 @@ explorer:
  return
 #IfWinActive, Word ahk_exe WINWORD.EXE
 F19::Clip_v()
+Mbutton::clippaste()
 
 
 Excel:
-	; #If (A_PriorHotKey = "Scrolllock" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
+	; #If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
 	F6::
 		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
@@ -43,7 +44,7 @@ Excel:
 	winactivate, SAMPLE LOG 2021.xlsx
 	excel.search()
 	return
-	Scrolllock::Excel.Connect(1)
+	Mbutton::Excel.Connect(1)
 	F19 & backspace::delete
 	F19 & down::^down
 	F19 & up::^up
@@ -56,7 +57,7 @@ Excel:
 			numpadadd::send, #{right}
 			numpadsub::send, #{left}
 #ifwinactive, ahk_exe EXCEL.EXE
-Scrolllock::
+Mbutton::
 F9::
 excel.search()
 sleep 200
@@ -104,7 +105,7 @@ OUTLOOK:
 	; F19 & ,::sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::Clip()
-	Scrolllock::
+	Mbutton::
 		Click 3
 		clip()
 		return
@@ -133,8 +134,8 @@ OUTLOOK:
 	
 	
 #ifwinactive, OneNote for Windows 10
-	Scrolllock & Wheelup::Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
-	Scrolllock & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
+	Mbutton & Wheelup::Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
+	Mbutton & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
 	^1::send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
 	^2::send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
 	^3::send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
@@ -145,8 +146,8 @@ OUTLOOK:
 
 OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
-	Scrolllock & Wheelup::Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
-	Scrolllock & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
+	Mbutton & Wheelup::Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
+	Mbutton & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
 	F9 & Wheelup::Wheel_2("{F11}")
 	F9::send,{AltDown}{w}{i}{Altup}
 	F6::sendinput,{wheelleft 20}
@@ -155,7 +156,7 @@ OneNote:
 	^2::send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
 	^3::send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
 	^4::send,{Ctrldown}{1}{CtrlUp}
-	$Scrolllock up::sendinput,{ctrlup}
+	$Mbutton up::sendinput,{ctrlup}
 	F20 up::PasteScreenshot()
 		PasteScreenshot(){
 		sleep 200
@@ -183,12 +184,12 @@ F20 & Right::WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 
 Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
-Scrolllock::menu.Remote_Desktop()
+Mbutton::menu.Remote_Desktop()
 F13::TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 #ifwinactive, ahk_class #32770
-	Scrolllock::menu.Remote_Login()
+	Mbutton::menu.Remote_Login()
 	; F19::menu.Remote_Login()
 #ifwinactive, ahk_class TscShellContainerClass
 	; F19::menu.Remote_Desktop()
-	Scrolllock::menu.Remote_Desktop()
+	Mbutton::menu.Remote_Desktop()
 

@@ -20,7 +20,6 @@ Clip(input=0){
       exit
       send, {home}+{end}^{c}
     ; clk(A_CaretX,A_CaretY,,2)
-    	
     ; TT(Clipboard,1000,,,3)
     ; clipwait
   ; TT(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))
@@ -51,27 +50,27 @@ Clip(input=0){
   If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
-        	Fileappend, %cProduct%`n, lib/Product.txt
+        Fileappend, %cProduct%`n, lib/Product.txt
   }
   If cBatch {
     GuiControl,Varbar:Text, Batch, %cBatch%
 				IniWrite, %cBatch%, data.ini, SavedVariables, Batch
-        	Fileappend, %cBatch%`n, lib/Batch.txt
+        Fileappend, %cBatch%`n, lib/Batch.txt
     }
   If cCoated {
     GuiControl,Varbar:Text, Coated, %cCoated%
 				IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-        	Fileappend, %cCoated%`n, lib/Coated.txt
+        Fileappend, %cCoated%`n, lib/Coated.txt
     }
   If cLot {
     GuiControl,Varbar:Text, lot, %clot%
 				IniWrite, %cLot%, data.ini, SavedVariables, Lot
-        	Fileappend, %cLot%`n, lib/Lot.txt
+        Fileappend, %cLot%`n, lib/Lot.txt
     }
   If cSampleID {
     GuiControl,Varbar:text, SampleID, %cSampleID%
 				IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
-        	Fileappend, %cSampleID%`n, lib/SampleID.txt
+        Fileappend, %cSampleID%`n, lib/SampleID.txt
     }
   If cAnalytical
     Department=Analytical
@@ -94,6 +93,21 @@ Clip(input=0){
     else 
       TT(Clipboard,200,,,3)
     }
+  else
+    return 
+  }
+  
+  
+  ClipPaste(){
+  ClipboardSaved:=ClipboardAll
+  clipboard:=
+    send, ^c
+  clipwait,0.10
+  if errorlevel 
+  {
+    clipboard:=ClipboardSaved
+      send, ^{v}
+  }
   else
     return 
   }

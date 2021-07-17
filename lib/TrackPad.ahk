@@ -37,7 +37,7 @@ numpaddiv::#down
 ; ;   ; numpadmult::send, +#{up} ;4up
 ; ;   lbutton::send, ^{click}
 ; ;   ; m::Send, +#{right}
-; ;   Scrolllock::send, {shiftDown}{click}{shiftup}
+; ;   Mbutton::send, {shiftDown}{click}{shiftup}
 ; ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ; ;   #If
 ;   numpaddiv::
@@ -61,7 +61,7 @@ numpaddiv::#down
 ;   numpaddiv::CloseWindow() ;4down clear filter
 ;   lbutton::send, ^{click}
 ;   ; Numlock::Send, +#{right}
-;   Scrolllock::send, {shiftDown}{click}{shiftup}
+;   Mbutton::send, {shiftDown}{click}{shiftup}
 ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ;   #If
 ;   numpadmult::
@@ -78,7 +78,7 @@ numpaddiv::#down
   
 ; 4_Tap(){
     ;  TT(A_ThisHotkey,450,,,2)
-    ;  Input, Akey, T0.95 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Scrolllock}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Scrolllock}{numlock}
+    ;  Input, Akey, T0.95 ,{NumpadAdd}{Numpadsub}{Numpadmult}{numpad0}{numpad5}{numpad4}{numpad3}{Numpad2}{Numpad1}{numpad9}{numpad8}{numpad7}{numpad6}{Numpaddiv}{space}{Mbutton}{F6}{F7}{F8}{F9}{F19}{F20}{Lbutton}{Mbutton}{numlock}
       ; If InStr(ErrorLevel, "EndKey:")
       ; {
       ;   If InStr(ErrorLevel, "NumpadAdd")
