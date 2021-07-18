@@ -35,7 +35,7 @@
 	j::           send,{shiftdown}{down}{shiftup}
 	l::           send,{shiftdown}{right}{shiftup}
 	h::           send,{shiftdown}{left}{shiftup}
-	k::           send,{shiftdown}{up}{shiftup}`
+	k::           send,{shiftdown}{up}{shiftup}
 	w::           send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	0::           send,{shiftdown}{Home}{shiftup}
 	4::           send,{shiftdown}{end}{shiftup} 
@@ -49,6 +49,7 @@
 	q::           send,{shiftdown}{altdown}{,}{altup}{shiftup}
 	g::           send,{shiftdown}{lwindown}{g}{lwinup}{shiftup}
 	f::           send,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
+	,::						send, {shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup}
 #If Getkeystate("F13","p") && Getkeystate("Lshift","p")
 	k::           sendinput, {up 10}
 	+k::          sendinput, {up 10}
@@ -229,7 +230,7 @@ PsudoNumpad:
 		GoToLine(){
 			send,{shiftdown}{altdown}{g}{altUp}{shiftup}
 			; sleep 200
-			input, letter, L3 V T2,{lcontrol}{Rcontrol}{return}{up}{down}{left}{right}
+			input, letter, L3 V T3,{lcontrol}{Rcontrol}{return}{up}{down}{left}{right}
 			; sleep 200
 			send, {Enter}
 			; send,{ctrldown}{shiftdown}{lwindown}{c}{ctrlup}{shiftup}{lwinup}{esc}

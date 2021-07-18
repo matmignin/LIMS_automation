@@ -226,7 +226,7 @@ Results_Definition:
 Register_new_samples:
   #ifwinactive, Register new samples - \\Remote
 	F9::
-		ControlGetText, Product, Edit1, VarBar
+		ControlGetText, Product, Product, VarBar
 		clk(181, 104,2,2)
 		sleep 300
 		send, %Product%{enter}
@@ -252,7 +252,7 @@ LMS:
 	Down::						down
 	right::						right
 	up::						up
-		numpaddiv::						closeWindow()
+	numpaddiv::						closeWindow()
 	<^r::						ReloadScript()
 	F9::						TouchPad.3up()
 	F8::						TouchPad.3Down()
@@ -279,6 +279,8 @@ Scroll_Fix:
 	numpadadd::Excel.NextSheet()
 	numpadsub::Excel.PrevSheet()
 #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+	F7::LMS.SearchBar(Batch,"{enter}")
+	F6::LMS.SearchBar(Product,"{enter}")
 	Numlock::
 		click
 		sleep 300

@@ -1,6 +1,13 @@
+
+
+
+
+
+
+
 Clip(input=0){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
-  ClipboardSaved:=Clipboard
+  ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
   ;  FlashScreen()
@@ -12,7 +19,7 @@ Clip(input=0){
     send, ^x
   else
     send, ^c
-  clipwait,0.65
+  clipwait,0.55
   if errorlevel
   {
     clipboard:=ClipboardSaved

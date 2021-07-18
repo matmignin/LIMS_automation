@@ -8,6 +8,7 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Coated, Edit4, VarBar
+		if Showsampleid=1
 		ControlGetText, SampleId, Edit5, VarBar
 		if !winactive("ahk_exe WFICA32.EXE")
 			winactivate, ahk_exe WFICA32.EXE

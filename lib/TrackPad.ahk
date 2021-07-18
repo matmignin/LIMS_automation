@@ -1,28 +1,6 @@
 
 
-#IfWinActive,
 
-#If getkeystate("lbutton","p")
-  space::             send, ^{click}
-  F19::               menu.LMS()
-  ; F19::             menu.LMS()
-  .::                 VS_Code_WindowInfo()
-  ; Lwin::            ^x
-  v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-  F20::               send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-  /::                 varbar.reset()
-  e::                 send,{LWinDown}{e}{lwinup}
-  o::                 OpenApp.Outlook()
-  d::                 LMS.Orient()
-  w::                 OpenApp.Workbook()
-
-#If
-#IfWinActive,
-;  [TrackPad]
-numpadsub::           #left
-numpadadd::           #right
-numpadMult::          #up
-numpaddiv::           #down
   ; Numlock::         4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
   
 

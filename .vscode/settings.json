@@ -21,7 +21,7 @@
         "lib/JSON.ahk": true,
         "lib/plugins/*": true,
         "lib/settings.ahk": true,
-        "lib/Vis2.ahk": true,
+        "lib/Vis2.ahk": false,
         "lib/Windownames.ini": true,
         "*/Roaming/*": true,
         "*.json": true,

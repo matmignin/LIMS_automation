@@ -83,6 +83,14 @@ run_Inverted:
   IniWrite, 0, data.ini, Locations, Inverted
  send,{esc}
 return
+run_ShowSampleID:
+  Menu, Tray, ToggleCheck, ShowSampleID
+ If ShowSampleID := !ShowSampleID
+  IniWrite, 1, data.ini, Locations, ShowSampleID
+ else
+  IniWrite, 0, data.ini, Locations, ShowSampleID
+ reload
+return
 run_Follow:
  Menu, Tray, ToggleCheck, VarbarFollow
  If follow:= !follow
@@ -105,8 +113,8 @@ return
 #IfWinActive,
 #include <TrackPad>
 #include <KEYS>
-; #include <LMS KEYS>
-#include <LMS TRACKPAD>
+#include <LMS KEYS>
+; #include <LMS TRACKPAD>
 #include <VScode>
 #Include <Firefox>
 #Include <clip>
@@ -129,7 +137,7 @@ return
 #include <SaveWindow>
 #Include <Snipper>
 #include <Notes>
-
+; #include <Cl3.ahk>
 
 
 VQuest_Start:
@@ -156,6 +164,7 @@ FileName:="lib/WinPos.txt"
  Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
  Menu, Tray, Add, VarbarFollow, Run_Follow
  menu, tray, add, Inverted, Run_Inverted
+ menu, tray, add, ShowSampleID, Run_ShowSampleID
  Menu, tray, NoStandard
 ;  Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
  Menu, Tray, Add, List Lines, Run_ListLines
@@ -173,13 +182,13 @@ FileName:="lib/WinPos.txt"
  SetMouseDelay, 5
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
- #MaxHotkeysPerInterval 100
+ #MaxHotkeysPerInterval 300
 ;  #HotkeyModifierTimeout 100
  #maxthreadsperhotkey, 1
 ;  #IfTimeout 500
  SetKeyDelay, 0, 0
- setwindelay,400
-
+ setwindelay,300
+ 
  FormatTime, TimeString,, M/d/yy
  Run, cl3.Ahk, lib\CL3
  try
@@ -199,8 +208,12 @@ OnExit("Varbar.Exit")
   Menu, Tray, Check, Inverted
  if (Inverted = 0)
   Menu, Tray, unCheck, Inverted
+ if (ShowSampleID = 0)
+  Menu, Tray, unCheck, showsampleID
+else
+  Menu, Tray, Check, showsampleID
  if (Follow = 1) {
-  ; Varbar.Follow()
+  Varbar.Follow()
   settimer, CheckActive, 500
   Menu, Tray, Check, VarbarFollow
  }

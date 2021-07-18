@@ -36,11 +36,12 @@ Excel:
 											return
 	#if
 	#IfWinActive, LMS Workbook.xlsb
-	F9::                 
+	Mbutton::                 
 		winactivate, SAMPLE LOG 2021.xlsx
 		excel.search()
 		return
-	Mbutton::            Excel.Connect(1)
+	F9::            Excel.Connect(1)
+	Numlock::            lms.searchbar(Product)
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up
@@ -48,7 +49,7 @@ Excel:
 	F19 & right::        ^right
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
-	numlock::            send, {altdown}{down 2}{altup} 
+	; numlock::            send, {altdown}{down 2}{altup} 
 #ifwinactive, Book
 	numpadadd::          send, #{right}
 	numpadsub::          send, #{left}

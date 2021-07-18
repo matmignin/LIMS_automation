@@ -16,6 +16,7 @@ Class VarBar{
 			iniread, note1, data.ini, SavedVariables, note1
 			Iniread, note2, data.ini, SavedVariables, note2
 			Iniread, Iteration, data.ini, SavedVariables, Iteration
+			Iniread, ShowSampleID, data.ini, Locations, ShowSampleID
 			Iniread, VarBar_X, data.ini, Locations, VarBar_X
 			Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
 			
@@ -39,21 +40,24 @@ Class VarBar{
 		WinSet, Transparent, 200
 			Gui, VarBar:color, 			21a366
 			GUI,VarBar:Font,				s15 cBlack Bold, Consolas
-			Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h28 x1 y1 w58,				%Product%  ; edit1
+			Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h28 x1 y1 w58 ,				%Product%  ; edit1
 			GUI,VarBar:Font,				s10 cBlack,Consolas
-			Gui,VarBar:add,Edit,	 	vBatch 					gbatchVarbar H19 x60 y-2 w70, 						%Batch% 	 ; edit2
+			Gui,VarBar:add,Edit,	 	vBatch 					gbatchVarbar H19 x60 y-2 w70 limit8, 						%Batch% 	 ; edit2
 			GUI,VarBar:Font,				s9 cBlack , Consolas
 			Gui,VarBar:add,Edit,	 	vlot 						gLotVarbar x60 center H18 y15 w70, 							%Lot% 		 ; edit3
 			GUI,VarBar:Font,				s8 cBlack,arial Narrow
 				; If Coated
 			Gui,VarBar:add,Edit,	 	vCoated 				gCoatedVarbar x131 H18 y15 w60, 					%Coated%   ; edit4
-			GUI,VarBar:Font,				s7 cBlack,arial
-				if sampleid
-			Gui,VarBar:add,Edit,	 	vSampleID 			gSampleIDVarbar x135 H18 y-3 w80, 				%SampleID%  ; edit5
+			GUI,VarBar:Font,				s7 cBlack,arrial
 			GUI,VarBar:Font,				s11 cBlack, Consolas
 			Gui,VarBar:Add,text, 		vIteration x203 y14 w18,																	%Iteration%	; Text1
 			GUI,VarBar:Font,				s8 cBlack,Consolas 		
-			Gui,VarBar:add,Edit,	 	vNote1 					gNotevarbar x220 H19 y-3 w60, 						%Note1%     ; edit6
+				if ShowSampleID=1
+			Gui,VarBar:add,Edit,	 	vSampleID 			gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
+				if ShowSampleID=1
+					Gui,VarBar:add,Edit,	 	vNote1 					gNotevarbar x220 H19 y-3 w60 left, 						%Note1%     ; edit6
+				else
+					Gui,VarBar:add,Edit,	 	vNote1 					gNotevarbar x135 H19 y-3 w145 left,  						%Note1%     ; edit6
 			Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar x220 H19 y14 w60,							%Note2%  		; edit7
 		OnMessage(0x203, "VarBar.Relocate")
 		CoordMode, mouse, screen
@@ -124,7 +128,7 @@ Focus(Control){
 	WinActivate, VarBar ahk_exe AutoHotkey.exe
 	GuiControl Varbar:Focus, %Control%, 
 	send, {ctrldown}{a}{ctrlup}
-	sleep 200
+	sleep 100
 
 	return
 }	

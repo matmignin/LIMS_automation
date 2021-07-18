@@ -10,12 +10,6 @@ KEY_DEFAULT:
 													Return
 	~<+rshift::							alttab
 	~>+lshift::							ShiftAltTab
-
-; #ifwinactive, Task Swi tchingexe explorer.exe
-	; $lshift::left
-	; $rshift::right
-	; rshift & lshift::tab
-	; lshift & rshift::+tab
 	lshift & Appskey::			Return
 	rshift & Appskey::			return
 
@@ -48,7 +42,7 @@ KEY_DEFAULT:
 
 
 
-	<^Space::              menu.LMS()
+	<^Space::              varbar.focus("Note1")
 	F9 & Lbutton::         sendinput,{Ctrldown}{Click}{CtrlUp}
 	F9 & Rbutton::         sendinput,{shiftdown}{Click}{shiftup}
 	F20 & 9::              SaveWindow_Save()
@@ -107,8 +101,25 @@ Double_press_For_Enter:
 	$space::								send, {enter}
 #if 
 
-
-
+#If getkeystate("lbutton","p")
+  space::             send, ^{click}
+  F19::               send, {F21}
+  ; F19::             menu.LMS()
+  .::                 VS_Code_WindowInfo()
+  ; Lwin::            ^x
+  v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+  F20::               send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+  /::                 varbar.reset()
+  e::                 send,{LWinDown}{e}{lwinup}
+  o::                 OpenApp.Outlook()
+  d::                 LMS.Orient()
+  w::                 OpenApp.Workbook()
+#If
+;  [TrackPad]
+numpadsub::           #left
+numpadadd::           #right
+numpadMult::          #up
+numpaddiv::           #down
 
 
 
@@ -152,7 +163,7 @@ Notes:
 	Media_next::                      send, {tab}
 	Media_prev::                      send, `+{tab}
 	F13::                             send, {altdown}{tab}{altup}
-	Media_Play_Pause::                notes.Close() ;gosub, NotesGuiClose
+	; Media_Play_Pause::                notes.Close() ;gosub, NotesGuiClose
 
 
 

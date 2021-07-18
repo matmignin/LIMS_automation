@@ -26,9 +26,6 @@ Test(n){
 ;------------------------------------------------------TEST 3------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
 
-
-
-
 HasValue(haystack, needle) {
     for index, value in haystack
         if (value = needle)
@@ -50,61 +47,24 @@ HasValue(haystack, needle) {
 	ListArray(The_Array){
 		; global
 		for vKey, vValue in The_Array
-			ArrayList .=vKey " " vValue "`n"
+			ArrayList .=vValue "|"
 		; msgbox, %ArrayList%
 		return ArrayList
 	}
 
+
+
+
 Test_1(){
 	global
-	loop, read, Products.txt
-	loop, parse, A_LoopReadLine,
-		Products.insert(A_LoopField)
-	; Products:=["J312","J312","K631","K631","J905","K312","K312"]
-	ProductList:=listarray(products)
-	ProductList:="J312 `n J312 `n K631 `n K631 `n J905 `n K312 `n K312"
-	products:=[]
-pos=0
-while pos := RegexMatch(productlist, "i)[abdefghijkl]\d{3}\b", var, pos+1) {
-								if hasValue(Products, Var) 
-									continue
-								Products.insert(var)
-                ; result .= (A_Index = 1 ? "" : "`r`n") var
-}
-
-	; ProductLisct:=listarray(products)
-msgbox % listarray(products)
-; tt(result)
-; newhistory:=[]
-; for k, v in Products
-; 	{
-; 	 check:=v.text
-; 	 lines:=v.lines
-; 	 new:=true
-; 	 for p, q in newhistory
-; 		{
-; 		 if (check == q.text)
-; 			{
-; 			 new:=false
-; 			}
-; 		}
-; 	 if new
-; 		newhistory.push({"text":check,"lines":lines})
-; 	 if (A_Index >= 10)
-; 		break
-; 	}
-; History:=newhistory
-; check:="", new:="",, lines:=""
-; newhistory:=[]
-; Return
-
-
-;  MsgBox, % result 
-; Clipboard := result
-; Clipboard := 
-
-
-return
+	send, {ctrldown}
+	ControlGetFocus, control, A
+	SendMessage, 0x0115, 0, 0, %control%, A
+	send, {ctrlup}
+	
+	
+	
+	
 	return
 }
 ;------------------------------------------------------------------------------------------------------------------------
@@ -323,7 +283,19 @@ Global
 
 
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; grep all the product codes out of a file and add them to an array without duplicates 
+/* 	
+products:=[]
+	fileread, ProductList, Data.ini ;read the data.ini file
+pos=0
+while pos := RegexMatch(productlist, "i)[abdefghijkl]\d{3}", var, pos+1) { ;fine each regex match in the ini file
+								if hasValue(Products, Var) ;check to see if duplicate value from list
+									continue
+								Products.insert(var) ; add to products array
+}
+msgbox % listarray(products)
+return 
+*/
 
 
 

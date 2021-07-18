@@ -155,7 +155,7 @@ If ActivateApi
 
 #Include %A_ScriptDir%\plugins\plugins.ahk
 
-UpdateTemplate(folder,Changes)                        ; WatchFolder() above
+UpdateTemplate(folder,ChangJes)                        ; WatchFolder() above
 	{
 	 Reload
 	 Sleep 1000
@@ -181,6 +181,21 @@ OnClipboardChange("FuncOnClipboardChange", 1)
 Return
 
 ; show clipboard history menu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ;!^v::
 hk_menu:

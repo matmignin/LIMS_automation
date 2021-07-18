@@ -1,4 +1,6 @@
 #IfWinActive, ahk_exe Code.exe
+
+
   $Lwin Up::            SendInput !+i
   Tab & h::             ^[  
   Tab & l::             ^]
@@ -86,6 +88,7 @@ tab::                   tab
   f19 & wheelup::       send,{ctrldown}{up}{ctrlup}
   f19 & lbutton::       ^lbutton
   F13 up::              send, {esc}{ctrlup}{altup}
+  F13 & space::         send, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 
 #If (A_PriorKey = "F19" AND A_TimeSincePriorkey < 950)
 numpadsub::             numpadsub
