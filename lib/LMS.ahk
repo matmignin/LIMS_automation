@@ -3,7 +3,7 @@ Class LMS {
 SearchBar(Code:="",PostCmd:=""){
 		Global
 		ifwinnotactive, ahk_exe WFICA32.EXE 
-			WinActivate, ahk_exe WFICA32.EXE
+		winActivate, ahk_exe WFICA32.EXE
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar

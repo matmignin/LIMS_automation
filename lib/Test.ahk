@@ -29,14 +29,94 @@ Test(n){
 
 
 
+HasValue(haystack, needle) {
+    for index, value in haystack
+        if (value = needle)
+            return index
+    if !(IsObject(haystack))
+        throw Exception("Bad haystack!", -1, haystack)
+    return 0
+}
+; HasValue(item, list, del:=","){
+; 	haystack:=del
+; 	if !IsObject(list)
+; 		haystack.= list del
+; 	else
+; 		for k,v in list
+; 			haystack.= v del	
+; 	Return !!InStr(del haystack del, del item del)
+; }
 
-
-
+	ListArray(The_Array){
+		; global
+		for vKey, vValue in The_Array
+			ArrayList .=vKey " " vValue "`n"
+		; msgbox, %ArrayList%
+		return ArrayList
+	}
 
 Test_1(){
 	global
-varbar.focus("Edit4")
+	loop, read, Products.txt
+	loop, parse, A_LoopReadLine,
+		Products.insert(A_LoopField)
+	; Products:=["J312","J312","K631","K631","J905","K312","K312"]
+	ProductList:=listarray(products)
+	ProductList:="J312 `n J312 `n K631 `n K631 `n J905 `n K312 `n K312"
+	products:=[]
+pos=0
+while pos := RegexMatch(productlist, "i)[abdefghijkl]\d{3}\b", var, pos+1) {
+								if hasValue(Products, Var) 
+									continue
+								Products.insert(var)
+                ; result .= (A_Index = 1 ? "" : "`r`n") var
+}
+
+	; ProductLisct:=listarray(products)
+msgbox % listarray(products)
+; tt(result)
+; newhistory:=[]
+; for k, v in Products
+; 	{
+; 	 check:=v.text
+; 	 lines:=v.lines
+; 	 new:=true
+; 	 for p, q in newhistory
+; 		{
+; 		 if (check == q.text)
+; 			{
+; 			 new:=false
+; 			}
+; 		}
+; 	 if new
+; 		newhistory.push({"text":check,"lines":lines})
+; 	 if (A_Index >= 10)
+; 		break
+; 	}
+; History:=newhistory
+; check:="", new:="",, lines:=""
+; newhistory:=[]
+; Return
+
+
+;  MsgBox, % result 
+; Clipboard := result
+; Clipboard := 
+
+
+return
 	return
+}
+;------------------------------------------------------------------------------------------------------------------------
+;------------------------------------------------------TEST 2 ------------------------------------------------------------
+;------------------------------------------------------------------------------------------------------------------------
+
+Test_2(){ 
+	Global
+ 
+ 
+ 
+ return
 }
 
 
@@ -81,36 +161,25 @@ return
 
 return
 ;------------------------------------------------------------------------------------------------------------------------
-;------------------------------------------------------TEST 2 ------------------------------------------------------------
-;------------------------------------------------------------------------------------------------------------------------
-
-Test_2(){ 
-	Global
-WinGetTitle, the_WinTitle, A
-	caret_x:=A_CaretX
-	caret_y:=A_Carety
-	clipboard:=
-tt(Caret_x ", " caret_y,5000,Caret_x,caret_y,2)
-keywait, Lbutton, d
-MouseClick, left,,, 1, 0, D
-				keywait, Lbutton, U
-				MouseClick, left,,, 1, 0, U
-				send, ^c
-				clipwait, 0.8
-	sleep 200
-	winactivate, %The_wintitle%
-	; click, %caret_X%, %caret_y%
-	send, {click, %caret_x%, %caret_y%}^{v}
- 
- 
- 
- 
- return
-}
-;------------------------------------------------------------------------------------------------------------------------
 ;---------------------------TEST 3 -----------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
 /* 
+; WinGetTitle, the_WinTitle, A
+; 	caret_x:=A_CaretX
+; 	caret_y:=A_Carety
+; 	clipboard:=
+; tt(Caret_x ", " caret_y,5000,Caret_x,caret_y,2)
+; keywait, Lbutton, d
+; MouseClick, left,,, 1, 0, D
+; 				keywait, Lbutton, U
+; 				MouseClick, left,,, 1, 0, U
+; 				send, ^c
+; 				clipwait, 0.8
+; 	sleep 200
+; 	winactivate, %The_wintitle%
+; 	; click, %caret_X%, %caret_y%
+; 	send, {click, %caret_x%, %caret_y%}^{v}
+ 
 
 ClipHandler:
 oldttext:="", ttext:="", ActiveWindowID:=""

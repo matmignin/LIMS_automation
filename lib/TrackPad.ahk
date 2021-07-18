@@ -3,44 +3,44 @@
 #IfWinActive,
 
 #If getkeystate("lbutton","p")
-  space::send, ^{click}
-  F19::menu.LMS()
-  ; F19::menu.LMS()
-  .::VS_Code_WindowInfo()
-  ; Lwin::^x
-  v::send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-   F20::send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-  /::varbar.reset()
-  e::send,{LWinDown}{e}{lwinup}
-  o::OpenApp.Outlook()
-  d::LMS.Orient()
-  w::OpenApp.Workbook()
+  space::             send, ^{click}
+  F19::               menu.LMS()
+  ; F19::             menu.LMS()
+  .::                 VS_Code_WindowInfo()
+  ; Lwin::            ^x
+  v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+  F20::               send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+  /::                 varbar.reset()
+  e::                 send,{LWinDown}{e}{lwinup}
+  o::                 OpenApp.Outlook()
+  d::                 LMS.Orient()
+  w::                 OpenApp.Workbook()
 
 #If
 #IfWinActive,
 ;  [TrackPad]
-numpadsub::#left
-numpadadd::#right
-numpadMult::#up
-numpaddiv::#down
-  ; Numlock::4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+numpadsub::           #left
+numpadadd::           #right
+numpadMult::          #up
+numpaddiv::           #down
+  ; Numlock::         4_tap() ;send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
   
 
 ; #If (A_PriorHotKey = "NumpadDiv" AND A_TimeSincePriorHotkey < 450) ;4 finger swipe down
-; ;   F6::send, #{left} ;4left
-; ;   F7::send, #{right}-
-; ;   F8::send, ^{home}
-; ;   F9::send, {altDown}{Ctrldown}{tab}{CtrlUp}{altup}
-; ;   numpadsub::send, +#{left} ;4left
-; ;   numpadadd::send, +#{right}
-; ;   numpadmult::send, {ShiftDown}{altDown}{up}{altup}{ShiftUp} ;4up
-; ;   ; numpadmult::send, +#{up} ;4up
-; ;   lbutton::send, ^{click}
-; ;   ; m::Send, +#{right}
-; ;   Mbutton::send, {shiftDown}{click}{shiftup}
-; ;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
+; ;   F6::            send, #{left} ;4left
+; ;   F7::            send, #{right}-
+; ;   F8::            send, ^{home}
+; ;   F9::            send, {altDown}{Ctrldown}{tab}{CtrlUp}{altup}
+; ;   numpadsub::     send, +#{left} ;4left
+; ;   numpadadd::     send, +#{right}
+; ;   numpadmult::    send, {ShiftDown}{altDown}{up}{altup}{ShiftUp} ;4up
+; ;   ; numpadmult::  send, +#{up} ;4up
+; ;   lbutton::       send, ^{click}
+; ;   ; m::           Send, +#{right}
+; ;   Mbutton::       send, {shiftDown}{click}{shiftup}
+; ;   ; rbutton::     send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ; ;   #If
-;   numpaddiv::
+;   numpaddiv::       
 ;   TT("Down")
 ; ;   sleep 450
 ;   if (A_TimeSincePriorHotkey > 450)
@@ -51,20 +51,20 @@ numpaddiv::#down
 
 
 ; #If (A_PriorHotKey = "Numpadmult" AND A_TimeSincePriorHotkey < 450) ;4 finger swipe down
-;   F6::send, #{left} ;4left
-;   F7::send, #{right}
-;   F8::send, ^{home}
-;   F9::send, {altDown}{Ctrldown}{tab}{CtrlUp}{altup}
-;   numpadsub::send, +#{left} ;4left
-;   numpadadd::send, +#{right}
-;   ; numpadmult::
-;   numpaddiv::CloseWindow() ;4down clear filter
-;   lbutton::send, ^{click}
-;   ; Numlock::Send, +#{right}
-;   Mbutton::send, {shiftDown}{click}{shiftup}
-;   ; rbutton::send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
+;   F6::              send, #{left} ;4left
+;   F7::              send, #{right}
+;   F8::              send, ^{home}
+;   F9::              send, {altDown}{Ctrldown}{tab}{CtrlUp}{altup}
+;   numpadsub::       send, +#{left} ;4left
+;   numpadadd::       send, +#{right}
+;   ; numpadmult::    
+;   numpaddiv::       CloseWindow() ;4down clear filter
+;   lbutton::         send, ^{click}
+;   ; Numlock::       Send, +#{right}
+;   Mbutton::         send, {shiftDown}{click}{shiftup}
+;   ; rbutton::       send % "{shiftDown}{click}{shiftup}" ;Mouse_RbuttonUP()
 ;   #If
-;   numpadmult::
+;   numpadmult::      
 ;   TT("up")
 ;   sleep 450
 ;   if (A_TimeSincePriorHotkey > 450)
@@ -116,12 +116,12 @@ numpaddiv::#down
   
   
 
-; $numlock::send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
+; $numlock::          send, {altDown}{lwindown}{Ctrldown}{o}{CtrlUp}{lwinup}{altup}
   
 
 #ifwinactive
 
- ~lbutton::return
+ ~lbutton::           return
  
  
 CloseWindow(){

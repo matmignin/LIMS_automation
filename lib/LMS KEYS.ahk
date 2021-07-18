@@ -240,24 +240,24 @@ Result_Entry:
 
 LMS:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-  F20 & Space::send, %Batch%
-  F19 & space::send, %Product%
-  F19 & up::send, %sampleID%
-  F19 & left::send, %lot%
-  F19 & right::send, %coated%
-  $Rbutton up::Mouse_RbuttonUP()
-  enter::click.okay()
-  esc::click.esc()
-  left::left
-  Down::down
-  right::right
-  up::up
-    numpaddiv::closeWindow()
-  <^r::ReloadScript()
-  F9::TouchPad.3up()
-  F8::TouchPad.3Down()
-  F7::TouchPad.3Right()
-  F6::TouchPad.3Left()
+	F20 & Space::						send, %Batch%
+	F19 & space::						send, %Product%
+	F19 & up::						send, %sampleID%
+	F19 & left::						send, %lot%
+	F19 & right::						send, %coated%
+	$Rbutton up::						Mouse_RbuttonUP()
+	enter::						click.okay()
+	esc::						click.esc()
+	left::						left
+	Down::						down
+	right::						right
+	up::						up
+		numpaddiv::						closeWindow()
+	<^r::						ReloadScript()
+	F9::						TouchPad.3up()
+	F8::						TouchPad.3Down()
+	F7::						TouchPad.3Right()
+	F6::						TouchPad.3Left()
 
 
   Mbutton::TouchPad.3Tap()
