@@ -1,7 +1,60 @@
 return
 #IfWinActive,
+F1::send, {lwindown}{e}{lwinup}
++F2::
+		Run, SAMPLE TO QC 2021.xlsx, \\10.1.2.118\share\QA FINSHED GOODS\Samples Photo Library\SAMPLES TO QC
+		winwait, File in Use,,1
+		send, {altdown}{r}{altup}
+    return
+F2::
+  if winexist("SAMPLE LOG 2021"){
+    winactivate
+    return
+  }
+  Run, SAMPLE LOG 2021.xlsx, \\10.1.2.118\share\QC LAB\
+  winactivate, ahk_exe EXCEL.EXE
+  sleep 200
+  winwait,File in Use,,9
+    if !errorlevel
+      send, {altdown}{r}{altup}
+  winwait, Password,,2
+    if !errorlevel
+      send, lab{enter}
+  winwait, SAMPLE LOG 2021.xlsx,, 3
+    if !errorlevel
+      excel.search()
+  return
+F3::
+  if winexist("LMS Products Checklist"){
+    winactivate
+    return
+  }
+  Run, LMS Products Checklist.xlsm, \\10.1.2.118\share\QC LAB\
+  winactivate, ahk_exe EXCEL.EXE
+  sleep 200
+  return
+F4::
+  if winexist("C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"){
+    winactivate
+    sleep 200 
+    send, {ctrldown}{e}{ctrlup}
+    return
+  }
+  Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
+  winactivate, ahk_exe EXCEL.EXE
+  sleep 200 
+  send, {ctrldown}{e}{ctrlup}
+  return
+^F1::
+  if winexist("AutoHotkey Help")
+    winactivate
+  Run, AutoHotkey.chm, C:\Users\mmignin\Documents
+  return
 OpenApps:
+#IfWinNotActive, ahk_exe Code.exe
+ F13 & f::OpenApp.Firefox()
  !f::OpenApp.Firefox()
+ F13 & v::OpenApp.vsCode()
  !v::OpenApp.vsCode()
  ; !c::OpenApp.Clickup()
  !e::send,{LWinDown}{e}{lwinup}
@@ -15,9 +68,10 @@ OpenApps:
  !n::openApp.OneNote()
  +!n::openApp.stickyNotes()
  !w::OpenApp.Workbook()
+ F13 & e::OpenApp.Workbook()
 
  !l::OpenApp.LMS()
-
+#ifwinnotactive
 
 
 class OpenApp{
@@ -55,12 +109,14 @@ Outlook(){
  }
 
 	Explorer(){
+ If WinActive("ahk_exe explorer.exe"){
+  send,{altDown}{tab}{altup}
+  return
+ }
  ifwinnotexist, ahk_exe explorer.exe
   send,{LWinDown}{e}{lwinup}
  IfWinNotActive,ahk_exe explorer.exe
   WinActivate, ahk_exe explorer.exe
- IfWinActive, ahk_exe explorer.exe
-  send,{altDown}{tab}{altup}
  return
  }
 	Firefox(){
@@ -89,8 +145,10 @@ Outlook(){
  }
  
   LMS(){
-  IfWinActive, ahk_exe WFICA32.EXE
+  If WinActive("ahk_exe WFICA32.EXE"){
     send,{altDown}{tab}{altup}
+    return
+  }
   ifwinnotexist, ahk_exe WFICA32.EXE
   {
     run, http://vqhq-prdcitrix1.vitaquest.int/Citrix/StoreWeb/
@@ -112,7 +170,7 @@ Outlook(){
  }
 
  RemoteDesktop(){
- IfWinActive, ahk_exe mstsc.exe
+ If WinActive("ahk_exe mstsc.exe")
   send,{altDown}{tab}{altup}
  ifwinnotexist, ahk_exe mstsc.exe
   run, mstsc.exe, C:\Windows\system32
@@ -122,8 +180,10 @@ Outlook(){
  }
 
   workbook(){
- IfWinActive, LMS Workbook.xlsb - Excel
+ If WinActive("LMS Workbook.xlsb - Excel"){
   send,{altDown}{tab}{altup}
+  return
+ }
  ifwinnotexist, LMS Workbook.xlsb - Excel
   run, LMS Workbook.xlsb, C:\Users\mmignin\OneDrive - Vitaquest International\
  IfWinNotActive,LMS Workbook.xlsb - Excel
@@ -131,8 +191,10 @@ Outlook(){
  return
  }
  VScode(){
- IfWinActive, ahk_exe Code.exe
+ If WinActive("ahk_exe Code.exe"){
   send,{altDown}{tab}{altup}
+  return
+ }
  ifwinnotexist,ahk_exe Code.exe
  {
    run, Code.exe, C:\Program Files\Microsoft VS Code
@@ -145,7 +207,7 @@ Outlook(){
  return
  }
  Notepad(){
- IfWinActive, ahk_exe notepad.exe
+ If WinActive("ahk_exe notepad.exe")
   send,{altDown}{tab}{altup}
  ifwinnotexist,ahk_exe notepad.exe
  {
@@ -158,8 +220,10 @@ Outlook(){
  return
  }
  OneNote(){
- IfWinActive, ahk_exe ONENOTE.EXE
+ If WinActive("ahk_exe ONENOTE.EXE"){
   send,{altDown}{tab}{altup}
+  return
+ }
  ifwinnotexist,ahk_exe ONENOTE.EXE
  {
   run, C:\Program Files\Microsoft Office\root\Office16\ONENOTE.EXE

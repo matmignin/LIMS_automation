@@ -19,13 +19,14 @@ Clip(input=0){
     send, ^x
   else
     send, ^c
+  sleep %input%
   clipwait,0.55
   if errorlevel
   {
     clipboard:=ClipboardSaved
     if (A_PriorKey != "F20")
       exit
-      send, {home}+{end}^{c}
+    send, {home}+{end}^{c}
     ; clk(A_CaretX,A_CaretY,,2)
     ; TT(Clipboard,1000,,,3)
     ; clipwait
@@ -95,27 +96,35 @@ Clip(input=0){
     Department=CTRetain
   GuiControl,Varbar:Text, Department, %Department%
   if (Input==0) {
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain && Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cSampleID "`n`t " cCoated "`t " Department,4000,,,3)
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Winactive("ahk_exe WFICA32.EXE") 
+      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " `n " Department,4000,,,3)
     else 
-      TT(Clipboard,200,,,3)
+      TT(Clipboard,400, 50,50,3)
     }
   else
     return 
   }
   
-  
+ClickText(button:=""){
+	mousegetpos, mousex, mousey
+	SetDefaultMouseSpeed, 0
+	Click, %A_CaretX% %A_caretY%, %button%
+	mousemove, %mousex%, %mousey%, 0
+	SetDefaultMouseSpeed, 1
+}
   ClipPaste(){
   ClipboardSaved:=ClipboardAll
   clipboard:=
-    send, ^c
+    sendinput, {ctrldown}{c}{ctrlup}
   clipwait,0.10
   if errorlevel 
-  {
+    {
     clipboard:=ClipboardSaved
-      send, ^{v}
-  }
+      sendinput, ^{v}
+      tt("paste",,100,100)
+    }
   else
+      tt(clipboard,,100,100)
     return 
   }
   

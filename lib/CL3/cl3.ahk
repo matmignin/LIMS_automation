@@ -155,7 +155,7 @@ If ActivateApi
 
 #Include %A_ScriptDir%\plugins\plugins.ahk
 
-UpdateTemplate(folder,ChangJes)                        ; WatchFolder() above
+UpdateTemplate(folder,Changes)                        ; WatchFolder() above
 	{
 	 Reload
 	 Sleep 1000

@@ -1,3 +1,4 @@
+return
 class SpecTab {
 	
 Table(){
@@ -92,7 +93,7 @@ CopySpecTemplate(){
 	; send, ^c
 	; clipwait,1 ; Tooltip, %Clipboard%
 	; sleep 100
-	clip()
+	clip(200)
 	; sleep 400
 	; TT(department)
 	Breaking.Point()
@@ -115,6 +116,7 @@ CopySpecTemplate(){
 		SpecTab.Edit_CoatedRetain()
 	sleep 500
 	;excel.NextSheet()
+	
 	;TT(Product)
 	return
  }
@@ -168,6 +170,7 @@ CopySpecs(){
 	; blockinput off
 	send, {esc}
 	copypastetoggle=1
+	exit
 	Return
 }
 
@@ -198,6 +201,7 @@ CopySpecs(){
 	Breaking.Point()
 	SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 	CopyPasteToggle=0
+	exit
 	return
 }
 
@@ -370,7 +374,7 @@ EditSpecification_Analytical(){
 
 ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1){
 	Global
-	TT(CreateRequirements)
+	; TT(CreateRequirements)
 		; normal
 	sleep 200
 	click, 250, 140 ; click id box to orient
@@ -408,7 +412,7 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	click 350, 660 ; click okay
 	; WinWaitClose, Results Definition,, 6
 		; if errorlevel
-			; return
+			return
 }
 
 TestDefinitionEditor(The_Description){

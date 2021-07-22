@@ -2,16 +2,14 @@ Class LMS {
 
 SearchBar(Code:="",PostCmd:=""){
 		Global
-		ifwinnotactive, ahk_exe WFICA32.EXE 
-		winActivate, ahk_exe WFICA32.EXE
+		if !winactive("ahk_exe WFICA32.EXE")
+			winactivate, ahk_exe WFICA32.EXE
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Coated, Edit4, VarBar
 		if Showsampleid=1
 		ControlGetText, SampleId, Edit5, VarBar
-		if !winactive("ahk_exe WFICA32.EXE")
-			winactivate, ahk_exe WFICA32.EXE
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 					send, {ctrlup}
@@ -27,11 +25,11 @@ SearchBar(Code:="",PostCmd:=""){
 			LMS.DetectTab()
 			if (Tab="Products") {
 				If (Code=Product){
-				clk(x%Tab%Search,yProductsSearch)
-							send, ^{a}%Product%^{a}
-							if PostCmd!=""
-								send % PostCmd
-									send, {ctrlup}	
+					clk(x%Tab%Search,yProductsSearch)
+					send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
+					if PostCmd!=""
+						send % PostCmd
+					send, {ctrlup}	
 				exit
 				}
 					If (Code=Batch) {
@@ -44,10 +42,10 @@ SearchBar(Code:="",PostCmd:=""){
 			if (Tab="Specs") {
 				If (Code=Product) {
 				clk(x%Tab%Search,yProductsSearch)
-							send, ^{a}%Product%^{a}
-							if PostCmd!=""
-								send % PostCmd
-									send, {ctrlup}	
+					send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
+					if PostCmd!=""
+						send % PostCmd
+					send, {ctrlup}	
 				exit
 				}
 				If (Code=Batch) {
@@ -58,7 +56,7 @@ SearchBar(Code:="",PostCmd:=""){
 			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 					clk(x%Tab%Search,yWorkTabSearch,,2)
 					; clk(x%Tab%Search,yWorkTabSearch)
-				send, ^{a}%Code%
+				send,{ctrldown}{a}{ctrlup}%code%
 				if PostCmd!=""
 					send % PostCmd
 							send, {ctrlup}
@@ -68,10 +66,10 @@ SearchBar(Code:="",PostCmd:=""){
 					clk(x%Tab%Search-40,yWorkTabSearch,,2)
 					sleep 20
 					clk(x%Tab%Search,yWorkTabSearch)
-				send, ^{a}%Code%
+				send,{ctrldown}{a}{ctrlup}%Code%
 				if PostCmd!=""
 					send % PostCmd
-							send, {ctrlup}
+					 		send, {ctrlup}
 				exit
 			}
 		}
@@ -158,8 +156,8 @@ SearchBar(Code:="",PostCmd:=""){
 
 FilterBar(Code:="",PostCmd:=""){
 	global
-	ifwinnotactive, ahk_exe WFICA32.EXE 
-		WinActivate, ahk_exe WFICA32.EXE
+		if !winactive("ahk_exe WFICA32.EXE")
+			winactivate, ahk_exe WFICA32.EXE
 	ControlGetText, Batch, Edit2, VarBar
 	ControlGetText, Lot, Edit3, VarBar
 	ControlGetText, Product, Edit1, VarBar
@@ -200,24 +198,24 @@ FilterBar(Code:="",PostCmd:=""){
 }
 
 DetectTab(){
-global
-tab:=
-FoundSamples:=
-FoundRequests:=
-FoundDocuments:=
-FoundResults:=
-FoundTests:=
-FoundSpecs:=
-Tab1:=
-TAB2:=
-TAB3:=
-TAB4:=
-TAB5:=
-TAB6:=
-TAB7:=
-	; LMS.Orient()
+	global Tab
+	; tab:=
+	; FoundSamples:=
+	; FoundRequests:=
+	; FoundDocuments:=
+	; FoundResults:=
+	; FoundTests:=
+	; FoundSpecs:=
+	; Tab1:=
+	; TAB2:=
+	; TAB3:=
+	; TAB4:=
+	; TAB5:=
+	; TAB6:=
+	; TAB7:=
 	ifwinnotactive, ahk_exe WFICA32.EXE
 		winactivate, ahk_exe WFICA32.EXE
+	; LMS.Orient()
 	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 				if !Tab1 {

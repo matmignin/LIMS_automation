@@ -19,6 +19,7 @@ Class VarBar{
 			Iniread, ShowSampleID, data.ini, Locations, ShowSampleID
 			Iniread, VarBar_X, data.ini, Locations, VarBar_X
 			Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
+			Iniread, Follow, data.ini, Locations, Follow
 			
 		; }
 		If (X=)
@@ -48,17 +49,17 @@ Class VarBar{
 			GUI,VarBar:Font,				s8 cBlack,arial Narrow
 				; If Coated
 			Gui,VarBar:add,Edit,	 	vCoated 				gCoatedVarbar x131 H18 y15 w60, 					%Coated%   ; edit4
-			GUI,VarBar:Font,				s7 cBlack,arrial
 			GUI,VarBar:Font,				s11 cBlack, Consolas
 			Gui,VarBar:Add,text, 		vIteration x203 y14 w18,																	%Iteration%	; Text1
-			GUI,VarBar:Font,				s8 cBlack,Consolas 		
+			; GUI,VarBar:Font,				s8 cBlack, 		
+			GUI,VarBar:Font,				s7 cBlack,arial
 				if ShowSampleID=1
 			Gui,VarBar:add,Edit,	 	vSampleID 			gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
 				if ShowSampleID=1
-					Gui,VarBar:add,Edit,	 	vNote1 					gNotevarbar x220 H19 y-3 w60 left, 						%Note1%     ; edit6
+					Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x220 H19 y-3 w60 left, 						%Note1%     ; edit6
 				else
-					Gui,VarBar:add,Edit,	 	vNote1 					gNotevarbar x135 H19 y-3 w145 left,  						%Note1%     ; edit6
-			Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar x220 H19 y14 w60,							%Note2%  		; edit7
+					Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x131 H19 y-3 w145 left,  						%Note1%     ; edit6
+			Gui,VarBar:add,Edit,	 	  vNote2 					gNotevarbar x220 H19 y14 w60,							%Note2%  		; edit7
 		OnMessage(0x203, "VarBar.Relocate")
 		CoordMode, mouse, screen
 		; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
@@ -134,11 +135,11 @@ Focus(Control){
 }	
 
 
-	Follow(WindowSelection){
+	Follow(){
 		global
-		; winactivate, 
+		Menu, Tray, Check, VarbarFollow
+		IniWrite, 1, data.ini, Locations, follow
 		SetTimer, CheckActive, 500
-	
 		return
 	}
 
@@ -247,21 +248,24 @@ Notes.Save()
 	
 }
 
-	Reset(){
+	Reset(xpos:=""){
 	Global
 	GUI, VarBar:destroy
 	coordmode, mouse, Screen
-	MouseGetPos,MousePos_X,MousePos_Y,w,h
+	WinGetPos, winx, winy, winWidth, winHeight, A,
 	coordmode, mouse, Window
-
-	IniWrite, %MousePos_X%, data.ini, Locations, VarBar_X
+	if !xpos
+		MouseGetPos,xpos,MousePos_Y,w,h
+	if !winactive("ahk_exe explorer.exe")
+		mousepos_y:=(winY)-1
+	IniWrite, %xpos%, data.ini, Locations, VarBar_X
 	IniWrite, %MousePos_Y%, data.ini, Locations, VarBar_Y
-	IniWrite, MousePos_X+50, data.ini, Locations, ProductTable_X
-	IniWrite, MousePos_Y+50, data.ini, Locations, ProductTable_Y
-	IniWrite, MousePos_X+50, data.ini, Locations, SpecTable_X
-	IniWrite, MousePos_Y+50, data.ini, Locations, SpecTable_Y
+	IniWrite, %xpos%+50, data.ini, Locations, ProductTable_X
+	IniWrite, %MousePos_Y%+50, data.ini, Locations, ProductTable_Y
+	IniWrite, %xpos%+50, data.ini, Locations, SpecTable_X
+	IniWrite, %MousePos_Y%+50, data.ini, Locations, SpecTable_Y
 			; Excel.Connect()
-	Gui, VarBar:Show, h30 x%MousePos_X% y%MousePos_Y% w390 ; NoActivate
+	Gui, VarBar:Show, h30 x%xpos% y%MousePos_Y% w390 NoActivate
 	VarBar.show(0)
 	; Varbar.Relocate()
 	return
@@ -281,6 +285,13 @@ CheckActive:
 		WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
   ; Varbar.Follow(Wintitle)
  }
+ if winexist("Excel - \\Remote")
+	WinGet, winminmax, MinMax , Excel - \\Remote,
+		if (winminmax=1){
+			winactivate, Excel - \\Remote
+			send, {lwindown}{down}{lwinup}
+		}
+			
  return
 ;  Else if WinActive("VarBar ahk_class AutoHotkeyGUI")
   ; exit

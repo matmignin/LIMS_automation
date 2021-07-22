@@ -4,8 +4,9 @@ class click{
  
 
 
-OKay(){
+OKay(sleeptime:=""){
  global
+ sleep %Sleeptime%
   if winactive("Results Definition")
    clk(1336,592)
   else If WinActive("Result Editor")
@@ -24,7 +25,8 @@ OKay(){
     clk(415, 360)
   else if winActive("Edit specification - \\Remote")
     clk(323, 621)
-
+  else if winActive("Reason for Change - \\Remote")
+    Return clk(170, 331)
   else if winexist("Error - \\Remote") {
     winactivate
     clk(148, 104)
@@ -167,5 +169,6 @@ OKay(){
   WinActivate, NuGenesis LMS - \\Remote
   click 70, 518
   winwaitactive, Edit sample template - \\Remote,, 5
+  return
  }
 }

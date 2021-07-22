@@ -18,9 +18,9 @@ InfoLocations(){
 	Name:=XL.Range("B2").Value
 	Customer:=XL.Range("B3").Value
 	ShipTo:=XL.Range("A3").Value
-	weight:=XL.Range("B6").Text
+	; weight:=XL.Range("B6").Text
 	ShapeAndSize:=XL.Range("B5").Value
-	Color:=XL.Range("B5").value
+	Color:=XL.Range("B6").value
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
@@ -31,7 +31,7 @@ InfoLocations(){
 	GuiControl, Varbar:Text, name, %name%
 	GuiControl, varbar:text, Color, %Color%
 	GuiControl, Varbar:Text, customer, %Customer%
-	GuiControl, varbar:text, weight, %weight%
+	; GuiControl, varbar:text, weight, %weight%
 	GuiControl, Varbar:Text, iteration, %iteration%
 	GuiControl, varbar:text, ShapeSize, %shapeSize%
 	EnvSet, PrevProduct, %Product%

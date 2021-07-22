@@ -144,7 +144,7 @@ clipChain_c(){
 		if (A_PriorKey="F20")
 			If !ErrorLevel
 		{
-			send, {home}+{end}^c
+			sendinput, {home}+{end}^c
 			ClipChainInsert()
 			exit
 		}
@@ -182,6 +182,7 @@ ClickText(button:="")
 	SetDefaultMouseSpeed, 0
 	Click, %A_CaretX% %A_caretY%, %button%
 	mousemove, %mousex%, %mousey%, 0
+	SetDefaultMouseSpeed, 1
 return
 }
 
@@ -200,21 +201,31 @@ return
 scrolllock::gosub, clipchainmenu
 F21::gosub, clipchainmenu
 F19::clipChain_v()
-F20::clipChain_c()
+$Rshift::
+sendinput, +{tab}{tab}
+ClipChainInsert()
+return
+F22::
+sendinput, +{tab}{tab}
+sleep 20
+clipChain_v()
+return
+F20::ClipChainInsert()
+; F20::clipChain_c()
 ClipChainInsert(){
 	global
 	clipboard:=
-	send, ^c
-	clipwait, 0.4
+	sendinput, ^c
+	clipwait, 0.2
 	if errorlevel
 	{
 		If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-			ClickText(3)p
+			ClickText(3)
 		Else
 			ClickText(2)
 		; ClipChainInsert(
-		send, ^c
-		clipwait, 0.5
+		sendinput, ^c
+		clipwait, 0.2
 	}
 	If (ClipChainGuiTitle = "")
 		ClipChainGuiTitle:="CL3ClipChain Insert text"

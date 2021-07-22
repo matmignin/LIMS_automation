@@ -1,9 +1,9 @@
 #IfWinActive, ahk_exe Code.exe
 
-
-  $Lwin Up::            SendInput !+i
-  Tab & h::             ^[  
-  Tab & l::             ^]
+	+^z::send, {shiftup}{Ctrldown}{y}{CtrlUp}
+  $Lwin Up::            Send, {shiftdown}{altdown}{i}{lwinup}{altup}{shiftup}
+  Tab & h::             send, {ctrldown}{[}{ctrlup}
+  Tab & l::             send, {ctrldown}{]}{ctrlup}
   Tab & j::             down
   Tab & k::             up
   Tab & f13::           send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
@@ -11,15 +11,15 @@
   Tab & 2::             send, {shiftdown}{altdown}{lwindown}{2}{lwinup}{altup}{shiftup}
   Tab & 3::             send, {shiftdown}{altdown}{lwindown}{3}{lwinup}{altup}{shiftup}
   Tab & `::             send, {shiftdown}{altdown}{lwindown}{``}{lwinup}{altup}{shiftup}
-  Tab & F15::           send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
+  Tab & F15::           send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
   F14::                 ReloadScript()
-; F15::                 sendinput, {up 10}
-  F16::                 send, {shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
-  F17::                 send, {shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup}
-  ` & Tab::             send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
+           ;   send, {shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
+  ; F17::                 send, {shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup}
+  ` & Tab::             send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
+  Tab & q::             send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
   ; `::                 send, {``}
   ^F::                  
-                        tt("Find",200)
+                        tt("Find",2000,A_CaretX,A_Carety)
                         send, {ctrldown}{f}{ctrlup}
                         return
   F6::                  F6
@@ -38,6 +38,8 @@ F19 & -::               send, {ctrldown}{-}{ctrlup}
 F19 & =::               send, {ctrldown}{=}{ctrlup}
 F19 & y::               send, {ctrldown}{w}{ctrlup}
 F19 & /::               send, {shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
+F19 & i::               send, {numpad9}@
+F19 & p::               send, {numpad8}
 tab & f::                sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 
 tab::                   tab
@@ -87,7 +89,7 @@ tab::                   tab
   f19 & wheeldown::     send,{ctrldown}{down}{ctrlup}
   f19 & wheelup::       send,{ctrldown}{up}{ctrlup}
   f19 & lbutton::       ^lbutton
-  F13 up::              send, {esc}{ctrlup}{altup}
+  F13 up::              send, {shiftdown}{altdown}{lwindown}{9}{0}{lwinup}{altup}{shiftup}{ctrlup}
   F13 & space::         send, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 
 #If (A_PriorKey = "F19" AND A_TimeSincePriorkey < 950)
@@ -99,100 +101,101 @@ F8::                    send, {ctrldown}{F8}{ctrlup}
 F9::                    send, {ctrldown}{F9}{ctrlup}
 F7::                    send, {ctrldown}{F7}{ctrlup}
 F6::                    send, {ctrldown}{F6}{ctrlup}
-wheelup::               Numpadmult
-wheeldown::             tt(yo)
+; wheeldown::             tt(yo)
 #if
 #IfWinActive, ahk_exe Code.exe
 numpadsub::             numpadsub
 numpadadd::             numpadadd
-numpadmult::            numpadmult
+numpadmult::            send, {shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
 numpaddiv::             numpaddiv
 ^numpaddiv::            send, {ctrldown}{w}{ctrlup}
+numlock::               ClipPaste()
 F19 up::                send, {F19}
-; ^f9::                 send, {shiftdown}{altdown}{Up}{altup}{shiftup}
-; ^f9::                 send, {shiftdown}{altdown}{F8}{altup}{shiftup}
+f8::                    send, {ctrldown}{d}{ctrlup}
+^k::                 send, {ctrldown}{up}{ctrlup}
+^j::                 send, {ctrldown}{down}{ctrlup}
 ; ^f9::                 send, {shiftdown}{altdown}{F9}{altup}{shiftup}
 ; ^f9::                 send, {shiftdown}{altdown}{Up}{altup}{shiftup}
 
 VSCODE_Hotstrings:
-  :*r:cd\::             {ctrldown}
-  :*r:cu\::             {ctrlup}
-  :*r:ad\::             {altdown}
-  :*r:au\::             {altup}
-  :*r:sd\::             {shiftdown}
-  :*r:su\::             {shiftup}
-  :*r:wd\::             {lwindown}
-  :*r:wu\::             {lwinup}
+  :*r:cd`;::{ctrldown}
+  :*r:cu`;::{ctrlup}
+  :*r:ad`;::{altdown}
+  :*r:au`;::{altup}
+  :*r:sd`;::{shiftdown}
+  :*r:su`;::{shiftup}
+  :*r:wd`;::{lwindown}
+  :*r:wu`;::{lwinup}
   Modifier_Hotstrings:
-  :*R:c\::              
+  :*R:c`;::               
                         sendraw,{ctrldown}{}{ctrlup}
                         sendinput,{left 9}
                         return
-  :*R:w\::              
+  :*R:w`;::              
                         sendraw,{lwindown}{}{lwinup}
                         sendinput,{left 9}
                         return
-  :*r:a\::              
+  :*r:a`;::              
                         sendraw,{altdown}{}{altup}
                         sendinput,{left 8}
                         return
-  :*r:s\::              
+  :*r:s`;::              
                         sendraw,{shiftdown}{}{shiftup}
                         sendinput,{left 10}
                         return
-  :*r:csw\::            
-  :*r:cws\::            
-  :*r:scw\::            
-  :*r:swc\::            
-  :*r:wcs\::            
-  :*r:wsc\::            
+  :*r:csw`;::            
+  :*r:cws`;::            
+  :*r:scw`;::            
+  :*r:swc`;::            
+  :*r:wcs`;::            
+  :*r:wsc`;::            
                         sendraw,{shiftdown}{ctrldown}{lwindown}{}{lwinup}{ctrlup}{shiftup}
                         sendinput,{left 26}
                         return
-  :*r:asw\::            
-  :*r:aws\::            
-  :*r:saw\::            
-  :*r:swa\::            
-  :*r:was\::            
-  :*r:wsa\::            
+  :*r:asw`;::            
+  :*r:aws`;::            
+  :*r:saw`;::            
+  :*r:swa`;::            
+  :*r:was`;::            
+  :*r:wsa`;::            
                         sendraw,{shiftdown}{altdown}{lwindown}{}{lwinup}{altup}{shiftup}
                         sendinput,{left 25}
                         return
-  :*r:asc\::            
-  :*r:acs\::            
-  :*r:sac\::            
-  :*r:sca\::            
-  :*r:cas\::            
-  :*r:csa\::            
+  :*r:asc`;::            
+  :*r:acs`;::            
+  :*r:sac`;::            
+  :*r:sca`;::            
+  :*r:cas`;::            
+  :*r:csa`;::            
                         sendraw,{shiftdown}{altdown}{ctrldown}{}{ctrlup}{altup}{shiftup}
                         sendinput,{left 25}
                         return
-  :*r:sc\::             
-  :*r:cs\::             
+  :*r:sc`;::             
+  :*r:cs`;::             
                         sendraw,{shiftdown}{ctrldown}{}{ctrlup}{shiftup}
                         sendinput,{left 18}
                         return
-  :*r:sw\::             
-  :*r:ws\::             
+  :*r:sw`;::             
+  :*r:ws`;::             
                         sendraw,{shiftdown}{lwindown}{}{lwinup}{shiftup}
                         sendinput,{left 18}
                         return
-  :*r:sa\::             
-  :*r:as\::             
+  :*r:sa`;::             
+  :*r:as`;::             
                         sendraw,{shiftdown}{altdown}{}{altup}{shiftup}
                         sendinput,{left 17}
                         return
-  :*r:ca\::             
-  :*r:ac\::             
+  :*r:ca`;::             
+  :*r:ac`;::             
                         sendraw,{altdown}{ctrldown}{}{ctrlup}{altup}
                         sendinput,{left 16}
                         return
-  :*r:wa\::             
-  :*r:aw\::             
+  :*r:wa`;::             
+  :*r:aw`;::             
                         sendraw,{altdown}{lwindown}{}{lwinup}{altup}
                         sendinput,{left 16}
                         return
-  :*R:main\::           
+  :*R:main`;::           
                         sendraw, NuGenesis LMS - \\Remote
                         return
                         :*R:lms\::            
@@ -213,7 +216,7 @@ VSCODE_Hotstrings:
                         :*R:iel\::            
                         sendraw, if ErrorLevel,
                         return
-                        :*R:rtn::             Return
+                        :*R:rtn::Return
                         return  
    
 
@@ -242,7 +245,7 @@ VS_Code_WindowInfo(){
 DoublePress(action,SecondAction:="", ToolTip:=""){
 
   If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
-    send, %action%{shiftup}{altup}{ctrlup}{lwinup}
+    send, % action "{shiftup}{altup}{ctrlup}{lwinup}"
     tt(ToolTip)
   }
   Else
@@ -259,7 +262,7 @@ FlashScreen(){
 return
 }
 
-TT(msg, time=1500, X:="",Y:="",W:="") {
+TT(msg, time=1500, X:="50",Y:="50",W:="") {
 	global
 	tooltip, %msg%, %X%, %Y%,%W%
 	SetTimer, RemoveToolTip%W%, -%time% 

@@ -9,10 +9,78 @@ explorer:
 	F7::                 	send, 		{lwindown}{s}{lwinup}
 	F6::                 	Varbar.SearchExplorer()
 
-#IfWinActive, Word ahk_exe WINWORD.EXE
-	F19::                	Clip_v()
-	Mbutton::            	clippaste()
 
+#IfWinActive, Word ahk_exe WINWORD.EXE
+	F19::                	Send, ^v
+	F13 & space::					sendinput, +{tab}{tab}
+	mbutton::							DoublePress("{click 3}{ctrldown}{c}{ctrlup}","{ctrldown}{c}{ctrlup}","copy")
+	
+	$Numlock::            	
+												StrReplace(clipboard, "`n", "")
+												send, {ctrldown}{v}{ctrlup}
+												return
+	; clippaste()
+	F20 & up::send, PRD{tab 2}Mat Mignin{tab 2}%TimeString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F20 & down::send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
+	F20 & right::FindAndReplaceWord("<English>","English")
+	F20 & left::
+		clipboard:=
+		sleep 20
+		send, ^c
+		clipwait, 0.5
+		send, {up}
+		FindAndReplaceWord("<" clipboard ">",clipboard,"r")
+		return
+	F20::clip_C()
+		F19 & k::up
+		F19 & j::down
+		F19 & h::left
+		F19 & l::right
+		F19 & space::send, +{tab}{tab}
+		F19 & /::send, N/A{down} 
+		F13 & /::send, N/A{down} 
+		F19 & n::send, N{down} 
+		F13 & n::send, N{down} 
+		F13 & y::send, Y{down} 
+		F19 & y::send, Y{down} 
+		F19 & m::send, Y{down} 
+		F13 & m::send, Y{down} 
+		F19 & f::send, FALSE{down} 
+		F13 & f::send, FALSE{down} 
+		F19 & ,::send, FALSE{down} 
+		F19 & t::send, TRUE{down} 
+		F13 & t::send, TRUE{down} 
+		F19 & .::send, TRUE{down} 
+		F13 & .::send, TRUE{down} 
+		F8::send, {enter}
+		F6::send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
+		F7::send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
+	:*:mm;::
+					send, Mat Mignin{tab 2}%TimeString%
+					return			
+	#ifwinactive, Verification 
+
+	#ifwinactive, Reason for Change - \\Remote
+	F13 & v::
+						send % "Verification" 
+						sleep 200
+						Click.Okay()
+						return
+	
+FindAndReplaceWord(find,Replace,AllOrOne:="a"){
+		send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
+		if (Allorone=="a"){
+			loop 3 {
+				sleep 200
+				if winactive("Microsoft Word")
+					send, {enter}
+				sleep 300	
+			}
+					return
+		}
+		else 
+			send, {enter}{esc}
+}
 
 Excel:
 	#If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
@@ -50,54 +118,47 @@ Excel:
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
 	; numlock::            send, {altdown}{down 2}{altup} 
-#ifwinactive, Book
-	numpadadd::          send, #{right}
-	numpadsub::          send, #{left}
-#ifwinactive, ahk_exe EXCEL.EXE
-	Mbutton::            
-	F9::                 
-excel.search()
-sleep 200
+	#ifwinactive, Book
+		F9::WinMove, A, , 123, 117, 794, 937
+	#ifwinactive, ahk_exe EXCEL.EXE         
+		F9::                 
+		excel.search()
+		sleep 200
 	F7::                 send, {lwindown}{right}{lwinup}
-; MoveFindReplace()
-
-return
+	; MoveFindReplace()
 	$rbutton::           Mouse_RbuttonUP()
 	+Enter::             sendinput, !{enter}
 	$Enter::             sendinput,{enter}
 	; Numlock::          Excel.SearchWorkbook(Product)
 	F8::                 send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
 	Media_Prev::         send,{LWindown}{tab}{lwinup}
-	
-	
 	F19 & F7::           ^F8 ;Excel.NextSheet()
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
-	; F20 & down::       WinMove, Find and Replace, , A_ScreenWidth-466, A_ScreenHeight/2+633, 466, 633
-#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
-	F7::                 MoveFindReplace()
-	F20 & WheelUp::      
-	Send, !{n}%Product%
-	sleep 400
-	return
+	#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
+		F7::                 MoveFindReplace()
+		F20 & WheelUp::      
+		Send, !{n}%Product%
+		sleep 400
+		return
 	F20 & WheelDown::    
- ; Wheel("{alt down}n{alt up}")
 	Sendinput % Batch
 	return
 	return::             sendinput, !{i}
 	rbutton & Lbutton::  sendinput, !{i}
 	
-MoveFindReplace(){
-	; wina
-; WinGetPos, Win_X, win_Y, win_w, Win_H, "SAMPLE LOG 2021.xlsx"
-; EdgeofWindow:=A_ScreenWidth-466
-; BottomofWindow:=(A_Screenhight/3)+(A_Screenhight/3)
-; excel.Search()
-; winMove, Find and Replace, , %EdgeofWindow%, %BottomofWindow%, %EdgeofWindow%+466, %BottomofWindow%
-}
+	MoveFindReplace(){
+		; wina
+	; WinGetPos, Win_X, win_Y, win_w, Win_H, "SAMPLE LOG 2021.xlsx"
+	; EdgeofWindow:=A_ScreenWidth-466
+	; BottomofWindow:=(A_Screenhight/3)+(A_Screenhight/3)
+	; excel.Search()
+	; winMove, Find and Replace, , %EdgeofWindow%, %BottomofWindow%, %EdgeofWindow%+466, %BottomofWindow%
+	}
 OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 
 	F19 & enter::        send, {ctrldown}{enter}{ctrlup}
+	numpadadd::         				 send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
 	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
@@ -131,8 +192,6 @@ OUTLOOK:
 	
 	
 #ifwinactive, OneNote for Windows 10
-	Mbutton & Wheelup::  Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
-	Mbutton & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
 	^1::                 send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
 	^2::                 send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
 	^3::                 send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
@@ -143,8 +202,6 @@ OUTLOOK:
 
 OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
-	Mbutton & Wheelup::  Wheel_2("{shiftdown}{altdown}{ctrldown}{=}{altup}{shiftup}{ctrlup}",50)
-	Mbutton & Wheeldown::Wheel_2("{altdown}{shiftdown}{ctrldown}{-}{altup}{shiftup}{ctrlup}",50)
 	F9 & Wheelup::       Wheel_2("{F11}")
 	F9::                 send,{AltDown}{w}{i}{Altup}
 	F6::                 sendinput,{wheelleft 20}

@@ -207,13 +207,14 @@ Main_Screen:
   F19 & F20::lms.searchBar("")
   F19 & space::Send, %Product%{enter}
   F20 & space::Send, %Batch%{enter}
+  F19 & /::Send, %lot%{enter}
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
   numpaddiv::CloseWindow()
-	space & lbutton::send, +{click}
-	space up::sendinput, ^{click}
-	wheelright::Touchpad.2right()
-	wheelleft::Touchpad.2left()
+	; space & lbutton::send, +{click}
+	; space up::sendinput, ^{click}
+	; wheelright::Touchpad.2right()
+	; wheelleft::Touchpad.2left()
 
 
 
@@ -242,33 +243,34 @@ LMS:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
 	F20 & Space::						send, %Batch%
 	F19 & space::						send, %Product%
-	F19 & up::						send, %sampleID%
+	F19 & up::							send, %sampleID%
 	F19 & left::						send, %lot%
 	F19 & right::						send, %coated%
 	$Rbutton up::						Mouse_RbuttonUP()
-	enter::						click.okay()
-	esc::						click.esc()
-	left::						left
-	Down::						down
-	right::						right
-	up::						up
-	numpaddiv::						closeWindow()
+	^`::										Varbar.reset()
+	enter::									click.okay()
+	esc::										click.esc()
+	; left::						left
+	; Down::						down
+	; right::						right
+	; up::						up
+	numpaddiv::			closeWindow()
 	<^r::						ReloadScript()
-	F9::						TouchPad.3up()
+	F9::						touchpad.3up()
 	F8::						TouchPad.3Down()
 	F7::						TouchPad.3Right()
 	F6::						TouchPad.3Left()
+	
 
-
-  Mbutton::TouchPad.3Tap()
+  $Mbutton::TouchPad.3Tap()
   ; numlock::LMS.Movetab("Home")
 	numpadMult::excel.connect()
   ; Numpadadd::lms.MoveTab("Right")
   ; NumpadSub::lms.MoveTab("Left")
 		numpadadd::Excel.NextSheet()
 		numpadsub::Excel.PrevSheet()
-  ; Media_Prev::varbar.SubIteration(20)
-  ; Media_next::Varbar.AddIteration(20)
+  Media_Prev::varbar.SubIteration(20)
+  Media_next::Varbar.AddIteration(20)
   numlock::touchpad.4tap()
 
 
@@ -278,7 +280,7 @@ Scroll_Fix:
 #If Mouse_IsOver("LMS Workbook.xlsb")
 	numpadadd::Excel.NextSheet()
 	numpadsub::Excel.PrevSheet()
-#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe WFICA32.EXE")
+#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe")
 	F7::LMS.SearchBar(Batch,"{enter}")
 	F6::LMS.SearchBar(Product,"{enter}")
 	Numlock::
@@ -287,8 +289,7 @@ Scroll_Fix:
 		touchpad.4tap()
 		return
 	space & lbutton::send, +{click}
-
-	space up::sendinput, ^{click}
+	; space up::sendinput, ^{click}
 
   #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
     Wheeldown::LMS.ScrollDown()

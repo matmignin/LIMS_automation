@@ -35,6 +35,7 @@ class Menu{
     Menu,Menu, add, &Delete Retain, Autofill
     
   Menu.show()
+  return
   }
   
   if winactive("Edit specification - \\Remote"){
@@ -54,6 +55,7 @@ class Menu{
     Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
     Menu, Menu, Add, &Report Only Heavy Metal,Autofill
   Menu.show()
+  return
   }
   if winactive("Edit specification - \\Remote"){
     Menu,Menu, add, Departments, Autofill
@@ -65,6 +67,7 @@ class Menu{
     Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
     Menu,Menu, add, departments, :DepartmentsMenu
   Menu.show()
+  return
   }
   if Winactive("Login - \\Remote"){
     ; Menu,Menu, add, &Login, LMS_Env
@@ -181,16 +184,6 @@ return
     Menu,Menu, deleteAll
    return
 
-   Tests:
-   if A_thismenuitem contains &Ingredient Table
-    ProductTab.Table()
-   else if A_thismenuItem contains &Spec Table
-    SpecTab.Table()
-   else if A_thismenuItem contains &Rotation Table
-    Rotation_GetTable()
-   else
-    Menu,Menu, deleteAll
-   return
 
 
    Passwords:
@@ -259,6 +252,16 @@ return
     Menu,Menu, deleteAll
    return
 
+   Tests:
+   if A_thismenuitem contains &Ingredient Table
+    ProductTab.Table()
+   else if A_thismenuItem contains &Spec Table
+    SpecTab.Table()
+   else if A_thismenuItem contains &Rotation Table
+    Rotation_GetTable()
+   else
+    Menu,Menu, deleteAll
+   return
 Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
       sendinput,{Click 182, 97}10.1.2.153{enter}

@@ -1,12 +1,13 @@
 ﻿gosub, vquest_start
-
+SetNumLockState, on
+; #if getnumlock 
 return
 Starting_test:
 ; Test_2()
 return
- 
+
 ReadSpecIntoDataBase:
- iniread, full, data.ini, %Product%,ecc738
+ iniread, full, data.ini, %Product%, ;ecc738
  Test_Specs:= strsplit(Full,"=")
  Test:=Test_Specs[1]
  Specs:= strsplit(Test_Specs[2],"|")
@@ -24,20 +25,7 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 }
 
 
-#IfWinActive,
-On:="On"
-Off:="Off"
-Clear:="Clear"
-yo:="yo"
-ye:="ye"
-Pk:=A_Priorkey
-Phk:=A_PriorHotkey
-Thk:=A_ThisHotkey
-tsThk:=A_TimesinceThisHotkey
-tThk:=A_TimesinceThisHotkey
-tsPhk:=A_TimesincePriorHotkey
-tPhk:=A_TimesincePriorHotkey
-;___________________________________________________________________________
+; ______________________________________________________________________
 WindowNames(){
  global
  Loop, Read, WindowNames.ini
@@ -94,10 +82,10 @@ return
 run_Follow:
  Menu, Tray, ToggleCheck, VarbarFollow
  If follow:= !follow
-  IniWrite, 1, data.ini, Locations, follow
+  Varbar.Follow()
+  ; IniWrite, 1, data.ini, Locations, follow
  else
-  IniWrite, 0, data.ini, Locations, follow
-Varbar.Follow()
+  IniWrite, 0, data.ini, Locations, Follow
 ;  send,{esc}
 return
 Run_Listlines:
@@ -111,15 +99,16 @@ exitapp
 return
 
 #IfWinActive,
-#include <TrackPad>
-#include <KEYS>
+; #include <TrackPad>
 #include <LMS KEYS>
+#include <KEYS>
 ; #include <LMS TRACKPAD>
 #include <VScode>
-#Include <Firefox>
 #Include <clip>
-#Include <Office KEYS>
+#Include <Firefox>
 #Include <LMS>
+#Include <Snipper>
+#Include <Office KEYS>
 #Include <OpenApp>
 #Include <AutoFill>
 #include <varBar>
@@ -134,9 +123,8 @@ return
 #include <mouse>
 #include <click>
 #include <Vim>
-#include <SaveWindow>
-#Include <Snipper>
 #include <Notes>
+; #include <SaveWindow>
 ; #include <Cl3.ahk>
 
 
@@ -147,7 +135,7 @@ VQuest_Start:
  #KeyHistory 300
  #InstallKeybdHook
  #InstallMouseHook
- #MenuMaskKey vkE8
+;  #MenuMaskKey vkE8
 
 
 CrLf=`r`n
@@ -157,7 +145,7 @@ FileName:="lib/WinPos.txt"
  envget, PrevProduct, PrevProduct
 
 ; AutoTrim, On
- ; #WinActivateForce
+ #WinActivateForce
  SetWorkingDir, %A_ScriptDir%
  Menu, Tray, Add, CL3, Run_cl3
  Menu, Tray, Add, CodeAlt, Run_CodeAlt
@@ -168,24 +156,24 @@ FileName:="lib/WinPos.txt"
  Menu, tray, NoStandard
 ;  Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
  Menu, Tray, Add, List Lines, Run_ListLines
- Menu, Tray, Add, windowSpy, WindowSpySub
  Menu, Tray, Add, Exit, ExitSub
+ Menu, Tray, Add, windowSpy, WindowSpySub
  Menu, Tray, Default, windowSpy ;Run_Listlines
 
 ;#Warn, All, OutputDebug
-#Warn UseUnsetLocal, OutputDebug
+; #Warn UseUnsetLocal, OutputDebug
 
  SetNumlockState Alwayson
  setcapslockstate alwaysoff
  SetscrolllockState, alwaysOff
  CoordMode, mouse, Window
- SetMouseDelay, 5
+ SetMouseDelay, 1
  SetDefaultMouseSpeed, 1
  SetTitleMatchMode, 2
- #MaxHotkeysPerInterval 300
-;  #HotkeyModifierTimeout 100
+ #MaxHotkeysPerInterval 200
+ #HotkeyModifierTimeout 20
  #maxthreadsperhotkey, 1
-;  #IfTimeout 500
+;  #IfTimeout 20
  SetKeyDelay, 0, 0
  setwindelay,300
  
@@ -204,19 +192,42 @@ OnExit("Varbar.Exit")
  Excel.Connect(1)
  IfWinExist, ahk_exe WFICA32.EXE
   LMS.Orient()
- if (Inverted = 1)
-  Menu, Tray, Check, Inverted
- if (Inverted = 0)
-  Menu, Tray, unCheck, Inverted
- if (ShowSampleID = 0)
-  Menu, Tray, unCheck, showsampleID
-else
-  Menu, Tray, Check, showsampleID
- if (Follow = 1) {
-  Varbar.Follow()
-  settimer, CheckActive, 500
-  Menu, Tray, Check, VarbarFollow
- }
- if (Follow = 0)
-  Menu, Tray, unCheck, VarbarFollow
+  if (Inverted = 1)
+    Menu, Tray, Check, Inverted
+  else
+    Menu, Tray, unCheck, Inverted
+  if (ShowSampleID = 0)
+    Menu, Tray, unCheck, showsampleID
+  else
+    Menu, Tray, Check, showsampleID
+  
+  if (ShowSampleID = 0)
+    Menu, Tray, unCheck, showsampleID
+  else
+    Menu, Tray, Check, showsampleID
+  if (Follow = 1)
+    varbar.follow()
+  else
+    Menu, Tray, unCheck, VarbarFollow
 gosub, Starting_test
+
+  setCheckBoxes(CheckboxName){
+    if (checkboxname = 0)
+      Menu, Tray, unCheck, CheckBoxName
+    else
+      Menu, Tray, Check, CheckBoxName    
+    }
+#IfWinActive,
+On:="On"
+Off:="Off"
+Clear:="Clear"
+yo:="yo"
+ye:="ye"
+Pk:=A_Priorkey
+Phk:=A_PriorHotkey
+Thk:=A_ThisHotkey
+tsThk:=A_TimesinceThisHotkey
+tThk:=A_TimesinceThisHotkey
+tsPhk:=A_TimesincePriorHotkey
+tPhk:=A_TimesincePriorHotkey
+;_____
