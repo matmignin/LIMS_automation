@@ -11,14 +11,14 @@ KEY_Snipper:
  
  
  sendlevel 0
-; Mbutton::esc
+
 
 
 return
  ;WheelDown::wheel("^1")
  
  ;Wheelup::Wheel("^5")
-;  Mbutton::send, {Click, 2}
+
 ; For sheet in xl.ActiveWorkbook.Worksheets
 												; 	Products.insert(Sheet.Name)
 												; Products.remove(1)
@@ -29,7 +29,7 @@ return
 												; 	else
 												; 		DDLProducts .= "|" Products[A_index]
 #IfWinActive, Paster - Snipaste ; the floating window
-; Mbutton::esc
+
  sendlevel 1
 
 ;  F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
@@ -46,7 +46,7 @@ return
  numpadDiv::send, !{click}
   F8::send,{click}{esc}
  sendlevel 0
-; Mbutton::esc
+
 	
 
  #if

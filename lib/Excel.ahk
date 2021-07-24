@@ -36,6 +36,7 @@ InfoLocations(){
 	GuiControl, varbar:text, ShapeSize, %shapeSize%
 	EnvSet, PrevProduct, %Product%
 	GuiControl, +redraw, varbar
+	this.SaveToDataBase()
 }
 
 Connect(reload:=0){
@@ -92,7 +93,17 @@ SearchWorkbook(SearchWord:=""){
 	return
 }
 
+SaveToDataBase(){
+	global
+ iniread, full, data.ini, %Product%, ;ecc738
+ Test_Specs:= strsplit(Full,"=")
+ Test:=Test_Specs[1]
+ Specs:= strsplit(Test_Specs[2],"|")
+ msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
 
+ LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+Return 
+}
 
 ActiveCell(){
 	Global

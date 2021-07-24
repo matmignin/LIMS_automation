@@ -9,6 +9,7 @@ Table(){
   ifwinnotactive, ahk_exe WFICA32.EXE 
     WinActivate, ahk_exe WFICA32.EXE
   WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+  Table_height=10
   ProductTable_X:= LMS_w+LMS_X-50
   ProductTable_Y:= LMS_Y+100
   Excel.Connect()
@@ -51,7 +52,10 @@ Table(){
   LV_ModifyCol(5,0)
   sleep 100
   CoordMode,mouse,screen
-  Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product%
+  ScreenEdge_X:=A_ScreenWidth-350
+  ScreenEdge_Y:=A_Screenheight-150
+  try Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product% Ingredient Table
+  catch Gui,Ingredient_Table:Show,x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Ingredient Table
   CoordMode,mouse,window
   return
 }

@@ -1,16 +1,9 @@
 
-
-
-
-
-
-
 Clip(input=0){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
   ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
-  ;  FlashScreen()
     OCR()
     return
   }
@@ -24,18 +17,9 @@ Clip(input=0){
   if errorlevel
   {
     clipboard:=ClipboardSaved
-    if (A_PriorKey != "F20")
+    if (A_PriorKey != "F20") || (A_PriorKey != "Mbutton")
       exit
     send, {home}+{end}^{c}
-    ; clk(A_CaretX,A_CaretY,,2)
-    ; TT(Clipboard,1000,,,3)
-    ; clipwait
-  ; TT(Clipboard,2000,(A_ScreenWidth/2),((A_screenheight/3)*2))
-  }
-
-  
-  ; CoordMode  , Tooltip, Screen
-  ; CoordMode  , Tooltip, Relative
     sleep      20
     RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", cProduct)
     RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
@@ -53,8 +37,6 @@ Clip(input=0){
     Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
     Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
     Sleep      20
-
-    ; TT(cProduct "`n" cBatch "`n" clot,1500,,,3)
   If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
@@ -86,7 +68,7 @@ Clip(input=0){
     Department=Micro
   If cRetain
     Department=Retain
-  If cCTRetain
+  If cCTRetaincCTRetain
     Department:="Retain (Coated)"
   If cPhysical
     Department=Physical
@@ -104,7 +86,8 @@ Clip(input=0){
   else
     return 
   }
-  
+}
+
 ClickText(button:=""){
 	mousegetpos, mousex, mousey
 	SetDefaultMouseSpeed, 0
@@ -112,22 +95,23 @@ ClickText(button:=""){
 	mousemove, %mousex%, %mousey%, 0
 	SetDefaultMouseSpeed, 1
 }
-  ClipPaste(){
+ClipPaste(){
   ClipboardSaved:=ClipboardAll
   clipboard:=
-    sendinput, {ctrldown}{c}{ctrlup}
+    Clip()
   clipwait,0.10
   if errorlevel 
     {
     clipboard:=ClipboardSaved
-      sendinput, ^{v}
+    StrReplace(clipboard, "`n", "")
+      send, ^{v}
       tt("paste",,100,100)
     }
   else
       tt(clipboard,,100,100)
     return 
   }
-  
+
 Clip_C2(){
   Global
     sendinput, {ctrlup}{altup}
@@ -152,14 +136,9 @@ Clip_C2(){
           KeyWait, F20,
         exit
     }
-    ; if (A_PriorKey contains F19)
-      ; exit
-    ; if (A_PriorhotKey contains F19)
     Clip()
-    ; TT(Clipboard,,0,0,3)
-    ; if (A_ThisHotkey != "F20")
-    ;     exit
- }
+  }
+
 clip_c(){
   Global
       sendinput, {ctrlup}{altup}{shiftup}
@@ -183,8 +162,7 @@ clip_c(){
     }
       Clip()
       return
-}
-
+  }
 
 
 clip_v(){

@@ -10,7 +10,7 @@
  F6::sendinput, !{left}
  F7::send, !{right}
 
- Mbutton::send,{CtrlDown}{click}{Ctrlup} ;sendinput, ^{click}
+;  Mbutton::send,{CtrlDown}{click}{Ctrlup} ;sendinput, ^{click}
  Rbutton up::send,{click r}
 
 

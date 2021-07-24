@@ -51,9 +51,9 @@ F4::
   Run, AutoHotkey.chm, C:\Users\mmignin\Documents
   return
 OpenApps:
-#IfWinNotActive, ahk_exe Code.exe
- F13 & f::OpenApp.Firefox()
- !f::OpenApp.Firefox()
+; #IfWinNotActive, ahk_exe Code.exe
+;  F13 & f::OpenApp.Firefox()
+ <!f::OpenApp.Firefox()
  F13 & v::OpenApp.vsCode()
  !v::OpenApp.vsCode()
  ; !c::OpenApp.Clickup()
@@ -62,14 +62,15 @@ OpenApps:
  !o::OpenApp.Outlook()
  !p::OpenApp.YourPhone()
  F20 & p::OpenApp.YourPhone()
+ F21 & p::OpenApp.YourPhone()
  !d::OpenApp.Display()
  ; !n::run, notes.ahk, %A_ScriptDir%\lib
  f20 & n::
+ f21 & n::
  !n::openApp.OneNote()
  +!n::openApp.stickyNotes()
  !w::OpenApp.Workbook()
  F13 & e::OpenApp.Workbook()
-
  !l::OpenApp.LMS()
 #ifwinnotactive
 
@@ -87,7 +88,7 @@ Clickup(){
 
 
 PhoneApp(){
- sendlevel 1
+ sendlevel 2
  ifwinnotexist, Your Phone
    send, {shiftdown}{altdown}{F8}{altup}{shiftup}
  else

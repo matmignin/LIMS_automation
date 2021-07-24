@@ -18,8 +18,9 @@ History:
 #include <Tooltip>
 
 ClipChainInit:
-	IniRead, ClipChainX , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX, 100
-	IniRead, ClipChainY , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY, 100
+MouseGetPos, ClipChainX, ClipChainY,
+	; IniRead, ClipChainX , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX, 100
+	; IniRead, ClipChainY , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY, 100
 	IniRead, ClipChainNoHistory , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainNoHistory , 0
 	IniRead, ClipChainTrans , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainTrans , 0
 	IniRead, ClipChainPause , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainPause , 0
@@ -56,6 +57,7 @@ ClipChainInit:
 	Menu, ClipChainMenu, Add
 	Menu, ClipChainMenu, Add, Load from File, ClipChainLoadFile
 	Menu, ClipChainMenu, Add, Save to File, ClipChainSaveFile
+	Menu, ClipChainMenu, Add, Edit box, #x
 	Menu, ClipChainMenu, Add
 	Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 
@@ -97,11 +99,57 @@ ClipChainInit:
 
 	Gosub, ClipChainCheckboxes
 	ClipChainLvHandle := New LV_Rows(HLV)
-		WinSet, Transparent, 200, CL3ClipChain ahk_class AutoHotkeyGUI
+		WinSet, Transparent, 100, CL3ClipChain ahk_class AutoHotkeyGUI
 Return
 
+
+Mouse_IsOver(WinTitle){
+	Global
+	MouseGetPos,,, Win
+	Return WinExist(WinTitle . " ahk_id " . Win)
+}
+
+
+#If Mouse_IsOver("CL3ClipChain")
+	Rbutton::			        gosub, clipchainmenu
+	^up::			         gosub, ClipchainMoveUp
+	^Down::			       gosub, ClipchainMoveDown
+	wheeldown::			       gosub, ClipchainMoveDown
+	Backspace::			     gosub, ClipChainDel
+#If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
+	+Enter::	
+	F19::						
+	^enter::							
+							ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
+							clipboard:=ClipChainIns
+							sleep 200
+							gosub, ClipChainInsertGuiOK
+							return
+#if
+	; Numlock::  ;send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+	; 		if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 200)
+	; 			send, {esc}{F21}
+	; 		else
+	; 			send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+	; 		return
+			
 #IfWinActive, CL3ClipChain Insert text
-	+Enter::gosub, ClipChainInsertGuiOK
+#IfWinActive, CL3ClipChain Insert text
+#IfWinActive, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item
+	+Enter::	
+	F19::						
+	^enter::							
+	; ^enter::							ControlClick, Button1, A, A, left, 1
+												ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
+												clipboard:=ClipChainIns
+												sleep 200
+												gosub, ClipChainInsertGuiOK
+												return
+#IfWinActive, CL3ClipChain
+	Rbutton::			        gosub, clipchainmenu
+	up::			         gosub, ClipchainMoveUp
+	Down::			       gosub, ClipchainMoveDown
+	Backspace::			     gosub, ClipChainDel
 
 	#IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
 		; sendlevel 3
@@ -127,6 +175,7 @@ return
 ; 	 Gosub, ClipChainPasteDoubleClick
 ; 	}
 ; Return
+
 clipChain_v(){
 	Global
 	gosub, ClipChainPasteDoubleClick
@@ -187,31 +236,34 @@ return
 }
 
 #If ClipChainActive()
-	pgup::gosub, ClipchainMoveUp
+	up::			         gosub, ClipchainMoveUp
+	Down::			       gosub, ClipchainMoveDown
+	Delete::			     gosub, ClipChainDel
+	^c::			         send, ^c
+	F20 & F19::			  
+										clipchaininsert()
+										send, ^x
+										return
+	^Numpadmult::			gosub, ClipchainMoveUp
+	^numpaddiv::			gosub, ClipchainMoveDown
+	\::	  	gosub, clipchainmenu
 
-Pgdn::gosub, ClipchainMoveDown
-Delete::gosub, ClipChainDel
-^c::send, ^c
-F20 & F19::
-	clipchaininsert()
-	send, ^x
-return
-^Numpadmult::gosub, ClipchainMoveUp
-^numpaddiv::gosub, ClipchainMoveDown
-scrolllock::gosub, clipchainmenu
-F21::gosub, clipchainmenu
-F19::clipChain_v()
-$Rshift::
-sendinput, +{tab}{tab}
-ClipChainInsert()
-return
-F22::
-sendinput, +{tab}{tab}
-sleep 20
-clipChain_v()
-return
-F20::ClipChainInsert()
-; F20::clipChain_c()
+	F19::			        clipChain_v()
+	$Rshift::			    
+										sendinput, +{tab}{tab}
+										ClipChainInsert()
+										return
+	>+Enter::			    
+										send, +{tab}{tab}
+										sleep 50
+										clipChain_v()
+										return
+	F21::			        ClipChainInsert()
+	; F20::			        ClipChainInsert()
+	F20::			      clipChain_c()
+	numlock::				clipChain_v()
+	Mbutton::  			clipchaininsert()
+	
 ClipChainInsert(){
 	global
 	clipboard:=
@@ -567,6 +619,7 @@ return
 ClipChainInsertGuiGuiExit:
 ClipChainInsertGuiGuiClose:
 ClipChainInsertGuiOK:
+
 	Gui, ClipChainInsertGui:Submit, Destroy
 	ClipChainInsertActive:=1
 Return

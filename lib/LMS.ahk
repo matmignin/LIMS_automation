@@ -69,21 +69,15 @@ SearchBar(Code:="",PostCmd:=""){
 				send,{ctrldown}{a}{ctrlup}%Code%
 				if PostCmd!=""
 					send % PostCmd
-					 		send, {ctrlup}
+					send, {ctrlup}
 				exit
 			}
 		}
 		
-}
+	}
 
 
-
-
-
-
-
-
-	MoveTab(Direction){
+MoveTab(Direction){
 		global
 	lms.DetectTab()
 	If (Direction="Right") {
@@ -195,24 +189,24 @@ FilterBar(Code:="",PostCmd:=""){
 	sleep 300
 	blockinput off
 	return
-}
+	}
 
 DetectTab(){
-	global Tab
-	; tab:=
-	; FoundSamples:=
-	; FoundRequests:=
-	; FoundDocuments:=
-	; FoundResults:=
-	; FoundTests:=
-	; FoundSpecs:=
-	; Tab1:=
-	; TAB2:=
-	; TAB3:=
-	; TAB4:=
-	; TAB5:=
-	; TAB6:=
-	; TAB7:=
+	global  
+	tab:=
+	FoundSamples:=
+	FoundRequests:=
+	FoundDocuments:=
+	FoundResults:=
+	FoundTests:=
+	FoundSpecs:=
+	Tab1:=
+	TAB2:=
+	TAB3:=
+	TAB4:=
+	TAB5:=
+	TAB6:=
+	TAB7:=
 	ifwinnotactive, ahk_exe WFICA32.EXE
 		winactivate, ahk_exe WFICA32.EXE
 	; LMS.Orient()
@@ -263,7 +257,7 @@ DetectTab(){
 				}
 				}
 		return Tab
-}
+	}
 
 FilterStatus(){
  global
@@ -286,7 +280,7 @@ FilterStatus(){
 			; }
 			; else ;is off/blue
 	; return
-}
+	}
 Filter(x:="Status"){
  global
 	FilterOn:=
@@ -326,7 +320,7 @@ Filter(x:="Status"){
 			else 
 				Return "Off" 
 	}
-}
+	}
 
 
 
@@ -337,7 +331,7 @@ CoA(){
 	clk(xCoa, yWorkTabSearch)
 	sleep 100
 	send, +{Tab}{enter}
-}
+	}
 
 	ViewCoA(){
 	global
@@ -353,7 +347,7 @@ CoA(){
 	else
 		TT(Tab)
 		return
-}
+	}
 
 SaveCode(){
 	global
@@ -367,35 +361,35 @@ SaveCode(){
 		iniwrite, %Batch%, Codes.ini, Batch,
 		iniwrite, %Product%, Codes.ini, Product, 
 		return
-		                    ;  creating an array and resorting without duplicates
-;  oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
+                    ;  creating an array and resorting without duplicates
+	;  oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
 
-		; Batches:= StrSplit(A_LoopReadLine, "`n") 
+			; Batches:= StrSplit(A_LoopReadLine, "`n") 
 
 
-; oArray2 := [], oTemp := {}
-; for vKey, vValue in oArray
-; {
-; 	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-; 	{
-; 		if !ObjHasKey(oTemp, vValue+0)
-; 			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
-; 	}
-; 	else
-; 	{
-; 		if !ObjHasKey(oTemp, "" vValue)
-; 			oArray2.Push("" vValue), oTemp["" vValue] := ""
-; 	}
-; }
-; vOutput := ""
-; for vKey, vValue in oArray2
-; 	vOutput .= vKey " " vValue "`r`n"
-; MsgBox, % vOutput
-; return
+	; oArray2 := [], oTemp := {}
+	; for vKey, vValue in oArray
+	; {
+	; 	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+	; 	{
+	; 		if !ObjHasKey(oTemp, vValue+0)
+	; 			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
+	; 	}
+	; 	else
+	; 	{
+	; 		if !ObjHasKey(oTemp, "" vValue)
+	; 			oArray2.Push("" vValue), oTemp["" vValue] := ""
+	; 	}
+	; }
+	; vOutput := ""
+	; for vKey, vValue in oArray2
+	; 	vOutput .= vKey " " vValue "`r`n"
+	; MsgBox, % vOutput
+	; return
 
-		
-		
-}
+			
+			
+	}
 
 
 
@@ -430,7 +424,7 @@ CheckDepartment(){
   If cCTRetain
     Department=CTRetain
 	return Department
-}
+	}
 
 
 
@@ -511,33 +505,30 @@ Orient(){
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
-}
+	}
 
 
 ScrollDown(){
 	Global
-if winactive("Result Editor - \\Remote") {
-	clk(503, 574,1)
-	Sleep 800
-	return
-	}
-if winactive("Test Definition Editor - \\Remote") {
-	clk(464, 532,,2)
-	Sleep 800
-	return
-}
-if winactive("Edit Formulation - \\Remote") {
-	clk(452, 473,,2)
+	if winactive("Result Editor - \\Remote") {
+		clk(503, 574,1)
 		Sleep 800
-	return
-}
-else
-	return
-}
-
-
-
-}
+		return
+		}
+	if winactive("Test Definition Editor - \\Remote") {
+		clk(464, 532,,2)
+		Sleep 800
+		return
+	}
+	if winactive("Edit Formulation - \\Remote") {
+		clk(452, 473,,2)
+			Sleep 800
+		return
+	}
+	else
+		return
+	}
+	}	
 
 
 

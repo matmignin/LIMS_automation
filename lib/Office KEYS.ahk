@@ -1,29 +1,33 @@
 explorer:
 #IfWinActive, ahk_exe explorer.exe
-	Mbutton::            	send, 		{enter}
+	; Mbutton::            	send, 		{enter}
 	F20 & up::           	WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
+	F21 & up::           	WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
 	F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
+	F21 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
 	F20 & down::         	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
+	F21 & down::         	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
 	F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
+	F21 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
 	F9::                 	send, 		{lwindown}{e}{lwinup}
 	F7::                 	send, 		{lwindown}{s}{lwinup}
 	F6::                 	Varbar.SearchExplorer()
+	^w::									closewindow()
 
 
 #IfWinActive, Word ahk_exe WINWORD.EXE
 	F19::                	Send, ^v
 	F13 & space::					sendinput, +{tab}{tab}
-	mbutton::							DoublePress("{click 3}{ctrldown}{c}{ctrlup}","{ctrldown}{c}{ctrlup}","copy")
-	
-	$Numlock::            	
-												StrReplace(clipboard, "`n", "")
-												send, {ctrldown}{v}{ctrlup}
-												return
+
 	; clippaste()
 	F20 & up::send, PRD{tab 2}Mat Mignin{tab 2}%TimeString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F21 & up::send, PRD{tab 2}Mat Mignin{tab 2}%TimeString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F20 & down::send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
+	F21 & down::send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F20 & right::FindAndReplaceWord("<English>","English")
+	F21 & right::FindAndReplaceWord("<English>","English")
 	F20 & left::
+	F21 & left::
 		clipboard:=
 		sleep 20
 		send, ^c
@@ -32,6 +36,7 @@ explorer:
 		FindAndReplaceWord("<" clipboard ">",clipboard,"r")
 		return
 	F20::clip_C()
+	F21::clip_C()
 		F19 & k::up
 		F19 & j::down
 		F19 & h::left
@@ -104,12 +109,9 @@ Excel:
 											return
 	#if
 	#IfWinActive, LMS Workbook.xlsb
-	Mbutton::                 
-		winactivate, SAMPLE LOG 2021.xlsx
-		excel.search()
-		return
+               
 	F9::            Excel.Connect(1)
-	Numlock::            lms.searchbar(Product)
+	; Numlock::            lms.searchbar(Product)
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up
@@ -137,10 +139,12 @@ Excel:
 	#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 		F7::                 MoveFindReplace()
 		F20 & WheelUp::      
+		F21 & WheelUp::      
 		Send, !{n}%Product%
 		sleep 400
 		return
 	F20 & WheelDown::    
+	F21 & WheelDown::    
 	Sendinput % Batch
 	return
 	return::             sendinput, !{i}
@@ -160,9 +164,12 @@ OUTLOOK:
 	F19 & enter::        send, {ctrldown}{enter}{ctrlup}
 	numpadadd::         				 send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
 	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	F21 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
+	F21 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::                Clip()
+	F21::                Clip()
 	Mbutton::            
 		Click 3
 		clip()
@@ -199,6 +206,7 @@ OUTLOOK:
 	^5::                 send,{Ctrldown}{3}{CtrlUp}
 	^`::                 send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 	F20 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
+	F21 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
 OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
@@ -212,6 +220,7 @@ OneNote:
 	^4::                 send,{Ctrldown}{1}{CtrlUp}
 	$Mbutton up::        sendinput,{ctrlup}
 	F20 up::             PasteScreenshot()
+	F21 up::             PasteScreenshot()
 		PasteScreenshot(){
 		sleep 200
 		sendinput, +^{4}
@@ -223,6 +232,7 @@ OneNote:
 		; sleep 200
 		sleep 200
 		KeyWait, F20,
+		KeyWait, F21,
 		MouseClick, left,,, 1, 0, u
 		send,{enter}
 		sleep 200 ;screenshot"}
@@ -233,17 +243,18 @@ OneNote:
 		return
 		}
 	F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
+	F21 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 
 #IfWinActive,
 
 Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
-	Mbutton::            menu.Remote_Desktop()
+	; Mbutton::            menu.Remote_Desktop()
 	F13::                TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 #ifwinactive, ahk_class #32770
-	Mbutton::            menu.Remote_Login()
+	; Mbutton::            menu.Remote_Login()
 	; F19::              menu.Remote_Login()
 #ifwinactive, ahk_class TscShellContainerClass
 	; F19::              menu.Remote_Desktop()
-	Mbutton::            menu.Remote_Desktop()
+	; Mbutton::            menu.Remote_Desktop()
 

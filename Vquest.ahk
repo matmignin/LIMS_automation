@@ -1,20 +1,41 @@
 ﻿gosub, vquest_start
 SetNumLockState, on
+CheckTime:=500
 ; #if getnumlock 
 return
-Starting_test:
-; Test_2()
-return
+CheckActive:
+  ; Varbar.Follow()
+  if winexist("Excel - \\Remote") ;shrink excel 
+    WinGet, winminmax, MinMax , Excel - \\Remote,
+      if (winminmax=1){
+        winactivate, Excel - \\Remote
+        send, {lwindown}{down}{lwinup}
+        sleep 300
+      }
+      If Follow 
+      {
+        If (Winexist("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote")) && WinExist("Excel - \\Remote")
+          WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, "NuGenesis LMS - \\Remote"
+        else
+          WinGetTitle, WinTitle, A 
+        VarWin_X := LMS_X+(LMS_W/2)-400
+        VarWin_Y := LMS_Y
+        WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
+      }
+      If A_TimeIdle >10000
+        send, {ctrlUp}{altup}
+  return
+  
+  
+  
+  
+  
+  Starting_test:
+  ; Test_2()
+  return
 
-ReadSpecIntoDataBase:
- iniread, full, data.ini, %Product%, ;ecc738
- Test_Specs:= strsplit(Full,"=")
- Test:=Test_Specs[1]
- Specs:= strsplit(Test_Specs[2],"|")
- msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+; ______________________________________________________________________
 
- LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-Return 
 
 
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
@@ -25,7 +46,6 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 }
 
 
-; ______________________________________________________________________
 WindowNames(){
  global
  Loop, Read, WindowNames.ini
@@ -50,66 +70,63 @@ return
 }
 
 StopSub:
-exitapp
+  exitapp
 Return
 VarBar_ResetSub:
  VarBar.Reset()
 return
 Run_Display:
  run, Display.url, C:\Users\mmignin\Desktop\
-Run_CL3:
+CL3(){
  Run, cl3.Ahk, lib\CL3
+}
  return
-Run_CodeAlt:
- Run, Coding.ahk
-return
-run_Inverted:
- Menu, Tray, ToggleCheck, Inverted
- If Inverted := !Inverted
-  IniWrite, 1, data.ini, Locations, Inverted
- else
-  IniWrite, 0, data.ini, Locations, Inverted
- send,{esc}
-return
-run_ShowSampleID:
+
+ShowSampleID(){
+  global
   Menu, Tray, ToggleCheck, ShowSampleID
  If ShowSampleID := !ShowSampleID
   IniWrite, 1, data.ini, Locations, ShowSampleID
  else
   IniWrite, 0, data.ini, Locations, ShowSampleID
- reload
+ Varbar.Show()
+}
+
+MouseCLip(){
+  global
+ Menu, Tray, ToggleCheck, MouseClip
+ If MouseClip:= !MouseClip
+  IniWrite, 1, data.ini, Locations, MouseClip
+ else 
+  IniWrite, 0, data.ini, Locations, Mouseclip
+ Varbar.Show()
+}
 return
-run_Follow:
- Menu, Tray, ToggleCheck, VarbarFollow
- If follow:= !follow
-  Varbar.Follow()
-  ; IniWrite, 1, data.ini, Locations, follow
- else
-  IniWrite, 0, data.ini, Locations, Follow
-;  send,{esc}
-return
-Run_Listlines:
- ListLines
-return
-WindowSpySub:
+KeyHistory(){
+  KeyHistory
+}
+
+WindowSpy(){
  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-return
-ExitSub:
-exitapp
-return
+}
+
+Exitsub(){
+  exitapp
+}
+
 
 #IfWinActive,
 ; #include <TrackPad>
-#include <LMS KEYS>
-#include <KEYS>
-; #include <LMS TRACKPAD>
 #include <VScode>
+#include <KEYS>
+; #include <LMS KEYS>
+; #include <LMS TRACKPAD>
 #Include <clip>
 #Include <Firefox>
+#Include <OpenApp>
 #Include <LMS>
 #Include <Snipper>
 #Include <Office KEYS>
-#Include <OpenApp>
 #Include <AutoFill>
 #include <varBar>
 #include <ProductTab>
@@ -122,8 +139,8 @@ return
 #include <wheel>
 #include <mouse>
 #include <click>
-#include <Vim>
-#include <Notes>
+; #include <Vim>
+; #include <Notes>
 ; #include <SaveWindow>
 ; #include <Cl3.ahk>
 
@@ -140,25 +157,33 @@ VQuest_Start:
 
 CrLf=`r`n
 FileName:="lib/WinPos.txt"
-
-
+ 
  envget, PrevProduct, PrevProduct
 
 ; AutoTrim, On
  #WinActivateForce
  SetWorkingDir, %A_ScriptDir%
- Menu, Tray, Add, CL3, Run_cl3
- Menu, Tray, Add, CodeAlt, Run_CodeAlt
- Menu, Tray, Add, ResetVarbar, Varbar_ResetSub
- Menu, Tray, Add, VarbarFollow, Run_Follow
- menu, tray, add, Inverted, Run_Inverted
- menu, tray, add, ShowSampleID, Run_ShowSampleID
+ Menu, Tray, Add, CL3, CL3
+ Menu, Tray, Add, MouseClip, Mouseclip
+ menu, tray, add, ShowSampleID, showSampleID
+  ; Iniread, ShowSampleIDState, data.ini, Locations, ShowSampleIDState
+  ; if showsampleidstate = 1
+  ;   Menu, Tray, Check, ShowsampleID
+  ; else
+  ;   Menu, Tray, unCheck, ShowsampleID
+  
+  ; Iniread, MouseClipState, data.ini, Locations, MouseclipState
+  ; if MouseClipstate = 1
+  ;   Menu, Tray, Check, MouseClip
+  ; else
+  ;   Menu, Tray, unCheck, MouseClip
+;  msgbox % ShowampleID
  Menu, tray, NoStandard
 ;  Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
- Menu, Tray, Add, List Lines, Run_ListLines
+ Menu, Tray, Add, KeyHistory, KeyHistory
  Menu, Tray, Add, Exit, ExitSub
- Menu, Tray, Add, windowSpy, WindowSpySub
- Menu, Tray, Default, windowSpy ;Run_Listlines
+ Menu, Tray, Add, windowSpy, WindowSpy
+ Menu, Tray, Default, KeyHistory
 
 ;#Warn, All, OutputDebug
 ; #Warn UseUnsetLocal, OutputDebug
@@ -181,8 +206,8 @@ FileName:="lib/WinPos.txt"
  Run, cl3.Ahk, lib\CL3
  try
  Menu, Tray, Icon, Robot.ico
-
-
+settimer, CheckActive, %CheckTime%
+varbar.Show()
 OnExit("Varbar.Exit")
 
  CopyPasteToggle=0
@@ -192,31 +217,42 @@ OnExit("Varbar.Exit")
  Excel.Connect(1)
  IfWinExist, ahk_exe WFICA32.EXE
   LMS.Orient()
-  if (Inverted = 1)
-    Menu, Tray, Check, Inverted
+  if (MouseClip = 1)
+    Menu, Tray, Check, MouseClip
   else
-    Menu, Tray, unCheck, Inverted
-  if (ShowSampleID = 0)
-    Menu, Tray, unCheck, showsampleID
-  else
+    Menu, Tray, unCheck, MouseClip
+    
+    if (ShowSampleID = 1)
     Menu, Tray, Check, showsampleID
+  else
+    Menu, Tray, unCheck, showsampleID
+  ; if (Inverted = 1)
+    ; Menu, Tray, Check, Inverted
+  ; else
+    ; Menu, Tray, unCheck, Inverted
+  ; if (ShowSampleID = 0)
+    ; Menu, Tray, unCheck, showsampleID
+  ; else
+    ; Menu, Tray, Check, showsampleID
   
-  if (ShowSampleID = 0)
-    Menu, Tray, unCheck, showsampleID
-  else
-    Menu, Tray, Check, showsampleID
-  if (Follow = 1)
-    varbar.follow()
-  else
-    Menu, Tray, unCheck, VarbarFollow
+  ; TrayMenu.CheckBoxes("showSampleID")
+  ; TrayMenu.CheckBoxes("Inverted")
+  ; TrayMenu.CheckBoxes("VarbarFollow")
+  ; TrayMenu.CheckBoxes("MouseClip")
+  ; if (ShowSampleID = 0)
+    ; Menu, Tray, unCheck, showsampleID
+  ; else
+    ; Menu, Tray, Check, showsampleID
+  ; if (Follow:= 1)
+    ; Menu, Tray, Check, VarbarFollow
+  ; else
+    ; Menu, Tray, unCheck, VarbarFollow
+      if WinExist("Vquest.ahk" ,,"Visual Studio Code")
+          winclose,
+        
 gosub, Starting_test
 
-  setCheckBoxes(CheckboxName){
-    if (checkboxname = 0)
-      Menu, Tray, unCheck, CheckBoxName
-    else
-      Menu, Tray, Check, CheckBoxName    
-    }
+
 #IfWinActive,
 On:="On"
 Off:="Off"
@@ -231,3 +267,4 @@ tThk:=A_TimesinceThisHotkey
 tsPhk:=A_TimesincePriorHotkey
 tPhk:=A_TimesincePriorHotkey
 ;_____
+  

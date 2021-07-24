@@ -122,6 +122,41 @@ class Menu{
     Menu, Menu, Add, Kilgore, Passwords
   Menu.show()
   }
+  
+  Apps(){
+  global
+  try Menu.delete()
+    Menu, Menu, Add, &MouseClip , MouseClip 
+    menu, menu, add
+    Menu, Menu, Add, &LMS , !l 
+    Menu, Menu, Add, &VScode , !v 
+    Menu, Menu, Add, &Outlook, !o
+    Menu, Menu, Add, &Phone, !p
+    Menu, Menu, Add, &Workbook, !w 
+    Menu, Menu, Add, &Explorer, !e 
+    Menu, Menu, Add, &Qther, Tests 
+    Menu, SubMenu, Add, &Sample Log, F2 
+    Menu, SubMenu, Add, &Product Checklist, F3 
+    Menu, SubMenu, Add, &All Label Copy, F4 
+  Menu, Menu, add, &Qther, :SubMenu
+  Menu.show()
+  }
+  Varbar(){
+  global
+  try Menu.delete()
+    Menu, Menu, Add, &MouseClip , MouseClip 
+    Menu, Menu, Add, &VScode , !v 
+    Menu, Menu, Add, &Outlook, !o
+    Menu, Menu, Add, &Phone, !p
+    Menu, Menu, Add, &Workbook, !w 
+    Menu, Menu, Add, &Explorer, !e 
+    Menu, Menu, Add, &Qther, Tests 
+    Menu, SubMenu, Add, &Sample Log, F2 
+    Menu, SubMenu, Add, &Product Checklist, F3 
+    Menu, SubMenu, Add, &All Label Copy, F4 
+  Menu, Menu, add, &Qther, :SubMenu
+  Menu.show()
+  }
   Remote_desktop(){
   global
   try
