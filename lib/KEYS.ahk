@@ -82,8 +82,9 @@ F19_And_F20:
 	F20 & Space::          Sendinput, %batch%
 	F21 & Space::          Sendinput, %batch%
 	F19 & backspace::      send,{delete}
-	F20 & Rbutton::        Clip("OCR")
-	F21 & Rbutton::        Clip("OCR")
+	F20 & Insert::        Clip("OCR")
+	F20 & Media_Play_Pause::        Clip("OCR")
+	F21 & Insert::        Clip("OCR")
 	F20 & F7::             Excel.NextSheet()
 	F21 & F7::             Excel.NextSheet()
 	F20 & F6::             Excel.PrevSheet()
@@ -120,6 +121,7 @@ F19_And_F20:
 	F21 & F19::            send, {F22}
 	F19 & lbutton::        ^Lbutton
 	F20::                  Clip_C()
+	F20 & F21::            send, {F21}
 	F21::                  Clip_C()
 	F19 up::               Clip_V()
 	F19 & Media_Play_pause::

@@ -117,8 +117,9 @@ Exitsub(){
 
 #IfWinActive,
 ; #include <TrackPad>
-#include <VScode>
+; #include <VScode>
 #include <KEYS>
+#include <Vim>
 ; #include <LMS KEYS>
 ; #include <LMS TRACKPAD>
 #Include <clip>
@@ -138,8 +139,7 @@ Exitsub(){
 #include <vis2>
 #include <wheel>
 #include <mouse>
-#include <click>
-; #include <Vim>
+; #include <click>
 ; #include <Notes>
 ; #include <SaveWindow>
 ; #include <Cl3.ahk>
