@@ -57,9 +57,9 @@ WORD:
 		
 		Table_Entry(Entry){
 			Global Iteration
-				if Iteration > 0
+				if Iteration < 0
 					Direction:="{Tab}"
-				If Iteration < 0
+				If Iteration > 0
 					Direction:="{Down}+{tab}{Tab}"
 			send % Entry Direction
 		}
