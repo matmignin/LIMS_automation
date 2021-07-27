@@ -1,56 +1,79 @@
 #Ifwinactive,
 
 KEY_DEFAULT:
-	F17::menu.Apps()
-  F15::MouseClip()
-  F16::!tab  
-	; ~alt & tab::clip_C()
-  Xbutton2 & Wheelup::	  send, {F9}
-  Xbutton2 & Wheeldown::	send, {F8}
-  Xbutton2 & Wheelleft::	send, {F6}
-  Xbutton2 & Wheelright::	send, {F7}
-	Xbutton1 & Wheelup::		send, {NumpadMult}
-	Xbutton1 & Wheeldown::	send, {NumpadDiv}
-	Xbutton1 & Wheelleft::	send, {Numpadsub}
-	Xbutton1 & Wheelright::	send, {Numpadadd}
-  Xbutton1::              clip_C()
-	Xbutton2::              Numlock
-	+Backspace::						backspace
-	+^z::										send, {shiftup}{Ctrldown}{y}{CtrlUp}
-	~<+rshift::							alttab
-	~>+lshift::							ShiftAltTab
+	F15::								menu.Apps()
+	F17::								MouseClip()
+	Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
+	Media_Prev::					send, {altdown}{tab}{altup}`
+	Media_Play_Pause:: 			send, {ctrldown}{altdown}{tab}{altup}{ctrlup}
+	Volume_Down::					send, {lwindown}{tab}{lwinup}
+	F16::								send, !{tab}
+	$#F7::							send, {lwindown}{right}{lwinup}
+	$#F6::							send, {lwindown}{left}{lwinup}
+	$#F9::							send, {lwindown}{up}{lwinup}
+	$#F8::							send, {lwindown}{down}{lwinup}
+	$!F7::							send, {laltdown}{right}{laltup}
+	$!F6::							send, {laltdown}{left}{laltup}
+	$!F9::							send, {laltdown}{up}{laltup}
+	$!F8::							send, {laltdown}{down}{laltup}
+	Xbutton2 & Wheelup::			Gosub, F9
+	Xbutton2 & Wheeldown::		Gosub, F8
+	Xbutton2 & Wheelleft::		Gosub, F6
+	Xbutton2 & Wheelright::		Gosub, F7
+	Xbutton1 & Wheelup::			Gosub, NumpadMult
+	Xbutton1 & Wheeldown::		Gosub, NumpadDiv
+	Xbutton1 & Wheelleft::		Gosub, Numpadsub
+	Xbutton1 & Wheelright::		Gosub, Numpadadd
+	; Xbutton1::						clip_C()
+	; Xbutton2::						Numlock
+	WheelRight::					GoSub, F7
+	WheelLeft::						GoSub, F6
+	+Backspace::					backspace
+	+^z::								send, {shiftup}{Ctrldown}{y}{CtrlUp}
+	~<+rshift::						alttab
+	~>+lshift::						ShiftAltTab
 	lshift & Appskey::			Return
 	rshift & Appskey::			return
-	<^;::             			sendinput, %Timestring%{space}
+	<^;::	 							sendinput, %Timestring%{space}
 	~Lbutton & left:: 			sendinput, %SampleID%
 	~Lbutton & Down:: 			sendinput, %Coated%
 	~Lbutton & right::			sendinput, %Lot%
-	~Lbutton & up::   			sendinput, %SampleID%
-	F20 & /::         			send, %SampleID%
-	F21 & /::         			send, %SampleID%
-	/ & Down::        			send, %Coated%
-	/ & right::       			send, %Lot%
-	/ & up::          			send, %SampleID%
-	/::               			send, /
-	` & 1::									Test_1()
-	` & 2::									Test_2()
-	` & 3::									Test_3()
-	`::               			sendraw, ``
-	~>+lbutton::          	sendinput,{shiftDown}{click}{shiftup}
+	~Lbutton & up::	 			sendinput, %SampleID%
+	F20 & /::	 					send, %SampleID%
+	F21 & /::	 					send, %SampleID%
+	/ & Down::						send, %Coated%
+	/ & .::							send, {?}
+	/ & right::	 					send, %Lot%
+	/ & up::							send, %SampleID%
+	/::	 							send, /
+	` & Del::						Test(Iteration)
+	` & 1::							Test_1()
+	` & 2::							Test_2()
+	` & 3::							Test_3()
+	`::	 							sendraw, ``
+	~>+lbutton::					send,{shiftDown}{click}{shiftup}
 	
-	#if MouseClip
+	
+	
+#if MouseClip
 	sendlevel 2
-	~Lbutton::
-Test_1()
-	varbar.Show()
-return	
-	Mbutton::clip()
-	$Numlock::            	
-												StrReplace(clipboard, "`n", "")
-												send, {ctrldown}{v}{ctrlup}
-												return
+	; ~Lbutton::
+	; 									ClickClip()
+	; 									; ControlsetText, Static1,%Clipboard%,VarBar
+	; 									StrReplace(clipboard, "`n`r", "")
+	; 									sleep 100
+	; 									; TT(Clipboard,4000,1,1,3,100)
+	; 									return	
+	Mbutton::
+										clip()
+										GuiControl,Varbar:Text, Clipboard, %Clipboard%
+										return
+	$Numlock::	        	
+										StrReplace(clipboard, "`n", "")
+										send, {ctrldown}{v}{ctrlup}
+										return
 	#if
-		Mbutton::								TrackPad.3Tap() ;	TMbutton() ;	ClipPaste()
+		Mbutton::					TrackPad.3Tap() ;	TMbutton() ;	ClipPaste()
 		; Mbutton::								TrackPad.3Tap() ;	TMbutton() ;	ClipPaste()
 	  ; Numlock::
 		; 	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 300)
@@ -58,14 +81,14 @@ return
 		; 	else
 		; 		ClipPaste()
 		; 	return
-sendlevel 0
+	sendlevel 0
 
-	Media_Play_Pause::			
-		send, ^{c}
-		winactivate, screencaps
-		sleep 200
-		send, {down}{enter}^{v}
-		return
+	; Media_Play_Pause::			
+	; 	send, ^{c}
+	; 	winactivate, screencaps
+	; 	sleep 200
+	; 	send, {down}{enter}^{v}
+	; 	return
 
 	<^Space::              varbar.focus("Note1")
 
@@ -185,12 +208,6 @@ numpaddiv::           #down
 
 
 
-#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-	enter::                           
-							winactivate, %the_WinTitle%
-							click, %caret_X%, %caret_y%
-							return
-
 
 class TrackPad {
 	3Right(){
@@ -296,6 +313,8 @@ class TrackPad {
 					clk(67, 754) ;edit results
 				else if (Tab="Samples")
 						clk(107, 319) ;assign Requests
+				else if (Tab="Tests")
+						WorkTab.DeleteRetain() ;delete retain tests
 				else if (Tab="Welcome") {
 				Menu,Menu, add, &Production Server, LMS_Env
 				Menu,Menu, add, &Test Server, LMS_Env
@@ -304,8 +323,8 @@ class TrackPad {
 				; else
 					; Menu.LMS()
 			}
-			else if Winactive("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-				Sendpassword()
+			; else if Winactive("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
+			; 	Sendpassword()
 			else if winactive("ahk_exe firefox.exe")
 				send, {ctrldown}{click}{ctrlup}
 			else If WinActive("LMS Workbook.xlsb")
@@ -437,8 +456,7 @@ Results_Definition:
 
 Register_new_samples:
   #ifwinactive, Register new samples - \\Remote
-	F9::
-		ControlGetText, Product, Product, VarBar
+	F7::
 		clk(181, 104,2,2)
 		sleep 300
 		send, %Product%{enter}
@@ -449,7 +467,13 @@ Result_Entry:
     #MaxThreadsPerHotkey 2
       F9::WorkTab.ChangeTestResults("loop")
     #MaxThreadsPerHotkey 1 
-
+Other_LMS_KEYS:
+	#ifwinactive, Reason for Change - \\Remote
+	F13 & v::
+						send % "Verification" 
+						sleep 200
+						Click.Okay()
+						return
 WFICA32:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
 	F20 & Space::						send, %Batch%
@@ -473,42 +497,26 @@ WFICA32:
 	F7::						TrackPad.3Right()
 	F6::						TrackPad.3Left()	
 	; ~alt & tab::clip_C()
-  Xbutton2 & Wheelup::	  TrackPad.3up()
-  Xbutton2 & Wheeldown::	TrackPad.3Down()
-  Xbutton2 & Wheelleft::	TrackPad.3Left()
-  Xbutton2 & Wheelright::TrackPad.3Right()
-	Xbutton1 & Wheelup::		send, {NumpadMult}
-	Xbutton1 & Wheeldown::	send, {NumpadDiv}
-	Xbutton1 & Wheelleft::	send, {Numpadsub}
-	Xbutton1 & Wheelright::	send, {Numpadadd}
-  XButton1::              clip_c()
-	; Xbutton2::              mbutton
-; Mbutton::clippaste()
-  ; $Mbutton::TrackPad.3Tap()
-  ; numlock::LMS.Movetab("Home")
-	numpadMult::excel.connect()
-  ; Numpadadd::lms.MoveTab("Right")
-  ; NumpadSub::lms.MoveTab("Left")
-		numpadadd::Excel.NextSheet()
-		numpadsub::Excel.PrevSheet()
-  Media_Prev::varbar.SubIteration(20)
-  Media_next::Varbar.AddIteration(20)
-  ; numlock::TrackPad.4tap()
 
-	Rbutton & Wheelup::   	send, Wheel_cut() 
-	Rbutton & Wheeldown:: 	send, Wheel_paste()
-	Rbutton & F19::       	send, VS_Code_WindowInfo() 
+	numpadMult::excel.connect()
+	numpadadd::Excel.NextSheet()
+	numpadsub::Excel.PrevSheet()
+
+	Rbutton & F19::       	send % VS_Code_WindowInfo() 
 	Rbutton & F6::        	send, Backspace
 	Rbutton & Lbutton::   	send, Enter
-	Rbutton::             	send, Mouse_RbuttonUP()
+	Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
 
 
 MouseIsOver:
-
-
+	return
 #If Mouse_IsOver("LMS Workbook.xlsb")
 	numpadadd::Excel.NextSheet()
 	numpadsub::Excel.PrevSheet()
+#If Mouse_IsOver("ahk_exe OUTLOOK.EXE")
+			Click 3
+		clip()
+		return
 #If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe")
 	F7::LMS.SearchBar(Batch,"{enter}")
 	F6::LMS.SearchBar(Product,"{enter}")

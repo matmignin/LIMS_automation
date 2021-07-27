@@ -3,11 +3,13 @@ SetNumLockState, on
 CheckTime:=500
 ; #if getnumlock 
 return
+
+
 CheckActive:
   ; Varbar.Follow()
   if winexist("Excel - \\Remote") ;shrink excel 
     WinGet, winminmax, MinMax , Excel - \\Remote,
-      if (winminmax=1){
+        if (winminmax=1){
         winactivate, Excel - \\Remote
         send, {lwindown}{down}{lwinup}
         sleep 300
@@ -17,7 +19,7 @@ CheckActive:
         If (Winexist("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote")) && WinExist("Excel - \\Remote")
           WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, "NuGenesis LMS - \\Remote"
         else
-          WinGetTitle, WinTitle, A 
+        WinGetTitle, WinTitle, A 
         VarWin_X := LMS_X+(LMS_W/2)-400
         VarWin_Y := LMS_Y
         WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
@@ -91,6 +93,15 @@ ShowSampleID(){
   IniWrite, 0, data.ini, Locations, ShowSampleID
  Varbar.Show()
 }
+ShowCoated(){
+  global
+  Menu, Tray, ToggleCheck, ShowCoated
+ If ShowCoated := !ShowCoated
+  IniWrite, 1, data.ini, Locations, ShowCoated
+ else
+  IniWrite, 0, data.ini, Locations, ShowCoated
+ Varbar.Show()
+}
 
 MouseCLip(){
   global
@@ -99,6 +110,17 @@ MouseCLip(){
   IniWrite, 1, data.ini, Locations, MouseClip
  else 
   IniWrite, 0, data.ini, Locations, Mouseclip
+ Varbar.Show()
+}
+ShowNotes(){
+  global
+;  Menu, Tray, ToggleCheck, ShowNotes
+ If ShowNotes:= !ShowNotes
+  Notes.Show()
+else
+  Notes.Close()
+  IniRead, Note1, data.ini, SavedVariable, Note1
+  IniRead, Note2, data.ini, SavedVariable, Note2
  Varbar.Show()
 }
 return
@@ -118,8 +140,8 @@ Exitsub(){
 #IfWinActive,
 ; #include <TrackPad>
 ; #include <VScode>
-#include <KEYS>
 #include <Vim>
+#include <KEYS>
 ; #include <LMS KEYS>
 ; #include <LMS TRACKPAD>
 #Include <clip>
@@ -140,7 +162,7 @@ Exitsub(){
 #include <wheel>
 #include <mouse>
 ; #include <click>
-; #include <Notes>
+#include <Notes>
 ; #include <SaveWindow>
 ; #include <Cl3.ahk>
 
@@ -163,21 +185,12 @@ FileName:="lib/WinPos.txt"
 ; AutoTrim, On
  #WinActivateForce
  SetWorkingDir, %A_ScriptDir%
+ Menu, Tray, Add, Exit, ExitSub
  Menu, Tray, Add, CL3, CL3
  Menu, Tray, Add, MouseClip, Mouseclip
  menu, tray, add, ShowSampleID, showSampleID
-  ; Iniread, ShowSampleIDState, data.ini, Locations, ShowSampleIDState
-  ; if showsampleidstate = 1
-  ;   Menu, Tray, Check, ShowsampleID
-  ; else
-  ;   Menu, Tray, unCheck, ShowsampleID
-  
-  ; Iniread, MouseClipState, data.ini, Locations, MouseclipState
-  ; if MouseClipstate = 1
-  ;   Menu, Tray, Check, MouseClip
-  ; else
-  ;   Menu, Tray, unCheck, MouseClip
-;  msgbox % ShowampleID
+ menu, tray, add, ShowCoated, ShowCoated
+ menu, tray, add, ShowNotes, ShowNotes
  Menu, tray, NoStandard
 ;  Menu, tray, Click, 1 ; this will show the tray menu because we send{rbutton} at the DoubleTrayClick label
  Menu, Tray, Add, KeyHistory, KeyHistory
@@ -221,34 +234,16 @@ OnExit("Varbar.Exit")
     Menu, Tray, Check, MouseClip
   else
     Menu, Tray, unCheck, MouseClip
-    
-    if (ShowSampleID = 1)
+  if (ShowSampleID = 1)
     Menu, Tray, Check, showsampleID
   else
+    Menu, Tray, unCheck, ShowCoated
+  if (ShowCoated = 1)
+    Menu, Tray, Check, ShowCoated
+  else
     Menu, Tray, unCheck, showsampleID
-  ; if (Inverted = 1)
-    ; Menu, Tray, Check, Inverted
-  ; else
-    ; Menu, Tray, unCheck, Inverted
-  ; if (ShowSampleID = 0)
-    ; Menu, Tray, unCheck, showsampleID
-  ; else
-    ; Menu, Tray, Check, showsampleID
-  
-  ; TrayMenu.CheckBoxes("showSampleID")
-  ; TrayMenu.CheckBoxes("Inverted")
-  ; TrayMenu.CheckBoxes("VarbarFollow")
-  ; TrayMenu.CheckBoxes("MouseClip")
-  ; if (ShowSampleID = 0)
-    ; Menu, Tray, unCheck, showsampleID
-  ; else
-    ; Menu, Tray, Check, showsampleID
-  ; if (Follow:= 1)
-    ; Menu, Tray, Check, VarbarFollow
-  ; else
-    ; Menu, Tray, unCheck, VarbarFollow
-      if WinExist("Vquest.ahk" ,,"Visual Studio Code")
-          winclose,
+  if WinExist("Vquest.ahk" ,,"Visual Studio Code")
+    winclose,
         
 gosub, Starting_test
 

@@ -20,12 +20,11 @@ Clip(input=0){
     if (A_PriorKey != "F20") || (A_PriorKey != "Mbutton")
       exit
     send, {home}+{end}^{c}
+  }
     sleep      20
     RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", cProduct)
     RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
-  ; RegExMatch(Clipboard, "(?<=Coated: )\b\d{3}-\d{4}\b", cCoated)
     RegExMatch(Clipboard, "i)(coated: |/?ct# |/?ct#|ct |coated )\d{3}-\d{4}\b", cCoated)
-  ; RegExMatch(Clipboard, "(?<=Ct# )|(?<=Coated.?)\b\d{3}-\d{4}\b", cCoated)
     RegExMatch(cCoated,   "\d{3}-\d{4}", cCoated)
     RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
     RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
@@ -79,14 +78,111 @@ Clip(input=0){
   GuiControl,Varbar:Text, Department, %Department%
   if (Input==0) {
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " `n " Department,4000,,,3)
+      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department,4000,Varbar_x,30,3,150)
     else 
-      TT(Clipboard,400, 50,50,3)
+        TT(Clipboard,200,A_ScreenWidth,10,3)
     }
   else
     return 
   }
+
+ClickClip(){
+	global
+MouseGetPos, xx
+TimeButtonDown = %A_TickCount%
+; Wait for it to be released
+Loop
+{
+   Sleep 10
+   GetKeyState, LButtonState, LButton, P
+   if LButtonState = U  ; Button has been released.
+   {
+      If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
+      {
+        ;  clip()
+         send, {ctrldown}{c}{ctrlup}
+         return
+      }
+      break
+   }
+   elapsed = %A_TickCount%
+   elapsed -= %TimeButtonDown%
+   if elapsed > 200  ; Button was held down too long, so assume it's not a double-click.
+   {
+      MouseGetPos x0, y0            ; save start mouse position
+      Loop
+   {
+     Sleep 20                    ; yield time to others
+     GetKeyState keystate, LButton
+     IfEqual keystate, U, {
+       MouseGetPos x, y          ; position when button released
+       break
+     }
+   }
+   if (x-x0 > 5 or x-x0 < -5 or y-y0 > 5 or y-y0 < -5)
+   {                             ; mouse has moved
+      clip0 := ClipBoardAll      ; save old clipboard
+      ClipBoard =
+      ; Clip()                   ; selection -> clipboard
+      send, {ctrldown}{c}{ctrlup}
+      ClipWait 1, 1              ; restore clipboard if no data
+      IfEqual ClipBoard,, SetEnv ClipBoard, %clip0%
+   }
+      return
+   }
 }
+; Otherwise, button was released quickly enough.  Wait to see if it's a double-click:
+TimeButtonUp = %A_TickCount%
+Loop
+{
+   Sleep 10
+   GetKeyState, LButtonState, LButton, P
+   if LButtonState = D  ; Button has been pressed down again.
+      break
+   elapsed = %A_TickCount%
+   elapsed -= %TimeButtonUp%
+   if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a double-click.
+      return
+}
+
+;Button pressed down again, it's at least a double-click
+TimeButtonUp2 = %A_TickCount%
+Loop
+{
+   Sleep 10
+   GetKeyState, LButtonState2, LButton, P
+   if LButtonState2 = U  ; Button has been released a 2nd time, let's see if it's a tripple-click.
+      break
+}
+;Button released a 2nd time
+TimeButtonUp3 = %A_TickCount%
+Loop
+{
+   Sleep 10
+   GetKeyState, LButtonState3, LButton, P
+   if LButtonState3 = D  ; Button has been pressed down a 3rd time.
+      break
+   elapsed = %A_TickCount%
+   elapsed -= %TimeButtonUp%
+   if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
+   {  ;Double-click
+      send, {ctrldown}{c}{ctrlup}
+      ; clip()
+      return
+   }
+}
+;Tripple-click:
+   Sleep, 100
+	 Send, {ctrldown}{a}{ctrlup}
+	 sleep 100
+   send, {ctrldown}{c}{ctrlup}
+  ;  clip()
+return
+	
+	return
+}
+
+
 
 ClickText(button:=""){
 	mousegetpos, mousex, mousey
@@ -105,10 +201,10 @@ ClipPaste(){
     clipboard:=ClipboardSaved
     StrReplace(clipboard, "`n", "")
       send, ^{v}
-      tt("paste",,100,100)
+      tt("paste",,100,100,,150)
     }
   else
-      tt(clipboard,,100,100)
+      tt(clipboard,,100,100,,150)
     return 
   }
 

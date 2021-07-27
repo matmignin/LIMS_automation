@@ -75,6 +75,20 @@ SearchBar(Code:="",PostCmd:=""){
 		}
 		
 	}
+SearchRequest(Code){    
+		Global            
+		winactivate, NuGenesis LMS - \\Remote
+		this.detectTab()
+		sleep 200
+		clk(xtab2,ytabs)
+		if (tab!="Request")
+			clk(xRequestsTab, yMyWorkTabs)
+		else
+		sleep 500
+		THIS.searchbar(code)
+		send, {ctrlup}
+		return
+	}
 
 
 MoveTab(Direction){
@@ -282,7 +296,7 @@ FilterStatus(){
 	; return
 	}
 Filter(x:="Status"){
- global
+	global
 	FilterOn:=
 	FilterOff:=
 	if !WinActive("NuGenesis LMS - \\Remote")
@@ -358,8 +372,8 @@ SaveCode(){
 		send, {enter}
 		FileAppend, %Batch% `n, Batch.txt
 		FileAppend, %product% `n, Product.txt
-		iniwrite, %Batch%, Codes.ini, Batch,
-		iniwrite, %Product%, Codes.ini, Product, 
+		iniwrite, %Batch%, Codes.ini, %Product%,
+		iniwrite, %Product%, Codes.ini, %Product%, 
 		return
                     ;  creating an array and resorting without duplicates
 	;  oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]

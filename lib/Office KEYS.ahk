@@ -13,8 +13,19 @@ explorer:
 	F7::                 	send, 		{lwindown}{s}{lwinup}
 	F6::                 	Varbar.SearchExplorer()
 	^w::									closewindow()
-
-
+	
+	#ifwinactive, Task View, 
+	F7::										send, {right}
+	F6::										send, {left}
+	F9::										send, {up}
+	F8::										send, {down}
+	Mbutton::								send, {space}
+	Numpaddiv::							
+	send, {Click R}
+	sleep 100 
+	send, {up}{enter}
+return
+WORD:
 #IfWinActive, Word ahk_exe WINWORD.EXE
 	F19::                	Send, ^v
 	F13 & space::					sendinput, +{tab}{tab}
@@ -42,35 +53,40 @@ explorer:
 		F19 & h::left
 		F19 & l::right
 		F19 & space::send, +{tab}{tab}
-		F19 & /::send, N/A{down} 
-		F13 & /::send, N/A{down} 
-		F19 & n::send, N{down} 
-		F13 & n::send, N{down} 
-		F13 & y::send, Y{down} 
-		F19 & y::send, Y{down} 
-		F19 & m::send, Y{down} 
-		F13 & m::send, Y{down} 
-		F19 & f::send, FALSE{down} 
-		F13 & f::send, FALSE{down} 
-		F19 & ,::send, FALSE{down} 
-		F19 & t::send, TRUE{down} 
-		F13 & t::send, TRUE{down} 
-		F19 & .::send, TRUE{down} 
-		F13 & .::send, TRUE{down} 
+		F19 & `;::send, {tab}
+		
+		Table_Entry(Entry){
+			Global Iteration
+				if Iteration > 0
+					Direction:="{Tab}"
+				If Iteration < 0
+					Direction:="{Down}+{tab}{Tab}"
+			send % Entry Direction
+		}
+		F19 & /::Table_Entry("N/A")
+		F19 & n::Table_Entry("N")
+		F19 & y::Table_Entry("Y")
+		F19 & m::Table_Entry("Y")
+		F19 & f::Table_Entry("FALSE")
+		F19 & ,::Table_Entry("FALSE")
+		F19 & t::Table_Entry("TRUE")
+		F19 & .::Table_Entry("TRUE")
+		Xbutton2 & Wheelup::			Gosub, F9
+		Xbutton2 & Wheeldown::		Gosub, F8
+		Xbutton2 & Wheelleft::		Gosub, F6
+		Xbutton2 & Wheelright::		Gosub, F7
+		Xbutton1 & Wheelup::			Gosub, NumpadMult
+		Xbutton1 & Wheeldown::		Gosub, NumpadDiv
+		Xbutton1 & Wheelleft::		Gosub, Numpadsub
+		Xbutton1 & Wheelright::		Gosub, Numpadadd
 		F8::send, {enter}
 		F6::send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
 		F7::send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	:*:mm;::
 					send, Mat Mignin{tab 2}%TimeString%
 					return			
-	#ifwinactive, Verification 
 
-	#ifwinactive, Reason for Change - \\Remote
-	F13 & v::
-						send % "Verification" 
-						sleep 200
-						Click.Okay()
-						return
+
 	
 FindAndReplaceWord(find,Replace,AllOrOne:="a"){
 		send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
@@ -160,7 +176,6 @@ Excel:
 	}
 OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
-
 	F19 & enter::        send, {ctrldown}{enter}{ctrlup}
 	numpadadd::         				 send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
 	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
@@ -168,31 +183,23 @@ OUTLOOK:
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F21 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
-	F20::                Clip()
-	F21::                Clip()
+	F20::                Clip_c()
+	F21::                Clip_c()
 	Mbutton::            
 		Click 3
 		clip()
 		return
-	F7::                 
-		winactivate, NuGenesis LMS - \\Remote
-		sleep 200
-		lms.searchbar(Batch)
-		return
-	F6::                 
+	F7::LMS.SearchRequest(Batch)
+		; winactivate, NuGenesis LMS - \\Remote
+		; sleep 200
+		; lms.searchbar(Batch)
+		; return
+	F9::                 
 		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
 		lms.searchbar(Product)
 		return
-	F8::                 
-		winactivate, NuGenesis LMS - \\Remote
-		sleep 200
-		clk(xRequestsTab, yMyWorkTabs)
-		sleep 300
-		lms.searchbar(Batch)
-		send, {ctrlup}
-		return
-	
+	F6::LMS.SearchRequest(Batch)    
 	return
 	
 	
@@ -249,12 +256,12 @@ OneNote:
 
 Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
-	; Mbutton::            menu.Remote_Desktop()
-	F13::                TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
+	Mbutton::            menu.Remote_Desktop()
+	; F13::                TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 #ifwinactive, ahk_class #32770
-	; Mbutton::            menu.Remote_Login()
-	; F19::              menu.Remote_Login()
+	Mbutton::            menu.Remote_Login()
+	F19::              menu.Remote_Login()
 #ifwinactive, ahk_class TscShellContainerClass
-	; F19::              menu.Remote_Desktop()
-	; Mbutton::            menu.Remote_Desktop()
+	F19::             menu.Remote_Desktop()
+	Mbutton::            menu.Remote_Desktop()
 

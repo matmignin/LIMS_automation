@@ -15,8 +15,8 @@ Show(){  ;array - remove duplicates (case insensitive)
 		; LoadedNotes1:=MyArray[A_index]
 	; }
 	LoadedNotes1:=MyArray[1]
-	; LoadedNotes2:=MyArray[2]
-	; LoadedNotes3:=MyArray[3]
+	LoadedNotes2:=MyArray[2]
+	LoadedNotes3:=MyArray[3]
 	; LoadedNotes4:=MyArray[4]
 	; LoadedNotes5:=MyArray[5]
 	; LoadedNotes6:=MyArray[6]
@@ -27,7 +27,7 @@ Show(){  ;array - remove duplicates (case insensitive)
 	gui, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
 	; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
 	; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
-	loop % myarray.MaxIndex() {
+	loop 2 {
 		n:=A_index + 1
 		Myedit=myedit%n%
 		Note:=myArray[n]
@@ -35,11 +35,12 @@ Show(){  ;array - remove duplicates (case insensitive)
 	}
 	; OnMessage(0x84, "WM_NCHITTEST")
 	; OnMessage(0x83, "WM_NCCALCSIZE")
-	gui, Notes:color, 836000
+	gui, Notes:color, 21a366
 	; OnMessage(0x203, "Notes.Relocate")
-	
-	gui, Notes:show, w 145 x%My_ScreenWidth% y%my_screenheight%,Notes
-	WinSet, Transparent, 180
+	Notes_x:=Varbar_x+136
+	Notes_y:=Varbar_Y+30
+	gui, Notes:show, w145 x%Notes_x% y%Notes_y% ,Notes
+	WinSet, Transparent, 195
 	return
 	
 }
@@ -62,11 +63,13 @@ close(){
   Filedelete, lib/Notes.txt
 	sleep 200
 	; loop 4
+	IniWrite, %Notes_X%, data.ini, Locations, Notes_X
+	IniWrite, %Notes_y%, data.ini, Locations, Notes_Y
 	Fileappend, %MyEdit1%`n, lib/Notes.txt
 	Fileappend, %MyEdit2%`n, lib/Notes.txt
 	Fileappend, %Myedit3%`n, lib/Notes.txt
-	Fileappend,w2s %Myedit4%`n, lib/Notes.txt
-	Fileappend, %Myedit5%`n, lib/Notes.txt
+	; Fileappend, %Myedit4%`n, lib/Notes.txt
+	; Fileappend, %Myedit5%`n, lib/Notes.txt
 	gui, Notes:destroy
   return
 } 
@@ -79,10 +82,10 @@ close(){
 	Fileappend, %MyEdit1%`n, lib/Notes.txt
 	Fileappend, %MyEdit2%`n, lib/Notes.txt
 	Fileappend, %Myedit3%`n, lib/Notes.txt
-	Fileappend, %Myedit4%`n, lib/Notes.txt
-	Fileappend, %Myedit5%`n, lib/Notes.txt
-	Fileappend, %Myedit6%`n, lib/Notes.txt
-	Fileappend, %Myedit7%`n, lib/Notes.txt
+	; Fileappend, %Myedit4%`n, lib/Notes.txt
+	; Fileappend, %Myedit5%`n, lib/Notes.txt
+	; Fileappend, %Myedit6%`n, lib/Notes.txt
+	; Fileappend, %Myedit7%`n, lib/Notes.txt
 	; Fileappend, %Myedit8%`n, lib/Notes.txt
 	; Fileappend, %Myedit9%`n, lib/Notes.txt
 	; Fileappend, %Myedit10%`n, lib/Notes.txt
@@ -93,8 +96,8 @@ close(){
 
 Relocate(){
 		global
-		PostMessage, 0xA1, 2
-		keywait, Lbutton, U
+		; PostMessage, 0xA1, 2
+		; keywait, Lbutton, U
 		wingetpos, Notes_x, Notes_y,W,H, Notes ahk_class AutoHotkeyGUI
 		; Excel.Connect()
 		IniWrite, %Notes_x%, data.ini, Locations, Notes_x
@@ -119,12 +122,13 @@ WM_NCCALCSIZE()
 	; Note:=RegExReplace(Note "`n", "m`a)(?=^\s*;).*\R") ; remove commented lines
 	; Note:=RegExReplace(Note, "\R+\R", "`r`n")     ; remove empty lines
 NotesButtonOK:
-
 	notes.Save()
+	notes.Close()
 	return
 	
 	NotesGuiClose:
 	NotesGuiEscape:
+	notes.Save()
 	notes.Close()
 	; gui, Notes:submit, nohide
 	; gui, Notes:destroy

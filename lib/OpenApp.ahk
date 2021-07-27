@@ -51,27 +51,27 @@ F4::
   Run, AutoHotkey.chm, C:\Users\mmignin\Documents
   return
 OpenApps:
-; #IfWinNotActive, ahk_exe Code.exe
-;  F13 & f::OpenApp.Firefox()
- <!f::OpenApp.Firefox()
- F13 & v::OpenApp.vsCode()
- !v::OpenApp.vsCode()
- ; !c::OpenApp.Clickup()
- !e::send,{LWinDown}{e}{lwinup}
- !+v::OpenApp.VPN()
- !o::OpenApp.Outlook()
- !p::OpenApp.YourPhone()
- F20 & p::OpenApp.YourPhone()
- F21 & p::OpenApp.YourPhone()
- !d::OpenApp.Display()
- ; !n::run, notes.ahk, %A_ScriptDir%\lib
- f20 & n::
- f21 & n::
- !n::openApp.OneNote()
- +!n::openApp.stickyNotes()
- !w::OpenApp.Workbook()
- F13 & e::OpenApp.Workbook()
- !l::OpenApp.LMS()
+  <!f::OpenApp.Firefox()
+  !v::OpenApp.vsCode()
+  ; !c::OpenApp.Clickup()
+  !e::send,{LWinDown}{e}{lwinup}
+  !+v::OpenApp.VPN()
+  !o::OpenApp.Outlook()
+  !d::OpenApp.Display()
+  ; !n::run, notes.ahk, %A_ScriptDir%\lib
+  F20 & p::
+  F21 & p::
+  !p::OpenApp.YourPhone()
+  f20 & n::
+  f21 & n::
+  !n::openApp.OneNote()
+  +!n::openApp.stickyNotes()
+  !w::OpenApp.Workbook()
+  !l::OpenApp.LMS()
+#IfWinNotActive, ahk_exe Code.exe
+  F13 & f::OpenApp.Firefox()
+  F13 & v::OpenApp.vsCode()
+  F13 & e::OpenApp.Workbook()
 #ifwinnotactive
 
 

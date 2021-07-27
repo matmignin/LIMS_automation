@@ -112,8 +112,8 @@ Mouse_IsOver(WinTitle){
 
 #If Mouse_IsOver("CL3ClipChain")
 	Rbutton::			        gosub, clipchainmenu
-	^up::			         gosub, ClipchainMoveUp
-	^Down::			       gosub, ClipchainMoveDown
+	; ^up::			         gosub, ClipchainMoveUp
+	; ^Down::			       gosub, ClipchainMoveDown
 	wheeldown::			       gosub, ClipchainMoveDown
 	Backspace::			     gosub, ClipChainDel
 #If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
@@ -147,8 +147,8 @@ Mouse_IsOver(WinTitle){
 												return
 #IfWinActive, CL3ClipChain
 	Rbutton::			        gosub, clipchainmenu
-	up::			         gosub, ClipchainMoveUp
-	Down::			       gosub, ClipchainMoveDown
+	; up::			         gosub, ClipchainMoveUp
+	; Down::			       gosub, ClipchainMoveDown
 	Backspace::			     gosub, ClipChainDel
 
 	#IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
@@ -236,8 +236,8 @@ return
 }
 
 #If ClipChainActive()
-	up::			         gosub, ClipchainMoveUp
-	Down::			       gosub, ClipchainMoveDown
+	; up::			         gosub, ClipchainMoveUp
+	; Down::			       gosub, ClipchainMoveDown
 	Delete::			     gosub, ClipChainDel
 	^c::			         send, ^c
 	F20 & F19::			  
@@ -248,7 +248,11 @@ return
 	^numpaddiv::			gosub, ClipchainMoveDown
 	\::	  	gosub, clipchainmenu
 
-	F19::			        clipChain_v()
+	F19::			        
+	clicktext(3)
+	clipChain_v()
+	return
+	
 	$Rshift::			    
 										sendinput, +{tab}{tab}
 										ClipChainInsert()

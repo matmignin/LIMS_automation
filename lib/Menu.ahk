@@ -2,165 +2,187 @@
 return
 class Menu{
 
-  show(){
-  global
-  Try Menu,menu,show
-  }
-  
-  Delete(){
-  global
-  try Menu,Menu, deleteAll
-  }
-  
-  add(Item:="",group:="MenuHandle"){
-  global
-  Menu,menu,add,%item%,%group%
-  }
-  
-  LMS(){
-  Global
-  try Menu.delete()
-  if winactive("NuGenesis LMS - \\Remote"){
-  LMS.DetectTab()
-  if (Tab="Samples")
-    Menu, Menu, add, New &Request, AutoFill
-  if (Tab="Specs") {
-      Menu,Menu, add, Copy &Template, autofill
-    If CopyPasteToggle=1
-      Menu,Menu, add, Paste &Specs, Autofill
-    If CopyPasteToggle=0
-      Menu,Menu, add, Copy &Specs, Autofill
-  }
-  if (Tab="Tests")
-    Menu,Menu, add, &Delete Retain, Autofill
+    show(){
+    global
+    Try Menu,menu,show
+    }
     
-  Menu.show()
-  return
-  }
-  
-  if winactive("Edit specification - \\Remote"){
-    Menu, Menu, add, &Analytical, AutoFill
-    Menu, Menu, add, &Physical, AutoFill
-    Menu, Menu, add, &Micro, AutoFill
-    Menu, Menu, add, &Retain, AutoFill
-    Menu, Menu, add, &Coated_Physical, AutoFill
-    Menu, Menu, add, &Coated_Retain, AutoFill
-  Menu.show()
-  }
-  if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
-    ; Menu.add("&Spec Table","Tests")
-    Menu,Menu, add
-    Menu, Menu, Add, &USP Heavy Metal,Autofill
-    Menu, Menu, Add, &Canada Heavy Metal,Autofill
-    Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
-    Menu, Menu, Add, &Report Only Heavy Metal,Autofill
-  Menu.show()
-  return
-  }
-  if winactive("Edit specification - \\Remote"){
-    Menu,Menu, add, Departments, Autofill
-    Menu, DepartmentsMenu, add, Analytical, AutoFill
-    Menu, DepartmentsMenu, add, Physical, AutoFill
-    Menu, DepartmentsMenu, add, Micro, AutoFill
-    Menu, DepartmentsMenu, add, Retain, AutoFill
-    Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
-    Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
-    Menu,Menu, add, departments, :DepartmentsMenu
-  Menu.show()
-  return
-  }
-  if Winactive("Login - \\Remote"){
-    ; Menu,Menu, add, &Login, LMS_Env
-    Menu,Menu, add, &Production Server, LMS_Env
-    Menu,Menu, add, &Test Server, LMS_Env
-  Menu.show()
-  }
-  else
+    Delete(){
+    global
+    try Menu,Menu, deleteAll
+    }
+    
+    add(Item:="",group:="MenuHandle"){
+    global
+    Menu,menu,add,%item%,%group%
+    }
+    
+    LMS(){
+    Global
+    try This.delete()
+    if winactive("NuGenesis LMS - \\Remote"){
+    LMS.DetectTab()
+    if (Tab="Samples")
+      Menu, Menu, add, New &Request, AutoFill
+    if (Tab="Specs") {
+        Menu,Menu, add, Copy &Template, autofill
+      If CopyPasteToggle=1
+        Menu,Menu, add, Paste &Specs, Autofill
+      If CopyPasteToggle=0
+        Menu,Menu, add, Copy &Specs, Autofill
+    }
+    if (Tab="Tests")
+      Menu,Menu, add, &Delete Retain, Autofill
+      
+    This.show()
     return
-  }
+    }
+    
+    if winactive("Edit specification - \\Remote"){
+      Menu, Menu, add, &Analytical, AutoFill
+      Menu, Menu, add, &Physical, AutoFill
+      Menu, Menu, add, &Micro, AutoFill
+      Menu, Menu, add, &Retain, AutoFill
+      Menu, Menu, add, &Coated_Physical, AutoFill
+      Menu, Menu, add, &Coated_Retain, AutoFill
+    This.show()
+    }
+    if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
+      ; This.add("&Spec Table","Tests")
+      Menu,Menu, add
+      Menu, Menu, Add, &USP Heavy Metal,Autofill
+      Menu, Menu, Add, &Canada Heavy Metal,Autofill
+      Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
+      Menu, Menu, Add, &Report Only Heavy Metal,Autofill
+    This.show()
+    return
+    }
+    if winactive("Edit specification - \\Remote"){
+      Menu,Menu, add, Departments, Autofill
+      Menu, DepartmentsMenu, add, Analytical, AutoFill
+      Menu, DepartmentsMenu, add, Physical, AutoFill
+      Menu, DepartmentsMenu, add, Micro, AutoFill
+      Menu, DepartmentsMenu, add, Retain, AutoFill
+      Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
+      Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
+      Menu,Menu, add, departments, :DepartmentsMenu
+    This.show()
+    return
+    }
+    if Winactive("Login - \\Remote"){
+      ; Menu,Menu, add, &Login, LMS_Env
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
+    This.show()
+    }
+    else
+      return
+    }
   
   
   Variable(){
-  global
-  ; Menu, Menu, add, &Variables, Variable
-    if Product
-      Menu, menu, Add, &Product `t %Product%, Variable
-    if Batch
-      Menu, menu, Add, &Batch `t %Batch%, Variable
-    if Lot
-      Menu, menu, Add, &Lot `t %Lot%, Variable
-    if SampleID
-      Menu, menu, Add, &SampleID `t %SampleID%, Variable
-    if Name
-      Menu, menu, Add, &Name `t %name%, Variable
-    if Customer
-      Menu, menu, Add, Cus&tomer `t %Customer%, Variable
-    if Coated
-      Menu, menu, Add, &Coated `t %Coated%, Variable
-    if Color
-      Menu, menu, Add, C&olor `t %Color%, Variable
-    if ShapeSize
-      Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
-    if Weight
-      Menu, menu, Add, &Weight `t %Weight%, Variable
-  ; Menu,Menu, add, &Variables, :Variables
-  Menu.show()
-  }
-  Tables(){
-  try
-  Menu.delete()
-  Menu,Menu,add,&Spec Table,Tests
-  Menu,Menu,add,&Ingredient Table,Tests
-  ;menu,Menu,add,&Rotation Table,Tests
-  Menu.show()
-  ;Menu,menu,add
-  }
-  passwords(){
-  global
-  Menu.delete()
-    Menu, Menu, Add, VQ Login, Passwords
-    Menu, Menu, Add, Kilgore, Passwords
-  Menu.show()
-  }
-  
+    global
+    ; Menu, Menu, add, &Variables, Variable
+      if Product
+        Menu, menu, Add, &Product `t %Product%, Variable
+      if Batch
+        Menu, menu, Add, &Batch `t %Batch%, Variable
+      if Lot
+        Menu, menu, Add, &Lot `t %Lot%, Variable
+      if SampleID
+        Menu, menu, Add, &SampleID `t %SampleID%, Variable
+      if Name
+        Menu, menu, Add, &Name `t %name%, Variable
+      if Customer
+        Menu, menu, Add, Cus&tomer `t %Customer%, Variable
+      if Coated
+        Menu, menu, Add, &Coated `t %Coated%, Variable
+      if Color
+        Menu, menu, Add, C&olor `t %Color%, Variable
+      if ShapeSize
+        Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
+      if Weight
+        Menu, menu, Add, &Weight `t %Weight%, Variable
+    ; Menu,Menu, add, &Variables, :Variables
+    This.show()
+    }
+    Tables(){
+    try
+    This.delete()
+    Menu,Menu,add,&Spec Table,Tests
+    Menu,Menu,add,&Ingredient Table,Tests
+    ;menu,Menu,add,&Rotation Table,Tests
+    This.show()
+    ;Menu,menu,add
+    }
+    passwords(){
+    global
+    This.delete()
+      Menu, Menu, Add, VQ Login, Passwords
+      Menu, Menu, Add, Kilgore, Passwords
+    This.show()
+    }
+    
   Apps(){
   global
-  try Menu.delete()
+  try This.delete()
     Menu, Menu, Add, &MouseClip , MouseClip 
     menu, menu, add
     Menu, Menu, Add, &LMS , !l 
     Menu, Menu, Add, &VScode , !v 
     Menu, Menu, Add, &Outlook, !o
     Menu, Menu, Add, &Phone, !p
-    Menu, Menu, Add, &Workbook, !w 
+    ; Menu, Menu, Add, &Workbook, !w 
     Menu, Menu, Add, &Explorer, !e 
-    Menu, Menu, Add, &Qther, Tests 
-    Menu, SubMenu, Add, &Sample Log, F2 
+    ; Menu, Menu, Add, &WorkSheets, Tests 
+    Menu, SubMenu, Add, &workBook, !w 
+    Menu, SubMenu, Add, &Test Log, F2 
+    Menu, SubMenu, Add, &Sample Log, +F2 
     Menu, SubMenu, Add, &Product Checklist, F3 
     Menu, SubMenu, Add, &All Label Copy, F4 
-  Menu, Menu, add, &Qther, :SubMenu
-  Menu.show()
+  Menu, Menu, add, &WorkSeehts, :SubMenu
+    if Winexist("Login - \\Remote"){
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
+      }
+  This.show()
   }
   Varbar(){
   global
-  try Menu.delete()
+  try This.delete()
     Menu, Menu, Add, &MouseClip , MouseClip 
-    Menu, Menu, Add, &VScode , !v 
-    Menu, Menu, Add, &Outlook, !o
-    Menu, Menu, Add, &Phone, !p
-    Menu, Menu, Add, &Workbook, !w 
-    Menu, Menu, Add, &Explorer, !e 
-    Menu, Menu, Add, &Qther, Tests 
-    Menu, SubMenu, Add, &Sample Log, F2 
+      if mouseclip=1  
+        menu, menu, Check, &MouseClip
+        
+    Menu, Menu, Add, &ShowNotes, ShowNotes 
+      ; if ShowNotes=1  
+        ; menu, menu, Check, &ShowNotes
+        
+    Menu, Menu, Add, Show&SampleID, ShowSampleID 
+      if ShowSampleID=1  
+        menu, menu, Check, Show&SampleID
+        
+    Menu, Menu, Add, Show&Coated, ShowCoated 
+      if ShowCoated=1  
+        menu, menu, Check, Show&Coated
+    Menu, SubMenu, Add, &workBook, !w 
+    Menu, SubMenu, Add, &Test Log, F2 
+    Menu, SubMenu, Add, &Sample Log, +F2 
     Menu, SubMenu, Add, &Product Checklist, F3 
     Menu, SubMenu, Add, &All Label Copy, F4 
-  Menu, Menu, add, &Qther, :SubMenu
-  Menu.show()
+  Menu, Menu, add, &WorkSeehts, :SubMenu
+    if Winexist("Login - \\Remote"){
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
+      }
+  ; Menu, Menu, add, &Notes, Notes.Show
+  
+  This.show()
   }
   Remote_desktop(){
   global
   try
-  Menu.delete()
+  This.delete()
     Menu, Menu, Add, TESTING LMS, Remote_desktop
     Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
     Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
@@ -178,7 +200,7 @@ class Menu{
     Menu, Menu, Add, &LMS Login, Passwords
     Menu, Menu, Add, &VQ Login, Passwords
     Menu, Menu, Add,&Kilgore, Passwords
-  Menu.show()
+  This.show()
   return
   }
 }
@@ -186,7 +208,7 @@ return
 
 
 
-   Variable:
+Variable:
     if A_thismenuItem contains &Product `t %Product%,
     send % Product
    else if A_thismenuItem contains &Batch `t %Batch%
@@ -334,6 +356,8 @@ Remote_Desktop:
     
 
    LMS_Env:
+   IfWinExist, Login - \\Remote, 
+      WinActivate, Login - \\Remote
     sleep 200
     Send,mmignin{tab}Kilgore7744
     if A_thismenuItem contains &Login
