@@ -12,6 +12,7 @@ CheckActive:
         if (winminmax=1){
         winactivate, Excel - \\Remote
         send, {lwindown}{down}{lwinup}
+        WinMove, Excel - \\Remote, , -178, -1179, 780, 1023
         sleep 300
       }
       If Follow 
@@ -24,11 +25,18 @@ CheckActive:
         VarWin_Y := LMS_Y
         WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
       }
-      If A_TimeIdle >10000
+      If A_TimeIdle >1000
         send, {ctrlUp}{altup}
   return
   
-  
+; ReadSpecIntoDataBase:
+;   iniread, full, data.ini, %Product%,ecc738
+;   Test_Specs:= strsplit(Full,"=")
+;   Test:=Test_Specs[1]
+;   Specs:= strsplit(Test_Specs[2],"|")
+;   msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+;   LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+;   Return 
   
   
   
@@ -176,7 +184,6 @@ VQuest_Start:
  #InstallMouseHook
 ;  #MenuMaskKey vkE8
 
-
 CrLf=`r`n
 FileName:="lib/WinPos.txt"
  
@@ -220,6 +227,7 @@ FileName:="lib/WinPos.txt"
  try
  Menu, Tray, Icon, Robot.ico
 settimer, CheckActive, %CheckTime%
+
 varbar.Show()
 OnExit("Varbar.Exit")
 

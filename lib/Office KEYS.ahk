@@ -61,12 +61,12 @@ WORD:
 					Direction:="{Tab}"
 				If Iteration > 0
 					Direction:="{Down}+{tab}{Tab}"
-			send % Entry Direction
+			send % Entry Direction "{ctrlup}{altup}{shiftup}"
 		}
 		F19 & /::Table_Entry("N/A")
-		F19 & n::Table_Entry("N")
-		F19 & y::Table_Entry("Y")
-		F19 & m::Table_Entry("Y")
+		F19 & n::Table_Entry("No")
+		F19 & y::Table_Entry("Yes")
+		F19 & m::Table_Entry("Yes")
 		F19 & f::Table_Entry("FALSE")
 		F19 & ,::Table_Entry("FALSE")
 		F19 & t::Table_Entry("TRUE")
@@ -126,7 +126,7 @@ Excel:
 	#if
 	#IfWinActive, LMS Workbook.xlsb
                
-	F9::            Excel.Connect(1)
+	F9::      					Excel.Connect(1)
 	; Numlock::            lms.searchbar(Product)
 	F19 & backspace::    delete
 	F19 & down::         ^down

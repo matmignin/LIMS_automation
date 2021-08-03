@@ -99,7 +99,8 @@ Class VarBar{
 				WinSet, Transparent, 190, AHK_id %GUIID%
 					GUI,VarBar:Font,				s8 cBlack,arial Narrow
 					Gui, VarBar:color, 			B39D1B
-						Gui,VarBar:add,Text,	vClipboard 				 R3 x1 H19 y-3 w145 left,  						%Clipboard%     ; edit6
+					Gui,VarBar:Add,text, 		vIteration x265 y15 w18,																	%Iteration%	; Text1	
+					Gui,VarBar:add,Text,	vClipboard 				 R3 x1 H19 y-3 w145 left,  						%Clipboard%     ; edit6
 				; edit6
 			} Else {
 				Gui Varbar:Default
@@ -123,7 +124,7 @@ Class VarBar{
 					; Gui,VarBar:delete,Edit,	 	  vNote2 					gNotevarbar x133 H19 y15 w130,							%Note2%  		; edit7
 						; Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w60 left, 						%Note1%     ; edit6
 					} else {
-						GUI,VarBar:Font,				s8 cBlack,arial Narrow
+						GUI,VarBar:Font,				s7 cBlack,arial Narrow
 					Gui,VarBar:add,Edit,	 	  vNote2 					gNotevarbar x133 H19 y15 w130,							%Note2%  		; edit7
 					}
 					; If Coated
@@ -135,17 +136,17 @@ Class VarBar{
 					{
 						Gui,VarBar:add,Edit,	 	vSampleID 			gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
 						; Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w60 left, 						%Note1%     ; edit6
-						Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w60 left, 						%Note1%     ; edit6
+						Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w80 left, 						%Note1%     ; edit6
 					}
 					else
-						Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x133 H19 y-3 w145 left,  						%Note1%     ; edit6
+						Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x133 H19 y-3 w165 left,  						%Note1%     ; edit6
 			; 
 			}
 			CoordMode, mouse, screen
 			; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
 			; varbar_x:= Varbar_x +100
 			try
-				Gui, VarBar:Show, h31 x%VarBar_X% y%VarBar_y% w280 NoActivate, VarBar
+				Gui, VarBar:Show, h31 x%VarBar_X% y%VarBar_y% w300 NoActivate, VarBar
 			; Gui, VarBar:Show, h30 x%offset_X% y%offset_y% w320 NoActivate, VarBar
 			catch
 			{
@@ -156,6 +157,7 @@ Class VarBar{
 			CoordMode, mouse, window
 			; if (Follow=1)
 			ControlsetText, Static1, %Iteration%,VarBar
+			OnMessage(0x0201, "WM_LBUTTONDOWN")
 			WinSet, Transparent, 190, AHK_id %GUIID%
 			return
 
@@ -275,6 +277,7 @@ Class VarBar{
 			Follow:=0
 			return
 		}
+		
 
 		LaunchTable(){
 			global
@@ -343,6 +346,9 @@ Class VarBar{
 
 	exit(){
 		global
+		wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 		iniwrite, %Product%, data.ini, SavedVariables, Product
 		iniwrite, %Batch%, data.ini, SavedVariables, Batch
 		iniwrite, %Lot%, data.ini, SavedVariables, Lot
@@ -359,3 +365,29 @@ Class VarBar{
 		}
 
 	}
+			WM_LBUTTONDOWN(wParam, lParam)
+			{
+				X := lParam & 0xFFFF
+				Y := lParam >> 16
+				if A_GuiControl
+					Ctrl := "`n(in control " . A_GuiControl . ")"
+				; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
+				PostMessage, 0xA1, 2
+		; keywait, Lbutton, U T0.20
+			; if !errorlevel
+			; {
+				; keywait, Lbutton, U T3
+					; if errorlevel
+						; MouseClick, Left, , , 1, 0, U
+						; MouseClick, Left, , , 1, 0, U
+				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+				; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+				; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+					
+		; MouseClick, Left, , , 1, 0, U
+				; return
+			; }
+			; else
+		; MouseClick, Left, , , 1, 0, U
+					
+}

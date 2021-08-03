@@ -109,7 +109,7 @@ class click{
 			return
 	}
 	CopySpecTemplate(){
-		WinActivate, NuGenesis LMS - \\Remote
+		WinActivate, NuGenedsis LMS - \\Remote
 		click 102, 289 ;copy into new spec
 		WinWaitActive, Edit specification - Remote, ,1
 		if ErrorLevel

@@ -1,13 +1,56 @@
-
-
-
-
 #include <varbar>
 #include <mouse>
 
-
 Class Excel{
+Connect(reload:=0){
+	Global
+	Gui VarBar:+LastFound
+	envget, PrevProduct, PrevProduct
+	; envget, iteration, Iteration
+	Products:=[]
+	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
+	if WinExist("LMS Workbook.xlsb")
+		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
+	else{
+		TT("no notebook open",500)
+				; VarBar.load()
+				varbar.show()
+				return
+		}
+	Try {
+		XL := ComObjActive("Excel.Application")
+		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
+		XL.Visible := True
+		sht := XL.ActiveSheet.Name
+		if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
+			; return
+			xl.sheets(PrevProduct).select
+			; Excel.PrevSheet()
+	}
+	Catch {
+		; Excel.PrevSheet()
+		TT("Didnt connect to workbook", 500,,,1)
+		; excel.connect()
+		; return
+	}
+	This.InfoLocations()
+												; For sheet in xl.ActiveWorkbook.Worksheets
+												; 	Products.insert(Sheet.Name)
+												; Products.remove(1)
+												; Products.remove(1)
+												; loop 3{
+												; 	if (Products[A_index] = "Finished")
+												; 		break
+												; 	else
+												; 		DDLProducts .= "|" Products[A_index]
+												; }
 
+	Gui VarBar:+LastFound
+	if (Reload = 1)
+		VarBar.show()
+		; excel.MatchColor()
+	return
+	}
 InfoLocations(){
 	global
 	GuiControl, -redraw, varbar
@@ -36,62 +79,13 @@ InfoLocations(){
 	GuiControl, varbar:text, ShapeSize, %shapeSize%
 	EnvSet, PrevProduct, %Product%
 	GuiControl, +redraw, varbar
-	this.SaveToDataBase()
-}
-
-Connect(reload:=0){
-	Global
-	Gui VarBar:+LastFound
-	envget, PrevProduct, PrevProduct
-	; envget, iteration, Iteration
-	Products:=[]
-	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if WinExist("LMS Workbook.xlsb")
-		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
-	else{
-		TT("no notebook open",500,0,0,1)
-				; VarBar.load()
-				varbar.show()
-				return
-		}
-	Try{
-		XL := ComObjActive("Excel.Application")
-		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
-		XL.Visible := True
-		sht := XL.ActiveSheet.Name
-	if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			; xl.sheets(PrevProduct).select
-			return
-			; Excel.PrevSheet()
+	; this.SaveToDataBase()
 	}
-	Catch{
-		; Excel.PrevSheet()
-		TT("Didnt connect to workbook", 500,0,0,1)
-		; excel.connect()
-		; return
-	}
-												; For sheet in xl.ActiveWorkbook.Worksheets
-												; 	Products.insert(Sheet.Name)
-												; Products.remove(1)
-												; Products.remove(1)
-												; loop 3{
-												; 	if (Products[A_index] = "Finished")
-												; 		break
-												; 	else
-												; 		DDLProducts .= "|" Products[A_index]
-												; }
-	excel.InfoLocations()
-	Gui VarBar:+LastFound
-	if (Reload = 1)
-		VarBar.show()
-		; excel.MatchColor()
-	return
-}
 
 SearchWorkbook(SearchWord:=""){
 	send, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
 	return
-}
+	}
 
 SaveToDataBase(){
 	global
@@ -99,18 +93,18 @@ SaveToDataBase(){
  Test_Specs:= strsplit(Full,"=")
  Test:=Test_Specs[1]
  Specs:= strsplit(Test_Specs[2],"|")
-;  msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+ msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
 
-;  LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-Return 
-}
+ LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+	Return 
+	}
 
 ActiveCell(){
 	Global
 	ActiveCell := Xl.ActiveCell.value
 	ActiveCell := Trim((ActiveCell, "`r`n"))
-return ActiveCell
-}
+	return ActiveCell
+	}
 
 NextSheet(){
 	global
@@ -123,7 +117,7 @@ NextSheet(){
 		excel.connect()
 	Excel.MatchColor()
 	;GuiControl, +redraw, varbar
-}
+	}
 
 PrevSheet(){
 	global
@@ -141,22 +135,22 @@ PrevSheet(){
 
 MatchColor(){
 	Global
-		TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
-		if (TabColor = 16764057)
- 			Gui, VarBar:color, 8ea9db; blue
-		else if (TabColor = 65280)
-			Gui, VarBar:color, 21a366 ;green
-		else if (TabColor = 10092543) ;yellow
-			Gui, VarBar:color, ffff00 ;Yellow
-		else if (TabColor = 26367) 	;orange
-			Gui, VarBar:color, fF8966 ;orange
-		else if (TabColor = 12632256) 	;greay
-			Gui, VarBar:color, 808080 ;Gray
-		if (TabColor = 0) 	;black
-			Gui, VarBar:color, 808080 ;Gray
-		else
+	TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
+	if (TabColor = 16764057)
+		Gui, VarBar:color, 8ea9db; blue
+	else if (TabColor = 65280)
+		Gui, VarBar:color, 21a366 ;green
+	else if (TabColor = 10092543) ;yellow
+		Gui, VarBar:color, ffff00 ;Yellow
+	else if (TabColor = 26367) 	;orange
+		Gui, VarBar:color, fF8966 ;orange
+	else if (TabColor = 12632256) 	;greay
+		Gui, VarBar:color, 808080 ;Gray
+	if (TabColor = 0) 	;black
+		Gui, VarBar:color, 808080 ;Gray
+	else
 			Gui, VarBar:color, ffffff ;White
-}
+	}
 Get_Current_row(){
 	Global
 	LV_GetText(Position, Current_row,1)
@@ -167,14 +161,14 @@ Get_Current_row(){
 	;LV_Modify(Current_row, "Check")
 	sleep 100
 	return
-}
+	}
 Search(){
 	BlockInput, on
 	sendinput, ^f!t!h{right}{enter}!s{right}!t!n
 	BlockInput, off
 	sleep 200
 	return
-}
+	}
 
 
 }

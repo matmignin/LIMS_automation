@@ -9,7 +9,7 @@ SearchBar(Code:="",PostCmd:=""){
 		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Coated, Edit4, VarBar
 		if Showsampleid=1
-		ControlGetText, SampleId, Edit5, VarBar
+			ControlGetText, SampleId, Edit5, VarBar
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 					send, {ctrlup}
@@ -22,6 +22,7 @@ SearchBar(Code:="",PostCmd:=""){
 			send, %Product%
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
+			LMS.Orient()
 			LMS.DetectTab()
 			if (Tab="Products") {
 				If (Code=Product){
@@ -86,7 +87,7 @@ SearchRequest(Code){
 		else
 		sleep 500
 		THIS.searchbar(code)
-		send, {ctrlup}
+		send, {ctrlup}{enter}
 		return
 	}
 

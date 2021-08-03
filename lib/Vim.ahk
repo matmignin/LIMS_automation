@@ -47,20 +47,6 @@
 	F7::                                         F7
 	F8::                                         F8
 	F9::                                         F9
-	F20 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-	F21 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-	F20 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
-	F21 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
-	F19 & left::                                 send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
-	F19 & up::                                   send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
-	F19 & down::                                 send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
-	F19 & right::                                send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
-	F19 & -::                                    send, {ctrldown}{-}{ctrlup}
-	F19 & =::                                    send, {ctrldown}{=}{ctrlup}
-	F19 & y::                                    send, {ctrldown}{w}{ctrlup}
-	F19 & /::                                    send, {shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
-	F19 & i::                                    send, {numpad9}@
-	F19 & p::                                    send, {numpad8}
 	tab & f::                                    sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 	tab::                                        tab
 	; `::                                          send, {``}
@@ -84,18 +70,32 @@
 	F20 & h::                                    send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 	F21 & h::                                    send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 	F20 & k::                                    send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+	F20 & backspace::                            delete
+	F21 & backspace::                            delete
 	F21 & k::                                    send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	F20 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F21 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F20 & l::                                    send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
 	F21 & l::                                    send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
-	F19 & k::                                    send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+	F20 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+	F21 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+	F20 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
+	F21 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
+	F19 & left::                                 send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
+	F19 & up::                                   send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
+	F19 & down::                                 send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
+	F19 & right::                                send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
+	F19 & -::                                    send, {ctrldown}{-}{ctrlup}
+	F19 & =::                                    send, {ctrldown}{=}{ctrlup}
+	F19 & y::                                    send, {ctrldown}{w}{ctrlup}
+	F19 & /::                                    send, {shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
+	F19 & i::                                    send, {numpad9}@
+	F19 & p::                                    send, {numpad8}
 	F19 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F19 & l::                                    send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
 	F19 & h::                                    send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
-	F20 & backspace::                            delete
-	F21 & backspace::                            delete
 	f19 & `::                                    send, ~
+	F19 & k::                                    send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	f19 & r::                                    send, %process%
 	f19 & c::                                    send, %mouseposition%
 	f19 & t::                                    send, %wintitle%
@@ -103,8 +103,8 @@
 	f19 & n::                                    send, {shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
 	f19 & f6::                                   send,{ctrldown}{[}{ctrlup}
 	f19 & f7::                                   send,{ctrldown}{]}{ctrlup}
-	f19 & wheeldown::                            send,{ctrldown}{down}{ctrlup}
-	f19 & wheelup::                              send,{ctrldown}{up}{ctrlup}
+	; f13 & wheeldown::                            send,{ctrldown}{down}{ctrlup}
+	; f13 & wheelup::                              send,{ctrldown}{up}{ctrlup}
 	F13 & `::												delete
 	F13 & f7::                                   wheel_2("!{right}",10)
 	F13 & f6::                                   wheel_2("!{left}",10)
@@ -113,6 +113,7 @@
 	F13 & F11::                                  vs_code_windowinfo()
 	F13 & tab::												send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13::                                        send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
+	F19::                                        Numpad0
 	
 	#ifwinactive
 
@@ -451,7 +452,7 @@ FlashScreen(){
 	return
 	}
 
-TT(msg:="yo", time=1500, X:="",Y:="",W:="1", T:="") {
+TT(msg:="yo", time=1500, X:="",Y:="",W:="", T:="") {
 	global
 		N=1
 	CoordMode, ToolTip, Relative
@@ -460,10 +461,10 @@ TT(msg:="yo", time=1500, X:="",Y:="",W:="1", T:="") {
 	If !Y
 		Y:=A_CaretY-50
 	tooltip, %msg%, %X%, %Y%,%W%
-	hwnd := WinExist("ahk_class tooltips_class32")
-	if T
-   	WinSet, Trans, %T%, % "ahk_id" hwnd
-   	WinSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
+	; hwnd := WinExist("ahk_class tooltips_class32")
+	; if T
+   	; WinSet, Trans, %T%, % "ahk_id" hwnd
+   	; WinSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; CoordMode, ToolTip, screen 
 	; WinSet, Trans, 200, %W%
 	SetTimer, RemoveToolTip%W%, -%time% 

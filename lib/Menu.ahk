@@ -17,67 +17,81 @@ class Menu{
     Menu,menu,add,%item%,%group%
     }
     
-    LMS(){
-    Global
-    try This.delete()
-    if winactive("NuGenesis LMS - \\Remote"){
-    LMS.DetectTab()
-    if (Tab="Samples")
-      Menu, Menu, add, New &Request, AutoFill
-    if (Tab="Specs") {
+  CopyPasteSpec(){
+    global copypasteToggle
+      try This.delete()
         Menu,Menu, add, Copy &Template, autofill
       If CopyPasteToggle=1
         Menu,Menu, add, Paste &Specs, Autofill
       If CopyPasteToggle=0
         Menu,Menu, add, Copy &Specs, Autofill
-    }
-    if (Tab="Tests")
+      return
+  }
+  LMS(){
+  Global
+  try This.delete()
+  if winactive("NuGenesis LMS - \\Remote"){
+    LMS.DetectTab()
+    if (Tab="Samples")
+      Menu, Menu, add, New &Request, AutoFill
+    else if (Tab="Specs")
+      this.CopyPasteSpec()
+    else if (Tab="Requests")
+      clk(61, 635) ;enter results
+    else if (Tab="Products")
+      clk(67, 754) ;edit results
+    ; else if (Tab="Specs")
+    ;   clk(67, 754) ;edit results
+    else if (Tab="Samples")
+        clk(107, 319) ;assign Requests
+    else if (Tab="Tests")
       Menu,Menu, add, &Delete Retain, Autofill
-      
-    This.show()
-    return
-    }
-    
-    if winactive("Edit specification - \\Remote"){
-      Menu, Menu, add, &Analytical, AutoFill
-      Menu, Menu, add, &Physical, AutoFill
-      Menu, Menu, add, &Micro, AutoFill
-      Menu, Menu, add, &Retain, AutoFill
-      Menu, Menu, add, &Coated_Physical, AutoFill
-      Menu, Menu, add, &Coated_Retain, AutoFill
-    This.show()
-    }
-    if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
-      ; This.add("&Spec Table","Tests")
-      Menu,Menu, add
-      Menu, Menu, Add, &USP Heavy Metal,Autofill
-      Menu, Menu, Add, &Canada Heavy Metal,Autofill
-      Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
-      Menu, Menu, Add, &Report Only Heavy Metal,Autofill
-    This.show()
-    return
-    }
-    if winactive("Edit specification - \\Remote"){
-      Menu,Menu, add, Departments, Autofill
-      Menu, DepartmentsMenu, add, Analytical, AutoFill
-      Menu, DepartmentsMenu, add, Physical, AutoFill
-      Menu, DepartmentsMenu, add, Micro, AutoFill
-      Menu, DepartmentsMenu, add, Retain, AutoFill
-      Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
-      Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
-      Menu,Menu, add, departments, :DepartmentsMenu
-    This.show()
-    return
-    }
-    if Winactive("Login - \\Remote"){
-      ; Menu,Menu, add, &Login, LMS_Env
+    else {
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
+    }
     This.show()
-    }
-    else
-      return
-    }
+  } 
+  if winactive("Edit specification - \\Remote"){
+    Menu, Menu, add, &Analytical, AutoFill
+    Menu, Menu, add, &Physical, AutoFill
+    Menu, Menu, add, &Micro, AutoFill
+    Menu, Menu, add, &Retain, AutoFill
+    Menu, Menu, add, &Coated_Physical, AutoFill
+    Menu, Menu, add, &Coated_Retain, AutoFill
+  This.show()
+  }
+  if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
+    ; This.add("&Spec Table","Tests")
+    Menu,Menu, add
+    Menu, Menu, Add, &USP Heavy Metal,Autofill
+    Menu, Menu, Add, &Canada Heavy Metal,Autofill
+    Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
+    Menu, Menu, Add, &Report Only Heavy Metal,Autofill
+  This.show()
+  return
+  }
+  if winactive("Edit specification - \\Remote"){
+    Menu,Menu, add, Departments, Autofill
+    Menu, DepartmentsMenu, add, Analytical, AutoFill
+    Menu, DepartmentsMenu, add, Physical, AutoFill
+    Menu, DepartmentsMenu, add, Micro, AutoFill
+    Menu, DepartmentsMenu, add, Retain, AutoFill
+    Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
+    Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
+    Menu,Menu, add, departments, :DepartmentsMenu
+  This.show()
+  return
+  }
+  if Winactive("Login - \\Remote"){
+    ; Menu,Menu, add, &Login, LMS_Env
+    Menu,Menu, add, &Production Server, LMS_Env
+    Menu,Menu, add, &Test Server, LMS_Env
+  This.show()
+  }
+  else
+    return
+  }
   
   
   Variable(){
@@ -175,6 +189,8 @@ class Menu{
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
       }
+          Menu,Menu,add,&Spec Table,Tests
+    Menu,Menu,add,&Ingredient Table,Tests
   ; Menu, Menu, add, &Notes, Notes.Show
   
   This.show()

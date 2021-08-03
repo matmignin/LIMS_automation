@@ -24,10 +24,8 @@ KEY_DEFAULT:
 	Xbutton1 & Wheeldown::		Gosub, NumpadDiv
 	Xbutton1 & Wheelleft::		Gosub, Numpadsub
 	Xbutton1 & Wheelright::		Gosub, Numpadadd
-	; Xbutton1::						clip_C()
-	; Xbutton2::						Numlock
-	WheelRight::					GoSub, F7
-	WheelLeft::						GoSub, F6
+	Xbutton1::						clip_C()
+	Xbutton2::						Numlock
 	+Backspace::					backspace
 	+^z::								send, {shiftup}{Ctrldown}{y}{CtrlUp}
 	~<+rshift::						alttab
@@ -39,8 +37,7 @@ KEY_DEFAULT:
 	~Lbutton & Down:: 			sendinput, %Coated%
 	~Lbutton & right::			sendinput, %Lot%
 	~Lbutton & up::	 			sendinput, %SampleID%
-	F20 & /::	 					send, %SampleID%
-	F21 & /::	 					send, %SampleID%
+
 	/ & Down::						send, %Coated%
 	/ & .::							send, {?}
 	/ & right::	 					send, %Lot%
@@ -52,7 +49,10 @@ KEY_DEFAULT:
 	` & 3::							Test_3()
 	`::	 							sendraw, ``
 	~>+lbutton::					send,{shiftDown}{click}{shiftup}
-	
+	F19 & up::						send, %SampleID%
+	F19 & left::					send, %lot%
+	F19 & right::					send, %coated%
+	F19 & s::	 					send, %SampleID%
 	
 	
 #if MouseClip
@@ -90,71 +90,73 @@ KEY_DEFAULT:
 	; 	send, {down}{enter}^{v}
 	; 	return
 
-	<^Space::              varbar.focus("Note1")
+	<^Space::             	varbar.focus("Note1")
 
 F19_And_F20:
-	F20 & 9::              SaveWindow_Save()
-	F21 & 9::              SaveWindow_Save()
-	F20 & 0::              SavedWindow_Restore()
-	F21 & 0::              SavedWindow_Restore()
-	; F20 & '::            varbar.follow()
-	F13 & esc::							 Varbar.reset()	
-	; F21 & '::							 Varbar.reset()	
-	F19 & \::              CreditCard()
-	F19 & Space::          send, %product%
-	F20 & Space::          Sendinput, %batch%
-	F21 & Space::          Sendinput, %batch%
-	F19 & backspace::      send,{delete}
-	F20 & Insert::        Clip("OCR")
-	F20 & Media_Play_Pause::        Clip("OCR")
-	F21 & Insert::        Clip("OCR")
-	F20 & F7::             Excel.NextSheet()
-	F21 & F7::             Excel.NextSheet()
-	F20 & F6::             Excel.PrevSheet()
-	F21 & F6::             Excel.PrevSheet()
-	F20 & backspace::      run, Taskmgr.exe
-	F21 & backspace::      run, Taskmgr.exe
-	F20 & Right::          send, #{right}
-	F21 & Right::          send, #{right}
-	F20 & Left::           send, #{Left}
-	F21 & Left::           send, #{Left}
-	F20 & UP::             send, #{UP}
-	F21 & UP::             send, #{UP}
-	F20 & Down::           send, #{Down}
-	F21 & Down::           send, #{Down}
-	F20 & \::              Sendpassword()
-	F21 & \::              Sendpassword()
-	F20 & .::              VS_Code_WindowInfo()
-	F21 & .::              VS_Code_WindowInfo()
-	F20 & o::							 OpenApp.Outlook()
-	F21 & o::							 OpenApp.Outlook()
-	F20 & ,::              LMS.Orient()
-	F21 & ,::              LMS.Orient()
-	F20 & =::              sendinput,{CtrlDown}{=}{Ctrlup}
-	F21 & =::              sendinput,{CtrlDown}{=}{Ctrlup}
-	F20 & -::              sendinput,{CtrlDown}{-}{Ctrlup}
-	F21 & -::              sendinput,{CtrlDown}{-}{Ctrlup}
-	F20 & Rshift::         Test_2() 
-	F21 & Rshift::         Test_2() 
-	F20 & enter::					 varbar.focus("Edit5")
-	F21 & enter::					 varbar.focus("Edit5")
-	F20 & l::              OpenApp.LMS()
-	F21 & l::              OpenApp.LMS()
-	F20 & F19::            send, {F22}
-	F21 & F19::            send, {F22}
-	F19 & lbutton::        ^Lbutton
-	F20::                  Clip_C()
-	F20 & F21::            send, {F21}
-	F21::                  Clip_C()
-	F19 up::               Clip_V()
+	F20 & 9::             	SaveWindow_Save()
+	F21 & 9::             	SaveWindow_Save()
+	F20 & 0::             	SavedWindow_Restore()
+	F21 & 0::             	SavedWindow_Restore()
+	; F20 & '::           	varbar.follow()
+	F13 & esc::					Varbar.reset()	
+	; F21 & '::					Varbar.reset()	
+	F19 & \::             	CreditCard()
+	F19 & Space::         	send, %product%
+	F20 & Space::         	Sendinput, %batch%
+	F21 & Space::         	Sendinput, %batch%
+	F19 & backspace::     	send,{delete}
+	F20 & Insert::        	Clip("OCR")
+	F20 & Media_Play_Pause::Clip("OCR")
+	F21 & Insert::        	Clip("OCR")
+	F20 & F7::            	Excel.NextSheet()
+	F21 & F7::            	Excel.NextSheet()
+	F20 & F6::            	Excel.PrevSheet()
+	F21 & F6::            	Excel.PrevSheet()
+	F20 & backspace::     	run, Taskmgr.exe
+	F21 & backspace::     	run, Taskmgr.exe
+	F20 & Right::         	send, #{right}
+	F21 & Right::         	send, #{right}
+	F20 & Left::          	send, #{Left}
+	F21 & Left::          	send, #{Left}
+	F20 & UP::            	send, #{UP}
+	F21 & UP::            	send, #{UP}
+	F20 & Down::          	send, #{Down}
+	F21 & Down::          	send, #{Down}
+	F20 & \::             	Sendpassword()
+	F21 & \::             	Sendpassword()
+	F20 & .::             	VS_Code_WindowInfo()
+	F21 & .::             	VS_Code_WindowInfo()
+	F20 & o:: 				 	OpenApp.Outlook()
+	F21 & o::				 	OpenApp.Outlook()
+	F20 & =::             	sendinput,{CtrlDown}{=}{Ctrlup}
+	F21 & =::             	sendinput,{CtrlDown}{=}{Ctrlup}
+	F20 & -::             	sendinput,{CtrlDown}{-}{Ctrlup}
+	F21 & -::             	sendinput,{CtrlDown}{-}{Ctrlup}
+	F20 & Rshift::        	Test_2() 
+	F21 & Rshift::        	Test_2() 
+	F19 & enter::			 	varbar.focus("Edit1")
+	F20 & enter::			 	varbar.focus("Edit2")
+	F21 & enter::			 	varbar.focus("Edit2")
+	F20 & ,::					varbar.Focus("Edit2")
+
+
+	F20 & l::             	OpenApp.LMS()
+	F21 & l::             	OpenApp.LMS()
+	F20 & F19::           	send, {F22}
+	F21 & F19::           	send, {F22}
+	F19 & lbutton::       	^Lbutton
+	F20::                 	Clip_C()
+	F20 & F21::           	send, {F21}
+	F21::                 	Clip_C()
+	F19 up::              	Clip_V()
 	F19 & Media_Play_pause::
-													my_screenwidth:=A_ScreenWidth-215
-													my_screenheight:=A_Screenheight-115
-													IniWrite, %my_screenwidth%, data.ini, Locations, Notes_x
-													IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
-													Return
+									my_screenwidth:=A_ScreenWidth-215
+									my_screenheight:=A_Screenheight-115
+									IniWrite, %my_screenwidth%, data.ini, Locations, Notes_x
+									IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
+									Return
 	
-	F13 & Lbutton::        F13Click()
+	F13 & Lbutton::       	F13Click()
 
 
 
@@ -305,26 +307,11 @@ class TrackPad {
 		; if MousePaste
 		; 	; ClipPaste()
 		; else if !MousePaste {
-			If winactive("NuGenesis LMS - \\Remote") {
-				LMS.Detecttab()
-				if (Tab="Requests")
-					clk(61, 635) ;enter results
-				else if (Tab="Products")
-					clk(67, 754) ;edit results
-				else if (Tab="Samples")
-						clk(107, 319) ;assign Requests
-				else if (Tab="Tests")
-						WorkTab.DeleteRetain() ;delete retain tests
-				else if (Tab="Welcome") {
-				Menu,Menu, add, &Production Server, LMS_Env
-				Menu,Menu, add, &Test Server, LMS_Env
-				Menu.show()
-				} 
-				; else
-					; Menu.LMS()
-			}
-			; else if Winactive("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-			; 	Sendpassword()
+			If winactive("NuGenesis LMS - \\Remote") 
+			 Menu.Lms()
+
+			else if Winactive("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
+			 	Sendpassword()
 			else if winactive("ahk_exe firefox.exe")
 				send, {ctrldown}{click}{ctrlup}
 			else If WinActive("LMS Workbook.xlsb")
@@ -482,6 +469,8 @@ WFICA32:
 	F19 & up::							send, %sampleID%
 	F19 & left::						send, %lot%
 	F19 & right::						send, %coated%
+	F19 & s::	 						send, %SampleID%
+	F21 & /::	 						send, %SampleID%
 	$Rbutton up::						Mouse_RbuttonUP()
 	^`::										Varbar.reset()
 	enter::									click.okay()
