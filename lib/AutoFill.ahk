@@ -76,7 +76,18 @@
 				sleep 200
 				WinWaitNotActive, Error - \\Remote,,3
 				sleep 200
-				click.RegisterNewSamples()
+				; RegisterNewSamples(){
+					WinActivate, Register new samples - \\Remote
+					click 181, 103, 2
+					sleep 50
+					; click 181, 103,
+					sleep 300
+					send, %product%
+					sleep 300
+					send, {enter}
+					return
+					; }
+				; click.RegisterNewSamples()
 				sleep 300
 				return
 			}

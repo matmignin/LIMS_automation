@@ -1,6 +1,10 @@
 
 Clip(input=0){
-  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
+  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department,clippaste
+  if (ClipPaste = 1){
+      send, {ctrldown}{c}{ctrlup}
+      return
+  }
   ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
@@ -9,9 +13,9 @@ Clip(input=0){
   }
   clipboard:=
   if (input=="cut")
-    send, ^x
+    send, {ctrldown}{x}{ctrlup}
   else
-    send, ^c
+    send, {ctrldown}{c}{ctrlup}
   sleep %input%
   clipwait,0.55
   if errorlevel
@@ -39,7 +43,7 @@ Clip(input=0){
   If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
-        Fileappend, %cProduct%`n, lib/Product.txt
+        Fileappend, %cProduct%`n, lib/Products.txt
   }
   If cBatch {
     GuiControl,Varbar:Text, Batch, %cBatch%
@@ -192,6 +196,11 @@ ClickText(button:=""){
 	SetDefaultMouseSpeed, 1
 }
 ClipPaste(){
+  global Clippaste
+    if (ClipPaste = 1){
+      send, {ctrldown}{v}{ctrlup}
+      return
+  }
   ClipboardSaved:=ClipboardAll
   clipboard:=
     Clip()
@@ -200,7 +209,7 @@ ClipPaste(){
     {
     clipboard:=ClipboardSaved
     StrReplace(clipboard, "`n", "")
-      send, ^{v}
+      send, {ctrldown}{v}{ctrlup}
       tt("paste",,100,100,,150)
     }
   else
@@ -224,7 +233,7 @@ Clip_C2(){
         if (A_PriorKey="F20")
         {
           clipboard:=
-          send, ^x
+          send, {ctrldown}{x}{ctrlup}
           clipwait
           TT(clipboard,200)
           return
@@ -262,7 +271,11 @@ clip_c(){
 
 
 clip_v(){
-  Global
+global Clippaste
+    if (ClipPaste = 1){
+      send, {ctrldown}{v}{ctrlup}
+      return
+  }
     KeyWait, F19, T0.30
     If ErrorLevel
     {
@@ -285,13 +298,16 @@ clip_v(){
         If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
             wheel_paste()
           Else
-          return
+            return
       }
-            ; Send, ^v
       return
     }
 clip_ctrl(){
-  Global
+  Global clippaste
+      if (ClipPaste = 1){
+        send, {ctrldown}{v}{ctrlup}
+        return
+      }
     KeyWait, F19, T0.30
     If ErrorLevel
     {
@@ -314,7 +330,7 @@ clip_ctrl(){
         If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
             wheel_paste()
           Else
-          return
+            return
       }
             ; Send, ^v
       return
@@ -327,8 +343,12 @@ c
 */
 return
 clip_v2(){
-  Global
-      sendinput, {ctrlup}{altup}{shiftup}
+  global Clippaste
+    if (ClipPaste = 1){
+      send, {ctrldown}{v}{ctrlup}
+      return
+  }
+    sendinput, {ctrlup}{altup}{shiftup}
     KeyWait, F19, T0.35
     if !Errorlevel
       {

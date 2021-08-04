@@ -19,7 +19,7 @@ SearchBar(Code:="",PostCmd:=""){
 			clk(246,77, 2)
 		else If winactive("Register new samples - \\Remote") {
 			Clk(180, 103, 2)
-			send, %Product%
+			send, %Product%{enter}
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
 			LMS.Orient()
@@ -83,7 +83,7 @@ SearchRequest(Code){
 		sleep 200
 		clk(xtab2,ytabs)
 		if (tab!="Request")
-			clk(xRequestsTab, yMyWorkTabs)
+			clk(RequestsTab, yMyWorkTabs)
 		else
 		sleep 500
 		THIS.searchbar(code)
@@ -91,72 +91,138 @@ SearchRequest(Code){
 		return
 	}
 
-
-MoveTab(Direction){
-		global
-	lms.DetectTab()
-	If (Direction="Right") {
-		If Tab2
-			clk(xTab3,47) ;"{down 3}{enter}"
-		else If Tab3
-			clk(xTab4,47) ;"{down 4}{enter}"
-		else if Tab4
-			clk(xTab5,47) ;"{down 5}{enter}"
-		else if Tab5
-			clk(xTab6,47) ;"{down 6}{enter}"
-		else if Tab6
-			clk(xTab7,47) ;"{down 7}{enter}"
-		else if Tab7
-			clk(xTab8,47) ;"{down 8}{enter}"
-		else if Tab8
-			clk(xTab9,47) ;"{down 9}{enter}"
-		else if Tab1
-			clk(xTab2,47) ;"{down 9}{enter}"
-		else 
-			sendinput % clk(xTabSelect,47) "{up}{enter}"
-		return
-		}
-	if (Direction="Left") {
-		If Tab2
-			sendinput % clk(xTabSelect,47) "{Up}{enter}"
-		else if Tab3
-			clk(xTab2,47) ; "{down 2}{enter}"
-		else if Tab4
-			clk(xTab3,47) ; "{down 3}{enter}"
-		else if Tab5
-			clk(xTab4,47) ; "{down 4}{enter}"
-		else if Tab6
-			clk(xTab2,47) ; "{down 5}{enter}"
-		else if Tab7
-			clk(xTab2,47) ; "{down 6}{enter}"
-		else if Tab8
-			clk(xTab2,47) ; "{down 7}{enter}"
-		else if Tab9
-			clk(xTab2,47) ; "{down 8}{enter}"
-		else if Tab1
-			clk(xTab4,47) ; "{down 8}{enter}"
-		else
-			clk(xTabSelect,47) "{up}{enter}"
-		return
-	}
-	if (Direction="Home") {
-		if Tab2
-		{
-			if (Tab="Samples"){
-				Mouse_Save()
-				send, {click 83, 708}{click, %xRequestsTab%, %yMyWorkTabs%}%MouseReturn%
-			return	
-			}
-			else
-				clk(xSamplesTab,yMyWorkTabs)
-			Return
-		}
-		else
-			clk(xTab2,47) ;'"{Down 2}{enter}"
-		return
+ProductSpecToggle(){
+	global
+	WinActivate, NuGenesis LMS - \\Remote
+	; this.detectTab()
+		; if Tab2 
+	; {
+		; this.SelectTab(3)
+		; sleep 100
+	; }
+	if (tabToggle == 0)
+	{
+		this.SelectTab(4)
+		tabtoggle:=1
+	} 
+	else 
+	{
+		this.SelectTab(3)
+		tabtoggle:=0
 	}
 	return
+	; If lms.DetectTab() = "Product"
+	; else
 	}
+	
+SampleRequestToggle(){
+	global
+	WinActivate, NuGenesis LMS - \\Remote
+	this.detectTab()
+		if !Tab2 
+	{
+		this.SelectTab(2)
+		; clk(xtab2,ytabselect)
+		sleep 80
+	}
+	If lms.DetectTab() = "Samples"
+		clk(RequestsTab,yWorkTabs)
+	else
+		clk(SamplesTab,yWorkTabs)
+	}
+	
+SelectTab(Direction){
+	global TabSelect, yTabSelect
+	winactivate, NuGenesis LMS - \\Remote
+	send % clk(TabSelect,45)
+	send, {down %direction%}
+	sleep 60
+	send, {ctrldown}{enter}{ctrlup}
+}
+SelectWorkTab(TabSelect){
+	global
+	; TabSelect:=SamplesTab
+	winactivate, NuGenesis LMS - \\Remote
+	lms.detecttab()
+	if !Tab2 
+	{
+		this.SelectTab(2)
+		; clk(xtab2,ytabselect)
+		sleep 100
+	}
+	clk(TabSelect,yWorkTabs)
+	sleep 400
+
+}
+
+
+
+MoveTab2(Direction){
+			global
+			WinActivate, ahk_exe WFICA32.EXE
+			lms.DetectTab()
+			If (Direction="Right") {
+			If Tab2
+				clk(xTab3,47) ;"{down 3}{enter}"
+			else If Tab3
+				clk(xTab4,47) ;"{down 4}{enter}"
+			else if Tab4
+				clk(xTab5,47) ;"{down 5}{enter}"
+			else if Tab5
+				clk(xTab6,47) ;"{down 6}{enter}"
+			else if Tab6
+				clk(xTab7,47) ;"{down 7}{enter}"
+			else if Tab7
+				clk(xTab8,47) ;"{down 8}{enter}"
+			else if Tab8
+				clk(xTab9,47) ;"{down 9}{enter}"
+			else if Tab1
+				clk(xTab2,47) ;"{down 9}{enter}"
+			else 
+				sendinput % clk(TabSelect,47) "{up}{enter}"
+			return
+			}
+		if (Direction="Left") {
+			If Tab2
+				sendinput % clk(TabSelect,47) "{Up}{enter}"
+			else if Tab3
+				clk(xTab2,47) ; "{down 2}{enter}"
+			else if Tab4
+				clk(xTab3,47) ; "{down 3}{enter}"
+			else if Tab5
+				clk(xTab4,47) ; "{down 4}{enter}"
+			else if Tab6
+				clk(xTab2,47) ; "{down 5}{enter}"
+			else if Tab7
+				clk(xTab2,47) ; "{down 6}{enter}"
+			else if Tab8
+				clk(xTab2,47) ; "{down 7}{enter}"
+			else if Tab9
+				clk(xTab2,47) ; "{down 8}{enter}"
+			else if Tab1
+				clk(xTab4,47) ; "{down 8}{enter}"
+			else
+				clk(TabSelect,47) "{up}{enter}"
+			return
+		}
+		if (Direction="Home") {
+			if Tab2
+			{
+				if (Tab="Samples"){
+					Mouse_Save()
+					send, {click 83, 708}{click, %RequestsTab%, %yMyWorkTabs%}%MouseReturn%
+				return	
+				}
+				else
+					clk(SamplesTab,yMyWorkTabs)
+				Return
+			}
+			else
+				clk(xTab2,47) ;'"{Down 2}{enter}"
+			return
+		}
+		return
+		}
 
 
 
@@ -208,6 +274,7 @@ FilterBar(Code:="",PostCmd:=""){
 
 DetectTab(){
 	global  
+	WinSet, Transparent, Off, ahk_exe WFICA32.EXE
 	tab:=
 	FoundSamples:=
 	FoundRequests:=
@@ -230,28 +297,28 @@ DetectTab(){
 				if !Tab1 {
 	
 					
-					PixelSearch, FoundSamples, FoundY, xsamplesTab, yWorkTabs, xsamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
+					PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
 					if FoundSamples {
 						Tab=Samples 
 						return Tab
 					}
 					else {
-					PixelSearch, FoundRequests, FoundY, xRequestsTab, yWorkTabs, xRequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundRequests {
 						Tab=Requests 
 						return tab
 					}
-					PixelSearch, FoundDocuments, FoundY, xDocumentsTab, yWorkTabs, xDocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundDocuments {
 						Tab=Documents 
 						return tab
 					}
-					PixelSearch, FoundResults, FoundY, xResultsTab, yWorkTabs, xResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundResults {
 						Tab=Results
 						return tab
 					}
-					PixelSearch, FoundTests, FoundY, xTestsTab, yWorkTabs, xTestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundTests {
 						Tab=Tests
 						return tab
@@ -372,8 +439,8 @@ SaveCode(){
 		sleep 200
 		send, {enter}
 		FileAppend, %Batch% `n, Batch.txt
-		FileAppend, %product% `n, Product.txt
-		iniwrite, %Batch%, Codes.ini, %Product%,
+		FileAppend, %product% `n, Products.txt
+		iniwrite, %Batch%, Codes.ini, %Batch%,
 		iniwrite, %Product%, Codes.ini, %Product%, 
 		return
                     ;  creating an array and resorting without duplicates
@@ -412,43 +479,18 @@ SaveCode(){
 
 
 
-CheckDepartment(){
-	global Department
-	clipboard:=
-	Send, ^c
-	sleep 200
-	clipwait, 3
-	Regexmatch(Clipboard, "(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-	Regexmatch(Clipboard, "((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-	Regexmatch(Clipboard, "(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-	Regexmatch(Clipboard, "(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-	Regexmatch(Clipboard, "(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-	Regexmatch(Clipboard, "(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
-  If cAnalytical
-    Department=Analytical
-  If cMicro
-    Department=Micro
-  If cRetain
-    Department=Retain
-  If cCTRetain
-    Department:="Retain (Coated)"
-  If cPhysical
-    Department=Physical
-  If cCTPhysical
-    Department:="Physical (Coated)"
-  If cCTRetain
-    Department=CTRetain
-	return Department
-	}
 
 
 
 
 Orient(){
 	global
-	Ifwinactive, NuGenesis LMS - \\Remote
-	if errorlevel
-		return
+	; ifwinnotactive, NuGenesis LMS - \\Remote
+		; Switch:=1
+	; IfWinExist, NuGenesis LMS - \\Remote
+		; winactivate
+	; if errorlevel
+		; return
 	CoordMode, mouse, Window
 	Tab:=
 	Tab1:=
@@ -458,20 +500,24 @@ Orient(){
 	Tab5:=
 	Tab6:=
 	WinGetPos,wX,wY,wW,wH, NuGenesis LMS - \\Remote
-	xTabSelect:=WW-10
-	yTabSelect:=75
-	xSamplesTab:=(Ww/2)-80
-	xRequestsTab:=(Ww/2)+20
-	xDocumentsTab:=(Ww/3)+(Ww/3)-50
-	xTestsTab:=(Ww/3)+(Ww/3)-220
-	xResultsTab:=(Ww/3)+(Ww/3)-150
+	TabSelect:=WW-10
+	yTabSelect:=45
+	yTabDropDown:=45
+	SamplesTab:=(Ww/2)-80
+	RequestsTab:=(Ww/2)+20
+	DocumentsTab:=(Ww/3)+(Ww/3)-50
+	TestsTab:=(Ww/3)+(Ww/3)-220
+	ResultsTab:=(Ww/3)+(Ww/3)-150
 	yWorkTabs:=74
 	yMyWorkTabs:=74
 	xDivider:=(Ww/5)
 	xTab1=150
 	xTab2=350
+	MyWorkTab=350
 	xTab3=550
+	ProductsTab=550
 	xTab4=750
+	SpecsTab=750
 	xTab5=950
 	xTab6=1150
 	xTab7=1550
@@ -520,6 +566,8 @@ Orient(){
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
+	; if switch
+		; winactivate ahk_exe Code.exe
 	}
 
 

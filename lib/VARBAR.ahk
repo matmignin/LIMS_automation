@@ -1,6 +1,7 @@
 
 #IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-	enter::                           
+	
+	^enter::                           
 							winactivate, %the_WinTitle%
 							click, %caret_X%, %caret_y%
 							return
@@ -11,11 +12,20 @@
 				else
 					notes.Save()
 				return
+	enter::
+	send, ^a
+	clip()
+	winactivate, NuGenesis LMS - \\Remote			
+	LMS.Searchbar(clipboard,"{enter}")
+	return
 	#ifwinactive
+	^left::Lms.SelectTab("Left")
+	^right::LMs.SelectTab("right")
 
-#If Mouse_IsOver("VarBar ahk_exe AutoHotkey.exe")
-	wheelleft::    Excel.PrevSheet()
-	wheelRight::   excel.Nextsheet()
+#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
+	; wheelleft::    Excel.PrevSheet()
+	; wheelRight::   excel.Nextsheet()
+
 	WheelUp::      Varbar.AddIteration()
 	Wheeldown::    Varbar.SubIteration()
 	F9::           Excel.connect()
@@ -26,21 +36,15 @@
 	lalt::     		 Varbar.Reset()
 	F21 & F20::    ProductTab.Table()
 	Rbutton::			menu.Varbar()
-	numpaddiv::
-	mbutton:: 
-				if Toggle := !Toggle
-				 Notes.Show()
-				else
-					notes.Save()
-				return
-				
-	MouseClip()
-	reload
-	return
+	; numpaddiv::
+
+	; MouseClip()
+	; reload
+	; return
+	#if
 	
-#If Mouse_IsOver("Notes ahk_exe AutoHotkey.exe")
-		NumpadDiv::
-		Mbutton::Notes.save()
+#If MouseIsOver("Notes ahk_exe AutoHotkey.exe")
+		; Mbutton::Notes.save()
 
 	  ;send, {click}{altdown}{a}{altup}
 	; F20 & F7::     SpecTab.Table()
@@ -110,7 +114,7 @@ Class VarBar{
 				GUI,VarBar:Font,				s15 cBlack Bold, Consolas
 				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h28 x1 y1 w58 ,				%Product%  ; edit1
 				GUI,VarBar:Font,				s10 cBlack,Consolas
-				Gui,VarBar:add,Edit,	 	vBatch 					gbatchVarbar H19 x60 y-2 w70 limit8, 						%Batch% 	 ; edit2
+				Gui,VarBar:add,Edit,	 	vBatch 					gbatchVarbar H19 x60 y-2 w70, 						%Batch% 	 ; edit2
 				GUI,VarBar:Font,				s9 cBlack , Consolas
 				Gui,VarBar:add,Edit,	 	vlot 						gLotVarbar x60 center H18 y15 w70, 							%Lot% 		 ; edit3
 				GUI,VarBar:Font,				s11 cBlack, Consolas
@@ -311,7 +315,7 @@ Class VarBar{
 		return
 		}
 
-		AddIteration(speed:=550){
+		AddIteration(speed:=350){
 		global Iteration
 		sleep 20
 		Iteration+=1
@@ -320,7 +324,7 @@ Class VarBar{
 		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		return
 		}
-		SubIteration(speed:=550){
+		SubIteration(speed:=350){
 		global Iteration
 		sleep 10
 		Iteration-=1

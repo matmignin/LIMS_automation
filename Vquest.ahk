@@ -15,16 +15,16 @@ CheckActive:
         WinMove, Excel - \\Remote, , -178, -1179, 780, 1023
         sleep 300
       }
-      If Follow 
-      {
-        If (Winexist("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote")) && WinExist("Excel - \\Remote")
-          WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, "NuGenesis LMS - \\Remote"
-        else
-        WinGetTitle, WinTitle, A 
-        VarWin_X := LMS_X+(LMS_W/2)-400
-        VarWin_Y := LMS_Y
-        WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
-      }
+      ; If Follow 
+      ; {
+        ; If (Winexist("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote")) && WinExist("Excel - \\Remote")
+          ; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, "NuGenesis LMS - \\Remote"
+        ; else
+        ; WinGetTitle, WinTitle, A 
+        ; VarWin_X := LMS_X+(LMS_W/2)-400
+        ; VarWin_Y := LMS_Y
+        ; WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
+      ; }
       If A_TimeIdle >1000
         send, {ctrlUp}{altup}
   return
@@ -220,7 +220,7 @@ FileName:="lib/WinPos.txt"
  #maxthreadsperhotkey, 1
 ;  #IfTimeout 20
  SetKeyDelay, 0, 0
- setwindelay,300
+ setwindelay, 200
  
  FormatTime, TimeString,, M/d/yy
  Run, cl3.Ahk, lib\CL3
@@ -229,15 +229,21 @@ FileName:="lib/WinPos.txt"
 settimer, CheckActive, %CheckTime%
 
 varbar.Show()
+; Iniread, Product, data.ini, SavedVariables, Product
+; Iniread, Batch, data.ini, SavedVariables, Batch
+ if !Product
+  Excel.Connect(1)
 OnExit("Varbar.Exit")
 
  CopyPasteToggle=0
+ TabToggle=0
  Batches:=[]
  Products:=[]
  Lots:=[]
- Excel.Connect(1)
+
  IfWinExist, ahk_exe WFICA32.EXE
   LMS.Orient()
+;  IfWinExist, ahk_exe WFICA32.EXE
   if (MouseClip = 1)
     Menu, Tray, Check, MouseClip
   else
@@ -251,7 +257,7 @@ OnExit("Varbar.Exit")
   else
     Menu, Tray, unCheck, showsampleID
   if WinExist("Vquest.ahk" ,,"Visual Studio Code")
-    winclose,
+    WinActivate, Vquest.ahk,,Visual Studio Code
         
 gosub, Starting_test
 
