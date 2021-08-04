@@ -529,8 +529,8 @@ MouseIsOver:
 #If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 	F7::LMS.SearchBar(Batch,"{enter}")
 	F6::LMS.SearchBar(Product,"{enter}")
-	; numpadadd::lms.ProductSpecToggle()
-	; numpadsub::lms.SampleRequestToggle()
+	numpadadd::lms.ProductSpecToggle()
+	numpadsub::lms.SampleRequestToggle()
 	; Numlock::
 	; 	click
 	; 	sleep 300
