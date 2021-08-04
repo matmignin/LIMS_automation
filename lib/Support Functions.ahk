@@ -577,9 +577,9 @@ Mouse_Click(Link){
 	return
 }
 
-; #if WinExist("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-;  Mbutton::Sendpassword()
-; #if
+#if WinExist("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
+ Mbutton::Sendpassword()
+#if
 
 SendPassword(){
 	if winactive("Remote Desktop")

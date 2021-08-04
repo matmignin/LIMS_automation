@@ -48,12 +48,12 @@ WORD:
 		return
 	F20::clip_C()
 	F21::clip_C()
-		F19 & k::up
-		F19 & j::down
-		F19 & h::left
-		F19 & l::right
+		F20 & k::up
+		F20 & j::down
+		F20 & h::left
+		F20 & l::right
 		F19 & space::send, +{tab}{tab}
-		F19 & `;::send, {tab}
+		F20 & `;::send, {tab}
 		
 		Table_Entry(Entry){
 			Global Iteration
@@ -63,14 +63,14 @@ WORD:
 					Direction:="{Down}+{tab}{Tab}"
 			send % Entry Direction "{ctrlup}{altup}{shiftup}"
 		}
-		F19 & /::Table_Entry("N/A")
-		F19 & n::Table_Entry("No")
-		F19 & y::Table_Entry("Yes")
-		F19 & m::Table_Entry("Yes")
-		F19 & f::Table_Entry("FALSE")
-		F19 & ,::Table_Entry("FALSE")
-		F19 & t::Table_Entry("TRUE")
-		F19 & .::Table_Entry("TRUE")
+		F20 & /::Table_Entry("N/A")
+		F20 & n::Table_Entry("No")
+		F20 & y::Table_Entry("Yes")
+		F20 & m::Table_Entry("Yes")
+		F20 & f::Table_Entry("FALSE")
+		F20 & ,::Table_Entry("FALSE")
+		F20 & t::Table_Entry("TRUE")
+		F20 & .::Table_Entry("TRUE")
 		Xbutton2 & Wheelup::			Gosub, F9
 		Xbutton2 & Wheeldown::		Gosub, F8
 		Xbutton2 & Wheelleft::		Gosub, F6
