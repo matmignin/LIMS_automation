@@ -369,29 +369,4 @@ Class VarBar{
 		}
 
 	}
-			WM_LBUTTONDOWN(wParam, lParam)
-			{
-				X := lParam & 0xFFFF
-				Y := lParam >> 16
-				if A_GuiControl
-					Ctrl := "`n(in control " . A_GuiControl . ")"
-				; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
-				PostMessage, 0xA1, 2
-		; keywait, Lbutton, U T0.20
-			; if !errorlevel
-			; {
-				; keywait, Lbutton, U T3
-					; if errorlevel
-						; MouseClick, Left, , , 1, 0, U
-						; MouseClick, Left, , , 1, 0, U
-				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-				; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-				; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
-					
-		; MouseClick, Left, , , 1, 0, U
-				; return
-			; }
-			; else
-		; MouseClick, Left, , , 1, 0, U
-					
-}
+			
