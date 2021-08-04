@@ -106,10 +106,10 @@
 	; f13 & wheeldown::                            send,{ctrldown}{down}{ctrlup}
 	; f13 & wheelup::                              send,{ctrldown}{up}{ctrlup}
 	F13 & `::												delete
-	F13 & f7::                                   wheel_2("!{right}",10)
-	F13 & f6::                                   wheel_2("!{left}",10)
-	F13 & wheeldown::                            wheel_2("{ctrldown}v{ctrlup}",2000)
-	F13 & wheelup::                              wheel_2("{ctrldown}x{ctrlup}",2000)
+	; F13 & f7::                                   wheel_2("!{right}",10)
+	; F13 & f6::                                   wheel_2("!{left}",10)
+	; F13 & wheeldown::                            wheel_2("{ctrldown}v{ctrlup}",2000)
+	; F13 & wheelup::                              wheel_2("{ctrldown}x{ctrlup}",2000)
 	F13 & F11::                                  vs_code_windowinfo()
 	F13 & tab::												send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13::                                        send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
@@ -396,10 +396,7 @@ VSCODE_Hotstrings:
 	:*R:main`;::                                            
 	sendraw, NuGenesis LMS - \\Remote
 	return
-	:*R:lms`;::                                              
-	sendraw, ahk_exe WFICA32.EXE
-	return
-	:*R:ifw`;::                                              
+	:*:lms`;::ahk_exe WFICA32.EXE                                         
 	sendraw, ifwinactive, 
 	return
 	:*R:ifwe`;::                                            
@@ -411,10 +408,12 @@ VSCODE_Hotstrings:
 	:*R:err`;::                                              
 	sendraw, if ErrorLevel,
 	return
-	:*R:rtn::                                    Return
+	:*R:rtn::Return
+	:*R:r`;::
+	sendinput, {end}return
 	return 
 	#ifwinactive,
-
+	
 VS_Code_WindowInfo(){
 	global
 	CoordMode, mouse, window
@@ -541,7 +540,7 @@ class Vim{
 		clipwait, 0.25
 		if errorlevel
 			send, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-		send, {shiftdown}{altdown}{ctrldown}{r}{altup}{shiftup}{ctrlup}
+		send, {shiftdown}{ctrldown}{r}{shiftup}{ctrlup}
 		sleep 200
 		send, ^v
 		sleep 300

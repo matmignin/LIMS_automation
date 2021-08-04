@@ -29,38 +29,46 @@ Test(n){
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------TEST 1------------------------------------------------------------
 Test_1(){
-; MakeTransparent(){
-Global Iteration, winToggle
-; Toggle:=A
-	T:=(255/5)*Iteration
-	if WinToggle := !WinToggle
-		WinSet, Transparent, %T%, A
-	else {
-			WinSet, TransColor, Off, A
-		WinSet, Transparent, Off, A
-	}
-Return
+global
+; winactivate, NuGenesis LMS - \\Remote
+; lms.SelectWorkTab(SamplesTabTab)
+; lms.SelectTab(4)
+lms.sampleRequestToggle()
+return
 }
 
 
-
-;------------------------------------------------------------------------------------------------------------------------
+;---------------------------------------------------------parcing a data file and setting to an array---------------------------------------------------------------
 ;------------------------------------------------------TEST 2 ------------------------------------------------------------
 Test_2(){ 
 	global
-	; if Toggle := !Toggle
-	Window:="NuGenesis LMS - \\Remote"
-		MouseGetPos, MouseX, MouseY, Window
-		PixelGetColor, MouseRGB, %MouseX%, %MouseY%, RGB
-		; It seems necessary to turn off any existing transparency first:
-		WinSet, TransColor, Off, A
-		WinSet, TransColor, White 230, A
-		WinSet, Redraw,, A
-		return
-	; }
-	; else
-		; WinSet, TransColor, Off, A
-Return
+Gui, Add, Text, x10 y12, Load file.
+Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
+Gui, Show, w300 h300,TEST
+Products:=[]
+return
+GuiClose:
+  ExitApp 
+loadfile:
+  FileSelectFile, eFile, 3, , Open the file, All FIles (*.*) ;* ; *.html; *.csv)
+  fileread,contents,%eFile%
+  RegExReplace(contents,"\n","",totalLines) ;match the number of new line character
+  totalLines++ ;always 1 short
+	loop,parse,contents,`n
+  {
+	Counter := 0 ; COUNTER IS ZEROED SO THAT THE RESULT IS AN OFFSET OF CURRENT LINE (ERASE ANY OFFSETS OF PAST LINES)
+	CURRENT_LINE := A_LoopField
+	While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abdefghijkl]\d{3}\b",Product)
+	{
+		Counter += OutputVar ; COUNTER IS INCREMENTED SO THAT IN A LINE WITH MULTIPLE RESULTS, THE MSGBOX OFFSETS THE CORRECT POSITION.
+		; MsgBox, %Counter% & %Product%
+		StringTrimLeft, CURRENT_LINE, CURRENT_LINE, %OutputVar%
+		sleep 50
+		Products.insert(CURRENT_LINE) ; add to products array
+		msgbox % Listarray(products)
+}
+  }
+return
 
 }
 
@@ -71,7 +79,32 @@ Return
 ;------------------------------------------------------------------------------------------------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
 
+;Test_3:
+Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt"){
+	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt")
+FileRead, OutputVar, %File%
+Sort, OutputVar, u
+FileDelete, %File%
+sleep, 300
+FileAppend, %OutputVar%, %File%
+	
+	
+	
+	
+}
+		; Loop
+		; {
+		; 	Sleep, 1
+		; 	GetKeyState, KeyState, Numbpadadd, D
+		; 	if KeyState = D
 
+		; 			break
+		; }
+		; MouseGetPos, ContactNamePosX, ContactNamePosy
+		; Send {Ctrl Up}{LButton Up}
+;	}
+
+return
 	
 	/*
 
@@ -163,22 +196,7 @@ Loop
    Send, ^c
 return
 
-*/
-Test_3:
 
-		; Loop
-		; {
-		; 	Sleep, 1
-		; 	GetKeyState, KeyState, Numbpadadd, D
-		; 	if KeyState = D
-
-		; 			break
-		; }
-		; MouseGetPos, ContactNamePosX, ContactNamePosy
-		; Send {Ctrl Up}{LButton Up}
-;	}
-
-return
 
 
 
@@ -206,13 +224,7 @@ HasValue2(item, list, del:=","){
 	Return !!InStr(del haystack del, del item del)
 }
 
-	ListArray(The_Array){
-		; global
-		for vKey, vValue in The_Array
-			ArrayList .=vValue "|"
-		; msgbox, %ArrayList%
-		return ArrayList
-	}
+
 
 
 return
@@ -462,4 +474,11 @@ FilterSearch_Test(TestName:="", MethodName:=""){
  send, ^a%MethodName%{enter}{tab 4}
 }
 
+	ListArray(The_Array){
+		global
+		for vKey, vValue in The_Array
+			ArrayList .=vValue "|"
+		; msgbox, %ArrayList%
+		return ArrayList
+	}
 return

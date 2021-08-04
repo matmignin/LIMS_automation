@@ -32,6 +32,7 @@ class Menu{
   try This.delete()
   if winactive("NuGenesis LMS - \\Remote"){
     LMS.DetectTab()
+    click
     if (Tab="Samples")
       Menu, Menu, add, New &Request, AutoFill
     else if (Tab="Specs")
@@ -132,6 +133,8 @@ class Menu{
     passwords(){
     global
     This.delete()
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
       Menu, Menu, Add, VQ Login, Passwords
       Menu, Menu, Add, Kilgore, Passwords
     This.show()

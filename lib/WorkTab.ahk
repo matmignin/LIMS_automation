@@ -1,64 +1,60 @@
-Class WorkTab{
+Class WorkTab {
 
 registerNewSamples(){
   global
+  SetWinDelay, 450
   mx:=
   my:=
   If Coated = "ERROR"
     Coated:=
   If Lot = "ERROR"
     lot:=
-  ; if Iteration=""
-  ; iteration=1
+    blockinput, on
   ControlGetText, Iteration, Static1, VarBar
   ifwinactive, Register new samples - \\Remote
   MouseGetPos, mx, my
-  ;  loop %iteration%
-  ;  {
   click 2
   sleep 200
   Breaking.Point()
-  winwaitactive, Edit sample (Field Configuration,, 3
+  sleep 200
+  winwaitactive, Edit sample `(Field Configuration,, 6 
     if ErrorLevel
       exit
-  sendinput,{tab 2}{right}{click 277, 139}{tab 6}
-  IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
-    sendinput,{tab}^a
+  sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+  IfWinActive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
+    send,{tab}^{a}
   sendinput, ^{a}%Batch%{tab}^{a}
-  IfWinActive, Edit sample (Field Configuration: F`, Micro) - \\Remote
+  IfWinActive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
   {
     sendinput,{CtrlDown}{a}{Ctrlup}%Lot%
-    send,{tab 3}
+    sendinput,{tab 3}
     sleep 100
   if Coated
-    sendinput,{CtrlDown}{a}{Ctrlup}%Coated%
+    sendinput, ^{a}%Coated%
     sleep 100
-    send, +{tab 2}
+    sendinput, +{tab 2}
   }
   Breaking.Point()
   sleep 180
-  if ShipTo
-    WorkTab.DropdownSelect(ShipTo)
-  ; else {
-  ;   WorkTab.DropdownSelect(200)
-  ;   return
-  ; }
-  sleep 200
+  if !ShipTo
+    return
+  This.DropdownSelect(ShipTo)
+  sleep 500
   Breaking.Point()
-  send, {enter}
-  sleep 100
+  sendinput, {enter}
+  sleep 200
+  blockinput, off
   winactivate, Register new samples - \\Remote
   my:=my+26
   MouseMove, mx, my
-  ; click 2
-  ; sleep 200
-    return
-
-  }
-
+  
+  SetWinDelay, 100
+    ; return
+}
 
 
 DropdownSelect(A_ShipTo){
+    SetWinDelay, 450
  AbsSelection:=Abs(A_ShipTo)-1
  if (a_shipto = "-1")
   Sendinput,{end}
@@ -68,10 +64,12 @@ DropdownSelect(A_ShipTo){
   sendinput,{home}{right %A_ShipTo%}{right}
  else if (a_ShipTo < 1)
   Sendinput,{end}{left %Absselection%}{left}
+    SetWinDelay, 200
  }
 
 DeleteRetain(){
 	gLOBAL
+  SetWinDelay, 450
   Breaking.Preamble()
 Winactivate, NuGenesis LMS - \\Remote
 	MouseGetPos, mx, mY  
@@ -93,12 +91,14 @@ Winactivate, NuGenesis LMS - \\Remote
 		sleep 800
     n--
       Breaking.Point()
+      SetWinDelay, 200
   }
 }
 
 
 NewRequest(){
  global
+ SetWinDelay, 450
 ;  department:= ; Clip()
  Clipboard:=
 ;  sleep 100
@@ -107,7 +107,6 @@ click
 ;  send, ^c
  clip()
  sleep 50
-;  LMS.CheckDepartment()
  sleep 400
 ;  tooltip, %department%
  click 64, 300 ;click Assign To New rewuest link
@@ -158,11 +157,12 @@ click
   send,{tab}{enter}
   ; tooltip,
  return
-
+SetWinDelay, 200
 }
 
 ChangeTestResults(Checkbox_Toggle:=0){
  global
+  SetWinDelay, 450
  if (Iteration = "ERROR")
   InputBox, Iteration, enter iteration, number please,, , , , , , , 1
    if errorlevel
@@ -221,7 +221,7 @@ ChangeTestResults(Checkbox_Toggle:=0){
  sleep 100
  mousemove, xpos, ypos+26
  return
-
+SetWinDelay, 200
 }
 
 AddSampleLog(count)
@@ -259,10 +259,10 @@ Main_EditResults()
 
 SelectTestSample(){
 global
+setWinDelay, 450
 MouseGetPos, mx, my
 click
 ;{
-;  lms.CheckDepartment()
   clip()
   sleep 300
  click 647, 75
@@ -286,6 +286,7 @@ click
   ; my:=my+26
   ; MouseMove, mx, my
   ; sleep 200
+  SetWinDelay, 200
 return
 }
 

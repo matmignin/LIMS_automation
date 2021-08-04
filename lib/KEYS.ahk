@@ -56,14 +56,7 @@ KEY_DEFAULT:
 	
 	
 #if MouseClip
-	sendlevel 2
-	; ~Lbutton::
-	; 									ClickClip()
-	; 									; ControlsetText, Static1,%Clipboard%,VarBar
-	; 									StrReplace(clipboard, "`n`r", "")
-	; 									sleep 100
-	; 									; TT(Clipboard,4000,1,1,3,100)
-	; 									return	
+	; sendlevel 2
 	Mbutton::
 										clip()
 										GuiControl,Varbar:Text, Clipboard, %Clipboard%
@@ -72,6 +65,7 @@ KEY_DEFAULT:
 										StrReplace(clipboard, "`n", "")
 										send, {ctrldown}{v}{ctrlup}
 										return
+	F19 & f20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;clip("OCR")									
 	#if
 		Mbutton::					TrackPad.3Tap() ;	TMbutton() ;	ClipPaste()
 		; Mbutton::								TrackPad.3Tap() ;	TMbutton() ;	ClipPaste()
@@ -81,7 +75,7 @@ KEY_DEFAULT:
 		; 	else
 		; 		ClipPaste()
 		; 	return
-	sendlevel 0
+	; sendlevel 0
 
 	; Media_Play_Pause::			
 	; 	send, ^{c}
@@ -172,9 +166,9 @@ F19_And_F20:
 
 
 Double_press_For_Enter:
-#If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F21 & Space" || A_PriorHotKey = "F20 & Space") && (A_TimeSincePriorHotkey < 5000) 
+#If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F21 & Space" || A_PriorHotKey = "F20 & Space") && (A_TimeSincePriorHotkey < 2000) 
 	F19 & space::           send, {enter}
-	; $space::              send, {enter} 
+	$space::              send, {enter} 
 	$rshift::               send, {tab}
 	F20 & Space::           send, {enter}
 	F21 & Space::           send, {enter}
@@ -304,34 +298,52 @@ class TrackPad {
 
 	3tap(){
 	Global 
-		; if MousePaste
-		; 	; ClipPaste()
-		; else if !MousePaste {
-			If winactive("NuGenesis LMS - \\Remote") 
-			 Menu.Lms()
-
-			else if Winactive("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-			 	Sendpassword()
-			else if winactive("ahk_exe firefox.exe")
-				send, {ctrldown}{click}{ctrlup}
-			else If WinActive("LMS Workbook.xlsb")
-					clip_C()
-			else if winactive("Edit Formulation - \\Remote") {
-				mouseclick, left, 455, 472,2,0
-				clk(250, 284)
-			} else if Winactive("Register new samples - \\Remote"){
-					WorkTab.registerNewSamples()
-			} else if winactive("Edit Product - \\Remote") {
-				ProductTab.EditProduct() 
-			} else If WinActive("Select tests for request: R") {
-				WorkTab.SelectTestSample() 
-			} else If WinActive("Paster - Snipaste") || WINACTIVE("Snipper - Snipaste") {
-				; sendlevel 1
-					send, {ctrldown}{7}{ctrlup}
-				; sendlevel 0
-			} Else 
-				Autofill()
+		if (MousePaste){
+			ClipPaste()
 			return
+		}
+		; } else If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") {
+		; 		if Toggle := !Toggle
+		; 		 Notes.Show()
+		; 		else
+		; 			notes.Save()
+		; 		return
+		 If Winactive("NuGenesis LMS - \\Remote") 
+			Menu.Lms()
+		 else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") 
+			Sendpassword()
+		 else if winactive("ahk_exe firefox.exe") 
+			send, {ctrldown}{click}{ctrlup}
+		 else If Winactive("LMS Workbook.xlsb") 
+			excel.connect()
+		 else if Winactive("Register new samples - \\Remote") 
+				WorkTab.registerNewSamples()
+		 else If Winactive("ahk_exe OUTLOOK.EXE") 
+		 {
+				Click 3
+				clip()
+		 }
+		 else if Winactive("Login - \\Remote") 
+		 	menu.passwords()
+		 else if Winactive("Results Definition - \\Remote") 
+			menu.LMS()
+		 else if Winactive("Edit Formulation - \\Remote") 
+		{
+			mouseclick, left, 455, 472,2,0
+			clk(250, 284)
+		}
+		 else if Winactive("Edit Product - \\Remote") 
+			ProductTab.EditProduct() 
+		 else If Winactive("Select tests for request: R") 
+			WorkTab.SelectTestSample() 
+		 else If Winactive("Paster - Snipaste")
+				send, ^c
+		 else if Winactive("Snipper - Snipaste") 
+				send, {enter}
+		 else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
+			send, {lwindown}{e}{lwinup}
+		 Else 
+		return
 		; }
 		}
 
@@ -381,7 +393,7 @@ class TrackPad {
 		If winactive("NuGenesis LMS - \\Remote") {
 		lms.DetectTab()
 			if (Tab="Samples")
-				clk(xRequestsTab,yWorkTabs)
+				clk(RequestsTab,yWorkTabs)
 			else if (Tab="Requests")
 				clk(56, 630)
 			else
@@ -401,7 +413,7 @@ class TrackPad {
 		If winactive("NuGenesis LMS - \\Remote"){
 			lms.DetectTab()
 			if (Tab="Requests")
-				clk(xSamplesTab,yWorkTabs)
+				clk(SamplesTab,yWorkTabs)
 			else If (Tab="Samples")
 				clk(70, 395)
 		Else
@@ -428,6 +440,12 @@ K_Main_LMS_Screen:
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
   numpaddiv::CloseWindow()
+  	numpadadd::lms.ProductSpecToggle()
+	numpadsub::lms.SampleRequestToggle()
+;   numpadadd::lms.SelectTab(4)
+;   numpadsub::lms.sampleRequestToggle()
+; 
+
 	; space & lbutton::send, +{click}
 	; space up::sendinput, ^{click}
 	; wheelright::TrackPad.2right()
@@ -437,7 +455,7 @@ K_Main_LMS_Screen:
 
 Results_Definition:
   #IfWinActive, Results Definition - \\Remote
-  wheelup::Mouse_click("Edit")
+;   wheelup::Mouse_click("Edit")
   ; numlock::send, % clk(712, 663) "{esc}"
 
 
@@ -488,8 +506,8 @@ WFICA32:
 	; ~alt & tab::clip_C()
 
 	numpadMult::excel.connect()
-	numpadadd::Excel.NextSheet()
-	numpadsub::Excel.PrevSheet()
+	; numpadadd::Excel.NextSheet()
+	; numpadsub::Excel.PrevSheet()
 
 	Rbutton & F19::       	send % VS_Code_WindowInfo() 
 	Rbutton & F6::        	send, Backspace
@@ -499,25 +517,29 @@ WFICA32:
 
 MouseIsOver:
 	return
-#If Mouse_IsOver("LMS Workbook.xlsb")
+
+#If MouseIsOver("LMS Workbook.xlsb")
 	numpadadd::Excel.NextSheet()
 	numpadsub::Excel.PrevSheet()
-#If Mouse_IsOver("ahk_exe OUTLOOK.EXE")
-			Click 3
-		clip()
-		return
-#If Mouse_IsOver("NuGenesis LMS - \\Remote ahk_exe")
+; #If MouseIsOver("ahk_exe OUTLOOK.EXE")
+			; Click 3
+		; clip()
+		; return
+#if
+#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 	F7::LMS.SearchBar(Batch,"{enter}")
 	F6::LMS.SearchBar(Product,"{enter}")
+	; numpadadd::lms.ProductSpecToggle()
+	; numpadsub::lms.SampleRequestToggle()
 	; Numlock::
 	; 	click
 	; 	sleep 300
 	; 	TrackPad.4tap()
 	; 	return
-	space & lbutton::send, +{click}
+	; space & lbutton::send, +{click}
 	; space up::sendinput, ^{click}
-
-  #If mouse_isover("Result Editor - \\Remote") || mouse_isover("Test Definition Editor - \\Remote") || mouse_isover("Edit Formulation - \\Remote")
+#if
+  #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
     Wheeldown::LMS.ScrollDown()
   #if
 

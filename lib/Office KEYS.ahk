@@ -27,7 +27,7 @@ explorer:
 return
 WORD:
 #IfWinActive, Word ahk_exe WINWORD.EXE
-	F19::                	Send, ^v
+
 	F13 & space::					sendinput, +{tab}{tab}
 
 	; clippaste()
@@ -185,10 +185,7 @@ OUTLOOK:
 	F21 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::                Clip_c()
 	F21::                Clip_c()
-	Mbutton::            
-		Click 3
-		clip()
-		return
+
 	F7::LMS.SearchRequest(Batch)
 		; winactivate, NuGenesis LMS - \\Remote
 		; sleep 200
@@ -217,7 +214,7 @@ OUTLOOK:
 
 OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
-	F9 & Wheelup::       Wheel_2("{F11}")
+	; F9 & Wheelup::       Wheel_2("{F11}")
 	F9::                 send,{AltDown}{w}{i}{Altup}
 	F6::                 sendinput,{wheelleft 20}
 	F7::                 sendinput,{Wheelright 10}

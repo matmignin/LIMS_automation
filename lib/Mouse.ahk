@@ -109,7 +109,7 @@ class click{
 			return
 	}
 	CopySpecTemplate(){
-		WinActivate, NuGenedsis LMS - \\Remote
+		WinActivate, NuGenesis LMS - \\Remote
 		click 102, 289 ;copy into new spec
 		WinWaitActive, Edit specification - Remote, ,1
 		if ErrorLevel
@@ -123,16 +123,7 @@ class click{
 		click 103, 325
 		return
 	}
-	RegisterNewSamples(){
-		WinActivate, Register new samples - \\Remote
-		click 181, 103, 2
-		sleep 50
-		; click 181, 103,
-		sleep 300
-		send, %product%{enter}
-		sleep 300
-		return
-	}
+	
 	TestDefinitionEditor_Results(){
 		winactivate, Test Definition Editor - \\Remote
 		click 236, 246 ;click resulst
@@ -158,7 +149,20 @@ Mouse_Save(){
 	return
 }
 
-Mouse_IsOver(WinTitle){
+MakeTransparent(){
+Global Iteration, winToggle
+; Toggle:=A
+	T:=(255/5)*Iteration
+	if WinToggle := !WinToggle
+		WinSet, Transparent, %T%, A
+	else {
+			WinSet, TransColor, Off, A
+		WinSet, Transparent, Off, A
+	}
+Return
+}
+
+MouseIsOver(WinTitle){
 	Global
 	MouseGetPos,,, Win
 	Return WinExist(WinTitle . " ahk_id " . Win)
