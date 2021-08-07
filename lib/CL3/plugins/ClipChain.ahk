@@ -245,7 +245,7 @@ return
 										send, ^x
 										return
 	^Numpadmult::			gosub, ClipchainMoveUp
-	^numpaddiv::			gosub, ClipchainMoveDown
+	^numpaddot::			gosub, ClipchainMoveDown
 	\::	  	gosub, clipchainmenu
 
 	F19::			        

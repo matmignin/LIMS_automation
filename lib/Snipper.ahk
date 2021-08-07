@@ -2,39 +2,19 @@
 
 KEY_Snipper:
  #IfWinActive, Snipper - Snipaste ; the capture screen
- 
  sendlevel 1
- numpadDiv::send, {esc} ;send, {lwindown}{click}{lwinup}
- rbutton::send,{CtrlDown}{c}{Ctrlup}
+ numpaddot::send, {esc} ;send, {lwindown}{click}{lwinup}
+ $rbutton::send,{enter}
  F8::send,{ctrldown}{c}{ctrlup}{esc}
-
- 
- 
- sendlevel 0
-
-
-
 return
- ;WheelDown::wheel("^1")
- 
- ;Wheelup::Wheel("^5")
 
-; For sheet in xl.ActiveWorkbook.Worksheets
-												; 	Products.insert(Sheet.Name)
-												; Products.remove(1)
-												; Products.remove(1)
-												; loop 3{
-												; 	if (Products[A_index] = "Finished")
-												; 		break
-												; 	else
-												; 		DDLProducts .= "|" Products[A_index]
 #IfWinActive, Paster - Snipaste ; the floating window
 
  sendlevel 1
 
 ;  F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
  F8::
- numpadDiv::send, {lwindown}{click}{lwinup}
+ numpaddot::send, {lwindown}{click}{lwinup}
  sendlevel 0
  
   
@@ -43,7 +23,7 @@ return
  F6::sendinput, ^+{-}
 #If MouseIsOver("Paster - Snipaste ahk_class")
  sendlevel 1
- numpadDiv::send, {lwindown}{click}{lwinup}
+ numpaddot::send, {lwindown}{click}{lwinup}
   F8::send,{click}{esc}
  sendlevel 0
 

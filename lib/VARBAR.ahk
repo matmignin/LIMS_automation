@@ -1,6 +1,6 @@
 
 #IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-	
+	F19 & F20::varbar.focus("Batch")
 	^enter::                           
 							winactivate, %the_WinTitle%
 							click, %caret_X%, %caret_y%
@@ -36,14 +36,14 @@
 	lalt::     		 Varbar.Reset()
 	F21 & F20::    ProductTab.Table()
 	Rbutton::			menu.Varbar()
-	; numpaddiv::
+	; numpaddot::
 
 	; MouseClip()
 	; reload
 	; return
 	#if
 	
-#If MouseIsOver("Notes ahk_exe AutoHotkey.exe")
+; #If MouseIsOver("Notes ahk_exe AutoHotkey.exe")
 		; Mbutton::Notes.save()
 
 	  ;send, {click}{altdown}{a}{altup}
@@ -51,7 +51,7 @@
 	; lbutton::      send, {click}^{a}
 	; Rbutton::    Menu.Tables() ; Excel.connect()
 	; F9::         ReloadScript()
-#if
+; #if
 
 
 ;C_Varbar:
@@ -106,55 +106,47 @@ Class VarBar{
 					Gui,VarBar:Add,text, 		vIteration x265 y15 w18,																	%Iteration%	; Text1	
 					Gui,VarBar:add,Text,	vClipboard 				 R3 x1 H19 y-3 w145 left,  						%Clipboard%     ; edit6
 				; edit6
-			} Else {
+			} 
+			Else 
+			{
 				Gui Varbar:Default
-				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner
-				WinSet, Transparent, 190, Varbar
-				Gui, VarBar:color, 			21a366
-				GUI,VarBar:Font,				s15 cBlack Bold, Consolas
+				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
+				WinSet, Transparent, 200, %GUIID%
+				Gui, VarBar:color,21a366
+				GUI,VarBar:Font,s15 cBlack Bold, Consolas
 				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h28 x1 y1 w58 ,				%Product%  ; edit1
-				GUI,VarBar:Font,				s10 cBlack,Consolas
-				Gui,VarBar:add,Edit,	 	vBatch 					gbatchVarbar H19 x60 y-2 w70, 						%Batch% 	 ; edit2
-				GUI,VarBar:Font,				s9 cBlack , Consolas
-				Gui,VarBar:add,Edit,	 	vlot 						gLotVarbar x60 center H18 y15 w70, 							%Lot% 		 ; edit3
-				GUI,VarBar:Font,				s11 cBlack, Consolas
-
-				Gui,VarBar:Add,text, 		vIteration x265 y15 w18,																	%Iteration%	; Text1
-					if ShowCoated 
+				GUI,VarBar:Font,s10 cBlack,Consolas
+				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar H19 x60 y-2 w70, 					%Batch% 	 ; edit2
+				GUI,VarBar:Font,s9 cBlack , Consolas
+				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x60 center H18 y15 w70, 				%Lot% 		 ; edit3
+				GUI,VarBar:Font,s16 cBlack, Consolas
+				Gui,VarBar:Add,text, 		vIteration x133 65 right y4 w18,														%Iteration%	; Text1
+				if ShowCoated 
 					{
-						GUI,VarBar:Font,				s8 cBlack,arial Narrow
-					Gui,VarBar:add,Edit,	 	vCoated 				gCoatedVarbar x131 H18 y15 w60, 					%Coated%   ; edit4
-					GuiControl, Hide, Edit4
-					; Gui,VarBar:delete,Edit,	 	  vNote2 					gNotevarbar x133 H19 y15 w130,							%Note2%  		; edit7
-						; Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w60 left, 						%Note1%     ; edit6
-					} else {
-						GUI,VarBar:Font,				s7 cBlack,arial Narrow
-					Gui,VarBar:add,Edit,	 	  vNote2 					gNotevarbar x133 H19 y15 w130,							%Note2%  		; edit7
+					GuiControl, Hide,Edit4
+					GUI,VarBar:Font,s8 cBlack,arial Narrow
+					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar x160 H18 y15 w60, 					%Coated%   ; edit4
+				} else {
+					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
+					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar x160 H19 y15 w150,					%Note2%  	; edit7
 					}
-					; If Coated
-				; GUI,VarBar:Font,				s9 cBlack, Consolas
-				; Gui,VarBar:Add,text, 		vMouseClip x210 y14 w30,																	MouseClip	; Text1
-				; GUI,VarBar:Font,				s8 cBlack,.
-				; GUI,VarBar:Font,				s7 cBlack,arial
-					if ShowSampleID
+				if ShowSampleID
 					{
-						Gui,VarBar:add,Edit,	 	vSampleID 			gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
-						; Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w60 left, 						%Note1%     ; edit6
-						Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x222 H19 y-3 w80 left, 						%Note1%     ; edit6
+					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
+					Gui,VarBar:add,Edit,		vNote1 					gNotevarbar x222 H19 y-3 w80 left, 				%Note1%     ; edit6
 					}
-					else
-						Gui,VarBar:add,Edit,	vNote1 					gNotevarbar x133 H19 y-3 w165 left,  						%Note1%     ; edit6
-			; 
+				else
+					Gui,VarBar:add,Edit,	vNote1 						gNotevarbar x160 H19 y-3 w150 left,  			%Note1%     ; edit6
 			}
 			CoordMode, mouse, screen
 			; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
 			; varbar_x:= Varbar_x +100
 			try
-				Gui, VarBar:Show, h31 x%VarBar_X% y%VarBar_y% w300 NoActivate, VarBar
+				Gui, VarBar:Show, h31 x%VarBar_X% y%VarBar_y% w310 NoActivate, VarBar
 			; Gui, VarBar:Show, h30 x%offset_X% y%offset_y% w320 NoActivate, VarBar
 			catch
 			{
-				Gui, VarBar:Show, h31 x1 y%A_screenwidth% w280 NoActivate, VarBar
+				Gui, VarBar:Show, h31 x1 y%A_screenwidth% w310 NoActivate, VarBar
 				IniWrite, 1, data.ini, Locations, VarBar_X
 				IniWrite, 1, data.ini, Locations, VarBar_Y
 			}
@@ -200,6 +192,7 @@ Class VarBar{
 				IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 				IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 				; IniWrite, %Follow%, data.ini, Locations, Follow
+				this.exit()
 				coordmode, mouse, Window
 				sleep 500
 				GUI, VarBar:destroy
@@ -370,3 +363,137 @@ Class VarBar{
 
 	}
 			
+			
+			
+Class Notes{
+
+	Show(){  ;array - remove duplicates (case insensitive)
+		global
+		try, GUI, Notes:destroy
+		Iniread, Notes_X, data.ini, Locations, Notes_X
+		Iniread, Notes_Y, data.ini, Locations, Notes_Y
+		my_screenwidth:=Notes_x
+		my_screenheight:=Notes_y
+		MyArray:=[]
+		FileRead, LoadedNotes, lib/Notes.txt
+		MyArray := StrSplit(LoadedNotes,"`r`n")
+		; loop % myarray.maxindex() {
+			; LoadedNotes1:=MyArray[A_index]
+		; }
+		LoadedNotes1:=MyArray[1]
+		LoadedNotes2:=MyArray[2]
+		LoadedNotes3:=MyArray[3]
+		; LoadedNotes4:=MyArray[4]
+		; LoadedNotes5:=MyArray[5]
+		; LoadedNotes6:=MyArray[6]
+		; LoadedNotes7:=MyArray[7]
+		; LoadedNotes8:=MyArray[8]
+		gui Notes:+LastFound +AlwaysOnTop -Caption -ToolWindow +owner
+		gui, Notes:add, button, Hidden default gNotesButtonOK, OK 
+		gui, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
+		; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
+		; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
+		loop 2 {
+			n:=A_index + 1
+			Myedit=myedit%n%
+			Note:=myArray[n]
+			gui, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]	
+		}
+		; OnMessage(0x84, "WM_NCHITTEST")
+		; OnMessage(0x83, "WM_NCCALCSIZE")
+		gui, Notes:color, 21a366
+		; OnMessage(0x203, "Notes.Relocate")
+		Notes_x:=Varbar_x+136
+		Notes_y:=Varbar_Y+30
+		gui, Notes:show, w145 x%Notes_x% y%Notes_y% ,Notes
+		WinSet, Transparent, 195
+		return
+		
+	}
+	Add(){
+		global
+		; notes.close()
+		; notes.show
+		; n:=4
+		Myedit:="vmyedit4"
+		loadedNotes:="loadednotes4"
+			gui, Notes:add, edit, w140 -Choose -VScroll +resize %Myedit%, %LoadedNotes%
+		return
+		
+		
+	}
+
+	close(){
+		global
+			gui, Notes:submit, nohide
+	Filedelete, lib/Notes.txt
+		sleep 200
+		; loop 4
+		IniWrite, %Notes_X%, data.ini, Locations, Notes_X
+		IniWrite, %Notes_y%, data.ini, Locations, Notes_Y
+		Fileappend, %MyEdit1%`n, lib/Notes.txt
+		Fileappend, %MyEdit2%`n, lib/Notes.txt
+		Fileappend, %Myedit3%`n, lib/Notes.txt
+		; Fileappend, %Myedit4%`n, lib/Notes.txt
+		; Fileappend, %Myedit5%`n, lib/Notes.txt
+		gui, Notes:destroy
+	return
+	} 
+
+		Save(){
+			global
+		gui, Notes:submit, nohide
+		Filedelete, lib/Notes.txt
+		sleep 200
+		Fileappend, %MyEdit1%`n, lib/Notes.txt
+		Fileappend, %MyEdit2%`n, lib/Notes.txt
+		Fileappend, %Myedit3%`n, lib/Notes.txt
+		; Fileappend, %Myedit4%`n, lib/Notes.txt
+		; Fileappend, %Myedit5%`n, lib/Notes.txt
+		; Fileappend, %Myedit6%`n, lib/Notes.txt
+		; Fileappend, %Myedit7%`n, lib/Notes.txt
+		; Fileappend, %Myedit8%`n, lib/Notes.txt
+		; Fileappend, %Myedit9%`n, lib/Notes.txt
+		; Fileappend, %Myedit10%`n, lib/Notes.txt
+		gui, Notes:destroy
+		return
+	}
+
+	Relocate(){
+			global
+			; PostMessage, 0xA1, 2
+			; keywait, Lbutton, U
+			wingetpos, Notes_x, Notes_y,W,H, Notes ahk_class AutoHotkeyGUI
+			; Excel.Connect()
+			IniWrite, %Notes_x%, data.ini, Locations, Notes_x
+			IniWrite, %Notes_y%, data.ini, Locations, Notes_y
+			sleep 300
+			return
+		}
+	WM_NCCALCSIZE()
+	{
+		if A_Gui
+			return 0    ; Sizes the client area to fill the entire window.
+	}
+}
+
+
+
+
+	; ButtonAdd:
+		; gui, Notes:submit
+		; sleep 100
+		; Note:=RegExReplace(Note "`n", "m`a)(?=^\s*;).*\R") ; remove commented lines
+		; Note:=RegExReplace(Note, "\R+\R", "`r`n")     ; remove empty lines
+	NotesButtonOK:
+		notes.Save()
+		notes.Close()
+		return
+		
+		NotesGuiClose:
+		NotesGuiEscape:
+		notes.Save()
+		notes.Close()
+		; gui, Notes:submit, nohide
+		; gui, Notes:destroy
+		return

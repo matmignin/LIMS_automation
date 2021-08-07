@@ -282,6 +282,7 @@ DetectTab(){
 	FoundResults:=
 	FoundTests:=
 	FoundSpecs:=
+	FoundReagents:=
 	Tab1:=
 	TAB2:=
 	TAB3:=
@@ -295,14 +296,11 @@ DetectTab(){
 	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 				if !Tab1 {
-	
-					
 					PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
 					if FoundSamples {
 						Tab=Samples 
 						return Tab
-					}
-					else {
+					}					else {
 					PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundRequests {
 						Tab=Requests 
@@ -325,13 +323,21 @@ DetectTab(){
 					}
 					else if Errorlevel
 					{
+					PIXELSEARCH, FoundReagents, FoundY, 600, 75, 610, 79, 0xF0F0F0, 10, Fast RGB ;icon on
+						if FoundReagents {
+							tab=Reagents
+							; msgbox, %tab% "reagent check"
+							return tab
+						}
+						else {
 					PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
 							tab=Specs
-						else	
+						else
 							Tab=Products
 						return Tab	
 						}
+					}
 					else 
 				return
 				exit
@@ -408,8 +414,8 @@ Filter(x:="Status"){
 
 CoA(){
 	global
-	Click
-	sleep 100
+	; Click
+	; sleep 100
 	clk(xCoa, yWorkTabSearch)
 	sleep 100
 	send, +{Tab}{enter}
@@ -419,7 +425,7 @@ CoA(){
 	global
 	lms.DetectTab()
 	if (Tab = "Samples")
-		LMS.CoA()
+		This.CoA()
 	If (Tab= "Requests")
 		clk(xEnter_Resulsts, yEnter_Resulsts)
 	If (Tab = "Products")
@@ -525,21 +531,20 @@ Orient(){
 	xTab9=358+1200
 	xTab10=358+1400
 	yTabs:=36
-		
 	xWorkTab:=334, 47 ;1st
 	yWorkTabSearch:=128
 	XCoA:=(Ww-131)
 	xClearfilter:=xDivider+16
 	yClearfilter:=270
 	xFilterIcon:=Ww-22
-  yFilterIcon:=131
+  	yFilterIcon:=131
 	
 	xProductsSearch:=xDivider+180
 	xSpecsSearch:=xDivider+183
 	yProductsSearch:=93
 	ySpecsSearch:=93
-	xRequestsSearch:=xDivider+175 ;103
-	xRequestsSearchDefault:=xDivider+155 ;103
+	xRequestsSearch:=xDivider+190 ;175 ;103
+	xRequestsSearchDefault:=xDivider+170 ;155 ;103
 	xSamplesSearch:=xDivider+145
 	xResultsSearch:=xDivider+185
 	xResultsSearch:=xDivider+185
@@ -566,8 +571,6 @@ Orient(){
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
-	; if switch
-		; winactivate ahk_exe Code.exe
 	}
 
 

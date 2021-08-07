@@ -1,8 +1,13 @@
 
+ClipRegex(Pattern){
+  RegExMatch(Clipboard, Pattern,Output)
+  return Output 
+}
+
 Clip(input=0){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department,clippaste
   if (ClipPaste = 1){
-      send, {ctrldown}{c}{ctrlup}
+      send, ^{c}
       return
   }
   ClipboardSaved:=Clipboardall
@@ -13,22 +18,23 @@ Clip(input=0){
   }
   clipboard:=
   if (input=="cut")
-    send, {ctrldown}{x}{ctrlup}
+    send, ^{x}
   else
-    send, {ctrldown}{c}{ctrlup}
+    send, ^{c}
+  ; TT(Clipboard,2000,Varbar_x,30,1,200)
   sleep %input%
-  clipwait,0.55
+  clipwait,0.35
   if errorlevel
   {
     clipboard:=ClipboardSaved
-    if (A_PriorKey != "F20") || (A_PriorKey != "Mbutton")
+    if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton")
       exit
     send, {home}+{end}^{c}
   }
     sleep      20
     RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", cProduct)
     RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
-    RegExMatch(Clipboard, "i)(coated: |/?ct# |/?ct#|ct |coated )\d{3}-\d{4}\b", cCoated)
+    RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", cCoated)
     RegExMatch(cCoated,   "\d{3}-\d{4}", cCoated)
     RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
     RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
@@ -82,9 +88,9 @@ Clip(input=0){
   GuiControl,Varbar:Text, Department, %Department%
   if (Input==0) {
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department,4000,Varbar_x,30,3,150)
+      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department,4000,Varbar_x,80,3,200)
     else 
-        TT(Clipboard,200,A_ScreenWidth,10,3)
+        TT(Clipboard,900,Varbar_x,200,3,175)
     }
   else
     return 
@@ -196,7 +202,7 @@ ClickText(button:=""){
 	SetDefaultMouseSpeed, 1
 }
 ClipPaste(){
-  global Clippaste
+  global Clippaste, varbar_x, Varbar_y
     if (ClipPaste = 1){
       send, {ctrldown}{v}{ctrlup}
       return
@@ -208,12 +214,13 @@ ClipPaste(){
   if errorlevel 
     {
     clipboard:=ClipboardSaved
-    StrReplace(clipboard, "`n", "")
+     StrReplace(clipboard, "`n", "")
       send, {ctrldown}{v}{ctrlup}
-      tt("paste",,100,100,,150)
+      ;tt("paste",,100,100,,150)
     }
   else
-      tt(clipboard,,100,100,,150)
+      ; tt(clipboard,,varbar_x,varbar_y,,50)
+      sleep 500
     return 
   }
 
@@ -265,6 +272,7 @@ clip_c(){
           Return
       }
     }
+    send, ^{c}
       Clip()
       return
   }
@@ -273,7 +281,7 @@ clip_c(){
 clip_v(){
 global Clippaste
     if (ClipPaste = 1){
-      send, {ctrldown}{v}{ctrlup}
+      send, ^{v}
       return
   }
     KeyWait, F19, T0.30
@@ -345,7 +353,7 @@ return
 clip_v2(){
   global Clippaste
     if (ClipPaste = 1){
-      send, {ctrldown}{v}{ctrlup}
+      send, ^{v}
       return
   }
     sendinput, {ctrlup}{altup}{shiftup}

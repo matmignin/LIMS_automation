@@ -176,7 +176,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
   EditProduct(){
     global
     SetWinDelay, 450
-    Excel.Connect()
+    ; Excel.Connect(1)
     click 120,80 ;click product box
     Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
     sleep 200
@@ -193,6 +193,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
       sendinput, {Tab 23}
     return
     Breaking.Point()
+    SetWinDelay, 200
   } 
 
   HM_ReportOnly(){ 

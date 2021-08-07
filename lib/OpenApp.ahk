@@ -33,6 +33,15 @@ F3::
   winactivate, ahk_exe EXCEL.EXE
   sleep 200
   return
+^F4::
+  if winexist("LMS Products Checklist"){
+    winactivate
+    return
+  }
+  Run, Master Rotation WB 2014 (Start from 10-14-2014).xlsx, \\10.1.2.118\share\QC LAB\
+  winactivate, ahk_exe EXCEL.EXE
+  sleep 200
+  return
 F4::
   if winexist("C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"){
     winactivate

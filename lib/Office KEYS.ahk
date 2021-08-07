@@ -1,19 +1,46 @@
 explorer:
 #IfWinActive, ahk_exe explorer.exe
 	; Mbutton::            	send, 		{enter}
-	F20 & up::           	WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
+	F20 & up::           	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, 0, A_ScreenWidth/2, A_ScreenHeight/2
 	F21 & up::           	WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
 	F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
 	F21 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
-	F20 & down::         	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
+	F20 & down::         	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, A_screenheight/2, A_ScreenWidth/2, A_ScreenHeight/2-45
 	F21 & down::         	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
 	F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
 	F21 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
-	F9::                 	send, 		{lwindown}{e}{lwinup}
-	F7::                 	send, 		{lwindown}{s}{lwinup}
-	F6::                 	Varbar.SearchExplorer()
-	^w::									closewindow()
+	F6::                 	send, {altdown}{left}{altup}
+	F7::                 	send, {altdown}{right}{altup}
+	F19 & Space::
+	F9::ExplorerSearch(Product)
 	
+	^w::									closewindow()
+ExplorerSearch(text){
+		excel.connect(1)
+		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
+		SearchWindow:="search-ms:displayname"
+		IfWinNotExist, %Sea% && ifwinNotexist, %AllLabelCopy%	
+			return									
+		;  Run, %AllLabelCopy%
+		; IfWinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
+			; run, %AllLabelCopy%
+		IfWinExist, %Sear% 
+		IfWinExist, %SearchWindow% 
+			winactivate, %AllLabelCopy%
+		winwait, %AllLabelCopy%, ,2
+		if errorlevel
+			winactivate, ahk_exe explorer.exe
+		sleep 300
+		WinGetPos, wX, wY, wW, wH, A
+		clk(ww-175, 75)
+		sleep 400
+		SetKeyDelay, 20, 1 
+		send, %Text%
+		sleep 300
+		send, {enter}
+		setkeydelay, 0 , 0
+		return
+		}
 	#ifwinactive, Task View, 
 	F7::										send, {right}
 	F6::										send, {left}
@@ -27,7 +54,7 @@ explorer:
 return
 WORD:
 #IfWinActive, Word ahk_exe WINWORD.EXE
-
+F19 & f20::send, {altdown}{PrintScreen}{altup}
 	F13 & space::					sendinput, +{tab}{tab}
 
 	; clippaste()
@@ -104,30 +131,31 @@ FindAndReplaceWord(find,Replace,AllOrOne:="a"){
 }
 
 Excel:
-	#If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
-	F6::                 
-											winactivate, NuGenesis LMS - \\Remote
-											sleep 200
-											click, xTab3,yTabs
-											; excel.connect()
-											lms.SearchBar(Product,"{enter}")
-											sleep 200
-											send, {click, 87, 676, 0}
-											return
-	F7::                 
-											winactivate, NuGenesis LMS - \\Remote
-											sleep 200
-											click, xTab4,yTabs
-											; excel.connect()
-											lms.SearchBar(Product,"{enter}")
-											sleep 200
-											send, {click, 87, 676, 0}
-											return
-	#if
+	/* 
+		#If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
+		F6::                 
+							winactivate, NuGenesis LMS - \\Remote
+							sleep 200
+							click, xTab3,yTabs
+							; excel.connect()
+							lms.SearchBar(Product,"{enter}")
+							sleep 200
+							send, {click, 87, 676, 0}
+							return
+		F7::                 
+							winactivate, NuGenesis LMS - \\Remote
+							sleep 200
+							click, xTab4,yTabs
+							; excel.connect()
+							lms.SearchBar(Product,"{enter}")
+							sleep 200
+							send, {click, 87, 676, 0}
+							return
+		#if 
+		*/
 	#IfWinActive, LMS Workbook.xlsb
                
-	F9::      					Excel.Connect(1)
-	; Numlock::            lms.searchbar(Product)
+	; F9::      					Excel.Connect(1)
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up
@@ -135,6 +163,10 @@ Excel:
 	F19 & right::        ^right
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
+	numpaddot::						
+								excel.Connect(1)
+								ExplorerSearch(Product)
+								return
 	; numlock::            send, {altdown}{down 2}{altup} 
 	#ifwinactive, Book
 		F9::WinMove, A, , 123, 117, 794, 937
@@ -183,10 +215,18 @@ OUTLOOK:
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F21 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
-	F20::                Clip_c()
-	F21::                Clip_c()
-
-	F7::LMS.SearchRequest(Batch)
+	F20::                
+		send, ^{c}
+		Clip_c()
+		return
+	; F21::                Clip_c()
+	F13::send, {altdown}{tab}{altup}
+	; Mbutton::
+	; 		; Click 3
+	; 		send, ^{c}
+	; 		clip_C()
+	; 	return
+	F7::LMS.SearchRequest(Batch,"{enter}")
 		; winactivate, NuGenesis LMS - \\Remote
 		; sleep 200
 		; lms.searchbar(Batch)
@@ -196,7 +236,7 @@ OUTLOOK:
 		sleep 200
 		lms.searchbar(Product)
 		return
-	F6::LMS.SearchRequest(Batch)    
+	F6::LMS.SearchRequest(Batch,"{enter}")    
 	return
 	
 	
@@ -261,4 +301,26 @@ Remote_DESKTOPs:
 #ifwinactive, ahk_class TscShellContainerClass
 	F19::             menu.Remote_Desktop()
 	Mbutton::            menu.Remote_Desktop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

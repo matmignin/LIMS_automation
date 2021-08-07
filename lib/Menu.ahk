@@ -19,6 +19,7 @@ class Menu{
     
   CopyPasteSpec(){
     global copypasteToggle
+     click
       try This.delete()
         Menu,Menu, add, Copy &Template, autofill
       If CopyPasteToggle=1
@@ -32,7 +33,7 @@ class Menu{
   try This.delete()
   if winactive("NuGenesis LMS - \\Remote"){
     LMS.DetectTab()
-    click
+    ; click
     if (Tab="Samples")
       Menu, Menu, add, New &Request, AutoFill
     else if (Tab="Specs")
@@ -41,8 +42,6 @@ class Menu{
       clk(61, 635) ;enter results
     else if (Tab="Products")
       clk(67, 754) ;edit results
-    ; else if (Tab="Specs")
-    ;   clk(67, 754) ;edit results
     else if (Tab="Samples")
         clk(107, 319) ;assign Requests
     else if (Tab="Tests")
@@ -85,7 +84,7 @@ class Menu{
   return
   }
   if Winactive("Login - \\Remote"){
-    ; Menu,Menu, add, &Login, LMS_Env
+    Menu,Menu, add, &Login, LMS_Env
     Menu,Menu, add, &Production Server, LMS_Env
     Menu,Menu, add, &Test Server, LMS_Env
   This.show()
@@ -155,6 +154,7 @@ class Menu{
     Menu, SubMenu, Add, &workBook, !w 
     Menu, SubMenu, Add, &Test Log, F2 
     Menu, SubMenu, Add, &Sample Log, +F2 
+    Menu, SubMenu, Add, &Rotations, ^F4 
     Menu, SubMenu, Add, &Product Checklist, F3 
     Menu, SubMenu, Add, &All Label Copy, F4 
   Menu, Menu, add, &WorkSeehts, :SubMenu
@@ -262,7 +262,7 @@ Variable:
 
 
 
-   Passwords:
+  Passwords:
     if (A_ThisMenuItem = "Samples")
     sendinput, care{enter}
    else if (A_ThisMenuItem = "Tests")

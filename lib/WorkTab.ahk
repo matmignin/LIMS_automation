@@ -160,68 +160,69 @@ click
 SetWinDelay, 200
 }
 
-ChangeTestResults(Checkbox_Toggle:=0){
- global
+ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
+  global
   SetWinDelay, 450
- if (Iteration = "ERROR")
+  if (Iteration = "ERROR")
   InputBox, Iteration, enter iteration, number please,, , , , , , , 1
-   if errorlevel
+  if errorlevel
     reload
- ;TT(iteration, 5000)
- ;winactivate, Result Entry - \\Remote
+  ;TT(iteration, 5000)
+  ;winactivate, Result Entry - \\Remote
   if checkbox_toggle contains loop
- {
+  {
   if keep_running = y
-   {
-    keep_running = n ;signal other thread to stop
-    return
-   }
+  {
+  keep_running = n ;signal other thread to stop
+  return
+  }
   keep_running = y
   winactivate, Result Entry - \\Remote
   MouseGetPos, xpos, ypos
   loop 25,
-   {
-    blockinput on
-    if keep_running = n ;another signal to stop
-    return
-    click
-    Mouse_Click("Orient_ResultEntry")
-   if keep_running = n ;another signal to stop
-    return
-    send,{tab}{Space}{tab}{Space}
-    send,{tab 10}^a
-    sleep 100
-    send, %Iteration%
-   if keep_running = n ;another signal to stop
-    return
-    sleep 100
-    ypos:=ypos+26
-   if keep_running = n ;another signal to stop
-    return
-    mousemove, xpos, ypos,0
-    sleep 200
-    blockinput off
-   }
-   Breaking.Point()
-   if keep_running = n ;another signal to stop
-    return
-   click
-   return
- }
- MouseGetPos, xpos, ypos
- click
- Mouse_Click("Orient_ResultEntry")
- if Checkbox_Toggle Contains Toggle
-  sendinput,{tab}{Space}{tab}{Space}
- else
-  sendinput,{tab}{tab}
- sendinput,{tab 10}^a
- sleep 100
- send, %Iteration%
- sleep 100
- mousemove, xpos, ypos+26
- return
-SetWinDelay, 200
+  {
+  blockinput on
+  if keep_running = n ;another signal to stop
+  return
+  click
+  Mouse_Click("Orient_ResultEntry")
+  if keep_running = n ;another signal to stop
+  return
+  send,{tab}{Space}{tab}{Space}
+  send,{tab 10}^a
+  sleep 100
+  send, %Iteration%
+  if keep_running = n ;another signal to stop
+  return
+  sleep 100
+  ypos:=ypos+26
+  if keep_running = n ;another signal to stop
+  return
+  mousemove, xpos, ypos,0
+  sleep 200
+  blockinput off
+  }
+  Breaking.Point()
+  if keep_running = n ;another signal to stop
+  return
+  click
+  return
+  }
+  MouseGetPos, xpos, ypos
+  click
+  Mouse_Click("Orient_ResultEntry")
+  if Checkbox_Toggle Contains Toggle
+    sendinput,{tab}{Space}{tab}{Space}
+  else
+    sendinput,{tab}{tab}
+  sendinput,{tab 10}^a
+  sleep 100
+  send, %Iteration%
+  sleep 100
+  if Checkbox_Toggle Not Contains Toggle
+    mousemove, xpos, ypos+26 
+  return
+  SetWinDelay, 200
 }
 
 AddSampleLog(count)
@@ -259,7 +260,8 @@ Main_EditResults()
 
 SelectTestSample(){
 global
-setWinDelay, 450
+setWinDelay, 550
+blockinput on
 MouseGetPos, mx, my
 click
 ;{
@@ -272,12 +274,12 @@ click
   winactivate, Select samples for test
  click 463, 71
  Breaking.Point()
- send,{click 244, 69}
- sleep 200
+ send, {click 244, 69}
+ sleep 300
  send,{click 205, 184}
- sleep 200
+ sleep 300
  Breaking.Point() 
- send,{click 171, 127}^{a}%department%{enter}{tab}^a{click 506, 323}
+ send, {click 171, 127}^{a}%department%{enter}{tab}^{a}{click 506, 323}
  sleep 300
  send, {click}{click 851, 660}
  
@@ -286,6 +288,7 @@ click
   ; my:=my+26
   ; MouseMove, mx, my
   ; sleep 200
+  blockinput off
   SetWinDelay, 200
 return
 }

@@ -3,41 +3,47 @@
 ; #IfWinActive, ahk_exe Code.exe
 #if MouseClip && winactive("ahk_exe Code.exe")
 	Mbutton::                                    ClickClip()
+#if Getkeystate("LControl","p")
+	; ^z::                                      send,{ctrldown}{z}{ctrlup}
+		z::                                      send,{ctrldown}{z}{ctrlup}
 #if
 
-
 #IfWinActive, ahk_exe Code.exe
-	WheelLeft::																				
-	F15 & tab::                                   send, {ctrldown}{]}{ctrlup}	
-	numpadsub::                                   numpadsub
-	numpadadd::                                   numpadadd
-	numpadmult::                                  send, {shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
-	numpaddiv::                                   numpaddiv
-	^numpaddiv::                                  send, {ctrldown}{w}{ctrlup}
-	Mbutton::                                     TrackPad.3Tap() 
-	F19 up::                                      send, {F19}
-	f8::                                          send, {ctrldown}{d}{ctrlup}
-	$^z::                         		                send, {ctrldown}{z}{ctrlup}
-	$^l::                                         send, {ctrldown}{]}{ctrlup}
-	$^h::                                         send, {ctrldown}{[}{ctrlup}
-	$+^z::                                        send, {shiftup}{Ctrldown}{y}{CtrlUp}
-	$Lwin Up::                                    Send, {shiftdown}{altdown}{i}{lwinup}{altup}{shiftup}
-	Tab & h::                                     send, {ctrldown}{[}{ctrlup}
-	Tab & l::                                     send, {ctrldown}{]}{ctrlup}
-	Tab & j::                                     down
-	Tab & k::                                     up
-	Tab & f13::                                   send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
-	Tab & 1::                                     send, {tab 8}
-	Tab & 2::                                     send, {tab 10}
-	Tab & 3::                                     send, {tab 12}
-	Tab & 4::                                     send, {tab 14}
-	Tab & 5::                                     send, {tab 26}
-	Tab & 6::                                     send, {tab 20}
-	Tab & `::                                     send, {shiftdown}{altdown}{lwindown}{``}{lwinup}{altup}{shiftup}
-	Tab & F15::                                   send, {ctrldown}{[}{ctrlup}
-	F14::                                         ReloadScript()
-	` & Tab::                                     send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
-	Tab & q::                                     send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
+	WheelLeft::												send, {altdown}{left}{altup}
+	Wheelright::											send, {altdown}{right}{altup}								
+	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
+	numpadsub::                                  numpadsub
+	numpadadd::                                  numpadadd
+	numpadmult::                                 send, {shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
+	numpaddot::                                  numpaddot
+	^numpaddot::                                 send, {ctrldown}{w}{ctrlup}
+	Mbutton::                                    3Tap() 
+	F19 up::                                     send, {F19}
+	f8::                                         send, {ctrldown}{d}{ctrlup}
+	$^z::                         		         send, {ctrldown}{z}{ctrlup}
+	$^l::                                        send, {ctrldown}{]}{ctrlup}
+	$^h::                                        send, {ctrldown}{[}{ctrlup}
+	$+^z::                                       send, {shiftup}{Ctrldown}{y}{CtrlUp}
+	$Lwin Up::                                   Send, {shiftdown}{altdown}{i}{lwinup}{altup}{shiftup}
+	Tab & h::                                    send, {ctrldown}{[}{ctrlup}
+	Tab & l::                                    send, {ctrldown}{]}{ctrlup}
+	Tab & j::                                    down
+	Tab & k::                                    up
+	Tab & f13::                                  send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
+	Tab & 1::                                    send, {tab 8}
+	Tab & 2::                                    send, {tab 10}
+	Tab & 3::                                    send, {tab 12}
+	Tab & 4::                                    send, {tab 14}
+	Tab & 5::                                    send, {tab 26}
+	Tab & 6::                                    send, {tab 20}
+	Tab & `::                                    send, {shiftdown}{altdown}{lwindown}{``}{lwinup}{altup}{shiftup}
+	Tab & F15::                                  send, {ctrldown}{[}{ctrlup}
+	F14::                                        ReloadScript()
+	` & Tab::                                    send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
+	Tab & q::                                    send, {ctrldown}{]}{ctrlup}
+	q & tab::                                    send, {ctrldown}{[}{ctrlup}
+	q & u::													sendinput, {q}{u
+	q::q
 	; `::   																				send, {``}
 	$^F::                                         
 		tt("`n ----Find------- `n",1000,A_CaretX,A_Carety)
@@ -89,8 +95,12 @@
 	F19 & =::                                    send, {ctrldown}{=}{ctrlup}
 	F19 & y::                                    send, {ctrldown}{w}{ctrlup}
 	F19 & /::                                    send, {shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
-	F19 & i::                                    send, {numpad9}@
-	F19 & p::                                    send, {numpad8}
+	F19 & i::                                    send, {F9}@
+	F19 & o::                                    send, {F9}
+	F19 & p::                                    send, ^{F9}
+	F19 & F9::                                   send, ^{F9}
+	F19 & lbutton::                              send, ^{click}
+	
 	F19 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F19 & l::                                    send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
 	F19 & h::                                    send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
@@ -146,7 +156,9 @@ F13_Control:
 	Space::                                      send,{shiftdown}{altDown}{a}{shiftup}{altup}
 	q::                                          send,{shiftdown}{altdown}{,}{altup}{shiftup}
 	g::                                          send,{shiftdown}{lwindown}{g}{lwinup}{shiftup}
-	z::                                          Send,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
+	; z::                                          Send,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
+			; ^z::                                      send,{ctrldown}{z}{ctrlup}
+		; z::                                      send,{ctrldown}{z}{ctrlup}
 	f::                                          send,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
 	,::                                          send,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
 	#If 
@@ -192,6 +204,7 @@ Vim:
 		Rshift::                                  send,{pgdn}
 		f19 & lbutton::                           send,^{lbutton}
 		9 & 0::												send, {)}
+		s::                                       send, {home}+{end}
 		space::                                   send, {shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 		]::                                       send,{}}
 		[::                                       send,{ctrldown}{right}{ctrlup}{{}
@@ -212,7 +225,6 @@ Vim:
 		j::                                       send, {down}
 		k::                                       send, {Up}
 		t::                                       send, {altdown}{down}{altup}
-		s::                                       send, {home}+{end}
 		h::                                       send, {left}
 		l::                                       send, {right}
 		x::                                       send, {Delete}
@@ -258,7 +270,7 @@ Vim:
 F13 UP:: 													send, {esc}{ctrlup}{altup}{shiftup}
 PsudoNumpad:
 	#If Getkeystate("F19","p")
-	0::                                         	send,{ctrldown}{0}{Ctrlup}
+	0::                                         	send,{-}
 	m::                                          numpad1
 	,::                                          numpad2
 	.::                                          numpad3
@@ -270,14 +282,14 @@ PsudoNumpad:
 	i::                                          numpad8
 	o::                                          numpad9
 	`;::                                         send,{numpad0}
-	; n::                                        Numpaddiv
+	; n::                                        numpaddot
 	y::                                          numpaddot
 	; b::                                        down
 	/::                                          numpad0
 	p::                                          numpad0
 	=::                                          =
 	-::                                          -
-	h::                                          send,{-}
+	h::                                          left
 	'::                                          right
 	Backspace::                                  backspace
 	ENTER::                                      send,{enter}

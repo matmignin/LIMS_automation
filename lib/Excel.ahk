@@ -11,20 +11,21 @@ Connect(reload:=0){
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook.xlsb")
 		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
-	else{
-		TT("no notebook open",500)
+	else {
+		TT("no notebook open",500) 
 				; VarBar.load()
 				varbar.show()
 				return
 		}
 	Try {
 		XL := ComObjActive("Excel.Application")
-		XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
+		; XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True
 		sht := XL.ActiveSheet.Name
 		if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			; return
 			xl.sheets(PrevProduct).select
+			; return
+		
 			; Excel.PrevSheet()
 	}
 	Catch {
@@ -48,7 +49,7 @@ Connect(reload:=0){
 	Gui VarBar:+LastFound
 	if (Reload = 1)
 		VarBar.show()
-		; excel.MatchColor()
+		excel.MatchColor()
 	return
 	}
 InfoLocations(){
@@ -68,7 +69,7 @@ InfoLocations(){
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
 	EnvSet, ShipTo, %ShipTo%
-	if Coated
+	; if Coated
 		GuiControl, Varbar:Text, Coated, %coated%
 	GuiControl, Varbar:Text, SampleID,
 	GuiControl, Varbar:Text, name, %name%
@@ -136,20 +137,28 @@ PrevSheet(){
 MatchColor(){
 	Global
 	TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
-	if (TabColor = 16764057)
-		Gui, VarBar:color, 8ea9db; blue
-	else if (TabColor = 65280)
-		Gui, VarBar:color, 21a366 ;green
-	else if (TabColor = 10092543) ;yellow
-		Gui, VarBar:color, ffff00 ;Yellow
-	else if (TabColor = 26367) 	;orange
-		Gui, VarBar:color, fF8966 ;orange
-	else if (TabColor = 12632256) 	;greay
-		Gui, VarBar:color, 808080 ;Gray
-	if (TabColor = 0) 	;black
-		Gui, VarBar:color, 808080 ;Gray
+	if 		(TabColor = 16777215) ;white
+		Gui, VarBar:color, F2F2F2 ; 
+	else if	(TabColor = 16764057) ;Blue
+		Gui, VarBar:color, 8ea9db ; 
+	else if 	(TabColor = 13434828) ;light green
+		Gui, VarBar:color, A9D08E ; 
+	else if 	(TabColor = 65280) ;green
+		Gui, VarBar:color, 21a366 
+	else if 	(TabColor = 10092543) ;yellow
+		Gui, VarBar:color, ffff00 
+	else if 	(TabColor = 26367) 	;orange
+		Gui, VarBar:color, fF8966 
+	else if 	(TabColor = 12632256) 	;greay
+		Gui, VarBar:color, 808080 
+	else if 	(TabColor = 10498160) 	;purple
+		Gui, VarBar:color, 7030A0 
+	else if 	(TabColor = 16777215) 	;light purple
+		Gui, VarBar:color, 9966FF 
+	else if 	(TabColor = 0) 	;black
+		Gui, VarBar:color, 808080 
 	else
-			Gui, VarBar:color, ffffff ;White
+			Gui, VarBar:color, FF9999 ;pink
 	}
 Get_Current_row(){
 	Global

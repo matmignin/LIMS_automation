@@ -54,8 +54,8 @@ class Breaking {
 		Return
 	else if winexist("PDF Preview - \\Remote"){
 		winactivate
-		clk(944, 11)
-		sleep 400
+		sleep 100
+		Send, {altdown}{F4}{altup}
 	}
 	else if winactive("Results Definition - \\Remote"){
     send, {esc}
@@ -75,7 +75,7 @@ class Breaking {
 		return
 	}
 	else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for Windows 10") {
-		sendinput, !{F4}
+		send, {altdown}{F4}{altup}
 		sleep 400
 		return
 	}
@@ -104,7 +104,7 @@ class Breaking {
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 
  ;GuiControlGet, OutputVar , , %CtrlHwnd%,
- IniRead,vOutput, Customers.ini, Customers, %OutputVar%
+	IniRead,vOutput, Customers.ini, Customers, %OutputVar%
  msgbox, %vOutput%
 }
 
@@ -219,9 +219,9 @@ TT(msg:="yo", time=1500, X:="",Y:="",W:="", T:="") {
 	If !Y
 		Y:=A_CaretY-50
 	tooltip, %msg%, %X%, %Y%,%W%
-	; hwnd := WinExist("ahk_class tooltips_class32")
-	; if T
-   	; WinSet, Trans, %T%, % "ahk_id" hwnd
+	hwnd := WinExist("ahk_class tooltips_class32")
+	if T
+   	WinSet, Trans, %T%, % "ahk_id" hwnd
    	; WinSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; CoordMode, ToolTip, screen 
 	; WinSet, Trans, 200, %W%
@@ -251,9 +251,9 @@ TT(msg:="yo", time=1500, X:="",Y:="",W:="", T:="") {
 
 ReloadScript(){
 	TT("`nReload`n ")
-	IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
-		WinActivate,
-	sendinput, ^s
+	; IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
+		; WinActivate,
+	; sendinput, ^s
 	sleep 200
 	run, VQuest.ahk
 	send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
@@ -275,7 +275,7 @@ class click{
 		else if Edit Ingredient
 			clk(265, 561)
 		else if winactive("Result Entry")
-			clk(1028, 808)
+			clk(1028, 860)
 		else if winActive("Results Definition - \\Remote")
 			clk(951, 751)
 		else if winActive("Microsoft Excel Security Notice - \\Remote")
@@ -577,7 +577,7 @@ Mouse_Click(Link){
 	return
 }
 
-#if WinExist("Login - \\Remote") || Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
+#if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
  Mbutton::Sendpassword()
 #if
 
@@ -667,3 +667,65 @@ Wheel_Copy()
 ;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
 	return
 }
+
+
+
+StopSub:
+  exitapp
+  Return
+VarBar_ResetSub:
+  VarBar.Reset()
+  return
+Run_Display:
+  run, Display.url, C:\Users\mmignin\Desktop\
+CL3(){
+  Run, cl3.Ahk, lib\CL3
+  }
+ShowSampleID(){
+  global
+  Menu, Tray, ToggleCheck, ShowSampleID
+  If ShowSampleID := !ShowSampleID
+  IniWrite, 1, data.ini, Locations, ShowSampleID
+  else
+  IniWrite, 0, data.ini, Locations, ShowSampleID
+  Varbar.Show()
+  }
+ShowCoated(){
+  global
+  Menu, Tray, ToggleCheck, ShowCoated
+  If ShowCoated := !ShowCoated
+  IniWrite, 1, data.ini, Locations, ShowCoated
+  else
+  IniWrite, 0, data.ini, Locations, ShowCoated
+  Varbar.Show()
+  }
+MouseCLip(){
+  global
+  Menu, Tray, ToggleCheck, MouseClip
+  If MouseClip:= !MouseClip
+  IniWrite, 1, data.ini, Locations, MouseClip
+  else 
+  IniWrite, 0, data.ini, Locations, Mouseclip
+  Varbar.Show()
+  }
+ShowNotes(){
+  global
+  ;  Menu, Tray, ToggleCheck, ShowNotes
+  If ShowNotes:= !ShowNotes
+  Notes.Show()
+  else
+  Notes.Close()
+  IniRead, Note1, data.ini, SavedVariable, Note1
+  IniRead, Note2, data.ini, SavedVariable, Note2
+  Varbar.Show()
+  }
+KeyHistory(){
+  KeyHistory
+  }
+WindowSpy(){
+  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+  }
+Exitsub(){
+  varbar.exit()
+  exitapp
+  }
