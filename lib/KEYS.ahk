@@ -1,13 +1,26 @@
 #ifwinexist, ahk_exe Teams.exe
 Media_Play_Pause::^+m
 #Ifwinactive,
-
+#if (N=1)
+	wheelDown::return
+	wheelup::return
+	#if
 KEY_DEFAULT:
 	F15::								+tab
 	F17::								menu.Apps()
-	+F17::							MouseClip()
+	+F17::							EnteringProduct()
 	F16::								send, !{tab}
-	
+	j & k::esc
+	j::j
+	k::k
+		F20 & wheeldown::send % Blockrepeat(500) "{numpadDot}"
+	F20 & wheelup::send % Blockrepeat(500) "{numpadmult}"
+	F20 & wheelleft::numpadleft
+	F20 & wheelright::Numpadadd 
+	F19 & wheeldown::Send % Blockrepeat(500) "{F8}"
+	F19 & wheelup::send % Blockrepeat(500) "{F9}"
+	F19 & wheelleft::F7
+	F19 & wheelright::F6 
 	Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
 	Media_Prev::					send, {altdown}{tab}{altup}
 	Volume_Down::					send, {lwindown}{tab}{lwinup}
@@ -50,17 +63,7 @@ KEY_DEFAULT:
 	F20 up:: 	               Clip_C()
 	F21 up::    	           	Clip_C()
 	F19 up::       	       	Clip_V()
-	
-#if MouseClip
-	; sendlevel 2
-	Mbutton::
-										; clip()
-										send, ^c
-										GuiControl,Varbar:Text, Clipboard, %Clipboard%
-										return
-	F19 & f20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;clip("OCR")									
-	#if
-		Mbutton::					3Tap() ;	TMbutton() ;	ClipPaste()
+	Mbutton::						3Tap() ;	TMbutton() ;	ClipPaste()
 		; Mbutton::								3Tap() ;	TMbutton() ;	ClipPaste()
 	  ; Numlock::
 		; 	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 300)
@@ -332,7 +335,8 @@ numpaddot::           #down
 
 	4tap(){
 			If winactive("NuGenesis LMS - \\Remote") {
-				LMS.Detecttab()if (Tab="Requests" || Tab:="Samples")
+				LMS.Detecttab()
+			if (Tab="Requests" || Tab:="Samples")
 					LMS.CoA()
 				; else if (Tab:="Samples")
 					; LMS.CoA()
@@ -370,7 +374,6 @@ numpaddot::           #down
 				lms.SearchBar(Batch,"{enter}")
 			sleep 800
 		}
-
 		Else
 			send, %batch%
 		sleep 700
@@ -392,7 +395,7 @@ numpaddot::           #down
 		return
 		}
 	}
-; }
+
 
 
 
@@ -410,11 +413,20 @@ _Main_LMS_Screen:
   F19 & /::Send, %lot%{enter}
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
-  numpaddot::CloseWindow()
-  	numpadadd::lms.ProductSpecToggle()
-	numpadsub::lms.SampleRequestToggle()
+  numpaddot::excel.connect(1)
+	numpadadd::
+		if EnteringProduct
+			excel.NextSheet()
+		else
+			lms.ProductSpecToggle()
+		return
+			
+	  
+	numpadsub::
+	
+	lms.SampleRequestToggle()
 ;   numpadadd::lms.SelectTab(4)
-;   numpadsub::lms.sampleRequestToggle()
+;   numpadsub::lms.sampleRequestToggle(
 ; 
 
 	; space & lbutton::send, +{click}

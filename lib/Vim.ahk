@@ -9,8 +9,16 @@
 #if
 
 #IfWinActive, ahk_exe Code.exe
-	WheelLeft::												send, {altdown}{left}{altup}
-	Wheelright::											send, {altdown}{right}{altup}								
+	; F20 & wheeldown::numpadDot
+	; F20 & wheelup::numpadmult
+	; F20 & wheelleft::numpadleft
+	; F20 & wheelright::Numpadadd 
+	; F19 & wheeldown::F8
+	; F19 & wheelup::F9
+	; F19 & wheelleft::F7
+	; F19 & wheelright::F6 
+	; WheelLeft::											send, {altdown}{left}{altup}
+	; Wheelright::											send, {altdown}{right}{altup}								
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
 	numpadsub::                                  numpadsub
 	numpadadd::                                  numpadadd
@@ -19,7 +27,7 @@
 	^numpaddot::                                 send, {ctrldown}{w}{ctrlup}
 	Mbutton::                                    3Tap() 
 	F19 up::                                     send, {F19}
-	f8::                                         send, {ctrldown}{d}{ctrlup}
+	; f8::                                         send, {ctrldown}{d}{ctrlup}
 	$^z::                         		         send, {ctrldown}{z}{ctrlup}
 	$^l::                                        send, {ctrldown}{]}{ctrlup}
 	$^h::                                        send, {ctrldown}{[}{ctrlup}
@@ -49,10 +57,10 @@
 		tt("`n ----Find------- `n",1000,A_CaretX,A_Carety)
 		send, {ctrldown}{f}{ctrlup}
 		return
-	F6::                                         F6
-	F7::                                         F7
-	F8::                                         F8
-	F9::                                         F9
+	$F6::                                         F6
+	$F7::                                         F7
+	; $F8::                                         F8
+	$F9::                                         F9
 	tab & f::                                    sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 	tab::                                        tab
 	; `::                                          send, {``}
@@ -123,7 +131,7 @@
 	F13 & F11::                                  vs_code_windowinfo()
 	F13 & tab::												send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13::                                        send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
-	F19::                                        Numpad0
+	F19::                                        ^c
 	
 	#ifwinactive
 

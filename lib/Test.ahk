@@ -457,15 +457,6 @@ AddCanceled(){
  sendinput,{click 399, 219}{end}'(Canceled'){enter}
 }
 
-blockRepeat(time=200){
- SetTimer, BlockInput, -%time%
- return
-}
-
-BlockInput:
- N=0
-return
-
 
 ToggleFilter_Test_1(){
  ifwinnotactive, NuGenesis LMS - \\Remote

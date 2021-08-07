@@ -54,7 +54,7 @@ VQuest_Start:
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add, Exit, ExitSub
   Menu, Tray, Add, CL3, CL3
-  Menu, Tray, Add, MouseClip, Mouseclip
+  Menu, Tray, Add, EnteringProduct, EnteringProduct
   menu, tray, add, ShowSampleID, showSampleID
   menu, tray, add, ShowCoated, ShowCoated
   menu, tray, add, ShowNotes, ShowNotes
@@ -98,10 +98,10 @@ VQuest_Start:
   ye:="ye"
   IfWinExist, ahk_exe WFICA32.EXE
   LMS.Orient()
-  if (MouseClip = 1)
-    Menu, Tray, Check, MouseClip
+  if (EnteringProduct = 1)
+    Menu, Tray, Check, EnteringProduct
   else
-    Menu, Tray, unCheck, MouseClip
+    Menu, Tray, unCheck, EnteringProduct
   if (ShowSampleID = 1)
     Menu, Tray, Check, showsampleID
   else

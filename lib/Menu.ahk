@@ -142,7 +142,7 @@ class Menu{
   Apps(){
   global
   try This.delete()
-    Menu, Menu, Add, &MouseClip , MouseClip 
+    Menu, Menu, Add, &EnteringProduct , EnteringProduct 
     menu, menu, add
     Menu, Menu, Add, &LMS , !l 
     Menu, Menu, Add, &VScode , !v 
@@ -167,9 +167,9 @@ class Menu{
   Varbar(){
   global
   try This.delete()
-    Menu, Menu, Add, &MouseClip , MouseClip 
-      if mouseclip=1  
-        menu, menu, Check, &MouseClip
+    Menu, Menu, Add, &EnteringProduct , EnteringProduct 
+      if EnteringProduct=1  
+        menu, menu, Check, &EnteringProduct
         
     Menu, Menu, Add, &ShowNotes, ShowNotes 
       ; if ShowNotes=1  

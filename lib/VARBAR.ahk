@@ -36,12 +36,8 @@
 	lalt::     		 Varbar.Reset()
 	F21 & F20::    ProductTab.Table()
 	Rbutton::			menu.Varbar()
-	; numpaddot::
+	numpaddot:: 	 Openapp.Workbook()
 
-	; MouseClip()
-	; reload
-	; return
-	#if
 	
 ; #If MouseIsOver("Notes ahk_exe AutoHotkey.exe")
 		; Mbutton::Notes.save()
@@ -79,7 +75,7 @@ Class VarBar{
 				Iniread, ShowCoated, data.ini, Locations, ShowCoated
 				Iniread, VarBar_X, data.ini, Locations, VarBar_X
 				Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
-				Iniread, MouseClip, data.ini, Locations, MouseClip
+				Iniread, EnteringProduct, data.ini, Locations, EnteringProduct
 			; }
 			If (X=Mouse)
 			{
@@ -96,19 +92,19 @@ Class VarBar{
 				GUI, VarBar:destroy
 			; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
 			; Varbar_X := LMS_X+1000
-			if MouseClip {
-				try GUI,Varbar:destroy
-				Gui Varbar:Default
-				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
-				WinSet, Transparent, 190, AHK_id %GUIID%
-					GUI,VarBar:Font,				s8 cBlack,arial Narrow
-					Gui, VarBar:color, 			B39D1B
-					Gui,VarBar:Add,text, 		vIteration x265 y15 w18,																	%Iteration%	; Text1	
-					Gui,VarBar:add,Text,	vClipboard 				 R3 x1 H19 y-3 w145 left,  						%Clipboard%     ; edit6
-				; edit6
-			} 
-			Else 
-			{
+			; if MouseClip {
+			; 	try GUI,Varbar:destroy
+			; 	Gui Varbar:Default
+			; 	Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
+			; 	WinSet, Transparent, 190, AHK_id %GUIID%
+			; 		GUI,VarBar:Font,				s8 cBlack,arial Narrow
+			; 		Gui, VarBar:color, 			B39D1B
+			; 		Gui,VarBar:Add,text, 		vIteration x265 y15 w18,																	%Iteration%	; Text1	
+			; 		Gui,VarBar:add,Text,	vClipboard 				 R3 x1 H19 y-3 w145 left,  						%Clipboard%     ; edit6
+			; 	; edit6
+			; } 
+			; Else 
+			; {
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
 				WinSet, Transparent, 200, %GUIID%
@@ -137,7 +133,7 @@ Class VarBar{
 					}
 				else
 					Gui,VarBar:add,Edit,	vNote1 						gNotevarbar x160 H19 y-3 w150 left,  			%Note1%     ; edit6
-			}
+			; }
 			CoordMode, mouse, screen
 			; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
 			; varbar_x:= Varbar_x +100

@@ -174,16 +174,16 @@ Excel:
 		F9::                 
 		excel.search()
 		sleep 200
-	F7::                 send, {lwindown}{right}{lwinup}
-	; MoveFindReplace()
-	$rbutton::           Mouse_RbuttonUP()
-	+Enter::             sendinput, !{enter}
-	$Enter::             sendinput,{enter}
-	; Numlock::          Excel.SearchWorkbook(Product)
-	F8::                 send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
-	Media_Prev::         send,{LWindown}{tab}{lwinup}
-	F19 & F7::           ^F8 ;Excel.NextSheet()
-	F19 & F6::           ^F9 ;Excel.PrevSheet()
+		F7::                 send, {lwindown}{right}{lwinup}
+		; MoveFindReplace()
+		$rbutton::           Mouse_RbuttonUP()
+		+Enter::             sendinput, !{enter}
+		$Enter::             sendinput,{enter}
+		; Numlock::          Excel.SearchWorkbook(Product)
+		F8::                 send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
+		Media_Prev::         send,{LWindown}{tab}{lwinup}
+		F19 & F7::           ^F8 ;Excel.NextSheet()
+		F19 & F6::           ^F9 ;Excel.PrevSheet()
 	#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 		F7::                 MoveFindReplace()
 		F20 & WheelUp::      
