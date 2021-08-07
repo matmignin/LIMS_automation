@@ -186,16 +186,16 @@ Excel:
 		F19 & F6::           ^F9 ;Excel.PrevSheet()
 	#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 		F7::                 MoveFindReplace()
-		F20 & WheelUp::      
-		F21 & WheelUp::      
-		Send, !{n}%Product%
-		sleep 400
-		return
-	F20 & WheelDown::    
-	F21 & WheelDown::    
-	Sendinput % Batch
-	return
-	return::             sendinput, !{i}
+		; F20 & WheelUp::      
+		; F21 & WheelUp::      
+		; Send, !{n}%Product%
+		; sleep 400
+		; return
+	; F20 & WheelDown::    
+	; F21 & WheelDown::    
+	; Sendinput % Batch
+	; return
+	; return::             sendinput, !{i}
 	rbutton & Lbutton::  sendinput, !{i}
 	
 	MoveFindReplace(){

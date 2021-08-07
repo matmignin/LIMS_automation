@@ -22,8 +22,11 @@ Connect(reload:=0){
 		; XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True
 		sht := XL.ActiveSheet.Name
+			Gui VarBar:+LastFound
 		if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			xl.sheets(PrevProduct).select
+			TT("MenuSheet")
+			; xl.sheets(PrevProduct).select
+			; Gui, VarBar:color, 000000
 			; return
 		
 			; Excel.PrevSheet()
@@ -115,8 +118,10 @@ NextSheet(){
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
 	XL.Sheets(NextSheetname).activate
 	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet")
+		XL.Sheets(NextSheetname).activate
 		excel.connect()
 	Excel.MatchColor()
+	TT(Product "`t" Batch "`t" Lot "`t" coated "`n" Name "`t" Customer "`t" "`n" Color "`t" Shapeandsize, ,,,1,200) 
 	;GuiControl, +redraw, varbar
 	}
 
@@ -127,8 +132,10 @@ PrevSheet(){
 	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
 	Xl.Sheets(PrevSheet).activate
-	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet")
+	if (prevSheetName = "Sheet1" || prevSheetName = "Main" || prevSheetName = "Template" || prevSheetName = "Finished" || prevSheetName = "Micro Pending" || prevSheetName = "Sheet2" || prevSheetName = "Sheet1" || prevSheetName = "Item Code" || prevSheetName = "Scrap Sheet")
+		Xl.Sheets(PrevSheet).activate
 		excel.connect()
+	TT(Product "`t" Batch "`t" Lot "`t" coated "`n" Name "`t" Customer "`t"  "`n" Color "`t" Shapeandsize, ,,,1,200) 
 	Excel.MatchColor()
 	; Excel.MatchColor()
 	;GuiControl, +redraw, varbar
@@ -156,7 +163,7 @@ MatchColor(){
 	else if 	(TabColor = 16777215) 	;light purple
 		Gui, VarBar:color, 9966FF 
 	else if 	(TabColor = 0) 	;black
-		Gui, VarBar:color, 808080 
+		Gui, VarBar:color, 000000 
 	else
 			Gui, VarBar:color, FF9999 ;pink
 	}

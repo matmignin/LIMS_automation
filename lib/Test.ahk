@@ -25,23 +25,19 @@ Test(n){
 
 
 
-
 	
 ;------------------------------------------------lms.dettesting individual regex------------------------------------------------------------------------
 ;------------------------------------------------------TEST 1------------------------------------------------------------
+return
 Test_1(){
 global
-	; clipboard:=
-	; send, ^c
-	; clipwait, 1
-	; TT(ClipRegex("i)[abdefghijkl]\d{3}\b") "`n" ClipRegex("i)(?<!Ct#)\b\d{3}-\d{4}\b") "`n" clipregex("i)(\b\d{4}\w\d\w?|\bBulk\b)") )
+	clipboard:=
+	send, ^c
+	clipwait, 1
+	TT(ClipRegex("i)[abdefghijkl]\d{3}\b") "`n" ClipRegex("i)(?<!Ct#)\b\d{3}-\d{4}\b") "`n" clipregex("i)(\b\d{4}\w\d\w?|\bBulk\b)") )
 	; TT(ClipRegex("i)(?<!Ct#)\b\d{3}-\d{4}\b"))
 	; TT(ClipRegex("i)(\b\d{4}\w\d\w?|\bBulk\b)"))
 	; TT(ClipRegex("i)\bs\d{8}-\d{3}\b"))|
-	TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
-	clipboard:=
-	clipboard:=tabcolor
-	tt(TabColor)
 return
 }
 

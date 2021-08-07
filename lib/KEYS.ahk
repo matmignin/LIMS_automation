@@ -13,14 +13,14 @@ KEY_DEFAULT:
 	j & k::esc
 	j::j
 	k::k
-		F20 & wheeldown::send % Blockrepeat(500) "{numpadDot}"
+	F20 & wheeldown::send % Blockrepeat(500) "{numpadDot}"
 	F20 & wheelup::send % Blockrepeat(500) "{numpadmult}"
-	F20 & wheelleft::numpadleft
-	F20 & wheelright::Numpadadd 
+	F20 & wheelright::gosub, Numpadadd
+	F20 & wheelleft::gosub, Numpadsub
 	F19 & wheeldown::Send % Blockrepeat(500) "{F8}"
 	F19 & wheelup::send % Blockrepeat(500) "{F9}"
-	F19 & wheelleft::F7
-	F19 & wheelright::F6 
+	F19 & wheelleft::gosub, F6
+	F19 & wheelright::GoSub, F7  
 	Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
 	Media_Prev::					send, {altdown}{tab}{altup}
 	Volume_Down::					send, {lwindown}{tab}{lwinup}
@@ -407,28 +407,27 @@ _Main_LMS_Screen:
   F21 & Left::WinMove, A, , -283, -1196, 1662, 952
   F19 & F20::lms.searchBar("")
   F19 & F21::lms.searchBar("")
-  F19 & space::Send, %Product%{enter}
+  F19 & space::
+		
+  	Send, %Product%{enter}
   F20 & space::Send, %Batch%{enter}
   F21 & space::Send, %Batch%{enter}
   F19 & /::Send, %lot%{enter}
   ~Lbutton & F19::send,{enter}
   Enter::LMS.SaveCode()
-  numpaddot::excel.connect(1)
+  numpaddot::blockrepeat(500) excel.connect(1)
 	numpadadd::
 		if EnteringProduct
 			excel.NextSheet()
 		else
 			lms.ProductSpecToggle()
 		return
-			
-	  
 	numpadsub::
-	
-	lms.SampleRequestToggle()
-;   numpadadd::lms.SelectTab(4)
-;   numpadsub::lms.sampleRequestToggle(
-; 
-
+		if EnteringProduct
+			excel.Prevsheet()
+		else
+			lms.SampleRequestToggle()
+		return
 	; space & lbutton::send, +{click}
 	; space up::sendinput, ^{click}
 	; wheelright::2right()
