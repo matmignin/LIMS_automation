@@ -1,4 +1,5 @@
-﻿gosub, vquest_start
+﻿
+gosub, vquest_start
 SetNumLockState, on
 CheckTime:=500
 ; #if getnumlock 
@@ -9,7 +10,6 @@ return
   return
 
 ; ______________________________________________________________________
-
 
 
 
@@ -98,6 +98,8 @@ VQuest_Start:
   ye:="ye"
   IfWinExist, ahk_exe WFICA32.EXE
   LMS.Orient()
+  
+
   if (EnteringProduct = 1)
     Menu, Tray, Check, EnteringProduct
   else

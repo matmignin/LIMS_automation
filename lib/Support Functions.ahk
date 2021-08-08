@@ -230,7 +230,7 @@ return
 }
 
 
-VS_Code_WindowInfo(){
+WindowInfo(){
 	global
 	CoordMode, mouse, window
 	MouseGetPos, mX, mY, ,WinControl
@@ -243,8 +243,10 @@ VS_Code_WindowInfo(){
 	TT(MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH,3000,,,2)
 	Process:= "ahk_exe " WinProcess
 	WinInfo:="WinMove, " Wintitle ", , " wX ", " wY ", " wW ", " wH
+	
 	keywait, F20, U
 	keywait, F21, U
+	
 	sleep 500
 	; Tooltip,
 	; SetTimer, RemoveToolTip, -2000
@@ -324,20 +326,33 @@ TT(msg:="yo", time=1500, X:="",Y:="",W:="", T:="") {
 		; N:=
 	return
 	}
-
 ReloadScript(){
-	TT("`nReload`n ")
-	; IfWinExist, ahk_exe AutoHotkey.exe Vquest.ahk
-		; WinActivate,
+	global
+	TT("`n `n - `t `t  Reload   `t `t -`n `n ")
 	send,{ctrldown}{s}{altup}{CtrlUp}{ShiftUp}{LWinUp}
 	sleep 200
-	run, VQuest.ahk
+	; try
+		run, VQuest.ahk
+	; catch e ;catch any errors
+	; throw e
 	}
+	
+LogError(exception) {
+	global
+    ErrorLine:=exception.Line
+    ErrorFile:=Exception.File
+	 clipboard:=ErrorLine " " e " " ErrorFile
+		FileAppend % "Error on at" exception.file " line " exception.Line ": " exception.Message "`n"
+        , errorlog.txt
+	 return True
+}
 
-
-
-
-
+	GotoError(){
+		global
+		send, {F9}{:}%ErrorLine%{enter}
+		; send, {F9}{:}%Errorline%{enter}
+		return
+	}
 class click{
 
 	OKay(sleeptime:=""){

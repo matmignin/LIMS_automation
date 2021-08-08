@@ -5,13 +5,13 @@
 							winactivate, %the_WinTitle%
 							click, %caret_X%, %caret_y%
 							return
-	mbutton::
-				Click
-				if Toggle := !Toggle
-				 Notes.SHow()
-				else
-					notes.Save()
-				return
+	; mbutton::
+				; Click
+				; if Toggle := !Toggle
+				;  Notes.SHow()
+				; else
+					; notes.Save()
+				; return
 	enter::
 	send, ^a
 	clip()
@@ -25,7 +25,7 @@
 #If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
 	; wheelleft::    Excel.PrevSheet()
 	; wheelRight::   excel.Nextsheet()
-
+	mbutton::		Varbar.launchTable()
 	WheelUp::      Varbar.AddIteration()
 	Wheeldown::    Varbar.SubIteration()
 	F9::           Excel.connect()
@@ -78,7 +78,7 @@ Class VarBar{
 				Iniread, EnteringProduct, data.ini, Locations, EnteringProduct
 			; }
 			If (X=Mouse)
-			{
+			{ 
 				coordmode, mouse, Screen
 				MouseGetPos,MousePos_X,ypos,w,h
 				coordmode, mouse, Window
@@ -87,7 +87,7 @@ Class VarBar{
 				IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 				IniWrite, %Varbar_y%, data.ini, Locations, VarBar_Y
 				coordmode, mouse, Window
-			}
+			} 
 			if (Destroy:="Reset")
 				GUI, VarBar:destroy
 			; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
@@ -276,12 +276,13 @@ Class VarBar{
 			global
 			try GUI ingredient_table:destroy
 			try GUI Spec_table:destroy
-			if winactive("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
+			excel.connect(1)
+			if winexist("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
 				SpecTab.Table()
-			if winactive("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
+			if winexist("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
 				ProductTab.Table()
 			else {
-			ifwinnotactive, ahk_exe WFICA32.EXE 
+				ifwinnotactive, ahk_exe WFICA32.EXE 
 				winactivate, ahk_exe WFICA32.EXE
 			lms.DetectTab()
 				If (Tab="Products")

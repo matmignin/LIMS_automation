@@ -4,7 +4,7 @@ ClipRegex(Pattern){
   return Output 
 }
 
-Clip(input=0){
+Clip(input=0,Wait:="0.35"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department,clippaste
   if (ClipPaste = 1){
       send, ^{c}
@@ -23,7 +23,7 @@ Clip(input=0){
     send, ^{c}
   ; TT(Clipboard,2000,Varbar_x,30,1,200)
   sleep %input%
-  clipwait,0.35
+  clipwait,%Wait%
   if errorlevel
   {
     clipboard:=ClipboardSaved

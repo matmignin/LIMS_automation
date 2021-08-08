@@ -1,5 +1,11 @@
-#ifwinexist, ahk_exe Teams.exe
-Media_Play_Pause::^+m
+; #ifwinexist, ahk_exe Teams.exe
+Media_Prev::F15
+Media_Play_Pause::F16
+Media_Next::F17
+Volume_Mute::F20
+Volume_Down::F18
+Volume_up::F18
+
 #Ifwinactive,
 #if (N=1)
 	wheelDown::return
@@ -115,8 +121,8 @@ F19_And_F20:
 	F21 & Down::          	send, #{Down}
 	F20 & \::             	Sendpassword()
 	F21 & \::             	Sendpassword()
-	F20 & .::             	VS_Code_WindowInfo()
-	F21 & .::             	VS_Code_WindowInfo()
+	F20 & .::             	WindowInfo()
+	F21 & .::             	WindowInfo()
 	F20 & o:: 				 	OpenApp.Outlook()
 	F21 & o::				 	OpenApp.Outlook()
 	F20 & =::             	sendinput,{CtrlDown}{=}{Ctrlup}
@@ -179,7 +185,7 @@ Double_press_For_Enter:
 #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
   space::             send, {ctrldown}{click}{ctrlup}
   F19::               send, {F21}
-  .::                 VS_Code_WindowInfo()
+  .::                 WindowInfo()
   v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
   F20::               send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
   e::                 send,{LWinDown}{e}{lwinup}
@@ -310,6 +316,8 @@ numpaddot::           #down
 		menu.passwords()
 	 else if Winactive("Result Entry - \\Remote") 
 		WorkTab.ChangeTestResults("toggle")
+	 else if Winactive("Edit specification - \\Remote")  	
+		menu.LMS()
 	 else if Winactive("Results Definition - \\Remote")  	
 		menu.LMS()
 	 else if Winactive("Edit Formulation - \\Remote") 
@@ -491,7 +499,7 @@ _WFICA32:
 	; numpadadd::Excel.NextSheet()
 	; numpadsub::Excel.PrevSheet()
 
-	Rbutton & F19::       	send % VS_Code_WindowInfo() 
+	Rbutton & F19::       	send % WindowInfo() 
 	Rbutton & F6::        	send, Backspace
 	Rbutton & Lbutton::   	send, Enter
 	Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()

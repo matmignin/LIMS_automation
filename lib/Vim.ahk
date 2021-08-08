@@ -7,7 +7,7 @@
 	; ^z::                                      send,{ctrldown}{z}{ctrlup}
 		z::                                      send,{ctrldown}{z}{ctrlup}
 #if
-
+ta
 #IfWinActive, ahk_exe Code.exe
 	; F20 & wheeldown::numpadDot
 	; F20 & wheelup::numpadmult
@@ -19,6 +19,7 @@
 	; F19 & wheelright::F6 
 	; WheelLeft::											send, {altdown}{left}{altup}
 	; Wheelright::											send, {altdown}{right}{altup}								
+	F20 & .:: 												Send, {ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
 	numpadsub::                                  numpadsub
 	numpadadd::                                  numpadadd
@@ -108,7 +109,7 @@
 	F19 & p::                                    send, ^{F9}
 	F19 & F9::                                   send, ^{F9}
 	F19 & lbutton::                              send, ^{click}
-	
+	F19 & Enter::											Send, {ctrldown}{enter}{ctrlup}
 	F19 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F19 & l::                                    send, {shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
 	F19 & h::                                    send, {shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
@@ -121,6 +122,7 @@
 	f19 & n::                                    send, {shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
 	f19 & f6::                                   send,{ctrldown}{[}{ctrlup}
 	f19 & f7::                                   send,{ctrldown}{]}{ctrlup}
+	F19 & 7::												GotoError()
 	; f13 & wheeldown::                            send,{ctrldown}{down}{ctrlup}
 	; f13 & wheelup::                              send,{ctrldown}{up}{ctrlup}
 	F13 & `::												delete
@@ -128,8 +130,9 @@
 	; F13 & f6::                                   wheel_2("!{left}",10)
 	; F13 & wheeldown::                            wheel_2("{ctrldown}v{ctrlup}",2000)
 	; F13 & wheelup::                              wheel_2("{ctrldown}x{ctrlup}",2000)
-	F13 & F11::                                  vs_code_windowinfo()
+	F13 & F11::                                  WindowInfo()
 	F13 & tab::												send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
+	F13 & lshift::											send, {shiftdown}{altdown}{ctrldown}{F7}{ctrlup}{altup}{shiftup}
 	F13::                                        send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
 	F19::                                        ^c
 	
@@ -422,6 +425,16 @@ VSCODE_Hotstrings:
 	:*R:ifwe`;::                                            
 	sendraw, ifwinexists, 
 	return
+	
+	:*R:iniw`;::                                            
+	sendraw, iniwrite 
+	send, {tab}`%`%{tab}data.ini{tab}SavedVariables{tab}
+	return
+	:*R:inir`;::                                            
+	sendraw, iniread 
+	send, {tab 2}data.ini{tab}SavedVariables{tab}
+	return
+	
 	:*R:#ifw`;::                                            
 	sendraw, #ifwinactive, 
 	return

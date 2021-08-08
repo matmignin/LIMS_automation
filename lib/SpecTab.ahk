@@ -94,10 +94,10 @@ CopySpecTemplate(){
 	global
 	department:= 
 	Clipboard:=
-	; send, ^c
+	send, ^c
 	; clipwait,1 ; Tooltip, %Clipboard%
-	; sleep 100
-	clip(200)
+	sleep 100
+	clip("",1.0)
 	; sleep 400
 	; TT(department)
 	Breaking.Point()

@@ -83,7 +83,7 @@ DropdownSelect(A_DropdownCount){
   if (A_DropdownCount = "-0")
   Sendinput, {tab}{end}
   if (a_DropdownCount = "")
-  ProductTab.DropDown_Ingredient()
+  this.DropDown_Ingredient()
   Breaking.Point()
   sleep 200
   return
@@ -103,8 +103,8 @@ DropdownSelect(A_DropdownCount){
     Mouse_Click("add_Composition")
     sleep 200
     Breaking.Point()
-    ProductTab.DropdownSelect(Dropdown_count)
-    ; ProductTab.Select_Ingredient()
+    this.DropdownSelect(Dropdown_count)
+    ; this.Select_Ingredient()
     ; tooltip, %Ingredient_Name%
     }
     if Winexist("Edit Ingredient - \\Remote")
@@ -407,21 +407,21 @@ Formulation_Hotstrings:
   ;}
   :*:stick\::stick packet ( g){left 3}{tab}Blend+{tab}
   :*:1scoop\::
-  ProductTab.Scoops(1)
+  this.Scoops(1)
   :*:2scoops::
-  ProductTab.Scoops(2,"two")
+  this.Scoops(2,"two")
   :*:3scoops::
-  ProductTab.Scoops(3,"three")
+  this.Scoops(3,"three")
   :*:4scoops::
-  ProductTab.Scoops(4,"four")
+  this.Scoops(4,"four")
   :*:5scoops::
-  ProductTab.Scoops(5,"five")
+  this.Scoops(5,"five")
   :*:6scoops::
-  ProductTab.Scoops(6,"six")
+  this.Scoops(6,"six")
   :*:1stick::
-  ProductTab.Scoops(1,,"stick packet")
+  this.Scoops(1,,"stick packet")
   :*:2sticks::
-  ProductTab.Scoops(2,"two","stick packet")
+  this.Scoops(2,"two","stick packet")
   return
 
 
