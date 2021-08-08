@@ -50,7 +50,7 @@ Clip(input=0,Wait:="0.55"){
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
           ; if cBatch
-            Fileappend, %TimeString% = %cProduct% %cbatch% %cLot% %ctCoated%`n, Products.txt
+            Fileappend, %TimeString% %cProduct% %cbatch% %cLot% %ctCoated%`n, Products.txt
           ; else
             ; Fileappend, %cProduct%`n, Products.txt
   }
