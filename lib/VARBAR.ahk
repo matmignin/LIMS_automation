@@ -35,7 +35,10 @@
 	F21::          Spectab.Table()
 	lalt::     		 Varbar.Reset()
 	F21 & F20::    ProductTab.Table()
-	Rbutton::			menu.Varbar()
+	Rbutton::		menu.Varbar()	
+
+
+	return
 	numpaddot:: 	 Openapp.Workbook()
 
 	
@@ -194,6 +197,30 @@ Class VarBar{
 				GUI, VarBar:destroy
 			return
 		}
+		
+		HistoryMenuItem(){
+			global
+  sleep 200
+      RegExMatch(A_ThisMenuItem, "i)[abdefghijkl]\d{3}\b", rProduct)
+  ControlsetText, Edit1,%rProduct%, VarBar
+      RegExMatch(A_ThisMenuItem, "i)(?<!Ct#)\b\d{3}-\d{4}\b", rBatch)
+  ControlsetText, Edit2,%rBatch%, VarBar
+      RegExMatch(A_ThisMenuItem, "i)(\b\d{4}\w\d\w?|\bBulk\b)", rlot)
+  ControlsetText, Edit3,%rLot%, VarBar
+    RegExMatch(A_ThisMenuItem, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", rCoated)
+    RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
+  ControlsetText, Edit4,%rCoated%, VarBar
+  Product:=rProduct
+  Batch:=rBatch
+  Lot:=rLot
+  Coated:=rRoated
+  return
+}
+		
+		
+		
+		
+		
 	Focus(Control){
 		global
 		WinGetTitle, the_WinTitle, A
@@ -355,6 +382,16 @@ Class VarBar{
 		iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
 		iniwrite, %Follow%, data.ini, Locations, Follow
 		iniwrite, %Inverted%, data.ini, Locations, Inverted
+		FileRead, OutputVar, Products.txt
+		Sort, OutputVar, u
+		FileDelete, Products.txt
+		sleep, 300
+		FileAppend, %OutputVar%, Products.txt
+		FileRead, OutputVar, Batches.txt
+		Sort, OutputVar, u
+		FileDelete, Batches.txt
+		sleep, 300
+		FileAppend, %OutputVar%, Batches.txt
 		Notes.Save()
 		}
 
@@ -363,7 +400,6 @@ Class VarBar{
 			
 			
 Class Notes{
-
 	Show(){  ;array - remove duplicates (case insensitive)
 		global
 		try, GUI, Notes:destroy
@@ -472,10 +508,7 @@ Class Notes{
 		if A_Gui
 			return 0    ; Sizes the client area to fill the entire window.
 	}
-}
-
-
-
+	}
 
 	; ButtonAdd:
 		; gui, Notes:submit

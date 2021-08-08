@@ -6,19 +6,11 @@
 #if Getkeystate("LControl","p")
 	; ^z::                                      send,{ctrldown}{z}{ctrlup}
 		z::                                      send,{ctrldown}{z}{ctrlup}
+		n:: 													send, {altdown}{ctrldown}{g}{ctrlup}{altup}
 #if
-ta
+
 #IfWinActive, ahk_exe Code.exe
-	; F20 & wheeldown::numpadDot
-	; F20 & wheelup::numpadmult
-	; F20 & wheelleft::numpadleft
-	; F20 & wheelright::Numpadadd 
-	; F19 & wheeldown::F8
-	; F19 & wheelup::F9
-	; F19 & wheelleft::F7
-	; F19 & wheelright::F6 
-	; WheelLeft::											send, {altdown}{left}{altup}
-	; Wheelright::											send, {altdown}{right}{altup}								
+						
 	F20 & .:: 												Send, {ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
 	numpadsub::                                  numpadsub
@@ -40,6 +32,7 @@ ta
 	Tab & k::                                    up
 	Tab & f13::                                  send, {shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup}
 	Tab & 1::                                    send, {tab 8}
+	tab & space::											send, {shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
 	Tab & 2::                                    send, {tab 10}
 	Tab & 3::                                    send, {tab 12}
 	Tab & 4::                                    send, {tab 14}
@@ -67,6 +60,7 @@ ta
 	; `::                                          send, {``}
 	!t::                                         TT(trackpadhints,5000)
 	<^r::                                        reloadscript()
+	<^t::                                        reloadscript()
 	LCtrl & Appskey::                            return
 	<^f19::                                      send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 	Lshift::                                     DoublePress("{ctrldown}{F6}{ctrlup}",,"Backward")
@@ -133,8 +127,10 @@ ta
 	F13 & F11::                                  WindowInfo()
 	F13 & tab::												send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13 & lshift::											send, {shiftdown}{altdown}{ctrldown}{F7}{ctrlup}{altup}{shiftup}
-	F13::                                        send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
+
+	F13::                                       send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
 	F19::                                        ^c
+	
 	
 	#ifwinactive
 
@@ -151,6 +147,7 @@ F13_Control:
 	o::                                          Send,{Home}{enter}{up}
 	0::                                          send,{shiftdown}{Home 2}{shiftup}
 	6::                                          send,{shiftdown}{Home}{shiftup}
+	t::														send,{F9}test.ahk{enter}
 	4::                                          send,{shiftdown}{end}{shiftup} 
 	<^m::                                        send,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
 	v::                                          send,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
@@ -164,7 +161,7 @@ F13_Control:
 	F19::                                        send,{shiftdown}{ctrldown}{altdown}{f6}{altup}{ctrlup}{shiftup} ;previous suggestion
 	'::                                          send {shiftdown}{ctrldown}{r}{ctrlup}{shiftup}
 	p::														send,{home}{enter}{up}{ctrldown}{v}{ctrlup}
-	Space::                                      send,{shiftdown}{altDown}{a}{shiftup}{altup}
+	Space::                                      send,{shiftdown}{altDown}{a}{shiftup}{altup}{shiftdown}{ctrldown}{]}{ctrlup}{shiftup}
 	q::                                          send,{shiftdown}{altdown}{,}{altup}{shiftup}
 	g::                                          send,{shiftdown}{lwindown}{g}{lwinup}{shiftup}
 	; z::                                          Send,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
@@ -186,23 +183,22 @@ F13_Control:
 	Tab & 5::                                    send, {tab 26}
 	Tab & 6::                                    send, {tab 20}
 Vim:
-	#If (Getkeystate("F13","p") && A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800)
+	#If (Getkeystate("F13","p") && A_PriorHotKey = "d" AND A_TimeSincePriorHotkey < 800) ;Vim Delete
 		w::                                       send, {shiftdown}{altdown}{ctrldown}{7}{ctrlup}{altup}{shiftup}
 		4::                                       send, +{end}^{x}
-		5::                                       send, ^{m}^{x}
-		0::                                       send, +{home}^{x}
+		5::                              			Send, {shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
 		d::                                       Send, {shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
 		[::                                       send, {shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 		]::                                       send, {shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
-		#If (Getkeystate("F13","p") && A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 400)
-			d::                                    Send,{home 2}+{end}^c
+	#If (Getkeystate("F13","p") && A_PriorHotKey = "y" AND A_TimeSincePriorHotkey < 800)
+		d::                                    Send,{home 2}+{end}^x
 		; w::                                         send,{right}{ctrldown}{left}{shiftdown}{right}{shiftup}{c}{Ctrlup}
 		5::                                       send, ^m^c
 		4::                                       send, +{end}^c{esc}{F5 2}
 		y::                                       send,{home}+{end}^c{esc}{F5 3}
 		w::                                       send,{shiftdown}{altDown}{ctrldown}{s}{altup}{shiftup}{c}{Ctrlup}{esc}{F5 2}
 		0::                                       send, +{home}^c{esc}{F5 2}
-		#If (Getkeystate("F13","p") && A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
+	#If (Getkeystate("F13","p") && A_PriorHotKey = "v" AND A_TimeSincePriorHotkey < 500)
 			w::                                          send,{F17}
 		#If (Getkeystate("F13","p") && A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
 			g::                                          send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
@@ -235,7 +231,9 @@ Vim:
 		v::                                       send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
 		j::                                       send, {down}
 		k::                                       send, {Up}
-		t::                                       send, {altdown}{down}{altup}
+		; t::                                       send, {altdown}{down}{altup}
+		t::														send, {F9}test.ahk{ctrldown}{enter}{ctrlup}
+
 		h::                                       send, {left}
 		l::                                       send, {right}
 		x::                                       send, {Delete}
@@ -279,6 +277,10 @@ Vim:
 		#if
 		#IfWinActive
 F13 UP:: 													send, {esc}{ctrlup}{altup}{shiftup}
+
+
+;=============================psudonumpad
+	
 PsudoNumpad:
 	#If Getkeystate("F19","p")
 	0::                                         	send,{-}
@@ -502,15 +504,31 @@ class Vim{
 		send,{a}
 		return
 	}
-
+	cut(){
+		clipboard:=ClipboardAll
+		clipboard:=
+		send, ^{x}
+		clipwait, 0.25
+		vimclip:=clipboard
+		tt(clipboard,400,,,,200)
+		sleep 20
+		clipboard:=ClipboardAll
+		return
+	}
 	Paste(){
 		global
 		KeyWait, %A_ThisHotkey%, U
 		KeyWait, %A_ThisHotkey% ,D T0.25
 		if errorlevel
-			sendinput, ^v
+			if Vimclip
+				sendinput, %Vimclip%
+			else
+				send, ^v
 		else
-			sendinput,{end}{enter}^{v}
+			if vimclip
+				sendinput, {end}{enter}%Vimclip%
+			else
+				sendinput,{end}{enter}^{v}
 		return
 	}
 	}

@@ -5,7 +5,9 @@ Media_Next::F17
 Volume_Mute::F20
 Volume_Down::F18
 Volume_up::F18
-
+f10::F21
+F11::F22
+F12::send, {altdown}{tab}{altup}
 #Ifwinactive,
 #if (N=1)
 	wheelDown::return
@@ -44,7 +46,7 @@ KEY_DEFAULT:
 	~>+lshift::						ShiftAltTab
 	lshift & Appskey::			Return
 	rshift & Appskey::			return
-	<^;::	 							sendinput, %Timestring%{space}
+	<^;::	 							sendinput, %DayString%{space}
 	~Lbutton & left:: 			sendinput, %SampleID%
 	~Lbutton & Down:: 			sendinput, %Coated%
 	~Lbutton & right::			sendinput, %Lot%
@@ -55,7 +57,7 @@ KEY_DEFAULT:
 	/ & right::	 					send, %Lot%
 	/ & up::							send, %SampleID%
 	/::	 							send, /
-	` & Del::						Test(Iteration)
+	` & space::						Test(Iteration) 
 	` & 1::							Test_1()
 	` & 2::							Test_2()
 	` & 3::							Test_3()

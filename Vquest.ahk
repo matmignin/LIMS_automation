@@ -63,7 +63,7 @@ VQuest_Start:
   Menu, Tray, Add, Exit, ExitSub
   Menu, Tray, Add, windowSpy, WindowSpy
   Menu, Tray, Default, KeyHistory
-
+OnExit("Varbar.Exit")
   SetNumlockState Alwayson
   setcapslockstate alwaysoff
   SetscrolllockState, alwaysOff
@@ -75,9 +75,10 @@ VQuest_Start:
   #HotkeyModifierTimeout 50
   #maxthreadsperhotkey, 1
 ;  #IfTimeout 20
-  SetKeyDelay, 0, 0
+  SetKeyDelay, 1, 0
   setwindelay, 200
-  FormatTime, TimeString,, M/d/yy
+  FormatTime, DayString,, M/d/yy
+  FormatTime, TimeString,, Time
   try
   Run, cl3.Ahk, lib\CL3
   try

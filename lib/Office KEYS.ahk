@@ -58,8 +58,8 @@ F19 & f20::send, {altdown}{PrintScreen}{altup}
 	F13 & space::					sendinput, +{tab}{tab}
 
 	; clippaste()
-	F20 & up::send, PRD{tab 2}Mat Mignin{tab 2}%TimeString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
-	F21 & up::send, PRD{tab 2}Mat Mignin{tab 2}%TimeString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F20 & up::send, PRD{tab 2}Mat Mignin{tab 2}%DayString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F21 & up::send, PRD{tab 2}Mat Mignin{tab 2}%DayString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F20 & down::send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F21 & down::send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F20 & right::FindAndReplaceWord("<English>","English")
@@ -110,7 +110,7 @@ F19 & f20::send, {altdown}{PrintScreen}{altup}
 		F6::send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
 		F7::send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	:*:mm;::
-					send, Mat Mignin{tab 2}%TimeString%
+					send, Mat Mignin{tab 2}%DayString%
 					return			
 
 
@@ -155,7 +155,7 @@ Excel:
 		*/
 	#IfWinActive, LMS Workbook.xlsb
                
-	; F9::      					Excel.Connect(1)
+	F9::    					Excel.Connect(1)
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up
@@ -169,14 +169,10 @@ Excel:
 								return
 	; numlock::            send, {altdown}{down 2}{altup} 
 	#ifwinactive, Book
-		F9::WinMove, A, , 123, 117, 794, 937
+		F9::WinMove, A, , 0, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	#ifwinactive, ahk_exe EXCEL.EXE         
-		F9::                 
-		excel.search()
-		sleep 200
-		F7::                 send, {lwindown}{right}{lwinup}
-		; MoveFindReplace()
-		$rbutton::           Mouse_RbuttonUP()
+		F9::                 excel.search()
+		F7::                 excel.Search()
 		+Enter::             sendinput, !{enter}
 		$Enter::             sendinput,{enter}
 		; Numlock::          Excel.SearchWorkbook(Product)
@@ -185,17 +181,10 @@ Excel:
 		F19 & F7::           ^F8 ;Excel.NextSheet()
 		F19 & F6::           ^F9 ;Excel.PrevSheet()
 	#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
-		F7::                 MoveFindReplace()
-		; F20 & WheelUp::      
-		; F21 & WheelUp::      
-		; Send, !{n}%Product%
-		; sleep 400
-		; return
-	; F20 & WheelDown::    
-	; F21 & WheelDown::    
-	; Sendinput % Batch
-	; return
-	; return::             sendinput, !{i}
+		F20 & space::      	Send, !{n}%Product%
+		F21 & space::     	Send, !{n}%Product%
+		F19 & space::     	Send, !{n}%Batch%
+	return::             sendinput, !{i}
 	rbutton & Lbutton::  sendinput, !{i}
 	
 	MoveFindReplace(){

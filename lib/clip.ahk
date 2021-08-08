@@ -4,7 +4,7 @@ ClipRegex(Pattern){
   return Output 
 }
 
-Clip(input=0,Wait:="0.35"){
+Clip(input=0,Wait:="0.55"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department,clippaste
   if (ClipPaste = 1){
       send, ^{c}
@@ -34,9 +34,9 @@ Clip(input=0,Wait:="0.35"){
     sleep      20
     RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", cProduct)
     RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
-    RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", cCoated)
-    RegExMatch(cCoated,   "\d{3}-\d{4}", cCoated)
     RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+    RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
+    RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
     RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
     
     Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
@@ -49,12 +49,15 @@ Clip(input=0,Wait:="0.35"){
   If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
-        Fileappend, %cProduct%`n, lib/Products.txt
+          ; if cBatch
+            Fileappend, %TimeString% = %cProduct% %cbatch% %cLot% %ctCoated%`n, Products.txt
+          ; else
+            ; Fileappend, %cProduct%`n, Products.txt
   }
   If cBatch {
     GuiControl,Varbar:Text, Batch, %cBatch%
 				IniWrite, %cBatch%, data.ini, SavedVariables, Batch
-        Fileappend, %cBatch%`n, lib/Batch.txt
+        Fileappend, %cBatch%`n, Batch.txt
     }
   If cCoated {
     GuiControl,Varbar:Text, Coated, %cCoated%

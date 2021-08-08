@@ -240,7 +240,7 @@ return
 	; Down::			       gosub, ClipchainMoveDown
 	Delete::			     gosub, ClipChainDel
 	^c::			         send, ^c
-	F20 & F19::			  
+	F11::
 										clipchaininsert()
 										send, ^x
 										return

@@ -17,6 +17,29 @@ class Menu{
     Menu,menu,add,%item%,%group%
     }
     
+    ProductHistory(){
+    global
+		try Menu,Menu, deleteAll
+		Loop, Read, Products.txt
+			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
+		Menu, Menu, Show
+    return
+    }
+    BatchHistory(){
+    global
+		try Menu,Menu, deleteAll
+		Loop, Read, Batches.txt
+			Menu, Menu, Add, %A_LoopReadLine%, BatchesHistory
+		Menu, Menu, Show
+    return
+    }
+    
+    
+    
+    
+    
+    
+    
   CopyPasteSpec(){
     global copypasteToggle
      click
@@ -166,7 +189,24 @@ class Menu{
   }
   Varbar(){
   global
+	   MouseGetPos,,,,WinControl
   try This.delete()
+		if (WinControl="Edit1" || WinControl="Edit2" || winControl="Edit3"){
+      		Loop, Read, Products.txt
+			Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
+    }
+		; if (WinControl="Edit2"){
+      		; Loop, Read, Batches.txt
+			; Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
+    ; }
+    else {
+    menu, Menu, Add, ProductsMenu, Varbar.HistoryMenuItem
+		Loop, Read, Products.txt
+			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
+		; Loop, Read, Batches.txt
+			; Menu, BatchesMenu, Add, %A_LoopReadLine%, BatchesHistory
+		; Menu, Menu, Add, Products, :ProductsMenu
+		; Menu, Menu, Add, Batches, :BatchesMenu    
     Menu, Menu, Add, &EnteringProduct , EnteringProduct 
       if EnteringProduct=1  
         menu, menu, Check, &EnteringProduct
@@ -195,7 +235,7 @@ class Menu{
           Menu,Menu,add,&Spec Table,Tests
     Menu,Menu,add,&Ingredient Table,Tests
   ; Menu, Menu, add, &Notes, Notes.Show
-  
+    }
   This.show()
   }
   Remote_desktop(){
