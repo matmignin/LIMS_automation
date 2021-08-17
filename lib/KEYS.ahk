@@ -1,14 +1,39 @@
 ; #ifwinexist, ahk_exe Teams.exe
+#Ifwinactive,
 Media_Prev::F15
 Media_Play_Pause::F16
 Media_Next::F17
 Volume_Mute::F20
 Volume_Down::F18
 Volume_up::F18
+/ & up::						Varbar.AddIteration(0)
+/ & down::   		      Varbar.SubIteration(0)
+F13 & wheelright::		Varbar.AddIteration(0) 
+; ^wheelup::   	
+; 	tt("wheelup", 500)
+; 	send, !
+; 	blockinput, mousemove
+; 	sleep 500
+; 	blockinput, mousemoveoff
+; 	; SetKeyDelay, 1, 0
+; 	return
+; ~^wheeldown::  
+; 	TT("wheeldown",500)
+; 	blockinput, mousemove
+; 	sleep 500
+; 	blockinput, mousemoveoff
+; 	; SetKeyDelay, 1, 0
+; 	return
+; 	; sendlevel 0
+F13 & wheelleft::   		Varbar.SubIteration(0)
+; ^wheeldown::Block(300,"^{c}")
+^wheeldown::Blockrepeat(500) clip()
+; ^wheeldown::send % Blockrepeat(900) "^{v}"
+; sleep 500
+; return
 f10::F21
 F11::F22
 F12::send, {altdown}{tab}{altup}
-#Ifwinactive,
 #if (N=1)
 	wheelDown::return
 	wheelup::return
@@ -52,10 +77,9 @@ KEY_DEFAULT:
 	~Lbutton & right::			sendinput, %Lot%
 	~Lbutton & up::	 			sendinput, %SampleID%
 	^Media_Next::					MakeTransparent()
-	/ & Down::						send, %Coated%
+	/ & space::						send, %Coated%
 	/ & .::							send, {?}
 	/ & right::	 					send, %Lot%
-	/ & up::							send, %SampleID%
 	/::	 							send, /
 	` & space::						Test(Iteration) 
 	` & 1::							Test_1()
@@ -63,7 +87,7 @@ KEY_DEFAULT:
 	` & 3::							Test_3()
 	`::	 							sendraw, ``
 	~>+lbutton::					send,{shiftDown}{click}{shiftup}
-	F19 & up::						send, %SampleID%
+	; F19 & up::						send, %SampleID%
 	F19 & left::					send, %lot%
 	F19 & right::					send, %coated%
 	F19 & s::	 					send, %SampleID%
@@ -511,11 +535,12 @@ MouseIsOver:
 	return
 
 #If MouseIsOver("ahk_exe OUTLOOK.EXE")
+	^Wheeldown::Blockrepeat(500) clip()
 	Mbutton::
-	winactivate, ahk_exe OUTLOOK.EXE
-	3tap()
-	return
-	#if
+		winactivate, ahk_exe OUTLOOK.EXE
+		3tap()
+		return
+		#if
 #If MouseIsOver("LMS Workbook.xlsb")
 	numpadadd::Excel.NextSheet()
 	numpadsub::Excel.PrevSheet()
@@ -530,6 +555,7 @@ MouseIsOver:
 	numpadadd::lms.ProductSpecToggle()
 	numpadsub::lms.SampleRequestToggle()
 	Numlock::4tap()
+	^Wheeldown::Blockrepeat(500) clip()
 	; 	click
 	; 	sleep 300
 	; 	4tap()

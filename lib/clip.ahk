@@ -21,18 +21,17 @@ Clip(input=0,Wait:="0.55"){
     send, ^{x}
   else
     send, ^{c}
-  ; TT(Clipboard,2000,Varbar_x,30,1,200)
   sleep %input%
   clipwait,%Wait%
   if errorlevel
   {
     clipboard:=ClipboardSaved
-    if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton")
+    if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
     send, {home}+{end}^{c}
   }
     sleep      20
-    RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", cProduct)
+    RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
     RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
     RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
     RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
@@ -50,7 +49,7 @@ Clip(input=0,Wait:="0.55"){
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
           ; if cBatch
-            Fileappend, %TimeString% %cProduct% %cbatch% %cLot% %ctCoated%`n, Products.txt
+            Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% %TimeString%`n, Products.txt
           ; else
             ; Fileappend, %cProduct%`n, Products.txt
   }

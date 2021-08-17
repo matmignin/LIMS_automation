@@ -1,5 +1,4 @@
 #include <varbar>
-#include <mouse>
 
 Class Excel{
 Connect(reload:=0){

@@ -71,7 +71,7 @@ DeleteRetain(){
 	gLOBAL
   SetWinDelay, 450
   Breaking.Preamble()
-Winactivate, NuGenesis LMS - \\Remote
+  Winactivate, NuGenesis LMS - \\Remote
 	MouseGetPos, mx, mY  
 ; InputBox, n, number of retains to delte, , , , , mx, my,,,50
   n:=Iteration*10
@@ -80,19 +80,22 @@ Winactivate, NuGenesis LMS - \\Remote
     TT(n,800)
     Breaking.Point()
     Winactivate, NuGenesis LMS - \\Remote
+    clk(61, 258)
+    ; previousProduct:=Product
 		sleep 100
-		; send, {click 61, 258}
-		clk(61, 258)
-		sleep 300
-		; winwait, Delete Tests - \\Remote
+		winwait, Delete Tests - \\Remote,,1
+    if errorlevel
+      MouseClick, left, 0, 26, 1, 0, , R
+      ; MouseClick, left, 0, 26, 1, 0, , R
+      sleep 300
+      winactivate, Delete Tests - \\Remote
+		  send, {enter}
 		sleep 100
-    winactivate, Delete Tests - \\Remote
-		send, {enter}
 		sleep 800
     n--
       Breaking.Point()
-      SetWinDelay, 200
   }
+      SetWinDelay, 200
 }
 
 

@@ -10,7 +10,12 @@
 #if
 
 #IfWinActive, ahk_exe Code.exe
-						
+	^wheeldown::Block(400, "{down}")
+		; if N
+	; wheelDown::return
+	; wheelup::return
+	; #if
+	^wheelup::return
 	F20 & .:: 												Send, {ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
 	numpadsub::                                  numpadsub
@@ -203,11 +208,11 @@ Vim:
 		#If (Getkeystate("F13","p") && A_PriorHotKey = "g" AND A_TimeSincePriorHotkey < 500)
 			g::                                          send, {shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
 		#If (Getkeystate("F13","p") && A_PriorHotKey = "p" AND A_TimeSincePriorHotkey < 500)
-		p::																						send, {end}{enter}{ctrldown}{v}{ctrlup}
+		p::																						send, ^z{end}{enter}{ctrldown}{v}{ctrlup}
 		#if
 	#If Getkeystate("F13","p")
-		p::                                       return
-		y::                                       return 
+		p::                                       ^v
+		y::                                       ^c 
 		Rshift::                                  send,{pgdn}
 		f19 & lbutton::                           send,^{lbutton}
 		9 & 0::												send, {)}
@@ -279,9 +284,9 @@ Vim:
 F13 UP:: 													send, {esc}{ctrlup}{altup}{shiftup}
 
 
-;=============================psudonumpad
+; ============================= psudonumpad(){}
 	
-PsudoNumpad:
+_PsudoNumpad:
 	#If Getkeystate("F19","p")
 	0::                                         	send,{-}
 	m::                                          numpad1
@@ -309,7 +314,7 @@ PsudoNumpad:
 	RShift::                                     send,{Tab}
 	#if
 
-VSCODE_Hotstrings:
+_VSCODE_Hotstrings:
 	:*r:cd`;::{ctrldown}
 	:*r:cu`;::{ctrlup}
 	:*r:ad`;::{altdown}

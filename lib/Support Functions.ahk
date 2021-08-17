@@ -1,11 +1,12 @@
 CheckActive:
   ; Varbar.Follow()
-  if winexist("Excel - \\Remote") ;shrink excel 
-    WinGet, winminmax, MinMax , Excel - \\Remote,
+  if winexist("Book ahk_exe WFICA32.EXE") ;shrink excel 
+    WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
         if (winminmax=1){
-        winactivate, Excel - \\Remote
-        send, {lwindown}{down}{lwinup}
-        WinMove, Excel - \\Remote, , -178, -1179, 780, 1023
+				winactivate, Book ahk_exe WFICA32.EXE
+			  send, {lwindown}{down}{lwinup}
+			  sleep 400
+				WinMove,ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2,A_ScreenHeight/4
         sleep 300
       }
       ; If Follow 
@@ -18,11 +19,12 @@ CheckActive:
         ; VarWin_Y := LMS_Y
         ; WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
       ; }
+		sendlevel 1
       If A_TimeIdle >1000
         send, {ctrlUp}{altup}
+		  sendlevel 0
   return
-
-
+  
 
 
 
@@ -269,6 +271,22 @@ FlashScreen(){
 	return
 	}
 
+Block(Time:=300, Action:=""){
+	Global N
+	If N
+		exit
+	If Action
+		send % action
+		sleep 100
+		; TT(TooltipMessage)
+	N:=1
+	SetTimer, BlockInput, -%time%
+	return
+	
+	Block:
+		N:=
+		return
+}
 
 BlockRepeat(Time:=300, ToolTipMessage:=""){
 	Global N
@@ -758,6 +776,27 @@ Wheel_Copy()
 	return
 }
 
+PasteScreenshot(){
+	sleep 200
+	sendinput, +^{4}
+	sleep 200
+	KeyWait, LButton, d
+	MouseClick, left,,, 1, 0, D
+	; sleep 200
+	KeyWait, LButton,
+	; sleep 200
+	sleep 200
+	KeyWait, F20,
+	KeyWait, F21,
+	MouseClick, left,,, 1, 0, u
+	send,{enter}
+	sleep 200 ;screenshot"}
+	WinActivate, %mwin%
+	sleep 200
+	; CLICK, %Mx%, %My%
+	send, ^v
+	return
+	}
 
 
 StopSub:

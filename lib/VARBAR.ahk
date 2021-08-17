@@ -27,6 +27,8 @@
 	; wheelRight::   excel.Nextsheet()
 	mbutton::		Varbar.launchTable()
 	WheelUp::      Varbar.AddIteration()
+	up::				Varbar.AddIteration(0)
+	down::   		Varbar.SubIteration(0)
 	Wheeldown::    Varbar.SubIteration()
 	F9::           Excel.connect()
 	F7::           Excel.NextSheet()
@@ -110,16 +112,16 @@ Class VarBar{
 			; {
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
-				WinSet, Transparent, 200, %GUIID%
-				Gui, VarBar:color,21a366
+				; WinSet, Transparent, 300, %GUIID%
+				Gui, VarBar:color,016D07
 				GUI,VarBar:Font,s15 cBlack Bold, Consolas
 				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h28 x1 y1 w58 ,				%Product%  ; edit1
 				GUI,VarBar:Font,s10 cBlack,Consolas
 				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar H19 x60 y-2 w70, 					%Batch% 	 ; edit2
 				GUI,VarBar:Font,s9 cBlack , Consolas
 				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x60 center H18 y15 w70, 				%Lot% 		 ; edit3
-				GUI,VarBar:Font,s16 cBlack, Consolas
-				Gui,VarBar:Add,text, 		vIteration x133 65 right y4 w18,														%Iteration%	; Text1
+				GUI,VarBar:Font,s18 cEF6950, Consolas
+				Gui,VarBar:Add,text, 		vIteration x134 65 center y2 w23,														%Iteration%	; Text1
 				if ShowCoated 
 					{
 					GuiControl, Hide,Edit4
@@ -153,7 +155,7 @@ Class VarBar{
 			; if (Follow=1)
 			ControlsetText, Static1, %Iteration%,VarBar
 			OnMessage(0x0201, "WM_LBUTTONDOWN")
-			WinSet, Transparent, 190, AHK_id %GUIID%
+			WinSet, Transparent, 225, AHK_id %GUIID%
 			return
 
 			ProductVarBar:
@@ -198,24 +200,24 @@ Class VarBar{
 			return
 		}
 		
-		HistoryMenuItem(){
-			global
-  sleep 200
-      RegExMatch(A_ThisMenuItem, "i)[abdefghijkl]\d{3}\b", rProduct)
-  ControlsetText, Edit1,%rProduct%, VarBar
-      RegExMatch(A_ThisMenuItem, "i)(?<!Ct#)\b\d{3}-\d{4}\b", rBatch)
-  ControlsetText, Edit2,%rBatch%, VarBar
-      RegExMatch(A_ThisMenuItem, "i)(\b\d{4}\w\d\w?|\bBulk\b)", rlot)
-  ControlsetText, Edit3,%rLot%, VarBar
-    RegExMatch(A_ThisMenuItem, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", rCoated)
-    RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
-  ControlsetText, Edit4,%rCoated%, VarBar
-  Product:=rProduct
-  Batch:=rBatch
-  Lot:=rLot
-  Coated:=rRoated
-  return
-}
+HistoryMenuItem(){
+	global
+	sleep 200
+	RegExMatch(A_ThisMenuItem, "i)[abdefghijkl]\d{3}\b", rProduct)
+	ControlsetText, Edit1,%rProduct%, VarBar
+	RegExMatch(A_ThisMenuItem, "i)(?<!Ct#)\b\d{3}-\d{4}\b", rBatch)
+	ControlsetText, Edit2,%rBatch%, VarBar
+	RegExMatch(A_ThisMenuItem, "i)(\b\d{4}\w\d\w?|\bBulk\b)", rlot)
+	ControlsetText, Edit3,%rLot%, VarBar
+	RegExMatch(A_ThisMenuItem, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", rCoated)
+	RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
+	ControlsetText, Edit4,%rCoated%, VarBar
+	Product:=rProduct
+	Batch:=rBatch
+	Lot:=rLot
+	Coated:=rRoated
+	return
+	}
 		
 		
 		
@@ -230,7 +232,6 @@ Class VarBar{
 		GuiControl Varbar:Focus, %Control%, 
 		send, {ctrldown}{a}{ctrlup}
 		sleep 100
-
 		return
 		}	
 
@@ -334,11 +335,16 @@ Class VarBar{
 
 		AddIteration(speed:=350){
 		global Iteration
-		sleep 20
+		GuiControl, -redraw, varbar
+		sleep 10
 		Iteration+=1
 		ControlsetText, Static1,%Iteration%,VarBar
+		tt(Iteration,300,Varbar_x,Varbar_y,2,200)
+		BlockInput, on
 		sleep %Speed%
+		BlockInput, off
 		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+		GuiControl, +redraw, varbar
 		return
 		}
 		SubIteration(speed:=350){
@@ -346,7 +352,10 @@ Class VarBar{
 		sleep 10
 		Iteration-=1
 		ControlsetText, Static1,%Iteration%,VarBar
+		tt(Iteration,300,Varbar_x,Varbar_y,2,200)
+		BlockInput, on
 		sleep %speed%
+		blockinput, off
 		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		return
 		}
@@ -387,11 +396,6 @@ Class VarBar{
 		FileDelete, Products.txt
 		sleep, 300
 		FileAppend, %OutputVar%, Products.txt
-		FileRead, OutputVar, Batches.txt
-		Sort, OutputVar, u
-		FileDelete, Batches.txt
-		sleep, 300
-		FileAppend, %OutputVar%, Batches.txt
 		Notes.Save()
 		}
 

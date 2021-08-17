@@ -1,10 +1,23 @@
-﻿
+﻿#MaxHotkeysPerInterval 1000
+#HotkeyModifierTimeout 50
+#maxthreadsperhotkey, 1
+SetKeyDelay, 1, 0.25
+setwindelay, 200
+FormatTime, DayString,, M/d/yy
+FormatTime, TimeString, R
 gosub, vquest_start
 SetNumLockState, on
-CheckTime:=500
-; #if getnumlock 
-return
+CoordMode, mouse, Window
+SetMouseDelay, 1
+SetDefaultMouseSpeed, 1
+SetTitleMatchMode, 2
+   #MenuMaskKey vkE8
+#WinActivateForce
+AutoTrim, On
+CheckTime:=300
 
+
+return
   Starting_test:
   ; Test_2()
   return
@@ -13,18 +26,65 @@ return
 
 
 
+clipClip(type){
+global
+; tt("clipchanged")
+; send, ^c
+    sleep      20
+    RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
+    RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
+    RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+    RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
+    RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
+    RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
+    Sleep      20
+  If cProduct {
+  GuiControl,Varbar:Text, Product, %cProduct%
+				IniWrite, %cProduct%, data.ini, SavedVariables, Product
+          ; if cBatch
+            Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% %TimeString%`n, Products.txt
+          ; else
+            ; Fileappend, %cProduct%`n, Products.txt
+  }
+  If cBatch {
+    GuiControl,Varbar:Text, Batch, %cBatch%
+				IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+        Fileappend, %cBatch%`n, Batch.txt
+    }
+  If cCoated {
+    GuiControl,Varbar:Text, Coated, %cCoated%
+				IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        Fileappend, %cCoated%`n, lib/Coated.txt
+    }
+  If cLot {
+    GuiControl,Varbar:Text, lot, %clot%
+				IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        Fileappend, %cLot%`n, lib/Lot.txt
+    }
+  If cSampleID {
+    GuiControl,Varbar:text, SampleID, %cSampleID%
+				IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
+        Fileappend, %cSampleID%`n, lib/SampleID.txt
+    }
+    if cProduct || cBatch || cLot || cCoated || cSampleID || Winactive("ahk_exe WFICA32.EXE") 
+      TT(cProduct " " cBatch " " cLot " " cCoated " ",4000,Varbar_x,80,3,200)
+    else 
+        TT(Clipboard,900,Varbar_x,200,3,175)
+    return 
+}
+
 
 
 
 #IfWinActive,
 #include <Vim>
+#Include <Office KEYS>
 #include <KEYS>
 #Include <clip>
 #Include <Firefox>
 #Include <OpenApp>
 #Include <LMS>
 #Include <Snipper>
-#Include <Office KEYS>
 #Include <AutoFill>
 #include <varBar>
 #include <ProductTab>
@@ -34,7 +94,6 @@ return
 #include <Rotation>
 #include <Excel>
 #include <vis2>
-#include <Notes>
   #include <Support Functions>
 
 
@@ -45,12 +104,11 @@ VQuest_Start:
   #KeyHistory 300
   #InstallKeybdHook
   #InstallMouseHook
-  ;  #MenuMaskKey vkE8
+OnClipboardChange("clipclip")
   CrLf=`r`n
   FileName:="lib/WinPos.txt"
   envget, PrevProduct, PrevProduct
-  AutoTrim, On
-  #WinActivateForce
+
   SetWorkingDir, %A_ScriptDir%
   Menu, Tray, Add, Exit, ExitSub
   Menu, Tray, Add, CL3, CL3
@@ -63,26 +121,14 @@ VQuest_Start:
   Menu, Tray, Add, Exit, ExitSub
   Menu, Tray, Add, windowSpy, WindowSpy
   Menu, Tray, Default, KeyHistory
-OnExit("Varbar.Exit")
+
   SetNumlockState Alwayson
   setcapslockstate alwaysoff
   SetscrolllockState, alwaysOff
-  CoordMode, mouse, Window
-  SetMouseDelay, 1
-  SetDefaultMouseSpeed, 1
-  SetTitleMatchMode, 2
-  #MaxHotkeysPerInterval 300
-  #HotkeyModifierTimeout 50
-  #maxthreadsperhotkey, 1
-;  #IfTimeout 20
-  SetKeyDelay, 1, 0
-  setwindelay, 200
-  FormatTime, DayString,, M/d/yy
-  FormatTime, TimeString,, Time
-  try
-  Run, cl3.Ahk, lib\CL3
-  try
-  Menu, Tray, Icon, Robot.ico
+
+
+  try Run, cl3.Ahk, lib\CL3
+  try Menu, Tray, Icon, Robot.ico
   settimer, CheckActive, %CheckTime%
   ; Iniread, Product, data.ini, SavedVariables, Product
   ; Iniread, Batch, data.ini, SavedVariables, Batch

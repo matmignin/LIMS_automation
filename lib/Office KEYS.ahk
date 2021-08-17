@@ -34,11 +34,11 @@ ExplorerSearch(text){
 		WinGetPos, wX, wY, wW, wH, A
 		clk(ww-175, 75)
 		sleep 400
-		SetKeyDelay, 20, 1 
+		; SetKeyDelay, 20, 1 
 		send, %Text%
 		sleep 300
 		send, {enter}
-		setkeydelay, 0 , 0
+		; setkeydelay, 0 , 0
 		return
 		}
 	#ifwinactive, Task View, 
@@ -53,7 +53,7 @@ ExplorerSearch(text){
 	send, {up}{enter}
 return
 WORD:
-#IfWinActive, Word ahk_exe WINWORD.EXE
+#IfWinActive, ahk_exe WINWORD.EXE
 F19 & f20::send, {altdown}{PrintScreen}{altup}
 	F13 & space::					sendinput, +{tab}{tab}
 
@@ -73,8 +73,6 @@ F19 & f20::send, {altdown}{PrintScreen}{altup}
 		send, {up}
 		FindAndReplaceWord("<" clipboard ">",clipboard,"r")
 		return
-	F20::clip_C()
-	F21::clip_C()
 		F20 & k::up
 		F20 & j::down
 		F20 & h::left
@@ -98,18 +96,18 @@ F19 & f20::send, {altdown}{PrintScreen}{altup}
 		F20 & ,::Table_Entry("FALSE")
 		F20 & t::Table_Entry("TRUE")
 		F20 & .::Table_Entry("TRUE")
-		Xbutton2 & Wheelup::			Gosub, F9
-		Xbutton2 & Wheeldown::		Gosub, F8
-		Xbutton2 & Wheelleft::		Gosub, F6
-		Xbutton2 & Wheelright::		Gosub, F7
-		Xbutton1 & Wheelup::			Gosub, NumpadMult
-		Xbutton1 & Wheeldown::		Gosub, NumpadDiv
-		Xbutton1 & Wheelleft::		Gosub, Numpadsub
-		Xbutton1 & Wheelright::		Gosub, Numpadadd
+		F19 & wheeldown::
 		F8::send, {enter}
+			return
+		F19 & Wheelleft::
 		F6::send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
+			return
+		F19 & Wheelright::
 		F7::send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
-	:*:mm;::
+			return
+	F19::Clip_c()
+	F20::clip_v()
+	:*:mm`;::
 					send, Mat Mignin{tab 2}%DayString%
 					return			
 
@@ -180,6 +178,7 @@ Excel:
 		Media_Prev::         send,{LWindown}{tab}{lwinup}
 		F19 & F7::           ^F8 ;Excel.NextSheet()
 		F19 & F6::           ^F9 ;Excel.PrevSheet()
+	F19::send, ^v
 	#ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 		F20 & space::      	Send, !{n}%Product%
 		F21 & space::     	Send, !{n}%Product%
@@ -226,6 +225,8 @@ OUTLOOK:
 		lms.searchbar(Product)
 		return
 	F6::LMS.SearchRequest(Batch,"{enter}")    
+	^wheelup::Block(500,"^{v}")
+	; ^wheeldown::send % Blockrepeat(500) clip_c()
 	return
 	
 	
@@ -254,27 +255,6 @@ OneNote:
 	$Mbutton up::        sendinput,{ctrlup}
 	F20 up::             PasteScreenshot()
 	F21 up::             PasteScreenshot()
-		PasteScreenshot(){
-		sleep 200
-		sendinput, +^{4}
-		sleep 200
-		KeyWait, LButton, d
-		MouseClick, left,,, 1, 0, D
-		; sleep 200
-		KeyWait, LButton,
-		; sleep 200
-		sleep 200
-		KeyWait, F20,
-		KeyWait, F21,
-		MouseClick, left,,, 1, 0, u
-		send,{enter}
-		sleep 200 ;screenshot"}
-		WinActivate, %mwin%
-		sleep 200
-		; CLICK, %Mx%, %My%
-		send, ^v
-		return
-		}
 	F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 	F21 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 

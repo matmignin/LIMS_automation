@@ -25,14 +25,6 @@ class Menu{
 		Menu, Menu, Show
     return
     }
-    BatchHistory(){
-    global
-		try Menu,Menu, deleteAll
-		Loop, Read, Batches.txt
-			Menu, Menu, Add, %A_LoopReadLine%, BatchesHistory
-		Menu, Menu, Show
-    return
-    }
     
     
     
@@ -195,18 +187,11 @@ class Menu{
       		Loop, Read, Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
     }
-		; if (WinControl="Edit2"){
-      		; Loop, Read, Batches.txt
-			; Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
-    ; }
     else {
     menu, Menu, Add, ProductsMenu, Varbar.HistoryMenuItem
 		Loop, Read, Products.txt
 			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
-		; Loop, Read, Batches.txt
-			; Menu, BatchesMenu, Add, %A_LoopReadLine%, BatchesHistory
-		; Menu, Menu, Add, Products, :ProductsMenu
-		; Menu, Menu, Add, Batches, :BatchesMenu    
+
     Menu, Menu, Add, &EnteringProduct , EnteringProduct 
       if EnteringProduct=1  
         menu, menu, Check, &EnteringProduct
