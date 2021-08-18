@@ -1,6 +1,18 @@
 ; #ifwinexist, ahk_exe Teams.exe
 #Ifwinactive,
 
+
+    6::
+    MouseGetPos, X_Initial,Y_Initial
+    SoundGet, VolumeInitial
+    
+    While GetKeyState("6","P")
+    {
+    	MouseGetPos, X,Y
+    	SoundSet, % VolumeInitial+(Y_Initial-Y)/5
+    }
+    return
+
 drag_enabled := 0
 
 +^#F22::
