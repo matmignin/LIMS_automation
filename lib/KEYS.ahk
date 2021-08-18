@@ -1,5 +1,12 @@
 ; #ifwinexist, ahk_exe Teams.exe
 #Ifwinactive,
+~RButton::
+If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
+{
+Click middle
+}
+Return
+
 Media_Prev::F15
 Media_Play_Pause::F16
 Media_Next::F17
