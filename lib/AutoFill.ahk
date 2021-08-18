@@ -47,7 +47,8 @@
 	} Else If winactive("Edit sample template - \\Remote"){
 		sendinput,{tab}{delete 4}%Product%{enter}
 	} Else If winactive("Select methods tests - \\Remote"){
-		Mouse_Click("SearchBar_SelectMethodsTests")
+		clk(225, 69,, 2)
+		; Mouse_Click("SearchBar_SelectMethodsTests") ;eliminating mouseclick funct
 
 
 		;RotationTab -----------------------------------------------------------------

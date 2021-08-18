@@ -10,12 +10,12 @@
 #if
 
 #IfWinActive, ahk_exe Code.exe
-	^wheeldown::Block(400, "{down}")
+	; ^wheeldown::Block(400, "{down}")
 		; if N
 	; wheelDown::return
 	; wheelup::return
 	; #if
-	^wheelup::return
+	; ^wheelup::return
 	F20 & .:: 												Send, {ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
 	numpadsub::                                  numpadsub

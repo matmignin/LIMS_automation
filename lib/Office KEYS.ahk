@@ -208,7 +208,7 @@ OUTLOOK:
 		Clip.Copy()
 		return
 	; F21::                Clip.Copy()
-	F13::send, {altdown}{tab}{altup}
+	; F13::send, {altdown}{tab}{altup}
 	; Mbutton::
 	; 		; Click 3
 	; 		send, ^{c}
@@ -227,6 +227,7 @@ OUTLOOK:
 	F6::LMS.SearchRequest(Batch,"{enter}")    
 	^wheelup::Block(500,"^{v}")
 	; ^wheeldown::send % Blockrepeat(500) Clip.Copy()
+	F13::clip.IfNothingSelected("menu")
 	return
 	
 	

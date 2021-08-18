@@ -110,27 +110,30 @@ class Menu{
   
   
   Variable(){
+    global
+    try 
+    this.delete()
   
     ; Menu, Menu, add, &Variables, Variable
-      if Product
+      ; if Product
         Menu, menu, Add, &Product `t %Product%, Variable
-      if Batch
+      ; if Batch
         Menu, menu, Add, &Batch `t %Batch%, Variable
-      if Lot
+      ; if Lot
         Menu, menu, Add, &Lot `t %Lot%, Variable
-      if SampleID
+      ; if SampleID
         Menu, menu, Add, &SampleID `t %SampleID%, Variable
-      if Name
+      ; if Name
         Menu, menu, Add, &Name `t %name%, Variable
-      if Customer
+      ; if Customer
         Menu, menu, Add, Cus&tomer `t %Customer%, Variable
-      if Coated
+      ; if Coated
         Menu, menu, Add, &Coated `t %Coated%, Variable
-      if Color
+      ; if Color
         Menu, menu, Add, C&olor `t %Color%, Variable
-      if ShapeSize
+      ; if ShapeSize
         Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
-      if Weight
+      ; if Weight
         Menu, menu, Add, &Weight `t %Weight%, Variable
     ; Menu,Menu, add, &Variables, :Variables
     This.show()
@@ -253,37 +256,37 @@ return
 
 
 Variable:
-    if A_thismenuItem contains &Product `t %Product%,
-    send % Product
-   else if A_thismenuItem contains &Batch `t %Batch%
-    send % Batch
-   else if A_thismenuItem contains &name `t %name%
-    send % Name
-   else if A_thismenuItem contains &SampleID `t %SampleID%
-    send % SampleID
-   else if A_thismenuItem contains &lot `t %Lot%
-    send % Lot
-   else if A_thismenuItem contains &Coated `t %Coated%
-    send % Coated
-   else if A_thismenuItem contains Cus&tomer `t %Customer%
-    send % Customer
-   else if A_thismenuItem contains C&olor `t %Color%
-    send % Color
-   else if A_thismenuItem contains Sha&peSize `t %ShapeSize%
-    send % shapesize
-   else if A_thismenuItem contains &Weight `t %Weight%
-    send % Weight
-   else if A_ThisMenuItem is digit
+  if A_thismenuItem contains &Product `t %Product%,
+    clip.IfNothingSelected(Product)
+  else if A_thismenuItem contains &Batch `t %Batch%
+    clip.IfNothingSelected(Batch)
+  else if A_thismenuItem contains &name `t %name%
+    clip.IfNothingSelected(Name)
+  else if A_thismenuItem contains &SampleID `t %SampleID%
+    clip.IfNothingSelected(SampleID)
+  else if A_thismenuItem contains &lot `t %Lot%
+    clip.IfNothingSelected(Lot)
+  else if A_thismenuItem contains &Coated `t %Coated%
+    clip.IfNothingSelected(Coated)
+  else if A_thismenuItem contains Cus&tomer `t %Customer%
+    clip.IfNothingSelected(Customer)
+  else if A_thismenuItem contains C&olor `t %Color%
+    clip.IfNothingSelected(Color)
+  else if A_thismenuItem contains Sha&peSize `t %ShapeSize%
+    clip.IfNothingSelected(shapesize)
+  else if A_thismenuItem contains &Weight `t %Weight%
+    clip.IfNothingSelected(Weight)
+  else if A_ThisMenuItem is digit
     {
-    Iteration:=A_Thismenuitem
-    GuiControl, Varbar:Text, iteration, %A_thismenuitem%
-    Clip()
-    sleep 200
-    varbar.Search("Batch")
+      Iteration:=A_Thismenuitem
+      GuiControl, Varbar:Text, iteration, %A_thismenuitem%
+      Clip()
+      sleep 200
+      varbar.Search("Batch")
     }
-   else
+  else
     Menu,Menu, deleteAll
-   return
+  return
 
 
 

@@ -197,7 +197,8 @@ CopySpecs(){
 	WinWaitActive, Results Definition,,0.25
 		if errorlevel
 			WinActivate, Results Definition
-	Mouse_Click("edit")
+	; Mouse_Click("edit") ;trying to eliminate mouseclick funct
+	clk(84, 65)
 	winwaitactive, Result Editor - \\Remote,,0.25
 		if errorlevel
 			WinActivate, Result Editor - \\Remote

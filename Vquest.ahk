@@ -2,7 +2,7 @@
 #HotkeyModifierTimeout 50
 #maxthreadsperhotkey, 1
 SetKeyDelay, 1, 0.25
-setwindelay, 200
+;setwindelay, 200
 FormatTime, DayString,, M/d/yy
 FormatTime, TimeString, R
 gosub, vquest_start
@@ -22,6 +22,37 @@ return
   ; Test_2()
   return
 
+
+CheckActive:
+  ; Varbar.Follow()
+  if winexist("Book ahk_exe WFICA32.EXE") ;shrink excel 
+    WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
+        if (winminmax=1){
+				winactivate, Book ahk_exe WFICA32.EXE
+			  sleep 400
+			  send, {lwindown}{down}{right}{lwinup}
+				; WinMove,ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2,A_ScreenHeight/4
+        ; sleep 300
+      }
+      ; If Follow 
+      ; {
+        ; If (Winexist("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote")) && WinExist("Excel - \\Remote")
+          ; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, "NuGenesis LMS - \\Remote"
+        ; else
+        ; WinGetTitle, WinTitle, A 
+        ; VarWin_X := LMS_X+(LMS_W/2)-400
+        ; VarWin_Y := LMS_Y
+        ; WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
+      ; }
+		sendlevel 1
+      If A_TimeIdle > 8000
+      {
+        setwindelay, 200
+        send, {ctrlUp}{altup}
+      }
+		  sendlevel 0
+  return
+
 ; ______________________________________________________________________
 
 
@@ -31,40 +62,8 @@ global
 ; tt("clipchanged")
 ; send, ^c
   clip.Regex("Codes")
-  clip.set()
-  ; If cProduct {
-  ; GuiControl,Varbar:Text, Product, %cProduct%
-	; 			IniWrite, %cProduct%, data.ini, SavedVariables, Product
-  ;         ; if cBatch
-  ;           Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% %TimeString%`n, Products.txt
-  ;         ; else
-  ;           ; Fileappend, %cProduct%`n, Products.txt
-  ; }
-  ; If cBatch {
-  ;   GuiControl,Varbar:Text, Batch, %cBatch%
-	; 			IniWrite, %cBatch%, data.ini, SavedVariables, Batch
-  ;       Fileappend, %cBatch%`n, Batch.txt
-  ;   }
-  ; If cCoated {
-  ;   GuiControl,Varbar:Text, Coated, %cCoated%
-	; 			IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-  ;       Fileappend, %cCoated%`n, lib/Coated.txt
-  ;   }
-  ; If cLot {
-  ;   GuiControl,Varbar:Text, lot, %clot%
-	; 			IniWrite, %cLot%, data.ini, SavedVariables, Lot
-  ;       Fileappend, %cLot%`n, lib/Lot.txt
-  ;   }
-  ; If cSampleID {
-  ;   GuiControl,Varbar:text, SampleID, %cSampleID%
-	; 			IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
-  ;       Fileappend, %cSampleID%`n, lib/SampleID.txt
-  ;   }
-    if cProduct || cBatch || cLot || cCoated || cSampleID || Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cCoated " ",4000,,-2,3,250)
-    else 
-        TT(Clipboard,900,,10,3,175)
-    return 
+  return
+
 }
 
 
@@ -98,7 +97,7 @@ VQuest_Start:
   #KeyHistory 300
   #InstallKeybdHook
   #InstallMouseHook
-  OnClipboardChange("clipclip")
+  ; OnClipboardChange("clipclip")
   CrLf=`r`n
   FileName:="lib/WinPos.txt"
   envget, PrevProduct, PrevProduct

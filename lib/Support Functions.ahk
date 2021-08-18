@@ -1,29 +1,4 @@
-CheckActive:
-  ; Varbar.Follow()
-  if winexist("Book ahk_exe WFICA32.EXE") ;shrink excel 
-    WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
-        if (winminmax=1){
-				winactivate, Book ahk_exe WFICA32.EXE
-			  send, {lwindown}{down}{lwinup}
-			  sleep 400
-				WinMove,ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2,A_ScreenHeight/4
-        sleep 300
-      }
-      ; If Follow 
-      ; {
-        ; If (Winexist("NuGenesis LMS - \\Remote") || Winactive("Register new samples - \\Remote")) && WinExist("Excel - \\Remote")
-          ; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, "NuGenesis LMS - \\Remote"
-        ; else
-        ; WinGetTitle, WinTitle, A 
-        ; VarWin_X := LMS_X+(LMS_W/2)-400
-        ; VarWin_Y := LMS_Y
-        ; WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
-      ; }
-		sendlevel 1
-      If A_TimeIdle >1000
-        send, {ctrlUp}{altup}
-		  sendlevel 0
-  return
+
   
 
 
@@ -305,45 +280,41 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 		return
 }
 	
-
-TT(msg:="yo", time=1500, X:="",Y:="",W:="", T:="") {
+TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 	global
-	; if N
-		; exit
-	CoordMode, ToolTip, Relative
-	; N:=1
+	if (Position:="R")
+		CoordMode, ToolTip, Relative
+	if (Position:="S")
+		CoordMode, ToolTip, Screen
 	If !X
-		X:=A_CaretX-50
+		X:=A_CaretX+50
 	If !Y
 		Y:=A_CaretY-50
-	tooltip, %msg%, %X%, %Y%,%W%
+	if !msg
+		msg:=A_PriorHotkey "`n" A_Thishotkey
+	tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := WinExist("ahk_class tooltips_class32")
-	if T
-   	WinSet, Trans, %T%, % "ahk_id" hwnd
+	if Transparent
+   	WinSet, Trans, %Transparent%, % "ahk_id" hwnd
    	; WinSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
-	; CoordMode, ToolTip, screen 
 	; WinSet, Trans, 200, %W%
-	SetTimer, RemoveToolTip%W%, -%time% 
+	CoordMode, ToolTip, screen 
+	SetTimer, RemoveToolTip%N%, -%time% 
 	return
 	RemoveToolTip:
 		ToolTip
-		; N:=
 	return
 	RemoveToolTip1:
 		ToolTip,,,,1
-		; N:=
 	return
 	RemoveToolTip2:
 		ToolTip,,,,2
-		; N:=
 	return
 	RemoveToolTip3:
 		ToolTip,,,,3
-		; N:=
 	return
 	RemoveToolTip4:
-		ToolTip,,,,3
-		; N:=
+		ToolTip,,,,4
 	return
 	}
 ReloadScript(){
@@ -730,53 +701,53 @@ CreditCard(){
 
 
 
-Wheel_Paste()
-{
-	Global
-	BlockInput, on
-	if winactive("ahk_exe WFICA32.EXE")
-	{
-		Clipboard := Trim((Clipboard, "`r`n"))
-		sleep 80
-		send, %Clipboard%
-		; TT("Paste")
-	}
-	else
-	send, {ctrldown}{v}{ctrlup}{altup}{ShiftUp}{LWinUp}
-		blockinput off
-			sleep 50
-	return
-}
-Wheel_Cut()
-{
-	global
-	PreClip:=ClipboardAll
-	clipboard:=
-	; sendlevel 2
-	Send, {ctrldown}{x}{ctrlup}{altup}{ShiftUp}{LWinUp}
+; Wheel_Paste()
+; {
+; 	Global
+; 	BlockInput, on
+; 	if winactive("ahk_exe WFICA32.EXE")
+; 	{
+; 		Clipboard := Trim((Clipboard, "`r`n"))
+; 		sleep 80
+; 		send, %Clipboard%
+; 		; TT("Paste")
+; 	}
+; 	else
+; 	send, {ctrldown}{v}{ctrlup}{altup}{ShiftUp}{LWinUp}
+; 		blockinput off
+; 			sleep 50
+; 	return
+; }
+; Wheel_Cut()
+; {
+; 	global
+; 	PreClip:=ClipboardAll
+; 	clipboard:=
+; 	; sendlevel 2
+; 	Send, {ctrldown}{x}{ctrlup}{altup}{ShiftUp}{LWinUp}
 
-	clipwait, 1
-	 TT(clipboard)
-	sleep 400
-	; sendlevel 0
-;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
-	return
-}
-Wheel_Copy()
-{
-	global
-		PreClip:=ClipboardAll
-		clipboard:=
-	; sendlevel 2
-	Send, {ctrldown}{c}{ctrlup}{altup}{ShiftUp}{LWinUp}
-	clipwait, 1
-	; sleep 100
-	; sendlevel 0
-	; TT(clipboard)
-	sleep 50
-;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
-	return
-}
+; 	clipwait, 1
+; 	 TT(clipboard)
+; 	sleep 400
+; 	; sendlevel 0
+; ;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
+; 	return
+; }
+; Wheel_Copy()
+; {
+; 	global
+; 		PreClip:=ClipboardAll
+; 		clipboard:=
+; 	; sendlevel 2
+; 	Send, {ctrldown}{c}{ctrlup}{altup}{ShiftUp}{LWinUp}
+; 	clipwait, 1
+; 	; sleep 100
+; 	; sendlevel 0
+; 	; TT(clipboard)
+; 	sleep 50
+; ;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
+; 	return
+; }
 
 PasteScreenshot(){
 	sleep 200

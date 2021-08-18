@@ -1,11 +1,7 @@
 
 Clip(input=0,Wait:="0.55"){
-  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department,clippaste
-  if (ClipPaste = 1){
-      send, ^{c}
-      return
-  }
-  ClipboardSaved:=Clipboardall
+  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
+  ; ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
     OCR()
@@ -20,74 +16,20 @@ Clip(input=0,Wait:="0.55"){
   clipwait,%Wait%
   if errorlevel
   {
-    clipboard:=ClipboardSaved
+    ; clipboard:=ClipboardSaved
     if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
     send, {home}+{end}^{c}
   }
   clip.Regex()
-    clip.set()
-  
-  ; GuiControl,Varbar:Text, Department, %Department%
-  if (Input==0) {
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department " | " Tab,4000,Varbar_x,80,3,200)
-    else 
-        TT(Clipboard,900,Varbar_x,200,3,175)
-    }
-  else
-    return 
-  }
+  return
+}
 
 Class Clip {
-  set(){
-  global Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,cBatch, cProduct, clot, ccoated, csampleid, canalytical,cmicro,cretain,cphysical,cCTphysical,cCTretain, department
-  If cProduct {
-  GuiControl,Varbar:Text, Product, %cProduct%
-				IniWrite, %cProduct%, data.ini, SavedVariables, Product
-          ; if cBatch
-            Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% %TimeString%`n, Products.txt
-          ; else
-            ; Fileappend, %cProduct%`n, Products.txt
-  }
-  If cBatch {
-    GuiControl,Varbar:Text, Batch, %cBatch%
-				IniWrite, %cBatch%, data.ini, SavedVariables, Batch
-        Fileappend, %cBatch%`n, Batch.txt
-    }
-  If cCoated {
-    GuiControl,Varbar:Text, Coated, %cCoated%
-				IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-        Fileappend, %cCoated%`n, lib/Coated.txt
-    }
-  If cLot {
-    GuiControl,Varbar:Text, lot, %clot%
-				IniWrite, %cLot%, data.ini, SavedVariables, Lot
-        Fileappend, %cLot%`n, lib/Lot.txt
-    }
-  If cSampleID {
-    GuiControl,Varbar:text, SampleID, %cSampleID%
-				IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
-        Fileappend, %cSampleID%`n, lib/SampleID.txt
-    }
-  If cAnalytical
-    Department=Analytical
-  If cMicro
-    Department=Micro
-  If cRetain
-    Department=Retain
-  If cCTRetaincCTRetain
-    Department:="Retain (Coated)"
-  If cPhysical
-    Department=Physical
-  If cCTPhysical
-    Department:="Physical (Coated)"
-  If cCTRetain
-    Department=CTRetain
-    }
+
 
 Regex(Category:="All"){
-  global
+    global Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, department
     sleep      20
     If (Category!="Department") {
       RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
@@ -96,32 +38,105 @@ Regex(Category:="All"){
       RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
       RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
       RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
+      If cProduct {
+      GuiControl,Varbar:Text, Product, %cProduct%
+            IniWrite, %cProduct%, data.ini, SavedVariables, Product
+              ; if cBatch
+                Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% %TimeString%`n, Products.txt
+              ; else
+                ; Fileappend, %cProduct%`n, Products.txt
+      }
+      If cBatch {
+        GuiControl,Varbar:Text, Batch, %cBatch%
+            IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+            Fileappend, %cBatch%`n, Batch.txt
+        }
+      If cCoated {
+        GuiControl,Varbar:Text, Coated, %cCoated%
+            IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+            Fileappend, %cCoated%`n, lib/Coated.txt
+        }
+      If cLot {
+        GuiControl,Varbar:Text, lot, %clot%
+            IniWrite, %cLot%, data.ini, SavedVariables, Lot
+            Fileappend, %cLot%`n, lib/Lot.txt
+        }
+      If cSampleID {
+        GuiControl,Varbar:text, SampleID, %cSampleID%
+            IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
+            Fileappend, %cSampleID%`n, lib/SampleID.txt
+        }
       sleep 20
     }
-    if Category:="Codes"
-      return
-    Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-    Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-    Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-    Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-    Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-    Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
-    Sleep      20
+    if (Category!="Codes"){
+      Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+      Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+      Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+      Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+      Sleep      20
+      If cAnalytical
+        Department=Analytical
+      If cMicro
+        Department=Micro
+      If cRetain
+        Department=Retain
+      If cCTRetain
+        Department:="Retain (Coated)"
+      If cPhysical
+        Department=Physical
+      If cCTPhysical
+        Department:="Physical (Coated)"
+    }
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain ;|| Winactive("ahk_exe WFICA32.EXE") 
+      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department ,3000,Varbar_x,80,3,200,"R")
+    ; else 
+        ; TT(Clipboard,900,Varbar_x,80,2,175,"R")
   return 
+
+
   }
 
-IfSelected(){
+IfNothingSelected(Action){
   global
-    PrevClip:=ClipboardAll
+    ClipboardSaved:=ClipboardAll
     clipboard:=
-      clipwait,0.75
-  if errorlevel
+    ; sleep 20
+    send, ^c
+      clipwait,0.60
+  if errorlevel ;if nothing selected
   {
-    clipboard:=ClipboardSaved
-    if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
-      exit
-    send, {home}+{end}^{c}
+    if Action:="SelectLine"
+      send, {home}+{end}^{c}
+    if Action:="SelectAll"
+      send, ^{a}^{c}
+    if Action:="Select"
+      send, {click 3}^{c}
+    If Action:="cut"
+      {
+        ; clipboard:=
+        send, ^{x}
+        clipwait, 0.45
+        PostCut:=ClipboardAll
+        clipboard:=ClipboardSaved
+        sleep 35
+        send, ^{v}
+        clipboard:=PostCut
+      }
+    if Action:="menu"
+      menu.Variable()
+    If Action:="Paste"
+    {
+      clipboard:=ClipboardSaved
+      send, ^{v}
+    }
+    else
+      send % Action
+    return
   }
+  else 
+  return
 }
 
 Click(){
@@ -306,7 +321,8 @@ global Clippaste
       if !ErrorLevel
       {
         If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-            wheel_paste()
+            send % BlockRepeat(300) "^{v}"
+            ; wheel_paste()
           Else
             return
       }
@@ -338,7 +354,8 @@ ctrl(){
       if !ErrorLevel
       {
         If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-            wheel_paste()
+          send % BlockRepeat(300) "^{v}"
+            ; wheel_paste()
           Else
             return
       }

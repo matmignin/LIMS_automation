@@ -85,7 +85,7 @@ F13 & wheeldown::   		Varbar.SubIteration()
 ; 	return
 ; 	; sendlevel 0
 ; ^wheeldown::Block(300,"^{c}")
-^wheeldown::Blockrepeat(500) clip()
+; ^wheeldown::Blockrepeat(500) clip()
 ; ^wheeldown::send % Blockrepeat(900) "^{v}"
 ; sleep 500
 ; return
@@ -573,6 +573,8 @@ _WFICA32:
 	F8::						3Down()
 	F7::						3Right()
 	F6::						3Left()	
+	^Wheeldown::			Blockrepeat(500) clip()
+	^wheelup::				menu.lms()
 	; ~alt & tab::Clip.Copy()
 
 	numpadMult::excel.connect()
@@ -609,7 +611,7 @@ MouseIsOver:
 	numpadadd::lms.ProductSpecToggle()
 	numpadsub::lms.SampleRequestToggle()
 	Numlock::4tap()
-	^Wheeldown::Blockrepeat(500) clip()
+	^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; 	click
 	; 	sleep 300
 	; 	4tap()

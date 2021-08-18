@@ -48,7 +48,7 @@ registerNewSamples(){
   my:=my+26
   MouseMove, mx, my
   
-  SetWinDelay, 100
+  ;setwindelay, 200
     ; return
 }
 
@@ -64,7 +64,7 @@ DropdownSelect(A_ShipTo){
   sendinput,{home}{right %A_ShipTo%}{right}
  else if (a_ShipTo < 1)
   Sendinput,{end}{left %Absselection%}{left}
-    SetWinDelay, 200
+    ;setwindelay, 200
  }
 
 DeleteRetain(){
@@ -95,13 +95,13 @@ DeleteRetain(){
     n--
       Breaking.Point()
   }
-      SetWinDelay, 200
+      ;setwindelay, 200
 }
 
 
 NewRequest(){
  global
- SetWinDelay, 450
+ SetWinDelay, 550
 ;  department:= ; Clip()
  Clipboard:=
 ;  sleep 100
@@ -159,13 +159,13 @@ click
   Breaking.Point()
   send,{tab}{enter}
   ; tooltip,
- return
-SetWinDelay, 200
+  ;setwindelay, 200
+  return
 }
 
 ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   global
-  SetWinDelay, 450
+  SetWinDelay, 550
   if (Iteration = "ERROR")
   InputBox, Iteration, enter iteration, number please,, , , , , , , 1
   if errorlevel
@@ -224,9 +224,9 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   sleep 100
   if Checkbox_Toggle Not Contains Toggle
     mousemove, xpos, ypos+26 
+  ;setwindelay, 200
   return
-  SetWinDelay, 200
-}
+  }
 
 AddSampleLog(count)
 {
@@ -292,7 +292,7 @@ click
   ; MouseMove, mx, my
   ; sleep 200
   blockinput off
-  SetWinDelay, 200
+  ;setwindelay, 200
 return
 }
 

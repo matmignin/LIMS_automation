@@ -193,20 +193,22 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
       sendinput, {Tab 23}
     return
     Breaking.Point()
-    SetWinDelay, 200
+    ;setwindelay, 200
   } 
 
   HM_ReportOnly(){ 
   SetWinDelay, 450 ;testing out
    click 125,120 ;click 1st row
-   Mouse_Click("add")
+  ;  Mouse_Click("add") ;trying to eliminate mouseclick function
+   clk(45, 65)
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 11} ;arsenic
    Breaking.Point()
 
    WinWaitClose, Edit Ingredient - \\Remote,,4
    click 125,140 ;click 2nd row
-   Mouse_Click("add")
+  ;  Mouse_Click("add") ;trying to eliminate mouseclick function
+   clk(45, 65)
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 167} ;lead
    Breaking.Point()
@@ -214,7 +216,8 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
    click 390, 659	;click okay
    WinWaitClose, Edit Ingredient - \\Remote,,4
    click 125,180 ;click 3rd row
-   Mouse_Click("add")
+  ;  Mouse_Click("add") ;trying to eliminate mouseclick function
+   clk(45, 65)
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 23} ;cadmium
    Breaking.Point()
@@ -222,7 +225,8 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
    click 390, 659	;click okay
    WinWaitClose, Edit Ingredient - \\Remote,,4
    click 125,200 ;click 4th row
-   Mouse_Click("add")
+  ;  Mouse_Click("add") ;trying to eliminate mouseclick function
+   clk(45, 65)
    winwaitactive, Edit Ingredient - \\Remote,,4
    Sendinput,{click 150,73}{tab}{right 189} ;mercury
    Breaking.Point()
@@ -374,7 +378,7 @@ return
 Ingredient_TableGuiClose:
 sleep 100
  GUI,Ingredient_Table:destroy
-  SetWinDelay, 300
+  ;setwindelay, 200
 return
 
 Formulation_Hotstrings:
