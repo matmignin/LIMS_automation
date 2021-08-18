@@ -97,10 +97,10 @@ F12::send, {altdown}{tab}{altup}
 	wheelup::return
 	#if
 KEY_DEFAULT:
-	F15::								+tab
+	; F15::								+tab
 	F17::								menu.Apps()
 	+F17::							EnteringProduct()
-	F16::								send, !{tab}
+	; F16::								send, !{tab}
 	j & k::esc
 	j::j
 	k::k
@@ -157,8 +157,8 @@ KEY_DEFAULT:
 	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
 	rbutton::						2tap()
 
-	<^Space::             	varbar.focus("Product")
-	F19 & F20::             	varbar.focus("Product")
+	>+Space::             	varbar.focus("Product")
+	F19 & F20::             varbar.focus("Product")
 
 F19_And_F20:
 	F20 & 9::             	SaveWindow_Save()
@@ -493,8 +493,7 @@ _Main_LMS_Screen:
   $Numlock::4tap() ;LMS.COA()
   F20 & Left::WinMove, A, , -283, -1196, 1662, 952
   F21 & Left::WinMove, A, , -283, -1196, 1662, 952
-  F19 & F20::lms.searchBar("")
-  F19 & F21::lms.searchBar("")
+  +F19::lms.searchBar("")
   F19 & space::
 		
   	Send, %Product%{enter}

@@ -1,6 +1,8 @@
 
 #IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-	F19 & F20::varbar.focus("Batch")
+	F19 & F20::send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+	F19::varbar.focus("Product")
+	F20::varbar.focus("Batch")
 	^enter::                           
 							winactivate, %the_WinTitle%
 							click, %caret_X%, %caret_y%
@@ -44,18 +46,7 @@
 	numpaddot:: 	 Openapp.Workbook()
 
 	
-; #If MouseIsOver("Notes ahk_exe AutoHotkey.exe")
 		; Mbutton::Notes.save()
-
-	  ;send, {click}{altdown}{a}{altup}
-	; F20 & F7::     SpecTab.Table()
-	; lbutton::      send, {click}^{a}
-	; Rbutton::    Menu.Tables() ; Excel.connect()
-	; F9::         ReloadScript()
-; #if
-
-
-;C_Varbar:
 return
 
 Class VarBar{	
@@ -114,23 +105,25 @@ Class VarBar{
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
 				; WinSet, Transparent, 300, %GUIID%
 				Gui, VarBar:color,016D07
-				GUI,VarBar:Font,s15 cBlack Bold, Consolas
-				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h28 x1 y1 w58 ,				%Product%  ; edit1
+				GUI,VarBar:Font,s13 cBlack Bold, Consolas
+				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h21 x1 y-4 w50 ,				%Product%  ; edit1
 				GUI,VarBar:Font,s10 cBlack,Consolas
-				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar H19 x60 y-2 w70, 					%Batch% 	 ; edit2
+				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H19 x1 y17 w70, 					%Batch% 	 ; edit2
 				GUI,VarBar:Font,s9 cBlack , Consolas
-				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x60 center H18 y15 w70, 				%Lot% 		 ; edit3
+				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x71 left H20 y17 w60, 				%Lot% 		 ; edit3
 				GUI,VarBar:Font,s18 cEF6950, Consolas
-				Gui,VarBar:Add,text, 		vIteration x134 65 center y2 w23,														%Iteration%	; Text1
-				if ShowCoated 
+				Gui,VarBar:Add,text, 		vIteration x134 65 center y2 w23,											%Iteration%	; Text1
+				if ShowCoated || Coated
 					{
-					GuiControl, Hide,Edit4
-					GUI,VarBar:Font,s8 cBlack,arial Narrow
-					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar x160 H18 y15 w60, 					%Coated%   ; edit4
-				} else {
+					; GuiControl, Hide,Edit4
+					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
+						Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x71 H18 y-2 w60, 					Ct# %Coated%   ; edit4
+					; if Coated
+						; Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x71 H18 y-2 w60, 					Ct# %Coated%   ; edit4
+				} ;else {
 					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
 					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar x160 H19 y15 w150,					%Note2%  	; edit7
-					}
+					; }
 				if ShowSampleID
 					{
 					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
@@ -143,11 +136,11 @@ Class VarBar{
 			; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
 			; varbar_x:= Varbar_x +100
 			try
-				Gui, VarBar:Show, h31 x%VarBar_X% y%VarBar_y% w310 NoActivate, VarBar
+				Gui, VarBar:Show, h35 x%VarBar_X% y%VarBar_y% w310 NoActivate, VarBar
 			; Gui, VarBar:Show, h30 x%offset_X% y%offset_y% w320 NoActivate, VarBar
 			catch
 			{
-				Gui, VarBar:Show, h31 x1 y%A_screenwidth% w310 NoActivate, VarBar
+				Gui, VarBar:Show, h35 x1 y%A_screenwidth% w310 NoActivate, VarBar
 				IniWrite, 1, data.ini, Locations, VarBar_X
 				IniWrite, 1, data.ini, Locations, VarBar_Y
 			}
@@ -229,9 +222,9 @@ HistoryMenuItem(){
 		caret_x:=A_CaretX
 		caret_y:=A_Carety
 		WinActivate, VarBar ahk_exe AutoHotkey.exe
-		GuiControl Varbar:Focus, %Control%, 
-		send, {ctrldown}{a}{ctrlup}
-		sleep 100
+		GuiControl Varbar:Focus, %Control%
+		; sleep 100
+		sendinput, ^{a}{ctrlup}{altup}
 		return
 		}	
 
@@ -277,16 +270,16 @@ HistoryMenuItem(){
 		Relocate(){
 			global
 			; OnMessage(0x201, "VarBar.Relocate")
-			keywait, space, 
+			; keywait, space, 
 				; MouseClick, Left, , , 1, 0, D
 				; MouseClick, WhichButton [, X, Y, ClickCount, Speed, D|U, R]
 				; if !errorlevel
 				; {
 					; keywait, Lbutton, U
 					; PostMessage, 0xA1, 2
-					wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-					IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-					IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+					; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+					; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+					; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 					; return
 				; }
 				; send, {ctrldown}{a}{ctrlup}
@@ -294,8 +287,8 @@ HistoryMenuItem(){
 				; MouseClick, Left, , , 1, 0, U
 				
 			; Excel.Connect()
-			sleep 300
-			Follow:=0
+			; sleep 300
+			; Follow:=0
 			return
 		}
 		

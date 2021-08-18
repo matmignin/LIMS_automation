@@ -10,6 +10,8 @@ A019 805-0931   Wednesday, August 18, 2021 1:51 AM
 A019 805-0931   Wednesday, August 18, 2021 1:52 AM
 A028  0283G1A  
 A028  0283G1A  Tuesday, August 17, 2021 7:02 PM
+A189    
+A189 906-0092   
 A189 906-0092   Wednesday, August 18, 2021 1:46 AM
 A189 906-0092   Wednesday, August 18, 2021 1:47 AM
 A189 906-0092   Wednesday, August 18, 2021 1:49 AM
@@ -18,6 +20,8 @@ B392 910-0646
 B834    
 B834    Wednesday, August 18, 2021 12:12 AM
 B895 901-0899   
+D682 106-0469   
+E126 106-1096 0239H1 CT#108-0232 
 E165 107-0733   
 E174 901-0831   
 E174 901-0831   Wednesday, August 18, 2021 1:46 AM
@@ -49,6 +53,7 @@ F595 107-0786   Tuesday, August 17, 2021 6:38 PM
 G083    
 G083    Wednesday, August 18, 2021 12:12 AM
 G103 
+G210    
 G558 
 G937 807-0187   
 G937 807-0187   Wednesday, August 18, 2021 2:03 AM
@@ -63,6 +68,8 @@ H602
 H602    Tuesday, August 17, 2021 7:03 PM
 H602    Tuesday, August 17, 2021 7:13 PM
 H625 
+H651    
+H651 004-0676   
 H822 805-0019   Wednesday, August 18, 2021 1:47 AM
 H822 805-0019   Wednesday, August 18, 2021 1:49 AM
 H822 805-0019   Wednesday, August 18, 2021 1:50 AM
@@ -95,14 +102,18 @@ I642 007-0342   Tuesday, August 17, 2021 6:38 PM
 I642 007-0342   Tuesday, August 17, 2021 6:51 PM
 I642 007-0342   Tuesday, August 17, 2021 6:55 PM
 I642 007-0342   Tuesday, August 17, 2021 6:59 PM
+I784    
 I940 004-0719   Tuesday, August 17, 2021 6:59 PM
 I940 004-0719   Tuesday, August 17, 2021 7:16 PM
+I940 005-0506   
 I950 102-0974   
 I950 102-0974   Tuesday, August 17, 2021 6:38 PM
 I950 102-0974   Tuesday, August 17, 2021 6:51 PM
 I950 102-0974   Tuesday, August 17, 2021 6:54 PM
 I950 102-0974   Tuesday, August 17, 2021 6:55 PM
 I950 102-0974   Tuesday, August 17, 2021 6:59 PM
+J096 106-0579 0222H1 Ct#107-0794 
+J140 810-0532   
 J140 810-0532   Wednesday, August 18, 2021 1:46 AM
 J140 810-0532   Wednesday, August 18, 2021 1:48 AM
 J140 810-0532   Wednesday, August 18, 2021 1:49 AM
@@ -135,6 +146,7 @@ J282    Tuesday, August 17, 2021 7:14 PM
 J368    
 J368    Tuesday, August 17, 2021 7:09 PM
 J392 107-0160   
+J650 105-0875   
 J677    
 J677    Tuesday, August 17, 2021 6:34 PM
 J677    Tuesday, August 17, 2021 6:35 PM
@@ -145,6 +157,7 @@ J790 105-0157   Tuesday, August 17, 2021 6:35 PM
 J790 105-0157   Tuesday, August 17, 2021 6:37 PM
 J790 105-0157   Tuesday, August 17, 2021 6:38 PM
 J790 105-0159   Tuesday, August 17, 2021 6:29 PM
+J902 105-1271 0128F1  
 J903 005-0589   
 J903 005-0589   Tuesday, August 17, 2021 6:34 PM
 J903 005-0589   Tuesday, August 17, 2021 6:38 PM
@@ -160,6 +173,7 @@ J925    Wednesday, August 18, 2021 1:37 AM
 J973 
 K085 
 K085 104-1308 100501 
+K087 103-0651   
 K087 105-0708   
 K087 105-0708   Tuesday, August 17, 2021 6:37 PM
 K087 105-0708   Tuesday, August 17, 2021 6:54 PM
@@ -173,6 +187,7 @@ K102 106-0945   Tuesday, August 17, 2021 6:54 PM
 K102 106-0945   Tuesday, August 17, 2021 6:59 PM
 K102 106-0945   Tuesday, August 17, 2021 7:18 PM
 K120    
+K134 105-1288   
 K158    
 K158    Tuesday, August 17, 2021 7:14 PM
 K166 108-0300   
@@ -195,12 +210,14 @@ K307 107-0233   Tuesday, August 17, 2021 6:34 PM
 K318 
 K318    
 K319 
+K319    
 K422 
 k424 
 k424    
 k428 
 k444 
 K468 
+K497 104-0715   
 K513 107-0791   Tuesday, August 17, 2021 6:27 PM
 k527 
 K539 
@@ -214,16 +231,17 @@ K571 107-0574   Tuesday, August 17, 2021 6:35 PM
 K571 107-0574   Tuesday, August 17, 2021 6:37 PM
 K571 107-0574   Tuesday, August 17, 2021 6:38 PM
 K602    
+K602 104-0881   
+K602 106-1248   
 K602 575-9200   
 K606 
 K608 
 k625 
-k629 
+K629 
 k630 
 k637 
 k640 
 k649
 K657 
 K657    
-E175 807-0087   
-E175 807-0087   
+K708    

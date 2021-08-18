@@ -122,13 +122,7 @@
 	f19 & f6::                                   send,{ctrldown}{[}{ctrlup}
 	f19 & f7::                                   send,{ctrldown}{]}{ctrlup}
 	F19 & 7::												GotoError()
-	; f13 & wheeldown::                            send,{ctrldown}{down}{ctrlup}
-	; f13 & wheelup::                              send,{ctrldown}{up}{ctrlup}
 	F13 & `::												delete
-	; F13 & f7::                                   wheel_2("!{right}",10)
-	; F13 & f6::                                   wheel_2("!{left}",10)
-	; F13 & wheeldown::                            wheel_2("{ctrldown}v{ctrlup}",2000)
-	; F13 & wheelup::                              wheel_2("{ctrldown}x{ctrlup}",2000)
 	F13 & F11::                                  WindowInfo()
 	F13 & tab::												send, {shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13 & lshift::											send, {shiftdown}{altdown}{ctrldown}{F7}{ctrlup}{altup}{shiftup}

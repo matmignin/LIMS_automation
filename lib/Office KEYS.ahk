@@ -1,6 +1,5 @@
 explorer:
 #IfWinActive, ahk_exe explorer.exe
-	; Mbutton::            	send, 		{enter}
 	F20 & up::           	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, 0, A_ScreenWidth/2, A_ScreenHeight/2
 	F21 & up::           	WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
 	F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
@@ -13,34 +12,8 @@ explorer:
 	F7::                 	send, {altdown}{right}{altup}
 	F19 & Space::
 	F9::ExplorerSearch(Product)
-	
 	^w::									closewindow()
-ExplorerSearch(text){
-		excel.connect(1)
-		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
-		SearchWindow:="search-ms:displayname"
-		IfWinNotExist, %Sea% && ifwinNotexist, %AllLabelCopy%	
-			return									
-		;  Run, %AllLabelCopy%
-		; IfWinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
-			; run, %AllLabelCopy%
-		IfWinExist, %Sear% 
-		IfWinExist, %SearchWindow% 
-			winactivate, %AllLabelCopy%
-		winwait, %AllLabelCopy%, ,2
-		if errorlevel
-			winactivate, ahk_exe explorer.exe
-		sleep 300
-		WinGetPos, wX, wY, wW, wH, A
-		clk(ww-175, 75)
-		sleep 400
-		; SetKeyDelay, 20, 1 
-		send, %Text%
-		sleep 300
-		send, {enter}
-		; setkeydelay, 0 , 0
-		return
-		}
+
 	#ifwinactive, Task View, 
 	F7::										send, {right}
 	F6::										send, {left}
@@ -54,7 +27,7 @@ ExplorerSearch(text){
 return
 WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
-F19 & f20::send, {altdown}{PrintScreen}{altup}
+; F19 & f20::send, {altdown}{PrintScreen}{altup}
 	F13 & space::					sendinput, +{tab}{tab}
 
 	; Clip.Paste()
@@ -113,20 +86,7 @@ F19 & f20::send, {altdown}{PrintScreen}{altup}
 
 
 	
-FindAndReplaceWord(find,Replace,AllOrOne:="a"){
-		send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
-		if (Allorone=="a"){
-			loop 3 {
-				sleep 200
-				if winactive("Microsoft Word")
-					send, {enter}
-				sleep 300	
-			}
-					return
-		}
-		else 
-			send, {enter}{esc}
-}
+
 
 Excel:
 	/* 
@@ -167,11 +127,11 @@ Excel:
 								return
 	; numlock::            send, {altdown}{down 2}{altup} 
 	#ifwinactive, Book
-		F9::WinMove, A, , 0, 0, A_ScreenWidth/3, A_ScreenHeight/4
+		F9::WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	#ifwinactive, ahk_exe EXCEL.EXE         
 		F9::                 excel.search()
 		F7::                 excel.Search()
-		+Enter::             sendinput, !{enter}
+		+Enter::             sendinput, {altdown}{enter}{altup}
 		$Enter::             sendinput,{enter}
 		; Numlock::          Excel.SearchWorkbook(Product)
 		F8::                 send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
@@ -197,28 +157,15 @@ Excel:
 OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        send, {ctrldown}{enter}{ctrlup}
-	numpadadd::         				 send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
+	numpadadd::         	send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
 	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	F21 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
-	F21 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
+	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, , 965, -1098, 1495, 1080
 	F20::                
 		send, ^{c}
 		Clip.Copy()
 		return
-	; F21::                Clip.Copy()
-	; F13::send, {altdown}{tab}{altup}
-	; Mbutton::
-	; 		; Click 3
-	; 		send, ^{c}
-	; 		Clip.Copy()
-	; 	return
 	F7::LMS.SearchRequest(Batch,"{enter}")
-		; winactivate, NuGenesis LMS - \\Remote
-		; sleep 200
-		; lms.searchbar(Batch)
-		; return
 	F9::                 
 		winactivate, NuGenesis LMS - \\Remote
 		sleep 200
@@ -280,11 +227,49 @@ Remote_DESKTOPs:
 
 
 
+ExplorerSearch(text){
+		excel.connect(1)
+		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
+		SearchWindow:="search-ms:displayname"
+		IfWinNotExist, %Sea% && ifwinNotexist, %AllLabelCopy%	
+			return									
+		;  Run, %AllLabelCopy%
+		; IfWinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
+			; run, %AllLabelCopy%
+		IfWinExist, %Sear% 
+		IfWinExist, %SearchWindow% 
+			winactivate, %AllLabelCopy%
+		winwait, %AllLabelCopy%, ,2
+		if errorlevel
+			winactivate, ahk_exe explorer.exe
+		sleep 300
+		WinGetPos, wX, wY, wW, wH, A
+		clk(ww-175, 75)
+		sleep 400
+		; SetKeyDelay, 20, 1 
+		send, %Text%
+		sleep 300
+		send, {enter}
+		; setkeydelay, 0 , 0
+		return
+		}
 
 
 
-
-
+FindAndReplaceWord(find,Replace,AllOrOne:="a"){
+		send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
+		if (Allorone=="a"){
+			loop 3 {
+				sleep 200
+				if winactive("Microsoft Word")
+					send, {enter}
+				sleep 300	
+			}
+					return
+		}
+		else 
+			send, {enter}{esc}
+}
 
 
 

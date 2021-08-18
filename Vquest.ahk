@@ -1,6 +1,7 @@
 ﻿#MaxHotkeysPerInterval 1000
 #HotkeyModifierTimeout 50
 #maxthreadsperhotkey, 1
+SetControlDelay, 0
 SetKeyDelay, 1, 0.25
 ;setwindelay, 200
 FormatTime, DayString,, M/d/yy
@@ -28,10 +29,10 @@ CheckActive:
   if winexist("Book ahk_exe WFICA32.EXE") ;shrink excel 
     WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
         if (winminmax=1){
-				winactivate, Book ahk_exe WFICA32.EXE
+				winactivate, Excel ahk_exe WFICA32.EXE
 			  sleep 400
-			  send, {lwindown}{down}{right}{lwinup}
-				; WinMove,ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2,A_ScreenHeight/4
+			  send, {lwindown}{down}{lwinup}
+				WinMove, Excel ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
         ; sleep 300
       }
       ; If Follow 
@@ -45,7 +46,7 @@ CheckActive:
         ; WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
       ; }
 		sendlevel 1
-      If A_TimeIdle > 8000
+      If A_TimeIdle > 900
       {
         setwindelay, 200
         send, {ctrlUp}{altup}

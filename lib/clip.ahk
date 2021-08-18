@@ -29,7 +29,7 @@ Class Clip {
 
 
 Regex(Category:="All"){
-    global Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, department
+    global Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain
     sleep      20
     If (Category!="Department") {
       RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
@@ -55,6 +55,14 @@ Regex(Category:="All"){
         GuiControl,Varbar:Text, Coated, %cCoated%
             IniWrite, %cCoated%, data.ini, SavedVariables, Coated
             Fileappend, %cCoated%`n, lib/Coated.txt
+            varbar.show()
+        }
+      If !cCoated {
+        GuiControl,Varbar:Text, Coated, %cCoated%
+            cCoated:=
+            IniWrite,%cCoated%, data.ini, SavedVariables, Coated
+            varbar.show()
+            ; Fileappend, %cCoated%`n, lib/Coated.txt
         }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
@@ -69,12 +77,12 @@ Regex(Category:="All"){
       sleep 20
     }
     if (Category!="Codes"){
-      Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
       Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
       Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
       Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-      Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-      Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+      Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
+      Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
       Sleep      20
       If cAnalytical
         Department=Analytical
@@ -89,8 +97,8 @@ Regex(Category:="All"){
       If cCTPhysical
         Department:="Physical (Coated)"
     }
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain ;|| Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department ,3000,Varbar_x,80,3,200,"R")
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Department ;|| Winactive("ahk_exe WFICA32.EXE") 
+      TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,0,0,3,250,"R")
     ; else 
         ; TT(Clipboard,900,Varbar_x,80,2,175,"R")
   return 

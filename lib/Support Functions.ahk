@@ -187,24 +187,25 @@ return
 					Ctrl := "`n(in control " . A_GuiControl . ")"
 				; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
 				PostMessage, 0xA1, 2
-				sleep 200
+				; sleep 200
 		; keywait, Lbutton, U T0.20
 			; if !errorlevel
 			; {
-				; keywait, Lbutton, U T3
 					; if errorlevel
 						; MouseClick, Left, , , 1, 0, U
 						; MouseClick, Left, , , 1, 0, U
-				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-				sleep 200
-				IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-				IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
-					
+				; keywait, Lbutton, U T5
 		; MouseClick, Left, , , 1, 0, U
+				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+				; sleep 200
+				; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+				; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+					
 				; return
 			; }
 			; else
 		; MouseClick, Left, , , 1, 0, U
+		return
 					
 }
 
@@ -286,9 +287,9 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 		CoordMode, ToolTip, Relative
 	if (Position:="S")
 		CoordMode, ToolTip, Screen
-	If !X
-		X:=A_CaretX+50
-	If !Y
+	If X:="-1"
+		X:=A_CaretX-50
+	If Y:="-1"
 		Y:=A_CaretY-50
 	if !msg
 		msg:=A_PriorHotkey "`n" A_Thishotkey
@@ -700,54 +701,6 @@ CreditCard(){
 #IfWinActive
 
 
-
-; Wheel_Paste()
-; {
-; 	Global
-; 	BlockInput, on
-; 	if winactive("ahk_exe WFICA32.EXE")
-; 	{
-; 		Clipboard := Trim((Clipboard, "`r`n"))
-; 		sleep 80
-; 		send, %Clipboard%
-; 		; TT("Paste")
-; 	}
-; 	else
-; 	send, {ctrldown}{v}{ctrlup}{altup}{ShiftUp}{LWinUp}
-; 		blockinput off
-; 			sleep 50
-; 	return
-; }
-; Wheel_Cut()
-; {
-; 	global
-; 	PreClip:=ClipboardAll
-; 	clipboard:=
-; 	; sendlevel 2
-; 	Send, {ctrldown}{x}{ctrlup}{altup}{ShiftUp}{LWinUp}
-
-; 	clipwait, 1
-; 	 TT(clipboard)
-; 	sleep 400
-; 	; sendlevel 0
-; ;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
-; 	return
-; }
-; Wheel_Copy()
-; {
-; 	global
-; 		PreClip:=ClipboardAll
-; 		clipboard:=
-; 	; sendlevel 2
-; 	Send, {ctrldown}{c}{ctrlup}{altup}{ShiftUp}{LWinUp}
-; 	clipwait, 1
-; 	; sleep 100
-; 	; sendlevel 0
-; 	; TT(clipboard)
-; 	sleep 50
-; ;   send,{altup}{CtrlUp}{ShiftUp}{LWinUp}
-; 	return
-; }
 
 PasteScreenshot(){
 	sleep 200
