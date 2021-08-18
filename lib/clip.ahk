@@ -25,21 +25,23 @@ Clip(input=0,Wait:="0.55"){
       exit
     send, {home}+{end}^{c}
   }
-    sleep      20
-    RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
-    RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
-    RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
-    RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
-    RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
-    RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
-    
-    Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-    Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-    Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-    Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-    Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
-    Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
-    Sleep      20
+  clip.Regex()
+    clip.set()
+  
+  ; GuiControl,Varbar:Text, Department, %Department%
+  if (Input==0) {
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Winactive("ahk_exe WFICA32.EXE") 
+      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department " | " Tab,4000,Varbar_x,80,3,200)
+    else 
+        TT(Clipboard,900,Varbar_x,200,3,175)
+    }
+  else
+    return 
+  }
+
+Class Clip {
+  set(){
+  global Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,cBatch, cProduct, clot, ccoated, csampleid, canalytical,cmicro,cretain,cphysical,cCTphysical,cCTretain, department
   If cProduct {
   GuiControl,Varbar:Text, Product, %cProduct%
 				IniWrite, %cProduct%, data.ini, SavedVariables, Product
@@ -82,22 +84,30 @@ Clip(input=0,Wait:="0.55"){
     Department:="Physical (Coated)"
   If cCTRetain
     Department=CTRetain
-  GuiControl,Varbar:Text, Department, %Department%
-  if (Input==0) {
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cSampleID " " cCoated " " Department,4000,Varbar_x,80,3,200)
-    else 
-        TT(Clipboard,900,Varbar_x,200,3,175)
     }
-  else
-    return 
-  }
 
-Class Clip {
-
-Regex(Pattern){
-  RegExMatch(Clipboard, Pattern,Output)
-  return Output 
+Regex(Category:="All"){
+  global
+    sleep      20
+    If (Category!="Department") {
+      RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
+      RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
+      RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+      RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
+      RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
+      RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
+      sleep 20
+    }
+    if Category:="Codes"
+      return
+    Regexmatch(Clipboard, "i)(\bAnalytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+    Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+    Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+    Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+    Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b)", cCTPhysical)
+    Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b)", cCTRetain)
+    Sleep      20
+  return 
   }
 
 IfSelected(){
