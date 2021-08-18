@@ -1,5 +1,31 @@
 ; #ifwinexist, ahk_exe Teams.exe
 #Ifwinactive,
+
+drag_enabled := 0
+
++^#F22::
+	if(drag_enabled)
+	{
+		Click up
+		drag_enabled := 0
+	}
+	else
+	{
+		drag_enabled := 1
+		Click down
+	}
+	return
+
+LButton::
+	if(drag_enabled)
+	{
+		Click up
+		drag_enabled := 0
+	}
+	else
+		click
+	return
+
 ~RButton::
 If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
 {
