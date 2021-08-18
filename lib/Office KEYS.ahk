@@ -57,7 +57,7 @@ WORD:
 F19 & f20::send, {altdown}{PrintScreen}{altup}
 	F13 & space::					sendinput, +{tab}{tab}
 
-	; clippaste()
+	; Clip.Paste()
 	F20 & up::send, PRD{tab 2}Mat Mignin{tab 2}%DayString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F21 & up::send, PRD{tab 2}Mat Mignin{tab 2}%DayString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F20 & down::send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
@@ -105,8 +105,8 @@ F19 & f20::send, {altdown}{PrintScreen}{altup}
 		F19 & Wheelright::
 		F7::send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 			return
-	F19::Clip_c()
-	F20::clip_v()
+	F19::Clip.Copy()
+	F20::Clip.paste()
 	:*:mm`;::
 					send, Mat Mignin{tab 2}%DayString%
 					return			
@@ -205,14 +205,14 @@ OUTLOOK:
 	F21 & Left::         WinMove, ahk_exe OUTLOOK.EXE, 1313, -1080, 1439, 1080 
 	F20::                
 		send, ^{c}
-		Clip_c()
+		Clip.Copy()
 		return
-	; F21::                Clip_c()
+	; F21::                Clip.Copy()
 	F13::send, {altdown}{tab}{altup}
 	; Mbutton::
 	; 		; Click 3
 	; 		send, ^{c}
-	; 		clip_C()
+	; 		Clip.Copy()
 	; 	return
 	F7::LMS.SearchRequest(Batch,"{enter}")
 		; winactivate, NuGenesis LMS - \\Remote
@@ -226,7 +226,7 @@ OUTLOOK:
 		return
 	F6::LMS.SearchRequest(Batch,"{enter}")    
 	^wheelup::Block(500,"^{v}")
-	; ^wheeldown::send % Blockrepeat(500) clip_c()
+	; ^wheeldown::send % Blockrepeat(500) Clip.Copy()
 	return
 	
 	

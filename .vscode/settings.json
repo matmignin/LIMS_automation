@@ -36,7 +36,7 @@
     "explorerExclude.backup": null,
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
-    "autoHide.autoHideSideBar": true,
-    "autoHide.autoHidePanel": false,
+    "autoHide.autoHideSideBar": false,
+    "autoHide.autoHidePanel": true,
     "notebook.outline.showCodeCells": true
 }

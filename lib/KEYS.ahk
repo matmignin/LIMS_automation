@@ -2,50 +2,61 @@
 #Ifwinactive,
 
 
-    6::
-    MouseGetPos, X_Initial,Y_Initial
-    SoundGet, VolumeInitial
-    
-    While GetKeyState("6","P")
-    {
-    	MouseGetPos, X,Y
-    	SoundSet, % VolumeInitial+(Y_Initial-Y)/5
-    }
-    return
 
-drag_enabled := 0
 
-+^#F22::
-	if(drag_enabled)
+; drag_enabled := 0
+
+; +^#F22::
+; 	if(drag_enabled)
+; 	{
+; 		Click up
+; 		drag_enabled := 0
+; 	}
+; 	else
+; 	{
+; 		drag_enabled := 1
+; 		Click down
+; 	}
+; 	return
+
+; LButton::
+; 	if(drag_enabled)
+; 	{
+; 		Click up
+; 		drag_enabled := 0
+; 	}
+; 	else
+; 		click
+; 	return
+
+
+
+
+MouseGesture(LeftAction:="",RightAction:=""){
+	global
+	MouseGetPos, xi,yi
+	sleep =
+	While GetKeyState(A_ThisHotkey,"P")
 	{
-		Click up
-		drag_enabled := 0
+		MouseGetPos, Xf,Yf
 	}
-	else
-	{
-		drag_enabled := 1
-		Click down
+	if (xi>Xf){
+		send % leftAction
+		tt("Left")
+		return
 	}
+	if (xi<Xf){
+		send % RightAction
+		tt("Right")
+		return
+	}
+	; if (yi>Yf+50)
+		; tt("Up")
+	; if (yi<Yf-50)
+		; tt("Down")
 	return
-
-LButton::
-	if(drag_enabled)
-	{
-		Click up
-		drag_enabled := 0
 	}
-	else
-		click
-	return
-
-~RButton::
-If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 500)
-{
-Click middle
-}
-Return
-
-Media_Prev::F15
+Media_Prev::MakeTransparent()
 Media_Play_Pause::F16
 Media_Next::F17
 Volume_Mute::F20
@@ -54,6 +65,9 @@ Volume_up::F18
 / & up::						Varbar.AddIteration(0)
 / & down::   		      Varbar.SubIteration(0)
 F13 & wheelright::		Varbar.AddIteration(0) 
+F13 & wheelleft::   		Varbar.SubIteration(0)
+F13 & wheelup::			Varbar.AddIteration() 
+F13 & wheeldown::   		Varbar.SubIteration()
 ; ^wheelup::   	
 ; 	tt("wheelup", 500)
 ; 	send, !
@@ -70,7 +84,6 @@ F13 & wheelright::		Varbar.AddIteration(0)
 ; 	; SetKeyDelay, 1, 0
 ; 	return
 ; 	; sendlevel 0
-F13 & wheelleft::   		Varbar.SubIteration(0)
 ; ^wheeldown::Block(300,"^{c}")
 ^wheeldown::Blockrepeat(500) clip()
 ; ^wheeldown::send % Blockrepeat(900) "^{v}"
@@ -99,9 +112,9 @@ KEY_DEFAULT:
 	F19 & wheelup::send % Blockrepeat(500) "{F9}"
 	F19 & wheelleft::gosub, F6
 	F19 & wheelright::GoSub, F7  
-	Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
-	Media_Prev::					send, {altdown}{tab}{altup}
-	Volume_Down::					send, {lwindown}{tab}{lwinup}
+	;Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
+	;Media_Prev::					send, {altdown}{tab}{altup}
+	;Volume_Down::					send, {lwindown}{tab}{lwinup}
 	$#F7::							send, {lwindown}{right}{lwinup}
 	$#F6::							send, {lwindown}{left}{lwinup}
 	$#F9::							send, {lwindown}{up}{lwinup}
@@ -112,8 +125,9 @@ KEY_DEFAULT:
 	$!F8::							send, {laltdown}{down}{laltup}
 	+Backspace::					backspace
 	+^z::								send, {shiftup}{Ctrldown}{y}{CtrlUp}
-	~<+rshift::						alttab
-	~>+lshift::						ShiftAltTab
+	~<+rshift::						send, {lwindown}{right}{lwinup}
+	~>+lshift::						send, {lwindown}{left}{lwinup}
+	~Rshift::
 	lshift & Appskey::			Return
 	rshift & Appskey::			return
 	<^;::	 							sendinput, %DayString%{space}
@@ -136,26 +150,12 @@ KEY_DEFAULT:
 	F19 & left::					send, %lot%
 	F19 & right::					send, %coated%
 	F19 & s::	 					send, %SampleID%
-	$Numlock::						4tap() ;ClipPaste()      	
-	F20 up:: 	               Clip_C()
-	F21 up::    	           	Clip_C()
-	F19 up::       	       	Clip_V()
-	Mbutton::						3Tap() ;	TMbutton() ;	ClipPaste()
-		; Mbutton::								3Tap() ;	TMbutton() ;	ClipPaste()
-	  ; Numlock::
-		; 	if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 300)
-		; 		Send, {ctrldown}{x}{ctrlup}
-		; 	else
-		; 		ClipPaste()
-		; 	return
-	; sendlevel 0
-
-	; Media_Play_Pause::			
-	; 	send, ^{c}
-	; 	winactivate, screencaps
-	; 	sleep 200
-	; 	send, {down}{enter}^{v}
-	; 	return
+	$Numlock::						4tap() ;Clip.Paste()      	
+	F20 up:: 	               Clip.Copy()
+	F21 up::    	           	Clip.Copy()
+	F19 up::       	       	Clip.paste()
+	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
+	rbutton::						2tap()
 
 	<^Space::             	varbar.focus("Product")
 	F19 & F20::             	varbar.focus("Product")
@@ -224,7 +224,6 @@ F19_And_F20:
 	
 	F13 & Lbutton::       	F13Click()
 	F13 & `::					Test(iteration)
-
 
 
 
@@ -475,6 +474,16 @@ numpaddot::           #down
 		}
 	}
 
+2tap(){
+	global
+	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 300)
+	{
+		menu.Variable()
+	}
+	else
+		click R
+	Return
+}
 
 
 
@@ -550,7 +559,7 @@ _WFICA32:
 	F19 & right::						send, %coated%
 	F19 & s::	 						send, %SampleID%
 	F21 & /::	 						send, %SampleID%
-	$Rbutton up::						Mouse_RbuttonUP()
+	; $Rbutton up::						Mouse_RbuttonUP()
 	^`::										Varbar.reset()
 	enter::									click.okay()
 	esc::										click.esc()
@@ -564,7 +573,7 @@ _WFICA32:
 	F8::						3Down()
 	F7::						3Right()
 	F6::						3Left()	
-	; ~alt & tab::clip_C()
+	; ~alt & tab::Clip.Copy()
 
 	numpadMult::excel.connect()
 	; numpadadd::Excel.NextSheet()
@@ -573,7 +582,7 @@ _WFICA32:
 	Rbutton & F19::       	send % WindowInfo() 
 	Rbutton & F6::        	send, Backspace
 	Rbutton & Lbutton::   	send, Enter
-	Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
+	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
 
 
 MouseIsOver:

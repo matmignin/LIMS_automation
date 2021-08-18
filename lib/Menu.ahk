@@ -110,7 +110,7 @@ class Menu{
   
   
   Variable(){
-    global
+  
     ; Menu, Menu, add, &Variables, Variable
       if Product
         Menu, menu, Add, &Product `t %Product%, Variable

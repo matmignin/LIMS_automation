@@ -13,7 +13,7 @@
  +F13::send, {esc}
 
 ;  Mbutton::send,{CtrlDown}{click}{Ctrlup} ;sendinput, ^{click}
- Rbutton up::send,{click r}
+;  Rbutton up::send,{click r}
 
 
 

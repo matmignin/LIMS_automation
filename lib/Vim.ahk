@@ -2,7 +2,7 @@
 
 ; #IfWinActive, ahk_exe Code.exe
 #if MouseClip && winactive("ahk_exe Code.exe")
-	Mbutton::                                    ClickClip()
+	Mbutton::                                    clip.Click()
 #if Getkeystate("LControl","p")
 	; ^z::                                      send,{ctrldown}{z}{ctrlup}
 		z::                                      send,{ctrldown}{z}{ctrlup}
@@ -68,17 +68,17 @@
 	<^t::                                        reloadscript()
 	LCtrl & Appskey::                            return
 	<^f19::                                      send,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
-	Lshift::                                     DoublePress("{ctrldown}{F6}{ctrlup}",,"Backward")
 	^Lshift::                                    send, {ctrldown}{y}{ctrlup}
-	Rshift::                                     DoublePress("{ctrldown}{F7}{ctrlup}",,"Forward")
-	LCtrl up::                                   doublepress("{altdown}{shiftdown}{up}{shiftup}{altup}")
+	; Lshift::                                     DoublePress("{ctrldown}{F6}{ctrlup}",,"Backward")
+	; Rshift::                                     DoublePress("{ctrldown}{F7}{ctrlup}",,"Forward")
+	; LCtrl j::                                   doublepress("{altdown}{shiftdown}{up}{shiftup}{altup}")
 	Lwin & Appskey::                             return
 	Lalt & Appskey::                             return
 	Lwin::                                       doublepress("{altdown}{shiftdown}{up}{shiftup}{altup}+{2}")
 	rshift & space::                             send,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 	<^lwin::                                     delete
 	<+space::                                    send,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
-	rbutton up::                                 click R
+	; rbutton up::                                 click R
 	^s::                                         sendinput, {ctrldown}{end}{ctrlup}
 	f9 & f6::                                    return
 	F20 & h::                                    send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
