@@ -503,12 +503,12 @@ If (templatefilelist <> "")
 			}
 		}
 	}
-Else
-	Menu, Submenu2, Add, "No templates", TemplateMenuHandler
-Menu, ClipMenu, Add, &t. Templates, :Submenu2
-Menu, ClipMenu, Icon, &t. Templates, res\%iconT%,,16
-Loop 18
-	Menu, Submenu3, Add, % "&" Chr(96+A_Index) ".", MenuHandler
+; Else
+	; Menu, Submenu2, Add, "No templates", TemplateMenuHandler
+; Menu, ClipMenu, Add, &t. Templates, :Submenu2
+; Menu, ClipMenu, Icon, &t. Templates, res\%iconT%,,16
+; Loop 18
+	; Menu, Submenu3, Add, % "&" Chr(96+A_Index) ".", MenuHandler
 }
 
 ; More history... (alt-z)
@@ -541,16 +541,16 @@ Else
 	 Menu, SubMenu4, Icon, No entries ..., res\%iconA%, , 16
 	}
 
-If !FIFOACTIVE
-	{
-	 Menu, ClipMenu, Add, &y. Yank entry, :Submenu3
-	 Menu, ClipMenu, Icon, &y. Yank entry, res\%iconY%,,16
-	}
+; If !FIFOACTIVE
+	; {
+	;  Menu, ClipMenu, Add, &y. Yank entry, :Submenu3
+	;  Menu, ClipMenu, Icon, &y. Yank entry, res\%iconY%,,16
+	; }
 Menu, ClipMenu, Add, &z. More history, :Submenu4
 Menu, ClipMenu, Icon, &z. More history, res\%iconZ%,,16
-Menu, ClipMenu, Add
-Menu, ClipMenu, Add, E&xit (Close menu), MenuHandler
-Menu, ClipMenu, Icon, E&xit (Close menu), res\%iconX%,,16
+; Menu, ClipMenu, Add
+; Menu, ClipMenu, Add, E&xit (Close menu), MenuHandler
+; Menu, ClipMenu, Icon, E&xit (Close menu), res\%iconX%,,16
 Return
 
 DispMenuText(TextIn,lines="1")

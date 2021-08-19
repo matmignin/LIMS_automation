@@ -28,10 +28,10 @@
 	; wheelleft::    Excel.PrevSheet()
 	; wheelRight::   excel.Nextsheet()
 	mbutton::		Varbar.launchTable()
-	WheelUp::      Varbar.AddIteration()
-	up::				Varbar.AddIteration(0)
-	down::   		Varbar.SubIteration(0)
-	Wheeldown::    Varbar.SubIteration()
+	WheelUp::      Varbar.AddIteration(500)
+	up::				Varbar.AddIteration(2)
+	down::   		Varbar.SubIteration(2)
+	Wheeldown::    Varbar.SubIteration(500)
 	F9::           Excel.connect()
 	F7::           Excel.NextSheet()
 	F6::           Excel.PrevSheet()
@@ -104,43 +104,44 @@ Class VarBar{
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
 				; WinSet, Transparent, 300, %GUIID%
-				Gui, VarBar:color,016D07
+				Gui, VarBar:color,016D07, 97BA7F   
 				GUI,VarBar:Font,s13 cBlack Bold, Consolas
-				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h21 x1 y-4 w50 ,				%Product%  ; edit1
+				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h21 x1 y0  w50 ,				%Product%  ; edit1
 				GUI,VarBar:Font,s10 cBlack,Consolas
-				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H19 x1 y17 w70, 					%Batch% 	 ; edit2
+				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H20 x+1 y1 w70, 					%Batch% 	 ; edit2
 				GUI,VarBar:Font,s9 cBlack , Consolas
-				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x71 left H20 y17 w60, 				%Lot% 		 ; edit3
-				GUI,VarBar:Font,s18 cEF6950, Consolas
-				Gui,VarBar:Add,text, 		vIteration x134 65 center y2 w23,											%Iteration%	; Text1
+				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x+1 left H20 y1 w60, 				%Lot% 		 ; edit3
 				if ShowCoated || Coated
 					{
-					; GuiControl, Hide,Edit4
 					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
-						Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x71 H18 y-2 w60, 					Ct# %Coated%   ; edit4
+						Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar center x+1 H20 y1 w60, 					%Coated%   ; edit4
+					Gui,VarBar:add,Edit,	vNote1 						gNotevarbar X+8 H20 y1 w70 right,  			%Note1%     ; edit6
 					; if Coated
 						; Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x71 H18 y-2 w60, 					Ct# %Coated%   ; edit4
-				} ;else {
+				} else {
 					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
-					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar x160 H19 y15 w150,					%Note2%  	; edit7
-					; }
+					Gui,VarBar:add,Edit,		vNote1 					gNotevarbar  x+3 H20 y1 w70 right, 				%Note1%     ; edit6
+					}
 				if ShowSampleID
 					{
-					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x131 H18 y-3 w80, 				%SampleID%  ; edit5
-					Gui,VarBar:add,Edit,		vNote1 					gNotevarbar x222 H19 y-3 w80 left, 				%Note1%     ; edit6
+					GuiControl, Hide,Edit5
+					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x131 H18 y1 w80, 				%SampleID%  ; edit5
 					}
 				else
-					Gui,VarBar:add,Edit,	vNote1 						gNotevarbar x160 H19 y-3 w150 left,  			%Note1%     ; edit6
+					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar  X+0 H20 y1 w150 right,					%Note2%  	; edit7
+				GUI,VarBar:Font,s18 cEF6950, Consolas
+				Gui,VarBar:Add,text, 		vIteration x+5 65 center y-4 w23,											%Iteration%	; Text1
 			; }
+			; Gui, Varbar:Color,, 00FFFF
 			CoordMode, mouse, screen
 			; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
 			; varbar_x:= Varbar_x +100
 			try
-				Gui, VarBar:Show, h35 x%VarBar_X% y%VarBar_y% w310 NoActivate, VarBar
+				Gui, VarBar:Show, h22 x%VarBar_X% y%VarBar_y% w510 NoActivate, VarBar
 			; Gui, VarBar:Show, h30 x%offset_X% y%offset_y% w320 NoActivate, VarBar
 			catch
 			{
-				Gui, VarBar:Show, h35 x1 y%A_screenwidth% w310 NoActivate, VarBar
+				Gui, VarBar:Show, h25 x1 y%A_screenwidth% w510 NoActivate, VarBar
 				IniWrite, 1, data.ini, Locations, VarBar_X
 				IniWrite, 1, data.ini, Locations, VarBar_Y
 			}
@@ -148,6 +149,7 @@ Class VarBar{
 			; if (Follow=1)
 			ControlsetText, Static1, %Iteration%,VarBar
 			OnMessage(0x0201, "WM_LBUTTONDOWN")
+			OnMessage(0x203, "VariableBar_Relocate")
 			WinSet, Transparent, 225, AHK_id %GUIID%
 			return
 
@@ -204,11 +206,11 @@ HistoryMenuItem(){
 	ControlsetText, Edit3,%rLot%, VarBar
 	RegExMatch(A_ThisMenuItem, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", rCoated)
 	RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
-	ControlsetText, Edit4,%rCoated%, VarBar
+	ControlsetText, Edit4,%rCoated%, VarBar 
 	Product:=rProduct
 	Batch:=rBatch
 	Lot:=rLot
-	Coated:=rRoated
+	Coated:=rRoated 
 	return
 	}
 		
@@ -269,14 +271,16 @@ HistoryMenuItem(){
 
 		Relocate(){
 			global
-			; OnMessage(0x201, "VarBar.Relocate")
+			; OnMessage( 0x201, "VarBar.Relocate")
 			; keywait, space, 
 				; MouseClick, Left, , , 1, 0, D
 				; MouseClick, WhichButton [, X, Y, ClickCount, Speed, D|U, R]
 				; if !errorlevel
 				; {
 					; keywait, Lbutton, U
-					; PostMessage, 0xA1, 2
+					PostMessage, 0xA1, 2
+					keywait, Lbutton, U
+					 send, ^a
 					; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 					; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 					; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
@@ -384,7 +388,7 @@ HistoryMenuItem(){
 		iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
 		iniwrite, %Follow%, data.ini, Locations, Follow
 		iniwrite, %Inverted%, data.ini, Locations, Inverted
-		FileRead, OutputVar, Products.txt
+		FileRead, OutputVar, Products.txt  
 		Sort, OutputVar, u
 		FileDelete, Products.txt
 		sleep, 300

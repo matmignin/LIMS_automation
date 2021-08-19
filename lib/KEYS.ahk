@@ -97,21 +97,21 @@ F12::send, {altdown}{tab}{altup}
 	wheelup::return
 	#if
 KEY_DEFAULT:
-	; F15::								+tab
+	; F15::							+tab
 	F17::								menu.Apps()
 	+F17::							EnteringProduct()
-	; F16::								send, !{tab}
-	j & k::esc
+	; F16::							send, !{tab}
+	j & k::							esc
 	j::j
 	k::k
-	F20 & wheeldown::send % Blockrepeat(500) "{numpadDot}"
-	F20 & wheelup::send % Blockrepeat(500) "{numpadmult}"
-	F20 & wheelright::gosub, Numpadadd
-	F20 & wheelleft::gosub, Numpadsub
-	F19 & wheeldown::Send % Blockrepeat(500) "{F8}"
-	F19 & wheelup::send % Blockrepeat(500) "{F9}"
-	F19 & wheelleft::gosub, F6
-	F19 & wheelright::GoSub, F7  
+	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
+	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
+	F20 & wheelright::			gosub, Numpadadd
+	F20 & wheelleft::				gosub, Numpadsub
+	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
+	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
+	F19 & wheelleft::				gosub, F6
+	F19 & wheelright::			GoSub, F7  
 	;Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
 	;Media_Prev::					send, {altdown}{tab}{altup}
 	;Volume_Down::					send, {lwindown}{tab}{lwinup}
@@ -372,6 +372,11 @@ numpaddot::           #down
 		 clip()
 		 return
 	 }
+		else if winexist("Delete Test - \\Remote") { ; Press Okay
+		WinActivate, Delete Test - \\Remote
+		clk(229, 136)
+		return
+	}
 	 else if Winactive("NuGenesis LMS - \\Remote") 
 		Menu.Lms()
 	 else if winactive("ahk_exe firefox.exe") 
@@ -478,7 +483,7 @@ numpaddot::           #down
 	global
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 300)
 	{
-		menu.Variable()
+		send, {F21}
 	}
 	else
 		click R
@@ -523,50 +528,51 @@ _Main_LMS_Screen:
 
 
 _Results_Definition:
-  #IfWinActive, Results Definition - \\Remote
-;   wheelup::Mouse_click("Edit")
-  ; numlock::send, % clk(712, 663) "{esc}"
+	#IfWinActive, Results Definition - \\Remote
+		wheelup::Mouse_click("Edit")
+		numlock::send, % clk(712, 663) "{esc}"
 
 
 _Register_new_samples:
-  #ifwinactive, Register new samples - \\Remote
-	F7::
-		clk(181, 104,2,2)
-		sleep 300
-		send, %Product%{enter}
-		return
+	#ifwinactive, Register new samples - \\Remote
+		F7:: 
+			clk(181, 104,2,2)
+			sleep 300
+			send, %Product%{enter}
+			return
 
 _Result_Entry:
-  #Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
-    #MaxThreadsPerHotkey 2
+	#Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
+		#MaxThreadsPerHotkey 2
       F9::WorkTab.ChangeTestResults("loop")
-    #MaxThreadsPerHotkey 1 
+		#MaxThreadsPerHotkey 1 
+
 _LMS_KEYS:
 	#ifwinactive, Reason for Change - \\Remote
-	F13 & v::
+		F13 & v::
 						send % "Verification" 
 						sleep 200
 						Click.Okay()
 						return
 _WFICA32:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-	F20 & Space::						send, %Batch%
-	F21 & Space::						send, %Batch%
-	F19 & space::						send, %Product%
-	F19 & up::							send, %sampleID%
-	F19 & left::						send, %lot%
-	F19 & right::						send, %coated%
-	F19 & s::	 						send, %SampleID%
-	F21 & /::	 						send, %SampleID%
-	; $Rbutton up::						Mouse_RbuttonUP()
-	^`::										Varbar.reset()
-	enter::									click.okay()
-	esc::										click.esc()
+	F20 & Space::			send, %Batch%
+	F21 & Space::			send, %Batch%
+	F19 & space::			send, %Product%
+	F19 & up::				send, %sampleID%
+	F19 & left::			send, %lot%
+	F19 & right::			send, %coated%
+	F19 & s::	 			send, %SampleID%
+	F21 & /::	 			send, %SampleID%
+	; $Rbutton up::		Mouse_RbuttonUP()
+	^`::						Varbar.reset()
+	enter::					click.okay()
+	esc::						click.esc()
 	; left::						left
 	; Down::						down
-	; right::						right
+	; right::					right
 	; up::						up
-	numpaddot::			closeWindow()
+	numpaddot::				closeWindow()
 	<^r::						ReloadScript()
 	F9::						3up()
 	F8::						3Down()
@@ -574,12 +580,7 @@ _WFICA32:
 	F6::						3Left()	
 	^Wheeldown::			Blockrepeat(500) clip()
 	^wheelup::				menu.lms()
-	; ~alt & tab::Clip.Copy()
-
 	numpadMult::excel.connect()
-	; numpadadd::Excel.NextSheet()
-	; numpadsub::Excel.PrevSheet()
-
 	Rbutton & F19::       	send % WindowInfo() 
 	Rbutton & F6::        	send, Backspace
 	Rbutton & Lbutton::   	send, Enter

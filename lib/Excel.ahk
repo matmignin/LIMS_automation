@@ -92,7 +92,7 @@ SearchWorkbook(SearchWord:=""){
 
 SaveToDataBase(){
 	global
- iniread, full, data.ini, %Product%, ;ecc738
+;  iniread, full, data.ini, %Product%, ;ecc738
  Test_Specs:= strsplit(Full,"=")
  Test:=Test_Specs[1]
  Specs:= strsplit(Test_Specs[2],"|")
@@ -120,7 +120,7 @@ NextSheet(){
 		XL.Sheets(NextSheetname).activate
 		excel.connect()
 	Excel.MatchColor()
-	TT(Product "`t" Batch "`t" Lot "`t" coated "`n" Name "`t" Customer "`t" "`n" Color "`t" Shapeandsize, ,,,1,200) 
+	TT(Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R") 
 	;GuiControl, +redraw, varbar
 	}
 
@@ -134,7 +134,7 @@ PrevSheet(){
 	if (prevSheetName = "Sheet1" || prevSheetName = "Main" || prevSheetName = "Template" || prevSheetName = "Finished" || prevSheetName = "Micro Pending" || prevSheetName = "Sheet2" || prevSheetName = "Sheet1" || prevSheetName = "Item Code" || prevSheetName = "Scrap Sheet")
 		Xl.Sheets(PrevSheet).activate
 		excel.connect()
-	TT(Product "`t" Batch "`t" Lot "`t" coated "`n" Name "`t" Customer "`t"  "`n" Color "`t" Shapeandsize, ,,,1,200) 
+	TT(Name "`t" Customer,2000,Varbar_x,Varbar_y+20,1,250,"R") 
 	Excel.MatchColor()
 	; Excel.MatchColor()
 	;GuiControl, +redraw, varbar

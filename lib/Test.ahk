@@ -35,12 +35,19 @@ Gui, Show, w300 h300,TEST
 return
 Test_1(){
 global
-	CurrentClipboard:=Clipboard
-	clipboard:=
-	send, ^c
-	clipwait, 1
-	clipboard:=CurrentClipboard "`n" Clipboard
-	tt(Clipboard)
+clipboard:=
+send, ^c
+clipwait, 1
+
+; SplitLMSSample(){
+RowSplit:=[]
+ParsedSample:=[]
+RowSplit:= strsplit(Clipboard,"`n")
+row2:=RowSplit[2]
+	Loop, parse, Row2, `t
+		ParsedSample.insert(A_LoopField)
+
+msgbox % "Product:" ParsedSample[1] "`n|Batch| " ParsedSample[2] "`n|PkgLot| " ParsedSample[3] "`n|Coated| " ParsedSample[4] "`n|Blister|" ParsedSample[5] "`n|ShipTo| " ParsedSample[8] "`n||`n" ParsedSample[6]
 return
 }
 
@@ -248,10 +255,6 @@ Global
 
 
 }
-
-
-
-
 
 
 

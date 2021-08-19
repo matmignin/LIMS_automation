@@ -16,7 +16,7 @@ Settings()
 	 CyclePlugins[0]:="<none>"
 	 Stats_Create()
 	 IniRead, MaxHistory         , %ini%, settings, MaxHistory, 150
-	 IniRead, MenuWidth          , %ini%, settings, MenuWidth, 40
+	 IniRead, MenuWidth          , %ini%, settings, MenuWidth, 30
 	 IniRead, SearchWindowWidth  , %ini%, settings, SearchWindowWidth, 595
 	 IniRead, SearchWindowHeight , %ini%, settings, SearchWindowHeight, 300
 	 IniRead, ShowLines          , %ini%, settings, ShowLines, 0

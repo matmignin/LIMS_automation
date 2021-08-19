@@ -41,38 +41,39 @@ Regex(Category:="All"){
       If cProduct {
       GuiControl,Varbar:Text, Product, %cProduct%
             IniWrite, %cProduct%, data.ini, SavedVariables, Product
+            IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
               ; if cBatch
-                Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% %TimeString%`n, Products.txt
+                Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% `n, Products.txt
               ; else
                 ; Fileappend, %cProduct%`n, Products.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
             IniWrite, %cBatch%, data.ini, SavedVariables, Batch
-            Fileappend, %cBatch%`n, Batch.txt
+            ; Fileappend, %cBatch%`n, Batch.txt
         }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
             IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-            Fileappend, %cCoated%`n, lib/Coated.txt
-            varbar.show()
-        }
-      If !cCoated {
-        GuiControl,Varbar:Text, Coated, %cCoated%
-            cCoated:=
-            IniWrite,%cCoated%, data.ini, SavedVariables, Coated
-            varbar.show()
             ; Fileappend, %cCoated%`n, lib/Coated.txt
+            varbar.show()
         }
+      ; If !cCoated {
+        ; GuiControl,Varbar:Text, Coated, %cCoated%
+            ; cCoated:=
+            ; IniWrite,%cCoated%, data.ini, SavedVariables, Coated
+            ; varbar.show()
+            ; Fileappend, %cCoated%`n, lib/Coated.txt
+        ; }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
             IniWrite, %cLot%, data.ini, SavedVariables, Lot
-            Fileappend, %cLot%`n, lib/Lot.txt
+            ; Fileappend, %cLot%`n, lib/Lot.txt
         }
       If cSampleID {
         GuiControl,Varbar:text, SampleID, %cSampleID%
             IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
-            Fileappend, %cSampleID%`n, lib/SampleID.txt
+            ; Fileappend, %cSampleID%`n, lib/SampleID.txt
         }
       sleep 20
     }
@@ -98,7 +99,7 @@ Regex(Category:="All"){
         Department:="Physical (Coated)"
     }
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Department ;|| Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,0,0,3,250,"R")
+      TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
     ; else 
         ; TT(Clipboard,900,Varbar_x,80,2,175,"R")
   return 

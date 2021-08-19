@@ -5,8 +5,11 @@
 	Mbutton::                                    clip.Click()
 #if Getkeystate("LControl","p")
 	; ^z::                                      send,{ctrldown}{z}{ctrlup}
-		z::                                      send,{ctrldown}{z}{ctrlup}
-		n:: 													send, {altdown}{ctrldown}{g}{ctrlup}{altup}
+	z::                                      send,{ctrldown}{z}{ctrlup}
+	n:: 													send, {altdown}{ctrldown}{g}{ctrlup}{altup}
+	l::                                      send, {ctrldown}{]}{ctrlup}
+	h::                                        send, {ctrldown}{[}{ctrlup}
+	+z::                                       send, {shiftup}{Ctrldown}{y}{CtrlUp}
 #if
 
 #IfWinActive, ahk_exe Code.exe
@@ -26,10 +29,7 @@
 	Mbutton::                                    3Tap() 
 	F19 up::                                     send, {F19}
 	; f8::                                         send, {ctrldown}{d}{ctrlup}
-	$^z::                         		         send, {ctrldown}{z}{ctrlup}
-	$^l::                                        send, {ctrldown}{]}{ctrlup}
-	$^h::                                        send, {ctrldown}{[}{ctrlup}
-	$+^z::                                       send, {shiftup}{Ctrldown}{y}{CtrlUp}
+
 	$Lwin Up::                                   Send, {shiftdown}{altdown}{i}{lwinup}{altup}{shiftup}
 	Tab & h::                                    send, {ctrldown}{[}{ctrlup}
 	Tab & l::                                    send, {ctrldown}{]}{ctrlup}
@@ -232,7 +232,6 @@ Vim:
 		k::                                       send, {Up}
 		; t::                                       send, {altdown}{down}{altup}
 		t::														send, {F9}test.ahk{ctrldown}{enter}{ctrlup}
-
 		h::                                       send, {left}
 		l::                                       send, {right}
 		x::                                       send, {Delete}
@@ -275,7 +274,7 @@ Vim:
 		^4::                                      send,{shiftdown}{end}{shiftup} 
 		#if
 		#IfWinActive
-F13 UP:: 													send, {esc}{ctrlup}{altup}{shiftup}
+; F13 UP:: 													send, {esc}{ctrlup}{altup}{shiftup}
 
 
 ; ============================= psudonumpad(){}

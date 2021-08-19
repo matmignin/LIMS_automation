@@ -54,9 +54,10 @@ F4::
   sleep 200 
   send, {ctrldown}{e}{ctrlup}
   return
-^F1::
++F1::
   if winexist("AutoHotkey Help")
-    winactivate
+    winactivate, 
+  else
   Run, AutoHotkey.chm, C:\Users\mmignin\Documents
   return
 OpenApps:

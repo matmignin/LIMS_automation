@@ -1,18 +1,20 @@
 ﻿#MaxHotkeysPerInterval 1000
-#HotkeyModifierTimeout 50
+#InstallKeybdHook
+#HotkeyModifierTimeout 80
 #maxthreadsperhotkey, 1
+SendMode Input
 SetControlDelay, 0
 SetKeyDelay, 1, 0.25
 ;setwindelay, 200
-FormatTime, DayString,, M/d/yy
-FormatTime, TimeString, R
+FormatTime, DayString,,  MM/dd/yy
+FormatTime, TimeString,  yyMMddHH
 gosub, vquest_start
 SetNumLockState, on
 CoordMode, mouse, Window
 SetMouseDelay, 1
 SetDefaultMouseSpeed, 1
 SetTitleMatchMode, 2
-   #MenuMaskKey vkE8
+  #MenuMaskKey vkE8
 #WinActivateForce
 AutoTrim, On
 CheckTime:=300
@@ -29,10 +31,10 @@ CheckActive:
   if winexist("Book ahk_exe WFICA32.EXE") ;shrink excel 
     WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
         if (winminmax=1){
-				winactivate, Excel ahk_exe WFICA32.EXE
-			  sleep 400
-			  send, {lwindown}{down}{lwinup}
-				WinMove, Excel ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
+				winactivate, Book ahk_exe WFICA32.EXE
+			  send, {lwindown}{left}{lwinup}
+			  sleep 200
+				; WinMove, Excel ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
         ; sleep 300
       }
       ; If Follow 
@@ -46,10 +48,10 @@ CheckActive:
         ; WinMove, VarBar ahk_class AutoHotkeyGUI,, VarWin_X, VarWin_Y,
       ; }
 		sendlevel 1
-      If A_TimeIdle > 900
+      If A_TimeIdle > 4000
       {
         setwindelay, 200
-        send, {ctrlUp}{altup}
+        ; send,{Blind}{ctrlUp}{altup}
       }
 		  sendlevel 0
   return

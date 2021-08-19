@@ -60,7 +60,7 @@ CreateGUI(){
 			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
 			temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 			Test:= Name[A_index]
-			Iniwrite, %Temp%, data.ini, %Product%, %Test%
+			; Iniwrite, %Temp%, data.ini, %Product%, %Test%
 		}
 	}
 }
@@ -91,17 +91,36 @@ Methods() {
 
 
 CopySpecTemplate(){
-	global
+	global 
 	department:= 
 	Clipboard:=
-	send, ^c
-	; clipwait,1 ; Tooltip, %Clipboard%
 	sleep 100
-	clip("",1.0)
-	; sleep 400
-	; TT(department)
+	send, ^c
+	clipwait,1 ; Tooltip, %Clipboard%
+	clip()
+	If errorlevel
+		return
+	sleep 400
+	TT(department)
 	Breaking.Point()
 	click.CopySpecTemplate()
+	sleep 200
+	; If (Department := "Analytical")
+	; 	SpecTab.Edit_Analytical()
+	; If (Department := "Physical (Coated)")
+	; 	SpecTab.Edit_CoatedPhysical()
+	; If (Department := "Physical")
+	; 	SpecTab.Edit_Physical()
+	; If (Department := "CTPhysical")
+	; 	SpecTab.Edit_CoatedPhysical()
+	; if (Department := "Micro")
+	; 	SpecTab.Edit_Micro()
+	; If (Department := "Retain (Coated)")
+	; 	SpecTab.Edit_CoatedRetain()
+	; If (Department := "Retain")
+	; 	SpecTab.Edit_Retain()
+	; If (Department := "CTRetain")
+		; SpecTab.Edit_CoatedRetain()
 	If Department Contains Analytical
 		SpecTab.Edit_Analytical()
 	If Department contains Physical (Coated)

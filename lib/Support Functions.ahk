@@ -287,10 +287,10 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 		CoordMode, ToolTip, Relative
 	if (Position:="S")
 		CoordMode, ToolTip, Screen
-	If X:="-1"
-		X:=A_CaretX-50
-	If Y:="-1"
-		Y:=A_CaretY-50
+	; If X:="-1"
+		; X:=A_CaretX-50
+	; If Y:="-1"
+		; Y:=A_CaretY-50
 	if !msg
 		msg:=A_PriorHotkey "`n" A_Thishotkey
 	tooltip, %msg%, %X%, %Y%,%N%
@@ -358,6 +358,10 @@ class click{
 			clk(265, 561)
 		else if winactive("Result Entry")
 			clk(1028, 860)
+		else if winexist("Delete Test - \\Remote") {
+			WinActivate, Delete Test - \\Remote
+			clk(229, 136)
+		}
 		else if winActive("Results Definition - \\Remote")
 			clk(951, 751)
 		else if winActive("Microsoft Excel Security Notice - \\Remote")

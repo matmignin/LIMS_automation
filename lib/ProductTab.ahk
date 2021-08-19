@@ -190,9 +190,10 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
     ; Mouse_Click("Add_Formulation")
     winactivate, Edit Formulation - \\Remote,
     send, {tab}%product%
-      sendinput, {Tab 23}
-    return
+      sendinput, {Tab 23}{click 268, 578}
     Breaking.Point()
+    ; clk(287, 578) ;click save
+    return
     ;setwindelay, 200
   } 
 

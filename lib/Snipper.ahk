@@ -41,9 +41,9 @@ return
 ClipTool:
 #IfWinactive, C:\Users\mmignin\Documents\VQuest\lib\CL3\cl3.ahk,
 
- F13 & j::send,{down}
- F13 & k::send,{up}
- F13 & l::send,{enter}
- F13 & h::send,{esc}
+;  F13 & j::send,{down}
+;  F13 & k::send,{up}
+;  F13 & l::send,{enter}
+;  F13 & h::send,{esc}
  F13::esc
  #IfWinActive
