@@ -291,8 +291,8 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 		; X:=A_CaretX-50
 	; If Y:="-1"
 		; Y:=A_CaretY-50
-	if !msg
-		msg:=A_PriorHotkey "`n" A_Thishotkey
+	; if !msg
+		; msg:=A_PriorHotkey "`n" A_Thishotkey
 	tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := WinExist("ahk_class tooltips_class32")
 	if Transparent

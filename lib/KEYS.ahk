@@ -127,10 +127,12 @@ KEY_DEFAULT:
 	+^z::								send, {shiftup}{Ctrldown}{y}{CtrlUp}
 	~<+rshift::						send, {lwindown}{right}{lwinup}
 	~>+lshift::						send, {lwindown}{left}{lwinup}
+	~Rshift & up:: 			sendinput, %SampleID%
 	~Rshift::
 	lshift & Appskey::			Return
 	rshift & Appskey::			return
 	<^;::	 							sendinput, %DayString%{space}
+	; / & up:: 			sendinput, %SampleID%
 	~Lbutton & left:: 			sendinput, %SampleID%
 	~Lbutton & Down:: 			sendinput, %Coated%
 	~Lbutton & right::			sendinput, %Lot%
@@ -366,51 +368,56 @@ numpaddot::           #down
 
 	3tap(){
 	Global 
-	 if winactive("ahk_exe OUTLOOK.EXE") {
-		 click 3
-		 send, ^{c}
-		 clip()
-		 return
-	 }
+	if winactive("ahk_exe OUTLOOK.EXE") {
+		click 3
+		send, ^{c}
+		clip()
+		return
+	}
 		else if winexist("Delete Test - \\Remote") { ; Press Okay
 		WinActivate, Delete Test - \\Remote
 		clk(229, 136)
 		return
 	}
-	 else if Winactive("NuGenesis LMS - \\Remote") 
+		else if winexist("Release: 21") { ; Press Okay
+		WinActivate, 
+		clk(131, 144)
+		return
+	}
+	else if Winactive("NuGenesis LMS - \\Remote") 
 		Menu.Lms()
-	 else if winactive("ahk_exe firefox.exe") 
+	else if winactive("ahk_exe firefox.exe") 
 		send, {ctrldown}{click}{ctrlup}
-	 else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") 
+	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") 
 		Sendpassword()
-	 else If Winactive("LMS Workbook.xlsb") 
+	else If Winactive("LMS Workbook.xlsb") 
 		excel.connect()
-	 else if Winactive("Register new samples - \\Remote") 
+	else if Winactive("Register new samples - \\Remote") 
 			WorkTab.registerNewSamples()
-	 else if Winactive("Login - \\Remote") 
+	else if Winactive("Login - \\Remote") 
 		menu.passwords()
-	 else if Winactive("Result Entry - \\Remote") 
+	else if Winactive("Result Entry - \\Remote") 
 		WorkTab.ChangeTestResults("toggle")
-	 else if Winactive("Edit specification - \\Remote")  	
+	else if Winactive("Edit specification - \\Remote")  	
 		menu.LMS()
-	 else if Winactive("Results Definition - \\Remote")  	
+	else if Winactive("Results Definition - \\Remote")  	
 		menu.LMS()
-	 else if Winactive("Edit Formulation - \\Remote") 
+	else if Winactive("Edit Formulation - \\Remote") 
 	{
 		mouseclick, left, 455, 472,2,0
 		clk(250, 284)
 	}
-	 else if Winactive("Edit Product - \\Remote") 
+	else if Winactive("Edit Product - \\Remote") 
 		ProductTab.EditProduct() 
-	 else If Winactive("Select tests for request: R") 
+	else If Winactive("Select tests for request: R") 
 		WorkTab.SelectTestSample() 
-	 else If Winactive("Paster - Snipaste")
+	else If Winactive("Paster - Snipaste")
 			send, ^c
-	 else if Winactive("Snipper - Snipaste") 
+	else if Winactive("Snipper - Snipaste") 
 			send, {enter}
-	 else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
+	else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
 		send, {lwindown}{e}{lwinup}
-	 Else 
+	Else 
 	return
 	; }
 	}
@@ -481,7 +488,7 @@ numpaddot::           #down
 
 2tap(){
 	global
-	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 300)
+	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450)
 	{
 		send, {F21}
 	}

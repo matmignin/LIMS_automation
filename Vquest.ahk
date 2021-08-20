@@ -31,7 +31,7 @@ CheckActive:
   if winexist("Book ahk_exe WFICA32.EXE") ;shrink excel 
     WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
         if (winminmax=1){
-				winactivate, Book ahk_exe WFICA32.EXE
+				; winactivate, Book ahk_exe WFICA32.EXE
 			  send, {lwindown}{left}{lwinup}
 			  sleep 200
 				; WinMove, Excel ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
@@ -51,7 +51,7 @@ CheckActive:
       If A_TimeIdle > 4000
       {
         setwindelay, 200
-        ; send,{Blind}{ctrlUp}{altup}
+        send,{ctrlUp}{altup}
       }
 		  sendlevel 0
   return
@@ -74,7 +74,7 @@ global
 
 #IfWinActive,
 #include <Vim>
-#Include <Office KEYS>
+#Include <OFFICE>
 #include <KEYS>
 #Include <clip>
 #Include <Firefox>
@@ -100,7 +100,7 @@ VQuest_Start:
   #KeyHistory 300
   #InstallKeybdHook
   #InstallMouseHook
-  ; OnClipboardChange("clipclip")
+  OnClipboardChange("clipclip")
   CrLf=`r`n
   FileName:="lib/WinPos.txt"
   envget, PrevProduct, PrevProduct
