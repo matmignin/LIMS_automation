@@ -18,18 +18,20 @@ History:
 #include <Tooltip>
 
 ClipChainInit:
-MouseGetPos, ClipChainX, ClipChainY,
-	; IniRead, ClipChainX , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX, 100
-	; IniRead, ClipChainY , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY, 100
+	CoordMode, Mouse Screen
+	MouseGetPos, Mx, MY,
+	IniRead, ClipChainX , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX,
+	IniRead, ClipChainY , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY, 
 	IniRead, ClipChainNoHistory , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainNoHistory , 0
 	IniRead, ClipChainTrans , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainTrans , 0
 	IniRead, ClipChainPause , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainPause , 0
-
-	If (ClipChainX = "") or (ClipChainX = "ERROR")
-		ClipChainX:=100
-	If (ClipChainY = "") or (ClipChainY = "ERROR")
-		ClipChainY:=100
-
+	CoordMode, Mouse, relative
+	sleep 20
+	If (ClipChainX := 0) Myr (ClipChainX = "ERROR")
+		ClipChainX:=My
+	If (ClipChainY := 0) or (ClipChainY = "ERROR")
+		ClipChainY:=My
+	
 	If !IsObject(ClipChainData)
 	{
 		IfExist, %A_ScriptDir%\ClipData\ClipChain\ClipChain.xml
@@ -62,31 +64,31 @@ MouseGetPos, ClipChainX, ClipChainY,
 	Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 
 	Gui, ClipChain:Default
-	Gui, ClipChain:Font, % dpi("s8")
+	Gui, ClipChain:Font, % dpi("s7")
 	Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate
-	Gui, ClipChain:Add, Listview, % dpi("x0 y0 w185 h350 NoSortHdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
+	Gui, ClipChain:Add, Listview, % dpi("x0 y0 w195 h350 r10 NoSortHdr -hdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
 	LV_ModifyCol(1,dpi()*25)
 	LV_ModifyCol(2,dpi()*160)
 	LV_ModifyCol(3,*0)
 	;LV_ModifyCol(2,100) ; debug
 	;LV_ModifyCol(3,30)  ; debug
 	Gosub, ClipChainListview
+	Gui, ClipChain:Add, Button, % dpi("gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
+	Gui, ClipChain:Add, Button, % dpi("x+1 gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
 
-	Gui, ClipChain:font,% dpi("s8")
+	; Gui, ClipChain:font,% dpi("s8")
 	; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+355 w181 h50 vGbox1"), Chain(s)
-	; Gui, ClipChain:Add, Button, % dpi("xp+8  yp+18 w26 h26   gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
-	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
-	Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
+	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
-	Gui, ClipChain:font
-	Gui, ClipChain:font, % dpi("s12 bold")
+	; Gui, ClipChain:font
+	; Gui, ClipChain:font, % dpi("s12 bold")
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
-	Gui, ClipChain:font
-	Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
+	; Gui, ClipChain:font
+	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
-	Gui, ClipChain:font
-	Gui, ClipChain:font,% dpi("s8")
+	; Gui, ClipChain:font
+	; Gui, ClipChain:font,% dpi("s8")
 	; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
 	; Gui, ClipChain:Add, Checkbox, % dpi("xp+10 yp+18 w75 h24 vClipChainNoHistory gClipChainCheckboxes"), No History
 	; Gui, ClipChain:Add, Checkbox, % dpi("xp+80 yp    w85 h24 vClipChainTrans     gClipChainCheckboxes"), Transparent
@@ -103,28 +105,23 @@ MouseGetPos, ClipChainX, ClipChainY,
 Return
 
 
-Mouse_IsOver(WinTitle){
-	Global
-	MouseGetPos,,, Win
-	Return WinExist(WinTitle . " ahk_id " . Win)
-}
 
 
 #If Mouse_IsOver("CL3ClipChain")
 	Rbutton::			        gosub, clipchainmenu
-	; ^up::			         gosub, ClipchainMoveUp
-	; ^Down::			       gosub, ClipchainMoveDown
-	wheeldown::			       gosub, ClipchainMoveDown
+	; wheeldown::			       gosub, ClipchainMoveDown
 	Backspace::			     gosub, ClipChainDel
 #If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
 	+Enter::	
 	F19::						
+	; ^Down::			       gosub, ClipchainMoveDown
+	; ^up::			         gosub, ClipchainMoveUp
 	^enter::							
-							ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
-							clipboard:=ClipChainIns
-							sleep 200
-							gosub, ClipChainInsertGuiOK
-							return
+				ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
+				clipboard:=ClipChainIns
+				sleep 200
+				gosub, ClipChainInsertGuiOK
+				return
 #if
 	; Numlock::  ;send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 	; 		if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 200)
@@ -236,38 +233,44 @@ return
 }
 
 #If ClipChainActive()
-	; up::			         gosub, ClipchainMoveUp
-	; Down::			       gosub, ClipchainMoveDown
-	Delete::			     gosub, ClipChainDel
-	^c::			         send, ^c
+	^Numpadmult::
+	F20 & up::			   MoveIndicatorUp()
+	^numpaddot::
+	F20 & Down::			MoveIndicatorDown()
+	Rshift & up::			gosub, ClipchainMoveUp
+	Rshift & down::		gosub, ClipchainMoveDown
+	; gosub, ClipchainMoveDown
+	Delete::			 	   gosub, ClipChainDel
+	^c::			     	   send, ^c
 	F11::
-										clipchaininsert()
-										send, ^x
-										return
-	^Numpadmult::			gosub, ClipchainMoveUp
-	^numpaddot::			gosub, ClipchainMoveDown
-	\::	  	gosub, clipchainmenu
-
+								clipchaininsert()
+								send, ^x
+								return
+	\::	  					gosub, clipchainmenu
+	F20 & F19::				;Gui, ClipChain:Destroy
+	F22:: 					gosub, ClipChainGuiClose
 	F19::			        
-	clicktext(3)
-	clipChain_v()
-	return
+								clicktext(3)
+								clipChain_v()
+								return
 	
 	$Rshift::			    
-										sendinput, +{tab}{tab}
-										ClipChainInsert()
-										return
+								sendinput, +{tab}{tab}
+								ClipChainInsert()
+								return
 	>+Enter::			    
-										send, +{tab}{tab}
-										sleep 50
-										clipChain_v()
-										return
-	F21::			        ClipChainInsert()
+								send, +{tab}{tab}
+								sleep 50
+								clipChain_v()
+								return
+	F21::			       	 ClipChainInsert()
 	; F20::			        ClipChainInsert()
-	F20::			      clipChain_c()
+	F20::			     		clipChain_c()
 	numlock::				clipChain_v()
-	Mbutton::  			clipchaininsert()
+	Mbutton::  				clipchaininsert()
 	
+#if
+
 ClipChainInsert(){
 	global
 	clipboard:=
@@ -602,13 +605,24 @@ ClipChainGuiClose:
 Return
 
 ClipChainSaveWindowPosition:
-	WinGetPos, ClipChainX, ClipChainY, , , CL3ClipChain ahk_class AutoHotkeyGUI
-	IniWrite, %ClipChainX%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
-	IniWrite, %ClipChainY%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 	IniWrite, %ClipChainNoHistory% , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainNoHistory
 	IniWrite, %ClipChainTrans% , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainTrans
 	IniWrite, %ClipChainPause% , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainPause
+	if (clipchainX := 0) or (clipchainY := 0)
+		return
+	WinGetPos, ClipChainX, ClipChainY, , , CL3ClipChain ahk_class AutoHotkeyGUI
+	IniWrite, %ClipChainX%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
+	IniWrite, %ClipChainY%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 Return
+
+MoveIndicatorDown(){
+	Clipchainindex++ 
+	gosub, ClipChainUpdateIndicator
+	}
+MoveIndicatorUp(){
+	Clipchainindex-- 
+	gosub, ClipChainUpdateIndicator
+}
 
 ClipChainMoveUp:
 	ClipChainLvHandle.Move(1) ; Move selected rows up.
@@ -669,5 +683,12 @@ ClipChainActive()
 	Else
 		Return false
 }
+
+Mouse_IsOver(WinTitle){
+	Global
+	MouseGetPos,,, Win
+	Return WinExist(WinTitle . " ahk_id " . Win)
+}
+
 
 #include %A_ScriptDir%\lib\class_lv_rows.ahk

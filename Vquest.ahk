@@ -32,7 +32,7 @@ CheckActive:
     WinGet, winminmax, MinMax ,Book ahk_exe WFICA32.EXE,
         if (winminmax=1){
 				; winactivate, Book ahk_exe WFICA32.EXE
-			  send, {lwindown}{left}{lwinup}
+			  send, {lwindown}{down}{lwinup}
 			  sleep 200
 				; WinMove, Excel ahk_exe WFICA32.EXE, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
         ; sleep 300
@@ -51,7 +51,7 @@ CheckActive:
       If A_TimeIdle > 4000
       {
         setwindelay, 200
-        send,{ctrlUp}{altup}
+        send,{lctrlUp}{altup}
       }
 		  sendlevel 0
   return
@@ -73,7 +73,7 @@ global
 
 
 #IfWinActive,
-#include <Vim>
+#include <VIM>
 #Include <OFFICE>
 #include <KEYS>
 #Include <clip>
@@ -89,6 +89,7 @@ global
 #include <menu>
 #include <Rotation>
 #include <Excel>
+; #include <Excel2SmartDoc>
 #include <vis2>
 #include <Support Functions>
 

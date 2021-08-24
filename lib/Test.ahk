@@ -97,8 +97,12 @@ return
 ;Test_3:
 Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt"){
 	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt")
-
-	
+		FileRead, OutputVar, Products.txt  
+		Sort, OutputVar, u
+		; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
+		FileDelete, Products.txt
+		sleep, 300
+		FileAppend, %OutputVar%, Products.txt
 	
 	
 	

@@ -2,8 +2,12 @@
 #Ifwinactive,
 
 
-
-
+_TestingZone:
+Volume_Mute::
+sendlevel 1
+send, {F23}
+sendlevel 0
+return
 ; drag_enabled := 0
 
 ; +^#F22::
@@ -59,7 +63,6 @@ MouseGesture(LeftAction:="",RightAction:=""){
 Media_Prev::MakeTransparent()
 Media_Play_Pause::F16
 Media_Next::F17
-Volume_Mute::F20
 Volume_Down::F18
 Volume_up::F18
 / & up::						Varbar.AddIteration(0)
@@ -154,8 +157,7 @@ KEY_DEFAULT:
 	F19 & s::	 					send, %SampleID%
 	$Numlock::						4tap() ;Clip.Paste()      	
 	F20 up:: 	               Clip.Copy()
-	F21 up::    	           	Clip.Copy()
-	F19 up::       	       	Clip.paste()
+	F19 up::      	       	Clip.paste()
 	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
 	rbutton::						2tap()
 
@@ -164,58 +166,38 @@ KEY_DEFAULT:
 
 F19_And_F20:
 	F20 & 9::             	SaveWindow_Save()
-	F21 & 9::             	SaveWindow_Save()
 	F20 & 0::             	SavedWindow_Restore()
-	F21 & 0::             	SavedWindow_Restore()
 	; F20 & '::           	varbar.follow()
 	F13 & esc::					Varbar.reset()	
-	; F21 & '::					Varbar.reset()	
 	F19 & \::             	CreditCard()
 	F19 & Space::         	send, %product%
 	F20 & Space::         	Sendinput, %batch%
-	F21 & Space::         	Sendinput, %batch%
 	F19 & backspace::     	send,{delete}
+	F20 & Rshift::
 	F20 & Insert::        	Clip("OCR")
-	F20 & Media_Play_Pause::Clip("OCR")
-	F21 & Insert::        	Clip("OCR")
 	F20 & F7::            	Excel.NextSheet()
-	F21 & F7::            	Excel.NextSheet()
 	F20 & F6::            	Excel.PrevSheet()
-	F21 & F6::            	Excel.PrevSheet()
-	F20 & backspace::     	run, Taskmgr.exe
-	F21 & backspace::     	run, Taskmgr.exe
+	F20 & esc::     			run, Taskmgr.exe
+	F20 & backspace::     	send, {delete}
 	F20 & Right::         	send, #{right}
-	F21 & Right::         	send, #{right}
 	F20 & Left::          	send, #{Left}
-	F21 & Left::          	send, #{Left}
 	F20 & UP::            	send, #{UP}
-	F21 & UP::            	send, #{UP}
 	F20 & Down::          	send, #{Down}
-	F21 & Down::          	send, #{Down}
 	F20 & \::             	Sendpassword()
-	F21 & \::             	Sendpassword()
 	F20 & .::             	WindowInfo()
-	F21 & .::             	WindowInfo()
 	F20 & o:: 				 	OpenApp.Outlook()
-	F21 & o::				 	OpenApp.Outlook()
 	F20 & =::             	sendinput,{CtrlDown}{=}{Ctrlup}
-	F21 & =::             	sendinput,{CtrlDown}{=}{Ctrlup}
 	F20 & -::             	sendinput,{CtrlDown}{-}{Ctrlup}
-	F21 & -::             	sendinput,{CtrlDown}{-}{Ctrlup}
-	F20 & Rshift::        	Test_2() 
-	F21 & Rshift::        	Test_2() 
 	F19 & enter::			 	varbar.focus("Edit1")
 	F20 & enter::			 	varbar.focus("Edit2")
-	F21 & enter::			 	varbar.focus("Edit2")
 	F20 & ,::					varbar.Focus("Edit2")
 
 
 	F20 & l::             	OpenApp.LMS()
 	F21 & l::             	OpenApp.LMS()
 	F20 & F19::           	send, {F22}
-	F21 & F19::           	send, {F22}
+	; F21 & F19::           	send, {F22}
 	F19 & lbutton::       	^Lbutton
-	F20 & F21::           	send, {F21}
 
 	F19 & Media_Play_pause::
 									my_screenwidth:=A_ScreenWidth-215
@@ -265,12 +247,11 @@ Double_press_For_Enter:
   d::                 LMS.Orient()
   w::                 OpenApp.Workbook()
 #If
-numpadsub::           #left
-numpadadd::           #right
-numpadMult::          #up
-numpaddot::           #down
-	pause::                           reload
-	` & esc::                         Pause
+numpadsub::          #left
+numpadadd::          #right
+numpadMult::         #up
+numpaddot::          #down
+pause::					Suspend, Toggle
 
 
 
@@ -498,6 +479,8 @@ numpaddot::           #down
 }
 
 
+#IfWinActive, Barcode Scanner - \\Remote
+	enter::enter
 
 
 _Main_LMS_Screen:
@@ -531,7 +514,6 @@ _Main_LMS_Screen:
 	; space up::sendinput, ^{click}
 	; wheelright::2right()
 	; wheelleft::2left()
-
 
 
 _Results_Definition:

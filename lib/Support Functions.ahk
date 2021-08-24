@@ -44,12 +44,12 @@ class Breaking {
 	}
 
 
-	; else if winactive("Composition - \\Remote"){
-    ; 	clk(841, 895)
-    ; 	sleep 50
-    ; 	clk(946, 896)
-    ; 	sleep 400
-    ; }
+; else if winactive("Composition - \\Remote"){
+	; 	clk(841, 895)
+	; 	sleep 50
+	; 	clk(946, 896)
+	; 	sleep 400
+	; }
 	; else If winactive("NuGenesis LMS - \\Remote")
 	; 	LMS.FilterClear()
 	; else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") {
@@ -364,6 +364,8 @@ class click{
 		}
 		else if winActive("Results Definition - \\Remote")
 			clk(951, 751)
+		; else if winActive("Barcode Scanner - \\Remote")
+			; send, {enter},
 		else if winActive("Microsoft Excel Security Notice - \\Remote")
 			send, !y
 		else if winActive("Reason For Change - \\Remote")

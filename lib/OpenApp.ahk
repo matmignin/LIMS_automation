@@ -54,6 +54,7 @@ F4::
   sleep 200 
   send, {ctrldown}{e}{ctrlup}
   return
+` & esc::        ;                 Pause, Toggle
 +F1::
   if winexist("AutoHotkey Help")
     winactivate, 
@@ -78,10 +79,6 @@ OpenApps:
   +!n::openApp.stickyNotes()
   !w::OpenApp.Workbook()
   !l::OpenApp.LMS()
-#IfWinNotActive, ahk_exe Code.exe
-  F13 & f::OpenApp.Firefox()
-  F13 & v::OpenApp.vsCode()
-  F13 & e::OpenApp.Workbook()
 #ifwinnotactive
 
 

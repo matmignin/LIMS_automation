@@ -45,7 +45,7 @@
 	Tab & 6::                                    send, {tab 20}
 	Tab & `::                                    send, {shiftdown}{altdown}{lwindown}{``}{lwinup}{altup}{shiftup}
 	Tab & F15::                                  send, {ctrldown}{[}{ctrlup}
-	F14::                                        ReloadScript()
+	;F14::                                        ReloadScript()
 	` & Tab::                                    send, {shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
 	Tab & q::                                    send, {ctrldown}{]}{ctrlup}
 	q & tab::                                    send, {ctrldown}{[}{ctrlup}

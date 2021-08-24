@@ -542,15 +542,15 @@ Else
 	}
 
 ; If !FIFOACTIVE
-	; {
-	;  Menu, ClipMenu, Add, &y. Yank entry, :Submenu3
-	;  Menu, ClipMenu, Icon, &y. Yank entry, res\%iconY%,,16
-	; }
+; 	{
+; 	 Menu, ClipMenu, Add, &y. Yank entry, :Submenu3
+; 	 Menu, ClipMenu, Icon, &y. Yank entry, res\%iconY%,,16
+; 	}
 Menu, ClipMenu, Add, &z. More history, :Submenu4
 Menu, ClipMenu, Icon, &z. More history, res\%iconZ%,,16
 ; Menu, ClipMenu, Add
-; Menu, ClipMenu, Add, E&xit (Close menu), MenuHandler
-; Menu, ClipMenu, Icon, E&xit (Close menu), res\%iconX%,,16
+Menu, ClipMenu, Add, E&xit (Close menu), MenuHandler
+Menu, ClipMenu, Icon, E&xit (Close menu), res\%iconX%,,16
 Return
 
 DispMenuText(TextIn,lines="1")

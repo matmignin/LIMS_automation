@@ -8,9 +8,9 @@ explorer:
 	F21 & down::         	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
 	F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
 	F21 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
-	F6::                 	send, {altdown}{left}{altup}
 	F7::                 	send, {altdown}{right}{altup}
-	F19 & Space::
+	F6::   send % BlockRepeat(400) product  "{enter}" ;              	send, {altdown}{left}{altup}
+	F19 & Space::				send, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
 	^w::									closewindow()
 
@@ -162,6 +162,8 @@ OUTLOOK:
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	Numpadsub::
 	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
+	numpadmult::
+	F20 & up::	         WinMove, ahk_exe OUTLOOK.EXE, , 1945, -738, 1076, 1158
 	F20::                
 		send, ^{c}
 		Clip.Copy()

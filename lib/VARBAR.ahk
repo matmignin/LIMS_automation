@@ -38,6 +38,11 @@
 	esc::          varbar.reset()
 	F21::          Spectab.Table()
 	lalt::     		 Varbar.Reset()
+	F20 & F19::
+		IniWrite, 0, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
+		IniWrite, 0, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
+		; Send, {F22}
+		return
 	F21 & F20::    ProductTab.Table()
 	Rbutton::		menu.Varbar()	
 
@@ -250,6 +255,8 @@ HistoryMenuItem(){
 		tooltip,
 		IniWrite, %ypos%, data.ini, Locations, VarBar_Y
 		IniWrite, %xpos%, data.ini, Locations, VarBar_X
+		IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
+		IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 		; Gui, VarBar:Show, h30 x%xpos% y%ypos% w390 NoActivate
 		; IniWrite, 0, data.ini, Locations, Follow
 		VarBar.show(0)
