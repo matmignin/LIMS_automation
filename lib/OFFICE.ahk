@@ -30,7 +30,7 @@ _explorer:
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
 	F13 & space::					sendinput, +{tab}{tab}
-	F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateStr  ing%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F21 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F20 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F21 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
@@ -70,9 +70,6 @@ _WORD:
 	:*:mm`;::         
 							send, Mat Mignin{tab 2}%DateString%
 							return			
-
-
-	
 
 
 Excel:
@@ -217,7 +214,7 @@ Remote_DESKTOPs:
 	Mbutton::            menu.Remote_Desktop()
 
 
- #IfWinActive, ahk_exe firefox.exe
+ #IfWinActive, ahk_exe firefox.exe 
  numpaddot::CloseWindow()
  F6::sendinput, !{left}
  F7::send, !{right}

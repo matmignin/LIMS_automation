@@ -80,7 +80,6 @@ global
 #Include <OFFICE>
 #include <KEYS>
 #Include <clip>
-; #Include <Firefox>
 #Include <OpenApp>
 #Include <LMS>
 #Include <Snipper>
@@ -174,29 +173,6 @@ VQuest_Start:
   ye:="ye"
   IfWinExist, ahk_exe WFICA32.EXE
   LMS.Orient()
-  
-
-  ; if (SwitchWorkSheets = 1){
-  ;   Menu, Tray, Check, SwitchWorkSheets
-  ;   Menu, Tray, UnCheck, SwitchSpaces
-  ;     SwitchSpaces:=
-  ; } 
-  ; else 
-  ; {
-  ;   Menu, Tray, Check, SwitchSpaces
-  ;   Menu, Tray, unCheck, SwitchWorkSheets
-  ;     SwitchWorkSheets:=
-  ; }
-  ; if (SwitchSpaces = 1){
-  ;   Menu, Tray, Check, SwitchSpaces
-  ;   Menu, Tray, UnCheck, SwitchWorkSheets
-  ;     SwitchWorkSheets:=
-  ; }
-  ; else {
-  ;   Menu, Tray, Check, SwitchWorkSheets
-  ;   Menu, Tray, unCheck, SwitchSpaces
-  ;     SwitchSpaces:=
-  ; }
   if (ShowSampleID = 1)
     Menu, Tray, Check, showsampleID
   else {

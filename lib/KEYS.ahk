@@ -632,7 +632,7 @@ _MouseIsOver:
 		3tap()
 		return
 		#if
-#If MouseIsOver("LMS Workbook.xlsb")
+; #If MouseIsOver("LMS Workbook.xlsb")
 	; numpadadd::Excel.NextSheet()
 	; numpadsub::Excel.PrevSheet()
 ; #If MouseIsOver("ahk_exe OUTLOOK.EXE")
