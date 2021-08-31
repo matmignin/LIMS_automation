@@ -263,6 +263,7 @@ Main_EditResults()
 
 SelectTestSample(){
 global
+clip.Regex("Department")
 setWinDelay, 550
 blockinput on
 MouseGetPos, mx, my
@@ -282,9 +283,12 @@ click
  send,{click 205, 184}
  sleep 300
  Breaking.Point() 
- send, {click 171, 127}^{a}%department%{enter}{tab}^{a}{click 506, 323}
- sleep 300
- send, {click}{click 851, 660}
+;  send, {click 171, 127}^{a}
+;  send, %department%
+;  sleep 200
+;  Send, {enter}{tab}^{a}{click 506, 323}
+;  sleep 300
+;  send, {click}{click 851, 660} ;click finish
  
  ; if (department="Analytical")
   ; send,
@@ -292,7 +296,7 @@ click
   ; MouseMove, mx, my
   ; sleep 200
   blockinput off
-  ;setwindelay, 200
+  setwindelay, 200
 return
 }
 

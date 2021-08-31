@@ -21,8 +21,8 @@
 	; ^wheelup::return
 	F20 & .:: 												Send, {ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
-	numpadsub::                                  numpadsub
-	numpadadd::                                  numpadadd
+	numpadsub::                                  4left()
+	numpadadd::                                  4right()
 	numpadmult::                                 send, {shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
 	numpaddot::                                  numpaddot
 	^numpaddot::                                 send, {ctrldown}{w}{ctrlup}

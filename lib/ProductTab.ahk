@@ -190,7 +190,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
     ; Mouse_Click("Add_Formulation")
     winactivate, Edit Formulation - \\Remote,
     send, {tab}%product%
-      sendinput, {Tab 23}{click 268, 578}
+      send, {Tab 23} ;{click 268, 578}
     Breaking.Point()
     ; clk(287, 578) ;click save
     return
@@ -382,51 +382,6 @@ sleep 100
   ;setwindelay, 200
 return
 
-Formulation_Hotstrings:
- #IfWinActive,ahk_exe WFICA32.EXE
-  :*R:#00\::`#00 capsule / 0.917`" x 0.336`"
-  :*R:#00e\::`#00 elongated capsule / 0.995`" x 0.336`"
-  :*R:#3\::`#3 capsule / 0.626`" x 0.229`"
-  :*R:#2\::`#2 capsule / 0.709`" x 0.250`"
-  :*R:#1\::`#1 capsule / 0.765`" x 0.272`"
-  :*R:#0\::`#0 capsule / 0.854`" x 0.300`"
-  :*R:USP\::Meets USP Requirements
-  :*R:fr\::Fixing Rotation
-  :*R:?\::?Kilgore7744
-  :*R:7/16\::`Round / 0.4375`"
-  :*R:5.5 oblong\::Oblong / 0.750`" x 0.313`"
-  :*R:5.5 oval\::Oval / 0.625`" x 0.344`""
-  :*R:5 oblong\::Oblong / 0.750`" x 0.250`""
-  :*:1\::`Each (1){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:2\::`Each two (2){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:3\::`Each three (3){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:4\::`Each four (4){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:5\::`Each five (5){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:6\::`Each six (6){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:7\::`Each seven (7){space} contains {ctrl down}{left}{ctrl up}{left}
-  :*:NMT30::`NMT 30 Minutes
-  :*:NMT5::`NMT 5 mcg/day
-  :*:NMT15::`NMT 15 mcg/day
-  :*:H\::Heavy Metals `*
-  :*:*H::`* Heavy Metals results are based on a daily dose of (1) capsule{ctrl down}{left}{left}{ctrl up}{right}
-  ;}
-  :*:stick\::stick packet ( g){left 3}{tab}Blend+{tab}
-  :*:1scoop\::
-  this.Scoops(1)
-  :*:2scoops::
-  this.Scoops(2,"two")
-  :*:3scoops::
-  this.Scoops(3,"three")
-  :*:4scoops::
-  this.Scoops(4,"four")
-  :*:5scoops::
-  this.Scoops(5,"five")
-  :*:6scoops::
-  this.Scoops(6,"six")
-  :*:1stick::
-  this.Scoops(1,,"stick packet")
-  :*:2sticks::
-  this.Scoops(2,"two","stick packet")
-  return
+
 
 

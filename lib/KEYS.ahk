@@ -98,11 +98,16 @@ F12::send, {altdown}{tab}{altup}
 #if (N=1)
 	wheelDown::return
 	wheelup::return
-	#if
-KEY_DEFAULT:
+#if
+
+	KEY_DEFAULT:
+	numpadsub::          4Left()
+	numpadadd::          4right()
+	numpadMult::         #up
+	numpaddot::          #down
+	pause::					Suspend, Toggle
 	; F15::							+tab
 	F17::								menu.Apps()
-	+F17::							EnteringProduct()
 	; F16::							send, !{tab}
 	j & k::							esc
 	j::j
@@ -134,12 +139,16 @@ KEY_DEFAULT:
 	~Rshift::
 	lshift & Appskey::			Return
 	rshift & Appskey::			return
-	<^;::	 							sendinput, %DayString%{space}
+	<^;::	 							sendinput, %DateString%{space}
 	; / & up:: 			sendinput, %SampleID%
-	~Lbutton & left:: 			sendinput, %SampleID%
-	~Lbutton & Down:: 			sendinput, %Coated%
-	~Lbutton & right::			sendinput, %Lot%
-	~Lbutton & up::	 			sendinput, %SampleID%
+	; ~Lbutton & left:: 			sendinput, %SampleID%
+	; ~Lbutton & Down:: 			sendinput, %Coated%
+	; ~Lbutton & right::			sendinput, %Lot%
+	; ~Lbutton & up::	 			sendinput, %SampleID%
+	Lbutton & F20::          	send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	Lbutton & F19::          	send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	Lbutton & left::           send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	Lbutton & down::           send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	^Media_Next::					MakeTransparent()
 	/ & space::						send, %Coated%
 	/ & .::							send, {?}
@@ -230,6 +239,7 @@ Double_press_For_Enter:
 	; $space::								send, {enter}
 #if 
 
+_Lbuton:
 #If (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 300) 
 	~lbutton::
 		sleep 200
@@ -242,16 +252,14 @@ Double_press_For_Enter:
   .::                 WindowInfo()
   v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
   F20::               send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+  left::              send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+  down::              send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
   e::                 send,{LWinDown}{e}{lwinup}
   o::                 OpenApp.Outlook()
   d::                 LMS.Orient()
   w::                 OpenApp.Workbook()
 #If
-numpadsub::          #left
-numpadadd::          #right
-numpadMult::         #up
-numpaddot::          #down
-pause::					Suspend, Toggle
+
 
 
 
@@ -388,6 +396,8 @@ pause::					Suspend, Toggle
 		mouseclick, left, 455, 472,2,0
 		clk(250, 284)
 	}
+	else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
+		send % clk(107, 66) Product "{enter}{enter}"
 	else if Winactive("Edit Product - \\Remote") 
 		ProductTab.EditProduct() 
 	else If Winactive("Select tests for request: R") 
@@ -431,7 +441,41 @@ pause::					Suspend, Toggle
 				Send, ^v
 		}
 
-
+4Right(){
+	global SwitchSpaces
+		if (SwitchSpaces==1) {
+			sendinput, #^{right}
+			return
+		}
+		else 
+		{ 
+			If winactive("ahk_exe Code.exe")
+				send, {numpadadd}
+			else If winactive("ahk_exe OUTLOOK.EXE")
+				WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
+			else
+				excel.nextsheet()
+		}
+		return
+}
+4left(){
+	global SwitchSpaces
+		if (SwitchSpaces==1) {
+			sendinput, #^{left}
+			return
+		}
+		else
+		{ 
+			If winactive("ahk_exe Code.exe")
+				send, {numpadsub}
+			else If winactive("ahk_exe OUTLOOK.EXE")
+				WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
+			else 
+				excel.Prevsheet()
+		}
+			; lms.SampleRequestToggle()
+		return
+}
 
 	2right(){
 		global
@@ -484,36 +528,36 @@ pause::					Suspend, Toggle
 
 
 _Main_LMS_Screen:
-  #Ifwinactive, NuGenesis LMS - \\Remote
-  $Numlock::4tap() ;LMS.COA()
-  F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-  F21 & Left::WinMove, A, , -283, -1196, 1662, 952
-  +F19::lms.searchBar("")
-  F19 & space::
-		
-  	Send, %Product%{enter}
-  F20 & space::Send, %Batch%{enter}
-  F21 & space::Send, %Batch%{enter}
-  F19 & /::Send, %lot%{enter}
-  ~Lbutton & F19::send,{enter}
-  Enter::LMS.SaveCode()
-  numpaddot::blockrepeat(500) excel.connect(1)
-	numpadadd::
-		if EnteringProduct
-			excel.NextSheet()
-		else
-			lms.ProductSpecToggle()
-		return
-	numpadsub::
-		if EnteringProduct
-			excel.Prevsheet()
-		else
-			lms.SampleRequestToggle()
-		return
+#Ifwinactive, NuGenesis LMS - \\Remote
+	$Numlock::4tap() ;LMS.COA()
+	F20 & Left::WinMove, A, , -283, -1196, 1662, 952
+	F21 & Left::WinMove, A, , -283, -1196, 1662, 952
+	+F19::lms.searchBar("")
+	F19 & space::Send, %Product%{enter}
+	F20 & space::Send, %Batch%{enter}
+	F21 & space::Send, %Batch%{enter}
+	F19 & /::Send, %lot%{enter}
+	~Lbutton & F19::send,{enter}
+	Enter::LMS.SaveCode()
+	numpaddot::blockrepeat(500) excel.connect(1)
+	; numpadadd::
+	; 	if SwitchWorkSheets
+	; 		excel.NextSheet()
+	; 	else
+	; 		lms.ProductSpecToggle()
+	; 	return
+	; numpadsub::
+	; 	if SwitchWorkSheets
+	; 		excel.Prevsheet()
+	; 	else
+	; 		lms.SampleRequestToggle()
+	; 	return
+	F20::send, ^c
 	; space & lbutton::send, +{click}
 	; space up::sendinput, ^{click}
-	; wheelright::2right()
-	; wheelleft::2left()
+	wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
+	wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
+
 
 
 _Results_Definition:
@@ -576,9 +620,11 @@ _WFICA32:
 	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
 
 
-MouseIsOver:
+_MouseIsOver:
 	return
 
+#If MouseIsOver("ahk_exe firefox.exe")
+	numpaddot::controlsend, ahk_exe firefox.exe,  ^{w}
 #If MouseIsOver("ahk_exe OUTLOOK.EXE")
 	^Wheeldown::Blockrepeat(500) clip()
 	Mbutton::
@@ -587,8 +633,8 @@ MouseIsOver:
 		return
 		#if
 #If MouseIsOver("LMS Workbook.xlsb")
-	numpadadd::Excel.NextSheet()
-	numpadsub::Excel.PrevSheet()
+	; numpadadd::Excel.NextSheet()
+	; numpadsub::Excel.PrevSheet()
 ; #If MouseIsOver("ahk_exe OUTLOOK.EXE")
 			; Click 3
 		; clip()
@@ -597,8 +643,8 @@ MouseIsOver:
 #If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 	F7::LMS.SearchBar(Batch,"{enter}")
 	F6::LMS.SearchBar(Product,"{enter}")
-	numpadadd::lms.ProductSpecToggle()
-	numpadsub::lms.SampleRequestToggle()
+	; numpadadd::lms.ProductSpecToggle()
+	; numpadsub::lms.SampleRequestToggle()
 	Numlock::4tap()
 	^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; 	click

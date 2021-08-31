@@ -538,6 +538,9 @@ Mouse_RbuttonUP(){
 
 Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	global
+	setwindelay, 10
+	SetKeyDelay, -1, -1
+	SetMouseDelay, -1
 	; mx:=
 	; my:=
 	; mw:=
@@ -550,10 +553,18 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	sleep 25
 	if (window!="")
 		winactivate, %mw%
-	If (ReturnMouse=0)	
+	If (ReturnMouse=0){
+		SetMouseDelay, 1
+		SetKeyDelay, 1, 0.25 
+		setwindelay, 200
 		Return MouseReturn
+	}
 	else
 		mousemove,%mx%,%my%,0
+	SetMouseDelay, 1
+	SetKeyDelay, 1, 0.25 
+	setwindelay, 200
+	
 	; sleep 50
 	;  return, {Click, %x%,%y%,}
 }
@@ -746,38 +757,50 @@ ShowSampleID(){
   global
   Menu, Tray, ToggleCheck, ShowSampleID
   If ShowSampleID := !ShowSampleID
-  IniWrite, 1, data.ini, Locations, ShowSampleID
+  IniWrite, 1, data.ini, Options, ShowSampleID
   else
-  IniWrite, 0, data.ini, Locations, ShowSampleID
+  IniWrite, 0, data.ini, Options, ShowSampleID
   Varbar.Show()
   }
 ShowCoated(){
   global
   Menu, Tray, ToggleCheck, ShowCoated
   If ShowCoated := !ShowCoated
-  IniWrite, 1, data.ini, Locations, ShowCoated
+  IniWrite, 1, data.ini, Options, ShowCoated
   else
-  IniWrite, 0, data.ini, Locations, ShowCoated
+  IniWrite, 0, data.ini, Options, ShowCoated
   Varbar.Show()
   }
-EnteringProduct(){
-  global
-  Menu, Tray, ToggleCheck, EnteringProduct
-  If EnteringProduct:= !EnteringProduct
-  IniWrite, 1, data.ini, Locations, EnteringProduct
-  else 
-  IniWrite, 0, data.ini, Locations, EnteringProduct
-  Varbar.Show()
-  }
+SwitchSpaces(){
+	global
+	Menu, Tray, ToggleCheck, SwitchSpaces
+	If SwitchSpaces:= !SwitchSpaces
+	{
+		IniWrite, 1, data.ini, Options, SwitchSpaces
+		Menu, Tray, Check, SwitchSpaces
+	}
+	else 
+	{
+		IniWrite, 0, data.ini, Options, SwitchSpaces
+		Menu, Tray, unCheck, SwitchSpaces
+	}
+	Varbar.Show()
+	}
+
+
 ShowNotes(){
   global
   ;  Menu, Tray, ToggleCheck, ShowNotes
   If ShowNotes:= !ShowNotes
-  Notes.Show()
-  else
-  Notes.Close()
+  {
   IniRead, Note1, data.ini, SavedVariable, Note1
   IniRead, Note2, data.ini, SavedVariable, Note2
+  	Notes.Show()
+  }
+  else
+  iniWrite, %Note1%, data.ini, SavedVariable, Note1
+  iniWrite, %Note2%, data.ini, SavedVariable, Note2
+  Notes.Close()
   Varbar.Show()
   }
 KeyHistory(){

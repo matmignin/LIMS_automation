@@ -413,15 +413,15 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 		send,{tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 	if (Max_limit = ""){
 		sendinput, NLT %Min_Limit% %The_Units%
-		return
+		exit
 		}
 	else if (Min_limit = "<"){
 		sendinput, %min_limit%%Max_Limit% %The_Units%
-		return
+		exit
 		}
 	else if (Min_limit = ""){
 		sendinput, NMT %Max_Limit% %The_Units%
-		return
+		Exit
 		}
 	Else
 		{

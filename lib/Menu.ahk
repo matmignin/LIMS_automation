@@ -161,7 +161,8 @@ class Menu{
   Apps(){
   global
   try This.delete()
-    Menu, Menu, Add, &EnteringProduct , EnteringProduct 
+    Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
+    Menu, Menu, Add, &SwitchSpaces , SwitchSpaces 
     menu, menu, add
     Menu, Menu, Add, &LMS , !l 
     Menu, Menu, Add, &VScode , !v 
@@ -196,9 +197,12 @@ Varbar(){
     menu, Menu, Add, ProductsMenu, Varbar.HistoryMenuItem
 		Loop, Read, Products.txt
 			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
-    Menu, Menu, Add, &EnteringProduct , EnteringProduct 
-      if EnteringProduct=1  
-        menu, menu, Check, &EnteringProduct
+    Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
+      if SwitchWorkSheets=1  
+        menu, menu, Check, &SwitchWorkSheets
+    Menu, Menu, Add, &SwitchSpaces , SwitchSpaces 
+      if SwitchSpaces=1  
+        menu, menu, Check, &SwitchSpaces
         
     Menu, Menu, Add, &ShowNotes, ShowNotes 
       ; if ShowNotes=1  

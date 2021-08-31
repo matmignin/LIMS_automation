@@ -71,12 +71,12 @@ Class VarBar{
 				iniread, note1, data.ini, SavedVariables, note1
 				Iniread, note2, data.ini, SavedVariables, note2
 				Iniread, Iteration, data.ini, SavedVariables, Iteration
-				Iniread, ShowSampleID, data.ini, Locations, ShowSampleID
-				Iniread, ShowCoated, data.ini, Locations, ShowSampleID
-				Iniread, ShowCoated, data.ini, Locations, ShowCoated
+				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
+				Iniread, ShowCoated, data.ini, Options, ShowSampleID
+				Iniread, ShowCoated, data.ini, Options, ShowCoated
 				Iniread, VarBar_X, data.ini, Locations, VarBar_X
 				Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
-				Iniread, EnteringProduct, data.ini, Locations, EnteringProduct
+				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
 			; }
 			If (X=Mouse)
 			{ 
@@ -116,37 +116,26 @@ Class VarBar{
 				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H20 x+1 y1 w70, 					%Batch% 	 ; edit2
 				GUI,VarBar:Font,s9 cBlack , Consolas
 				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x+1 left H20 y1 w60, 				%Lot% 		 ; edit3
-				if ShowCoated || Coated
-					{
 					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
-						Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar center x+1 H20 y1 w60, 					%Coated%   ; edit4
-					Gui,VarBar:add,Edit,	vNote1 						gNotevarbar X+8 H20 y1 w70 right,  			%Note1%     ; edit6
-					; if Coated
-						; Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x71 H18 y-2 w60, 					Ct# %Coated%   ; edit4
-				} else {
-					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
-					Gui,VarBar:add,Edit,		vNote1 					gNotevarbar  x+3 H20 y1 w70 right, 				%Note1%     ; edit6
-					}
-				if ShowSampleID
-					{
-					GuiControl, Hide,Edit5
-					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x131 H18 y1 w80, 				%SampleID%  ; edit5
-					}
+				if ShowSampleID || !Coated
+					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H20 y1 w80, 				%SampleID%  ; edit5
 				else
-					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar  X+0 H20 y1 w150 right,					%Note2%  	; edit7
+					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar center x+1 H20 y1 w60, 					%Coated%   ; edit4
 				GUI,VarBar:Font,s18 cEF6950, Consolas
 				Gui,VarBar:Add,text, 		vIteration x+5 65 center y-4 w23,											%Iteration%	; Text1
-			; }
+					GUI,VarBar:Font,s7.5 cBlack,arial Narrow
+					Gui,VarBar:add,Edit,		vNote1 					gNotevarbar  x+3 H20 y1 w120 right, 				%Note1%     ; edit6
+					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar  X+0 H20 y1 w142 right,					%Note2%  	; edit7
 			; Gui, Varbar:Color,, 00FFFF
 			CoordMode, mouse, screen
-			; WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
-			; varbar_x:= Varbar_x +100
-			try
-				Gui, VarBar:Show, h22 x%VarBar_X% y%VarBar_y% w510 NoActivate, VarBar
-			; Gui, VarBar:Show, h30 x%offset_X% y%offset_y% w320 NoActivate, VarBar
+			try {
+				WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
+				varbar_x:= Varbar_x +700
+				Gui, VarBar:Show, h23 x%VarBar_X% y%VarBar_y% w560 NoActivate, VarBar
+			}
 			catch
 			{
-				Gui, VarBar:Show, h25 x1 y%A_screenwidth% w510 NoActivate, VarBar
+				Gui, VarBar:Show, h23 x1 y%A_screenwidth% w560 NoActivate, VarBar
 				IniWrite, 1, data.ini, Locations, VarBar_X
 				IniWrite, 1, data.ini, Locations, VarBar_Y
 			}
@@ -269,37 +258,14 @@ HistoryMenuItem(){
 
 		Follow(){
 			global
-
-		; Varbar.Follow(Wintitle)
-		;  }
-			; }
 			return
 		}
 
 		Relocate(){
 			global
-			; OnMessage( 0x201, "VarBar.Relocate")
-			; keywait, space, 
-				; MouseClick, Left, , , 1, 0, D
-				; MouseClick, WhichButton [, X, Y, ClickCount, Speed, D|U, R]
-				; if !errorlevel
-				; {
-					; keywait, Lbutton, U
 					PostMessage, 0xA1, 2
 					keywait, Lbutton, U
 					 send, ^a
-					; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-					; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-					; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
-					; return
-				; }
-				; send, {ctrldown}{a}{ctrlup}
-				; send, {ctrldown}{a}{ctrlup}
-				; MouseClick, Left, , , 1, 0, U
-				
-			; Excel.Connect()
-			; sleep 300
-			; Follow:=0
 			return
 		}
 		
@@ -393,8 +359,6 @@ HistoryMenuItem(){
 		IniWrite, %note2%, data.ini, SavedVariables, note2
 		iniwrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
 		iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
-		iniwrite, %Follow%, data.ini, Locations, Follow
-		iniwrite, %Inverted%, data.ini, Locations, Inverted
 		FileRead, OutputVar, Products.txt  
 		Sort, OutputVar, u
 		FileDelete, Products.txt
