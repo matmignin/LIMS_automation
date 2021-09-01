@@ -292,7 +292,8 @@ DetectTab(){
 	TAB7:=
 	ifwinnotactive, ahk_exe WFICA32.EXE
 		winactivate, ahk_exe WFICA32.EXE
-	; LMS.Orient()
+	LMS.Orient()
+	; CoordMode, pixel, Relative
 	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 				if !Tab1 {
@@ -300,7 +301,8 @@ DetectTab(){
 					if FoundSamples {
 						Tab=Samples 
 						return Tab
-					}					else {
+					}					
+					else {
 					PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundRequests {
 						Tab=Requests 
@@ -340,7 +342,7 @@ DetectTab(){
 					}
 					else 
 				return
-				exit
+				; exit
 				}
 				}
 				}

@@ -1,13 +1,9 @@
 _explorer:
 #IfWinActive, ahk_exe explorer.exe
-	F20 & up::           	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, 0, A_ScreenWidth/2, A_ScreenHeight/2
-	F21 & up::           	WinMove,  ahk_exe explorer.exe, , 668, -1200, 974, 577
+	; F20 & up::           	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, 0, A_ScreenWidth/2, A_ScreenHeight/2
 	F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
-	F21 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
 	F20 & down::         	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, A_screenheight/2, A_ScreenWidth/2, A_ScreenHeight/2-45
-	F21 & down::         	WinMove,  ahk_exe explorer.exe, , 1162, 427, 1405, 1140
 	F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
-	F21 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
 	F7::                 	send, {altdown}{right}{altup}
 	F19 & space::   send % BlockRepeat(400) product  "{enter}" ;              	send, {altdown}{left}{altup}
 	F6::   send % BlockRepeat(400) product  "{enter}" ;              	send, {altdown}{left}{altup}
@@ -30,14 +26,10 @@ _explorer:
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
 	F13 & space::					sendinput, +{tab}{tab}
-	F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
-	F21 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	; F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F20 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
-	F21 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F20 & right::     FindAndReplaceWord("<English>","English")
-	F21 & right::     FindAndReplaceWord("<English>","English")
 	F20 & left::      
-	F21 & left::      
 							clipboard:=
 							sleep 20
 							send, ^c
@@ -49,7 +41,7 @@ _WORD:
 	F20 & j::         down
 	F20 & h::         left
 	F20 & l::         right
-	F19 & space::     send, +{tab}{tab}
+	; F19 & space::     send, +{tab}{tab}
 	F20 & `;::        send, {tab}
 	F20 & /::         Table_Entry("N/A")
 	F20 & n::         Table_Entry("No")
@@ -126,9 +118,8 @@ Excel:
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
 	F19::						send, ^v
 #ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
-	F20 & space::      	Send, !{n}%Product%
-	F21 & space::     	Send, !{n}%Product%
-	F19 & space::     	Send, !{n}%Batch%
+	; F20 & space::      	Send, !{n}%Product%
+	; F19 & space::     	Send, !{n}%Batch%
 	return::             sendinput, !{i}
 	rbutton & Lbutton::  sendinput, !{i}
 #ifwinactive, LMS Products Checklist.xlsm - Excel
@@ -145,10 +136,13 @@ OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        send, {ctrldown}{enter}{ctrlup}
 	; numpadadd::         	send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
-	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F20::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F19::          sendinput % Trim(Product, OmitChars = " `n")	
+	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; Numpadsub::
-	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
+	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, ,1226, -1098, 1489, 1080
+
 	numpadmult::
 	F20 & up::	         WinMove, ahk_exe OUTLOOK.EXE, , 1945, -738, 1076, 1158
 	F20 & right::	      WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
@@ -171,7 +165,7 @@ sendinput, Hello Osvaldo,`n`t Can you please fill out the results for organolept
 	return
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
 	Numlock::send, {Backspace}	
-	F20::send, {backspace}
+	; F20::send, {backspace}
 	F19::send, ^{click}
 	
 #ifwinactive, OneNote for Windows 10
@@ -182,7 +176,6 @@ sendinput, Hello Osvaldo,`n`t Can you please fill out the results for organolept
 	^5::                 send,{Ctrldown}{3}{CtrlUp}
 	^`::                 send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 	F20 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
-	F21 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
 OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
@@ -198,7 +191,6 @@ OneNote:
 	; F20 up::             PasteScreenshot()
 	; F21 up::             PasteScreenshot()
 	F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
-	F21 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 
 #IfWinActive,
 
@@ -206,6 +198,12 @@ Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
 	Mbutton::            menu.Remote_Desktop()
 	; F13::                TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
+#IfWinActive, ahk_exe mstsc.exe
+	F20::
+	SendLevel, 2
+	send, ^{c}
+	sendlevel, 0
+	return
 #ifwinactive, ahk_class #32770
 	Mbutton::            menu.Remote_Login()
 	F19::              menu.Remote_Login()

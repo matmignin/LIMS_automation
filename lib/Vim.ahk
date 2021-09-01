@@ -19,7 +19,7 @@
 	; wheelup::return
 	; #if
 	; ^wheelup::return
-	F20 & .:: 												Send, {ctrldown}{f}{ctrlup}%wintitle%
+	F20 & .:: 			 									Send, {ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  send, {ctrldown}{]}{ctrlup}	
 	numpadsub::                                  4left()
 	numpadadd::                                  4right()
@@ -27,7 +27,7 @@
 	numpaddot::                                  numpaddot
 	^numpaddot::                                 send, {ctrldown}{w}{ctrlup}
 	Mbutton::                                    3Tap() 
-	F19 up::                                     send, {F19}
+	; F19 up::                                     send, {F19}
 	; f8::                                         send, {ctrldown}{d}{ctrlup}
 
 	$Lwin Up::                                   Send, {shiftdown}{altdown}{i}{lwinup}{altup}{shiftup}
@@ -82,21 +82,14 @@
 	^s::                                         sendinput, {ctrldown}{end}{ctrlup}
 	f9 & f6::                                    return
 	F20 & h::                                    send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-	F21 & h::                                    send, {shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 	F20 & k::                                    send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	F20 & backspace::                            delete
-	F21 & backspace::                            delete
-	F21 & k::                                    send, {shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	F20 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
-	F21 & j::                                    send, {shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F20 & l::                                    send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
-	F21 & l::                                    send, {shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
 	F20 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-	F21 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
 	F20 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
-	F21 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 	F19 & left::                                 send, {shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
-	F19 & up::                                   send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
+	; F19 & up::                                   send, {shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 	F19 & down::                                 send, {shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
 	F19 & right::                                send, {shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 	F19 & -::                                    send, {ctrldown}{-}{ctrlup}
@@ -128,7 +121,7 @@
 	F13 & lshift::											send, {shiftdown}{altdown}{ctrldown}{F7}{ctrlup}{altup}{shiftup}
 
 	F13::                                       send, {shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
-	F19::                                        ^c
+	; F19::                                        ^c
 	
 	
 	#ifwinactive
@@ -219,8 +212,7 @@ Vim:
 		f::                                       Vim.Find()
 		n::                                       send, {altdown}{ctrldown}{g}{ctrlup}{altup}
 		F19::                                     send, {shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
-		f20::                                     pgdn
-		f21::                                     pgdn
+		; f20::                                     pgdn
 		q::                                       send, {altdown}{,}{altup}
 		1::                                       F1
 		2::                                       F2
@@ -300,16 +292,17 @@ _PsudoNumpad:
 	p::                                          numpad0
 	=::                                          =
 	-::                                          -
+	; F20::                                        send, {.}
 	h::                                          left
 	'::                                          right
 	Backspace::                                  backspace
 	ENTER::                                      send,{enter}
 	RShift::                                     send,{Tab}
-	#if
+	#if 
 
 _VSCODE_Hotstrings:
 	:*r:cd`;::{ctrldown}
-	:*r:cu`;::{ctrlup}
+	:*r:cu`;::{ctrlup} 
 	:*r:ad`;::{altdown}
 	:*r:au`;::{altup}
 	:*r:sd`;::{shiftdown}
@@ -328,8 +321,11 @@ _VSCODE_Hotstrings:
 	:*R:mp`;::                                   
 	send, %mouseposition%
 	return
-	:*R:wc`;::                                   
+	:*R:wc`;::                                  
 	send, %Wincontrol%
+	return
+	:*R:wl`;::
+	Send, %WinLocation%
 	return
 	:*R:tt`;::                                    
 	sendinput, tt(){left} 
@@ -528,7 +524,7 @@ class Vim{
 			if vimclip
 				sendinput, {end}{enter}%Vimclip%
 			else
-				sendinput,{end}{enter}^{v}
+				send,{end}{enter}^{v}
 		return
 	}
 	}

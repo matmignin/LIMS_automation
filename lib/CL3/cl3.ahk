@@ -806,6 +806,7 @@ ClipText:=""
 Return
 }
 
+
 CheckHistory: ; check for duplicate entries
 
 newhistory:=[]
@@ -928,7 +929,7 @@ XA_Save("History", A_ScriptDir "\ClipData\History\History.xml") ; put variable n
 XA_Save("stats", A_ScriptDir "\stats.xml")
 
 ;XA_Save("Slots", A_ScriptDir "\ClipData\Slots\Slots.xml")
-;XA_Save("ClipChainData", A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
+XA_Save("ClipChainData", A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
 ;XA_Save("AutoReplace", A_ScriptDir "\ClipData\AutoReplace\AutoReplace.xml")
 
 If ActivateApi

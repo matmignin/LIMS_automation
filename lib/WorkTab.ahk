@@ -54,7 +54,7 @@ registerNewSamples(){
 
 
 DropdownSelect(A_ShipTo){
-    SetWinDelay, 450
+    SetWinDelay, 500
  AbsSelection:=Abs(A_ShipTo)-1
  if (a_shipto = "-1")
   Sendinput,{end}
@@ -69,45 +69,55 @@ DropdownSelect(A_ShipTo){
 
 DeleteRetain(){
 	gLOBAL
-  SetWinDelay, 450
-  Breaking.Preamble()
+  SetWinDelay, 25
+  ; Breaking.Preamble()
   Winactivate, NuGenesis LMS - \\Remote
 	MouseGetPos, mx, mY  
 ; InputBox, n, number of retains to delte, , , , , mx, my,,,50
   n:=Iteration*10
+  SetControlDelay -1
   loop %n%,
   {
-    TT(n,800)
-    Breaking.Point()
-    Winactivate, NuGenesis LMS - \\Remote
-    clk(61, 258)
+    ; TT(n,800)
+    ; Breaking.Point()
+    ; Winactivate, ahk_exe WFICA32.EXE
+      ; ControlClick, x61 y258, ahk_exe WFICA32.EXE
+  Winactivate, NuGenesis LMS - \\Remote
+    clk(61, 258,,,"ahk_exe WFICA32.EXE")
     ; previousProduct:=Product
 		sleep 100
-		winwait, Delete Tests - \\Remote,,1
+		winwait, Delete Tests - \\Remote,,1.5
     if errorlevel
-      MouseClick, left, 0, 26, 1, 0, , R
+    {
+      sleep 100
+      if winexist("Warning - \\Remote")
+        ControlSend,, {enter}, Warning - \\Remote
+      ; Winactivate, NuGenesis LMS - \\Remote
       ; MouseClick, left, 0, 26, 1, 0, , R
-      sleep 300
-      winactivate, Delete Tests - \\Remote
-		  send, {enter}
+    }
+      ; MouseClick, left, 0, 26, 1, 0, , R
+      sleep 200
+      if WinExist("Delete Tests - \\Remote")
+        ControlSend,, {enter}, Delete Tests - \\Remote
+		  ; send, {enter}
 		sleep 100
-		sleep 800
+		; sleep 500
     n--
       Breaking.Point()
   }
-      ;setwindelay, 200
+      setwindelay, 200
 }
 
 
 NewRequest(){
  global
  SetWinDelay, 550
-;  department:= ; Clip()
+ department:= ; Clip()
  Clipboard:=
 ;  sleep 100
  WinActivate, NuGenesis LMS - \\Remote
 click 
-;  send, ^c
+ send, ^c
  clip()
  sleep 50
  sleep 400
@@ -159,7 +169,7 @@ click
   Breaking.Point()
   send,{tab}{enter}
   ; tooltip,
-  ;setwindelay, 200
+  setwindelay, 200
   return
 }
 
@@ -180,7 +190,7 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   return
   }
   keep_running = y
-  winactivate, Result Entry - \\Remote
+  ; winactivate, Result Entry - \\Remote
   MouseGetPos, xpos, ypos
   loop 25,
   {
@@ -224,7 +234,7 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   sleep 100
   if Checkbox_Toggle Not Contains Toggle
     mousemove, xpos, ypos+26 
-  ;setwindelay, 200
+  setwindelay, 200
   return
   }
 
@@ -232,6 +242,7 @@ AddSampleLog(count)
 {
  global
  ;MouseGetPos, xpos, ypos
+  setwindelay, 200
  loop, %count%
  {
   click 46, 877

@@ -234,7 +234,7 @@ CopySpecs(){
 	click 67, 562 ; Add Methods
 	winwaitactive, Select methods tests - \\Remote,,0.25
 	click 227, 69. 2 ; method search bar
-	sendinput, %MethodID%{enter}^a{click 506, 337}{click 851, 656} ; add test and hit okay
+	sendinput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
 	sleep 200
 	WinActivate, NuGenesis LMS - \\Remote
 	click 397, 591 ; click attrobutes
@@ -710,9 +710,9 @@ HM_Prop65(){
 	Breaking.Point()
 	winactivate, Result Editor - \\Remote
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 12}{space}{tab 2}^a
+	sendinput,{tab 12}{space}{tab 2}^{a}
 	;sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
-	sendinput, 0{tab}^a
+	sendinput, 0{tab}^{a}
 	sleep 100
 	sendinput, 9.999{tab 5}^a<10 mcg/day
 	click 390, 659	;click okay

@@ -18,9 +18,8 @@ return
  sendlevel 0
  
   
-;  F9::sendinput, ^c
- F7::sendinput, ^+{+}
- F6::sendinput, ^+{-}
+;  F7::send, ^+{+}
+;  F6::send, ^+{-}
 #If MouseIsOver("Paster - Snipaste ahk_class")
  sendlevel 1
  numpaddot::send, {lwindown}{click}{lwinup}

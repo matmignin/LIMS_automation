@@ -1,3 +1,96 @@
+#ifwinactive,
+~F20 & Space::
+If !ActiveWindowID
+	WinGet, ActiveWindowID, ID, A
+cyclebackward:=1
+PreviousClipCycleCounter:=0 ; 13/10/2017 test
+ClipCycleCounter:=1
+ClipCycleFirst:=1
+While GetKeyState("F20","D") and cyclebackward
+	{
+	 If (ClipCycleCounter <> 0)
+	 {	
+		; Var:=Product[%ClipCycleCounter%]
+		Var:=Product ClipCycleCounter
+	 	TT(Var)
+		; ttext:=% DispToolTipText(Var)
+	 }
+	 else
+		ttext:="[cancelled]"
+	 If (oldttext <> ttext)
+		{
+		 ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+		 oldttext:=ttext
+		}
+	 Sleep 100
+	 KeyWait, Space,
+	}
+If (ClipCycleCounter > 0) ; If zero we've cancelled it
+	{
+	 Gosub, ClipboardHandler
+	 ClipCycleCounter:=1
+	}
+Return
+
+F20 & Space Up::
+PreviousClipCycleCounter:=ClipCycleCounter
+If (ClipCycleFirst = 0)
+	ClipCycleCounter++
+ClipCycleFirst:=0
+Return
+
+ClipBoardHandler:
+oldttext:="", ttext:="", ActiveWindowID:=""
+If (Var <> Clipboard)
+	{
+	 StrReplace(ClipText,"`n", "`n", Count)
+	}
+Clipboard:=Var
+	;  StartTime:=A_TickCount
+	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
+		; Return
+	;  WinActivate, ahk_id %ActiveWindowID%
+		Sleep, 20
+	 Send, ^v
+	;  PasteTime := A_TickCount
+	 oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+Return
+
+
+
+
+
+
+
+
+` & Space::
+  Product:=[]
+  Batch:=[]
+  Lot:=[]
+
+  loop 3 {
+    temp:=Product A_Index
+    Iniread, Temp, data.ini, SavedVariables, Temp
+   ;  if hasValue(Product, Temp) ;check to see if duplicate value from list
+			; continue
+		Product.Push(Temp)
+    msgbox % Product[A_index]
+   ;  iniwrite, %Temp%, data.ini, SavedVariables, Product0
+		; iniwrite, K111, data.ini, SavedVariables, Product1
+		; iniwrite, K222, data.ini, SavedVariables, Product2
+		; iniwrite, K333, data.ini, SavedVariables, Product3
+  }
+  return
+
+
+
+
+
+
+
+
+
+
 Test(n){
 	global
 	if Iteration==1
@@ -28,47 +121,20 @@ Test(n){
 Gui, Add, Text, x10 y12, Load file.
 Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
 Gui, Show, w300 h300,TEST
+#ifwinactive#
+DispToolTipText(TextIn,Format=0)
+	{
+	 TextOut:=RegExReplace(TextIn,"^\s*")
+	 TextOut:=SubStr(TextOut,1,750)
+	 ;StringReplace,TextOut,TextOut,`;,``;,All
+	 FormatFunc:=StrReplace(CyclePlugins[Format]," ")
+	 If IsFunc(FormatFunc)
+		TextOut:=%FormatFunc%(TextOut)
+	 Return TextOut
+	}  
 
+;Test_A(){  ; cycle tooltip
 
-;Test_A(){
-~` & Space::
-keywait Space
-{key++             
- if key = 1
- {
-   TT(key)
-   Sendinput, %Product%%key%
- 
- }
- else if key = 2
- {
-  TT(key)
-  Sendinput, %Product%%key%
- 
- }
- else if key = 3
- {
-  TT(key)
-  Sendinput, %Product%%key%
- 
- }
- else if key = 4
- {
-  TT(key)
-  Sendinput, %Product%%key%
- 
- }
- else if key = 5
- {
-  TT(key)
-    Sendinput, %Product%%key%
-}
-keywait ``
-key=0
-}
-return
-
-;}
 
 ` & 9:: ; Demonstrates the usage of the Match object.
 FoundPos := RegExMatch("K288 101-1111 101-2222", "O)([abdefghijkl]\d{3) (?<Batch>)\b\d{3}-\d{4}\b)", SubPat)  ; The starting "O)" turns SubPat into an object.
@@ -268,14 +334,7 @@ return
 
 
 
-HasValue(haystack, needle) {
-    for index, value in haystack
-        if (value = needle)
-            return index
-    if !(IsObject(haystack))
-        throw Exception("Bad haystack!", -1, haystack)
-    return 0
-}
+
 HasValue2(item, list, del:=","){ ;detect duplicate in array
 	haystack:=del
 	if !IsObject(list)
@@ -523,11 +582,20 @@ FilterSearch_Test(TestName:="", MethodName:=""){
  send, ^a%MethodName%{enter}{tab 4}
 }
 
-	ListArray(The_Array){
+ListArray(The_Array){
 		global
 		for vKey, vValue in The_Array
 			ArrayList .=vValue "|"
-		; msgbox, %ArrayList%
+		msgbox, %ArrayList%
 		return ArrayList
 	}
 return
+
+HasValue(haystack, needle) {
+    for index, value in haystack
+        if (value = needle)
+            return index
+    if !(IsObject(haystack))
+        throw Exception("Bad haystack!", -1, haystack)
+    return 0
+}

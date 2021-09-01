@@ -234,9 +234,9 @@ return
 
 #If ClipChainActive()
 	^Numpadmult::
-	F20 & up::			   MoveIndicatorUp()
+	; F20 & up::			   MoveIndicatorUp()
 	^numpaddot::
-	F20 & Down::			MoveIndicatorDown()
+	; F20 & Down::			MoveIndicatorDown()
 	Rshift & up::			gosub, ClipchainMoveUp
 	Rshift & down::		gosub, ClipchainMoveDown
 	; gosub, ClipchainMoveDown
@@ -265,7 +265,7 @@ return
 								return
 	F21::			       	 ClipChainInsert()
 	; F20::			        ClipChainInsert()
-	F20::			     		clipChain_c()
+	; F20::			     		clipChain_c()
 	numlock::				clipChain_v()
 	Mbutton::  				clipchaininsert()
 	

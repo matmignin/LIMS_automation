@@ -86,7 +86,7 @@ InfoLocations(){
 	}
 
 SearchWorkbook(SearchWord:=""){
-	send, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
+	sendinput, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
 	return
 	}
 

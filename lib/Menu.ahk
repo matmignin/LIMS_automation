@@ -47,20 +47,24 @@ class Menu{
   Global
   try This.delete()
   if winactive("NuGenesis LMS - \\Remote"){
+    ; LMS.Orient()
     LMS.DetectTab()
+    ; msgbox, %Tab%
     ; click
     if (Tab="Samples")
       Menu, Menu, add, New &Request, AutoFill
-    else if (Tab="Specs")
+    else if (Tab="Tests")
+      Menu,Menu, add, &Delete Retain, Autofill
+    else if (Tab="Specs"){
       this.CopyPasteSpec()
+      Menu,Menu, add, &Delete Retain, Autofill
+    }
     else if (Tab="Requests")
       clk(61, 635) ;enter results
     else if (Tab="Products")
       clk(67, 754) ;edit results
     else if (Tab="Samples")
         clk(107, 319) ;assign Requests
-    else if (Tab="Tests")
-      Menu,Menu, add, &Delete Retain, Autofill
     else {
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
@@ -191,11 +195,17 @@ Varbar(){
 		if (WinControl="Edit1" || WinControl="Edit2" || winControl="Edit3"){
       		Loop, Read, Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
+      if A_index>5
+        return
     }
     else {
     menu, Menu, Add, ProductsMenu, Varbar.HistoryMenuItem
 		Loop, Read, Products.txt
+    {
 			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
+      if A_index>5
+        return
+    }
     Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
       if SwitchWorkSheets=1  
         menu, menu, Check, &SwitchWorkSheets

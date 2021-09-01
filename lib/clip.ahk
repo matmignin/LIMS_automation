@@ -4,14 +4,15 @@ Clip(input=0,Wait:="0.55"){
   ; ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
+    sleep 100
     OCR()
     return
   }
   clipboard:=
   if (input=="cut")
-    send, ^{x}
+    send, ^{x}{ctrlup}
   else
-    send, ^{c}
+    send, ^{c}{ctrlup}
   sleep %input%
   clipwait,%Wait%
   if errorlevel
@@ -19,7 +20,7 @@ Clip(input=0,Wait:="0.55"){
     ; clipboard:=ClipboardSaved
     if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
-    send, {home}+{end}^{c}
+    send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
   }
   clip.Regex()
   return
@@ -29,7 +30,7 @@ Class Clip {
 
 
 Regex(Category:="All"){
-    global Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain
+    global Batch, Batch0, Product0, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain
     sleep      20
     If (Category!="Department") {
       RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
@@ -37,10 +38,17 @@ Regex(Category:="All"){
       RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
       RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
       RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
-      RegExMatch(Clipboard, "i)\bs\d{8}-\d{3}\b", cSampleID)
+      RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
+      StringReplace, cSampleID, cSampleID, $, S
       If cProduct {
+        if !(cProduct=Product)
+        {
+          Product0:=Product
+          IniWrite, %Product0%, data.ini, SavedVariables, Product0
+          Product:=
+        }
       GuiControl,Varbar:Text, Product, %cProduct%
-            IniWrite, %cProduct%, data.ini, SavedVariables, Product
+            IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
             IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
               ; if cBatch
                 Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% `n, Products.txt
@@ -48,6 +56,11 @@ Regex(Category:="All"){
                 ; Fileappend, %cProduct%`n, Products.txt
       }
       If cBatch {
+        if !(cBatch=Batch)
+        {
+          Batch0:=Batch
+          IniWrite, %Batch0%, data.ini, SavedVariables, Batch0
+        }
         GuiControl,Varbar:Text, Batch, %cBatch%
             IniWrite, %cBatch%, data.ini, SavedVariables, Batch
             ; Fileappend, %cBatch%`n, Batch.txt
@@ -134,9 +147,9 @@ IfNothingSelected(Action){
     if Action:="SelectLine"
       send, {home}+{end}^{c}
     if Action:="SelectAll"
-      send, ^{a}^{c}
+      send, ^{a}^{c}{ctrlup}
     if Action:="Select"
-      send, {click 3}^{c}
+      send, {click 3}^{c}{ctrlup}
     If Action:="cut"
       {
         ; clipboard:=
@@ -153,7 +166,7 @@ IfNothingSelected(Action){
     If Action:="Paste"
     {
       clipboard:=ClipboardSaved
-      send, ^{v}
+      send, ^{v}{ctrlup}
     }
     else
       send % Action
@@ -177,7 +190,7 @@ Click(){
         If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
         {
           ;  clip()
-          send, {ctrldown}{c}{ctrlup}
+          send, ^{c}
           return
         }
         break
@@ -294,7 +307,7 @@ ClickText(button:=""){
 
 Copy(){
   Global
-      sendinput, {ctrlup}{altup}{shiftup}
+      send, {ctrlup}{altup}{shiftup}
     KeyWait, F20, T0.20
     If ErrorLevel
     {

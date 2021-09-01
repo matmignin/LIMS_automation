@@ -129,7 +129,7 @@
 
 
 	} Else If winactive("Paster - Snipaste ahk_exe Snipaste.exe"){
-		sendinput, ^-^-
+		send, ^-^-
 
 	} else
 		return

@@ -135,19 +135,28 @@ F12::send, {altdown}{tab}{altup}
 	+^z::								send, {shiftup}{Ctrldown}{y}{CtrlUp}
 	~<+rshift::						send, {lwindown}{right}{lwinup}
 	~>+lshift::						send, {lwindown}{left}{lwinup}
-	~Rshift & up:: 			sendinput, %SampleID%
-	~Rshift::
+	; ~Rshift & up:: 			sendinput, %SampleID%
 	lshift & Appskey::			Return
+	<^;::	 							sendinput, %DateString%
 	rshift & Appskey::			return
-	<^;::	 							sendinput, %DateString%{space}
 	; / & up:: 			sendinput, %SampleID%
 	; ~Lbutton & left:: 			sendinput, %SampleID%
 	; ~Lbutton & Down:: 			sendinput, %Coated%
 	; ~Lbutton & right::			sendinput, %Lot%
 	; ~Lbutton & up::	 			sendinput, %SampleID%
-	Lbutton & F20::          	send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
-	Lbutton & F19::          	send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	Lbutton & left::           send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	Lbutton & F20::          	
+										BlockInput, on
+										sleep 25
+										send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+										blockinput, off
+										sleep 200
+										return
+	Lbutton & F19::          	sendinput, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	Lbutton & left::          	
+	sleep 200
+	clip("OCR")
+	sleep 200
+	return
 	Lbutton & down::           send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	^Media_Next::					MakeTransparent()
 	/ & space::						send, %Coated%
@@ -160,27 +169,27 @@ F12::send, {altdown}{tab}{altup}
 	` & 3::							Test_3()
 	`::	 							sendraw, ``
 	~>+lbutton::					send,{shiftDown}{click}{shiftup}
-	; F19 & up::						send, %SampleID%
-	F19 & left::					send, %lot%
-	F19 & right::					send, %coated%
-	F19 & s::	 					send, %SampleID%
+	F20 & up::						send, %SampleID%
+	F20 & left::					send, %lot%
+	F20 & right::					send, %coated%
+	F20 & s::	 					send, %SampleID%
 	$Numlock::						4tap() ;Clip.Paste()      	
-	F20 up:: 	               Clip.Copy()
-	F19 up::      	       	Clip.paste()
+	; F20 up:: 	               Clip.Copy()
+	; F19 up::      	       		Clip.paste()
 	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
 	rbutton::						2tap()
 
-	>+Space::             	varbar.focus("Product")
-	F19 & F20::             varbar.focus("Product")
+	>+F20::             	varbar.focus("Batch")
+	>+F19::             	varbar.focus("Product")
+	; F19 & F20::             varbar.focus("Product")
 
 F19_And_F20:
 	F20 & 9::             	SaveWindow_Save()
 	F20 & 0::             	SavedWindow_Restore()
-	; F20 & '::           	varbar.follow()
 	F13 & esc::					Varbar.reset()	
 	F19 & \::             	CreditCard()
-	F19 & Space::         	send, %product%
-	F20 & Space::         	Sendinput, %batch%
+	; F19 & Space::         	send, %product%
+	; F20 & Space::         	Sendinput, %batch%
 	F19 & backspace::     	send,{delete}
 	F20 & Rshift::
 	F20 & Insert::        	Clip("OCR")
@@ -188,25 +197,19 @@ F19_And_F20:
 	F20 & F6::            	Excel.PrevSheet()
 	F20 & esc::     			run, Taskmgr.exe
 	F20 & backspace::     	send, {delete}
-	F20 & Right::         	send, #{right}
-	F20 & Left::          	send, #{Left}
-	F20 & UP::            	send, #{UP}
-	F20 & Down::          	send, #{Down}
 	F20 & \::             	Sendpassword()
 	F20 & .::             	WindowInfo()
 	F20 & o:: 				 	OpenApp.Outlook()
-	F20 & =::             	sendinput,{CtrlDown}{=}{Ctrlup}
-	F20 & -::             	sendinput,{CtrlDown}{-}{Ctrlup}
+	F20 & =::             	send,{CtrlDown}{=}{Ctrlup}
+	F20 & -::             	send,{CtrlDown}{-}{Ctrlup}
 	F19 & enter::			 	varbar.focus("Edit1")
 	F20 & enter::			 	varbar.focus("Edit2")
 	F20 & ,::					varbar.Focus("Edit2")
 
 
 	F20 & l::             	OpenApp.LMS()
-	F21 & l::             	OpenApp.LMS()
 	F20 & F19::           	send, {F22}
-	; F21 & F19::           	send, {F22}
-	F19 & lbutton::       	^Lbutton
+	; F19 & lbutton::       	^Lbutton
 
 	F19 & Media_Play_pause::
 									my_screenwidth:=A_ScreenWidth-215
@@ -228,7 +231,7 @@ F19_And_F20:
 
 Double_press_For_Enter:
 #If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F21 & Space" || A_PriorHotKey = "F20 & Space") && (A_TimeSincePriorHotkey < 2000) 
-	F19 & space::           send, {enter}
+	; F19 & space::           send, {enter}
 	; $space::              send, {enter} 
 	$rshift::               send, {tab}
 	F20 & Space::           send, {enter}
@@ -247,7 +250,7 @@ _Lbuton:
 			tt("ye")
 			return
 #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
-  space::             send, {ctrldown}{click}{ctrlup}
+;   space::             send, {ctrldown}{click}{ctrlup}
   F19::               send, {F21}
   .::                 WindowInfo()
   v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
@@ -368,7 +371,7 @@ _Lbuton:
 		clk(229, 136)
 		return
 	}
-		else if winexist("Release: 21") { ; Press Okay
+		else if winexist("Release: ") { ; Press Okay
 		WinActivate, 
 		clk(131, 144)
 		return
@@ -535,11 +538,9 @@ _Main_LMS_Screen:
 #Ifwinactive, NuGenesis LMS - \\Remote
 	$Numlock::4tap() ;LMS.COA()
 	F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-	F21 & Left::WinMove, A, , -283, -1196, 1662, 952
-	+F19::lms.searchBar("")
-	F19 & space::Send, %Product%{enter}
-	F20 & space::Send, %Batch%{enter}
-	F21 & space::Send, %Batch%{enter}
+	; +F19::lms.searchBar("")
+	; F19 & space::Send, %Product%{enter}
+	; F20 & space::Send, %Batch%{enter}
 	F19 & /::Send, %lot%{enter}
 	~Lbutton & F19::send,{enter}
 	Enter::LMS.SaveCode()
@@ -556,7 +557,7 @@ _Main_LMS_Screen:
 	; 	else
 	; 		lms.SampleRequestToggle()
 	; 	return
-	F20::send, ^c
+	; F20::send, ^c  
 	; space & lbutton::send, +{click}
 	; space up::sendinput, ^{click}
 	wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
@@ -593,9 +594,8 @@ _LMS_KEYS:
 						return
 _WFICA32:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-	F20 & Space::			send, %Batch%
-	F21 & Space::			send, %Batch%
-	F19 & space::			send, %Product%
+	; F20 & Space::			send, %Batch%
+	; F19 & space::			send, %Product%
 	F19 & up::				send, %sampleID%
 	F19 & left::			send, %lot%
 	F19 & right::			send, %coated%
@@ -619,8 +619,8 @@ _WFICA32:
 	^wheelup::				menu.lms()
 	numpadMult::excel.connect()
 	Rbutton & F19::       	send % WindowInfo() 
-	Rbutton & F6::        	send, Backspace
-	Rbutton & Lbutton::   	send, Enter
+	Rbutton & F6::        	send, {Backspace}
+	Rbutton & Lbutton::   	send, {Enter}
 	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
 
 
@@ -675,16 +675,20 @@ _MouseIsOver:
 ~lbutton::return
 
 F13Click(){
-  KeyWait, lbutton, T0.25
-    If ErrorLevel
-    {
-       KeyWait, Lbutton, D T5
-        If !ErrorLevel
-          send, ^{click 3}
-        exit
-    }
-    send, ^{Click 2}
-    return
+KeyWait, lbutton, T0.25
+	If ErrorLevel
+	{
+		KeyWait, Lbutton, D T5
+		If !ErrorLevel 
+		{
+			send, ^{click 3}
+			send, {CtrlUp}
+		}
+		exit
+	}
+	send, ^{Click 2}
+	send, {CtrlUp}
+	return
 	}
 
 

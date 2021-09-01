@@ -207,7 +207,7 @@ return
 		; MouseClick, Left, , , 1, 0, U
 		return
 					
-}
+} 
 
 
 WindowInfo(){
@@ -222,10 +222,10 @@ WindowInfo(){
 	Sleep, 100
 	TT(MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH,3000,,,2)
 	Process:= "ahk_exe " WinProcess
-	WinInfo:="WinMove, " Wintitle ", , " wX ", " wY ", " wW ", " wH
+	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
+	WinLocation:= wX "," wY "," wW "," wH
 	
-	keywait, F20, U
-	keywait, F21, U
+	keywait, F20, U T5
 	
 	sleep 500
 	; Tooltip,
