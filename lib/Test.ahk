@@ -2,7 +2,7 @@ Test(n){
 	global
 	if Iteration==1
 	{
-		test_1()
+		test_A()
 		Return
 	}
 	else if iteration==2
@@ -28,6 +28,48 @@ Test(n){
 Gui, Add, Text, x10 y12, Load file.
 Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
 Gui, Show, w300 h300,TEST
+
+
+Test_A(){
+` & Space::
+keywait Space 
+{key++             
+ if key = 1
+ {
+   TT(key)
+   Sendinput, %Product%%key%
+ 
+ }
+ else if key = 2
+ {
+  TT(key)
+  Sendinput, %Product%%key%
+ 
+ }
+ else if key = 3
+ {
+  TT(key)
+  Sendinput, %Product%%key%
+ 
+ }
+ else if key = 4
+ {
+  TT(key)
+  Sendinput, %Product%%key%
+ 
+ }
+ else if key = 5
+ {
+  TT(key)
+    Sendinput, %Product%%key%
+}
+}
+return
+
+}
+
+
+
 
 
 ;------------------------------------------------lms.dettesting individual regex------------------------------------------------------------------------
