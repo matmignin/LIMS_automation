@@ -30,7 +30,7 @@ Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
 Gui, Show, w300 h300,TEST
 
 
-Test_A(){
+;Test_A(){
 ` & Space::
 keywait Space 
 {key++             
@@ -66,10 +66,12 @@ keywait Space
 }
 return
 
-}
+;}
 
-
-
+` & 9:: ; Demonstrates the usage of the Match object.
+FoundPos := RegExMatch("K288 101-1111 101-2222", "O)([abdefghijkl]\d{3) (?<Batch>)\b\d{3}-\d{4}\b)", SubPat)  ; The starting "O)" turns SubPat into an object.
+Msgbox % SubPat.Count() ": " SubPat.Value(1) " " SubPat.Name(2) "=" SubPat["Batch"]  ;>>> Displays "2: Michiganroad nr=72"
+return
 
 
 ;------------------------------------------------lms.dettesting individual regex------------------------------------------------------------------------
@@ -272,7 +274,7 @@ HasValue(haystack, needle) {
         throw Exception("Bad haystack!", -1, haystack)
     return 0
 }
-HasValue2(item, list, del:=","){
+HasValue2(item, list, del:=","){ ;detect duplicate in array
 	haystack:=del
 	if !IsObject(list)
 		haystack.= list del
