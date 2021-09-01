@@ -76,7 +76,7 @@ Class VarBar{
 				Iniread, ShowCoated, data.ini, Options, ShowCoated
 				Iniread, VarBar_X, data.ini, Locations, VarBar_X
 				Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
-				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+				Iniread, SwitchWorkSpaces, data.ini, Options, SwitchWorkSheets
 			; }
 			If (X=Mouse)
 			{ 
@@ -128,23 +128,30 @@ Class VarBar{
 					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar  X+0 H20 y1 w142 right,					%Note2%  	; edit7
 			; Gui, Varbar:Color,, 00FFFF
 			CoordMode, mouse, screen
-			try {
+			; try {
+				IfWinActive, NuGenesis LMS - \\Remote
+			; if ActiveWin=LMS
+				{
 				WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
-				varbar_x:= Varbar_x +700
+				varbar_x:= Varbar_x +200
 				Gui, VarBar:Show, h23 x%VarBar_X% y%VarBar_y% w560 NoActivate, VarBar
+				ActiveWin:="LMS"
 			}
-			catch
+			; catch
+			else
+			; if ActiveWin=VScode
 			{
-				Gui, VarBar:Show, h23 x1 y%A_screenwidth% w560 NoActivate, VarBar
-				IniWrite, 1, data.ini, Locations, VarBar_X
-				IniWrite, 1, data.ini, Locations, VarBar_Y
+				MidScreen:=A_ScreenWidth /4
+				Gui, VarBar:Show, h23 x%MidScreen% y%A_screenheight% w560 NoActivate, VarBar
+				ActiveWin:="VScode"
+				; IniWrite, 1, data.ini, Locations, VarBar_X
+				; IniWrite, 1, data.ini, Locations, VarBar_Y
 			}
 			CoordMode, mouse, window
-			; if (Follow=1)
 			ControlsetText, Static1, %Iteration%,VarBar
 			OnMessage(0x0201, "WM_LBUTTONDOWN")
 			OnMessage(0x203, "VariableBar_Relocate")
-			WinSet, Transparent, 225, AHK_id %GUIID%
+			WinSet, Transparent, 205, AHK_id %GUIID%
 			return
 
 			ProductVarBar:
@@ -233,7 +240,7 @@ HistoryMenuItem(){
 			tooltip, Place bar
 		if !winactive("NuGenesis = \\Remote"){
 			coordmode, mouse, Screen
-			keywait, F13, U
+			keywait, F13, U T5
 			MouseGetPos,xpos,ypos,w,h
 			send, {laltup}
 		} else {
@@ -264,7 +271,7 @@ HistoryMenuItem(){
 		Relocate(){
 			global
 					PostMessage, 0xA1, 2
-					keywait, Lbutton, U
+					keywait, Lbutton, U T5
 					 send, ^a
 			return
 		}

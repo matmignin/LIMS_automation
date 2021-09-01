@@ -2,7 +2,7 @@ Test(n){
 	global
 	if Iteration==1
 	{
-		test_A()
+		test_1()
 		Return
 	}
 	else if iteration==2
@@ -31,8 +31,8 @@ Gui, Show, w300 h300,TEST
 
 
 ;Test_A(){
-` & Space::
-keywait Space 
+~` & Space::
+keywait Space
 {key++             
  if key = 1
  {
@@ -63,6 +63,8 @@ keywait Space
   TT(key)
     Sendinput, %Product%%key%
 }
+keywait ``
+key=0
 }
 return
 

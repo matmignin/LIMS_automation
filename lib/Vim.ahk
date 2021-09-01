@@ -416,6 +416,7 @@ _VSCODE_Hotstrings:
 	sendraw,{altdown}{lwindown}{}{lwinup}{altup}
 	sendinput,{left 16}
 	return
+	:*R:nu`;::                                            
 	:*R:main`;::                                            
 	sendraw, NuGenesis LMS - \\Remote
 	return
@@ -445,6 +446,7 @@ _VSCODE_Hotstrings:
 	:*R:r`;::
 	sendinput, {end}return
 	return 
+	:*:vs`;::ahk_exe Code.exe
 	#ifwinactive,
 	
 
@@ -515,7 +517,7 @@ class Vim{
 	}
 	Paste(){
 		global
-		KeyWait, %A_ThisHotkey%, U
+		KeyWait, %A_ThisHotkey%, U T5
 		KeyWait, %A_ThisHotkey% ,D T0.25
 		if errorlevel
 			if Vimclip

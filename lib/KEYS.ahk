@@ -154,7 +154,7 @@ F12::send, {altdown}{tab}{altup}
 	/ & .::							send, {?}
 	/ & right::	 					send, %Lot%
 	/::	 							send, /
-	` & space::						Test(Iteration) 
+	; ` & space::						Test(Iteration) 
 	` & 1::							Test_1()
 	` & 2::							Test_2()
 	` & 3::							Test_3()
@@ -442,9 +442,9 @@ _Lbuton:
 		}
 
 4Right(){
-	global SwitchSpaces
-		if (SwitchSpaces==1) {
-			sendinput, #^{right}
+	global SwitchWorkSheets
+		if (SwitchWorkSheets==1) {
+				excel.nextsheet()
 			return
 		}
 		else 
@@ -453,15 +453,17 @@ _Lbuton:
 				send, {numpadadd}
 			else If winactive("ahk_exe OUTLOOK.EXE")
 				WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
-			else
+			else If winactive("ahk_exe WFICA32.EXE")
 				excel.nextsheet()
+			else
+			sendinput, #{right}
 		}
 		return
 }
 4left(){
-	global SwitchSpaces
-		if (SwitchSpaces==1) {
-			sendinput, #^{left}
+	global SwitchWorkSheets
+		if (SwitchWorkSheets==1) {
+				excel.Prevsheet()
 			return
 		}
 		else
@@ -470,8 +472,10 @@ _Lbuton:
 				send, {numpadsub}
 			else If winactive("ahk_exe OUTLOOK.EXE")
 				WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
-			else 
+			else If winactive("ahk_exe WFICA32.EXE")
 				excel.Prevsheet()
+			else 
+			sendinput, #{left}
 		}
 			; lms.SampleRequestToggle()
 		return
@@ -674,7 +678,7 @@ F13Click(){
   KeyWait, lbutton, T0.25
     If ErrorLevel
     {
-       KeyWait, Lbutton, D
+       KeyWait, Lbutton, D T5
         If !ErrorLevel
           send, ^{click 3}
         exit

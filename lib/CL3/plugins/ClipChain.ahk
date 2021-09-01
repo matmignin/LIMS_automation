@@ -184,7 +184,7 @@ clipChain_c(){
 	KeyWait, F20, T0.20
 	If ErrorLevel
 	{
-		KeyWait, F20,
+		KeyWait, F20, T4
 		if (A_PriorKey!="F20")
 			exit
 		if (A_PriorKey="F20")
@@ -194,11 +194,11 @@ clipChain_c(){
 			ClipChainInsert()
 			exit
 		}
-		KeyWait, F20,
+		KeyWait, F20, T4
 		Return
 	}
 	if Errorlevel = 0
-		KeyWait, F20,
+		KeyWait, F20, T4
 	if !ErrorLevel
 		ClipChainInsert()
 return

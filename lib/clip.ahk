@@ -99,7 +99,22 @@ Regex(Category:="All"){
         Department:="Physical (Coated)"
     }
     if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Department ;|| Winactive("ahk_exe WFICA32.EXE") 
-      TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
+      ; TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
+    if cProduct 
+      Vars:=cProduct
+    If cBatch
+      Vars.="`t"cBatch
+    If cLot
+      Vars.="`n"cLot
+    If cCoated
+      Vars.="`t"cCoated
+    If ShowSampleID
+      If cSampleID
+        Vars.="`t"cSampleID
+    If cAnalytical
+      Vars.="`n`t"cAnalytical
+    TT(Vars)
+
     ; else 
         ; TT(Clipboard,900,Varbar_x,80,2,175,"R")
   return 
@@ -322,7 +337,7 @@ global Clippaste
           ; send, {F21}
           Return
         }
-          KeyWait, F19,
+          KeyWait, F19, T2
           Return
       }
     if Errorlevel = 0
@@ -355,7 +370,7 @@ ctrl(){
           ; send, {F21}
           Return
         }
-          KeyWait, F19,
+          KeyWait, F19, T4
           Return
       }
     if Errorlevel = 0

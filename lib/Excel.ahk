@@ -120,7 +120,8 @@ NextSheet(){
 		XL.Sheets(NextSheetname).activate
 		excel.connect()
 	Excel.MatchColor()
-	TT(Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R") 
+	; TT(Product "`t" Batch "`n" Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R") 
+	TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t" Customer, 2000,,,1,250,"R") 
 	;GuiControl, +redraw, varbar
 	}
 
@@ -134,7 +135,7 @@ PrevSheet(){
 	if (prevSheetName = "Sheet1" || prevSheetName = "Main" || prevSheetName = "Template" || prevSheetName = "Finished" || prevSheetName = "Micro Pending" || prevSheetName = "Sheet2" || prevSheetName = "Sheet1" || prevSheetName = "Item Code" || prevSheetName = "Scrap Sheet")
 		Xl.Sheets(PrevSheet).activate
 		excel.connect()
-	TT(Name "`t" Customer,2000,Varbar_x,Varbar_y+20,1,250,"R") 
+	TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer,2000,,,1,250,"R") 
 	Excel.MatchColor()
 	; Excel.MatchColor()
 	;GuiControl, +redraw, varbar

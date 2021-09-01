@@ -771,18 +771,18 @@ ShowCoated(){
   IniWrite, 0, data.ini, Options, ShowCoated
   Varbar.Show()
   }
-SwitchSpaces(){
+SwitchWorkSheets(){
 	global
-	Menu, Tray, ToggleCheck, SwitchSpaces
-	If SwitchSpaces:= !SwitchSpaces
+	Menu, Tray, ToggleCheck, SwitchWorkSheets
+	If SwitchWorkSheets:= !SwitchWorkSheets
 	{
-		IniWrite, 1, data.ini, Options, SwitchSpaces
-		Menu, Tray, Check, SwitchSpaces
+		IniWrite, 1, data.ini, Options, SwitchWorkSheets
+		Menu, Tray, Check, SwitchWorkSheets
 	}
 	else 
 	{
-		IniWrite, 0, data.ini, Options, SwitchSpaces
-		Menu, Tray, unCheck, SwitchSpaces
+		IniWrite, 0, data.ini, Options, SwitchWorkSheets
+		Menu, Tray, unCheck, SwitchWorkSheets
 	}
 	Varbar.Show()
 	}

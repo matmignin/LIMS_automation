@@ -30,7 +30,7 @@ _explorer:
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
 	F13 & space::					sendinput, +{tab}{tab}
-	F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateStr  ing%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F21 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
 	F20 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F21 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
@@ -195,8 +195,8 @@ OneNote:
 	^3::                 send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
 	^4::                 send,{Ctrldown}{1}{CtrlUp}
 	$Mbutton up::        sendinput,{ctrlup}
-	F20 up::             PasteScreenshot()
-	F21 up::             PasteScreenshot()
+	; F20 up::             PasteScreenshot()
+	; F21 up::             PasteScreenshot()
 	F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 	F21 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 
