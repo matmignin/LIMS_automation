@@ -4,14 +4,14 @@ If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cyclebackward:=1
 PreviousClipCycleCounter:=0 ; 13/10/2017 test
-ClipCycleCounter:=1
+ClipCycleCounter:=1ERRORERROR
 ClipCycleFirst:=1
 While GetKeyState("F20","D") and cyclebackward
 	{
 	 If (ClipCycleCounter <> 0)
 	 {	
 		; Var:=Product[%ClipCycleCounter%]
-		Var:=Product ClipCycleCounter
+		Var:=Product%ClipCycleCounter%
 	 	TT(Var)
 		; ttext:=% DispToolTipText(Var)
 	 }
