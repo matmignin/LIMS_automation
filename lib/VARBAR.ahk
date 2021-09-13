@@ -398,13 +398,13 @@ HistoryMenuItem(){
 		iniwrite, %Product%, data.ini, Products, Product
 		iniwrite, %Batch%, data.ini, Batches, Batch
 		; iniwrite, %Batch1%, data.ini, SavedVariables, Batch1
-		loop 3 {
-			n:=A_index
-			Item:=Product%n%
-			iniwrite, %Item%, data.ini, Products, Product%n%
+		; loop 3 {
+			; n:=A_index
+			; Item:=Product%n%
+			; iniwrite, %Item%, data.ini, Products, Product%n%
 			; Item:=Batch%n%
 			; iniwrite, %Item%, data.ini, Batches, Batch%n%
-			}	
+			; }	
 		; iniwrite, %Product0%, data.ini, Products, Product0
 		; iniwrite, %Product1%, data.ini, Products, Product1
 		; iniwrite, %Product2%, data.ini, Products, Product2

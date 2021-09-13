@@ -1,95 +1,79 @@
 #ifwinactive,
-~F20 & Space::
-If !ActiveWindowID
-	WinGet, ActiveWindowID, ID, A
-cyclebackward:=1
-PreviousClipCycleCounter:=0 ; 13/10/2017 test
-ClipCycleCounter:=1ERRORERROR
-ClipCycleFirst:=1
-While GetKeyState("F20","D") and cyclebackward
+	~F20 & Space::
+	If !ActiveWindowID
+		WinGet, ActiveWindowID, ID, A
+	cyclebackward:=1
+	PreviousClipCycleCounter:=0 ; 13/10/2017 test
+	ClipCycleCounter:=1ERRORERROR
+	ClipCycleFirst:=1
+	While GetKeyState("F20","D") and cyclebackward
 	{
-	 If (ClipCycleCounter <> 0)
-	 {	
-		; Var:=Product[%ClipCycleCounter%]
-		Var:=Product%ClipCycleCounter%
-	 	TT(Var)
-		; ttext:=% DispToolTipText(Var)
-	 }
-	 else
-		ttext:="[cancelled]"
-	 If (oldttext <> ttext)
-		{
-		 ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-		 oldttext:=ttext
+		If (ClipCycleCounter <> 0)
+		{	
+			; Var:=Product[%ClipCycleCounter%]
+			Var:=Product%ClipCycleCounter%
+			TT(Var)
+			; ttext:=% DispToolTipText(Var)
 		}
-	 Sleep 100
-	 KeyWait, Space,
+		else
+			ttext:="[cancelled]"
+		If (oldttext <> ttext)
+		{
+			ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+			oldttext:=ttext
+		}
+		Sleep 100
+		KeyWait, Space,
 	}
-If (ClipCycleCounter > 0) ; If zero we've cancelled it
+	If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	{
-	 Gosub, ClipboardHandler
-	 ClipCycleCounter:=1
+		Gosub, ClipboardHandler
+		ClipCycleCounter:=1
 	}
 Return
 
 F20 & Space Up::
-PreviousClipCycleCounter:=ClipCycleCounter
-If (ClipCycleFirst = 0)
-	ClipCycleCounter++
-ClipCycleFirst:=0
+	PreviousClipCycleCounter:=ClipCycleCounter
+	If (ClipCycleFirst = 0)
+		ClipCycleCounter++
+	ClipCycleFirst:=0
 Return
 
 ClipBoardHandler:
-oldttext:="", ttext:="", ActiveWindowID:=""
-If (Var <> Clipboard)
+	oldttext:="", ttext:="", ActiveWindowID:=""
+	If (Var <> Clipboard)
 	{
-	 StrReplace(ClipText,"`n", "`n", Count)
+		StrReplace(ClipText,"`n", "`n", Count)
 	}
-Clipboard:=Var
+	Clipboard:=Var
 	;  StartTime:=A_TickCount
 	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
-		; Return
+	; Return
 	;  WinActivate, ahk_id %ActiveWindowID%
-		Sleep, 20
-	 Send, ^v
+	Sleep, 20
+	Send, ^v
 	;  PasteTime := A_TickCount
-	 oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
 Return
 
-
-
-
-
-
-
-
 ` & Space::
-  Product:=[]
-  Batch:=[]
-  Lot:=[]
+	Product:=[]
+	Batch:=[]
+	Lot:=[]
 
-  loop 3 {
-    temp:=Product A_Index
-    Iniread, Temp, data.ini, SavedVariables, Temp
-   ;  if hasValue(Product, Temp) ;check to see if duplicate value from list
-			; continue
+	loop 3 {
+		temp:=Product A_Index
+		Iniread, Temp, data.ini, SavedVariables, Temp
+		;  if hasValue(Product, Temp) ;check to see if duplicate value from list
+		; continue
 		Product.Push(Temp)
-    msgbox % Product[A_index]
-   ;  iniwrite, %Temp%, data.ini, SavedVariables, Product0
+		msgbox % Product[A_index]
+		;  iniwrite, %Temp%, data.ini, SavedVariables, Product0
 		; iniwrite, K111, data.ini, SavedVariables, Product1
 		; iniwrite, K222, data.ini, SavedVariables, Product2
 		; iniwrite, K333, data.ini, SavedVariables, Product3
-  }
-  return
-
-
-
-
-
-
-
-
-
+	}
+return
 
 Test(n){
 	global
@@ -112,95 +96,85 @@ Test(n){
 	}
 	else
 		test_%n%()
-		return
-		}
+return
+}
 
-
-		return
-		test_%n%()
+return
+test_%n%()
 Gui, Add, Text, x10 y12, Load file.
 Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
 Gui, Show, w300 h300,TEST
 #ifwinactive#
-DispToolTipText(TextIn,Format=0)
-	{
-	 TextOut:=RegExReplace(TextIn,"^\s*")
-	 TextOut:=SubStr(TextOut,1,750)
-	 ;StringReplace,TextOut,TextOut,`;,``;,All
-	 FormatFunc:=StrReplace(CyclePlugins[Format]," ")
-	 If IsFunc(FormatFunc)
+	DispToolTipText(TextIn,Format=0)
+{
+	TextOut:=RegExReplace(TextIn,"^\s*")
+	TextOut:=SubStr(TextOut,1,750)
+	;StringReplace,TextOut,TextOut,`;,``;,All
+	FormatFunc:=StrReplace(CyclePlugins[Format]," ")
+	If IsFunc(FormatFunc)
 		TextOut:=%FormatFunc%(TextOut)
-	 Return TextOut
-	}  
+Return TextOut
+} 
 
 ;Test_A(){  ; cycle tooltip
 
-
 ` & 9:: ; Demonstrates the usage of the Match object.
-FoundPos := RegExMatch("K288 101-1111 101-2222", "O)([abdefghijkl]\d{3) (?<Batch>)\b\d{3}-\d{4}\b)", SubPat)  ; The starting "O)" turns SubPat into an object.
-Msgbox % SubPat.Count() ": " SubPat.Value(1) " " SubPat.Name(2) "=" SubPat["Batch"]  ;>>> Displays "2: Michiganroad nr=72"
+	FoundPos := RegExMatch("K288 101-1111 101-2222", "O)([abdefghijkl]\d{3) (?<Batch>)\b\d{3}-\d{4}\b)", SubPat) ; The starting "O)" turns SubPat into an object.
+	Msgbox % SubPat.Count() ": " SubPat.Value(1) " " SubPat.Name(2) "=" SubPat["Batch"] ;>>> Displays "2: Michiganroad nr=72"
 return
-
 
 ;------------------------------------------------lms.dettesting individual regex------------------------------------------------------------------------
 ;------------------------------------------------------TEST 1------------------------------------------------------------
 return
 Test_1(){
-global
-clipboard:=
-Send, ^c
-clipwait, 1
-
-; SplitLMSSample(){
-RowSplit:=[]
-ParsedSample:=[]
-RowSplit:= strsplit(Clipboard,"`n")
-row2:=RowSplit[2]
+	global
+	clipboard:=
+	Send, ^c
+	clipwait, 1
+	; SplitLMSSample(){
+	RowSplit:=[]
+	ParsedSample:=[]
+	RowSplit:= strsplit(Clipboard,"`n")
+	row2:=RowSplit[2]
 	Loop, parse, Row2, `t
 		ParsedSample.insert(A_LoopField)
-
-msgbox % "Product:" ParsedSample[1] "`n|Batch| " ParsedSample[2] "`n|PkgLot| " ParsedSample[3] "`n|Coated| " ParsedSample[4] "`n|Blister|" ParsedSample[5] "`n|ShipTo| " ParsedSample[8] "`n||`n" ParsedSample[6]
+	msgbox % "Product:" ParsedSample[1] "`n|Batch| " ParsedSample[2] "`n|PkgLot| " ParsedSample[3] "`n|Coated| " ParsedSample[4] "`n|Blister|" ParsedSample[5] "`n|ShipTo| " ParsedSample[8] "`n||`n" ParsedSample[6]
 return
 }
-
 
 ;---------------------------------------------------------parcing a data file and setting to an array---------------------------------------------------------------
 ;------------------------------------------------------TEST 2 ------------------------------------------------------------
 Test_2(){ 
 	global
-Gui, Add, Text, x10 y12, Load file.
-Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
-Gui, Show, w300 h300,TEST
-Products:=[]
+	Gui, Add, Text, x10 y12, Load file.
+	Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
+	Gui, Show, w300 h300,TEST
+	Products:=[]
 return
 GuiClose:
-  ExitApp 
+ExitApp 
 loadfile:
-  FileSelectFile, eFile, 3, , Open the file, All FIles (*.*) ;* ; *.html; *.csv)
-  fileread,contents,%eFile%
-  RegExReplace(contents,"\n","",totalLines) ;match the number of new line character
-  totalLines++ ;always 1 short
+	FileSelectFile, eFile, 3, , Open the file, All FIles (*.*) ;* ; *.html; *.csv)
+	fileread,contents,%eFile%
+	RegExReplace(contents,"\n","",totalLines) ;match the number of new line character
+	totalLines++ ;always 1 short
 	loop,parse,contents,`n
-  {
-	Counter := 0 ; COUNTER IS ZEROED SO THAT THE RESULT IS AN OFFSET OF CURRENT LINE (ERASE ANY OFFSETS OF PAST LINES)
-	CURRENT_LINE := A_LoopField
-	While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abdefghijkl]\d{3}\b",Product)
 	{
-		Counter += OutputVar ; COUNTER IS INCREMENTED SO THAT IN A LINE WITH MULTIPLE RESULTS, THE MSGBOX OFFSETS THE CORRECT POSITION.
-		; MsgBox, %Counter% & %Product%
-		StringTrimLeft, CURRENT_LINE, CURRENT_LINE, %OutputVar%
-		sleep 50
-		Products.insert(CURRENT_LINE) ; add to products array
-		msgbox % Listarray(products)
-}
-  }
+		Counter := 0 ; COUNTER IS ZEROED SO THAT THE RESULT IS AN OFFSET OF CURRENT LINE (ERASE ANY OFFSETS OF PAST LINES)
+		CURRENT_LINE := A_LoopField
+		While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abdefghijkl]\d{3}\b",Product)
+		{
+			Counter += OutputVar ; COUNTER IS INCREMENTED SO THAT IN A LINE WITH MULTIPLE RESULTS, THE MSGBOX OFFSETS THE CORRECT POSITION.
+			; MsgBox, %Counter% & %Product%
+			StringTrimLeft, CURRENT_LINE, CURRENT_LINE, %OutputVar%
+			sleep 50
+			Products.insert(CURRENT_LINE) ; add to products array
+			msgbox % Listarray(products)
+		}
+	}
 return
 
 }
-
-
-
-
 
 ;------------------------------------------------------TEST 3------------------------------------------------------------
 ;---------------------------------------------------------remove duplicates---------------------------------------------------------------
@@ -209,30 +183,28 @@ return
 ;Test_3:
 Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt"){
 	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt")
-		FileRead, OutputVar, Products.txt  
-		Sort, OutputVar, u
-		; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
-		FileDelete, Products.txt
-		sleep, 300
-		FileAppend, %OutputVar%, Products.txt
-	
-	
-	
-}
-		; Loop
-		; {
-		; 	Sleep, 1
-		; 	GetKeyState, KeyState, Numbpadadd, D
-		; 	if KeyState = D
+	FileRead, OutputVar, Products.txt 
+	Sort, OutputVar, u
+	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
+	FileDelete, Products.txt
+	sleep, 300
+	FileAppend, %OutputVar%, Products.txt
 
-		; 			break
-		; }
-		; MouseGetPos, ContactNamePosX, ContactNamePosy
-		; Send {Ctrl Up}{LButton Up}
+}
+; Loop
+; {
+; 	Sleep, 1
+; 	GetKeyState, KeyState, Numbpadadd, D
+; 	if KeyState = D
+
+; 			break
+; }
+; MouseGetPos, ContactNamePosX, ContactNamePosy
+; Send {Ctrl Up}{LButton Up}
 ;	}
 
 return
-	
+
 	/*
 
 ~Numlock:: ;Clipchain_v()
@@ -324,17 +296,6 @@ Loop
    Send, ^c
 return
 
-
-
-
-
-
-
-
-
-
-
-
 HasValue2(item, list, del:=","){ ;detect duplicate in array
 	haystack:=del
 	if !IsObject(list)
@@ -345,9 +306,6 @@ HasValue2(item, list, del:=","){ ;detect duplicate in array
 	Return !!InStr(del haystack del, del item del)
 }
 
-
-
-
 return
 ;------------------------------------------------------------------------------------------------------------------------
 ;---------------------------TEST 3 -----------------------------------------------------------------
@@ -356,26 +314,7 @@ return
 Test_3(Code:=""){
 Global
 
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* 
 ; WinGetTitle, the_WinTitle, A
@@ -410,7 +349,6 @@ PasteIt()
 Gosub, CheckHistory
 MenuItemPos:=0
 Return
-
 
 ClipFuncOnClipboardChange() {
  global
@@ -478,7 +416,6 @@ ClipText:=""
 Return
 }
 
-
 ClipCheckHistory: ; check for duplicate entries
 newhistory:=[]
 for k, v in History
@@ -504,35 +441,18 @@ check:="", new:="", icon:="", lines:=""
 newhistory:=[]
 Return
 
-
-
-
-
-
-
-
-
-
-
-
- */
-
-
-
+*/
 
 ; Loop, Read, Batch.Txt
-	
+
 ; 	; If A_Index = 1
 ; 		; Continue
 ; 	Batches := StrSplit(A_LoopReadLine, "`n")
 ; ; loop, read, Batch.txt
 ; 	; loop, parse, A_LoopReadLine,
 ; 		; Batches.insert(A_LoopField)
-		
+
 ; 		Msgbox % Batches[0]
-
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; grep all the product codes out of a file and add them to an array without duplicates 
 /* 	
@@ -548,54 +468,55 @@ msgbox % listarray(products)
 return 
 */
 
-
-
-
-
-
-
-
 ; 	; }
 
-
-
 AddCanceled(){
- ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
- 	winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
- SendInput,{click 399, 219}{end}'(Canceled'){enter}
+	ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
+		winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
+	SendInput,{click 399, 219}{end}'(Canceled'){enter}
 }
 
-
 ToggleFilter_Test_1(){
- ifwinnotactive, NuGenesis LMS - \\Remote
- WinActivate, NuGenesis LMS - \\Remote
- click 489, 836, R
- SendInput,{down 2}{enter}
+	ifwinnotactive, NuGenesis LMS - \\Remote
+		WinActivate, NuGenesis LMS - \\Remote
+	click 489, 836, R
+	SendInput,{down 2}{enter}
 }
 
 FilterSearch_Test(TestName:="", MethodName:=""){
- ifwinnotactive, NuGenesis LMS - \\Remote
- WinActivate, NuGenesis LMS - \\Remote
- click 1230, 648 ;click name Divider
- Send, ^a%TestName%{enter}
- click 1067, 647 ; click method ID Divider
- Send, ^a%MethodName%{enter}{tab 4}
+	ifwinnotactive, NuGenesis LMS - \\Remote
+		WinActivate, NuGenesis LMS - \\Remote
+	click 1230, 648 ;click name Divider
+	Send, ^a%TestName%{enter}
+	click 1067, 647 ; click method ID Divider
+	Send, ^a%MethodName%{enter}{tab 4}
 }
 
-ListArray(The_Array){
-		global
-		for vKey, vValue in The_Array
-			ArrayList .=vValue "|"
+ListArray(The_Array,Option:="n"){
+	global
+	if (option<>"n"){
+		for Each, Element in The_Array
+			ArrayList .=Element " " Option " "
 		msgbox, %ArrayList%
 		return ArrayList
 	}
-return
+	else {
+  ; ArrayList := "1: "
+  For Each, Element In The_Array {
+    ;  If (ArrayList <> "1: ") ; ArrayList is not empty, so add a line feed
+        ArrayList .= "`n" A_index ": "
+    ArrayList .= Element
+  }
+  MsgBox, %ArrayList%
+	return ArrayList
+  }
+}
 
 HasValue(haystack, needle) {
-    for index, value in haystack
-        if (value = needle)
-            return index
-    if !(IsObject(haystack))
-        throw Exception("Bad haystack!", -1, haystack)
-    return 0
+	for index, value in haystack
+		if (value = needle)
+		return index
+	if !(IsObject(haystack))
+		throw Exception("Bad haystack!", -1, haystack)
+return 0
 }

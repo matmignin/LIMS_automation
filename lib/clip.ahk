@@ -26,9 +26,11 @@ Clip(input=0,Wait:="0.55"){
   return
 }
 
+
 Class Clip {
 Regex(Category:="All"){
-    global Batch, Batch0, Product, Product0, Product2, Product3, Product4, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
+    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
+    ; global ;Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
     sleep      20
     If (Category!="Department") {
       RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
@@ -39,33 +41,39 @@ Regex(Category:="All"){
       RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
       If cProduct {
+        if (cProduct!=Product) {
+      ; GuiControl,Varbar:Text, Product, %cProduct%
+            Product3:=Product2
+            Product2:=Product1
+            Product1:=Product
+            Product:=cProduct
 
-        ; if (cProduct!=Product)
-        {
+            IniWrite, %Product3%, data.ini, Products, Product4
+            sleep 20
+            IniWrite, %Product2%, data.ini, Products, Product3
+            sleep 20
+            IniWrite, %Product1%, data.ini, Products, Product2
+            sleep 20
+            ; IniWrite, %Product%,  data.ini, Products, Product1
+            sleep 20
+            IniWrite, %cProduct%, data.ini, Products, Product
+        ; {
           ; Product.Insert(Product)
           ; Product.insert(cProduct)
           ; Product.Insert(Product1)
           ; Products.Insert(Product2)
           ; Products.Insert(Product3)
+          ; Products.Insert(Product4)
           ; loop 4
           ;   n:=A_index
           ;   next:=A_index
-            Product:=cProduct
-            Product1:=Product1
-            Product2:=Product2
-            Product3:=Product3
-            IniWrite, %Product3%, data.ini, Products, Product4
-            IniWrite, %Product2%, data.ini, Products, Product3
-            IniWrite, %Product1%, data.ini, Products, Product2
-            IniWrite, %Product%, data.ini, Products, Product1
-          msgbox % Product "`n1:" product1 "`n2" Product2 "`n3" Product3 "`n4" Product4
+          ; msgbox % Product "`n1:" product1 "`n2" Product2 "`n3" Product3 "`n4" Product4
           ; Product:=
         }
-      GuiControl,Varbar:Text, Product, %cProduct%
             ; IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
             ; IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
               ; if cBatch
-                Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% `n, Products.txt
+                ; Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% `n, Products.txt
               ; else
                 ; Fileappend, %cProduct%`n, Products.txt
       }

@@ -25,20 +25,22 @@
   return
 
   Starting_test:
-    ; Products:=[]
-  Iniread, Products, data.ini, Products
-  Iniread, Product, data.ini, Products, Product
+    Products:=[]
+  ; Iniread, Products, data.ini, Products
+  Iniread, Product,  data.ini, Products, Product
   Iniread, Product1, data.ini, Products, Product1
   Iniread, Product2, data.ini, Products, Product2
   Iniread, Product3, data.ini, Products, Product3
   Iniread, Product4, data.ini, Products, Product4
           ; Products.Insert(Product)
-          ; Products.Insert(Product1)
-          ; Products.Insert(Product2)
-          ; Products.Insert(Product3)
-          ; Products.Insert(Product3)
+          Products.Insert(Product1)
+          Products.Insert(Product2)
+          Products.Insert(Product3)
+          Products.Insert(Product4)
 ; activeWin:="VScode"
-  msgbox % Product "`n1: " product1 "`n2: " Product2 "`n3: " Product3 "`n4: "  Product4 "`n---`n" Products
+listarray(Products,"|")
+
+  ; msgbox % "0:" Product "`n1: " product1 "`n2: " Product2 "`n3: " Product3 "`n4: "  Product4 "`n---`n" products[1] "--" Products[]
   ; Test_2()
   return
 
