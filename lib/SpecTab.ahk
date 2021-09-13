@@ -4,24 +4,25 @@ class SpecTab {
 Table(){
 	Global
 	Try GUI, Spec_Table:destroy
-  ; CoordMode, mouse, Window
+  CoordMode, mouse, Window
 ;  CoordMode, , Screen
  ifwinnotactive, ahk_exe WFICA32.EXE 
 	WinActivate, ahk_exe WFICA32.EXE
  WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+ 
 	; Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
 	; Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
 		CoordMode, mouse, window
-	SpecTable_X:=LMS_w+350
+	SpecTable_X:=LMS_w+LMS_X-50
 	SpecTable_Y:=LMS_Y+100
 	Table_height=10
-		; CoordMode, mouse, screen
+		CoordMode, mouse, screen
 	Excel.Connect()
 	SpecTab.GetExcelData()
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		SpecTab.ShowGUI()
-		sleep 200
+		sleep 100
 	return
 }
 
@@ -31,8 +32,8 @@ Table(){
 		CoordMode, mouse, screen
 		ScreenEdge_X:=A_ScreenWidth-350
 		ScreenEdge_Y:=A_Screenheight-150
-		try Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product%
-		catch Gui, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% 
+		try Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product% Spec Table
+		catch Gui, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Spec Table
 		CoordMode, mouse, window
 		return
 		}

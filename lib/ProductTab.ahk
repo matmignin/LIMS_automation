@@ -44,7 +44,7 @@ Table(){
     else
       LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index],DropDownCount[A_index])
   }
-  Gui,Ingredient_Table:Add,Checkbox,vAutoEnter x20,Auto-Enter Results?
+  Gui,Ingredient_Table:Add,Checkbox,vAutoEnter x20 checked,Auto-Enter Results?
   LV_ModifyCol(1,50)
   LV_ModifyCol(2,180)
   LV_ModifyCol(3,100)
@@ -98,10 +98,10 @@ DropdownSelect(A_DropdownCount){
     Ingredient_position:=Trim(Ingredient_Position,"`r`n")
     ifWinnotexist, Edit Ingredient - \\Remote
     {
-    WinActivate,Composition - \\Remote
+    WinActivate, Composition - \\Remote
     Breaking.Point()
     Mouse_Click("add_Composition")
-    sleep 200
+    sleep 150
     Breaking.Point()
     this.DropdownSelect(Dropdown_count)
     ; this.Select_Ingredient()
@@ -109,9 +109,9 @@ DropdownSelect(A_DropdownCount){
     }
     if Winexist("Edit Ingredient - \\Remote")
     {
-      Winactivate,
+      Winactivate, Edit Ingredient - \\Remote
     }
-    sleep 200
+    sleep 150
     Send,{tab 6}^a%Ingredient_position%{tab}^a
     SendInput,%Ingredient_Name%
     sleep 100
@@ -119,7 +119,7 @@ DropdownSelect(A_DropdownCount){
     Send,{tab}
     Send,{tab 2}^a
     Send,%Ingredient_Claim%
-    Sleep 400
+    Sleep 200
     Current_Row:= Current_Row+1
     Breaking.Point()
     Send,{enter}

@@ -38,7 +38,7 @@
           Products.Insert(Product3)
           Products.Insert(Product4)
 ; activeWin:="VScode"
-listarray(Products,"|")
+; listarray(Products,"|")
 
   ; msgbox % "0:" Product "`n1: " product1 "`n2: " Product2 "`n3: " Product3 "`n4: "  Product4 "`n---`n" products[1] "--" Products[]
   ; Test_2()
@@ -46,15 +46,23 @@ listarray(Products,"|")
 
 CheckActive:
   ; if winexist("Excel - \\Remote") ;shrink excel 
-    WinGet, winminmax, MinMax, A
-      if Winactive("Excel - \\Remote") || Winactive("Book") && (winminmax=1) {
-        winactivate , ; Excel - \\Remote,
-			  sleep 200
-			  Send, {lwindown}{down}{lwinup}
-      CoordMode, mouse, screen
-				WinMove, A, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
+  
+  if winexist("Password ahk_class bosa_sdm_XL9 ahk_exe EXCEL.EXE"){ ; !Winactive("Password ahk_exe EXCEL.EXE") { ;samplelab passord excel 
+    winactivate
+    sleep 200
+    send, lab{enter}
+    sleep 1000
+    }
+    
+  ;  WinGet, winminmax, MinMax, A
+  ;    if Winactive("Excel - \\Remote") || Winactive("Book") && (winminmax=1) {
+   ;     winactivate , ; Excel - \\Remote,
+		;	  sleep 200
+		;	  Send, {lwindown}{down}{lwinup}
+     ; CoordMode, mouse, screen
+			;	WinMove, A, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
         ; sleep 300
-      }
+      ;}
     if Product
       Vars:=Product
     if Batch

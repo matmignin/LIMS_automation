@@ -193,7 +193,7 @@ F19_And_F20:
 	F19 & backspace::     	Send,{delete}
 	F20 & Rshift::
 	F20 & Insert::        	Clip("OCR")
-	F20 & F7::            	Excel.NextSheet()
+	F20 & F7::            	Excel.NextS7heet()
 	F20 & F6::            	Excel.PrevSheet()
 	F20 & esc::     			run, Taskmgr.exe
 	F20 & backspace::     	Send, {delete}
@@ -392,6 +392,8 @@ _Lbuton:
 		WorkTab.ChangeTestResults("toggle")
 	else if Winactive("Edit specification - \\Remote")  	
 		menu.LMS()
+	else if Winactive("Composition - \\Remote")  	
+		ProductTab.Table()
 	else if Winactive("Results Definition - \\Remote")  	
 		menu.LMS()
 	else if Winactive("Edit Formulation - \\Remote") 

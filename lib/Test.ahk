@@ -500,7 +500,7 @@ ListArray(The_Array,Option:="n"){
 		msgbox, %ArrayList%
 		return ArrayList
 	}
-	else {
+	else {  
   ; ArrayList := "1: "
   For Each, Element In The_Array {
     ;  If (ArrayList <> "1: ") ; ArrayList is not empty, so add a line feed
