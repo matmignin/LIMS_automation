@@ -1,6 +1,6 @@
 
 #IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-	F19 & F20::send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+	F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
 	F19::varbar.focus("Product")
 	; F20::varbar.focus("Batch")
 	^enter::                           
@@ -14,39 +14,23 @@
 				; else
 					; notes.Save()
 				; return
-	Backspace::
-		   ; MouseGetPos,,,,WinControl
-			ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-			; msgbox, %Wincontrol%
-;   try This.delete()
-		send, ^{a}{backspace}
-		if (WinControl="Edit2"){
-			Batch:=
-			ControlsetText, Edit2,%Batch%,VarBar
-			GuiControl, Varbar:Text, Batch,%Batch%
-			}
-		if (WinControl="Edit3"){
-			Lot:=
-			ControlsetText, Edit3,%Lot%,VarBar
-			GuiControl, Varbar:Text, Lot,%Lot%
-			}
-		if (winControl="Edit4") {
-			Coated:=
-			GuiControl, Varbar:Text, Coated,%Coated%
-			; ControlsetText, Edit4,%Coated% ,VarBar
-			; iniwrite, %Coated%, data.ini, SavedVariables, Coated
-		}
-		; iniwrite, %Batch%, data.ini, SavedVariables, Batch
-		; iniwrite, %Lot%, data.ini, SavedVariables, Lot
-		; varbar.Show()
-Return
-	enter::
-	send, ^a
-	clip()
-	winactivate, NuGenesis LMS - \\Remote			
-	LMS.Searchbar(clipboard,"{enter}")
+	numlock::
+			MouseGetPos,,,,WinControl
+			; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+			msgbox, %Wincontrol%
+			Send, ^{a}{backspace}{enter}
+
+			ControlsetText, Wincontrol,,VarBar
+
+	Return
+		enter::
+		Send, ^a
+		clip()
+		winactivate, NuGenesis LMS - \\Remote			
+		LMS.Searchbar(clipboard,"{enter}")
 	return
-	#ifwinactive
+	Lbutton::click
+#ifwinactive
 	^left::Lms.SelectTab("Left")
 	^right::LMs.SelectTab("right")
 
@@ -62,26 +46,15 @@ Return
 				GuiControl, Varbar:Text, Product,%Product1%
 			else
 				GuiControl, Varbar:Text, Product,%Product0%
-			; iniwrite, %Product%, data.ini, SavedVariables, Product
-			; iniwrite, %Product0%, data.ini, SavedVariables, Product0
-			; iniwrite, %Product1%, data.ini, SavedVariables, Product1
-			; ControlsetText, Edit1,%Product0%,VarBar
 			}
 		if (WinControl="Edit2"){
 			Batch:=Batch0
-			; ControlsetText, Edit2,%Batch0%,VarBar
-			; GuiControl, Varbar:Text, Batch,%Batch0%
 			}
 		if (WinControl="Edit3"){
-			; Lot:=Lot1
-			; ControlsetText, Edit3,%Lot%,VarBar
 			GuiControl, Varbar:Text, Lot,%Lot%
 			}
 		if (winControl="Edit4") {
-			; Coated:=Coated1
 			GuiControl, Varbar:Text, Coated,%Coated%
-			; ControlsetText, Edit4,%Coated% ,VarBar
-			; iniwrite, %Coated%, data.ini, SavedVariables, Coated
 		}
 		return
 
@@ -120,11 +93,11 @@ Class VarBar{
 			; EnvGet, iteration, Iteration
 			if !WinExist("LMS Workbook.xlsb"){
 				Iniread, Batch, data.ini, SavedVariables, Batch
-				Iniread, Product, data.ini, SavedVariables, Product
-				Iniread, Product0, data.ini, SavedVariables, Product0
-				Iniread, Product1, data.ini, SavedVariables, Product1
-				Iniread, Product2, data.ini, SavedVariables, Product2
-				Iniread, Product3, data.ini, SavedVariables, Product3
+				Iniread, Product, data.ini, Products, Product
+				; Iniread, Product0, data.ini, Products, Product0
+				; Iniread, Product1, data.ini, Products, Product1
+				; Iniread, Product2, data.ini, Products, Product2
+				; Iniread, Product3, data.ini, Products, Product3
 				Iniread, Batch0, data.ini, SavedVariables, Batch0
 				Iniread, Batch1, data.ini, SavedVariables, Batch1
 				Iniread, SampleID, data.ini, SavedVariables, SampleID
@@ -154,26 +127,12 @@ Class VarBar{
 			} 
 			if (Destroy:="Reset")
 				GUI, VarBar:destroy
-			; WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
-			; Varbar_X := LMS_X+1000
-			; if MouseClip {
-			; 	try GUI,Varbar:destroy
-			; 	Gui Varbar:Default
-			; 	Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
-			; 	WinSet, Transparent, 190, AHK_id %GUIID%
-			; 		GUI,VarBar:Font,				s8 cBlack,arial Narrow
-			; 		Gui, VarBar:color, 			B39D1B
-			; 		Gui,VarBar:Add,text, 		vIteration x265 y15 w18,																	%Iteration%	; Text1	
-			; 		Gui,VarBar:add,Text,	vClipboard 				 R3 x1 H19 y-3 w145 left,  						%Clipboard%     ; edit6
-			; 	; edit6
-			; } 
-			; Else 
 			; {
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
 				WinSet, Transparent, 200, %GUIID%
-				; Gui, VarBar:color,016D07, 97BA7F   
 				Gui, VarBar:color,DC734F, 97BA7F   
+				; Gui, VarBar:color,016D07, 97BA7F   
 				GUI,VarBar:Font,s14 cBlack Bold, Consolas
 				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h25 x20 y0  w55 ,				%Product%  ; edit1
 				GUI,VarBar:Font,s10 cBlack,Consolas
@@ -189,36 +148,28 @@ Class VarBar{
 					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H24 y1 w80, 				%SampleID%  ; edit5
 				else
 					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H24 y1 w0, 				%SampleID%  ; edit5
-
-				GUI,VarBar:Font,s19 107C41, Consolas
+			GUI,VarBar:Font,s19 107C41, Consolas
 				; GUI,VarBar:Font,s19 cEF6950, Consolas
-				Gui,VarBar:Add,text, 		vIteration x+5 65 center y-3 w23,											%Iteration%	; Text1
-					GUI,VarBar:Font,s8.5 cBlack,arial Narrow
-					Gui,VarBar:add,Edit,		vNote1 					gNotevarbar  x+3 H24 y1 w150 right, 				%Note1%     ; edit6
-					Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar  X+2 H24 y1 w150 right,					%Note2%  	; edit7
-			; Gui, Varbar:Color,, 00FFFF
+			Gui,VarBar:Add,text, vIteration x+5 65 center y-3 w23,											%Iteration%	; Text1
+			GUI,VarBar:Font,s8.5 cBlack,arial Narrow
+			Gui,VarBar:add,Edit,		vNote1 					gNotevarbar1  x+3 H24 y1 w150 right, 				%Note1%     ; edit6
+			Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar2 X+2 H24 y1 w150 right,					%Note2%  	; edit7
 			CoordMode, mouse, screen
-			; try {
-				IfWinexist, NuGenesis LMS - \\Remote
-			; if ActiveWin=LMS
+			IfWinexist, NuGenesis LMS - \\Remote
 				{
-				WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
-				varbar_x:= Varbar_x +200
-				if ShowSampleID || !Coated
-					Gui, VarBar:Show, h25 x%VarBar_X% y%VarBar_y% w700 NoActivate, VarBar
-				else
-				Gui, VarBar:Show, h25 x%VarBar_X% y%VarBar_y% w640 NoActivate, VarBar
-				ActiveWin:="LMS"
+					WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
+					varbar_x:= Varbar_x +200
+					if ShowSampleID || !Coated
+						Gui, VarBar:Show, h25 x%VarBar_X% y%VarBar_y% w700 NoActivate, VarBar
+					else
+					Gui, VarBar:Show, h25 x%VarBar_X% y%VarBar_y% w640 NoActivate, VarBar
+					ActiveWin:="LMS"
 			}
-			; catch
 			else
-			; if ActiveWin=VScode
 			{
 				MidScreen:=A_ScreenWidth /2
 				Gui, VarBar:Show, h25 x%MidScreen% y1 w640 NoActivate, VarBar
 				ActiveWin:="VScode"
-				; IniWrite, 1, data.ini, Locations, VarBar_X
-				; IniWrite, 1, data.ini, Locations, VarBar_Y
 			}
 			CoordMode, mouse, window
 			ControlsetText, Static1, %Iteration%,VarBar
@@ -243,7 +194,12 @@ Class VarBar{
 				sleep 100
 				Gui, VarBar:submit,NoHide
 			return
-			NoteVarBar:
+			NoteVarBar1:
+				sleep 100
+				; keywait, enter
+				Gui, VarBar:submit,NoHide
+			return
+			NoteVarBar2:
 				sleep 100
 				; keywait, enter
 				Gui, VarBar:submit,NoHide
@@ -301,7 +257,7 @@ HistoryMenuItem(){
 		WinActivate, VarBar ahk_exe AutoHotkey.exe
 		GuiControl Varbar:Focus, %Control%
 		; sleep 100
-		sendinput, ^{a}{ctrlup}{altup}
+		SendInput, ^{a}{ctrlup}{altup}
 		return
 		}	
 
@@ -316,7 +272,7 @@ HistoryMenuItem(){
 			coordmode, mouse, Screen
 			keywait, F13, U T5
 			MouseGetPos,xpos,ypos,w,h
-			send, {laltup}
+			Send, {laltup}
 		} else {
 			WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
 			xpos := LMS_X+1000
@@ -346,7 +302,7 @@ HistoryMenuItem(){
 			global
 					PostMessage, 0xA1, 2
 					keywait, Lbutton, U T5
-					 send, ^a
+					 Send, ^a
 			return
 		}
 		
@@ -413,14 +369,17 @@ HistoryMenuItem(){
 
 	Load(){
 		Global
-		Iniread, Product, data.ini, SavedVariables, Product
-		Iniread, Batch, data.ini, SavedVariables, Batch
-		Iniread, Product0, data.ini, SavedVariables, Product0
-		Iniread, Product1, data.ini, SavedVariables, Product1
-		Iniread, Product2, data.ini, SavedVariables, Product2
-		Iniread, Product3, data.ini, SavedVariables, Product3
-		Iniread, Batch0, data.ini, SavedVariables, Batch0
-		Iniread, Batch1, data.ini, SavedVariables, Batch1
+		; Iniread, Product, data.ini, SavedVariables, Product
+		Iniread, Batch, data.ini, Batches, Batch
+		Iniread, Product, data.ini, Products, Product
+		Iniread, Product0, data.ini, Products, Product0
+		Iniread, Product1, data.ini, Products, Product1
+		Iniread, Product2, data.ini, Products, Product2
+		Iniread, Product3, data.ini, Products, Product3
+		Iniread, Batch4, data.ini, Batches, Batch4
+		Iniread, Batch1, data.ini, Batches, Batch1
+		Iniread, Batch2, data.ini, Batches, Batch2
+		Iniread, Batch3, data.ini, Batches, Batch3
 		Iniread, Lot, data.ini, SavedVariables, Lot
 		Iniread, Coated, data.ini, SavedVariables, Coated
 		Iniread, SampleID, data.ini, SavedVariables, SampleID
@@ -436,19 +395,21 @@ HistoryMenuItem(){
 		wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
-		iniwrite, %Product%, data.ini, SavedVariables, Product
-		iniwrite, %Batch%, data.ini, SavedVariables, Batch
-		iniwrite, %Batch1%, data.ini, SavedVariables, Batch1
-		; loop 3 {
-			; n:=A_index-1
-			; Temp:=Product[n]
-			; iniwrite, %Temp%, data.ini, SavedVariables, % Product[n]
-			; }	
-		; iniwrite, %Product0%, data.ini, SavedVariables, Product0
-		; iniwrite, %Product1%, data.ini, SavedVariables, Product1
-		; iniwrite, %Product2%, data.ini, SavedVariables, Product2
-		; iniwrite, %Product3%, data.ini, SavedVariables, Product3
-		iniwrite, %Batch0%, data.ini, SavedVariables, Batch0
+		iniwrite, %Product%, data.ini, Products, Product
+		iniwrite, %Batch%, data.ini, Batches, Batch
+		; iniwrite, %Batch1%, data.ini, SavedVariables, Batch1
+		loop 3 {
+			n:=A_index
+			Item:=Product%n%
+			iniwrite, %Item%, data.ini, Products, Product%n%
+			; Item:=Batch%n%
+			; iniwrite, %Item%, data.ini, Batches, Batch%n%
+			}	
+		; iniwrite, %Product0%, data.ini, Products, Product0
+		; iniwrite, %Product1%, data.ini, Products, Product1
+		; iniwrite, %Product2%, data.ini, Products, Product2
+		; iniwrite, %Product3%, data.ini, Products, Product3
+		; iniwrite, %Batch0%, data.ini, SavedVariables, Batch0
 		iniwrite, %Lot%, data.ini, SavedVariables, Lot
 		iniwrite, %Coated%, data.ini, SavedVariables, Coated
 		iniwrite, %SampleID%, data.ini, SavedVariables, SampleID

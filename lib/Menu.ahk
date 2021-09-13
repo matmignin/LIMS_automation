@@ -306,17 +306,17 @@ Variable:
 
   Passwords:
     if (A_ThisMenuItem = "Samples")
-    sendinput, care{enter}
+    SendInput, care{enter}
    else if (A_ThisMenuItem = "Tests")
-    Sendinput, lab{enter}
+    SendInput, lab{enter}
    else if (A_ThisMenuItem = "Visual")
-    Sendinput, open{enter}
+    SendInput, open{enter}
    else if (A_ThisMenuItem = "&VQ Login")
-    Sendinput, ?Kilgore7744{enter}
+    SendInput, ?Kilgore7744{enter}
    else if (A_ThisMenuItem = "&Kilgore")
-    Sendinput, Kilgore7744{enter}
+    SendInput, Kilgore7744{enter}
    else if (A_ThisMenuItem = "&LMS Login")
-    Sendinput,Mmignin{tab}Kilgore7744{enter}
+    SendInput,Mmignin{tab}Kilgore7744{enter}
    else
     Menu,Menu, deleteAll
    return
@@ -382,34 +382,34 @@ Variable:
    return
 Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
-      sendinput,{Click 182, 97}10.1.2.153{enter}
+      SendInput,{Click 182, 97}10.1.2.153{enter}
       winwaitactive, Windows Security,,2
       if !errorlevel
-      sendinput, Kilgore7744{enter}
+      SendInput, Kilgore7744{enter}
       return
       }
     if (A_thisMenuItem = "TEST_LMS")
-      sendinput,{Click 182, 97}10.1.2.152{enter}
+      SendInput,{Click 182, 97}10.1.2.152{enter}
     if (A_thisMenuItem = "TEST_NuGen")
-      sendinput,{Click 182, 97}10.1.2.150{enter}
+      SendInput,{Click 182, 97}10.1.2.150{enter}
     if (A_thisMenuItem = "TEST_SDMS")
-      sendinput,{Click 182, 97}10.1.2.149{enter}
+      SendInput,{Click 182, 97}10.1.2.149{enter}
     if (A_thisMenuItem = "PRD_Citrix_One")
-      sendinput,{Click 182, 97}10.1.2.134{enter}
+      SendInput,{Click 182, 97}10.1.2.134{enter}
     if (A_thisMenuItem = "PRD_Citrix_Two")
-      sendinput,{Click 182, 97}10.1.2.226{enter}
+      SendInput,{Click 182, 97}10.1.2.226{enter}
     if (A_thisMenuItem = "PRD_Citrix_Three")
-      sendinput,{Click 182, 97}10.1.2.227{enter}
+      SendInput,{Click 182, 97}10.1.2.227{enter}
     if (A_thisMenuItem = "LMS_PRD")
-      sendinput,{Click 182, 97}10.1.2.138{enter}
+      SendInput,{Click 182, 97}10.1.2.138{enter}
     if (A_thisMenuItem = "NuGenesis")
-      sendinput,{Click 182, 97}10.1.2.164{enter}
+      SendInput,{Click 182, 97}10.1.2.164{enter}
     if (A_thisMenuItem = "SDMS")
-      sendinput,{Click 182, 97}10.1.2.142{enter}
+      SendInput,{Click 182, 97}10.1.2.142{enter}
     if (A_thisMenuItem = "PRD_EMPCitrix")
-      sendinput,{Click 182, 97}10.1.2.242{enter}
+      SendInput,{Click 182, 97}10.1.2.242{enter}
     if (A_thisMenuItem = "Empower")
-      sendinput,{Click 182, 97}10.1.2.228{enter}
+      SendInput,{Click 182, 97}10.1.2.228{enter}
     else
       Try Menu,Menu, deleteAll
     return
@@ -422,7 +422,7 @@ Remote_Desktop:
     sleep 200
     Send,mmignin{tab}Kilgore7744
     if A_thismenuItem contains &Login
-    send,{enter}
+    Send,{enter}
    else if A_thismenuItem contains &Production Server
     SwitchEnv("Prd")
    else if A_thismenuItem contains &Test Server

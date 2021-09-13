@@ -31,11 +31,11 @@ class Breaking {
 		if ThisWindow contains, Inbox - mmignin@vitaquest.com - Outlook
 			return
 		if ThisWindow contains, PDF Preview - \\Remote, OneNote for Windows 10,ahk_exe OUTLOOK.EXE,OneNote for Windows 10,ahk_exe explorer.exe,
-			send, {altdown}{F4}{altup}
+			Send, {altdown}{F4}{altup}
 		if ThisWindow contains,Results Definition - \\Remote
-			send, {esc}
+			Send, {esc}
 		if ThisWindow contains,ahk_exe firefox.exe, ahk_exe Code.exe, ahk_exe msedge.exe, 
-			send, {ctrldown}{w}{ctrlup}
+			Send, {ctrldown}{w}{ctrlup}
 		if ThisWindow contains, NuGenesis LMS - \\Remote
 			LMS.FilterClear()
 		if ThisWindow contains,Adobe Acrobat Reader
@@ -53,12 +53,12 @@ class Breaking {
 	; else If winactive("NuGenesis LMS - \\Remote")
 	; 	LMS.FilterClear()
 	; else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") {
-	; 	send, ^{w}
+	; 	Send, ^{w}
 	; 	sleep 400
 	; 	return
 	; }
 	; else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for Windows 10") {
-	; 	send, {altdown}{F4}{altup}
+	; 	Send, {altdown}{F4}{altup}
 	; 	sleep 400
 	; 	return
 	; }
@@ -73,7 +73,7 @@ class Breaking {
 	; 	return
 	; }
 	; else if winactive("Adobe Acrobat Reader"){
-	; 	send, ^q
+	; 	Send, ^q
 	; 	sleep 400
 	; }
 	; else
@@ -92,7 +92,7 @@ class Breaking {
 	; 	Send, {altdown}{F4}{altup}
 	; }
 	; else if winactive("Results Definition - \\Remote"){
-   ;  send, {esc}
+   ;  Send, {esc}
    ;  return
 	; }
 	; ; else if winactive("Composition - \\Remote"){
@@ -104,12 +104,12 @@ class Breaking {
 	; else If winactive("NuGenesis LMS - \\Remote")
 	; 	LMS.FilterClear()
 	; else if WinActive("ahk_exe firefox.exe") || winactive("ahk_exe msedge.exe") || winactive("ahk_exe Code.exe") {
-	; 	send, ^{w}
+	; 	Send, ^{w}
 	; 	sleep 400
 	; 	return
 	; }
 	; else if WinActive("ahk_exe explorer.exe") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for Windows 10") {
-	; 	send, {altdown}{F4}{altup}
+	; 	Send, {altdown}{F4}{altup}
 	; 	sleep 400
 	; 	return
 	; }
@@ -124,7 +124,7 @@ class Breaking {
 	; 	return
 	; }
 	; else if winactive("Adobe Acrobat Reader"){
-	; 	send, ^q
+	; 	Send, ^q
 	; 	sleep 400
 	; }
 	; else
@@ -162,7 +162,7 @@ WindowNameMenu:
  sleep 200
  InputVar:=A_ThisMenuItem
  IniRead,vOutput, WindowNames.ini, WindowNames, %InputVar%
- Sendinput, %vOutput%{enter}
+ SendInput, %vOutput%{enter}
 return
 }
 
@@ -234,7 +234,7 @@ WindowInfo(){
 
 DoublePress(action,SecondAction:="", ToolTip:=""){
 	If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
-		send, % action "{shiftup}{altup}{ctrlup}{lwinup}"
+		Send, % action "{shiftup}{altup}{ctrlup}{lwinup}"
 		tt(ToolTip)
 	}
 	Else
@@ -243,9 +243,9 @@ DoublePress(action,SecondAction:="", ToolTip:=""){
 	}
 
 FlashScreen(){
-	send, #^{c}
+	Send, #^{c}
 	sleep 40
-	send, #^{c}
+	Send, #^{c}
 	return
 	}
 
@@ -321,7 +321,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 ReloadScript(){
 	global
 	TT("`n `n - `t `t  Reload   `t `t -`n `n ")
-	send,{ctrldown}{s}{altup}{CtrlUp}{ShiftUp}{LWinUp}
+	Send,{ctrldown}{s}{altup}{CtrlUp}{ShiftUp}{LWinUp}
 	sleep 200
 	; try
 		run, VQuest.ahk
@@ -341,8 +341,8 @@ LogError(exception) {
 
 	GotoError(){
 		global
-		send, {F9}{:}%ErrorLine%{enter}
-		; send, {F9}{:}%Errorline%{enter}
+		Send, {F9}{:}%ErrorLine%{enter}
+		; Send, {F9}{:}%Errorline%{enter}
 		return
 	}
 class click{
@@ -365,9 +365,9 @@ class click{
 		else if winActive("Results Definition - \\Remote")
 			clk(951, 751)
 		; else if winActive("Barcode Scanner - \\Remote")
-			; send, {enter},
+			; Send, {enter},
 		else if winActive("Microsoft Excel Security Notice - \\Remote")
-			send, !y
+			Send, !y
 		else if winActive("Reason For Change - \\Remote")
 			clk(229, 236)
 		else if winactive("New Document - \\Remote")
@@ -381,12 +381,12 @@ class click{
 			clk(148, 104)
 			winactivate, Register new samples - \\Remote
 			clk(181, 104, 2)
-			send, %product%{enter}
+			Send, %product%{enter}
 		}
 		else if winexist("Change Configuration - \\Remote")
 			clk(131, 296,"Change Configuration - \\Remote")
 		Else
-			send,{enter}
+			Send,{enter}
 		return
 	}
 
@@ -394,7 +394,7 @@ class click{
 		if winexist("Change Configuration - \\Remote")
 			click 342, 296
 		Else
-			send,{esc}
+			Send,{esc}
 		return
 	}
 
@@ -525,12 +525,12 @@ Mouse_RbuttonUP(){
 	#inputlevel 1
 	suspend, On
 	sleep 50
-	; send,{AppsKey}
+	; Send,{AppsKey}
 	Click, Right
-	; send,{rbutton}
+	; Send,{rbutton}
 	; sleep 200
 	; MouseClick, Right,,,1, 0, U
-	; sendinput,{esc}
+	; SendInput,{esc}
 	suspend, Off
 	#inputlevel 0
 	return
@@ -611,7 +611,7 @@ Mouse_Click(Link){
 	else if Link contains Edit
 		click 84, 65
 	else if Link Contains Main_EditTest
-		Sendinput,{click, 56, 784 }
+		SendInput,{click, 56, 784 }
 	else if Link Contains Add_Formulation
 		click, 73, 280
 	else if Link contains AddNewSampleTemplate
@@ -622,12 +622,12 @@ Mouse_Click(Link){
 		Click 341, 618
 	else if Link contains Select_TestsForRequests
 	{
-		sendinput,{Click 500, 340}{click, 845, 658}
+		SendInput,{Click 500, 340}{click, 845, 658}
 		winwaitactive, Edit request - \\Remote, ,3
-		sendinput,{tab}{enter}
+		SendInput,{tab}{enter}
 	}
 	else if Link Contains Products_Tab
-		Sendinput,{click, 550, 35}{tab}%Product%+{Tab 7}
+		SendInput,{click, 550, 35}{tab}%Product%+{Tab 7}
 	else if Link contains SearchBar_Product
 	{
 		if winactive("Select methods tests - \\Remote")
@@ -640,9 +640,9 @@ Mouse_Click(Link){
 			;click 366, 44
 			;sleep 300
 			click 518, 89, 2
-			sendinput, %Product%
+			SendInput, %Product%
 			sleep 200
-			send,{enter}
+			Send,{enter}
 		}
 		return
 	}
@@ -658,21 +658,21 @@ Mouse_Click(Link){
 			click 783, 45
 			sleep 400
 			click 487, 125, 2
-			sendinput, %Batch%
+			SendInput, %Batch%
 			sleep 200
-			send,{enter}
+			Send,{enter}
 			winwaitactive, Warning - \\Remote, ,2
 			if errorlevel
 				return
 			else
-				sendinput,{esc}
+				SendInput,{esc}
 			return
 		}
 		Return
 	}
 	else
 		msgbox, yo
-	send, %mouseReturn%
+	Send, %mouseReturn%
 	return
 }
 
@@ -682,35 +682,35 @@ Mouse_Click(Link){
 
 SendPassword(){
 	if winactive("Remote Desktop")
-		sendinput, mmignin{tab}{K}ilgore7744{enter}
-	; sendinput, ?+{K}ilgore7744{enter}
+		SendInput, mmignin{tab}{K}ilgore7744{enter}
+	; SendInput, ?+{K}ilgore7744{enter}
 	if WinExist("ahk_exe ONENOTE.EXE Protected Section"){
 		winactivate
-		sendinput, {K}ilgore7744{enter}
+		SendInput, {K}ilgore7744{enter}
 	}
 	if WinExist("Login - \\Remote"){
 		winactivate
-		sendinput, mmignin{tab}{K}ilgore7744{enter}
+		SendInput, mmignin{tab}{K}ilgore7744{enter}
 	}
 	Else If Winexist("Sign :"){
 		winactivate,
-		sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
+		SendInput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
 	}
 	else if winexist("Windows Security"){
 		winactivate,
-		sendinput, Kilgore7744{enter}
+		SendInput, Kilgore7744{enter}
 	}
 	else if winexist("CredentialUIBroker.exe"){
 		winactivate,
-		sendinput, Kilgore7744{enter}
+		SendInput, Kilgore7744{enter}
 	}
 	else
-		sendinput, +{K}ilgore7744{enter}
+		SendInput, +{K}ilgore7744{enter}
 	return
 }
 
 CreditCard(){
-	sendinput, 4130220009588038
+	SendInput, 4130220009588038
 	TT("11/21 127",5000)
 	return
 }
@@ -721,7 +721,7 @@ CreditCard(){
 
 PasteScreenshot(){
 	sleep 200
-	sendinput, +^{4}
+	SendInput, +^{4}
 	sleep 200
 	KeyWait, LButton, d
 	MouseClick, left,,, 1, 0, D
@@ -732,12 +732,12 @@ PasteScreenshot(){
 	KeyWait, F20,
 	KeyWait, F21,
 	MouseClick, left,,, 1, 0, u
-	send,{enter}
+	Send,{enter}
 	sleep 200 ;screenshot"}
 	WinActivate, %mwin%
 	sleep 200
 	; CLICK, %Mx%, %My%
-	send, ^v
+	Send, ^v
 	return
 	}
 

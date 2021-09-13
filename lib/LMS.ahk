@@ -12,14 +12,14 @@ SearchBar(Code:="",PostCmd:=""){
 			ControlGetText, SampleId, Edit5, VarBar
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
-					send, {ctrlup}
+					Send, {ctrlup}
 			exit
 		}
 		if winactive("Select methods tests - \\Remote")
 			clk(246,77, 2)
 		else If winactive("Register new samples - \\Remote") {
 			Clk(180, 103, 2)
-			send, %Product%{enter}
+			Send, %Product%{enter}
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
 			LMS.Orient()
@@ -27,10 +27,10 @@ SearchBar(Code:="",PostCmd:=""){
 			if (Tab="Products") {
 				If (Code=Product){
 					clk(x%Tab%Search,yProductsSearch)
-					send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
+					Send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
 					if PostCmd!=""
 						send % PostCmd
-					send, {ctrlup}	
+					Send, {ctrlup}	
 				exit
 				}
 					If (Code=Batch) {
@@ -43,10 +43,10 @@ SearchBar(Code:="",PostCmd:=""){
 			if (Tab="Specs") {
 				If (Code=Product) {
 				clk(x%Tab%Search,yProductsSearch)
-					send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
+					Send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
 					if PostCmd!=""
 						send % PostCmd
-					send, {ctrlup}	
+					Send, {ctrlup}	
 				exit
 				}
 				If (Code=Batch) {
@@ -57,20 +57,20 @@ SearchBar(Code:="",PostCmd:=""){
 			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 					clk(x%Tab%Search,yWorkTabSearch,,2)
 					; clk(x%Tab%Search,yWorkTabSearch)
-				send,{ctrldown}{a}{ctrlup}%code%
+				Send,{ctrldown}{a}{ctrlup}%code%
 				if PostCmd!=""
 					send % PostCmd
-							send, {ctrlup}
+							Send, {ctrlup}
 				exit
 			}
 			If (Tab="Requests") {
 					clk(x%Tab%Search-40,yWorkTabSearch,,2)
 					sleep 20
 					clk(x%Tab%Search,yWorkTabSearch)
-				send,{ctrldown}{a}{ctrlup}%Code%
+				Send,{ctrldown}{a}{ctrlup}%Code%
 				if PostCmd!=""
 					send % PostCmd
-					send, {ctrlup}
+					Send, {ctrlup}
 				exit
 			}
 		}
@@ -87,7 +87,7 @@ SearchRequest(Code){
 		else
 		sleep 500
 		THIS.searchbar(code)
-		send, {ctrlup}{enter}
+		Send, {ctrlup}{enter}
 		return
 	}
 
@@ -135,9 +135,9 @@ SelectTab(Direction){
 	global TabSelect, yTabSelect
 	winactivate, NuGenesis LMS - \\Remote
 	send % clk(TabSelect,45)
-	send, {down %direction%}
+	Send, {down %direction%}
 	sleep 60
-	send, {ctrldown}{enter}{ctrlup}
+	Send, {ctrldown}{enter}{ctrlup}
 }
 SelectWorkTab(TabSelect){
 	global
@@ -179,12 +179,12 @@ MoveTab2(Direction){
 			else if Tab1
 				clk(xTab2,47) ;"{down 9}{enter}"
 			else 
-				sendinput % clk(TabSelect,47) "{up}{enter}"
+				SendInput % clk(TabSelect,47) "{up}{enter}"
 			return
 			}
 		if (Direction="Left") {
 			If Tab2
-				sendinput % clk(TabSelect,47) "{Up}{enter}"
+				SendInput % clk(TabSelect,47) "{Up}{enter}"
 			else if Tab3
 				clk(xTab2,47) ; "{down 2}{enter}"
 			else if Tab4
@@ -210,7 +210,7 @@ MoveTab2(Direction){
 			{
 				if (Tab="Samples"){
 					Mouse_Save()
-					send, {click 83, 708}{click, %RequestsTab%, %yMyWorkTabs%}%MouseReturn%
+					Send, {click 83, 708}{click, %RequestsTab%, %yMyWorkTabs%}%MouseReturn%
 				return	
 				}
 				else
@@ -231,8 +231,8 @@ MoveTab2(Direction){
 
 FilterBar(Code:="",PostCmd:=""){
 	global
-		if !winactive("ahk_exe WFICA32.EXE")
-			winactivate, ahk_exe WFICA32.EXE
+	if !winactive("ahk_exe WFICA32.EXE")
+		winactivate, ahk_exe WFICA32.EXE
 	ControlGetText, Batch, Edit2, VarBar
 	ControlGetText, Lot, Edit3, VarBar
 	ControlGetText, Product, Edit1, VarBar
@@ -263,7 +263,7 @@ FilterBar(Code:="",PostCmd:=""){
     else
 			return
 			
-		send, ^{a}%Code%^{a}
+		Send, ^{a}%Code%^{a}
 		sleep 200
 		if PostCmd!=""
 					send % PostCmd
@@ -391,7 +391,7 @@ Filter(x:="Status"){
 		if winactive("NuGenesis LMS - \\Remote")	
 			Clk(xClearFilter,yClearFilter,"Right")
 		sleep 100
-		send, {shiftDown}{Tab 2}{shiftup}{enter}
+		Send, {shiftDown}{Tab 2}{shiftup}{enter}
 		sleep 400
 		; if (LMS.Filter()=Off)
 			; LMS.Filter(On)
@@ -420,7 +420,7 @@ CoA(){
 	; sleep 100
 	clk(xCoa, yWorkTabSearch)
 	sleep 100
-	send, +{Tab}{enter}
+	Send, +{Tab}{enter}
 	}
 
 	ViewCoA(){
@@ -445,7 +445,7 @@ SaveCode(){
 		Send, {CtrlDown}{a}{Ctrlup}
 		clip(1)
 		sleep 200
-		send, {enter}
+		Send, {enter}
 		FileAppend, %Batch% `n, Batch.txt
 		FileAppend, %product% `n, Products.txt
 		iniwrite, %Batch%, Codes.ini, %Batch%,

@@ -13,27 +13,27 @@
 		menu.LMS()
 	} Else If Winexist("Delete Test - \\Remote "){
 		winactivate,
-		Sendinput,{enter}
+		SendInput,{enter}
 	} Else If Winexist("Select Iterations - \\Remote"){
 		winactivate,
-		send, +^v
+		Send, +^v
 	} Else If winactive("Select Product - \\Remote"){
 		Excel.Connect()
-		sendinput,{click 106, 64}%Product%{enter}{enter}
+		SendInput,{click 106, 64}%Product%{enter}{enter}
 		return
 	} Else If winactive("Edit specification - \\Remote"){
 		; ProductTab.EditProduct()
 		menu.LMS()
 	} Else If winactive("New Document - \\Remote"){
-		sendinput, %Product%
+		SendInput, %Product%
 	} else if winactive("Microsoft Excel Security Notice - \\Remote"){
-		send, !y
+		Send, !y
 		;------------------------------------------
 	} Else If winactive("Edit Product - \\Remote"){
 		;iniread, Product, data.ini, Products, 1
 		ProductTab.EditProduct()
 	} Else If winactive("Edit Formulation - \\Remote"){
-		sendinput,{tab}%Product%+{tab 7}
+		SendInput,{tab}%Product%+{tab 7}
 	} Else If winactive("Composition - \\Remote"){
 		ProductTab.Table()
 	} Else If winactive("Edit Ingredient - \\Remote"){
@@ -45,7 +45,7 @@
 	} Else If winactive("Result Editor - \\Remote") || winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote"){
 		SpecTab.Table()
 	} Else If winactive("Edit sample template - \\Remote"){
-		sendinput,{tab}{delete 4}%Product%{enter}
+		SendInput,{tab}{delete 4}%Product%{enter}
 	} Else If winactive("Select methods tests - \\Remote"){
 		clk(225, 69,, 2)
 		; Mouse_Click("SearchBar_SelectMethodsTests") ;eliminating mouseclick funct
@@ -62,14 +62,14 @@
 		WorkTab.ChangeTestResults("toggle")
 	} else if winexist("Reason For Change - \\Remote"){
 		winactivate, Reason For Change - \\Remote
-		sendinput,{click 143, 118}Fixing Rotation{click 240, 239}
+		SendInput,{click 143, 118}Fixing Rotation{click 240, 239}
 		TT("Fixing Rotation",2000)
 				return
 	} else if Winactive("Register new samples - \\Remote"){
 			If Option = 0
 				WorkTab.registerNewSamples()
 			else{
-				sendinput,{Click 200, 134}
+				SendInput,{Click 200, 134}
 				sleep 300 ;register new sample
 				WinWaitActive, Error - \\Remote,, 4
 					if !ErrorLevel
@@ -83,9 +83,9 @@
 					sleep 50
 					; click 181, 103,
 					sleep 300
-					send, %product%
+					Send, %product%
 					sleep 300
-					send, {enter}
+					Send, {enter}
 					return
 					; }
 				; click.RegisterNewSamples()
@@ -99,15 +99,15 @@
 		WorkTab.registerNewSamples() ;
 
 	} Else If winactive("Find and Replace"){
-		sendinput, %Product%
+		SendInput, %Product%
 	} Else If winactive("Select Product - \\Remote"){ ; rotation testing product select
-		sendinput,{click 108, 67}%product%{enter 2}
+		SendInput,{click 108, 67}%product%{enter 2}
 	} Else If Winexist("Release:"){
 		winactivate,
-		sendinput,{tab}{enter}
+		SendInput,{tab}{enter}
 		sleep 200
 		ifwinactive, Sections Exceeding - \\Remote
-			send,{enter}
+			Send,{enter}
 		return
 
 	; } Else If Winexist("Approve specification - \\Remote"){
@@ -123,13 +123,13 @@
 		winactivate, Register new samples - \\Remote
 	} Else If Winexist("Sign :"){
 		winactivate,
-		sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
+		SendInput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
 	}	Else If winactive("Edit test (Field Configuration:"){
 			WorkTab.AddTestDescription("(on sample log)")
 
 
 	} Else If winactive("Paster - Snipaste ahk_exe Snipaste.exe"){
-		send, ^-^-
+		Send, ^-^-
 
 	} else
 		return

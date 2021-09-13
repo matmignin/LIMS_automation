@@ -13,10 +13,10 @@ ConvertIngredientSelection(IngredientSelection){
  sleep 140
  AbsSelection:=Abs(IngredientSelection)-1
  if (IngredientSelection > 0)
-  msgbox, %ingredientSelection% ; sendinput,{home}{right %IngredientSelection%}
+  msgbox, %ingredientSelection% ; SendInput,{home}{right %IngredientSelection%}
  if (IngredientSelection < 0)
-  msgbox, %AbsSelection% ;Sendinput,{tab}{end}{left %Absselection%}
+  msgbox, %AbsSelection% ;SendInput,{tab}{end}{left %Absselection%}
  sleep 300
- ; send,{enter}
+ ; Send,{enter}
 return
 }

@@ -148,7 +148,7 @@ return
 Test_1(){
 global
 clipboard:=
-send, ^c
+Send, ^c
 clipwait, 1
 
 ; SplitLMSSample(){
@@ -387,12 +387,12 @@ Global
 ; MouseClick, left,,, 1, 0, D
 ; 				keywait, Lbutton, U
 ; 				MouseClick, left,,, 1, 0, U
-; 				send, ^c
+; 				Send, ^c
 ; 				clipwait, 0.8
 ; 	sleep 200
 ; 	winactivate, %The_wintitle%
 ; 	; click, %caret_X%, %caret_y%
-; 	send, {click, %caret_x%, %caret_y%}^{v}
+; 	Send, {click, %caret_x%, %caret_y%}^{v}
  
 
 ClipHandler:
@@ -562,7 +562,7 @@ return
 AddCanceled(){
  ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
  	winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
- sendinput,{click 399, 219}{end}'(Canceled'){enter}
+ SendInput,{click 399, 219}{end}'(Canceled'){enter}
 }
 
 
@@ -570,16 +570,16 @@ ToggleFilter_Test_1(){
  ifwinnotactive, NuGenesis LMS - \\Remote
  WinActivate, NuGenesis LMS - \\Remote
  click 489, 836, R
- sendinput,{down 2}{enter}
+ SendInput,{down 2}{enter}
 }
 
 FilterSearch_Test(TestName:="", MethodName:=""){
  ifwinnotactive, NuGenesis LMS - \\Remote
  WinActivate, NuGenesis LMS - \\Remote
  click 1230, 648 ;click name Divider
- send, ^a%TestName%{enter}
+ Send, ^a%TestName%{enter}
  click 1067, 647 ; click method ID Divider
- send, ^a%MethodName%{enter}{tab 4}
+ Send, ^a%MethodName%{enter}{tab 4}
 }
 
 ListArray(The_Array){

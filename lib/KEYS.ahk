@@ -5,7 +5,7 @@
 _TestingZone:
 Volume_Mute::
 sendlevel 1
-send, {F23}
+Send, {F23}
 sendlevel 0
 return
 ; drag_enabled := 0
@@ -73,7 +73,7 @@ F13 & wheelup::			Varbar.AddIteration()
 F13 & wheeldown::   		Varbar.SubIteration()
 ; ^wheelup::   	
 ; 	tt("wheelup", 500)
-; 	send, !
+; 	Send, !
 ; 	blockinput, mousemove
 ; 	sleep 500
 ; 	blockinput, mousemoveoff
@@ -94,7 +94,7 @@ F13 & wheeldown::   		Varbar.SubIteration()
 ; return
 f10::F21
 F11::F22
-F12::send, {altdown}{tab}{altup}
+F12::Send, {altdown}{tab}{altup}
 #if (N=1)
 	wheelDown::return
 	wheelup::return
@@ -108,7 +108,7 @@ F12::send, {altdown}{tab}{altup}
 	pause::					Suspend, Toggle
 	; F15::							+tab
 	F17::								menu.Apps()
-	; F16::							send, !{tab}
+	; F16::							Send, !{tab}
 	j & k::							esc
 	j::j
 	k::k
@@ -120,59 +120,59 @@ F12::send, {altdown}{tab}{altup}
 	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
 	F19 & wheelleft::				gosub, F6
 	F19 & wheelright::			GoSub, F7  
-	;Media_Next::					send, {shiftdown}{altdown}{tab}{altup}{shiftup}
-	;Media_Prev::					send, {altdown}{tab}{altup}
-	;Volume_Down::					send, {lwindown}{tab}{lwinup}
-	$#F7::							send, {lwindown}{right}{lwinup}
-	$#F6::							send, {lwindown}{left}{lwinup}
-	$#F9::							send, {lwindown}{up}{lwinup}
-	$#F8::							send, {lwindown}{down}{lwinup}
-	$!F7::							send, {laltdown}{right}{laltup}
-	$!F6::							send, {laltdown}{left}{laltup}
-	$!F9::							send, {laltdown}{up}{laltup}
-	$!F8::							send, {laltdown}{down}{laltup}
+	;Media_Next::					Send, {shiftdown}{altdown}{tab}{altup}{shiftup}
+	;Media_Prev::					Send, {altdown}{tab}{altup}
+	;Volume_Down::					Send, {lwindown}{tab}{lwinup}
+	$#F7::							Send, {lwindown}{right}{lwinup}
+	$#F6::							Send, {lwindown}{left}{lwinup}
+	$#F9::							Send, {lwindown}{up}{lwinup}
+	$#F8::							Send, {lwindown}{down}{lwinup}
+	$!F7::							Send, {laltdown}{right}{laltup}
+	$!F6::							Send, {laltdown}{left}{laltup}
+	$!F9::							Send, {laltdown}{up}{laltup}
+	$!F8::							Send, {laltdown}{down}{laltup}
 	+Backspace::					backspace
-	+^z::								send, {shiftup}{Ctrldown}{y}{CtrlUp}
-	~<+rshift::						send, {lwindown}{right}{lwinup}
-	~>+lshift::						send, {lwindown}{left}{lwinup}
-	; ~Rshift & up:: 			sendinput, %SampleID%
+	+^z::								Send, {shiftup}{Ctrldown}{y}{CtrlUp}
+	~<+rshift::						Send, {lwindown}{right}{lwinup}
+	~>+lshift::						Send, {lwindown}{left}{lwinup}
+	; ~Rshift & up:: 			SendInput, %SampleID%
 	lshift & Appskey::			Return
-	<^;::	 							sendinput, %DateString%
+	<^;::	 							SendInput, %DateString%
 	rshift & Appskey::			return
-	; / & up:: 			sendinput, %SampleID%
-	; ~Lbutton & left:: 			sendinput, %SampleID%
-	; ~Lbutton & Down:: 			sendinput, %Coated%
-	; ~Lbutton & right::			sendinput, %Lot%
-	; ~Lbutton & up::	 			sendinput, %SampleID%
+	; / & up:: 			SendInput, %SampleID%
+	; ~Lbutton & left:: 			SendInput, %SampleID%
+	; ~Lbutton & Down:: 			SendInput, %Coated%
+	; ~Lbutton & right::			SendInput, %Lot%
+	; ~Lbutton & up::	 			SendInput, %SampleID%
 	Lbutton & F20::          	
 										BlockInput, on
 										sleep 25
-										send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+										Send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
 										blockinput, off
 										sleep 200
 										return
-	Lbutton & F19::          	sendinput, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	Lbutton & F19::          	SendInput, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	Lbutton & left::          	
 	sleep 200
 	clip("OCR")
 	sleep 200
 	return
-	Lbutton & down::           send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	^Media_Next::					MakeTransparent()
-	/ & space::						send, %Coated%
-	/ & .::							send, {?}
-	/ & right::	 					send, %Lot%
-	/::	 							send, /
+	/ & space::						Send, %Coated%
+	/ & .::							Send, {?}
+	/ & right::	 					Send, %Lot%
+	/::	 							Send, /
 	; ` & space::						Test(Iteration) 
 	` & 1::							Test_1()
 	` & 2::							Test_2()
 	` & 3::							Test_3()
 	`::	 							sendraw, ``
-	~>+lbutton::					send,{shiftDown}{click}{shiftup}
-	F20 & up::						send, %SampleID%
-	F20 & left::					send, %lot%
-	F20 & right::					send, %coated%
-	F20 & s::	 					send, %SampleID%
+	~>+lbutton::					Send,{shiftDown}{click}{shiftup}
+	F20 & up::						Send, %SampleID%
+	F20 & left::					Send, %lot%
+	F20 & right::					Send, %coated%
+	F20 & s::	 					Send, %SampleID%
 	$Numlock::						4tap() ;Clip.Paste()      	
 	; F20 up:: 	               Clip.Copy()
 	; F19 up::      	       		Clip.paste()
@@ -188,27 +188,27 @@ F19_And_F20:
 	F20 & 0::             	SavedWindow_Restore()
 	F13 & esc::					Varbar.reset()	
 	F19 & \::             	CreditCard()
-	; F19 & Space::         	send, %product%
-	; F20 & Space::         	Sendinput, %batch%
-	F19 & backspace::     	send,{delete}
+	; F19 & Space::         	Send, %product%
+	; F20 & Space::         	SendInput, %batch%
+	F19 & backspace::     	Send,{delete}
 	F20 & Rshift::
 	F20 & Insert::        	Clip("OCR")
 	F20 & F7::            	Excel.NextSheet()
 	F20 & F6::            	Excel.PrevSheet()
 	F20 & esc::     			run, Taskmgr.exe
-	F20 & backspace::     	send, {delete}
+	F20 & backspace::     	Send, {delete}
 	F20 & \::             	Sendpassword()
 	F20 & .::             	WindowInfo()
 	F20 & o:: 				 	OpenApp.Outlook()
-	F20 & =::             	send,{CtrlDown}{=}{Ctrlup}
-	F20 & -::             	send,{CtrlDown}{-}{Ctrlup}
+	F20 & =::             	Send,{CtrlDown}{=}{Ctrlup}
+	F20 & -::             	Send,{CtrlDown}{-}{Ctrlup}
 	F19 & enter::			 	varbar.focus("Edit1")
 	F20 & enter::			 	varbar.focus("Edit2")
 	F20 & ,::					varbar.Focus("Edit2")
 
 
 	F20 & l::             	OpenApp.LMS()
-	F20 & F19::           	send, {F22}
+	F20 & F19::           	Send, {F22}
 	; F19 & lbutton::       	^Lbutton
 
 	F19 & Media_Play_pause::
@@ -231,15 +231,15 @@ F19_And_F20:
 
 Double_press_For_Enter:
 #If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F21 & Space" || A_PriorHotKey = "F20 & Space") && (A_TimeSincePriorHotkey < 2000) 
-	; F19 & space::           send, {enter}
-	; $space::              send, {enter} 
-	$rshift::               send, {tab}
-	F20 & Space::           send, {enter}
-	F21 & Space::           send, {enter}
+	; F19 & space::           Send, {enter}
+	; $space::              Send, {enter} 
+	$rshift::               Send, {tab}
+	F20 & Space::           Send, {enter}
+	F21 & Space::           Send, {enter}
 
 #If (A_PriorhotKey = "F19" || A_PriorHotKey = "F20" || A_PriorHotKey = "F21 & Space") && (A_TimeSincePriorHotkey < 5000) 
-	$rshift::								send, {tab}
-	; $space::								send, {enter}
+	$rshift::								Send, {tab}
+	; $space::								Send, {enter}
 #if 
 
 _Lbuton:
@@ -250,14 +250,14 @@ _Lbuton:
 			tt("ye")
 			return
 #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
-;   space::             send, {ctrldown}{click}{ctrlup}
-  F19::               send, {F21}
+;   space::             Send, {ctrldown}{click}{ctrlup}
+  F19::               Send, {F21}
   .::                 WindowInfo()
-  v::                 send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-  F20::               send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-  left::              send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
-  down::              send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-  e::                 send,{LWinDown}{e}{lwinup}
+  v::                 Send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+  F20::               Send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+  left::              Send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+  down::              Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+  e::                 Send,{LWinDown}{e}{lwinup}
   o::                 OpenApp.Outlook()
   d::                 LMS.Orient()
   w::                 OpenApp.Workbook()
@@ -277,17 +277,17 @@ _Lbuton:
 		else If winactive("Select methods tests - \\Remote")
 			SpecTab.Methods()
 		else If WinActive("Composition - \\Remote")
-			send, {enter}
+			Send, {enter}
 		else If WinActive("Test Definition Editor - \\Remote")
 			clk(330, 619) ;click save
 		else If WinActive("Results Definition - \\Remote")
-			send, {enter}
+			Send, {enter}
 		else if winactive("Register new samples - \\Remote")
 			clk(502, 354)
 		else if winactive("Select samples for test:")
 			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
 		else	
-			; send, {WheelRight}
+			; Send, {WheelRight}
 		return
 	}
 
@@ -296,23 +296,23 @@ _Lbuton:
 		If winactive("NuGenesis LMS - \\Remote")
 			LMS.SearchBar(Product,"{enter}")
 		else If winactive("Select methods tests - \\Remote")
-			send, {esc}
+			Send, {esc}
 		else If WinActive("Composition - \\Remote")
-			send, {esc}
+			Send, {esc}
 		else If WinActive("Test Definition Editor - \\Remote")
-			send, {esc}
+			Send, {esc}
 		else If WinActive("Results Definition - \\Remote")
-			send, {esc}
+			Send, {esc}
 		else if winactive("Edit test (Field Configuration:")
-			send, {esc}
+			Send, {esc}
 		else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
 			WorkTab.ChangeTestResults("toggle")
 		else if winactive("Register new samples - \\Remote")
-			send, {esc}
+			Send, {esc}
 		else if winactive("Select samples for test:")
-			send, {esc}
+			Send, {esc}
 		else 
-			send, {wheelleft}
+			Send, {wheelleft}
 		return
 		}
 
@@ -362,7 +362,7 @@ _Lbuton:
 	Global 
 	if winactive("ahk_exe OUTLOOK.EXE") {
 		click 3
-		send, ^{c}
+		Send, ^{c}
 		clip()
 		return
 	}
@@ -379,7 +379,7 @@ _Lbuton:
 	else if Winactive("NuGenesis LMS - \\Remote") 
 		Menu.Lms()
 	else if winactive("ahk_exe firefox.exe") 
-		send, {ctrldown}{click}{ctrlup}
+		Send, {ctrldown}{click}{ctrlup}
 	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") 
 		Sendpassword()
 	else If Winactive("LMS Workbook.xlsb") 
@@ -406,11 +406,11 @@ _Lbuton:
 	else If Winactive("Select tests for request: R") 
 		WorkTab.SelectTestSample() 
 	else If Winactive("Paster - Snipaste")
-			send, ^c
+			Send, ^c
 	else if Winactive("Snipper - Snipaste") 
-			send, {enter}
+			Send, {enter}
 	else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
-		send, {lwindown}{e}{lwinup}
+		Send, {lwindown}{e}{lwinup}
 	Else 
 	return
 	; }
@@ -439,7 +439,7 @@ _Lbuton:
 					Menu.LMS()
 			}
 			else if winactive("PDF Preview - \\Remote")
-				send, {altdown}{F4}{altup}
+				Send, {altdown}{F4}{altup}
 			Else
 				Send, ^v
 		}
@@ -453,13 +453,13 @@ _Lbuton:
 		else 
 		{ 
 			If winactive("ahk_exe Code.exe")
-				send, {numpadadd}
+				Send, {numpadadd}
 			else If winactive("ahk_exe OUTLOOK.EXE")
 				WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
 			else If winactive("ahk_exe WFICA32.EXE")
 				excel.nextsheet()
 			else
-			sendinput, #{right}
+			SendInput, #{right}
 		}
 		return
 }
@@ -472,13 +472,13 @@ _Lbuton:
 		else
 		{ 
 			If winactive("ahk_exe Code.exe")
-				send, {numpadsub}
+				Send, {numpadsub}
 			else If winactive("ahk_exe OUTLOOK.EXE")
 				WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
 			else If winactive("ahk_exe WFICA32.EXE")
 				excel.Prevsheet()
 			else 
-			sendinput, #{left}
+			SendInput, #{left}
 		}
 			; lms.SampleRequestToggle()
 		return
@@ -497,7 +497,7 @@ _Lbuton:
 			sleep 800
 		}
 		Else
-			send, %batch%
+			Send, %batch%
 		sleep 700
 		return
 		}
@@ -512,7 +512,7 @@ _Lbuton:
 			else If (Tab="Samples")
 				clk(70, 395)
 		Else
-			send, %Product%
+			Send, %Product%
 		sleep 700
 		return
 		}
@@ -522,7 +522,7 @@ _Lbuton:
 	global
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450)
 	{
-		send, {F21}
+		Send, {F21}
 	}
 	else
 		click R
@@ -542,7 +542,7 @@ _Main_LMS_Screen:
 	; F19 & space::Send, %Product%{enter}
 	; F20 & space::Send, %Batch%{enter}
 	F19 & /::Send, %lot%{enter}
-	~Lbutton & F19::send,{enter}
+	~Lbutton & F19::Send,{enter}
 	Enter::LMS.SaveCode()
 	numpaddot::blockrepeat(500) excel.connect(1)
 	; numpadadd::
@@ -557,9 +557,9 @@ _Main_LMS_Screen:
 	; 	else
 	; 		lms.SampleRequestToggle()
 	; 	return
-	; F20::send, ^c  
-	; space & lbutton::send, +{click}
-	; space up::sendinput, ^{click}
+	; F20::Send, ^c  
+	; space & lbutton::Send, +{click}
+	; space up::SendInput, ^{click}
 	wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
 	wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
 
@@ -568,7 +568,7 @@ _Main_LMS_Screen:
 _Results_Definition:
 	#IfWinActive, Results Definition - \\Remote
 		wheelup::Mouse_click("Edit")
-		numlock::send, % clk(712, 663) "{esc}"
+		numlock::Send, % clk(712, 663) "{esc}"
 
 
 _Register_new_samples:
@@ -576,7 +576,7 @@ _Register_new_samples:
 		F7:: 
 			clk(181, 104,2,2)
 			sleep 300
-			send, %Product%{enter}
+			Send, %Product%{enter}
 			return
 
 _Result_Entry:
@@ -594,13 +594,13 @@ _LMS_KEYS:
 						return
 _WFICA32:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-	; F20 & Space::			send, %Batch%
-	; F19 & space::			send, %Product%
-	F19 & up::				send, %sampleID%
-	F19 & left::			send, %lot%
-	F19 & right::			send, %coated%
-	F19 & s::	 			send, %SampleID%
-	F21 & /::	 			send, %SampleID%
+	; F20 & Space::			Send, %Batch%
+	; F19 & space::			Send, %Product%
+	F19 & up::				Send, %sampleID%
+	F19 & left::			Send, %lot%
+	F19 & right::			Send, %coated%
+	F19 & s::	 			Send, %SampleID%
+	F21 & /::	 			Send, %SampleID%
 	; $Rbutton up::		Mouse_RbuttonUP()
 	^`::						Varbar.reset()
 	enter::					click.okay()
@@ -619,8 +619,8 @@ _WFICA32:
 	^wheelup::				menu.lms()
 	numpadMult::excel.connect()
 	Rbutton & F19::       	send % WindowInfo() 
-	Rbutton & F6::        	send, {Backspace}
-	Rbutton & Lbutton::   	send, {Enter}
+	Rbutton & F6::        	Send, {Backspace}
+	Rbutton & Lbutton::   	Send, {Enter}
 	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
 
 
@@ -628,7 +628,7 @@ _MouseIsOver:
 	return
 
 #If MouseIsOver("ahk_exe firefox.exe")
-	numpaddot::controlsend, ahk_exe firefox.exe,  ^{w}
+	numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
 #If MouseIsOver("ahk_exe OUTLOOK.EXE")
 	^Wheeldown::Blockrepeat(500) clip()
 	Mbutton::
@@ -655,8 +655,8 @@ _MouseIsOver:
 	; 	sleep 300
 	; 	4tap()
 	; 	return
-	; space & lbutton::send, +{click}
-	; space up::sendinput, ^{click}
+	; space & lbutton::Send, +{click}
+	; space up::SendInput, ^{click}
 #if
   #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
     Wheeldown::LMS.ScrollDown()
@@ -681,13 +681,13 @@ KeyWait, lbutton, T0.25
 		KeyWait, Lbutton, D T5
 		If !ErrorLevel 
 		{
-			send, ^{click 3}
-			send, {CtrlUp}
+			Send, ^{click 3}
+			Send, {CtrlUp}
 		}
 		exit
 	}
-	send, ^{Click 2}
-	send, {CtrlUp}
+	Send, ^{Click 2}
+	Send, {CtrlUp}
 	return
 	}
 

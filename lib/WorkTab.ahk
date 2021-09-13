@@ -20,19 +20,19 @@ registerNewSamples(){
   winwaitactive, Edit sample `(Field Configuration,, 6 
     if ErrorLevel
       exit
-  sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+  SendInput, {tab 2}{right}{click 277, 139}{tab 6}
   IfWinActive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
-    send,{tab}^{a}
-  sendinput, ^{a}%Batch%{tab}^{a}
+    Send,{tab}^{a}
+  SendInput, ^{a}%Batch%{tab}^{a}
   IfWinActive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
   {
-    sendinput,{CtrlDown}{a}{Ctrlup}%Lot%
-    sendinput,{tab 3}
+    SendInput,{CtrlDown}{a}{Ctrlup}%Lot%
+    SendInput,{tab 3}
     sleep 100
   if Coated
-    sendinput, ^{a}%Coated%
+    SendInput, ^{a}%Coated%
     sleep 100
-    sendinput, +{tab 2}
+    SendInput, +{tab 2}
   }
   Breaking.Point()
   sleep 180
@@ -41,7 +41,7 @@ registerNewSamples(){
   This.DropdownSelect(ShipTo)
   sleep 500
   Breaking.Point()
-  sendinput, {enter}
+  SendInput, {enter}
   sleep 200
   blockinput, off
   winactivate, Register new samples - \\Remote
@@ -57,13 +57,13 @@ DropdownSelect(A_ShipTo){
     SetWinDelay, 500
  AbsSelection:=Abs(A_ShipTo)-1
  if (a_shipto = "-1")
-  Sendinput,{end}
+  SendInput,{end}
  else if (a_shipTo = "1")
-  Sendinput,{home}
+  SendInput,{home}
  else if (a_ShipTo > 1)
-  sendinput,{home}{right %A_ShipTo%}{right}
+  SendInput,{home}{right %A_ShipTo%}{right}
  else if (a_ShipTo < 1)
-  Sendinput,{end}{left %Absselection%}{left}
+  SendInput,{end}{left %Absselection%}{left}
     ;setwindelay, 200
  }
 
@@ -99,7 +99,7 @@ DeleteRetain(){
       sleep 200
       if WinExist("Delete Tests - \\Remote")
         ControlSend,, {enter}, Delete Tests - \\Remote
-		  ; send, {enter}
+		  ; Send, {enter}
 		sleep 100
 		; sleep 500
     n--
@@ -117,7 +117,7 @@ NewRequest(){
 ;  sleep 100
  WinActivate, NuGenesis LMS - \\Remote
 click 
- send, ^c
+ Send, ^c
  clip()
  sleep 50
  sleep 400
@@ -136,20 +136,20 @@ click
  click, right, 264, 590 ; click to show filer
  sleep 100
  Breaking.Point()
- send,{up}{enter}
+ Send,{up}{enter}
  sleep 100
  click, 97, 125 ; click filter
- send, %Department%{enter}{tab 2}
+ Send, %Department%{enter}{tab 2}
  sleep 100
  Breaking.Point()
- send, %product%{enter}
+ Send, %product%{enter}
  ;click 152, 195
- send,{tab}{CtrlDown}{a}{Ctrlup}
+ Send,{tab}{CtrlDown}{a}{Ctrlup}
  input, , V T3,{Lbutton}{enter}
  click 504, 338 ; click arrow
  WinActivate, Select tests for request
  click, right, 264, 590 ; click to clear filter
- send,{up}{enter}
+ Send,{up}{enter}
  sleep 100
  WinActivate, Select tests for request
  sleep 100
@@ -167,7 +167,7 @@ click
  Sleep 100
   winactivate, Edit request
   Breaking.Point()
-  send,{tab}{enter}
+  Send,{tab}{enter}
   ; tooltip,
   setwindelay, 200
   return
@@ -201,10 +201,10 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   Mouse_Click("Orient_ResultEntry")
   if keep_running = n ;another signal to stop
   return
-  send,{tab}{Space}{tab}{Space}
-  send,{tab 10}^a
+  Send,{tab}{Space}{tab}{Space}
+  Send,{tab 10}^a
   sleep 100
-  send, %Iteration%
+  Send, %Iteration%
   if keep_running = n ;another signal to stop
   return
   sleep 100
@@ -225,12 +225,12 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   click
   Mouse_Click("Orient_ResultEntry")
   if Checkbox_Toggle Contains Toggle
-    sendinput,{tab}{Space}{tab}{Space}
+    SendInput,{tab}{Space}{tab}{Space}
   else
-    sendinput,{tab}{tab}
-  sendinput,{tab 10}^a
+    SendInput,{tab}{tab}
+  SendInput,{tab 10}^a
   sleep 100
-  send, %Iteration%
+  Send, %Iteration%
   sleep 100
   if Checkbox_Toggle Not Contains Toggle
     mousemove, xpos, ypos+26 
@@ -249,24 +249,24 @@ AddSampleLog(count)
   ;Click, xpos, ypos, 2
   ;ypos:= ypos+26
   winwaitactive, Edit test (Field Configuration: I`, Analytical) - \\Remote,, 3
-  sendinput,{Click, 402, 284}{end}(on sample log){click, 334, 618}
+  SendInput,{Click, 402, 284}{end}(on sample log){click, 334, 618}
   winwaitactive, NuGenesis LMS - \\Remote,,3
   sleep 300
   winactivate, NuGenesis LMS - \\Remote
   sleep 500
-  send,{click, 1290, 703}{down %A_index%}
+  Send,{click, 1290, 703}{down %A_index%}
  }
  return
 }
 
 Main_EditResults()
 {
- sendinput,{click}{click 77, 751} ;edit results
+ SendInput,{click}{click 77, 751} ;edit results
  winwaitactive, Results Definition - \\Remote,,3
  return
 }
 	AddTestDescription(Text){
-		sendinput,{click 305, 294}{end}%TEXT%{click 330, 617}
+		SendInput,{click 305, 294}{end}%TEXT%{click 330, 617}
 	}
 
 
@@ -289,20 +289,20 @@ click
   winactivate, Select samples for test
  click 463, 71
  Breaking.Point()
- send, {click 244, 69}
+ Send, {click 244, 69}
  sleep 300
- send,{click 205, 184}
+ Send,{click 205, 184}
  sleep 300
  Breaking.Point() 
-;  send, {click 171, 127}^{a}
-;  send, %department%
+;  Send, {click 171, 127}^{a}
+;  Send, %department%
 ;  sleep 200
 ;  Send, {enter}{tab}^{a}{click 506, 323}
 ;  sleep 300
-;  send, {click}{click 851, 660} ;click finish
+;  Send, {click}{click 851, 660} ;click finish
  
  ; if (department="Analytical")
-  ; send,
+  ; Send,
   ; my:=my+26
   ; MouseMove, mx, my
   ; sleep 200

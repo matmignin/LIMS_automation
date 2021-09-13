@@ -4,45 +4,45 @@ _explorer:
 	F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
 	F20 & down::         	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, A_screenheight/2, A_ScreenWidth/2, A_ScreenHeight/2-45
 	F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
-	F7::                 	send, {altdown}{right}{altup}
-	F19 & space::   send % BlockRepeat(400) product  "{enter}" ;              	send, {altdown}{left}{altup}
-	F6::   send % BlockRepeat(400) product  "{enter}" ;              	send, {altdown}{left}{altup}
-	; F19 & Space::				send, ^{e}%product%{enter}
+	F7::                 	Send, {altdown}{right}{altup}
+	F19 & space::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
+	F6::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
+	; F19 & Space::				Send, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
 	^w::									closewindow()
 
 #ifwinactive, Task View, 
-	F7::										send, {right}
-	F6::										send, {left}
-	F9::										send, {up}
-	F8::										send, {down}
-	Mbutton::								send, {space}
+	F7::										Send, {right}
+	F6::										Send, {left}
+	F9::										Send, {up}
+	F8::										Send, {down}
+	Mbutton::								Send, {space}
 	Numpaddiv::							
-	send, {Click R}
+	Send, {Click R}
 	sleep 100 
-	send, {up}{enter}
+	Send, {up}{enter}
 	return
 
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
-	F13 & space::					sendinput, +{tab}{tab}
-	; F20 & up::        send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
-	F20 & down::      send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
+	F13 & space::					SendInput, +{tab}{tab}
+	; F20 & up::        Send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
+	F20 & down::      Send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
 	F20 & right::     FindAndReplaceWord("<English>","English")
 	F20 & left::      
 							clipboard:=
 							sleep 20
-							send, ^c
+							Send, ^c
 							clipwait, 0.5
-							send, {up}
+							Send, {up}
 							FindAndReplaceWord("<" clipboard ">",clipboard,"r")
 							return
 	F20 & k::         up
 	F20 & j::         down
 	F20 & h::         left
 	F20 & l::         right
-	; F19 & space::     send, +{tab}{tab}
-	F20 & `;::        send, {tab}
+	; F19 & space::     Send, +{tab}{tab}
+	F20 & `;::        Send, {tab}
 	F20 & /::         Table_Entry("N/A")
 	F20 & n::         Table_Entry("No")
 	F20 & y::         Table_Entry("Yes")
@@ -52,15 +52,15 @@ _WORD:
 	F20 & t::         Table_Entry("TRUE")
 	F20 & .::         Table_Entry("TRUE")
 	F19 & wheeldown:: 
-	F8::              send, {enter}
+	F8::              Send, {enter}
 	F19 & Wheelleft:: 
-	F6::              send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
+	F6::              Send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
 	F19 & Wheelright::
-	F7::              send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
+	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	F19::             Clip.Copy()
 	F20::             Clip.paste()
 	:*:mm`;::         
-							send, Mat Mignin{tab 2}%DateString%
+							Send, Mat Mignin{tab 2}%DateString%
 							return			
 
 
@@ -74,7 +74,7 @@ Excel:
 							; excel.connect()
 							lms.SearchBar(Product,"{enter}")
 							sleep 200
-							send, {click, 87, 676, 0}
+							Send, {click, 87, 676, 0}
 							return
 		F7::                 
 							winactivate, NuGenesis LMS - \\Remote
@@ -83,7 +83,7 @@ Excel:
 							; excel.connect()
 							lms.SearchBar(Product,"{enter}")
 							sleep 200
-							send, {click, 87, 676, 0}
+							Send, {click, 87, 676, 0}
 							return
 		#if 
 		*/
@@ -103,27 +103,27 @@ Excel:
 #ifwinactive, Excel ahk_exe WFICA32.EXE 
 	; F9::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	F6::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
-	F9::						send, {lwindown}{down}{lwinup}
-	^wheelup::				send, {click 3}%SampleID%
-	^wheeldown::			send, %SampleID%
+	F9::						Send, {lwindown}{down}{lwinup}
+	^wheelup::				Send, {click 3}%SampleID%
+	^wheeldown::			Send, %SampleID%
 #ifwinactive, ahk_exe EXCEL.EXE         
 	F9::                 excel.search()
 	F7::                 excel.Search()
-	+Enter::             sendinput, {altdown}{enter}{altup}
-	$Enter::             sendinput,{enter}
+	+Enter::             SendInput, {altdown}{enter}{altup}
+	$Enter::             SendInput,{enter}
 	; Numlock::          Excel.SearchWorkbook(Product)
-	F8::                 send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
-	Media_Prev::         send,{LWindown}{tab}{lwinup}
+	F8::                 Send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
+	Media_Prev::         Send,{LWindown}{tab}{lwinup}
 	F19 & F7::           ^F8 ;Excel.NextSheet()
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
-	F19::						send, ^v
+	F19::						Send, ^v
 #ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 	; F20 & space::      	Send, !{n}%Product%
 	; F19 & space::     	Send, !{n}%Batch%
-	return::             sendinput, !{i}
-	rbutton & Lbutton::  sendinput, !{i}
+	return::             SendInput, !{i}
+	rbutton & Lbutton::  SendInput, !{i}
 #ifwinactive, LMS Products Checklist.xlsm - Excel
-	Mbutton::sendinput, {click}MM{tab}%DateString%
+	Mbutton::SendInput, {click}MM{tab}%DateString%
 	MoveFindReplace(){
 		; wina
 	; WinGetPos, Win_X, win_Y, win_w, Win_H, "SAMPLE LOG 2021.xlsx"
@@ -134,12 +134,12 @@ Excel:
 	}
 OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
-	F19 & enter::        send, {ctrldown}{enter}{ctrlup}
+	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
 	; numpadadd::         	send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
-	<+F20::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	<+F19::          sendinput % Trim(Product, OmitChars = " `n")	
-	F20 & F19::          sendinput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
-	; F19 & ,::          sendinput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F20::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F19::          SendInput % Trim(Product, OmitChars = " `n")	
+	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
+	; F19 & ,::          SendInput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; Numpadsub::
 	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, ,1226, -1098, 1489, 1080
 
@@ -147,7 +147,7 @@ OUTLOOK:
 	F20 & up::	         WinMove, ahk_exe OUTLOOK.EXE, , 1945, -738, 1076, 1158
 	F20 & right::	      WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
 	F20::                
-		send, ^{c}
+		Send, ^{c}
 		Clip.Copy()
 		return
 	F7::LMS.SearchRequest(Batch,"{enter}")
@@ -161,33 +161,33 @@ OUTLOOK:
 	; ^wheeldown::send % Blockrepeat(500) Clip.Copy()
 	F13::return ; clip.IfNothingSelected("menu")
 :*:ol`;::
-sendinput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
+SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
 	return
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
-	Numlock::send, {Backspace}	
-	; F20::send, {backspace}
-	F19::send, ^{click}
+	Numlock::Send, {Backspace}	
+	; F20::Send, {backspace}
+	F19::Send, ^{click}
 	
 #ifwinactive, OneNote for Windows 10
-	^1::                 send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
-	^2::                 send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
-	^3::                 send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
-	^4::                 send,{Ctrldown}{1}{CtrlUp}
-	^5::                 send,{Ctrldown}{3}{CtrlUp}
-	^`::                 send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
+	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
+	^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
+	^3::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
+	^4::                 Send,{Ctrldown}{1}{CtrlUp}
+	^5::                 Send,{Ctrldown}{3}{CtrlUp}
+	^`::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 	F20 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
 OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
 	; F9 & Wheelup::       Wheel_2("{F11}")
-	F9::                 send,{AltDown}{w}{i}{Altup}
-	F6::                 sendinput,{wheelleft 20}
-	F7::                 sendinput,{Wheelright 10}
-	^1::                 send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
-	^2::                 send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
-	^3::                 send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
-	^4::                 send,{Ctrldown}{1}{CtrlUp}
-	$Mbutton up::        sendinput,{ctrlup}
+	F9::                 Send,{AltDown}{w}{i}{Altup}
+	F6::                 SendInput,{wheelleft 20}
+	F7::                 SendInput,{Wheelright 10}
+	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
+	^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
+	^3::                 Send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
+	^4::                 Send,{Ctrldown}{1}{CtrlUp}
+	$Mbutton up::        SendInput,{ctrlup}
 	; F20 up::             PasteScreenshot()
 	; F21 up::             PasteScreenshot()
 	F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
@@ -201,7 +201,7 @@ Remote_DESKTOPs:
 #IfWinActive, ahk_exe mstsc.exe
 	F20::
 	SendLevel, 2
-	send, ^{c}
+	Send, ^{c}
 	sendlevel, 0
 	return
 #ifwinactive, ahk_class #32770
@@ -214,10 +214,10 @@ Remote_DESKTOPs:
 
  #IfWinActive, ahk_exe firefox.exe 
  numpaddot::CloseWindow()
- F6::sendinput, !{left}
- F7::send, !{right}
- F13::send, {ctrldown}{/}{ctrlup}
- +F13::send, {esc}
+ F6::SendInput, !{left}
+ F7::Send, !{right}
+ F13::Send, {ctrldown}{/}{ctrlup}
+ +F13::Send, {esc}
 
 
 
@@ -245,9 +245,9 @@ ExplorerSearch(text){
 		clk(ww-175, 75)
 		sleep 400
 		; SetKeyDelay, 20, 1 
-		send, %Text%
+		Send, %Text%
 		sleep 300
-		send, {enter}
+		Send, {enter}
 		; setkeydelay, 0 , 0
 		return
 		}
@@ -255,18 +255,18 @@ ExplorerSearch(text){
 
 
 FindAndReplaceWord(find,Replace,AllOrOne:="a"){
-		send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
+		Send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
 		if (Allorone=="a"){
 			loop 3 {
 				sleep 200
 				if winactive("Microsoft Word")
-					send, {enter}
+					Send, {enter}
 				sleep 300	
 			}
 					return
 		}
 		else 
-			send, {enter}{esc}
+			Send, {enter}{esc}
 }
 
 Table_Entry(Entry){

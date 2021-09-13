@@ -86,7 +86,7 @@ InfoLocations(){
 	}
 
 SearchWorkbook(SearchWord:=""){
-	sendinput, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
+	SendInput, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
 	return
 	}
 
@@ -180,7 +180,7 @@ Get_Current_row(){
 	}
 Search(){
 	BlockInput, on
-	sendinput, ^f!t!h{right}{enter}!s{right}!t!n
+	SendInput, ^f!t!h{right}{enter}!s{right}!t!n
 	BlockInput, off
 	sleep 200
 	return

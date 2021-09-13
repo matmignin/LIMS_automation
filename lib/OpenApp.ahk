@@ -1,10 +1,10 @@
 return
 #IfWinActive,
-F1::send, {lwindown}{e}{lwinup}
+F1::Send, {lwindown}{e}{lwinup}
 +F2::
 		Run, SAMPLE TO QC 2021.xlsx, \\10.1.2.118\share\QA FINSHED GOODS\Samples Photo Library\SAMPLES TO QC
 		winwait, File in Use,,1
-		send, {altdown}{r}{altup}
+		Send, {altdown}{r}{altup}
     return
 F2::
   if winexist("SAMPLE LOG 2021"){
@@ -16,10 +16,10 @@ F2::
   sleep 200
   winwait,File in Use,,9
     if !errorlevel
-      send, {altdown}{r}{altup}
+      Send, {altdown}{r}{altup}
   winwait, Password,,2
     if !errorlevel
-      send, lab{enter}
+      Send, lab{enter}
   winwait, SAMPLE LOG 2021.xlsx,, 3
     if !errorlevel
       excel.search()
@@ -46,13 +46,13 @@ F4::
   if winexist("C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"){
     winactivate
     sleep 200 
-    send, {ctrldown}{e}{ctrlup}
+    Send, {ctrldown}{e}{ctrlup}
     return
   }
   Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
   winactivate, ahk_exe EXCEL.EXE
   sleep 200 
-  send, {ctrldown}{e}{ctrlup}
+  Send, {ctrldown}{e}{ctrlup}
   return
 ` & esc::        ;                 Pause, Toggle
 +F1::
@@ -65,7 +65,7 @@ OpenApps:
   <!f::OpenApp.Firefox()
   !v::OpenApp.vsCode()
   ; !c::OpenApp.Clickup()
-  !e::send,{LWinDown}{e}{lwinup}
+  !e::Send,{LWinDown}{e}{lwinup}
   !+v::OpenApp.VPN()
   !o::OpenApp.Outlook()
   !d::OpenApp.Display()
@@ -97,7 +97,7 @@ Clickup(){
 PhoneApp(){
  sendlevel 2
  ifwinnotexist, Your Phone
-   send, {shiftdown}{altdown}{F8}{altup}{shiftup}
+   Send, {shiftdown}{altdown}{F8}{altup}{shiftup}
  else
   WinActivate, Your Phone
  sendlevel 0
@@ -118,11 +118,11 @@ Outlook(){
 
 	Explorer(){
  If WinActive("ahk_exe explorer.exe"){
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
   return
  }
  ifwinnotexist, ahk_exe explorer.exe
-  send,{LWinDown}{e}{lwinup}
+  Send,{LWinDown}{e}{lwinup}
  IfWinNotActive,ahk_exe explorer.exe
   WinActivate, ahk_exe explorer.exe
  return
@@ -136,7 +136,7 @@ Outlook(){
  WinWait, ahk_exe firefox.exe,,2
  sleep 200
   ; ControlSend, Control ^l, ahk_exe firefox.exe
-  send,{CtrlDown}{l}{Ctrlup}
+  Send,{CtrlDown}{l}{Ctrlup}
  return
  }
 
@@ -154,7 +154,7 @@ Outlook(){
  
   LMS(){
   If WinActive("ahk_exe WFICA32.EXE"){
-    send,{altDown}{tab}{altup}
+    Send,{altDown}{tab}{altup}
     return
   }
   ifwinnotexist, ahk_exe WFICA32.EXE
@@ -179,7 +179,7 @@ Outlook(){
 
  RemoteDesktop(){
  If WinActive("ahk_exe mstsc.exe")
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
  ifwinnotexist, ahk_exe mstsc.exe
   run, mstsc.exe, C:\Windows\system32
   IfWinNotActive,ahk_exe mstsc.exe
@@ -189,7 +189,7 @@ Outlook(){
 
   workbook(){
  If WinActive("LMS Workbook.xlsb - Excel"){
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
   return
  }
  ifwinnotexist, LMS Workbook.xlsb - Excel
@@ -200,13 +200,13 @@ Outlook(){
  }
  VScode(){
  If WinActive("ahk_exe Code.exe"){
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
   return
  }
  ifwinnotexist,ahk_exe Code.exe
  {
    run, Code.exe, C:\Program Files\Microsoft VS Code
-  send,{altDown}{Ctrldown}{v}{CtrlUp}{altup}
+  Send,{altDown}{Ctrldown}{v}{CtrlUp}{altup}
   winactivate, ahk_exe Code.exe
   WinMove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,
  }
@@ -216,7 +216,7 @@ Outlook(){
  }
  Notepad(){
  If WinActive("ahk_exe notepad.exe")
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
  ifwinnotexist,ahk_exe notepad.exe
  {
   run, C:\Windows\system32\Notepad.exe
@@ -229,7 +229,7 @@ Outlook(){
  }
  OneNote(){
  If WinActive("ahk_exe ONENOTE.EXE"){
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
   return
  }
  ifwinnotexist,ahk_exe ONENOTE.EXE
@@ -253,7 +253,7 @@ Outlook(){
 ;  }
 StickyNotes(){
  IfWinActive, ahk_exe stickynot.exe
-  send,{altDown}{tab}{altup}
+  Send,{altDown}{tab}{altup}
  ifwinnotexist, ahk_exe stickynot.exe
   Run, Stickynot.exe, C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Accessories\
   ; Run, stickynot.exe

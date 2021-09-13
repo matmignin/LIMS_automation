@@ -73,7 +73,7 @@ Methods() {
 	; Mouse_Click("searchBar_SelectMethodsTest")
 	WinActivate, Select methods tests - \\Remote
 	click, 229, 72,2
-	send, ^a
+	Send, ^a
 	Loop, Read, Methods.ini
 	{
 	If A_Index = 1
@@ -95,7 +95,7 @@ CopySpecTemplate(){
 	department:= 
 	Clipboard:=
 	sleep 100
-	send, ^c
+	Send, ^c
 	clipwait,1 ; Tooltip, %Clipboard%
 	clip()
 	If errorlevel
@@ -158,7 +158,7 @@ CopySpecs(){
 		WinActivate, Test Definition Editor - \\Remote
 	; sleep 400
 	click 418, 202
-	send, ^a^c
+	Send, ^a^c
 	Clipwait,1
 	Description:=Clipboard
 	sleep 200
@@ -174,13 +174,13 @@ CopySpecs(){
 	sleep 80
 	clipboard:=
 	sleep 20
-	send, ^c
+	Send, ^c
 	clipwait, 1
 	if ErrorLevel
 		msgbox, yo
 	; sendlevel,0
 	sleep 200
-	send,{esc}
+	Send,{esc}
 	ParsedSpecs:=[]
 	Loop, parse, Clipboard, `t
 		ParsedSpecs.insert(A_LoopField)
@@ -191,7 +191,7 @@ CopySpecs(){
 	Units:=Parsedspecs[21]
 	sleep 200
 	; blockinput off
-	send, {esc}
+	Send, {esc}
 	copypastetoggle=1
 	exit
 	Return
@@ -234,7 +234,7 @@ CopySpecs(){
 	click 67, 562 ; Add Methods
 	winwaitactive, Select methods tests - \\Remote,,0.25
 	click 227, 69. 2 ; method search bar
-	sendinput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
+	SendInput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
 	sleep 200
 	WinActivate, NuGenesis LMS - \\Remote
 	click 397, 591 ; click attrobutes
@@ -249,7 +249,7 @@ AutoFill(){
 		blockinput, on
 	If Winactive("NuGenesis LMS - \\Remote")
 		{
-			;sendinput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
+			;SendInput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
 			sleep 200
 			Breaking.Point()
 			click, 57, 719 ;click Edit Test
@@ -277,8 +277,8 @@ AutoFill(){
 
 			WinActivate, Results Definition - \\Remote
 			If Method contains ICP-MS 231
-				send,{click 217, 141}
-			send,{click 80, 66} ;click edit
+				Send,{click 217, 141}
+			Send,{click 80, 66} ;click edit
 			sleep 200
 			Breaking.Point()
 			winwaitactive, Result Editor - \\Remote,,0.5
@@ -367,7 +367,7 @@ GetExcelData(){
 EditSampleTemplate_A(){
 	global
 	winactivate, Edit sample template - \\Remote
-	sendinput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
+	SendInput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
 	WinWaitActive, NuGenesis LMS - \\Remote,,8
 	Breaking.Point()
 	if !errorlevel
@@ -378,10 +378,10 @@ EditSampleTemplate_A(){
 EditSpecification_Analytical(){
 	global
 	winactivate, Edit specification - \\Remote
-	sendinput,{click 376, 87}{home}
-	sendinput, %Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
+	SendInput,{click 376, 87}{home}
+	SendInput, %Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
 	Breaking.Point()
-	send,{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
+	Send,{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
 	Breaking.Point()
 	click, 340, 622 ;click okay
 	Breaking.Point()
@@ -404,32 +404,32 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	click, 250, 140 ; click id box to orient
 	sleep 200
 	if (Uselimitsbox := 0)
-		send,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 7}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-									send,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
+		Send,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 7}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+									Send,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
 	sleep 200
 	If (UseLimitsBox:=1)
-		send,{space}
+		Send,{space}
 	sleep 200
-		send,{tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		Send,{tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 	if (Max_limit = ""){
-		sendinput, NLT %Min_Limit% %The_Units%
+		SendInput, NLT %Min_Limit% %The_Units%
 		exit
 		}
 	else if (Min_limit = "<"){
-		sendinput, %min_limit%%Max_Limit% %The_Units%
+		SendInput, %min_limit%%Max_Limit% %The_Units%
 		exit
 		}
 	else if (Min_limit = ""){
-		sendinput, NMT %Max_Limit% %The_Units%
+		SendInput, NMT %Max_Limit% %The_Units%
 		Exit
 		}
 	Else
 		{
 			If CreateRequirements=1
-				sendinput, %Min_Limit% - %Max_Limit% %The_Units%
+				SendInput, %Min_Limit% - %Max_Limit% %The_Units%
 			else if CreateRequirements!=1)
-				Sendinput, %CreateRequirements%
-		; Sendinput, %Requirement%
+				SendInput, %CreateRequirements%
+		; SendInput, %Requirement%
 		}
 	sleep 100
 	Breaking.Point()
@@ -455,33 +455,33 @@ MouseClick, left, 464, 532,2,0
 		Breaking.Point()
 		Click, 187, 200 ;Orient_SpecTab.TestDefinitionEditor
 		if Name contains Vitamin C
-			send,{Home}{Delete 12}%Trimmed_Description%
+			Send,{Home}{Delete 12}%Trimmed_Description%
 		else
 			Send,^a%Trimmed_Description%
 			Breaking.Point()
 		sleep 300
 	}
 	return
-	;send,{shift down}{Tab 15}{Shift up}{enter}
+	;Send,{shift down}{Tab 15}{Shift up}{enter}
 }
 
 Edit_Physical(){
 	Global
 	winactivate, Edit specification - \\Remote
-	sendinput,{click 376, 87}{home}
-	send,%Product%`,{space}{shift down}I{shift Up}n{shift down}{space}P{shift Up}rocess`,{space}{shift down}P{shift Up}hysical{tab 3}^a{backspace}
-	send,{tab}^a%Product%{tab 2}
+	SendInput,{click 376, 87}{home}
+	Send,%Product%`,{space}{shift down}I{shift Up}n{shift down}{space}P{shift Up}rocess`,{space}{shift down}P{shift Up}hysical{tab 3}^a{backspace}
+	Send,{tab}^a%Product%{tab 2}
 	Sleep 200
-	send,{Space}
+	Send,{Space}
 	sleep 200
 	winwaitactive, Products List - \\Remote, , 8
 	if !errorlevel
 		sleep 300
-	send,{enter 2}
+	Send,{enter 2}
 	sleep 200
-	send,{tab}
+	Send,{tab}
 	sleep 200
-	send,{right}
+	Send,{right}
 	sleep 500
 	Breaking.Point()
 	click, 340, 622 ;click okay
@@ -494,55 +494,55 @@ Edit_Physical(){
 	winwaitactive, Edit sample template - \\Remote,,4
 	if !errorlevel
 		sleep 300
-	sendinput,{tab}{delete 4}%Product%{enter}
+	SendInput,{tab}{delete 4}%Product%{enter}
 	return
 }
 
 Edit_CoatedRetain(){
 	global
 	winactivate, Edit specification - \\Remote
-	sendinput,{click 376, 87}{home}
-	send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	SendInput,{click 376, 87}{home}
+	Send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
-	send,{tab}{right}
+	Send,{tab}{right}
 	sleep 200
 	Breaking.Point()
-	send,{tab}{right}{tab 3}{left 4}
+	Send,{tab}{right}{tab 3}{left 4}
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel
 		click.EditSampleTemplate()
 		Breaking.Point()
-		sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift Up}etain
+		SendInput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift Up}etain
 	return
 }
 
 Edit_CoatedPhysical(){
 	global
 	winactivate, Edit specification - \\Remote
-	sendinput,{click 376, 87}{home}
-	send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	SendInput,{click 376, 87}{home}
+	Send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
-	send,{tab}{right}
+	Send,{tab}{right}
 	sleep 200
-	send,{tab}{right}{tab}{left 4}
+	Send,{tab}{right}{tab}{left 4}
 	Breaking.Point()
 	winwaitactive, NuGenesis LMS - \\Remote, ,8
 	if !errorlevel
 	click.EditSampleTemplate()
 	Breaking.Point()
-		sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift Up}hysical
+		SendInput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift Up}hysical
 	return
 }
 
 Edit_Retain(){
 	Global
 	winactivate, Edit specification - \\Remote
-	sendinput,{click 376, 87}{home}
-	send,%Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	SendInput,{click 376, 87}{home}
+	Send,%Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 200
-	send,{tab}{right}
+	Send,{tab}{right}
 	sleep 400
-	send,{tab}{right}
+	Send,{tab}{right}
 	sleep 1500
 	Breaking.Point()
 	WinWaitactive, Edit specification - \\Remote,, 1
@@ -555,7 +555,7 @@ Edit_Retain(){
 	click.EditSampleTemplate()
 		sleep 300
 		Breaking.Point()
-	sendinput,{tab}{delete 4}%Product%{enter}
+	SendInput,{tab}{delete 4}%Product%{enter}
 	return
 	}
 Edit_Analytical(){
@@ -574,25 +574,25 @@ Edit_Analytical(){
 Edit_Micro(){
 	Global
 	winactivate, Edit specification - \\Remote
-	sendinput,{click 376, 87}{home}
-	send,%Product%`,{space}{shift down}F{shift Up}inished`,{space}{shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
+	SendInput,{click 376, 87}{home}
+	Send,%Product%`,{space}{shift down}F{shift Up}inished`,{space}{shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
 	Sleep 200
-	send,{Space}
+	Send,{Space}
 	sleep 200
 	winwaitactive, Products List - \\Remote, ,2
-	send,{enter 2}
+	Send,{enter 2}
 	sleep 200
-	send,{tab}
+	Send,{tab}
 	sleep 200
 	Breaking.Point()
-	send,{right}{tab}{left 2}{enter}
+	Send,{right}{tab}{left 2}{enter}
 	winwaitactive, NuGenesis LMS - \\Remote, ,5
 	if !errorlevel
 		sleep 300
 		Breaking.Point()
 	click.EditSampleTemplate()
 		sleep 300
-	sendinput,{tab}{delete 4}%Product%{enter}
+	SendInput,{tab}{delete 4}%Product%{enter}
 	return
 }
 
@@ -609,28 +609,28 @@ HM_ReportOnly(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	return
 }
@@ -640,7 +640,7 @@ HM_USP(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -648,7 +648,7 @@ HM_USP(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -656,7 +656,7 @@ HM_USP(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -664,7 +664,7 @@ HM_USP(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 	click 390, 659	;click okay
 	return
 }
@@ -675,7 +675,7 @@ HM_Canada(){
 	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -683,7 +683,7 @@ HM_Canada(){
 	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -691,7 +691,7 @@ HM_Canada(){
 	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -699,7 +699,7 @@ HM_Canada(){
 	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
 	click 390, 659	;click okay
 	return
 }
@@ -710,11 +710,11 @@ HM_Prop65(){
 	Breaking.Point()
 	winactivate, Result Editor - \\Remote
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 12}{space}{tab 2}^{a}
-	;sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
-	sendinput, 0{tab}^{a}
+	SendInput,{tab 12}{space}{tab 2}^{a}
+	;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
+	SendInput, 0{tab}^{a}
 	sleep 100
-	sendinput, 9.999{tab 5}^a<10 mcg/day
+	SendInput, 9.999{tab 5}^a<10 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	winactivate, Result Definition - \\Remote
@@ -722,11 +722,11 @@ HM_Prop65(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 12}{space}{tab 2}^a
-	;sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
-	sendinput, 0{tab}^a
+	SendInput,{tab 12}{space}{tab 2}^a
+	;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
+	SendInput, 0{tab}^a
 	sleep 100
-	sendinput, 0.499{tab 5}^a<0.5 mcg/day
+	SendInput, 0.499{tab 5}^a<0.5 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	winactivate, Result Definition - \\Remote
@@ -734,11 +734,11 @@ HM_Prop65(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 12}{space}{tab 2}^a
-	;sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
-	sendinput, 0{tab}^a
+	SendInput,{tab 12}{space}{tab 2}^a
+	;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
+	SendInput, 0{tab}^a
 	sleep 100
-	sendinput, 4.099{tab 5}^a<4.1 mcg/day
+	SendInput, 4.099{tab 5}^a<4.1 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	winactivate, Result Definition - \\Remote
@@ -746,11 +746,11 @@ HM_Prop65(){
 	click 80,70 ;Edit
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	sendinput,{tab 12}{space}{tab 2}^a
-	;sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
-	sendinput, 0{tab}^a
+	SendInput,{tab 12}{space}{tab 2}^a
+	;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
+	SendInput, 0{tab}^a
 	sleep 100
-	sendinput, 0.299{tab 5}^a<0.3 mcg/day
+	SendInput, 0.299{tab 5}^a<0.3 mcg/day
 	click 390, 659	;click okay
 	return
 }
@@ -763,7 +763,7 @@ Methods:
 	sleep 200
 	InputVar:=A_ThisMenuItem
 	IniRead,vOutput, Methods.ini, Methods, %InputVar%
-	Sendinput, %vOutput%{enter}
+	SendInput, %vOutput%{enter}
 	sleep 300
 	click 506, 341
 	SpecTab.Methods()
@@ -771,7 +771,7 @@ Methods:
 
 Spec_Table:
 	if (A_GuiEvent = "DoubleClick" ){
-		sendinput,{space}
+		SendInput,{space}
 	SpecTab.GetRowText()
 	SpecTab.AutoFill()
 	}
@@ -787,7 +787,7 @@ Spec_TableGuiClose:
 ; 	WinActivate, Edit specification - \\Remote
 ; 	SpecTab.Edit_Physical()
 ; 	sleep 2000
-; 	sendinput,{Enter}
+; 	SendInput,{Enter}
 ; return
 ; 	SpecTab.Edit_CoatedPhysical()
 ; 	sleep 2000
@@ -796,27 +796,27 @@ Spec_TableGuiClose:
 ; 	WinActivate, Edit specification - \\Remote
 ; 	SpecTab.Edit_Retain()
 ; 	sleep 2000
-; 	sendinput,{Enter}
+; 	SendInput,{Enter}
 ; return
 
 ; 	SpecTab.Edit_CoatedRetain()
 ; 	sleep 2000
-; 	; sendinput,{Enter}
+; 	; SendInput,{Enter}
 ; return
 
 ; 	WinActivate, Edit specification - \\Remote
 ; 	SpecTab.Edit_Micro()
 ; 	sleep 2000
-; 	sendinput,{Enter}
+; 	SendInput,{Enter}
 ; return
 
 ; 	WinActivate, Edit specification - \\Remote
 ; 	SpecTab.Edit_Analytical()
 ; 	sleep 2000
-; 	sendinput,{Enter}
+; 	SendInput,{Enter}
 ; return
-; 	sendinput, %Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}A{shift Up}nalytical
-; 	Sendinput,{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{tab}{right}
+; 	SendInput, %Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}A{shift Up}nalytical
+; 	SendInput,{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{tab}{right}
 ; return
 
 

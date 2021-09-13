@@ -10,9 +10,9 @@ Clip(input=0,Wait:="0.55"){
   }
   clipboard:=
   if (input=="cut")
-    send, ^{x}{ctrlup}
+    Send, ^{x}{ctrlup}
   else
-    send, ^{c}{ctrlup}
+    Send, ^{c}{ctrlup}
   sleep %input%
   clipwait,%Wait%
   if errorlevel
@@ -20,17 +20,15 @@ Clip(input=0,Wait:="0.55"){
     ; clipboard:=ClipboardSaved
     if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
-    send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
+    Send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
   }
   clip.Regex()
   return
 }
 
 Class Clip {
-
-
 Regex(Category:="All"){
-    global Batch, Batch0, Product0, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain
+    global Batch, Batch0, Product, Product0, Product2, Product3, Product4, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
     sleep      20
     If (Category!="Department") {
       RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
@@ -41,15 +39,31 @@ Regex(Category:="All"){
       RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
       If cProduct {
-        if !(cProduct=Product)
+
+        ; if (cProduct!=Product)
         {
-          Product0:=Product
-          IniWrite, %Product0%, data.ini, SavedVariables, Product0
-          Product:=
+          ; Product.Insert(Product)
+          ; Product.insert(cProduct)
+          ; Product.Insert(Product1)
+          ; Products.Insert(Product2)
+          ; Products.Insert(Product3)
+          ; loop 4
+          ;   n:=A_index
+          ;   next:=A_index
+            Product:=cProduct
+            Product1:=Product1
+            Product2:=Product2
+            Product3:=Product3
+            IniWrite, %Product3%, data.ini, Products, Product4
+            IniWrite, %Product2%, data.ini, Products, Product3
+            IniWrite, %Product1%, data.ini, Products, Product2
+            IniWrite, %Product%, data.ini, Products, Product1
+          msgbox % Product "`n1:" product1 "`n2" Product2 "`n3" Product3 "`n4" Product4
+          ; Product:=
         }
       GuiControl,Varbar:Text, Product, %cProduct%
-            IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
-            IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
+            ; IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
+            ; IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
               ; if cBatch
                 Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% `n, Products.txt
               ; else
@@ -140,25 +154,25 @@ IfNothingSelected(Action){
     ClipboardSaved:=ClipboardAll
     clipboard:=
     ; sleep 20
-    send, ^c
+    Send, ^c
       clipwait,0.60
   if errorlevel ;if nothing selected
   {
     if Action:="SelectLine"
-      send, {home}+{end}^{c}
+      Send, {home}+{end}^{c}
     if Action:="SelectAll"
-      send, ^{a}^{c}{ctrlup}
+      Send, ^{a}^{c}{ctrlup}
     if Action:="Select"
-      send, {click 3}^{c}{ctrlup}
+      Send, {click 3}^{c}{ctrlup}
     If Action:="cut"
       {
         ; clipboard:=
-        send, ^{x}
+        Send, ^{x}
         clipwait, 0.45
         PostCut:=ClipboardAll
         clipboard:=ClipboardSaved
         sleep 35
-        send, ^{v}
+        Send, ^{v}
         clipboard:=PostCut
       }
     if Action:="menu"
@@ -166,7 +180,7 @@ IfNothingSelected(Action){
     If Action:="Paste"
     {
       clipboard:=ClipboardSaved
-      send, ^{v}{ctrlup}
+      Send, ^{v}{ctrlup}
     }
     else
       send % Action
@@ -190,7 +204,7 @@ Click(){
         If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
         {
           ;  clip()
-          send, ^{c}
+          Send, ^{c}
           return
         }
         break
@@ -214,7 +228,7 @@ Click(){
         clip0 := ClipBoardAll      ; save old clipboard
         ClipBoard =
         ; Clip()                   ; selection -> clipboard
-        send, {ctrldown}{c}{ctrlup}
+        Send, {ctrldown}{c}{ctrlup}
         ClipWait 1, 1              ; restore clipboard if no data
         IfEqual ClipBoard,, SetEnv ClipBoard, %clip0%
     }
@@ -255,7 +269,7 @@ Click(){
     elapsed -= %TimeButtonUp%
     if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
     {  ;Double-click
-        send, {ctrldown}{c}{ctrlup}
+        Send, {ctrldown}{c}{ctrlup}
         ; clip()
         return
     }
@@ -264,7 +278,7 @@ Click(){
     Sleep, 100
     Send, {ctrldown}{a}{ctrlup}
     sleep 100
-    send, {ctrldown}{c}{ctrlup}
+    Send, {ctrldown}{c}{ctrlup}
     ;  clip()
   return
     
@@ -284,7 +298,7 @@ ClickText(button:=""){
 ; Paste(){
 ;   global Clippaste, varbar_x, Varbar_y
 ;     if (ClipPaste = 1){
-;       send, {ctrldown}{v}{ctrlup}
+;       Send, {ctrldown}{v}{ctrlup}
 ;       return
 ;   }
 ;   ClipboardSaved:=ClipboardAll
@@ -295,7 +309,7 @@ ClickText(button:=""){
 ;     {
 ;     clipboard:=ClipboardSaved
 ;      StrReplace(clipboard, "`n", "")
-;       send, {ctrldown}{v}{ctrlup}
+;       Send, {ctrldown}{v}{ctrlup}
 ;       ;tt("paste",,100,100,,150)
 ;     }
 ;   else
@@ -307,7 +321,7 @@ ClickText(button:=""){
 
 Copy(){
   Global
-      send, {ctrlup}{altup}{shiftup}
+      Send, {ctrlup}{altup}{shiftup}
     KeyWait, F20, T0.20
     If ErrorLevel
     {
@@ -321,12 +335,12 @@ Copy(){
           Return
         }
         Else ;will trigger after 1 sec
-          send, {F22}
+          Send, {F22}
           ; KeyWait, F20,
           Return
       }
     }
-    send, ^{c}
+    Send, ^{c}
       Clip()
       return
   }
@@ -335,7 +349,7 @@ Copy(){
 Paste(){
 global Clippaste
     if (ClipPaste = 1){
-      send, ^{v}
+      Send, ^{v}
       return
   }
     KeyWait, F19, T0.30
@@ -347,7 +361,7 @@ global Clippaste
         if (A_PriorKey="F19")
         If !ErrorLevel
         {
-          ; send, {F21}
+          ; Send, {F21}
           Return
         }
           KeyWait, F19, T2
@@ -368,7 +382,7 @@ global Clippaste
 ctrl(){
   Global clippaste
       if (ClipPaste = 1){
-        send, {ctrldown}{v}{ctrlup}
+        Send, {ctrldown}{v}{ctrlup}
         return
       }
     KeyWait, F19, T0.30
@@ -380,7 +394,7 @@ ctrl(){
         if (A_PriorKey="F19")
         If !ErrorLevel
         {
-          ; send, {F21}
+          ; Send, {F21}
           Return
         }
           KeyWait, F19, T4

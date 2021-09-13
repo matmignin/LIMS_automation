@@ -1,37 +1,44 @@
-﻿#HotkeyInterval 1000
-#MaxHotkeysPerInterval 500
-; #MaxThreadsPerHotkey, 
-#MaxThreadsBuffer, On
-#InstallKeybdHook
-#InstallMouseHook
-#HotkeyModifierTimeout 80
-#maxthreadsperhotkey, 1
-;SendMode, InputThenPl
-SetControlDelay, 1
-SetKeyDelay, 1, 0.25
-setwindelay, 250
-FormatTime, DateString,,  MM/dd/yy
-FormatTime, TimeString,  yyMMddHH
-gosub, vquest_start
-SetNumLockState, on
-SetscrolllockState, off
-CoordMode, mouse, Window
-SetMouseDelay, 1
-SetDefaultMouseSpeed, 1
-SetTitleMatchMode, 2
+﻿gosub, vquest_start
+  CheckTime:=500
+  #HotkeyInterval 501
+  #MaxHotkeysPerInterval 500
+  #MaxThreadsBuffer, On
+  #InstallKeybdHook
+  #InstallMouseHook
+  #HotkeyModifierTimeout 80
+  #maxthreadsperhotkey, 1
+  ;SendMode, InputThenPl
+  SetControlDelay, 1
+  SetKeyDelay, 1, 0.25
+  setwindelay, 250
+  FormatTime, DateString,,  MM/dd/yy
+  FormatTime, TimeString,  yyMMddHH
+  SetNumLockState, on
+  SetscrolllockState, off
+  CoordMode, mouse, Window
+  SetMouseDelay, 1
+  SetDefaultMouseSpeed, 1
+  SetTitleMatchMode, 2
   ; #MenuMaskKey vkE8
-#WinActivateForce
-AutoTrim, On
-CheckTime:=500
-  Iniread, Product0, data.ini, SavedVariables, Product0
-  Iniread, Product1, data.ini, SavedVariables, Product1
-  Iniread, Product2, data.ini, SavedVariables, Product2
-  Iniread, Product3, data.ini, SavedVariables, Product3
-; activeWin:="VScode"
+  #WinActivateForce
+  AutoTrim, On
+  return
 
-
-return
   Starting_test:
+    ; Products:=[]
+  Iniread, Products, data.ini, Products
+  Iniread, Product, data.ini, Products, Product
+  Iniread, Product1, data.ini, Products, Product1
+  Iniread, Product2, data.ini, Products, Product2
+  Iniread, Product3, data.ini, Products, Product3
+  Iniread, Product4, data.ini, Products, Product4
+          ; Products.Insert(Product)
+          ; Products.Insert(Product1)
+          ; Products.Insert(Product2)
+          ; Products.Insert(Product3)
+          ; Products.Insert(Product3)
+; activeWin:="VScode"
+  msgbox % Product "`n1: " product1 "`n2: " Product2 "`n3: " Product3 "`n4: "  Product4 "`n---`n" Products
   ; Test_2()
   return
 
@@ -41,7 +48,7 @@ CheckActive:
       if Winactive("Excel - \\Remote") || Winactive("Book") && (winminmax=1) {
         winactivate , ; Excel - \\Remote,
 			  sleep 200
-			  send, {lwindown}{down}{lwinup}
+			  Send, {lwindown}{down}{lwinup}
       CoordMode, mouse, screen
 				WinMove, A, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
         ; sleep 300
@@ -85,7 +92,7 @@ CheckActive:
 clipClip(type){
 global
 ; tt("clipchanged")
-; send, ^c
+; Send, ^c
   clip.Regex("Codes")
   return
 
@@ -191,7 +198,7 @@ VQuest_Start:
   varbar.Show()
   Excel.Connect(1)
   OnExit("Varbar.Exit")
-  send, {ctrlup}{altup}{shiftup}{lwinup}
+  Send, {ctrlup}{altup}{shiftup}{lwinup}
   gosub, Starting_test
 
 
