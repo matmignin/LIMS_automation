@@ -38,7 +38,7 @@
           Products.Insert(Product3)
           Products.Insert(Product4)
 ; activeWin:="VScode"
-; listarray(Products,"|")
+; listarray(Products)
 
   ; msgbox % "0:" Product "`n1: " product1 "`n2: " Product2 "`n3: " Product3 "`n4: "  Product4 "`n---`n" products[1] "--" Products[]
   ; Test_2()
@@ -47,7 +47,7 @@
 CheckActive:
   ; if winexist("Excel - \\Remote") ;shrink excel 
   
-  if winexist("Password ahk_class bosa_sdm_XL9 ahk_exe EXCEL.EXE"){ ; !Winactive("Password ahk_exe EXCEL.EXE") { ;samplelab passord excel 
+  if winactive("Password ahk_class bosa_sdm_XL9 ahk_exe EXCEL.EXE") && winexist("LMS Workbook.xlsb - Excel"){ ; !Winactive("Password ahk_exe EXCEL.EXE") { ;samplelab passord excel 
     winactivate
     sleep 200
     send, lab{enter}

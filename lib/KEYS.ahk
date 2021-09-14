@@ -356,7 +356,7 @@ _Lbuton:
 		return
 		
 		}
-
+; [] yolo
 
 	3tap(){
 	Global 
@@ -398,8 +398,9 @@ _Lbuton:
 		menu.LMS()
 	else if Winactive("Edit Formulation - \\Remote") 
 	{
-		mouseclick, left, 455, 472,2,0
-		clk(250, 284)
+		productTab.EditFormulation()
+		; mouseclick, left, 455, 472,2,0
+		; clk(250, 284)
 	}
 	else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
 		send % clk(107, 66) Product "{enter}{enter}"

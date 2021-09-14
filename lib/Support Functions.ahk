@@ -283,17 +283,21 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 	
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 	global
-	if (Position:="R")
-		CoordMode, ToolTip, Relative
 	if (Position:="S")
 		CoordMode, ToolTip, Screen
+	if (Position:="R")
+		CoordMode, ToolTip, Relative
 	; If X:="-1"
 		; X:=A_CaretX-50
 	; If Y:="-1"
 		; Y:=A_CaretY-50
 	; if !msg
 		; msg:=A_PriorHotkey "`n" A_Thishotkey
-	tooltip, %msg%, %X%, %Y%,%N%
+
+	if (Position:="C")
+		tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
+	else
+		tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := WinExist("ahk_class tooltips_class32")
 	if Transparent
    	WinSet, Trans, %Transparent%, % "ahk_id" hwnd

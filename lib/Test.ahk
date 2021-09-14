@@ -12,12 +12,11 @@
 		{	
 			; Var:=Product[%ClipCycleCounter%]
 			Var:=Products[ClipCycleCounter]
-			TT(Var,1000,%A_CaretX%,%A_CaretY%,1,250,"C")
+			; TT(Var,1000,,,,250,"C")
 			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
 			; Gui, History:Add, Text,, %Var%
 			; Gui, History:Show, NoActivate, var 
-			ttext:=% DispToolTipText(Var) 
-			sleep 100
+			ttext:=% DispToolTipText(Var)
 		}
 		else
 			ttext:="[cancelled]"
@@ -26,7 +25,7 @@
 			ToolTip, % ttext,A_CaretX, A_CaretY,
 			oldttext:=ttext
 		}
-		Sleep 100
+		Sleep 50
 		KeyWait, Space,
 	}
 	Gui, History:Destroy
@@ -42,7 +41,7 @@ F20 & Space Up::
 	If (ClipCycleFirst = 0)
 		ClipCycleCounter++
 	ClipCycleFirst:=0
-Return
+Return   
 ClipBoardHandler:
 	oldttext:="", ttext:="", ActiveWindowID:=""
 	If (Var <> Clipboard)
@@ -54,31 +53,48 @@ ClipBoardHandler:
 	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
 	; Return
 	;  WinActivate, ahk_id %ActiveWindowID%
-	Sleep, 35
-	Send, ^{v}
-	blo
-	sleep 200
+	; Sleep, 20
+	send % BlockRepeat(25) "^v"
+	; Send, ^v
 	;  PasteTime := A_TickCount
 	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+	; sleep 300
 Return
 
 ` & Space::
-	Product:=[]
-	Batch:=[]
-	Lot:=[]
+	; Product:=[]
+	; Batch:=[]
+	; Lot:=[]
 
-	loop 3 {
-		temp:=Product A_Index
-		Iniread, Temp, data.ini, SavedVariables, Temp
-		;  if hasValue(Product, Temp) ;check to see if duplicate value from list
-		; continue
-		Product.Push(Temp)
-		msgbox % Product[A_index]
-		;  iniwrite, %Temp%, data.ini, SavedVariables, Product0
-		; iniwrite, K111, data.ini, SavedVariables, Product1
-		; iniwrite, K222, data.ini, SavedVariables, Product2
-		; iniwrite, K333, data.ini, SavedVariables, Product3
-	}
+CustomColor := "EEAA99"  ; Can be any RGB color (it will be made transparent below).
+Gui +LastFound +AlwaysOnTop -Caption +ToolWindow  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
+Gui, Color, %CustomColor%
+Gui, Font, s32  ; Set a large font size (32-point).
+Gui, Add, Text, vMyText cLime, XXXXX YYYYY  ; XX & YY serve to auto-size the window.
+; Make all pixels of this color transparent and make the text itself translucent (150):
+WinSet, TransColor, %CustomColor% 150
+SetTimer, UpdateOSD, 200
+Gosub, UpdateOSD  ; Make the first update immediate rather than waiting for the timer.
+Gui, Show, x0 y400 NoActivate  ; NoActivate avoids deactivating the currently active window.
+return
+
+UpdateOSD:
+MouseGetPos, MouseX, MouseY
+GuiControl,, MyText, X%MouseX%, Y%MouseY%
+return
+	; loop 4 {
+	; 	temp:=Product A_Index
+	; 	Iniread, Temp, data.ini, SavedVariables, Temp
+	; 	 if hasValue(Product, Temp) ;check to see if duplicate value from list
+	; 	continue
+	; 	Product.Push(Temp)
+	; 	msgbox % Product[A_index]
+		;  iniwrite, %Temp%, data.ini, Products, Product
+		; iniwrite, K111, data.ini, Products, Product1
+		; iniwrite, K222, data.ini, Products, Product2
+		; iniwrite, K333, data.ini, Products, Product3
+		; iniwrite, K444, data.ini, Products, Product4
+	; }
 return
 
 Test(n){

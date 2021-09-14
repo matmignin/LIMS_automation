@@ -89,7 +89,7 @@ DropdownSelect(A_DropdownCount){
   return
   }
 
-  EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
+  EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){ ;the final input window for adding ingredients
     Global
     SetWinDelay, 450
     Excel.Get_Current_row()
@@ -173,8 +173,8 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
 
 
 
-  EditProduct(){
-    global
+  EditProduct(){ ;for naming Product code and customer, 
+    global Product, Name, Customer, ShapeAndSize, color
     SetWinDelay, 450
     ; Excel.Connect(1)
     click 120,80 ;click product box
@@ -182,16 +182,35 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
     sleep 200
     SendInput,%Name%{tab 8}
     sleep 400
-    winwaitactive,NuGenesis LMS - \\Remote,,10
+    winwaitactive,NuGenesis LMS - \\Remote,,16
     WinActivate, NuGenesis LMS - \\Remote
     click, 67, 283
     sleep 200
     Breaking.Point()
+    This.EditFormulation()
+    ; clk(287, 578) ;click save
+    return
+    ;setwindelay, 200
+  } 
+
+  EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
+    global Product, ShapeAndSize, color
     ; Mouse_Click("Add_Formulation")
-    winactivate, Edit Formulation - \\Remote,
+    if !winactive("Edit Formulation - \\Remote") && winexist("Edit Formulation - \\Remote")
+      winactivate, Edit Formulation - \\Remote,
     Send, {tab}%product%
       Send, {Tab 23} ;{click 268, 578}
+      sleep 200
     Breaking.Point()
+    if ShapeAndSize
+      send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
+    ShapeAndsize:=  
+    sleep 200
+    If Color Contains IF(B7
+      color:=
+    else
+      send, {tab 2}^a%Color%{shiftdown}{tab 2}{shiftup}
+    sleep 200
     ; clk(287, 578) ;click save
     return
     ;setwindelay, 200
@@ -239,13 +258,17 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
   DropDown_Ingredient(){
    global
     SetWinDelay, 450
+  if (GeneralCount=2){
+    SendInput,{tab}{Home}{right 2}{right 62}
+    return
+  }
    ;Menu,IngredientMenu,Add,Creatine, IngredientMenuHandler
-   Menu,IngredientMenu,Add,Generic Ingredient &A.1,IngredientMenuHandler
-   Menu,IngredientMenu,Add,Generic Ingredient &B.1,IngredientMenuHandler
-   Menu,IngredientMenu,Add,Generic Ingredient &C.1,IngredientMenuHandler
-   Menu,IngredientMenu,Add,Generic Ingredient &D.1,IngredientMenuHandler
-   Menu,IngredientMenu,Add,Generic Ingredient &E.1,IngredientMenuHandler
-   Menu,IngredientMenu,Add,Generic Ingredient &F.1,IngredientMenuHandler
+   Menu,IngredientMenu,Add,Generic Ingredient &A,IngredientMenuHandler
+   Menu,IngredientMenu,Add,Generic Ingredient &B,IngredientMenuHandler
+   Menu,IngredientMenu,Add,Generic Ingredient &C,IngredientMenuHandler
+   Menu,IngredientMenu,Add,Generic Ingredient &D,IngredientMenuHandler
+   Menu,IngredientMenu,Add,Generic Ingredient &E,IngredientMenuHandler
+   Menu,IngredientMenu,Add,Generic Ingredient &F,IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &G,IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &H,IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &I,IngredientMenuHandler
@@ -277,7 +300,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
    ; Menu,IngredientMenu,Add,Quercetin Dihydrate,IngredientMenuHandler
    ; Menu,IngredientMenu,Add,Taurine,IngredientMenuHandler
    Menu,IngredientMenu,Add,Total Probiotic,IngredientMenuHandler
-   Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
+    Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
    Menu,IngredientMenu,Show,
    return
   }
@@ -291,59 +314,63 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
 
 
 IngredientMenuHandler:
+; tt(GeneralCount)
 Click 150, 73
-; click, 150, 73
-if (A_ThisMenuItem ="Generic Ingredient &A.1")
+; if !GeneralCount
+; clk(150, 73)
+  GeneralCount=1
+; tt(GeneralCount)
+if (A_ThisMenuItem ="Generic Ingredient &A")
   SendInput,{tab}{Home}{right 2}{right 56}
-else if (A_ThisMenuItem ="Generic Ingredient &B.1")
+else if (A_ThisMenuItem ="Generic Ingredient &B") || (GeneralCount=2)
   SendInput,{tab}{Home}{right 2}{right 62}
-else if (A_ThisMenuItem ="Generic Ingredient &C.1")
+else if (A_ThisMenuItem ="Generic Ingredient &C") || (GeneralCount=3)
   SendInput,{tab}{Home}{right 2}{right 68}
-else if (A_ThisMenuItem ="Generic Ingredient &D.1")
+else if (A_ThisMenuItem ="Generic Ingredient &D") || (GeneralCount=4)
   SendInput,{tab}{home}{right 2}{right 74}
-else if (A_ThisMenuItem ="Generic Ingredient &E.1")
+else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount==5)
   SendInput,{tab}{Home}{right 2}{right 80}
-else if (A_ThisMenuItem ="Generic Ingredient &F.1")
+else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount==6)
   SendInput,{tab}{Home}{right 2}{right 86}
-else if (A_ThisMenuItem ="Generic Ingredient &G")
+else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount==7)
   SendInput,{tab}{Home}{right 2}{right 92}
-else if (A_ThisMenuItem ="Generic Ingredient &H")
-  SendInput,{tab}{Home}{right 2}{right 94}
-else if (A_ThisMenuItem ="Generic Ingredient &I")
+else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount==8)
+  SendInput,{tab}{Home}{right 2}{right 93}
+else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount==9)
   SendInput,{tab}{Home}{right 2}{right 95}
-else if (A_ThisMenuItem ="Generic Ingredient &J")
+else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount==10)
   SendInput,{tab}{Home}{right 2}{right 97}
-else if (A_ThisMenuItem ="Generic Ingredient &K")
+else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount==11)
   SendInput,{tab}{Home}{right 2}{right 99}
-else if (A_ThisMenuItem ="Generic Ingredient &L")
+else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount==12)
   SendInput,{tab}{Home}{right 2}{right 100}
-else if (A_ThisMenuItem ="Generic Ingredient &M")
+else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount==13)
   SendInput,{tab}{Home}{right 2}{right 101}
-else if (A_ThisMenuItem ="Generic Ingredient &N")
+else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount==14)
   SendInput,{tab}{Home}{right 2}{right 102}
-else if (A_ThisMenuItem ="Generic Ingredient &O")
+else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount==15)
   SendInput,{tab}{Home}{right 2}{right 103}
-else if (A_ThisMenuItem ="Generic Ingredient &P")
+else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount==16)
   SendInput,{tab}{Home}{right 2}{right 104}
-else if (A_ThisMenuItem ="Generic Ingredient &Q")
+else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount==17)
   SendInput,{tab}{Home}{right 2}{right 105}
-else if (A_ThisMenuItem ="Generic Ingredient &R")
+else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount==18)
   SendInput,{tab}{Home}{right 2}{right 106}
-else if (A_ThisMenuItem ="Generic Ingredient &S")
+else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount==19)
   SendInput,{tab}{Home}{right 2}{right 107}
-else if (A_ThisMenuItem ="Generic Ingredient &T")
+else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount==20)
   SendInput,{tab}{Home}{right 2}{right 108}
-else if (A_ThisMenuItem ="Generic Ingredient &U")
+else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount==21)
   SendInput,{tab}{Home}{right 2}{right 109}
-else if (A_ThisMenuItem ="Generic Ingredient &V")
+else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount==22)
   SendInput,{tab}{Home}{right 2}{right 110}
-else if (A_ThisMenuItem ="Generic Ingredient &W")
+else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount==23)
   SendInput,{tab}{Home}{right 2}{right 111}
-else if (A_ThisMenuItem ="Generic Ingredient &X")
+else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount==24)
   SendInput,{tab}{Home}{right 2}{right 112}
-else if (A_ThisMenuItem ="Generic Ingredient &Y")
+else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount==25)
   SendInput,{tab}{Home}{right 2}{right 113}
-else if (A_ThisMenuItem ="Generic Ingredient &Z")
+else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount==26)
   SendInput,{tab}{Home}{right 2}{right 114}
 else if (A_ThisMenuItem ="Ingredient Note 1")
   SendInput,{tab}{Home}{right 2}{right 139}
@@ -357,6 +384,9 @@ else if (A_ThisMenuItem ="STOP")
   Reload
 else
   return
+tt(GeneralCount,,0,0,2)
+GeneralCount++  
+tt(GeneralCount)
 return
 
 

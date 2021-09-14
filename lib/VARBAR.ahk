@@ -83,7 +83,15 @@
 	
 		; Mbutton::Notes.save()
 return
+; [] 
+/*
+// youol
+\\yolo 
+||yolo
+[] nono 
+[] 
 
+ */
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global

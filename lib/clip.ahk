@@ -43,6 +43,7 @@ Regex(Category:="All"){
       If cProduct {
         if (cProduct!=Product) {
       ; GuiControl,Varbar:Text, Product, %cProduct%
+            Product4:=Product3
             Product3:=Product2
             Product2:=Product1
             Product1:=Product
