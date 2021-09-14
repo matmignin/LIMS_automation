@@ -4,27 +4,32 @@
 		WinGet, ActiveWindowID, ID, A
 	cyclebackward:=1
 	PreviousClipCycleCounter:=0 ; 13/10/2017 test
-	ClipCycleCounter:=1ERRORERROR
+	ClipCycleCounter:=1
 	ClipCycleFirst:=1
 	While GetKeyState("F20","D") and cyclebackward
 	{
 		If (ClipCycleCounter <> 0)
 		{	
 			; Var:=Product[%ClipCycleCounter%]
-			Var:=Product%ClipCycleCounter%
-			TT(Var)
-			; ttext:=% DispToolTipText(Var)
+			Var:=Products[ClipCycleCounter]
+			TT(Var,1000,%A_CaretX%,%A_CaretY%,1,250,"C")
+			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
+			; Gui, History:Add, Text,, %Var%
+			; Gui, History:Show, NoActivate, var 
+			ttext:=% DispToolTipText(Var) 
+			sleep 100
 		}
 		else
 			ttext:="[cancelled]"
 		If (oldttext <> ttext)
-		{
-			ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+		{	
+			ToolTip, % ttext,A_CaretX, A_CaretY,
 			oldttext:=ttext
 		}
 		Sleep 100
 		KeyWait, Space,
 	}
+	Gui, History:Destroy
 	If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	{
 		Gosub, ClipboardHandler
@@ -38,7 +43,6 @@ F20 & Space Up::
 		ClipCycleCounter++
 	ClipCycleFirst:=0
 Return
-
 ClipBoardHandler:
 	oldttext:="", ttext:="", ActiveWindowID:=""
 	If (Var <> Clipboard)
@@ -50,8 +54,10 @@ ClipBoardHandler:
 	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
 	; Return
 	;  WinActivate, ahk_id %ActiveWindowID%
-	Sleep, 20
-	Send, ^v
+	Sleep, 35
+	Send, ^{v}
+	blo
+	sleep 200
 	;  PasteTime := A_TickCount
 	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
 Return
