@@ -71,6 +71,7 @@ Regex(Category:="All"){
           ; msgbox % Product "`n1:" product1 "`n2" Product2 "`n3" Product3 "`n4" Product4
           ; Product:=
         }
+        return
             ; IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
             ; IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
               ; if cBatch

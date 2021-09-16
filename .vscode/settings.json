@@ -15,7 +15,7 @@
         "bin/": true,
         "lib/plugins/": true,
         "lib/*.code-workspace": true,
-        "lib/CL3/*": true,
+        "lib/CL3/*": false,
         "lib/DebugWindow.AHK": true,
         "lib/Gdip_All.ahk": true,
         "lib/JSON.ahk": true,

@@ -90,6 +90,11 @@ _TestingZone:
 	#if
 
 KEY_DEFAULT:
+_Esc:
+	esc & 1::send, {shiftdown}{altdown}{-}{altup}{shiftup}
+	esc & 2::send, {shiftdown}{altdown}{=}{altup}{shiftup}
+	esc & 3::send, {shiftdown}{altdown}{0}{altup}{shiftup}
+	esc::esc
 	Media_Prev::MakeTransparent()
 	Media_Play_Pause::F16
 	Media_Next::F17

@@ -64,7 +64,7 @@ _WORD:
 							return			
 
 
-Excel:
+_Excel:
 	/*   ; searchbar and tabswitch
 		#If (A_PriorHotKey = "Mbutton" AND A_TimeSincePriorHotkey < 9000 AND winactive("LMS Workbook.xlsb"))
 		F6::                 
@@ -128,7 +128,7 @@ Excel:
 	Mbutton::SendInput MM{tab}%CurrentDateTime%
 	SendInput, {click}MM{tab}%DateString%
 
-OUTLOOK:
+_OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
 	; numpadadd::         	send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
@@ -164,6 +164,10 @@ SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organolept
 	; F20::Send, {backspace}
 	F19::						Send, ^{click}
 	
+
+
+
+_OneNote:
 #ifwinactive, OneNote for Windows 10
 	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
 	^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
@@ -173,7 +177,6 @@ SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organolept
 	^`::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 	F20 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
-OneNote:
 	#IfWinActive, ahk_exe ONENOTE.EXE
 	; F9 & Wheelup::       Wheel_2("{F11}")
 	F9::                 Send,{AltDown}{w}{i}{Altup}
@@ -190,7 +193,7 @@ OneNote:
 
 #IfWinActive,
 
-Remote_DESKTOPs:
+_Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
 	Mbutton::            menu.Remote_Desktop()
 	; F13::                TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
@@ -207,13 +210,16 @@ Remote_DESKTOPs:
 	F19::            	 menu.Remote_Desktop()
 	Mbutton::          menu.Remote_Desktop()
 
-
+_Firefox:
  #IfWinActive, ahk_exe firefox.exe 
  numpaddot::	      sendInput, ^w
  F6::				   	SendInput, !{left}
  F7::				   	Send, !{right}
  F13::				  	Send, {ctrldown}{/}{ctrlup}
  +F13::				 	Send, {esc}
+ numpadadd::send, {lwindown}{right}{lwinup}
+ numpadsub::send, {lwindown}{left}{lwinup}
+ numpadmult::send, {lwindown}{up}{lwinup}
 
 
 
