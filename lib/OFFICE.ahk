@@ -18,10 +18,10 @@ _explorer:
 	F8::										Send, {down}
 	Mbutton::								Send, {space}
 	Numpaddiv::							
-	Send, {Click R}
-	sleep 100 
-	Send, {up}{enter}
-	return
+												Send, {Click R}
+												sleep 100 
+												Send, {up}{enter}
+												return
 
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
@@ -100,13 +100,15 @@ Excel:
 								excel.Connect(1)
 								ExplorerSearch(Product)
 								return
+
 #ifwinactive, Excel ahk_exe WFICA32.EXE 
 	; F9::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	F6::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	F9::						Send, {lwindown}{down}{lwinup}
 	^wheelup::				Send, {click 3}%SampleID%
 	^wheeldown::			Send, %SampleID%
-#ifwinactive, ahk_exe EXCEL.EXE         
+#ifwinactive, ahk_exe EXCEL.EXE     
+	Numlock::Send, {shiftdown}{F9}{shiftup}
 	F9::                 excel.search()
 	F7::                 excel.Search()
 	+Enter::             SendInput, {altdown}{enter}{altup}
@@ -123,21 +125,15 @@ Excel:
 	return::             SendInput, !{i}
 	rbutton & Lbutton::  SendInput, !{i}
 #ifwinactive, LMS Products Checklist.xlsm - Excel
-	Mbutton::SendInput, {click}MM{tab}%DateString%
-	MoveFindReplace(){
-		; wina
-	; WinGetPos, Win_X, win_Y, win_w, Win_H, "SAMPLE LOG 2021.xlsx"
-	; EdgeofWindow:=A_ScreenWidth-466
-	; BottomofWindow:=(A_Screenhight/3)+(A_Screenhight/3)
-	; excel.Search()
-	; winMove, Find and Replace, , %EdgeofWindow%, %BottomofWindow%, %EdgeofWindow%+466, %BottomofWindow%
-	}
+	Mbutton::SendInput MM{tab}%CurrentDateTime%
+	SendInput, {click}MM{tab}%DateString%
+
 OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
 	; numpadadd::         	send % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}{space}is updated."
-	<+F20::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	<+F19::          SendInput % Trim(Product, OmitChars = " `n")	
+	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
 	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::          SendInput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; Numpadsub::
@@ -147,26 +143,26 @@ OUTLOOK:
 	F20 & up::	         WinMove, ahk_exe OUTLOOK.EXE, , 1945, -738, 1076, 1158
 	F20 & right::	      WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
 	F20::                
-		Send, ^{c}
-		Clip.Copy()
-		return
-	F7::LMS.SearchRequest(Batch,"{enter}")
+								Send, ^{c}
+								Clip.Copy()
+								return
+	F7::						LMS.SearchRequest(Batch,"{enter}")
 	F9::                 
-		winactivate, NuGenesis LMS - \\Remote
-		sleep 200
-		lms.searchbar(Product)
-		return
-	F6::LMS.SearchRequest(Batch,"{enter}")    
-	^wheelup::Block(500,"^{v}")
+								winactivate, NuGenesis LMS - \\Remote
+								sleep 200
+								lms.searchbar(Product)
+								return
+	F6::						LMS.SearchRequest(Batch,"{enter}")    
+	^wheelup::				Block(500,"^{v}")
 	; ^wheeldown::send % Blockrepeat(500) Clip.Copy()
-	F13::return ; clip.IfNothingSelected("menu")
+	F13::						return ; clip.IfNothingSelected("menu")
 :*:ol`;::
 SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
 	return
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
-	Numlock::Send, {Backspace}	
+	Numlock::				Send, {Backspace}	
 	; F20::Send, {backspace}
-	F19::Send, ^{click}
+	F19::						Send, ^{click}
 	
 #ifwinactive, OneNote for Windows 10
 	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
@@ -205,19 +201,19 @@ Remote_DESKTOPs:
 	sendlevel, 0
 	return
 #ifwinactive, ahk_class #32770
-	Mbutton::            menu.Remote_Login()
+	Mbutton::          menu.Remote_Login()
 	F19::              menu.Remote_Login()
 #ifwinactive, ahk_class TscShellContainerClass
-	F19::             menu.Remote_Desktop()
-	Mbutton::            menu.Remote_Desktop()
+	F19::            	 menu.Remote_Desktop()
+	Mbutton::          menu.Remote_Desktop()
 
 
  #IfWinActive, ahk_exe firefox.exe 
- numpaddot::CloseWindow()
- F6::SendInput, !{left}
- F7::Send, !{right}
- F13::Send, {ctrldown}{/}{ctrlup}
- +F13::Send, {esc}
+ numpaddot::	      sendInput, ^w
+ F6::				   	SendInput, !{left}
+ F7::				   	Send, !{right}
+ F13::				  	Send, {ctrldown}{/}{ctrlup}
+ +F13::				 	Send, {esc}
 
 
 

@@ -11,8 +11,9 @@
   SetControlDelay, 1
   SetKeyDelay, 1, 0.25
   setwindelay, 250
-  FormatTime, DateString,,  MM/dd/yy
-  FormatTime, TimeString,  yyMMddHH
+  FormatTime, DayString,, d/MM/yy
+  FormatTime, TimeString, R
+  FormatTime, CurrentDateTime,, dd/MM/yy
   SetNumLockState, on
   SetscrolllockState, off
   CoordMode, mouse, Window
@@ -47,12 +48,12 @@
 CheckActive:
   ; if winexist("Excel - \\Remote") ;shrink excel 
   
-  if winactive("Password ahk_class bosa_sdm_XL9 ahk_exe EXCEL.EXE") && winexist("LMS Workbook.xlsb - Excel"){ ; !Winactive("Password ahk_exe EXCEL.EXE") { ;samplelab passord excel 
-    winactivate
-    sleep 200
-    send, lab{enter}
-    sleep 1000
-    }
+  ; if winactive("Password ahk_class bosa_sdm_XL9 ahk_exe EXCEL.EXE") && winexist("LMS Workbook.xlsb - Excel"){ ; !Winactive("Password ahk_exe EXCEL.EXE") { ;samplelab passord excel 
+    ; winactivate
+    ; sleep 200
+    ; send, lab{enter}
+    ; sleep 1000
+    ; }
     
   ;  WinGet, winminmax, MinMax, A
   ;    if Winactive("Excel - \\Remote") || Winactive("Book") && (winminmax=1) {
@@ -64,13 +65,13 @@ CheckActive:
         ; sleep 300
       ;}
     if Product
-      Vars:=Product
+      ProductConcat:=Product
     if Batch
-      Vars.="`t"Batch
+      ProductConcat.="`t"Batch
     if Lot
-      Vars.="`n"Lot
+      ProductConcat.="`n"Lot
     if Coated
-      Vars.="`t"Coated
+      ProductConcat.="`t"Coated
     ; if !(Activewin="VScode") && winactive("ahk_exe Code.exe") {
       ; Varbar.show()
       ; TT("vscode")

@@ -203,7 +203,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
       sleep 200
     Breaking.Point()
     if ShapeAndSize
-      send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
+    send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
     ShapeAndsize:=  
     sleep 200
     If Color Contains IF(B7
@@ -258,10 +258,10 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
   DropDown_Ingredient(){
    global
     SetWinDelay, 450
-  if (GeneralCount=2){
-    SendInput,{tab}{Home}{right 2}{right 62}
-    return
-  }
+  ; if (GeneralCount=2){
+    ; SendInput,{tab}{Home}{right 2}{right 62}
+    ; return
+  ; }
    ;Menu,IngredientMenu,Add,Creatine, IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &A,IngredientMenuHandler
    Menu,IngredientMenu,Add,Generic Ingredient &B,IngredientMenuHandler
@@ -318,7 +318,7 @@ IngredientMenuHandler:
 Click 150, 73
 ; if !GeneralCount
 ; clk(150, 73)
-  GeneralCount=1
+  ; GeneralCount=1
 ; tt(GeneralCount)
 if (A_ThisMenuItem ="Generic Ingredient &A")
   SendInput,{tab}{Home}{right 2}{right 56}
@@ -384,9 +384,9 @@ else if (A_ThisMenuItem ="STOP")
   Reload
 else
   return
-tt(GeneralCount,,0,0,2)
-GeneralCount++  
-tt(GeneralCount)
+; tt(GeneralCount,,0,0,2)
+; GeneralCount++  
+; tt(GeneralCount)
 return
 
 

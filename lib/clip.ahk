@@ -114,23 +114,29 @@ Regex(Category:="All"){
       sleep 20
     }
     if (Category!="Codes"){
-      Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-      Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-      Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-      Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
-      Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
+      ; Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      Regexmatch(Clipboard, "i)\bF, Micro\b",cMicro)
+      Regexmatch(Clipboard, "i)\bI, Retain\b", cRetain)
+      Regexmatch(Clipboard, "i)\bI, Physical\b", cPhysical)
+      Regexmatch(Clipboard, "i)\bCT, Physical\b", cCTPhysical)
+      Regexmatch(Clipboard, "i)\bCT, Retain\b", cCTRetain)
+      ; Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      ; Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+      ; Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+      ; Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      ; Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
+      ; Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
       Sleep      20
       If cAnalytical
-        Department=Analytical
+        Department:="Analytical"
       If cMicro
-        Department=Micro
+        Department:="Micro"
       If cRetain
-        Department=Retain
+        Department:="Retain"
       If cCTRetain
         Department:="Retain (Coated)"
       If cPhysical
-        Department=Physical
+        Department:=Physical
       If cCTPhysical
         Department:="Physical (Coated)"
     }

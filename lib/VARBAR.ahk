@@ -1,4 +1,5 @@
 
+
 #IfWinActive, VarBar ahk_exe AutoHotkey.exe 
 	F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
 	F19::varbar.focus("Product")
@@ -83,15 +84,7 @@
 	
 		; Mbutton::Notes.save()
 return
-; [] 
-/*
-// youol
-\\yolo 
-||yolo
-[] nono 
-[] 
 
- */
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
@@ -102,10 +95,7 @@ Class VarBar{
 			if !WinExist("LMS Workbook.xlsb"){
 				Iniread, Batch, data.ini, SavedVariables, Batch
 				Iniread, Product, data.ini, Products, Product
-				; Iniread, Product0, data.ini, Products, Product0
-				; Iniread, Product1, data.ini, Products, Product1
-				; Iniread, Product2, data.ini, Products, Product2
-				; Iniread, Product3, data.ini, Products, Product3
+	
 				Iniread, Batch0, data.ini, SavedVariables, Batch0
 				Iniread, Batch1, data.ini, SavedVariables, Batch1
 				Iniread, SampleID, data.ini, SavedVariables, SampleID
@@ -138,52 +128,52 @@ Class VarBar{
 			; {
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
-				WinSet, Transparent, 200, %GUIID%
+				WinSet, Transparent, 100, %GUIID%
 				Gui, VarBar:color,DC734F, 97BA7F   
 				; Gui, VarBar:color,016D07, 97BA7F   
-				GUI,VarBar:Font,s14 cBlack Bold, Consolas
-				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h25 x20 y0  w55 ,				%Product%  ; edit1
-				GUI,VarBar:Font,s10 cBlack,Consolas
-				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H24 x+1 y1 w70, 					%Batch% 	 ; edit2
-				GUI,VarBar:Font,s9 cBlack , Consolas
-				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x+1 left H24 y1 w60, 				%Lot% 		 ; edit3
-					GUI,VarBar:Font,s8 cBlack,arial Narrow
+				GUI,VarBar:Font,s16 cBlack Bold, Consolas
+				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h27 x20 y0  w62 ,				%Product%  ; edit1
+				GUI,VarBar:Font,s11 cBlack,Consolas
+				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H27 x+1 y1 w73, 					%Batch% 	 ; edit2
+				GUI,VarBar:Font,s10 cBlack , Consolas
+				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x+1 left H27 y1 w63, 				%Lot% 		 ; edit3
+					GUI,VarBar:Font,s9 cBlack,arial Narrow
 				if !Coated
-					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x+1 H24 y1 w20, 					%Coated%   ; edit4
+					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x+1 H27 y1 w23, 					%Coated%   ; edit4
 				else
-					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar center x+1 H24 y1 w60, 					%Coated%   ; edit4
+					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar center x+1 H27 y1 w63, 					%Coated%   ; edit4
 				if ShowSampleID
-					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H24 y1 w80, 				%SampleID%  ; edit5
+					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H27 y1 w83, 				%SampleID%  ; edit5
 				else
-					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H24 y1 w0, 				%SampleID%  ; edit5
-			GUI,VarBar:Font,s19 107C41, Consolas
+					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H27 y1 w0, 				%SampleID%  ; edit5
+			GUI,VarBar:Font,s20 107C41, Consolas
 				; GUI,VarBar:Font,s19 cEF6950, Consolas
 			Gui,VarBar:Add,text, vIteration x+5 65 center y-3 w23,											%Iteration%	; Text1
 			GUI,VarBar:Font,s8.5 cBlack,arial Narrow
-			Gui,VarBar:add,Edit,		vNote1 					gNotevarbar1  x+3 H24 y1 w150 right, 				%Note1%     ; edit6
-			Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar2 X+2 H24 y1 w150 right,					%Note2%  	; edit7
+			Gui,VarBar:add,Edit,		vNote1 					gNotevarbar1  x+3 H27 y1 w150 right, 				%Note1%     ; edit6
+			Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar2 X+2 H27 y1 w150 right,					%Note2%  	; edit7
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
 				{
 					WinGetPos, VarBar_X, VarBar_Y,,, NuGenesis LMS - \\Remote,
-					varbar_x:= Varbar_x +200
+					varbar_x:= Varbar_x +700
 					if ShowSampleID || !Coated
-						Gui, VarBar:Show, h25 x%VarBar_X% y%VarBar_y% w700 NoActivate, VarBar
+						Gui, VarBar:Show, h26 x%VarBar_X% y%VarBar_y% w700 NoActivate, VarBar
 					else
-					Gui, VarBar:Show, h25 x%VarBar_X% y%VarBar_y% w640 NoActivate, VarBar
+					Gui, VarBar:Show, h26 x%VarBar_X% y%VarBar_y% w700 NoActivate, VarBar
 					ActiveWin:="LMS"
 			}
 			else
 			{
 				MidScreen:=A_ScreenWidth /2
-				Gui, VarBar:Show, h25 x%MidScreen% y1 w640 NoActivate, VarBar
+				Gui, VarBar:Show, h26 x%MidScreen% y1 w700 NoActivate, VarBar
 				ActiveWin:="VScode"
 			}
 			CoordMode, mouse, window
 			ControlsetText, Static1, %Iteration%,VarBar
 			OnMessage(0x0201, "WM_LBUTTONDOWN")
 			OnMessage(0x203, "VariableBar_Relocate")
-			WinSet, Transparent, 165, AHK_id %GUIID%
+			WinSet, Transparent, 235, AHK_id %GUIID%
 			return
 
 			ProductVarBar:

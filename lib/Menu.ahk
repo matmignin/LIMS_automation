@@ -192,10 +192,11 @@ Varbar(){
   global
 	   MouseGetPos,,,,WinControl
   try This.delete()
-		if (WinControl="Edit1" || WinControl="Edit2" || winControl="Edit3"){
+/* 		;this was code that read a text file and of previous Concated Codes, then made it into a menu
+  if (WinControl="Edit1" || WinControl="Edit2" || winControl="Edit3"){
       		Loop, Read, Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
-      if A_index>5
+      if (A_index > 5)
         return
     }
     else {
@@ -205,7 +206,8 @@ Varbar(){
 			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
       if A_index>5
         return
-    }
+    } 
+    */
     Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
       if SwitchWorkSheets=1  
         menu, menu, Check, &SwitchWorkSheets
@@ -234,7 +236,7 @@ Varbar(){
           Menu,Menu,add,&Spec Table,Tests
     Menu,Menu,add,&Ingredient Table,Tests
   ; Menu, Menu, add, &Notes, Notes.Show
-    }
+    ; }
   This.show()
   }
 

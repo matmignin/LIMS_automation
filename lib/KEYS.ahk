@@ -3,104 +3,104 @@
 
 
 _TestingZone:
-Volume_Mute::
-sendlevel 1
-Send, {F23}
-sendlevel 0
-return
-; drag_enabled := 0
-
-; +^#F22::
-; 	if(drag_enabled)
-; 	{
-; 		Click up
-; 		drag_enabled := 0
-; 	}
-; 	else
-; 	{
-; 		drag_enabled := 1
-; 		Click down
-; 	}
-; 	return
-
-; LButton::
-; 	if(drag_enabled)
-; 	{
-; 		Click up
-; 		drag_enabled := 0
-; 	}
-; 	else
-; 		click
-; 	return
-
-
-
-
-MouseGesture(LeftAction:="",RightAction:=""){
-	global
-	MouseGetPos, xi,yi
-	sleep =
-	While GetKeyState(A_ThisHotkey,"P")
-	{
-		MouseGetPos, Xf,Yf
-	}
-	if (xi>Xf){
-		send % leftAction
-		tt("Left")
-		return
-	}
-	if (xi<Xf){
-		send % RightAction
-		tt("Right")
-		return
-	}
-	; if (yi>Yf+50)
-		; tt("Up")
-	; if (yi<Yf-50)
-		; tt("Down")
+	Volume_Mute::
+	sendlevel 1
+	Send, {F23}
+	sendlevel 0
 	return
-	}
-Media_Prev::MakeTransparent()
-Media_Play_Pause::F16
-Media_Next::F17
-Volume_Down::F18
-Volume_up::F18
-/ & up::						Varbar.AddIteration(0)
-/ & down::   		      Varbar.SubIteration(0)
-F13 & wheelright::		Varbar.AddIteration(0) 
-F13 & wheelleft::   		Varbar.SubIteration(0)
-F13 & wheelup::			Varbar.AddIteration() 
-F13 & wheeldown::   		Varbar.SubIteration()
-; ^wheelup::   	
-; 	tt("wheelup", 500)
-; 	Send, !
-; 	blockinput, mousemove
-; 	sleep 500
-; 	blockinput, mousemoveoff
-; 	; SetKeyDelay, 1, 0
-; 	return
-; ~^wheeldown::  
-; 	TT("wheeldown",500)
-; 	blockinput, mousemove
-; 	sleep 500
-; 	blockinput, mousemoveoff
-; 	; SetKeyDelay, 1, 0
-; 	return
-; 	; sendlevel 0
-; ^wheeldown::Block(300,"^{c}")
-; ^wheeldown::Blockrepeat(500) clip()
-; ^wheeldown::send % Blockrepeat(900) "^{v}"
-; sleep 500
-; return
-f10::F21
-F11::F22
-F12::Send, {altdown}{tab}{altup}
-#if (N=1)
-	wheelDown::return
-	wheelup::return
-#if
+	; drag_enabled := 0
 
-	KEY_DEFAULT:
+	; +^#F22::
+	; 	if(drag_enabled)
+	; 	{
+	; 		Click up
+	; 		drag_enabled := 0
+	; 	}
+	; 	else
+	; 	{
+	; 		drag_enabled := 1
+	; 		Click down
+	; 	}
+	; 	return
+
+	; LButton::
+	; 	if(drag_enabled)
+	; 	{
+	; 		Click up
+	; 		drag_enabled := 0
+	; 	}
+	; 	else
+	; 		click
+	; 	return
+
+
+
+
+	MouseGesture(LeftAction:="",RightAction:=""){
+		global
+		MouseGetPos, xi,yi
+		sleep =
+		While GetKeyState(A_ThisHotkey,"P")
+		{
+			MouseGetPos, Xf,Yf
+		}
+		if (xi>Xf){
+			send % leftAction
+			tt("Left")
+			return
+		}
+		if (xi<Xf){
+			send % RightAction
+			tt("Right")
+			return
+		}
+		; if (yi>Yf+50)
+			; tt("Up")
+		; if (yi<Yf-50)
+			; tt("Down")
+		return
+	}
+	; ^wheelup::   	
+	; 	tt("wheelup", 500)
+	; 	Send, !
+	; 	blockinput, mousemove
+	; 	sleep 500
+	; 	blockinput, mousemoveoff
+	; 	; SetKeyDelay, 1, 0
+	; 	return
+	; ~^wheeldown::  
+	; 	TT("wheeldown",500)
+	; 	blockinput, mousemove
+	; 	sleep 500
+	; 	blockinput, mousemoveoff
+	; 	; SetKeyDelay, 1, 0
+	; 	return
+	; 	; sendlevel 0
+	; ^wheeldown::Block(300,"^{c}")
+	; ^wheeldown::Blockrepeat(500) clip()
+	; ^wheeldown::send % Blockrepeat(900) "^{v}"
+	; sleep 500
+	; return
+	f10::F21
+	F11::F22
+	F12::Send, {altdown}{tab}{altup}
+	#if (N=1)
+		wheelDown::return
+		wheelup::return
+	#if
+
+KEY_DEFAULT:
+	Media_Prev::MakeTransparent()
+	Media_Play_Pause::F16
+	Media_Next::F17
+	Volume_Down::F18
+	Volume_up::F18
+	/ & up::						Varbar.AddIteration(0)
+	/ & down::   		      Varbhar.SubIteration(0)
+	F13 & wheelright::		Varbar.AddIteration(0) 
+	F13 & wheelleft::   		Varbar.SubIteration(0)
+	F13 & wheelup::			Varbar.AddIteration() 
+	F13 & wheeldown::   		Varbar.SubIteration()
 	numpadsub::          4Left()
 	numpadadd::          4right()
 	numpadMult::         #up
@@ -137,7 +137,10 @@ F12::Send, {altdown}{tab}{altup}
 	~>+lshift::						Send, {lwindown}{left}{lwinup}
 	; ~Rshift & up:: 			SendInput, %SampleID%
 	lshift & Appskey::			Return
-	<^;::	 							SendInput, %DateString%
+	<^`;::
+	FormatTime, CurrentDateTime,, dd/MM/yy
+	SendInput %CurrentDateTime%
+	return
 	rshift & Appskey::			return
 	; / & up:: 			SendInput, %SampleID%
 	; ~Lbutton & left:: 			SendInput, %SampleID%
@@ -179,8 +182,8 @@ F12::Send, {altdown}{tab}{altup}
 	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
 	rbutton::						2tap()
 
-	>+F20::             	varbar.focus("Batch")
-	>+F19::             	varbar.focus("Product")
+	>+F20::             			varbar.focus("Batch")
+	>+F19::            		 	varbar.focus("Product")
 	; F19 & F20::             varbar.focus("Product")
 
 F19_And_F20:
@@ -280,8 +283,12 @@ _Lbuton:
 			Send, {enter}
 		else If WinActive("Test Definition Editor - \\Remote")
 			clk(330, 619) ;click save
-		else If WinActive("Results Definition - \\Remote")
+		else If WinActive("Results Definition - \\Remote"){
 			Send, {enter}
+			sleep 200
+			WinActivate, "Test Definition Editor - \\Remote"
+			clk(330, 619)
+		}
 		else if winactive("Register new samples - \\Remote")
 			clk(502, 354)
 		else if winactive("Select samples for test:")
@@ -331,16 +338,21 @@ _Lbuton:
 
 	3up(){
 		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.DetectTab()
-				if (Tab="Requests"){
-					click, 2
-					sleep 200
-					Autofill()
-					return
-				}
-				else if (Tab="Products")
-					LMS.ViewCoa()
+		If winactive("NuGenesis LMS - \\Remote") {
+				Excel.Connect(1)
+				TT(Product " " Batch "`n`t" Name " - " Customer)
+		}
+	/* 
+				LMS.DetectTab()
+					if (Tab="Requests"){
+						click, 2
+						sleep 200
+						Autofill()
+						return
+					}
+					else if (Tab="Products")
+						LMS.ViewCoa()
+	*/
 		else if winactive("Edit test (Field Configuration:")
 			Autofill()
 		else if winactive("Register new samples - \\Remote")
@@ -351,7 +363,9 @@ _Lbuton:
 			send % Clk(250, 70) "{up}" ; click okay.
 		else If WinActive("Composition - \\Remote")
 			ProductTab.AddCOASpace()
-		else
+		else if Winactive("Results Definition - \\Remote")  	
+			menu.LMS()
+		else	
 			return
 		return
 		
@@ -366,8 +380,9 @@ _Lbuton:
 		clip()
 		return
 	}
-		else if winexist("Delete Test - \\Remote") { ; Press Okay
-		WinActivate, Delete Test - \\Remote
+		else if winexist("Delete Test - \\Remote") || Winexist("Delete results - \\Remote") || Winexist("Delete sample templates - \\Remote") || WinExist("Delete specification - \\Remote") { ; Press Okay
+		WinActivate, Delete
+		send, y
 		clk(229, 136)
 		return
 	}
@@ -395,7 +410,7 @@ _Lbuton:
 	else if Winactive("Composition - \\Remote")  	
 		ProductTab.Table()
 	else if Winactive("Results Definition - \\Remote")  	
-		menu.LMS()
+		sendinput, {Blind}{ctrldown}{click}{ctrlup}
 	else if Winactive("Edit Formulation - \\Remote") 
 	{
 		productTab.EditFormulation()
@@ -535,19 +550,23 @@ _Lbuton:
 
 #IfWinActive, Barcode Scanner - \\Remote
 	enter::enter
-
+	F20::LMS.SearchbarPaste()
+	^v::LMS.SearchbarPaste()
 
 _Main_LMS_Screen:
 #Ifwinactive, NuGenesis LMS - \\Remote
 	$Numlock::4tap() ;LMS.COA()
 	F20 & Left::WinMove, A, , -283, -1196, 1662, 952
-	; +F19::lms.searchBar("")
-	; F19 & space::Send, %Product%{enter}
-	; F20 & space::Send, %Batch%{enter}
+	+F19::lms.searchBar("")
+	F19 & space::Send, %Product%{enter}
+	F20 & space::Send, %Batch%{enter}
 	F19 & /::Send, %lot%{enter}
 	~Lbutton & F19::Send,{enter}
 	Enter::LMS.SaveCode()
 	numpaddot::blockrepeat(500) excel.connect(1)
+	F20::LMS.SearchbarPaste()
+	^v::LMS.SearchbarPaste()
+	F19::LMS.Searchbar()
 	; numpadadd::
 	; 	if SwitchWorkSheets
 	; 		excel.NextSheet()

@@ -41,18 +41,18 @@ SearchBar(Code:="",PostCmd:=""){
 				}
 			}
 			if (Tab="Specs") {
-				If (Code=Product) {
+				; If (Code=Product) {
 				clk(x%Tab%Search,yProductsSearch)
 					Send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
 					if PostCmd!=""
 						send % PostCmd
 					Send, {ctrlup}	
 				exit
-				}
-				If (Code=Batch) {
-					clk(53, 756)
-					exit
-				}
+				; }
+				; If (Code=Batch) {
+				; 	clk(53, 756)
+				; 	exit
+				; }
 			}
 			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 					clk(x%Tab%Search,yWorkTabSearch,,2)
@@ -75,6 +75,20 @@ SearchBar(Code:="",PostCmd:=""){
 			}
 		}
 		
+	}
+
+	SearchbarPaste(){
+		Clipboard := StrReplace(Clipboard, "`r`n", A_Space)
+		Clipboard := StrReplace(Clipboard, "`n", A_Space)
+		Clipboard := StrReplace(Clipboard, ", ", A_Space)
+		Clipboard := StrReplace(Clipboard, ",", A_Space)
+		Clipboard := StrReplace(Clipboard, A_tab, A_Space)
+		Clipboard := StrReplace(Clipboard, A_space A_space, A_Space)
+		sleep 200
+		send, ^v
+		sleep 100
+		send, {enter}
+		return clipboard
 	}
 SearchRequest(Code){    
 		Global            

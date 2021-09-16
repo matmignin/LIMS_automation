@@ -35,7 +35,7 @@ registerNewSamples(){
     SendInput, +{tab 2}
   }
   Breaking.Point()
-  sleep 180
+  sleep 200
   if !ShipTo
     return
   This.DropdownSelect(ShipTo)
@@ -45,6 +45,7 @@ registerNewSamples(){
   sleep 200
   blockinput, off
   winactivate, Register new samples - \\Remote
+  sleep 300
   my:=my+26
   MouseMove, mx, my
   
@@ -54,17 +55,22 @@ registerNewSamples(){
 
 
 DropdownSelect(A_ShipTo){
-    SetWinDelay, 500
+  sleep 100
+    ; SetKeyDelay, 0, 0
+    ; SetWinDelay, 500
  AbsSelection:=Abs(A_ShipTo)-1
  if (a_shipto = "-1")
-  SendInput,{end}
+  Sendinput,{end}
  else if (a_shipTo = "1")
-  SendInput,{home}
+  Sendinput,{home}
  else if (a_ShipTo > 1)
-  SendInput,{home}{right %A_ShipTo%}{right}
+  Sendinput,{home}{right}{right %A_ShipTo%}
  else if (a_ShipTo < 1)
-  SendInput,{end}{left %Absselection%}{left}
-    ;setwindelay, 200
+  Sendinput,{end}{left}{left %Absselection%}
+    ; setwindelay, 200
+    sleep 400
+      ; SetKeyDelay, 1, 0.25
+    return
  }
 
 DeleteRetain(){

@@ -97,8 +97,9 @@ CopySpecTemplate(){
 	Clipboard:=
 	sleep 100
 	Send, ^c
+	Send, ^c
 	clipwait,1 ; Tooltip, %Clipboard%
-	clip()
+	clip("Department")
 	If errorlevel
 		return
 	sleep 400
@@ -508,8 +509,10 @@ Edit_CoatedRetain(){
 	Send,{tab}{right}
 	sleep 200
 	Breaking.Point()
-	Send,{tab}{right}{tab 3}{left 4}
-	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	Send,{tab}{right}{tab 3} ;{left 4}
+	sleep 200
+	click, 340, 622 ;click okay
+	winwaitactive, NuGenesis LMS - \\Remote, ,12
 	if !errorlevel
 		click.EditSampleTemplate()
 		Breaking.Point()
@@ -525,9 +528,11 @@ Edit_CoatedPhysical(){
 	sleep 400
 	Send,{tab}{right}
 	sleep 200
-	Send,{tab}{right}{tab}{left 4}
+	Send,{tab}{right}{tab} ;{left 4}
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	sleep 200
+	click, 340, 622 ;click okay
+	winwaitactive, NuGenesis LMS - \\Remote, ,12
 	if !errorlevel
 	click.EditSampleTemplate()
 	Breaking.Point()
@@ -587,7 +592,7 @@ Edit_Micro(){
 	sleep 200
 	Breaking.Point()
 	Send,{right}{tab}{left 2}{enter}
-	winwaitactive, NuGenesis LMS - \\Remote, ,5
+	winwaitactive, NuGenesis LMS - \\Remote, ,4
 	if !errorlevel
 		sleep 300
 		Breaking.Point()
