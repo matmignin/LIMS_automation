@@ -23,7 +23,8 @@ Connect(reload:=0){
 		sht := XL.ActiveSheet.Name
 			Gui VarBar:+LastFound
 		if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			TT("MenuSheet")
+			; TT("MenuSheet")
+			return
 			; xl.sheets(PrevProduct).select
 			; Gui, VarBar:color, 000000
 			; return
@@ -37,7 +38,7 @@ Connect(reload:=0){
 		; return
 	}
 	This.InfoLocations()
-												; For sheet in xl.ActiveWorkbook.Worksheets
+												For sheet in xl.ActiveWorkbook.Worksheets
 												; 	Products.insert(Sheet.Name)
 												; Products.remove(1)
 												; Products.remove(1)
