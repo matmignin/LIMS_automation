@@ -102,10 +102,11 @@ CheckActive:
 
 clipClip(type){
 global
-; tt("clipchanged")
+ifwinactive, ahk_exe EXCEL.EXE
+  ; return
 ; Send, ^c
   clip.Regex("Codes")
-  return
+return
 
 }
 
