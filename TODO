@@ -1,10 +1,9 @@
 Todo:
-  ☐ Make todolist better?
   ☐ work on rotations
   ☐ noidle checkmark
   ✔ shift + ctrl + k = K @done(21-09-14 08:12)
   ☐ Fix Copy Sample Template Department Detection
-  ☐ Fix Coated Physical not selecting correct dropdown. (extend the wait time too)
+  ✔ Fix Coated Physical not selecting correct dropdown. (extend the wait time too) @done(21-09-16 08:14)
   ☐ have Canada Hevy Metal spec put a 0 for min
   ☐ Make a Note button to add a box
   fix the edit boxes not saving to ini from submit

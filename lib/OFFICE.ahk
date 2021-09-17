@@ -88,7 +88,7 @@ _Excel:
 		#if 
 		*/
 #IfWinActive, LMS Workbook.xlsb
-	F9::    					Excel.Connect(1)
+	; F9::    					Excel.Connect(1)
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up
@@ -104,12 +104,13 @@ _Excel:
 #ifwinactive, Excel ahk_exe WFICA32.EXE 
 	; F9::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	F6::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
-	F9::						Send, {lwindown}{down}{lwinup}
+	; F9::						Send, {lwindown}{down}{lwinup}
 	^wheelup::				Send, {click 3}%SampleID%
 	^wheeldown::			Send, %SampleID%
 #ifwinactive, ahk_exe EXCEL.EXE     
 	Numlock::Send, {shiftdown}{F9}{shiftup}
-	F9::                 excel.search()
+	; F9::                 excel.search()
+	F9::						3tap()
 	F7::                 excel.Search()
 	+Enter::             SendInput, {altdown}{enter}{altup}
 	$Enter::             SendInput,{enter}
@@ -222,7 +223,9 @@ _Firefox:
  numpadmult::send, {lwindown}{up}{lwinup}
 
 
-
+#ifwinactive, Map VQ drive.bat ahk_exe cmd.exe
+	mbutton::
+	F19 & \::sendinput, mmignin{enter}{/}Kilgore7744{enter}
 
 
 

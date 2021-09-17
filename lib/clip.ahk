@@ -33,16 +33,16 @@ Regex(Category:="All"){
     ; global ;Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
     sleep      20
     If (Category!="Department") {
-      RegExMatch(Clipboard, "i)[abdefghijkl]\d{3}", cProduct)
-      RegExMatch(Clipboard, "i)(?<!Ct#)\b\d{3}-\d{4}\b", cBatch)
+      RegExMatch(Clipboard, "i)\b[abdefghijkl]\d{3}\b", cProduct)
+      RegExMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
       RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
       RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
       RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
       If cProduct {
-        if (cProduct!=Product) {
-      ; GuiControl,Varbar:Text, Product, %cProduct%
+        ; if (cProduct!=Product) {
+            GuiControl,Varbar:Text, Product, %cProduct%
             Product4:=Product3
             Product3:=Product2
             Product2:=Product1
@@ -70,8 +70,7 @@ Regex(Category:="All"){
           ;   next:=A_index
           ; msgbox % Product "`n1:" product1 "`n2" Product2 "`n3" Product3 "`n4" Product4
           ; Product:=
-        }
-        return
+        ; }
             ; IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
             ; IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
               ; if cBatch
@@ -156,7 +155,7 @@ Regex(Category:="All"){
         Vars.="`t"cSampleID
     If cAnalytical
       Vars.="`n`t"cAnalytical
-    TT(Vars)
+    ; TT(Vars)
 
     ; else 
         ; TT(Clipboard,900,Varbar_x,80,2,175,"R")

@@ -708,6 +708,11 @@ SendPassword(){
 		winactivate,
 		SendInput, Kilgore7744{enter}
 	}
+	else if winexist("Map VQ drive.bat ahk_exe cmd.exe"){
+		winactivate,
+		Send, mmignin{enter}{/}Kilgore7744{enter}
+		return
+	}
 	else
 		SendInput, +{K}ilgore7744{enter}
 	return

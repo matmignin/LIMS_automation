@@ -65,14 +65,14 @@ Table(){
 
 DropdownSelect(A_DropdownCount){
   global
-  SetWinDelay, 450
+  ; SetWinDelay, 450
   ; if Winactive("Duplicate ingredient ID - \\Remote") || winactive("Warning - \\Remote") || winactive("Composition - \\Remote")
   ; {
     ; exit
     ; return
   ; }
   click, 150, 73
-  sleep 300
+  sleep 100
   Breaking.Point()
   ;tooltip, %Ingredient_Name%
   AbsSelection:=Abs(A_DropdownCount)
@@ -91,26 +91,29 @@ DropdownSelect(A_DropdownCount){
 
   EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){ ;the final input window for adding ingredients
     Global
-    SetWinDelay, 450
+    ; SetWinDelay, 450
     Excel.Get_Current_row()
     Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
     Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
     Ingredient_position:=Trim(Ingredient_Position,"`r`n")
     ifWinnotexist, Edit Ingredient - \\Remote
     {
+      ; sleep 450
     WinActivate, Composition - \\Remote
     Breaking.Point()
-    Mouse_Click("add_Composition")
+    sleep 400
+    click 57, 65 ;Mouse_Click("add_Composition")
     sleep 150
     Breaking.Point()
     this.DropdownSelect(Dropdown_count)
     ; this.Select_Ingredient()
+    sleep 200
     ; tooltip, %Ingredient_Name%
     }
-    if Winexist("Edit Ingredient - \\Remote")
-    {
+    ; if Winexist("Edit Ingredient - \\Remote")
+    ; {
       Winactivate, Edit Ingredient - \\Remote
-    }
+    ; }
     sleep 150
     Send,{tab 6}^a%Ingredient_position%{tab}^a
     SendInput,%Ingredient_Name%

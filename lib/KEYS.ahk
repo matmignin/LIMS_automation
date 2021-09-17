@@ -100,10 +100,10 @@ _Esc:
 	Media_Next::F17
 	Volume_Down::F18
 	Volume_up::F18
+	/ & down::   		      Varbar.SubIteration(0)
 	/ & up::						Varbar.AddIteration(0)
-	/ & down::   		      Varbhar.SubIteration(0)
-	F13 & wheelright::		Varbar.AddIteration(0) 
-	F13 & wheelleft::   		Varbar.SubIteration(0)
+	F13 & wheelright::		Varbar.AddIteration() 
+	F13 & wheelleft::   		Varbar.SubIteration()
 	F13 & wheelup::			Varbar.AddIteration() 
 	F13 & wheeldown::   		Varbar.SubIteration()
 	numpadsub::          4Left()
@@ -119,8 +119,8 @@ _Esc:
 	k::k
 	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
 	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
-	F20 & wheelright::			gosub, Numpadadd
-	F20 & wheelleft::				gosub, Numpadsub
+	
+
 	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
 	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
 	F19 & wheelleft::				gosub, F6
@@ -343,9 +343,15 @@ _Lbuton:
 
 	3up(){
 		global
+		if winactive("ahk_exe EXCEL.EXE"){
+			excel.Connect()
+			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer)
+			return
+		}
 		If winactive("NuGenesis LMS - \\Remote") {
-				Excel.Connect(1)
+				Excel.Connect()
 				TT(Product " " Batch "`n`t" Name " - " Customer)
+				return
 		}
 	/* 
 				LMS.DetectTab()
@@ -400,7 +406,7 @@ _Lbuton:
 		Menu.Lms()
 	else if winactive("ahk_exe firefox.exe") 
 		Send, {ctrldown}{click}{ctrlup}
-	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") 
+	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 		Sendpassword()
 	else If Winactive("LMS Workbook.xlsb") 
 		excel.connect()
@@ -649,7 +655,11 @@ _WFICA32:
 	Rbutton & F6::        	Send, {Backspace}
 	Rbutton & Lbutton::   	Send, {Enter}
 	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
-
+F20 & wheelUp::				sendInput % Lot
+	F20 & wheelRight::			sendInput % Batch
+	F20 & wheelleft::				sendInput % product
+	F20 & wheelDown::				sendInput % Coated
+#IfWinActive,
 
 _MouseIsOver:
 	return

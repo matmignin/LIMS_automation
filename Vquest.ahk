@@ -26,8 +26,10 @@
   return
 
   Starting_test:
+  ; FloVar()
     Products:=[]
   ; Iniread, Products, data.ini, Products
+  iniread VimClip ,data.ini, SavedVariables, VimClip 
   Iniread, Product,  data.ini, Products, Product
   Iniread, Product1, data.ini, Products, Product1
   Iniread, Product2, data.ini, Products, Product2
@@ -53,45 +55,100 @@ CheckActive:
     ; sleep 200
     ; send, lab{enter}
     ; sleep 1000
-    ; }
-    
+    if winactive("VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe")
+      return
+    ; if
+     WinGet, NewWindow, ProcessName, A
+     sleep 200
+      if (NewWindow==CurrentWindow)
+        return
+      CurrentWindow:=NewWindow
   ;  WinGet, winminmax, MinMax, A
   ;    if Winactive("Excel - \\Remote") || Winactive("Book") && (winminmax=1) {
    ;     winactivate , ; Excel - \\Remote,
 		;	  sleep 200
 		;	  Send, {lwindown}{down}{lwinup}
      ; CoordMode, mouse, screen
-			;	WinMove, A, ,0, 0, A_ScreenWidth/2, A_ScreenHeight/4
-        ; sleep 300
-      ;}
-    if Product
-      ProductConcat:=Product
-    if Batch
-      ProductConcat.="`t"Batch
-    if Lot
-      ProductConcat.="`n"Lot
-    if Coated
-      ProductConcat.="`t"Coated
-    ; if !(Activewin="VScode") && winactive("ahk_exe Code.exe") {
-      ; Varbar.show()
-      ; TT("vscode")
-      ; return
-    ; }
-    if !(Activewin="LMS") && winactive("NuGenesis LMS - \\Remote") {
-      Varbar.show()
+    ;  WinGet, CurrentWindow, ProcessName, A
+    ;  sleep 200
+      ; CurrentWindow:=
+    if winactive("ahk_exe EXCEL.EXE") { 
+      WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+				WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy +2 ;+ Varbar_oh-33
       return
     }
-    if winactive("NuGenesis LMS - \\Remote") {
-      LMS.Orient()
+    if winactive("ahk_exe Code.exe") { 
+      WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+				WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+400, Varbar_oy + Varbar_oh-33
+      return
+    }
+    if winactive("ahk_exe OUTLOOK.EXE") { 
+      WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+				WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+400, Varbar_oy + Varbar_oh-30
+      return
+    }
+    if winactive("NuGenesis LMS - \\Remote") || !winactive("ahk_exe EXCEL.EXE") || !winactive("ahk_exe Code.exe") || !winactive("ahk_exe OUTLOOK.EXE") { ;&& (ActiveWin="LMS"){
+      WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
+      }
+
+      ; WinMove, VarBar ahk_class AutoHoqtkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x+500, Varbar_y,
+        ; sleep 300
+      ;}
+    ; if Product
+      ; ProductConcat:=Product
+    ; if Batch
+      ; ProductConcat.="`t"Batch
+    ; if Lot
+      ; ProductConcat.="`n"Lot
+    ; if Coated
+      ; ProductConcat.="`t"Coated
+    ; if winactive("VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe")
+    ;   return
+    ; if winactive("ahk_exe WFICA32.EXE") && (ActiveWin="LMS")
+    ;   return
+    ; if winactive("ahk_exe OUTLOOK.EXE") && (ActiveWin=)
+    ;   return
+    ; ; if !winactive("ahk_exe WFICA32.EXE") && !(ActiveWin="LMS"){
+    ;   ; return
+    ; if winactive("ahk_exe WFICA32.EXE") && !(ActiveWin="LMS"){
+    ;   WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote
+    ;   varbar_x:= Varbar_x +500
+    ;   varbar.show()
+    ;   ActiveWin:="LMS"
+    ;   }
+    ; if winactive("ahk_exe OUTLOOK.EXE") && (ActiveWin="LMS"){
+    ;   WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, A
+    ;   varbar.Show()
+    ;   ActiveWin=
+    ;   }
+
+      ; winmove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe,,A_ScreenWidth/2,1
+      ; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote
+    
+
+    ; else
+      ; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, A
+      ; winmove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe,,1,1 
+      ; ActiveWin:="Outlook"
+      ; TT("vscode")
+    ; }
+    ; if !(Activewin="LMS") && winactive("NuGenesis LMS - \\Remote") {
+      ; LMS.Orient()
+      ; Varbar.show()
+      ; ActiveWin:="LMS"
+      ; return
+    ; }
+    ; if winactive("NuGenesis LMS - \\Remote") {
+      ; LMS.Orient()
       ; Varbar.show()
       ; try Gui,VarBar:Destroy
-      ActiveWin:="LMS"
-    }
+      ; ActiveWin:="LMS"
+    ; }
     ; if winactive("ahk_exe Code.exe"){
       ; ActiveWin:="VScode"
       ; Varbar.show()
 			; }
-      CoordMode, mouse , Relative
+      ; CoordMode, mouse , Relative
 
   return
 #IfWinActive, 
@@ -103,9 +160,10 @@ CheckActive:
 clipClip(type){
 global
 ifwinactive, ahk_exe EXCEL.EXE
-  ; return
+  return
 ; Send, ^c
-  clip.Regex("Codes")
+  clip.Regex()
+  TT(Product " " Batch " " Department)
 return
 
 }
@@ -191,7 +249,6 @@ VQuest_Start:
 ;     Iniread, Lots%A_index%, data.ini, SavedVariables, Lots%A_Index%
 ;   loop 4 
 ;     Iniread, Coateds%A_index%, data.ini, SavedVariables, Coateds%A_Index%
-
   CopyPasteToggle=0
   TabToggle=0
   On:="On"
@@ -207,8 +264,9 @@ VQuest_Start:
     Menu, Tray, unCheck, showsampleID
     showsampleID:=
     }
-  varbar.Show()
+
   Excel.Connect(1)
+  varbar.Show()
   OnExit("Varbar.Exit")
   Send, {ctrlup}{altup}{shiftup}{lwinup}
   gosub, Starting_test

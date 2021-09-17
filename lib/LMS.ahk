@@ -522,6 +522,11 @@ Orient(){
 	Tab5:=
 	Tab6:=
 	WinGetPos,wX,wY,wW,wH, NuGenesis LMS - \\Remote
+	; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
+	Flovar_x:= wx +900
+	Flovar_y:= wH + wY -28
+	varBar_wx:=wx+450
+	varBar_wY:=wy
 	TabSelect:=WW-10
 	yTabSelect:=45
 	yTabDropDown:=45
