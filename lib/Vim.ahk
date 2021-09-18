@@ -15,6 +15,7 @@
 #IfWinActive, ahk_exe Code.exe
 	; +^k::                                     SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
 	; +^j::                                     SendInput,{Altdown}{shiftdown}{ctrldown}{down}{shiftup}{ctrlup}{altup}
+	!v:: sendinput, {ctrldown}{o}{ctrlup}vim.ahk{enter}
 	F20 & .:: 			 									SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  SendInput,{ctrldown}{]}{ctrlup}	
 	numpadsub::                                  4left()
@@ -56,6 +57,7 @@ _TAB:
 	q & u::													SendInput, {q}{u]
 	q::q
 	F13 & tab::												SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
+
 	;F14::                                        ReloadScript()
 	; `::   																				SendInput,{``}
 	$^F::                                         
@@ -104,6 +106,8 @@ _TAB:
 	F19 & =::                                    SendInput,{ctrldown}{=}{ctrlup}
 	F19 & y::                                    SendInput,{ctrldown}{w}{ctrlup}
 	F19 & /::                                    SendInput,{shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
+	F19 & m::                                    SendInput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
+	F19 & u::                                    SendInput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
 	F19 & i::                                    SendInput,{F9}@
 	F19 & o::                                    SendInput,{F9}
 	F19 & p::                                    SendInput,^{F9}
@@ -134,7 +138,7 @@ _TAB:
 	
 	#ifwinactive
 
-_F13_Control: 
+_F13_CONTROL: 
 #If Getkeystate("F13","p") && Getkeystate("LControl","p")
 	; 5::                                        SendInput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
 	j::                                          SendInput,{shiftdown}{down}{shiftup}
@@ -167,7 +171,7 @@ _F13_Control:
 	e::                                          SendInput,{shiftdown}{end}{shiftup}
 	; g::                                          SendInput,{shiftdown}{lwindown}{g}{lwinup}{shiftup}
 ]::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
-[::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
+[::                                 			    	SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
 9::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
 0::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
 	; z::                                        SendInput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
@@ -176,8 +180,8 @@ _F13_Control:
 	; f::                                        SendInput,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
 	,::                                          SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
 	#If 
+_F13_SHIFT:    
 #If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")
-	F13_SHIFT:    
 	k::                                          SendInput,{up 10}
 	+k::                                        	SendInput,{up 10}
 	j::                                          SendInput,{down 10}
@@ -189,7 +193,27 @@ _F13_Control:
 	Tab & 5::                                    SendInput,{tab 26}
 	Tab & 6::                                    SendInput,{tab 20}
 
-Vim:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_Vim_Doublepress:
 	#If (A_PriorHotKey = "d" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;Vim Delete
 		4::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
 		e::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
@@ -222,20 +246,21 @@ Vim:
 	; #If (A_PriorHotKey = "p" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500)
 		; p::													vim.paste() ;SendInput,^z{end}{enter}
 	#if
+_Vim_13:
 	#If Getkeystate("F13","p")
-		F13::	Vim.Find()
 		p::                                       Vim.Paste()
 		y::                                       SendInput,^{c} 
 		Rshift::                                  SendInput,{pgdn}
 		f19 & lbutton::                           SendInput,^{lbutton}
 		9 & 0::												SendInput,{)}
 		s::                                       SendInput,{home}+{end}
-		c::                                       SendInput,{shiftdown}{altdown}{lwindown}{c}{lwinup}{altup}{shiftup}
+		c::                                       clip.Append()
+		; c::                                       SendInput,{shiftdown}{altdown}{lwindown}{c}{lwinup}{altup}{shiftup}
 		space::												^space
 		z::													backspace
-		0::                                   
 		]::                                       SendInput,{shiftdown}{altdown}{]}{altup}{shiftup}
-		9::
+		9::													SendInput,{shiftdown}{altdown}{9}{altup}{shiftup}
+		0::													SendInput,{shiftdown}{altdown}{0}{altup}{shiftup}
 		[::                                       SendInput,{shiftdown}{altdown}{[}{altup}{shiftup}
 		$^]::                                     SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
 		$^[::                                     SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
@@ -251,8 +276,13 @@ Vim:
 		2::                                       SendInput,{F2{
 		w::                                       SendInput,{ctrldown}{right}{ctrlup}
 		 4::                                      SendInput,{End}
-		`;::                                      SendInput,{End}
+		i::                                      	SendInput,{F9}@
+		`;::                                      SendInput,{shiftdown}{altdown}{;}{altup}{shiftup}
+		^`;::                                     SendInput,{shiftdown}{ctrldown}{altdown}{;}{ctrlup}{altup}{shiftup}
+		/::	                                    SendInput,{shiftdown}{altdown}{/}{altup}{shiftup}
+		^/::	                                    SendInput,{shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
 		+l::                                      SendInput,{End}
+		.::                                     	SendInput,{shiftdown}{ctrldown}{,}{ctrlup}{shiftup}
 		e::                                       Send,+{end}{right}
 		a::                                       SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
 		^a::                                      SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
@@ -278,12 +308,12 @@ Vim:
 		m::                                       SendInput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
 		u::                                       SendInput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup}
 	; up::                                      SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
-		'::  													vim.GoToLine()
+		'::  													sendinput,{shiftdown}{altdown}{'}{altup}{shiftup}
 		; `;::                                      SendInput,:
-		i::                                       SendInput,{ctrldown}{i}{Ctrlup}
+		; i::                                       SendInput,{ctrldown}{i}{Ctrlup}
 		5::                                       SendInput,{shiftdown}{5}{shiftup}
-	; `::                                     Vim.ChangeSelection()
-		r::                                       Vim.ChangeSelection()
+	`::                                     Vim.ChangeSelection()
+		; r::                                       Vim.ChangeSelection()
 		Enter::                                   SendInput,{shiftdown}{enter}{shiftup}
 	; !F::                                      openapp.Firefox()
 		^space::                                  SendInput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}
@@ -350,158 +380,9 @@ _PsudoNumpad:
 	RShift::                                     SendInput,{Tab}
 	#if 
 
-_VSCODE_Hotstrings:
-	:*r:cd`;::{ctrldown}
-	:*r:cu`;::{ctrlup} 
-	:*r:ad`;::{altdown}
-	:*r:au`;::{altup}
-	:*r:sd`;::{shiftdown}
-	:*r:su`;::{shiftup}
-	:*r:wd`;::{lwindown}
-	:*r:wu`;::{lwinup}
-	:*R:wt`;::
-	SendInput,%wintitle%
-	return
-	:*R:wm`;::                                   
-	SendInput,%wininfo%
-	return
-	:*R:wp`;::                                   
-	SendInput,%process%
-	return
-	:*R:mp`;::                                   
-	SendInput,%mouseposition%
-	return
-	:*R:wc`;::                                  
-	SendInput,%Wincontrol%
-	return
-	:*R:wl`;::
-	SendInput,%WinLocation%
-	return
-	:*R:tt`;::                                    
-	SendInput, tt(){left} 
-	return 
-	:*R:hs`;::                                   
-	InputBox, UserInput, New Hotstring,enter Hotstring,,,,,,,, 
-	SendInput, {end}{return}:`*R:%UserInput%``;::`n`t`t`t`t`t`t`t`t`t`t`tSendInput`, {enter}return{up}{end}{shiftup}{ctrldown}{v}{ctrlup}
-	return 
-	:*R:we`;::                                   
-	SendInput, WinExist(`"`"){left 2} 
-	return 
-	:*R:wa`;::                                    
-	SendInput, WinActive(`"`"){left 2} 
-	return 
-	:*R:tr`;::                                   
-	sendraw, tt("")
-	SendInput, {left 2} 
-	return 
-	:*R:c`;::                                                   
-	sendraw,{ctrldown}{}{ctrlup}
-	SendInput,{left 9}
-	return
-	:*R:w`;::                                                  
-	sendraw,{lwindown}{}{lwinup}
-	SendInput,{left 9}
-	return
-	:*r:a`;::                                                  
-	sendraw,{altdown}{}{altup}
-	SendInput,{left 8}
-	return
-	:*r:s`;::                                                  
-	sendraw,{shiftdown}{}{shiftup}
-	SendInput,{left 10}
-	return
-	:*r:csw`;::                                              
-	:*r:cws`;::                                              
-	:*r:scw`;::                                              
-	:*r:swc`;::                                              
-	:*r:wcs`;::                                              
-	:*r:wsc`;::                                              
-	sendraw,{shiftdown}{ctrldown}{lwindown}{}{lwinup}{ctrlup}{shiftup}
-	SendInput,{left 26}
-	return
-	:*r:asw`;::                                              
-	:*r:aws`;::                                              
-	:*r:saw`;::                                              
-	:*r:swa`;::                                              
-	:*r:was`;::                                              
-	:*r:wsa`;::                                              
-	sendraw,{shiftdown}{altdown}{lwindown}{}{lwinup}{altup}{shiftup}
-	SendInput,{left 25}
-	return
-	:*r:asc`;::                                              
-	:*r:acs`;::                                              
-	:*r:sac`;::                                              
-	:*r:sca`;::                                              
-	:*r:cas`;::                                              
-	:*r:csa`;::                                              
-	sendraw,{shiftdown}{altdown}{ctrldown}{}{ctrlup}{altup}{shiftup}
-	SendInput,{left 25}
-	return
-	:*r:sc`;::                                                
-	:*r:cs`;::                                                
-	sendraw,{shiftdown}{ctrldown}{}{ctrlup}{shiftup}
-	SendInput,{left 18}
-	return
-	:*r:sw`;::                                                
-	:*r:ws`;::                                                
-	sendraw,{shiftdown}{lwindown}{}{lwinup}{shiftup}
-	SendInput,{left 18}
-	return
-	:*r:sa`;::                                                
-	:*r:as`;::                                                
-	sendraw,{shiftdown}{altdown}{}{altup}{shiftup}
-	SendInput,{left 17}
-	return
-	:*r:ca`;::                                                
-	:*r:ac`;::                                                
-	sendraw,{altdown}{ctrldown}{}{ctrlup}{altup}
-	SendInput,{left 16}
-	return
-	:*r:wa`;::                                                
-	:*r:aw`;::                                                
-	sendraw,{altdown}{lwindown}{}{lwinup}{altup}
-	SendInput,{left 16}
-	return
-	:*R:nu`;::                                            
-	:*R:main`;::                                            
-	sendraw, NuGenesis LMS - \\Remote
-	return
-	:*:lms`;::ahk_exe WFICA32.EXE                                         
-	sendraw, ifwinactive, 
-	return
-	:*R:ifwe`;::                                            
-	sendraw, ifwinexists, 
-	return
-	:*R:iniw`;::                                            
-	sendraw, iniwrite 
-	SendInput,{Space}`%`%{,}{Space}data.ini{,}{Space}SavedVariables{,}{Space}
-	return
-	:*R:inir`;::                                            
-	sendraw, iniread 
-	SendInput,{space}{,}data.ini{,}{space}SavedVariables{,}{space}
-	return
-	
-	:*R:#ifw`;::                                            
-	sendraw, #ifwinactive, 
-	return
-	:*R:err`;::                                              
-	sendraw, if ErrorLevel,
-	return
-	:*R:rtn::Return
-	:*R:r`;::
-	SendInput, {end}return
-	return 
-	:*:vs`;::ahk_exe Code.exe
-	#ifwinactive,
-	
 
 class Vim{
-	key(){
-		SendInput,{F13}
-		sleep 10
-		SendInput,{%A_thishotkey%}{esc}
-		return
-	}
+
 	find(){
 		global
 		SendInput,{shiftdown}{altdown}{ctrldown}{f}{shiftup}{altup}{ctrlup}
@@ -515,17 +396,7 @@ class Vim{
 		; SendInput,{esc}
 		return
 	}
-	GoToLine(){
-		SendInput,{shiftdown}{altdown}{g}{altUp}{shiftup}
-		; sleep 200
-		input, letter, L3 V T3,{lcontrol}{Rcontrol}{return}{up}{down}{left}{right}
-		; sleep 200
-		SendInput,{Enter}
-		; , %letter%{a}
-		; keywait, enter, d
-		; SendInput,{esc}
-		return
-	}
+
 
 	ChangeSelection(){
 		Clipsave:=ClipboardAll
@@ -541,13 +412,6 @@ class Vim{
 		Clipboard:=ClipSave
 		return
 	}
-	Line(LeaderKey){
-		SendInput,{esc}
-		Input, Numbers, L3,,{enter}
-		
-		SendInput,{a}
-
-	}
 	Yank(Precommand:="",Cut:=""){
 		global VimClip
 		PreClip:=ClipboardAll
@@ -555,11 +419,11 @@ class Vim{
 		if Precommand
 			Sendinput % PreCommand
 		Send, ^{c}
-		clipwait, 0.55
+		clipwait, 0.25
 		if !errorlevel
 			vimclip:=clipboard
 		if Cut
-			Sendinput, {Backspace 2}
+			Sendinput, {Backspace}
 		RegExReplace(VimClip, "\R+\R", "`r`n") 
 		VimClip := StrReplace(VimClip, "`t","")
 		sleep 20

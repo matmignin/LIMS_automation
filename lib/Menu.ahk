@@ -43,7 +43,7 @@ class Menu{
         Menu,Menu, add, Copy &Specs, Autofill
       return
   }
-  LMS(){
+LMS(){
   Global
   try This.delete()
   if winactive("NuGenesis LMS - \\Remote"){
@@ -113,7 +113,7 @@ class Menu{
   }
   
   
-  Variable(){
+Variable(){
     global
     ; CoordMode, mouse, Screen
     ; MouseGetPos, mx, my
@@ -143,7 +143,7 @@ class Menu{
     ; Menu,Menu, add, &Variables, :Variables
     This.show()
     }
-    Tables(){
+  Tables(){
     try
     This.delete()
     Menu,Menu,add,&Spec Table,Tests
@@ -152,13 +152,21 @@ class Menu{
     This.show()
     ;Menu,menu,add
     }
-    passwords(){
+  passwords(){
     global
     This.delete()
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
       Menu, Menu, Add, VQ Login, Passwords
       Menu, Menu, Add, Kilgore, Passwords
+    This.show()
+    }
+  Reasons(){
+    global
+    This.delete()
+    menu,menu,add, Duplicate Entry
+    menu,menu,add, Removing B12 from Rotation AL %daystring%
+    menu,menu,add, Fixing Rotation
     This.show()
     }
     
@@ -372,7 +380,7 @@ Variable:
     Menu,Menu, deleteAll
    return
 
-   Tests:
+Tests:
    if A_thismenuitem contains &Ingredient Table
     ProductTab.Table()
    else if A_thismenuItem contains &Spec Table
@@ -432,6 +440,24 @@ Remote_Desktop:
    else
     Menu,Menu, deleteall
    return
+
+
+Reasons:
+  ;  if A_thismenuitem contains Fixing Rotation
+    ; ReasonText:="Fixing Rotation"
+  ;  else if A_thismenuItem contains Removing B12 from Rotation AL %daystring%
+    ; ReasonText:="Removing B12 from rotation AL " Daystring
+  ;  else if A_thismenuItem contains Duplicate Entry
+    ; ReasonText:="Duplicate Entry"
+  ;  else
+		winactivate, Reason For Change - \\Remote
+		Send,{click 143, 118}%A_ThisMenuItem%{click 240, 239}
+    Menu,Menu, deleteAll
+   return
+
+		; TT("Fixing Rotation",2000)
+
+
 
    SwitchEnv(ServerEnv){
     sleep 200

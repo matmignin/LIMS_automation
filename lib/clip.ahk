@@ -13,8 +13,8 @@ Clip(input=0,Wait:="0.55"){
     Send, ^{x}{ctrlup}
   else
     Send, ^{c}{ctrlup}
-  sleep %input%
   clipwait,%Wait%
+  sleep %input%
   if errorlevel
   {
     ; clipboard:=ClipboardSaved
@@ -28,6 +28,22 @@ Clip(input=0,Wait:="0.55"){
 
 
 Class Clip {
+
+Append(Delimiter:="`n"){
+global
+		PreClip:=Clipboard
+		Clipboard:=
+		Send, ^{c}
+		clipwait, 0.55
+		if errorlevel
+      Delimiter:=
+		clipboard := Preclip Delimiter Clipboard
+    tt(Preclip)
+		return 
+}
+
+
+
 Regex(Category:="All"){
     global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
     ; global ;Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
@@ -346,7 +362,7 @@ Copy(){
         if (A_PriorKey="F20") {  
         If !ErrorLevel
         {
-          Clip("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick
+          This.Copy("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick
           Return
         }
         Else ;will trigger after 1 sec
@@ -356,14 +372,16 @@ Copy(){
       }
     }
     Send, ^{c}
-      Clip()
+    TT(Clipboard,1000,200,200,2,245,"R")
+      clip.Regex()
+
       return
   }
 
 
 Paste(){
 global Clippaste
-    if (ClipPaste = 1){
+    if (ClipPaste) {
       Send, ^{v}
       return
   }
@@ -390,6 +408,7 @@ global Clippaste
             send % BlockRepeat(300) "^{v}"
             ; wheel_paste()
           Else
+          Clip.Append()
             return
       }
       return

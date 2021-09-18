@@ -1,6 +1,9 @@
 ﻿Class ProductTab {
 
 
+ 
+
+
 Table(){
   Global
   try GUI, Ingredient_table:destroy
@@ -52,8 +55,8 @@ Table(){
   LV_ModifyCol(5,0)
   sleep 100
   CoordMode,mouse,screen
-  ScreenEdge_X:=A_ScreenWidth-350
-  ScreenEdge_Y:=A_Screenheight-150
+  ScreenEdge_X:=A_ScreenWidth-550
+  ScreenEdge_Y:=A_Screenheight-450
   try Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product% Ingredient Table
   catch Gui,Ingredient_Table:Show,x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Ingredient Table
   CoordMode,mouse,window
@@ -63,58 +66,29 @@ Table(){
 
 
 
-DropdownSelect(A_DropdownCount){
-  global
-  ; SetWinDelay, 450
-  ; if Winactive("Duplicate ingredient ID - \\Remote") || winactive("Warning - \\Remote") || winactive("Composition - \\Remote")
-  ; {
-    ; exit
-    ; return
-  ; }
-  click, 150, 73
-  sleep 100
-  Breaking.Point()
-  ;tooltip, %Ingredient_Name%
-  AbsSelection:=Abs(A_DropdownCount)
-  if (A_DropdownCount > 0)
-  SendInput, {tab}{home}{right %A_DropdownCount%}
-  if (A_DropdownCount < 0)
-  SendInput, {tab}{end}{left %AbsSelection%}
-  if (A_DropdownCount = "-0")
-  SendInput, {tab}{end}
-  if (a_DropdownCount = "")
-  this.DropDown_Ingredient()
-  Breaking.Point()
-  sleep 200
-  return
-  }
+
 
   EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){ ;the final input window for adding ingredients
     Global
-    ; SetWinDelay, 450
-    Excel.Get_Current_row()
     Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
     Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
     Ingredient_position:=Trim(Ingredient_Position,"`r`n")
     ifWinnotexist, Edit Ingredient - \\Remote
     {
-      ; sleep 450
     WinActivate, Composition - \\Remote
     Breaking.Point()
-    sleep 400
+    sleep 200
     click 57, 65 ;Mouse_Click("add_Composition")
     sleep 150
     Breaking.Point()
     this.DropdownSelect(Dropdown_count)
-    ; this.Select_Ingredient()
-    sleep 200
-    ; tooltip, %Ingredient_Name%
+    ; sleep 200
     }
-    ; if Winexist("Edit Ingredient - \\Remote")
-    ; {
       Winactivate, Edit Ingredient - \\Remote
-    ; }
+    Excel.Get_Current_row()
     sleep 150
+    if winactive("Composition - \\Remote")
+      return
     Send,{tab 6}^a%Ingredient_position%{tab}^a
     SendInput,%Ingredient_Name%
     sleep 100
@@ -130,6 +104,24 @@ DropdownSelect(A_DropdownCount){
     return
     }
 
+  DropdownSelect(A_DropdownCount){
+    global
+    click, 150, 73 ;click dropdown boxx
+    sleep 100
+    Breaking.Point()
+
+    AbsSelection:=Abs(A_DropdownCount)
+    if (A_DropdownCount > 0)
+    SendInput, {tab}{home}{right %A_DropdownCount%}
+    if (A_DropdownCount < 0)
+    SendInput, {tab}{end}{left %AbsSelection%}
+    if (A_DropdownCount = "-0")
+    SendInput, {tab}{end}
+    if (a_DropdownCount = "")
+    this.DropDown_Ingredient()
+    Breaking.Point()
+    return
+    }
 
 
   AddCOASpace(){

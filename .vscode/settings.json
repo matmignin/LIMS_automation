@@ -37,6 +37,6 @@
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
     "autoHide.autoHideSideBar": false,
-    "autoHide.autoHidePanel": true,
+    "autoHide.autoHidePanel": false,
     "notebook.outline.showCodeCells": true
 }

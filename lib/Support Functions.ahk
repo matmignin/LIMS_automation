@@ -324,7 +324,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 	}
 ReloadScript(){
 	global
-	TT("`n `n - `t `t  Reload   `t `t -`n `n ")
+	TT(blank " Reload `t`t" blank,,,,,180)
 	Send,{ctrldown}{s}{altup}{CtrlUp}{ShiftUp}{LWinUp}
 	sleep 200
 	; try

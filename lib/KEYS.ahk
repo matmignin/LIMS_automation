@@ -1,7 +1,9 @@
 ; #ifwinexist, ahk_exe Teams.exe
 #Ifwinactive,
-
-
+#if Winactive("Results Definition - \\Remote")
+	space::sendinput,{ctrldown}{click}{ctrlup}
+	mbutton::Spectab.Table()
+#if
 _TestingZone:
 	Volume_Mute::
 	sendlevel 1
@@ -90,6 +92,9 @@ _TestingZone:
 	#if
 
 KEY_DEFAULT:
+F21::clip.Append()
+TT(Clipboard,1000,200,200,2,245,"R")
+
 _Esc:
 	esc & 1::send, {shiftdown}{altdown}{-}{altup}{shiftup}
 	esc & 2::send, {shiftdown}{altdown}{=}{altup}{shiftup}
@@ -102,10 +107,10 @@ _Esc:
 	Volume_up::F18
 	/ & down::   		      Varbar.SubIteration(0)
 	/ & up::						Varbar.AddIteration(0)
-	F13 & wheelright::		Varbar.AddIteration() 
+	F13 & wheelright::		Varbar.AddIteration(250) 
 	F13 & wheelleft::   		Varbar.SubIteration()
-	F13 & wheelup::			Varbar.AddIteration() 
-	F13 & wheeldown::   		Varbar.SubIteration()
+	F13 & wheelup::			send % Blockrepeat(300) Varbar.AddIteration() 
+	F13 & wheeldown::   		send % Blockrepeat(300) Varbar.SubIteration()
 	numpadsub::          4Left()
 	numpadadd::          4right()
 	numpadMult::         #up
@@ -120,11 +125,8 @@ _Esc:
 	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
 	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
 	
-
-	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
-	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
-	F19 & wheelleft::				gosub, F6
-	F19 & wheelright::			GoSub, F7  
+	F15 & Lbutton::				send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	F16 & Lbutton::				send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}							
 	;Media_Next::					Send, {shiftdown}{altdown}{tab}{altup}{shiftup}
 	;Media_Prev::					Send, {altdown}{tab}{altup}
 	;Volume_Down::					Send, {lwindown}{tab}{lwinup}
@@ -143,7 +145,7 @@ _Esc:
 	; ~Rshift & up:: 			SendInput, %SampleID%
 	lshift & Appskey::			Return
 	<^`;::
-	FormatTime, CurrentDateTime,, dd/MM/yy
+	FormatTime, CurrentDateTime,, MM/d/yy
 	SendInput %CurrentDateTime%
 	return
 	rshift & Appskey::			return
@@ -177,13 +179,9 @@ _Esc:
 	` & 3::							Test_3()
 	`::	 							sendraw, ``
 	~>+lbutton::					Send,{shiftDown}{click}{shiftup}
-	F20 & up::						Send, %SampleID%
-	F20 & left::					Send, %lot%
-	F20 & right::					Send, %coated%
-	F20 & s::	 					Send, %SampleID%
 	$Numlock::						4tap() ;Clip.Paste()      	
-	; F20 up:: 	               Clip.Copy()
-	; F19 up::      	       		Clip.paste()
+	F20 up:: 	               Clip.Copy()
+	F19 up::      	       		Clip.paste()
 	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
 	rbutton::						2tap()
 
@@ -192,6 +190,16 @@ _Esc:
 	; F19 & F20::             varbar.focus("Product")
 
 F19_And_F20:
+	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
+	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
+	F19 & wheelleft::				gosub, F6
+	F19 & wheelright::			GoSub, F7  
+	F19 & Lbutton::				send,{ctrldown}{click}{ctrlup}
+	F19 & Rbutton::				send,{Shiftdown}{click}{shiftup}
+	F20 & up::						Send, %SampleID%
+	F20 & left::					Send, %lot%
+	F20 & right::					Send, %coated%
+	F20 & s::	 					Send, %SampleID%
 	F20 & 9::             	SaveWindow_Save()
 	F20 & 0::             	SavedWindow_Restore()
 	F13 & esc::					Varbar.reset()	
@@ -237,7 +245,7 @@ F19_And_F20:
 
 
 
-Double_press_For_Enter:
+_Double_press_For_Enter:
 #If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F21 & Space" || A_PriorHotKey = "F20 & Space") && (A_TimeSincePriorHotkey < 2000) 
 	; F19 & space::           Send, {enter}
 	; $space::              Send, {enter} 
@@ -258,7 +266,7 @@ _Lbuton:
 			tt("ye")
 			return
 #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
-;   space::             Send, {ctrldown}{click}{ctrlup}
+	space::            send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
   F19::               Send, {F21}
   .::                 WindowInfo()
   v::                 Send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
@@ -275,288 +283,7 @@ _Lbuton:
 
 
 
-; class TrackPad {
-	3Right(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.SearchBar(Batch,"{enter}")
-		else If winactive("Result Entry - \\Remote")
-			WorkTab.ChangeTestResults()
-		else If winactive("Select methods tests - \\Remote")
-			SpecTab.Methods()
-		else If WinActive("Composition - \\Remote")
-			Send, {enter}
-		else If WinActive("Test Definition Editor - \\Remote")
-			clk(330, 619) ;click save
-		else If WinActive("Results Definition - \\Remote"){
-			Send, {enter}
-			sleep 200
-			WinActivate, "Test Definition Editor - \\Remote"
-			clk(330, 619)
-		}
-		else if winactive("Register new samples - \\Remote")
-			clk(502, 354)
-		else if winactive("Select samples for test:")
-			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
-		else	
-			; Send, {WheelRight}
-		return
-	}
-
-	3left(){
-			global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.SearchBar(Product,"{enter}")
-		else If winactive("Select methods tests - \\Remote")
-			Send, {esc}
-		else If WinActive("Composition - \\Remote")
-			Send, {esc}
-		else If WinActive("Test Definition Editor - \\Remote")
-			Send, {esc}
-		else If WinActive("Results Definition - \\Remote")
-			Send, {esc}
-		else if winactive("Edit test (Field Configuration:")
-			Send, {esc}
-		else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
-			WorkTab.ChangeTestResults("toggle")
-		else if winactive("Register new samples - \\Remote")
-			Send, {esc}
-		else if winactive("Select samples for test:")
-			Send, {esc}
-		else 
-			Send, {wheelleft}
-		return
-		}
-
-
-	3Down(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.Filter(Clear)
-		else if winactive("Select samples for test:")
-			Clk(853, 657) ; click okay.
-		else
-			return
-		return
-	}
-
-
-	3up(){
-		global
-		if winactive("ahk_exe EXCEL.EXE"){
-			excel.Connect()
-			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer)
-			return
-		}
-		If winactive("NuGenesis LMS - \\Remote") {
-				Excel.Connect()
-				TT(Product " " Batch "`n`t" Name " - " Customer)
-				return
-		}
-	/* 
-				LMS.DetectTab()
-					if (Tab="Requests"){
-						click, 2
-						sleep 200
-						Autofill()
-						return
-					}
-					else if (Tab="Products")
-						LMS.ViewCoa()
-	*/
-		else if winactive("Edit test (Field Configuration:")
-			Autofill()
-		else if winactive("Register new samples - \\Remote")
-			LMS.SearchBar(Product,"{enter}")
-		else If WinActive("Select tests for request: R")
-			clk(638, 70)
-		else if winactive("Select samples for test:")
-			send % Clk(250, 70) "{up}" ; click okay.
-		else If WinActive("Composition - \\Remote")
-			ProductTab.AddCOASpace()
-		else if Winactive("Results Definition - \\Remote")  	
-			menu.LMS()
-		else	
-			return
-		return
-		
-		}
-; [] yolo
-
-	3tap(){
-	Global 
-	if winactive("ahk_exe OUTLOOK.EXE") {
-		click 3
-		Send, ^{c}
-		clip()
-		return
-	}
-		else if winexist("Delete Test - \\Remote") || Winexist("Delete results - \\Remote") || Winexist("Delete sample templates - \\Remote") || WinExist("Delete specification - \\Remote") { ; Press Okay
-		WinActivate, Delete
-		send, y
-		clk(229, 136)
-		return
-	}
-		else if winexist("Release: ") { ; Press Okay
-		WinActivate, 
-		clk(131, 144)
-		return
-	}
-	else if Winactive("NuGenesis LMS - \\Remote") 
-		Menu.Lms()
-	else if winactive("ahk_exe firefox.exe") 
-		Send, {ctrldown}{click}{ctrlup}
-	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
-		Sendpassword()
-	else If Winactive("LMS Workbook.xlsb") 
-		excel.connect()
-	else if Winactive("Register new samples - \\Remote") 
-			WorkTab.registerNewSamples()
-	else if Winactive("Login - \\Remote") 
-		menu.passwords()
-	else if Winactive("Result Entry - \\Remote") 
-		WorkTab.ChangeTestResults("toggle")
-	else if Winactive("Edit specification - \\Remote")  	
-		menu.LMS()
-	else if Winactive("Composition - \\Remote")  	
-		ProductTab.Table()
-	else if Winactive("Results Definition - \\Remote")  	
-		sendinput, {Blind}{ctrldown}{click}{ctrlup}
-	else if Winactive("Edit Formulation - \\Remote") 
-	{
-		productTab.EditFormulation()
-		; mouseclick, left, 455, 472,2,0
-		; clk(250, 284)
-	}
-	else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
-		send % clk(107, 66) Product "{enter}{enter}"
-	else if Winactive("Edit Product - \\Remote") 
-		ProductTab.EditProduct() 
-	else If Winactive("Select tests for request: R") 
-		WorkTab.SelectTestSample() 
-	else If Winactive("Paster - Snipaste")
-			Send, ^c
-	else if Winactive("Snipper - Snipaste") 
-			Send, {enter}
-	else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
-		Send, {lwindown}{e}{lwinup}
-	Else 
-	return
-	; }
-	}
-
-
-	4tap(){
-			If winactive("NuGenesis LMS - \\Remote") {
-				LMS.Detecttab()
-			if (Tab="Requests" || Tab:="Samples")
-					LMS.CoA()
-				; else if (Tab:="Samples")
-					; LMS.CoA()
-				else if (Tab:="Products")
-					{
-					clk(86, 443) ;edit composition
-					Return
-					}
-				else if (Tab="Specs")
-					{
-					click
-					clk(67, 754) ;edit results
-					Return
-					}
-				else
-					Menu.LMS()
-			}
-			else if winactive("PDF Preview - \\Remote")
-				Send, {altdown}{F4}{altup}
-			Else
-				Send, ^v
-		}
-
-4Right(){
-	global SwitchWorkSheets
-		if (SwitchWorkSheets==1) {
-				excel.nextsheet()
-			return
-		}
-		else 
-		{ 
-			If winactive("ahk_exe Code.exe")
-				Send, {numpadadd}
-			else If winactive("ahk_exe OUTLOOK.EXE")
-				WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
-			else If winactive("ahk_exe WFICA32.EXE")
-				excel.nextsheet()
-			else
-			SendInput, #{right}
-		}
-		return
-}
-4left(){
-	global SwitchWorkSheets
-		if (SwitchWorkSheets==1) {
-				excel.Prevsheet()
-			return
-		}
-		else
-		{ 
-			If winactive("ahk_exe Code.exe")
-				Send, {numpadsub}
-			else If winactive("ahk_exe OUTLOOK.EXE")
-				WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
-			else If winactive("ahk_exe WFICA32.EXE")
-				excel.Prevsheet()
-			else 
-			SendInput, #{left}
-		}
-			; lms.SampleRequestToggle()
-		return
-}
-
-	2right(){
-		global
-		If winactive("NuGenesis LMS - \\Remote") {
-		lms.DetectTab()
-			if (Tab="Samples")
-				clk(RequestsTab,yWorkTabs)
-			else if (Tab="Requests")
-				clk(56, 630)
-			else
-				lms.SearchBar(Batch,"{enter}")
-			sleep 800
-		}
-		Else
-			Send, %batch%
-		sleep 700
-		return
-		}
-
-
-	2Left(){
-		global
-		If winactive("NuGenesis LMS - \\Remote"){
-			lms.DetectTab()
-			if (Tab="Requests")
-				clk(SamplesTab,yWorkTabs)
-			else If (Tab="Samples")
-				clk(70, 395)
-		Else
-			Send, %Product%
-		sleep 700
-		return
-		}
-	}
-
-2tap(){
-	global
-	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450)
-	{
-		Send, {F21}
-	}
-	else
-		click R
-	Return
-}
+;
 
 
 #IfWinActive, Barcode Scanner - \\Remote

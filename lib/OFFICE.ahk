@@ -59,9 +59,7 @@ _WORD:
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	F19::             Clip.Copy()
 	F20::             Clip.paste()
-	:*:mm`;::         
-							Send, Mat Mignin{tab 2}%DateString%
-							return			
+		
 
 
 _Excel:
@@ -126,9 +124,12 @@ _Excel:
 	return::             SendInput, !{i}
 	rbutton & Lbutton::  SendInput, !{i}
 #ifwinactive, LMS Products Checklist.xlsm - Excel
-	Mbutton::SendInput MM{tab}%CurrentDateTime%
-	SendInput, {click}MM{tab}%DateString%
-
+	F13::
+	Mbutton::
+	SendInput, MM{tab}
+	FormatTime, CurrentDateTime,, MM/d/yy
+	SendInput %CurrentDateTime%
+	return
 _OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
@@ -157,9 +158,7 @@ _OUTLOOK:
 	^wheelup::				Block(500,"^{v}")
 	; ^wheeldown::send % Blockrepeat(500) Clip.Copy()
 	F13::						return ; clip.IfNothingSelected("menu")
-:*:ol`;::
-SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
-	return
+
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
 	Numlock::				Send, {Backspace}	
 	; F20::Send, {backspace}

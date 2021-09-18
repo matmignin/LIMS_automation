@@ -17,22 +17,20 @@
 				; return
 	+numlock::
 			MouseGetPos,,,,WinControl
-			; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+			ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
 			msgbox, %Wincontrol%
 			Send, ^{a}{backspace}{enter}
-
 			ControlsetText, Wincontrol,,VarBar
-
-	Return
-		Mbutton::
+		Return
+	Mbutton::
 		click
-		enter::
-		Send, ^a
-		clip()
+	enter::
+		Send, ^a^c
+		; clip()
 		winactivate, NuGenesis LMS - \\Remote			
 		LMS.Searchbar(clipboard,"{enter}")
-	return
-	Lbutton::click
+		return
+	; Lbutton::click
 #ifwinactive
 	; ^left::Lms.SelectTab("Left")
 	; ^right::LMs.SelectTab("right")
@@ -41,7 +39,7 @@
 	; wheelleft::    Excel.PrevSheet()
 	; wheelRight::   excel.Nextsheet()
 	+Mbutton::
-		   MouseGetPos,,,,WinControl
+			MouseGetPos,,,,WinControl
 			; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
 			if (WinControl="Edit1"){
 				Product1:=Product
@@ -60,7 +58,7 @@
 				GuiControl, Varbar:Text, Coated,%Coated%
 			}
 			return
-		Mbutton::
+	Mbutton::
 				click
 				Send, ^a
 				clip()
@@ -69,31 +67,21 @@
 				return
 
 
-	numlock::		Varbar.launchTable()
-	WheelUp::      Varbar.AddIteration(500)
-	up::				Varbar.AddIteration(2)
-	down::   		Varbar.SubIteration(2)
-	Wheeldown::    Varbar.SubIteration(500)
+	WheelUp::      send % Blockrepeat(400) Varbar.AddIteration()
+	Wheeldown::    send % Blockrepeat(400) Varbar.SubIteration()
+	wheelright::	Varbar.AddIteration(0)
+	Wheelleft::   	Varbar.SubIteration(0)
+	up::				Varbar.AddIteration(0)
+	down::   		Varbar.SubIteration(0)
 	F9::           Excel.connect()
 	F7::           Excel.NextSheet()
 	F6::           Excel.PrevSheet()
-	esc::          varbar.reset()
-	F21::          Spectab.Table()
-	lalt::     		 Varbar.Reset()
-	F20 & F19::
-		IniWrite, 0, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
-		IniWrite, 0, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
-		; Send, {F22}
+	F8::				Varbar.launchTable()
+	Numlock::				send, {click}^a
 		return
 	Rbutton::		menu.Varbar()	
-
-
 	return
 	numpaddot:: 	 Openapp.Workbook()
-
-	
-		; Mbutton::Notes.save()
-return
 #if
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -142,28 +130,8 @@ Class VarBar{
 				WinSet, Transparent, 100, %GUIID%
 				Gui, VarBar:color,DC734F, 97BA7F   
 				; Gui, VarBar:color,016D07, 97BA7F   
-				GUI,VarBar:Font,s16 cBlack Bold, Consolas
-				Gui,VarBar:Add,edit, 		vProduct 				gproductVarBar left h27 x20 y0  w62 ,				%Product%  ; edit1
-				GUI,VarBar:Font,s11 cBlack,Consolas
-				Gui,VarBar:add,Edit,	 		vBatch 					gbatchVarbar left H27 x+1 y1 w73, 					%Batch% 	 ; edit2
-				GUI,VarBar:Font,s11 cBlack , Consolas
-				Gui,VarBar:add,Edit,	 		vlot 						gLotVarbar x+1 left H27 y1 w63, 				%Lot% 		 ; edit3
-					GUI,VarBar:Font,s9 cBlack,arial Narrow
-				if !Coated
-					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar left x+1 H27 y1 w23, 					%Coated%   ; edit4
-				else
-					Gui,VarBar:add,Edit,	 	vCoated 					gCoatedVarbar center x+1 H27 y1 w63, 					%Coated%   ; edit4
-				if ShowSampleID
-					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H27 y1 w83, 				%SampleID%  ; edit5
-				else
-					Gui,VarBar:add,Edit,	 	vSampleID 				gSampleIDVarbar x+1 H27 y1 w0, 				%SampleID%  ; edit5
-			GUI,VarBar:Font,s20 107C41, Consolas
-				; GUI,VarBar:Font,s19 cEF6950, Consolas
-			Gui,VarBar:Add,text, vIteration x+5 65 center y-3 w23,											%Iteration%	; Text1
-			GUI,VarBar:Font,s10 cBlack,arial Narrow
-			Gui,VarBar:add,Edit,		vNote1 					gNotevarbar1  x+3 H27 y1 w180 right, 				%Note1%     ; edit6
-			GUI,VarBar:Font,s9 cBlack,arial Narrow
-			Gui,VarBar:add,Edit,	 	vNote2 					gNotevarbar2 X+2 H27 y1 w230 right,					%Note2%  	; edit7
+				this.AddBoxes()
+			
 			CoordMode, mouse, screen
 			; IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
@@ -180,7 +148,11 @@ Class VarBar{
 					; Varbar_Y:=wY
 					; Varbar_x:=wX
 				; try 
-		Gui, VarBar:Show, h30 x%Varbar_X% y%Varbar_Y% w780 NoActivate, VarBar
+				MidScreen:=A_ScreenWidth//2
+  				TopScreen:=A_ScreenHeight-35
+		try Gui, VarBar:Show, h32 x%Varbar_X% y%Varbar_Y% w780 NoActivate, VarBar
+		Catch 
+			Gui, VarBar:Show, h32 x%MidScreen% y%TopScreen% w780 NoActivate, VarBar
 				; Catch 
 					; Gui, VarBar:Show, h30 x%wX% y%Wy% w780 NoActivate, VarBar
 			; else
@@ -235,9 +207,9 @@ Class VarBar{
 				; coordmode, mouse, Screen
 				sleep 100
 				; IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-					IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
+					; IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 				; IniWrite, %Iteration%, data.ini, SavedVariables, yteration
-				IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+				; IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 				; IniWrite, %Follow%, data.ini, Locations, Follow
 				this.exit()
 				coordmode, mouse, Window
@@ -246,6 +218,35 @@ Class VarBar{
 			return
 		}
 		
+
+AddBoxes(){
+		global
+GUI,VarBar:Font,				s16 cBlack Bold, Consolas
+Gui,VarBar:Add,edit,		vProduct 	gproductVarBar 		 left h29 x20 y0  w65 ,		    %Product%  ; edit1
+GUI,VarBar:Font,				s11 cBlack,Consolas
+Gui,VarBar:add,Edit,		vBatch 		gbatchVarbar 		    left H29 x+1 y1 w75, 			    %Batch% 	 ; edit2
+GUI,VarBar:Font,				s11 cBlack , Consolas
+Gui,VarBar:add,Edit,		vlot 			gLotVarbar 		        x+1 left H29 y1 w65, 		    %Lot% 		 ; edit3
+GUI,VarBar:Font,				s9 cBlack,arial Narrow
+	if !Coated
+Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    left x+1 H29 y1 w25, 			  %Coated%   ; edit4
+	else
+Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    center x+1 H29 y1 w65, 			%Coated%   ; edit4
+	if ShowSampleID
+Gui,VarBar:add,Edit,		vSampleID 	gSampleIDVarbar 		  x+1 H29 y1 w85, 		       %SampleID%  ; edit5
+	else
+Gui,VarBar:add,Edit,		vSampleID 	gSampleIDVarbar 		  x+1 H29 y1 w0, 		        %SampleID%  ; edit5
+; GUI,VarBar:Font,				s19 cEF6950, Consolas
+GUI,VarBar:Font,				s20 107C41, Consolas
+Gui,VarBar:Add,text,		vIteration								  x+5 65 center y-3 w23,		%Iteration%	; Text1
+GUI,VarBar:Font,				s10 cBlack,arial Narrow
+Gui,VarBar:add,Edit,		vNote1 		gNotevarbar1 		     x+3 H29 y1 w180 right, 		 %Note1%     ; edit6
+GUI,VarBar:Font,				s9 cBlack,arial Narrow
+Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		     X+2 H29 y1 w230 right,			  %Note2%  	; edit7
+	}
+
+
+
 HistoryMenuItem(){
 	global
 	sleep 200
@@ -315,10 +316,44 @@ HistoryMenuItem(){
 
 
 
-		Follow(){
-			global
+	Follow(){
+		global
+		if !winexist("ahk_exe WFICA32.EXE")
+			return
+		if winactive("VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe")
+			return
+		WinGet, NewWindow, ProcessName, A
+		if (NewWindow=CurrentWindow) 
+			return
+			CurrentWindow:=NewWindow
+		if winactive("ahk_exe EXCEL.EXE") { 
+			WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+					WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy +2 ;+ Varbar_oh-33
 			return
 		}
+		if winactive("ahk_exe Code.exe") || !winexist("ahk_exe WFICA32.EXE"){ 
+			WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+					WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+400, Varbar_oy + Varbar_oh-35
+			return
+		}
+		if winactive("Inbox ahk_exe OUTLOOK.EXE") { 
+			WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+					WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+400, Varbar_oy + Varbar_oh-30
+			return
+		}
+		if winactive("ahk_exe explorer.exe") { 
+			; WinGetPos, VarBar_X, VarBar_Y, Varbar_W,Varbar_x, 
+			varbar_wx:=A_ScreenWidth/2
+			varbar_wy:=A_ScreenHeight
+			WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_wx, varbar_wy
+			return
+		}
+		if  winactive("ahk_exe WFICA32.EXE") && !winactive("ahk_exe EXCEL.EXE") && !winactive("ahk_exe Code.exe") && !winactive("ahk_exe OUTLOOK.EXE") { ;&& (ActiveWin="LMS"){
+			lms.Orient()
+			WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_wx, Varbar_wy
+			return
+		}
+	}
 
 		Relocate(){
 			global
@@ -364,30 +399,26 @@ HistoryMenuItem(){
 
 		AddIteration(speed:=350){
 		global Iteration
-		GuiControl, -redraw, varbar
+		; GuiControl, -redraw, varbar
 		sleep 10
 		Iteration+=1
 		ControlsetText, Static1,%Iteration%,VarBar
 		tt(Iteration,300,Varbar_x,Varbar_y,2,200)
-		BlockInput, on
 		sleep %Speed%
-		BlockInput, off
 		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-		GuiControl, +redraw, varbar
+		; GuiControl, +redraw, varbar
 		return
 		}
 		SubIteration(speed:=350){
 		global Iteration
-		GuiControl, -redraw, varbar
+		; GuiControl, -redraw, varbar
 		sleep 10
 		Iteration-=1
 		ControlsetText, Static1,%Iteration%,VarBar
 		tt(Iteration,300,Varbar_x,Varbar_y,2,200)
-		BlockInput, on
 		sleep %speed%
-		blockinput, off
-		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-		GuiControl, +redraw, varbar
+		IniWrite, %Iteration%, data.ini, SavedVariables, 
+		; GuiControl, +redraw, varbar
 		return
 		}
 

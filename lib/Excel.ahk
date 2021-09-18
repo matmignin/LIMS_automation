@@ -122,8 +122,8 @@ NextSheet(){
 		excel.connect()
 	Excel.MatchColor()
 	; TT(Product "`t" Batch "`n" Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R") 
-	TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t" Customer) 
-	;GuiControl, +redraw, varbar
+	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t" Customer) 
+	GuiControl, +redraw, varbar
 	}
 
 PrevSheet(){
@@ -133,13 +133,13 @@ PrevSheet(){
 	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
 	Xl.Sheets(PrevSheet).activate
-	if (prevSheetName = "Sheet1" || prevSheetName = "Main" || prevSheetName = "Template" || prevSheetName = "Finished" || prevSheetName = "Micro Pending" || prevSheetName = "Sheet2" || prevSheetName = "Sheet1" || prevSheetName = "Item Code" || prevSheetName = "Scrap Sheet")
+	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet")
 		Xl.Sheets(PrevSheet).activate
 		excel.connect()
-	TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer) 
-	Excel.MatchColor()
+	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer) 
 	; Excel.MatchColor()
-	;GuiControl, +redraw, varbar
+	Excel.MatchColor()
+	GuiControl, +redraw, varbar
 	}
 
 MatchColor(){

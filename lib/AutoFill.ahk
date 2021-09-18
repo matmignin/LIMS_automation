@@ -61,9 +61,7 @@
 	} Else If winactive("Result Entry - \\Remote"){
 		WorkTab.ChangeTestResults("toggle")
 	} else if winexist("Reason For Change - \\Remote"){
-		winactivate, Reason For Change - \\Remote
-		SendInput,{click 143, 118}Fixing Rotation{click 240, 239}
-		TT("Fixing Rotation",2000)
+		Menu.Reasons()
 				return
 	} else if Winactive("Register new samples - \\Remote"){
 			If Option = 0
