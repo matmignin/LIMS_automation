@@ -26,6 +26,18 @@ Clip(input=0,Wait:="0.55"){
   return
 }
 
+clipClip(type){
+  global
+  ifwinactive, ahk_exe EXCEL.EXE
+    return
+  ; Send, ^c
+    clip.Regex()
+    ; clip.regex("Department")
+    ; TT(Product " " Batch " " lot " " Coated)
+return
+
+}
+
 
 Class Clip {
 
@@ -35,17 +47,22 @@ global
 		Clipboard:=
 		Send, ^{c}
 		clipwait, 0.55
-		if errorlevel
-      Delimiter:=
-		clipboard := Preclip Delimiter Clipboard
-    tt(Preclip)
+		if !errorlevel
+    {
+      clipboard := Preclip Delimiter Clipboard
+      TT(Clipboard,1000,200,200,2,245,"R")
+      return
+    }
+    clipboard:=Preclip
+    ; Delimiter:=
+    ; tt(Preclip)
 		return 
 }
 
 
 
 Regex(Category:="All"){
-    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
+    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department
     ; global ;Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
     sleep      20
     If (Category!="Department") {
@@ -156,7 +173,7 @@ Regex(Category:="All"){
       If cCTPhysical
         Department:="Physical (Coated)"
     }
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Department ;|| Winactive("ahk_exe WFICA32.EXE") 
+    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain ; Department ;|| Winactive("ahk_exe WFICA32.EXE") 
       ; TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
     if cProduct 
       Vars:=cProduct
@@ -186,7 +203,7 @@ IfNothingSelected(Action){
     clipboard:=
     ; sleep 20
     Send, ^c
-      clipwait,0.60
+      clipwait,0.40
   if errorlevel ;if nothing selected
   {
     if Action:="SelectLine"
@@ -352,6 +369,7 @@ ClickText(button:=""){
 
 Copy(){
   Global
+    preclip:=Clipboardall
       Send, {ctrlup}{altup}{shiftup}
     KeyWait, F20, T0.20
     If ErrorLevel
@@ -371,9 +389,15 @@ Copy(){
           Return
       }
     }
+    clipboard:=
     Send, ^{c}
+    clipwait, 1.5
+    if errorlevel {
+      clipboard:=Preclip
+      return
+    }
     TT(Clipboard,1000,200,200,2,245,"R")
-      clip.Regex()
+    clip.Regex()
 
       return
   }

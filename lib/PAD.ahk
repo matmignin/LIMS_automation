@@ -1,5 +1,34 @@
-;_3Fingers:
+rshift & Appskey::			return
+	; / & up:: 			SendInput, %SampleID%
+_Lbuton:
+#If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
+	space::             send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	F19::               Sendinput, {F21} 
+	,::                 clip("ORC")
+	.::                 WindowInfo()
+	v::                 Send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
+	F20::               Send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+	left::              Send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	down::              Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	e::                 Send,{LWinDown}{e}{lwinup}
+	o::                 OpenApp.Outlook()
+	d::                 LMS.Orient()
+	w::                 OpenApp.Workbook()
+#If
 
+	Lbutton & F20::          	
+										; BlockInput, on
+										sleep 25
+										Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}{ctrlup}"
+										; blockinput, off
+										sleep 200
+										return
+	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}{ctrlup}"
+	Lbutton & ,::          		send % BlockRepeat() clip("OCR")
+	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+
+
+;_3Fingers:
 
 
 	3Right(){
@@ -26,7 +55,7 @@
 			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
 		else	
 			; Send, {WheelRight}
-		return
+	return
 	}
 
 	3left(){
@@ -127,8 +156,22 @@
 			clk(131, 144)
 			return
 		}
-		else if Winactive("NuGenesis LMS - \\Remote") 
-			Menu.Lms()
+		else if Winactive("NuGenesis LMS - \\Remote"){
+			LMS.DetectTab()
+			if (Tab="Samples")
+				Menu, Menu, add, New &Request, AutoFill
+			else if (Tab="Tests")
+				Menu,Menu, add, &Delete Retain, Autofill
+			else if (Tab="Specs")
+				SpecTab.CopySpecTemplate()
+			else if (Tab="Requests")
+				clk(61, 635) ;enter results
+			else if (Tab="Products")
+				clk(67, 754) ;edit results
+			else if (Tab="Samples")
+				clk(107, 319) ;assign Requests
+			return
+			}
 		else if winactive("ahk_exe firefox.exe") 
 			Send, {ctrldown}{click}{ctrlup}
 		else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")

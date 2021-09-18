@@ -93,51 +93,52 @@ Methods() {
 
 CopySpecTemplate(){
 	global 
-	department:= 
-	Clipboard:=
 	sleep 100
-	Send, ^c
-	Send, ^c
-	clipwait,1 ; Tooltip, %Clipboard%
-	clip("Department")
-	If errorlevel
-		return
+	if WinActive("NuGenesis LMS - \\Remote"){
+		click
+		; Send, ^c
+		; clipwait,1.5 ; Tooltip, %Clipboard%
+		clip("Department")
+		sleep 200
+		TT(department)
+		Breaking.Point()
+	}
+	If !errorlevel
+		click 102, 289
 	sleep 400
-	TT(department)
 	Breaking.Point()
-	click.CopySpecTemplate()
 	sleep 200
-	; If (Department := "Analytical")
-	; 	SpecTab.Edit_Analytical()
-	; If (Department := "Physical (Coated)")
-	; 	SpecTab.Edit_CoatedPhysical()
-	; If (Department := "Physical")
-	; 	SpecTab.Edit_Physical()
-	; If (Department := "CTPhysical")
-	; 	SpecTab.Edit_CoatedPhysical()
-	; if (Department := "Micro")
-	; 	SpecTab.Edit_Micro()
-	; If (Department := "Retain (Coated)")
-	; 	SpecTab.Edit_CoatedRetain()
-	; If (Department := "Retain")
-	; 	SpecTab.Edit_Retain()
-	; If (Department := "CTRetain")
-		; SpecTab.Edit_CoatedRetain()
-	If Department Contains Analytical
+	If (Department = "Analytical")
 		SpecTab.Edit_Analytical()
-	If Department contains Physical (Coated)
+	else If (Department = "Physical (Coated)")
 		SpecTab.Edit_CoatedPhysical()
-	If Department contains Physical
+	else If (Department = "Physical")
 		SpecTab.Edit_Physical()
-	If Department contains CTPhysical
+	else If (Department = "CTPhysical")
 		SpecTab.Edit_CoatedPhysical()
-	if Department contains Micro
+	else if (Department = "Micro")
 		SpecTab.Edit_Micro()
-	If Department Contains Retain (Coated)
+	else If (Department = "Retain (Coated)")
 		SpecTab.Edit_CoatedRetain()
-	If Department Contains Retain
+	else If (Department = "Retain")
 		SpecTab.Edit_Retain()
-	If Department Contains CTRetain
+	else If (Department = "CTRetain")
+		SpecTab.Edit_CoatedRetain()
+	else If Department Contains Analytical
+		SpecTab.Edit_Analytical()
+	else If Department contains Physical (Coated)
+		SpecTab.Edit_CoatedPhysical()
+	else If Department contains Physical
+		SpecTab.Edit_Physical()
+	else If Department contains CTPhysical
+		SpecTab.Edit_CoatedPhysical()
+	else if Department contains Micro
+		SpecTab.Edit_Micro()
+	else If Department Contains Retain (Coated)
+		SpecTab.Edit_CoatedRetain()
+	else If Department Contains Retain
+		SpecTab.Edit_Retain()
+	else If Department Contains CTRetain
 		SpecTab.Edit_CoatedRetain()
 	sleep 500
 	;excel.NextSheet()
@@ -248,7 +249,7 @@ AutoFill(){
 	global
 	WinActivate, ahk_exe WFICA32.EXE
 		sleep 200
-		blockinput, on
+		;blockinput, on
 	If Winactive("NuGenesis LMS - \\Remote")
 		{
 			;SendInput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
@@ -369,6 +370,7 @@ GetExcelData(){
 EditSampleTemplate_A(){
 	global
 	winactivate, Edit sample template - \\Remote
+	Breaking.Point()
 	SendInput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
 	WinWaitActive, NuGenesis LMS - \\Remote,,8
 	Breaking.Point()
@@ -445,7 +447,8 @@ TestDefinitionEditor(The_Description){
 	Global
 	if The_description is space
 		{
-MouseClick, left, 464, 532,2,0
+		MouseClick, left, 464, 532,2,0
+		Breaking.Point()
 		click.TestDefinitionEditor_Results()
 		return
 		}
@@ -472,15 +475,19 @@ Edit_Physical(){
 	winactivate, Edit specification - \\Remote
 	SendInput,{click 376, 87}{home}
 	Send,%Product%`,{space}{shift down}I{shift Up}n{shift down}{space}P{shift Up}rocess`,{space}{shift down}P{shift Up}hysical{tab 3}^a{backspace}
+	Breaking.Point()
 	Send,{tab}^a%Product%{tab 2}
+	Breaking.Point()
 	Sleep 200
 	Send,{Space}
 	sleep 200
+	Breaking.Point()
 	winwaitactive, Products List - \\Remote, , 8
 	if !errorlevel
 		sleep 300
 	Send,{enter 2}
 	sleep 200
+	Breaking.Point()
 	Send,{tab}
 	sleep 200
 	Send,{right}
@@ -504,6 +511,7 @@ Edit_CoatedRetain(){
 	global
 	winactivate, Edit specification - \\Remote
 	SendInput,{click 376, 87}{home}
+	Breaking.Point()
 	Send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
 	Send,{tab}{right}
@@ -511,6 +519,7 @@ Edit_CoatedRetain(){
 	Breaking.Point()
 	Send,{tab}{right}{tab 3} ;{left 4}
 	sleep 200
+	Breaking.Point()
 	click, 340, 622 ;click okay
 	winwaitactive, NuGenesis LMS - \\Remote, ,12
 	if !errorlevel
@@ -527,10 +536,12 @@ Edit_CoatedPhysical(){
 	Send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
 	Send,{tab}{right}
+	Breaking.Point()
 	sleep 200
 	Send,{tab}{right}{tab} ;{left 4}
 	Breaking.Point()
 	sleep 200
+	Breaking.Point()
 	click, 340, 622 ;click okay
 	winwaitactive, NuGenesis LMS - \\Remote, ,12
 	if !errorlevel
@@ -545,6 +556,7 @@ Edit_Retain(){
 	winactivate, Edit specification - \\Remote
 	SendInput,{click 376, 87}{home}
 	Send,%Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+	Breaking.Point()
 	sleep 200
 	Send,{tab}{right}
 	sleep 400
@@ -554,6 +566,7 @@ Edit_Retain(){
 	WinWaitactive, Edit specification - \\Remote,, 1
 	if !errorlevel
 		click, 340, 622 ;click okay
+		Breaking.Point()
 	winwaitactive, NuGenesis LMS - \\Remote, ,4
 	if !errorlevel
 		sleep 300
@@ -566,6 +579,7 @@ Edit_Retain(){
 	}
 Edit_Analytical(){
 	Global
+	Breaking.Point()
 	If WinActive("Edit sample template - \\Remote")
 		SpecTab.EditSampleTemplate_A()
 	else If winexist("Edit specification - \\Remote")

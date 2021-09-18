@@ -127,7 +127,6 @@ _TAB:
 	f19 & f6::                                   SendInput,{ctrldown}{[}{ctrlup}
 	f19 & f7::                                   SendInput,{ctrldown}{]}{ctrlup}
 	F19 & 7::												GotoError()
-	F13 & `::												delete
 	F13 & F11::                                  WindowInfo()
 	; F13 & g::                                  	SendInput,{shiftdown}{altdown}{lwindown}{g}{lwinup}{altup}{shiftup}
 	F13 & lshift::											enter
@@ -222,7 +221,7 @@ _Vim_Doublepress:
 		l::                                       SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^{x}
 		h::                                       SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{x}
 		5::                              			SendInput,{shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
-		w::                                       vim.Yank("{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}","cut")
+		w::                                       vim.Yank("{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}","cut")
 		d::                                       vim.Yank("{Home 2}{shiftdown}{End}{right}{shiftup}","cut")
 		[::                                  		SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 		]::                                       SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
@@ -338,7 +337,11 @@ _Vim_13:
 		#if
 		#IfWinActive
 F13::F13 ; 													SendInput,{esc}{ctrlup}{altup}{shiftup}
-
+F13 & Lbutton::sendinput, {shiftdown}{click}{shiftup}
+F13 & down::sendinput, {shiftdown}{down}{shiftup}
+F13 & up::sendinput, {shiftdown}{up}{shiftup}
+F13 & left::sendinput, {shiftdown}{left}{shiftup}
+F13 & right::sendinput, {shiftdown}{right}{shiftup}
 
 ; ============================= psudonumpad(){}
 

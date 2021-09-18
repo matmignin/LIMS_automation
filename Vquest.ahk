@@ -46,145 +46,151 @@ Starting_test:
   ; msgbox % "0:" Product "`n1: " product1 "`n2: " Product2 "`n3: " Product3 "`n4: "  Product4 "`n---`n" products[1] "--" Products[]
   return
 
-CheckActive:
+CheckActive: ;continuously runing sub
 varbar.Follow()
-
-
-
-
-
-
-
-
   return
 #IfWinActive, 
 
 
-;
+Test_4:
 
 
-clipClip(type){
-global
-ifwinactive, ahk_exe EXCEL.EXE
-  return
-; Send, ^c
-  clip.Regex()
-  ; TT(Product " " Batch " " Department)
-return
 
-}
+; CreateArray(){ ;creating an array and resorting without duplicates
+	 ;Products := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
+
+			Batches:= StrSplit(A_LoopReadLine, "`n") 
+
+
+	Products2 := [], oTemp := {}
+	for vKey, vValue in Products
+	{
+		if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+		{
+			if !ObjHasKey(oTemp, vValue+0)
+				Products2.Push(vValue+0), oTemp[vValue+0] := ""
+		}
+		else
+		{
+			if !ObjHasKey(oTemp, "" vValue)
+				Products2.Push("" vValue), oTemp["" vValue] := ""
+		}  
+	}
+	vOutput := ""
+	for vKey, vValue in Products2
+		vOutput .= vKey " " vValue "`r`n"
+	MsgBox, % vOutput
+	return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 #IfWinActive,
-#Include <Test>
-#include <VIM>
-#include <HotStrings>
-#Include <OFFICE>
-#include <KEYS>
-#include <PAD>
-#Include <clip>
-#Include <OpenApp>
-#Include <LMS>
-#Include <Snipper>
-#Include <AutoFill>
-#include <varBar>
-#include <ProductTab>
-#include <WorkTab>
-#include <SpecTab>
-#include <menu>
-#include <Rotation>
-#include <Excel>
-; #include <Excel2SmartDoc>
-#include <vis2>
-#include <Support Functions>
+  #Include <Test>
+  #include <VIM>
+  #include <HotStrings>
+  #Include <OFFICE>
+  #include <KEYS>
+  #include <PAD>
+  #Include <clip>
+  #Include <OpenApp>
+  #Include <LMS>
+  #Include <Snipper>
+  #Include <AutoFill>
+  #include <varBar>
+  #include <ProductTab>
+  #include <WorkTab>
+  #include <SpecTab>
+  #include <menu>
+  #include <Rotation>
+  #include <Excel>
+  #include <vis2>
+  #include <Support Functions>
 
 
-VQuest_Start:
-  #Persistent
-  #NoEnv
-  #SingleInstance,Force
-  #KeyHistory 300
-  #InstallKeybdHook
-  #InstallMouseHook
-  OnClipboardChange("clipclip")
-  CrLf=`r`n
-  FileName:="lib/WinPos.txt"
-  envget, PrevProduct, PrevProduct
-
-  SetWorkingDir, %A_ScriptDir%
-  iniread, note1, data.ini, SavedVariables, note1
-  Iniread, note2, data.ini, SavedVariables, note2
-  Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
-  Menu, Tray, Add, Exit, ExitSub
-  Menu, Tray, Add, CL3, CL3
-    Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
-  if (SwitchWorkSheets = 1){
-    Menu, Tray, Check, SwitchWorkSheets
-    SwitchWorkSheets:=1
-    SwitchSpaces:=
-  } 
-  else 
-  {
-    Menu, Tray, unCheck, SwitchWorkSheets
-    SwitchSpaces:=1
-    SwitchWorkSheets:=
-  }
-  menu, tray, add, ShowSampleID, showSampleID
-  ; menu, tray, add, ShowSampleID, showSampleID
-  ; menu, tray, add, ShowCoated, ShowCoated
-  menu, tray, add, ShowNotes, ShowNotes
-  Menu, tray, NoStandard
-  Menu, Tray, Add, KeyHistory, KeyHistory
-  Menu, Tray, Add, Exit, ExitSub
-  Menu, Tray, Add, windowSpy, WindowSpy
-  Menu, Tray, Default, KeyHistory
-
-  SetNumlockState Alwayson
-  setcapslockstate alwaysoff
-  SetscrolllockState, alwaysOff
-
-
-  try Run, cl3.Ahk, lib\CL3
-  try Menu, Tray, Icon, Robot.ico
-  settimer, CheckActive, %CheckTime%
-
-
-
-
-;   loop 4 
-;     Iniread, Batches%A_index%, data.ini, SavedVariables, Batches%A_Index%
-;   loop 4 
-;     Iniread, Lots%A_index%, data.ini, SavedVariables, Lots%A_Index%
-;   loop 4 
-;     Iniread, Coateds%A_index%, data.ini, SavedVariables, Coateds%A_Index%
-  CopyPasteToggle=0
-  TabToggle=0
-  On:="On"
-  Off:="Off"
-  Clear:="Clear"
-  yo:="yo"
-  ye:="ye"
-  Blank:=" `n `n  `t `t `n`t "
-  CurrentWindow:=A
-  IfWinExist, ahk_exe WFICA32.EXE
-  LMS.Orient()
-  if (ShowSampleID = 1)
-    Menu, Tray, Check, showsampleID
-  else {
-    Menu, Tray, unCheck, showsampleID
-    showsampleID:=
+  VQuest_Start:
+    #Persistent
+    #NoEnv
+    #SingleInstance,Force
+    #KeyHistory 300
+    #InstallKeybdHook
+    #InstallMouseHook
+    OnClipboardChange("clipclip")
+    CrLf=`r`n
+    FileName:="lib/WinPos.txt"
+    envget, PrevProduct, PrevProduct
+    SetWorkingDir, %A_ScriptDir%
+    Iniread, Iteration, data.ini, SavedVariables, Iteration
+    iniread, note1, data.ini, SavedVariables, note1
+    Iniread, note2, data.ini, SavedVariables, note2
+    Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+    Menu, Tray, Add, Exit, ExitSub
+    Menu, Tray, Add, CL3, CL3
+      Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
+    if (SwitchWorkSheets = 1){
+      Menu, Tray, Check, SwitchWorkSheets
+      SwitchWorkSheets:=1
+      SwitchSpaces:=
+    } 
+    else 
+    {
+      Menu, Tray, unCheck, SwitchWorkSheets
+      SwitchSpaces:=1
+      SwitchWorkSheets:=
     }
-
-  Excel.Connect(1)
-  varbar.Show()
-  OnExit("Varbar.Exit")
-  Send, {ctrlup}{altup}{shiftup}{lwinup}
-  gosub, Starting_test
-
-
-#IfWinActive,
-
-;_____
+    menu, tray, add, ShowSampleID, showSampleID
+    menu, tray, add, ShowNotes, ShowNotes
+    Menu, tray, NoStandard
+    Menu, Tray, Add, KeyHistory, KeyHistory
+    Menu, Tray, Add, Exit, ExitSub
+    Menu, Tray, Add, windowSpy, WindowSpy
+    Menu, Tray, Default, KeyHistory
+    SetNumlockState Alwayson
+    setcapslockstate alwaysoff
+    SetscrolllockState, alwaysOff
+    try Run, cl3.Ahk, lib\CL3
+    try Menu, Tray, Icon, Robot.ico
+    settimer, CheckActive, %CheckTime%
+    CopyPasteToggle=0
+    TabToggle=0
+    On:="On"
+    Off:="Off"
+    Clear:="Clear"
+    yo:="yo"
+    ye:="ye"
+    Blank:=" `n `n  `t `t `n`t "
+    CurrentWindow:=A
+    IfWinExist, ahk_exe WFICA32.EXE
+    LMS.Orient()
+    if (ShowSampleID = 1)
+      Menu, Tray, Check, showsampleID
+    else {
+      Menu, Tray, unCheck, showsampleID
+      showsampleID:=
+      }
+    Excel.Connect(1)
+    varbar.Show()
+    OnExit("Varbar.Exit")
+    Send, {ctrlup}{altup}{shiftup}{lwinup}
+    gosub, Starting_test
+  #IfWinActive,
   

@@ -465,35 +465,9 @@ SaveCode(){
 		iniwrite, %Batch%, Codes.ini, %Batch%,
 		iniwrite, %Product%, Codes.ini, %Product%, 
 		return
-                    ;  creating an array and resorting without duplicates
-	;  oArray := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
 
-			; Batches:= StrSplit(A_LoopReadLine, "`n") 
-
-
-	; oArray2 := [], oTemp := {}
-	; for vKey, vValue in oArray
-	; {
-	; 	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-	; 	{
-	; 		if !ObjHasKey(oTemp, vValue+0)
-	; 			oArray2.Push(vValue+0), oTemp[vValue+0] := ""
-	; 	}
-	; 	else
-	; 	{
-	; 		if !ObjHasKey(oTemp, "" vValue)
-	; 			oArray2.Push("" vValue), oTemp["" vValue] := ""
-	; 	}
-	; }
-	; vOutput := ""
-	; for vKey, vValue in oArray2
-	; 	vOutput .= vKey " " vValue "`r`n"
-	; MsgBox, % vOutput
-	; return
-
-			
-			
 	}
+
 
 
 

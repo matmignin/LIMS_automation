@@ -95,13 +95,15 @@ return
 	; 	continue
 	; 	Product.Push(Temp)
 	; 	msgbox % Product[A_index]
-		;  iniwrite, %Temp%, data.ini, Products, Product
+	;  iniwrite, %Temp%, data.ini, Products, Product
 		; iniwrite, K111, data.ini, Products, Product1
 		; iniwrite, K222, data.ini, Products, Product2
 		; iniwrite, K333, data.ini, Products, Product3
 		; iniwrite, K444, data.ini, Products, Product4
 	; }
 return
+
+
 
 Test(n){
 	global
@@ -123,7 +125,7 @@ Test(n){
 		Return
 	}
 	else
-		test_%n%()
+		gosub, test_%n%
 return
 }
 
@@ -233,7 +235,7 @@ Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Products.txt"){
 
 return
 
-	/*
+/*
 
 ~Numlock:: ;Clipchain_v()
 MouseGetPos, xx

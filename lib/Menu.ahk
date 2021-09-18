@@ -59,12 +59,7 @@ LMS(){
       this.CopyPasteSpec()
       Menu,Menu, add, &Delete Retain, Autofill
     }
-    else if (Tab="Requests")
-      clk(61, 635) ;enter results
-    else if (Tab="Products")
-      clk(67, 754) ;edit results
-    else if (Tab="Samples")
-        clk(107, 319) ;assign Requests
+
     else {
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env

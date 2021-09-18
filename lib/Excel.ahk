@@ -55,13 +55,23 @@ Connect(reload:=0){
 		excel.MatchColor()
 	return
 	}
+	RegexCell(vCell){
+		Global
+		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
+      RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch)
+      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b)", lot)
+      RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
+      RegExMatch(ctCoated,   "\d{3}-\d{4}", Coated)
+	}
 InfoLocations(){
 	global
 	GuiControl, -redraw, varbar
 	Product:=XL.Range("B7").Value
-	Batch:=XL.Range("C4").Value
-	Lot:=XL.Range("E4").Value
-	Coated:=xl.range("F4").value
+	; SamplesConcat:=XL.Range("B4").Value
+	This.RegexCell(XL.Range("B4").Value)
+	; Batch:=XL.Range("C4").Value
+	; Lot:=XL.Range("E4").Value
+	; Coated:=xl.range("F4").value
 	Name:=XL.Range("B2").Value
 	Customer:=XL.Range("B3").Value
 	ShipTo:=XL.Range("A3").Value

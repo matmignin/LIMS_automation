@@ -93,31 +93,30 @@ _TestingZone:
 
 KEY_DEFAULT:
 F21::clip.Append()
-TT(Clipboard,1000,200,200,2,245,"R")
 
 _Esc:
-	esc & 1::send, {shiftdown}{altdown}{-}{altup}{shiftup}
-	esc & 2::send, {shiftdown}{altdown}{=}{altup}{shiftup}
-	esc & 3::send, {shiftdown}{altdown}{0}{altup}{shiftup}
-	esc::esc
-	Media_Prev::MakeTransparent()
-	Media_Play_Pause::F16
-	Media_Next::F17
-	Volume_Down::F18
-	Volume_up::F18
-	/ & down::   		      Varbar.SubIteration(0)
-	/ & up::						Varbar.AddIteration(0)
-	F13 & wheelright::		Varbar.AddIteration(250) 
-	F13 & wheelleft::   		Varbar.SubIteration()
-	F13 & wheelup::			send % Blockrepeat(300) Varbar.AddIteration() 
-	F13 & wheeldown::   		send % Blockrepeat(300) Varbar.SubIteration()
-	numpadsub::          4Left()
-	numpadadd::          4right()
-	numpadMult::         #up
-	numpaddot::          #down
-	pause::					Suspend, Toggle
+	esc & 1::						send, {shiftdown}{altdown}{-}{altup}{shiftup}
+	esc & 2::						send, {shiftdown}{altdown}{=}{altup}{shiftup}
+	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
+	esc::								esc
+	Media_Prev::					MakeTransparent()
+	Media_Play_Pause::			F16
+	Media_Next::					F17
+	Volume_Down::					F18
+	Volume_up::						F18
+	/ & down::   		      	Varbar.SubIteration(0)
+	/ & up::							Varbar.AddIteration(0)
+	F13 & wheelright::			Varbar.AddIteration(250) 
+	F13 & wheelleft::   			Varbar.SubIteration()
+	F13 & wheelup::				send % Blockrepeat(300) Varbar.AddIteration() 
+	F13 & wheeldown::   			send % Blockrepeat(300) Varbar.SubIteration()
+	numpadsub::          		4Left()
+	numpadadd::          		4right()
+	numpadMult::         		#up
+	numpaddot::          		#down
+	pause::							Suspend, Toggle 
 	; F15::							+tab
-	F17::								menu.Apps()
+	F17::								sendinput, {altdown}{tab}{altup}
 	; F16::							Send, !{tab}
 	j & k::							esc
 	j::j
@@ -148,26 +147,7 @@ _Esc:
 	FormatTime, CurrentDateTime,, MM/d/yy
 	SendInput %CurrentDateTime%
 	return
-	rshift & Appskey::			return
-	; / & up:: 			SendInput, %SampleID%
-	; ~Lbutton & left:: 			SendInput, %SampleID%
-	; ~Lbutton & Down:: 			SendInput, %Coated%
-	; ~Lbutton & right::			SendInput, %Lot%
-	; ~Lbutton & up::	 			SendInput, %SampleID%
-	Lbutton & F20::          	
-										BlockInput, on
-										sleep 25
-										Send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
-										blockinput, off
-										sleep 200
-										return
-	Lbutton & F19::          	SendInput, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	Lbutton & left::          	
-	sleep 200
-	clip("OCR")
-	sleep 200
-	return
-	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	
 	^Media_Next::					MakeTransparent()
 	/ & space::						Send, %Coated%
 	/ & .::							Send, {?}
@@ -234,7 +214,7 @@ F19_And_F20:
 									IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
 									Return
 	
-	F13 & Lbutton::       	F13Click()
+
 	F13 & `::					Test(iteration)
 
 
@@ -258,26 +238,7 @@ _Double_press_For_Enter:
 	; $space::								Send, {enter}
 #if 
 
-_Lbuton:
-#If (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 300) 
-	~lbutton::
-		sleep 200
-		if getkeystate(lbutton, "P")
-			tt("ye")
-			return
-#If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
-	space::            send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
-  F19::               Send, {F21}
-  .::                 WindowInfo()
-  v::                 Send, {shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
-  F20::               Send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-  left::              Send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
-  down::              Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-  e::                 Send,{LWinDown}{e}{lwinup}
-  o::                 OpenApp.Outlook()
-  d::                 LMS.Orient()
-  w::                 OpenApp.Workbook()
-#If
+
 
 
 
