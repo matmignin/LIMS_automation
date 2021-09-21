@@ -143,6 +143,8 @@ _VSCODE_Hotstrings:
 _WindowNames:
 	:*R:ifwe`;::ifwinexists, 
 	:*:iwe`;::ifwinexists, 
+	:*:vb`;::VarBar ahk_exe AutoHotkey.exe 
+	:*:varbar`;::VarBar ahk_exe AutoHotkey.exe 
 	:*:nu`;::NuGenesis LMS - \\Remote                                            
 	:*:main`;::NuGenesis LMS - \\Remote 
 	:*:lms`;::ahk_exe WFICA32.EXE   
@@ -155,6 +157,9 @@ _WindowNames:
 	:*:explorer`;::ahk_exe explorer.exe
 	:*:explor`;::ahk_exe explorer.exe
 	:*:onenote`;::ahk_exe ONENOTE.EXE
+	:*:exel`;::ahk_exe EXCEL.EXE
+	:*:wb`;::LMS Workbook.xlsb - Excel
+	:*:lmswb`;::LMS Workbook.xlsb - Excel
 	:*:note`;::ahk_exe ONENOTE.EXE
 	:*:exe`;::
 	sendinput, ahk_exe %Process%
