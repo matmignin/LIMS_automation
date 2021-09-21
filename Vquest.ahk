@@ -7,7 +7,6 @@
   #InstallMouseHook
   #HotkeyModifierTimeout 80
   #maxthreadsperhotkey, 1
-  ;SendMode, InputThenPl
   SetControlDelay, 1
   SetKeyDelay, 1, 0.25
   setwindelay, 250
@@ -47,7 +46,14 @@ Starting_test:
   return
 
 CheckActive: ;continuously runing sub
-varbar.Follow()
+;varbar.Follow()
+If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !Winactive("ahk_exe WFICA32.EXE"){
+  WinSet, Transparent, 90, AHK_id %GUIID%
+  while MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !WinActive("VarBar ahk_exe AutoHotkey.exe")
+    sleep 600
+    WinSet, Transparent, 235, AHK_id %GUIID%
+}
+
   return
 #IfWinActive, 
 
@@ -81,6 +87,7 @@ Test_4:
 		vOutput .= vKey " " vValue "`r`n"
 	MsgBox, % vOutput
 	return
+
 
 
 
@@ -143,6 +150,8 @@ Test_4:
     iniread, note1, data.ini, SavedVariables, note1
     Iniread, note2, data.ini, SavedVariables, note2
     Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+    Iniread, VarBar_X, data.ini, Locations, VarBar_X
+    Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
     Menu, Tray, Add, Exit, ExitSub
     Menu, Tray, Add, CL3, CL3
       Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
@@ -159,6 +168,7 @@ Test_4:
     }
     menu, tray, add, ShowSampleID, showSampleID
     menu, tray, add, ShowNotes, ShowNotes
+    menu, tray, add, NoIdle, NoIdle
     Menu, tray, NoStandard
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, Exit, ExitSub
