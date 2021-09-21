@@ -86,21 +86,17 @@
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
-			try this.exit() 
-			; If (X<>0)
-			; {
-			; EnvGet, iteration, Iteration
+			try Gui,VarBar:Destroy
 			if !WinExist("LMS Workbook.xlsb"){
 				Iniread, Batch, data.ini, SavedVariables, Batch
 				Iniread, Product, data.ini, Products, Product
-				Iniread, VarBar_X, data.ini, Locations, VarBar_X
-				Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
 				Iniread, Batch0, data.ini, SavedVariables, Batch0
 				Iniread, Batch1, data.ini, SavedVariables, Batch1
 				Iniread, SampleID, data.ini, SavedVariables, SampleID
 				Iniread, Lot, data.ini, SavedVariables, Lot
 				Iniread, Coated, data.ini, SavedVariables, Coated
 			}
+
 				iniread, note1, data.ini, SavedVariables, note1
 				Iniread, note2, data.ini, SavedVariables, note2
 				Iniread, Iteration, data.ini, SavedVariables, Iteration
@@ -110,18 +106,18 @@ Class VarBar{
 
 				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
 			; }
-			If (X=Mouse)
-			{ 
-				coordmode, mouse, Screen
-				MouseGetPos,MousePos_X,ypos,w,h
-				coordmode, mouse, Window
-				Varbar_X:=xpos
-				varbar_y:=ypos
-					IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-				varbar_y:=ypos
-				IniWrite, %Varbar_y%, data.ini, Locations, VarBar_Y
-				coordmode, mouse, Window
-			} 
+			; If (X=Mouse)
+			; { 
+			; 	coordmode, mouse, Screen
+			; 	MouseGetPos,MousePos_X,ypos,w,h
+			; 	coordmode, mouse, Window
+			; 	Varbar_X:=xpos
+			; 	varbar_y:=ypos
+			; 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+			; 	varbar_y:=ypos
+			; 	IniWrite, %Varbar_y%, data.ini, Locations, VarBar_Y
+			; 	coordmode, mouse, Window
+			; } 
 			; if (Destroy:="Reset")
 				; GUI, VarBar:destroy
 			; {
@@ -133,24 +129,17 @@ Class VarBar{
 				this.AddBoxes()
 			
 			CoordMode, mouse, screen
-			; IfWinexist, NuGenesis LMS - \\Remote
+			IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
 					; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
 			; IfWinexist, NuGenesiy LMS - \\Remote
 					; varbar_x:= Varbar_x +500
 
 			; if ShowSampleID || !Coated
-				if !Varbar_x
-					varbar_x:=Varbar_wx
-				if !Varbar_y
-					varbar_y:=Varbar_wy
-				; if !varbar_y
-					; Varbar_Y:=wY
-					; Varbar_x:=wX
 				; try 
 				MidScreen:=A_ScreenWidth//2
   				TopScreen:=A_ScreenHeight-35
-		try Gui, VarBar:Show, h32 x%Varbar_X% y%Varbar_Y% w780 NoActivate, VarBar
+		Try Gui, VarBar:Show, h32 x%Varbar_X% y%Varbar_Y% w780 NoActivate, VarBar
 		Catch 
 			Gui, VarBar:Show, h32 x%MidScreen% y%TopScreen% w780 NoActivate, VarBar
 				; Catch 
@@ -203,13 +192,12 @@ Class VarBar{
 			
 			VarBarGuiClose:
 				coordmode, mouse, Screen
-					; WinGetPos,VarBar_X,Varbar_Y,w,h
-				; coordmode, mouse, Screen
+				WinGetPos,VarBar_X,Varbar_Y,w,h
 				sleep 100
 				; IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-					; IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
+				IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
 				; IniWrite, %Iteration%, data.ini, SavedVariables, yteration
-				; IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+				IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 				; IniWrite, %Follow%, data.ini, Locations, Follow
 				this.exit()
 				coordmode, mouse, Window
@@ -289,21 +277,21 @@ HistoryMenuItem(){
 			; if !xpos 
 			; IniWrite, %xpos%, data.ini, Locations, VarBar_X
 			; if !ypos 
-			tooltip, Place bar
+			tt("Place bar")
 		if !winactive("NuGenesis = \\Remote"){
 			coordmode, mouse, Screen
-			keywait, F13, U T5
-			MouseGetPos,xpos,ypos,w,h
+			; keywait, F13, U T2
+			MouseGetPos,Varbar_X,Varbar_Y
 			Send, {laltup}
-		} else {
+		} 
+		else {
 			WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
 			xpos := LMS_X+1000
 			ypos := LMS_Y
 		}
 		tooltip,
 		IniWrite, %ypos%, data.ini, Locations, VarBar_Y
-			IniWrite, %xpos%, data.ini, Locations, VarBar_X
-		IniWrite, %ypos%, data.ini, Locations, Varyar_Y
+		IniWrite, %xpos%, data.ini, Locations, VarBar_X
 		IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
 		IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 		; Gui, VarBar:Show, h30 x%xpos% y%ypos% w390 NoActivate
@@ -358,7 +346,7 @@ HistoryMenuItem(){
 		Relocate(){
 			global
 					PostMessage, 0xA1, 2
-					keywait, Lbutton, U T5
+					keywait, Lbutton, U T2
 					 Send, ^a
 			return
 		}
@@ -442,13 +430,14 @@ HistoryMenuItem(){
 		iniread, note1, data.ini, SavedVariables, note1
 		Iniread, note2, data.ini, SavedVariables, note2
 		Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-			Iniread, VarBar_X, data.ini, Locations, VarBar_x
-		Iniread, VarBaryY, data.ini, Locations, VarBar_Y
+		Iniread, VarBar_X, data.ini, Locations, VarBar_x
 		}
 
 	exit(){
 		global
 		wingetpos, Varbar_X, Varbar_Y,Wx,Hx, VarBar ahk_class AutoHotkeyGUI
+
+
 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 		; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
