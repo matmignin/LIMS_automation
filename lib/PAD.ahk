@@ -160,10 +160,13 @@ _Lbuton:
 			LMS.DetectTab()
 			if (Tab="Samples")
 				Menu, Menu, add, New &Request, AutoFill
-			else if (Tab="Tests")
+			else if (Tab="Tests"){
 				Menu,Menu, add, &Delete Retain, Autofill
+				menu.show()
+			}
 			else if (Tab="Specs")
-				SpecTab.CopySpecTemplate()
+				; SpecTab.CopySpecTemplate()
+				menu.lms()
 			else if (Tab="Requests")
 				clk(61, 635) ;enter results
 			else if (Tab="Products")
@@ -215,30 +218,30 @@ _Lbuton:
 
 ;_4Fingers:
 	4tap(){
-			If winactive("NuGenesis LMS - \\Remote") {
-				LMS.Detecttab()
-			if (Tab="Requests" || Tab:="Samples")
-					LMS.CoA()
-				; else if (Tab:="Samples")
-					; LMS.CoA()
-				else if (Tab:="Products")
-					{
-					clk(86, 443) ;edit composition
-					Return
-					}
-				else if (Tab="Specs")
-					{
-					click
-					clk(67, 754) ;edit results
-					Return
-					}
-				else
-					Menu.LMS()
-			}
-			else if winactive("PDF Preview - \\Remote")
-				Send, {altdown}{F4}{altup}
-			Else
-				Send, ^v
+		If winactive("NuGenesis LMS - \\Remote") {
+			LMS.Detecttab()
+		if (Tab="Requests" || Tab:="Samples")
+				LMS.CoA()
+			; else if (Tab:="Samples")
+				; LMS.CoA()
+			else if (Tab:="Products")
+				{
+				clk(86, 443) ;edit composition
+				Return
+				}
+			else if (Tab="Specs")
+				{
+				click
+				clk(67, 754) ;edit results
+				Return
+				}
+			else
+				Menu.LMS()
+		}
+		else if winactive("PDF Preview - \\Remote")
+			Send, {altdown}{F4}{altup}
+		Else
+			TT("singleTap")
 	}
 
 	4Right(){

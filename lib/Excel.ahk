@@ -55,35 +55,48 @@ Connect(reload:=0){
 		excel.MatchColor()
 	return
 	}
-	RegexCell(vCell){
+	RegexCell(vCell,n:=""){
 		Global
 		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
-      RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch)
-      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b)", lot)
+      RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch%n%)
+      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b)", lot%n%)
       RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
-      RegExMatch(ctCoated,   "\d{3}-\d{4}", Coated)
+      RegExMatch(ctCoated,   "\d{3}-\d{4}", Coated%n%)
 	}
 InfoLocations(){
 	global
 	GuiControl, -redraw, varbar
-	Product:=XL.Range("B7").Value
-	; SamplesConcat:=XL.Range("B4").Value
-	This.RegexCell(XL.Range("B4").Value)
-	; Batch:=XL.Range("C4").Value
-	; Lot:=XL.Range("E4").Value
-	; Coated:=xl.range("F4").value
-	Name:=XL.Range("B2").Value
-	Customer:=XL.Range("B3").Value
-	ShipTo:=XL.Range("A3").Value
-	; weight:=XL.Range("B6").Text
-	ShapeAndSize:=XL.Range("B5").Value
-	Color:=XL.Range("B6").value
+	If (XL.Range("A1").Value!=1){
+		Product:=XL.Range("B7").Value
+		This.RegexCell(XL.Range("B4").Value)
+		; Batch:=XL.Range("C4").Value
+		; Lot:=XL.Range("E4").Value
+		; Coated:=xl.range("F4").value
+		Name:=XL.Range("B2").Value
+		Customer:=XL.Range("B3").Value
+		ShipTo:=XL.Range("A3").Value
+		; weight:=XL.Range("B6").Text
+		ShapeAndSize:=XL.Range("B5").Value
+		Color:=XL.Range("B6").value
+	}
+	Else {
+		Product:=XL.Range("B1").Value
+		This.RegexCell(XL.Range("F1").Value)
+		This.RegexCell(XL.Range("F2").Value,2)
+		Name:=XL.Range("B2").Value
+		Customer:=XL.Range("B3").Value
+		ShipTo:=XL.Range("C3").Value
+		ServingSize:=XL.Range("B4").Value
+		ShapeAndSize:=XL.Range("B5").Value
+		Color:=XL.Range("B6").value
+	}
+	GuiControl, Varbar:Text, Note2, %Batch2% %Lot2%
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
 	EnvSet, ShipTo, %ShipTo%
 	; if Coated
-		GuiControl, Varbar:Text, Coated, %coated%
+	GuiControl, Varbar:Text, Coated, %coated%
 	GuiControl, Varbar:Text, SampleID,
 	GuiControl, Varbar:Text, name, %name%
 	GuiControl, varbar:text, Color, %Color%
