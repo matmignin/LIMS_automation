@@ -22,16 +22,31 @@ Table(){
   LabelName:=		  []
   DropDownCount:= []
   Sub_Table_height:=0
-  while (Xl.Range("M" . A_Index+7).Value != "") {
-    Position[A_index]     :=  Xl.Range("F" . A_Index+7).Text
-    Name[A_index]         :=  Xl.Range("K" . A_Index+7).text
-    LabelClaim[A_index]   :=	Xl.Range("L" . A_Index+7).Text
-    LabelName[A_index]    :=	Xl.Range("M" . A_Index+7).Text
-    DropDownCount[A_index]:=	Xl.Range("A" . A_Index+7).Text
-    Total_rows            :=	A_index +1
-    Table_Height          :=	A_index
-    if (Xl.Range("F" . A_Index+7).text = "")
-      Sub_Table_Height:=Sub_Table_Height+1
+  If (XL.Range("A1").Value!=1){ ; old sheets
+    while (Xl.Range("M" . A_Index+7).Value != "") {
+      Position[A_index]     :=  Xl.Range("F" . A_Index+7).Text
+      Name[A_index]         :=  Xl.Range("K" . A_Index+7).text
+      LabelClaim[A_index]   :=	Xl.Range("L" . A_Index+7).Text
+      LabelName[A_index]    :=	Xl.Range("M" . A_Index+7).Text
+      DropDownCount[A_index]:=	Xl.Range("A" . A_Index+7).Text
+      Total_rows            :=	A_index +1
+      Table_Height          :=	A_index
+      if (Xl.Range("F" . A_Index+7).text = "")
+        Sub_Table_Height:=Sub_Table_Height+1
+    }
+  } 
+  Else { ; new sheets
+    while (Xl.Range("AK" . A_Index+7).Value != "") {
+      Position[A_index]     :=  Xl.Range("AD" . A_Index+7).Text
+      Name[A_index]         :=  Xl.Range("AI" . A_Index+7).text
+      LabelClaim[A_index]   :=	Xl.Range("AJ" . A_Index+7).Text
+      LabelName[A_index]    :=	Xl.Range("AK" . A_Index+7).Text
+      DropDownCount[A_index]:=	Xl.Range("AM" . A_Index+7).Text
+      Total_rows            :=	A_index +1
+      Table_Height          :=	A_index
+      if (Xl.Range("AD" . A_Index+7).text = "")
+        Sub_Table_Height:=Sub_Table_Height+1
+    }
   }
   Table_Height:=Table_height-Sub_table_Height
   Gui,Ingredient_Table:Default
