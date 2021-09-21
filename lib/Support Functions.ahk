@@ -795,8 +795,29 @@ SwitchWorkSheets(){
 	}
 	Varbar.Show()
 	}
-
-
+NoIdle(){
+	global
+	Menu, Tray, ToggleCheck, NoIdle
+	If NoIdle:= !NoIdle
+	{
+		SetTimer, NoidleTimer, % (3*60*1000)
+		Menu, Tray, Check, NoIdle
+	}
+	else 
+	{
+		Menu, Tray, unCheck, NoIdle
+		Settimer, NoidleTimer,off
+	}
+	Varbar.Show()
+	}
+	
+NoIdleTimer:
+if (A_TimeIdle > (60*1000)) {
+  MouseMove, 1,0,0,R
+  SLEEP 100
+  MouseMove, -1,0,0,R
+}
+Return
 ShowNotes(){
   global
   ;  Menu, Tray, ToggleCheck, ShowNotes
