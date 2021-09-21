@@ -71,7 +71,6 @@ CreateGUI(){
 
 Methods() {
 	global
-	; Mouse_Click("searchBar_SelectMethodsTest")
 	WinActivate, Select methods tests - \\Remote
 	click, 229, 72,2
 	Send, ^a
@@ -80,9 +79,9 @@ Methods() {
 	If A_Index = 1
 		Continue
 	Method := StrSplit(A_LoopReadLine, "=")
-	; MethodGroup := StrSplit(A_LoopReadLine, "|")
+	; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
 	Selection:= % Method[1]
-	; Group:= % MethodGroup[2]
+	; Group:= % MethodGroup[2] ;for a second split
 	Menu, Methodmenu, add, %Selection%, Methods
 	}
 	Menu, MethodMenu, Show,
@@ -312,7 +311,7 @@ ModifyColumns(){
 	LV_ModifyCol(1,130)
 	LV_ModifyCol(2,0)
 	LV_ModifyCol(6,0)
-	LV_ModifyCol(7,20)
+	LV_ModifyCol(7,0)
 	LV_ModifyCol(8,80)
 	LV_ModifyCol(9,0)
 	LV_Delete(Table_Height)
@@ -321,45 +320,66 @@ ModifyColumns(){
 GetRowText(){
 	global
 	LV_GetText(Name, 				A_EventInfo,1)
-	LV_GetText(LabelClaim, 	A_EventInfo,2)
+	LV_GetText(LabelClaim, 		A_EventInfo,2)
 	LV_GetText(MinLimit, 		A_EventInfo,3)
 	LV_GetText(MaxLimit, 		A_EventInfo,4)
 	LV_GetText(Units, 			A_EventInfo,5)
-	LV_GetText(Percision, 	A_EventInfo,6)
-	LV_GetText(Description, A_EventInfo,7)
+	LV_GetText(Percision, 		A_EventInfo,6)
+	LV_GetText(Description, 	A_EventInfo,7)
 	LV_GetText(Method, 			A_EventInfo,8)
 	Gui, Spec_Table:submit,NoHide
 }
 GetExcelData(){
 	Global
-	Name:=				[]
+	Name:=			[]
 	Position:=		[]
 	LabelClaim:=	[]
 	MinLimit:=		[]
 	MaxLimit:=		[]
-	Units:=				[]
+	Units:=			[]
 	Percision:=		[]
 	LabelName:=		[]
 	Description:=	[]
 	Requirement:=	[]
-	method:= 			[]
-	while (Xl.Range("M" . A_Index+6).Value != "")
-	{
-		Position[A_index]:=				Xl.Range("F" . A_Index+7).Text
-		Name[A_index]:=						Xl.Range("K" . A_Index+7).text
-		LabelClaim[A_index]:=			Xl.Range("L" . A_Index+7).Text
-		MinLimit[A_index]:=				Xl.Range("G" . A_Index+7).Text
-		MaxLimit[A_index]:=				Xl.Range("H" . A_Index+7).Text
-		Units[A_index]:=					Xl.Range("I" . A_Index+7).Text
-		Percision[A_index]:=			Xl.Range("J" . A_Index+7).Text
-		Description[A_index]:=		Xl.Range("N" . A_Index+7).Text
-		Method[A_index]:=					Xl.Range("D" . A_Index+7).Text
-		Total_rows:=A_index
-		Table_Height:=A_index
-		if (Table_Height > 30)
-			Table_Height = 30
+	method:= 		[]
+	If (XL.Range("A1").Value!=1){
+		while (Xl.Range("M" . A_Index+6).Value != ""){
+			Position[A_index]:=				Xl.Range("F" . A_Index+7).Text
+			Name[A_index]:=					Xl.Range("K" . A_Index+7).text
+			LabelClaim[A_index]:=			Xl.Range("L" . A_Index+7).Text
+			MinLimit[A_index]:=				Xl.Range("G" . A_Index+7).Text
+			MaxLimit[A_index]:=				Xl.Range("H" . A_Index+7).Text
+			Units[A_index]:=					Xl.Range("I" . A_Index+7).Text
+			Percision[A_index]:=				Xl.Range("J" . A_Index+7).Text
+			Description[A_index]:=			Xl.Range("N" . A_Index+7).Text
+			Method[A_index]:=					Xl.Range("D" . A_Index+7).Text
+			Total_rows:=A_index
+			Table_Height:=A_index
+			if (Table_Height > 30)
+				Table_Height = 30
+		}
 	}
-}
+	else {
+		while (Xl.Range("AK" . A_Index+6).Value != ""){
+			Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
+			Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
+			LabelClaim[A_index]:=			Xl.Range("AJ" . A_Index+7).Text
+			MinLimit[A_index]:=				Xl.Range("AI" . A_Index+7).Text
+			MaxLimit[A_index]:=				Xl.Range("AF" . A_Index+7).Text
+			Units[A_index]:=					Xl.Range("AG" . A_Index+7).Text
+			Percision[A_index]:=				Xl.Range("AH" . A_Index+7).Text
+			Description[A_index]:=			Xl.Range("AL" . A_Index+7).Text
+			Method[A_index]:=					Xl.Range("AB" . A_Index+7).Text
+			Total_rows:=A_index
+			Table_Height:=A_index
+			if (Table_Height > 30)
+				Table_Height = 30
+		}
+	}
+	
+	}
+
+
 
 
 
@@ -693,9 +713,17 @@ HM_Canada(){
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
+	winwaitactive, Result Editor - \\Remote,,4
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
+	click 390, 659	;click okay
+	Breaking.Point()
+	WinWaitClose, Result Editor - \\Remote,,4
+	click 125,130 ;click 1st row
+	click 80,70 ;Edit
+	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -703,7 +731,7 @@ HM_Canada(){
 	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}9.8{tab 5}NMT 9.8 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}6.3{tab 5}NMT 6.3 mcg/day
 	click 390, 659	;click okay
 	WinWaitClose, Result Editor - \\Remote,,4
 	click 125,130 ;click 1st row
@@ -711,15 +739,7 @@ HM_Canada(){
 	Breaking.Point()
 	Breaking.Point()
 	winwaitactive, Result Editor - \\Remote,,4
-	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}6.3{tab 5}NMT 6.3 mcg/day
-	click 390, 659	;click okay
-	WinWaitClose, Result Editor - \\Remote,,4
-	click 125,130 ;click 1st row
-	click 80,70 ;Edit
-	Breaking.Point()
-	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
-	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}20.3{tab 5}NMT 20.3 mcg/day
+	SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}20.3{tab 5}NMT 20.3 mcg/day
 	click 390, 659	;click okay
 	return
 }
