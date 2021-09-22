@@ -38,16 +38,18 @@ Connect(reload:=0){
 		; return
 	}
 	This.InfoLocations()
+												/*  Get each sheet name and turn it into an array
 												For sheet in xl.ActiveWorkbook.Worksheets
-												; 	Products.insert(Sheet.Name)
-												; Products.remove(1)
-												; Products.remove(1)
-												; loop 3{
-												; 	if (Products[A_index] = "Finished")
-												; 		break
-												; 	else
-												; 		DDLProducts .= "|" Products[A_index]
-												; }
+													Products.insert(Sheet.Name)
+												Products.remove(1)
+												Products.remove(1)
+												loop 3{
+													if (Products[A_index] = "Finished")
+														break
+													else
+														DDLProducts .= "|" Products[A_index]
+												} 
+												*/
 
 	Gui VarBar:+LastFound
 	if (Reload = 1)
@@ -66,35 +68,30 @@ Connect(reload:=0){
 InfoLocations(){
 	global
 	GuiControl, -redraw, varbar
-	If (XL.Range("A1").Value!=1){
-		Product:=XL.Range("B7").Value
-		This.RegexCell(XL.Range("B4").Value)
-		; Batch:=XL.Range("C4").Value
-		; Lot:=XL.Range("E4").Value
-		; Coated:=xl.range("F4").value
-		Name:=XL.Range("B2").Value
-		Customer:=XL.Range("B3").Value
-		ShipTo:=XL.Range("A3").Value
-		; weight:=XL.Range("B6").Text
-		ShapeAndSize:=XL.Range("B5").Value
-		Color:=XL.Range("B6").value
-	}
-	Else {
+		; Product:=XL.Range("B7").Value
+		; This.RegexCell(XL.Range("B4").Value)
+		; ; Batch:=XL.Range("C4").Value
+		; ; Lot:=XL.Range("E4").Value
+		; ; Coated:=xl.range("F4").value
+		; Name:=XL.Range("B2").Value
+		; Customer:=XL.Range("B3").Value
+		; ShipTo:=XL.Range("A3").Value
+		; ; weight:=XL.Range("B6").Text
+		; ShapeAndSize:=XL.Range("B5").Value
+		; Color:=XL.Range("B6").value
 		Product:=XL.Range("B1").Value
-		This.RegexCell(XL.Range("F1").Value)
-		This.RegexCell(XL.Range("F2").Value,2)
+		This.RegexCell(XL.Range("E1").Value)
+		; This.RegexCell(XL.Range("E2").Value,2)
 		Name:=XL.Range("B2").Value
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value
 		ServingSize:=XL.Range("B4").Value
 		ShapeAndSize:=XL.Range("B5").Value
 		Color:=XL.Range("B6").value
-	}
-	GuiControl, Varbar:Text, Note2, %Batch2% %Lot2%
+
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Product, %Product%
 	GuiControl, Varbar:Text, Batch, %Batch%
-	EnvSet, ShipTo, %ShipTo%
 	; if Coated
 	GuiControl, Varbar:Text, Coated, %coated%
 	GuiControl, Varbar:Text, SampleID,
@@ -104,7 +101,6 @@ InfoLocations(){
 	; GuiControl, varbar:text, weight, %weight%
 	GuiControl, Varbar:Text, iteration, %iteration%
 	GuiControl, varbar:text, ShapeSize, %shapeSize%
-	EnvSet, PrevProduct, %Product%
 	GuiControl, +redraw, varbar
 	; this.SaveToDataBase()
 	}
