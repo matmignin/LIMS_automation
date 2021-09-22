@@ -195,7 +195,6 @@ _OneNote:
 
 _Remote_DESKTOPs:
 #IfWinActive, Remote Desktop Connection
-	Mbutton::            menu.Remote_Desktop()
 	; F13::                TT("`n PRDCitrix1 `t 10.1.2.134`n PRDCitrix2 `t 10.1.2.226`n PRDCitrix3 `t 10.1.2.227 `n LMS-Test `t 10.1.2.152",6000)
 #IfWinActive, ahk_exe mstsc.exe
 	F20::
@@ -204,11 +203,10 @@ _Remote_DESKTOPs:
 	sendlevel, 0
 	return
 #ifwinactive, ahk_class #32770
-	Mbutton::          menu.Remote_Login()
 	F19::              menu.Remote_Login()
 #ifwinactive, ahk_class TscShellContainerClass
 	F19::            	 menu.Remote_Desktop()
-	Mbutton::          menu.Remote_Desktop()
+
 
 _Firefox:
  #IfWinActive, ahk_exe firefox.exe 

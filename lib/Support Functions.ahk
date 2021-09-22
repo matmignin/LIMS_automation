@@ -281,6 +281,24 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 		return
 }
 	
+; Pop(Msg:="yo"){
+; 	global
+; ; CoordMode, Mouse, Relative
+; MouseGetPos, PopUp_x,Popup_y,
+; popup_y:=Popup_y+30
+; Gui, PopUp:+AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow   ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
+; Gui, PopUp:Add, Text,, %msg%
+; Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
+; WinSet, Transparent, 100, %GUIID%
+; Gui, PopUp:color,DC734F, 97BA7F 
+; settimer, destroyGui, -1000
+; return
+
+; DestroyGui:
+;   gui, PopUp:destroy
+;   return
+; }
+
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 	global
 	if (Position:="S")
@@ -680,9 +698,7 @@ Mouse_Click(Link){
 	return
 }
 
-#if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
- Mbutton::Sendpassword()
-#if
+
 
 SendPassword(){
 	if winactive("Remote Desktop")
@@ -759,6 +775,9 @@ VarBar_ResetSub:
   return
 Run_Display:
   run, Display.url, C:\Users\mmignin\Desktop\
+DebugVars(){
+  Run, DebugVars.Ahk, lib\DebugVars
+  }
 CL3(){
   Run, cl3.Ahk, lib\CL3
   }
@@ -823,13 +842,15 @@ ShowNotes(){
   ;  Menu, Tray, ToggleCheck, ShowNotes
   If ShowNotes:= !ShowNotes
   {
-  IniRead, Note1, data.ini, SavedVariable, Note1
-  IniRead, Note2, data.ini, SavedVariable, Note2
+  IniRead, Note1, data.ini, Notes, Note1
+  IniRead, Note2, data.ini, Notes, Note2
+  IniRead, Note3, data.ini, Notes, Note3
   	Notes.Show()
   }
   else
-  iniWrite, %Note1%, data.ini, SavedVariable, Note1
-  iniWrite, %Note2%, data.ini, SavedVariable, Note2
+  iniWrite, %Note1%, data.ini, Notes, Note1
+  iniWrite, %Note2%, data.ini, Notes, Note2
+  iniWrite, %Note3%, data.ini, Notes, Note3
   Notes.Close()
   Varbar.Show()
   }
