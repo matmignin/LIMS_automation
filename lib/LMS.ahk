@@ -18,8 +18,8 @@ SearchBar(Code:="",PostCmd:=""){
 		if winactive("Select methods tests - \\Remote")
 			clk(246,77, 2)
 		else If winactive("Register new samples - \\Remote") {
-			Clk(180, 103, 2)
-			Send, %Product%{enter}
+			; Clk(180, 103, 2)
+			Send, {click 180, 103,2}%Product%{enter}
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
 			LMS.Orient()
@@ -252,8 +252,8 @@ FilterBar(Code:="",PostCmd:=""){
 	ControlGetText, Product, Edit1, VarBar
 	ControlGetText, Coated, Edit4, VarBar
 	ControlGetText, SampleId, Edit5, VarBar
-	ControlGetText, Note1, Edit6, VarBar
-	ControlGetText, Note2, Edit7, VarBar
+	; ControlGetText, Note1, Edit6, VarBar
+	; ControlGetText, Note2, Edit7, VarBar
 	blockinput on
 	; lms.FilterStatus()
     LMS.DetectTab()

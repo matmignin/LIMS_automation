@@ -106,12 +106,12 @@ _Lbuton:
 	3up(){
 		global
 		if winactive("ahk_exe EXCEL.EXE"){
-			excel.Connect()
+			excel.Connect(1)
 			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 			return
 		}
 		If winactive("NuGenesis LMS - \\Remote") {
-				Excel.Connect()
+				Excel.Connect(1)
 				TT(Product " " Batch "`n`t" Name " - " Customer)
 				return
 		}

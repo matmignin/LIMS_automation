@@ -76,6 +76,9 @@ DropdownSelect(A_ShipTo){
 DeleteRetain(){
 	gLOBAL
   SetWinDelay, 25
+    SetMouseDelay, -1
+  SetDefaultMouseSpeed, 0
+  CoordMode, mouse, Relative
   ; Breaking.Preamble()
   Winactivate, NuGenesis LMS - \\Remote
 	MouseGetPos, mx, mY  
@@ -84,12 +87,21 @@ DeleteRetain(){
   SetControlDelay -1
   loop %n%,
   {
+  CoordMode, mouse, Screen
+	MouseGetPos, mx, mY  
+  CoordMode, mouse, relative
     ; TT(n,800)
     ; Breaking.Point()
     ; Winactivate, ahk_exe WFICA32.EXE
       ; ControlClick, x61 y258, ahk_exe WFICA32.EXE
   Winactivate, NuGenesis LMS - \\Remote
-    clk(61, 258,,,"ahk_exe WFICA32.EXE")
+    ; clk(61, 258,,,"ahk_exe WFICA32.EXE")
+    send, {click 61, 258}
+  CoordMode, mouse, Screen
+    ; send, {click %mx%,%my%,0}
+    MouseMove, %mX%, %mY%, 0,
+    ; send, {click %mx%,%my%,0}
+    ;clk(61, 258,,,"ahk_exe WFICA32.EXE")
     ; previousProduct:=Product
 		sleep 100
 		winwait, Delete Tests - \\Remote,,1.5
@@ -280,13 +292,14 @@ Main_EditResults()
 
 SelectTestSample(){
 global
-clip.Regex("Department")
 setWinDelay, 550
 blockinput on
 MouseGetPos, mx, my
 click
+; send, ^c
 ;{
   clip()
+; clip.Regex("Department")
   sleep 300
  click 647, 75
  sleep 600
@@ -296,12 +309,14 @@ click
  click 463, 71
  Breaking.Point()
  Send, {click 244, 69}
- sleep 300
+ sleep 500
  Send,{click 205, 184}
- sleep 300
- Breaking.Point() 
+ sleep 400
+;  Breaking.Point() 
+;  tt(Department)
 ;  Send, {click 171, 127}^{a}
 ;  Send, %department%
+;  sleep 200
 ;  sleep 200
 ;  Send, {enter}{tab}^{a}{click 506, 323}
 ;  sleep 300
@@ -312,6 +327,7 @@ click
   ; my:=my+26
   ; MouseMove, mx, my
   ; sleep 200
+  department:=
   blockinput off
   setwindelay, 200
 return

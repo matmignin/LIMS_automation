@@ -86,7 +86,7 @@ _Excel:
 		#if 
 		*/
 #IfWinActive, LMS Workbook.xlsb
-	; F9::    					Excel.Connect(1)
+	F9::    					Excel.Connect(1)
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up

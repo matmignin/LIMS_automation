@@ -1,5 +1,6 @@
 
-  
+
+
 
 
 
@@ -361,12 +362,6 @@ LogError(exception) {
 	 return True
 }
 
-	GotoError(){
-		global
-		Send, {F9}{:}%ErrorLine%{enter}
-		; Send, {F9}{:}%Errorline%{enter}
-		return
-	}
 class click{
 
 	OKay(sleeptime:=""){

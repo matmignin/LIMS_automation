@@ -65,7 +65,7 @@ Regex(Category:="All"){
     global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department
     ; global ;Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
     sleep      20
-    If (Category!="Department") {
+    ; If (Category!="Department") {
       RegExMatch(Clipboard, "i)\b[abdefghijkl]\d{3}\b", cProduct)
       RegExMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
@@ -145,20 +145,20 @@ Regex(Category:="All"){
             ; Fileappend, %cSampleID%`n, lib/SampleID.txt
         }
       sleep 20
-    }
-    if (Category!="Codes"){
+    ; }
+    ; if (Category!="Codes"){
       ; Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      Regexmatch(Clipboard, "i)\bF, Micro\b",cMicro)
-      Regexmatch(Clipboard, "i)\bI, Retain\b", cRetain)
-      Regexmatch(Clipboard, "i)\bI, Physical\b", cPhysical)
-      Regexmatch(Clipboard, "i)\bCT, Physical\b", cCTPhysical)
-      Regexmatch(Clipboard, "i)\bCT, Retain\b", cCTRetain)
-      ; Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      ; Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-      ; Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-      ; Regexmatch(Clipboard, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-      ; Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
-      ; Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
+      ; Regexmatch(Clipboard, "i)\bF, Micro\b",cMicro)
+      ; Regexmatch(Clipboard, "i)\bI, Retain\b", cRetain)
+      ; Regexmatch(Clipboard, "i)\bI, Physical\b", cPhysical)
+      ; Regexmatch(Clipboard, "i)\bCT, Physical\b", cCTPhysical)
+      ; Regexmatch(Clipboard, "i)\bCT, Retain\b", cCTRetain)
+      Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+      Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+      Regexmatch(Clipboard, "i)(\bI, Physical\b|\bPhysical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
+      Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
       Sleep      20
       If cAnalytical
         Department:="Analytical"
@@ -169,25 +169,28 @@ Regex(Category:="All"){
       If cCTRetain
         Department:="Retain (Coated)"
       If cPhysical
-        Department:=Physical
+        Department:="Physical"
       If cCTPhysical
         Department:="Physical (Coated)"
-    }
-    if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain ; Department ;|| Winactive("ahk_exe WFICA32.EXE") 
-      ; TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
-    if cProduct 
-      Vars:=cProduct
-    If cBatch
-      Vars.="`t"cBatch
-    If cLot
-      Vars.="`n"cLot
-    If cCoated
-      Vars.="`t"cCoated
-    If ShowSampleID
-      If cSampleID
-        Vars.="`t"cSampleID
-    If cAnalytical
-      Vars.="`n`t"cAnalytical
+    ; }
+    ; if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Department ;|| Winactive("ahk_exe WFICA32.EXE") 
+    ;   ; TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
+    ; if cProduct 
+    ;   Vars:=cProduct
+    ; If cBatch
+    ;   Vars.="`t"cBatch
+    ; If cLot
+    ;   Vars.="`n"cLot
+    ; If cCoated
+    ;   Vars.="`t"cCoated
+    ; If ShowSampleID
+    ;   If cSampleID
+    ;     Vars.="`t"cSampleID
+    ; If cAnalytical
+    ;   Vars.="`n`t"cAnalytical
+    ; If Department
+    ;   Vars.="`n`t"Department
+    ; TT(Vars)
     ; TT(Vars)
 
     ; else 

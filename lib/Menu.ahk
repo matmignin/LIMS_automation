@@ -159,9 +159,8 @@ Variable(){
   Reasons(){
     global
     This.delete()
-    menu,menu,add, Duplicate Entry
-    menu,menu,add, Removing B12 from Rotation AL %daystring%
-    menu,menu,add, Fixing Rotation
+    menu,menu,add, Fixing Rotation, Reasons
+    menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
     This.show()
     }
     
@@ -438,15 +437,16 @@ Remote_Desktop:
 
 
 Reasons:
-  ;  if A_thismenuitem contains Fixing Rotation
-    ; ReasonText:="Fixing Rotation"
+		winactivate, Reason For Change - \\Remote
+		Send,{click 143, 118}%A_ThisMenuItem%
+   if A_thismenuitem contains Fixing Rotation
+    send, {click 240, 239}
   ;  else if A_thismenuItem contains Removing B12 from Rotation AL %daystring%
     ; ReasonText:="Removing B12 from rotation AL " Daystring
   ;  else if A_thismenuItem contains Duplicate Entry
     ; ReasonText:="Duplicate Entry"
   ;  else
-		winactivate, Reason For Change - \\Remote
-		Send,{click 143, 118}%A_ThisMenuItem%{click 240, 239}
+		; Send,{click 143, 118}%A_ThisMenuItem%{click 240, 239}
     Menu,Menu, deleteAll
    return
 

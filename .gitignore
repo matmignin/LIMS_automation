@@ -1,3 +1,28 @@
 AHK-Studio Backup/*
 
-lib/CL3/ClipData/History/History-20210916043732.xml.bak
+lib/CL3/ClipData/*
+lib/DebugVars/DebugVars.ahk
+
+lib/DebugVars/DebugVars.ahk - Shortcut.lnk
+lib/DebugVars/DebugVarsGui.ahk
+lib/DebugVars/empty.png
+lib/DebugVars/minus.png
+lib/DebugVars/plus.png
+lib/DebugVars/readme.md
+lib/DebugVars/TreeListView_test.ahk
+lib/DebugVars/TreeListView.ahk
+lib/DebugVars/VarEdit_test.ahk
+lib/DebugVars/VarEditGui.ahk
+lib/DebugVars/VarTree_test.ahk
+lib/DebugVars/VarTreeGui.ahk
+lib/DebugVars/VarTreeObjectNode.ahk
+lib/dbgp_console.ahk
+lib/dbgp_listvars.ahk
+lib/dbgp_test.ahk
+lib/dbgp.ahk
+
+.vscode/*
+Products.txt
+Batch.txt
+Codes.ini
+.vscode/settings.json

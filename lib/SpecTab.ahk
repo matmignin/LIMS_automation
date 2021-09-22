@@ -342,29 +342,29 @@ GetExcelData(){
 	Description:=	[]
 	Requirement:=	[]
 	method:= 		[]
-	If (XL.Range("A1").Value!=1){
-		while (Xl.Range("M" . A_Index+6).Value != ""){
-			Position[A_index]:=				Xl.Range("F" . A_Index+7).Text
-			Name[A_index]:=					Xl.Range("K" . A_Index+7).text
-			LabelClaim[A_index]:=			Xl.Range("L" . A_Index+7).Text
-			MinLimit[A_index]:=				Xl.Range("G" . A_Index+7).Text
-			MaxLimit[A_index]:=				Xl.Range("H" . A_Index+7).Text
-			Units[A_index]:=					Xl.Range("I" . A_Index+7).Text
-			Percision[A_index]:=				Xl.Range("J" . A_Index+7).Text
-			Description[A_index]:=			Xl.Range("N" . A_Index+7).Text
-			Method[A_index]:=					Xl.Range("D" . A_Index+7).Text
-			Total_rows:=A_index
-			Table_Height:=A_index
-			if (Table_Height > 30)
-				Table_Height = 30
-		}
-	}
-	else {
+	; If (XL.Range("A1").Value!=1){
+	; 	while (Xl.Range("M" . A_Index+6).Value != ""){
+	; 		Position[A_index]:=				Xl.Range("F" . A_Index+7).Text
+	; 		Name[A_index]:=					Xl.Range("K" . A_Index+7).text
+	; 		LabelClaim[A_index]:=			Xl.Range("L" . A_Index+7).Text
+	; 		MinLimit[A_index]:=				Xl.Range("G" . A_Index+7).Text
+	; 		MaxLimit[A_index]:=				Xl.Range("H" . A_Index+7).Text
+	; 		Units[A_index]:=					Xl.Range("I" . A_Index+7).Text
+	; 		Percision[A_index]:=				Xl.Range("J" . A_Index+7).Text
+	; 		Description[A_index]:=			Xl.Range("N" . A_Index+7).Text
+	; 		Method[A_index]:=					Xl.Range("D" . A_Index+7).Text
+	; 		Total_rows:=A_index
+	; 		Table_Height:=A_index
+	; 		if (Table_Height > 30)
+	; 			Table_Height = 30
+	; 	}
+	; }
+	; else {
 		while (Xl.Range("AK" . A_Index+6).Value != ""){
 			Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
 			Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
 			LabelClaim[A_index]:=			Xl.Range("AJ" . A_Index+7).Text
-			MinLimit[A_index]:=				Xl.Range("AI" . A_Index+7).Text
+			MinLimit[A_index]:=				Xl.Range("AE" . A_Index+7).Text
 			MaxLimit[A_index]:=				Xl.Range("AF" . A_Index+7).Text
 			Units[A_index]:=					Xl.Range("AG" . A_Index+7).Text
 			Percision[A_index]:=				Xl.Range("AH" . A_Index+7).Text
@@ -375,7 +375,7 @@ GetExcelData(){
 			if (Table_Height > 30)
 				Table_Height = 30
 		}
-	}
+	; }
 	
 	}
 

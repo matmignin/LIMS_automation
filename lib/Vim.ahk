@@ -3,6 +3,7 @@
 ; #IfWinActive, ahk_exe Code.exe
 #if MouseClip && winactive("ahk_exe Code.exe")
 	Mbutton::                                    clip.Click()
+_LCONTROL:
 #if Getkeystate("LControl","p")
 	; ^z::                                     SendInput,{ctrldown}{z}{ctrlup}
 	z::                                     	 SendInput,{ctrldown}{z}{ctrlup}
@@ -11,22 +12,23 @@
 	h::                                        SendInput,{ctrldown}{[}{ctrlup}
 	+z::                                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
 #if
-
+_VScode:
 #IfWinActive, ahk_exe Code.exe
 	; +^k::                                     SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
 	; +^j::                                     SendInput,{Altdown}{shiftdown}{ctrldown}{down}{shiftup}{ctrlup}{altup}
-	!v:: sendinput, {ctrldown}{o}{ctrlup}vim.ahk{enter}
+	!v:: 														send, {F9}vim.ahk{enter}
 	F20 & .:: 			 									SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  SendInput,{ctrldown}{]}{ctrlup}	
 	numpadsub::                                  4left()
 	numpadadd::                                  4right()
-	numpadmult::                                 SendInput,{shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
+	numpadmult::                                 SendInput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
+	; numpadmult::                                 SendInput,{shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
 	numpaddot::                                  numpaddot
 	^numpaddot::                                 SendInput,{ctrldown}{w}{ctrlup}
 	Mbutton::                                    3Tap() 
-	$Lwin Up::  
-	                                 SendInput,{shiftdown}{altdown}{i}{lwinup}{altup}{shiftup}
+	$Lwin Up::  											SendInput,{shiftdown}{altdown}{i}{lwinup}{altup}{shiftup} ; toggle colun selection mode
 _TAB:
+	Tab & `:: 	 											
 	Tab & h::                                    SendInput,{ctrldown}{[}{ctrlup}
 	Tab & l::                                    SendInput,{ctrldown}{]}{ctrlup}
 	Tab & j::                                   	down
@@ -49,7 +51,6 @@ _TAB:
 	Tab & 5::                                    SendInput,{tab 26}
 	Tab & 6::                                    SendInput,{tab 20}
 	Tab & F15::                                  SendInput,{ctrldown}{[}{ctrlup}
-	esc & `::                                   	delete
 	` & Tab::                                    SendInput,{shiftdown}{altdown}{lwindown}{q}{lwinup}{altup}{shiftup}
 	` & esc::                                    backspace
 	Tab & q::                                    SendInput,{ctrldown}{]}{ctrlup}
@@ -57,9 +58,6 @@ _TAB:
 	q & u::													SendInput, {q}{u]
 	q::q
 	F13 & tab::												SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
-
-	;F14::                                        ReloadScript()
-	; `::   																				SendInput,{``}
 	$^F::                                         
 		tt("`n ----Find------- `n",1000,A_CaretX,A_Carety)
 		SendInput,{ctrldown}{f}{ctrlup}
@@ -76,7 +74,7 @@ _TAB:
 	LCtrl & Appskey::                            return
 	<^f19::                                      SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 	<+f19::                                      SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
-	^Lshift::                                    SendInput,{ctrldown}{y}{ctrlup}
+	^Lshift::                                    
 
 
 	; Lshift::                                     DoublePress("{ctrldown}{F6}{ctrlup}",,"Backward")
@@ -90,7 +88,6 @@ _TAB:
 	<+space::                                    SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 	; rbutton up::                                 click R
 	^s::                                         SendInput, {ctrldown}{end}{ctrlup}
-	f9 & f6::                                    return
 	F20 & h::                                    SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 	F20 & k::                                    SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	F20 & backspace::                            delete
@@ -111,22 +108,18 @@ _TAB:
 	F19 & i::                                    SendInput,{F9}@
 	F19 & o::                                    SendInput,{F9}
 	F19 & p::                                    SendInput,^{F9}
-	F19 & F9::                                   SendInput,^{F9}
 	F19 & lbutton::                              SendInput,^{click}
 	F19 & Enter::											SendInput,{ctrldown}{enter}{ctrlup}
-	F19 & j::                                    SendInput,{shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
+	F19 & j::                                    SendInput,+!{j}
+	F19 & k::                                    SendInput,+!{k}
 	F19 & l::                                    SendInput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
 	F19 & h::                                    SendInput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
 	f19 & `::                                    SendInput,~
-	F19 & k::                                    SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	f19 & r::                                    SendInput,%process%
 	f19 & c::                                    SendInput,%mouseposition%
 	f19 & t::                                    SendInput,%wintitle%
 	f19 & w::                                    SendInput,%wininfo%
 	f19 & n::                                    SendInput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
-	f19 & f6::                                   SendInput,{ctrldown}{[}{ctrlup}
-	f19 & f7::                                   SendInput,{ctrldown}{]}{ctrlup}
-	F19 & 7::												GotoError()
 	F13 & F11::                                  WindowInfo()
 	; F13 & g::                                  	SendInput,{shiftdown}{altdown}{lwindown}{g}{lwinup}{altup}{shiftup}
 	F13 & lshift::											enter
@@ -153,31 +146,44 @@ _F13_CONTROL:
 	6::                                          SendInput,{shiftdown}{Home}{shiftup}
 	t::														SendInput,{F9}test.ahk{enter}
 	4::                                          SendInput,{shiftdown}{end}{shiftup} 
-	<^m::                                        SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
 	v::                                          SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
 	<^v::                                        SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
-	<^u::                                        SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
-	^m::                                         SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	[::														
+	<^m::                                        SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	^m::                                         SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;highlight Previous
 	m::                                          SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
 	tab::														SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}						
+	]:
 	u::                                          SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
-	^u::                                         SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
+	^u::                                         SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight next
+	<^u::                                        SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
 	F19::                                        SendInput,{shiftdown}{ctrldown}{altdown}{f6}{altup}{ctrlup}{shiftup} ;previous suggestion
-	'::                                          sendInput,{shiftdown}{ctrldown}{r}{ctrlup}{shiftup}
-	p::														SendInput,{home}{enter}{up}{ctrldown}{v}{ctrlup}
+		'::  													sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
+	^'::  													sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
+		p::														SendInput,{home}{enter}{up}{ctrldown}{v}{ctrlup}
 	Space::                                      SendInput,{shiftdown}{altDown}{a}{shiftup}{altup}{shiftdown}{ctrldown}{]}{ctrlup}{shiftup}
-	q::                                          SendInput,{shiftdown}{home}{shiftup}
-	e::                                          SendInput,{shiftdown}{end}{shiftup}
+	; q::                                          SendInput,{shiftdown}{home}{shiftup}
+	e::                                          SendInput,{shiftdown}{end}{shiftup} ;encase
 	; g::                                          SendInput,{shiftdown}{lwindown}{g}{lwinup}{shiftup}
-]::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
-[::                                 			    	SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
-9::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
-0::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
-	; z::                                        SendInput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
-	; ^z::               			                 SendInput,{ctrldown}{z}{ctrlup}
-	; z::           		                          SendInput,{ctrldown}{z}{ctrlup}
-	; f::                                        SendInput,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
-	,::                                          SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
+	; ]::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
+	; [::                                 			    	SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
+	9::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
+	0::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
+		; z::                                        SendInput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
+		; ^z::               			                 SendInput,{ctrldown}{z}{ctrlup}
+		; z::           		                          SendInput,{ctrldown}{z}{ctrlup}
+		; f::                                        SendInput,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
+	q::                                          SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
+	,::                                      SendInput,{shiftdown}{Home 2}{shiftup}
+	.::                                      SendInput,{shiftdown}{end}{shiftup} 
+	z::											SendInput,{ctrldown}{y}{ctrlup}
+	^z::											SendInput,{ctrldown}{y}{ctrlup}
+	s::                                       SendInput,{home}+{end}
+	^s::                                       SendInput,{home}+{end}
+	c::	                                 	SendInput,!+^{/}
+	/::	                                 	SendInput,!+^{/}
+	^c::	                                 	SendInput,!+^{/}
+	^/::	                                 	SendInput,!+^{/}
 	#If 
 _F13_SHIFT:    
 #If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")
@@ -185,15 +191,15 @@ _F13_SHIFT:
 	+k::                                        	SendInput,{up 10}
 	j::                                          SendInput,{down 10}
 	+j::                                        	SendInput,{down 10}
-	Tab & 1::                                    SendInput,{tab 8}
-	Tab & 2::                                    SendInput,{tab 10}
-	Tab & 3::                                    SendInput,{tab 12}
-	Tab & 4::                                    SendInput,{tab 14}
-	Tab & 5::                                    SendInput,{tab 26}
-	Tab & 6::                                    SendInput,{tab 20}
+	1::		                                    SendInput,{tab 8}
+	2::		                                    SendInput,{tab 10}
+	3::		                                    SendInput,{tab 12}
+	4::		                                    SendInput,{tab 14}
+	5::		                                    SendInput,{tab 26}
+	6::		                                    SendInput,{tab 20}
 
 
-
+#if
 
 
 
@@ -215,22 +221,20 @@ _F13_SHIFT:
 _Vim_Doublepress:
 	#If (A_PriorHotKey = "d" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;Vim Delete
 		4::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
-		e::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
-		`;::                                      SendInput,{shiftdown}{end}{shiftup}^{x}
-		q::                                       SendInput,{shiftdown}{home}{shiftup}^{x}
+		.::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
+		`;::                                      SendInput,{shiftdown}{end}{shiftup}^{x} ;encase
+		,::                                       SendInput,{shiftdown}{home}{shiftup}^{x}
 		l::                                       SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^{x}
 		h::                                       SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{x}
 		5::                              			SendInput,{shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
 		w::                                       vim.Yank("{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}","cut")
 		d::                                       vim.Yank("{Home 2}{shiftdown}{End}{right}{shiftup}","cut")
-		[::                                  		SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
-		]::                                       SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
+		; [::                                  		SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
+		; ]::                                       SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 	#If (A_PriorHotKey = "y" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800)
-		; e::                                       SendInput,{shiftdown}{end}{shiftup}^c{esc}{F5 2}
-		; q::                                       SendInput,^{m}^{c}
-		e::                                       SendInput,{shiftdown}{end}{shiftup}^{c}{F5 2}
-		`;::                                      SendInput,{shiftdown}{end}{shiftup}^{c}{F5 2}
-		q::                                       SendInput,{shiftdown}{home}{shiftup}^{c}{F5 2}
+		.::                                       SendInput,{shiftdown}{end}{shiftup}^{c}{F5 2}
+		`;::                                      SendInput,{shiftdown}{end}{shiftup}^{c}{F5 2} ;incase
+		,::                                       SendInput,{shiftdown}{home}{shiftup}^{c}{F5 2}
 		d::                                   		SendInput,{home 2}{shiftdown}{end}{shiftup}^x
 	; w::                                    		 SendInput,{right}{ctrldown}{left}{shiftdown}{right}{shiftup}{c}{Ctrlup}
 		5::                                       SendInput,^{m}^{c}
@@ -245,44 +249,45 @@ _Vim_Doublepress:
 	; #If (A_PriorHotKey = "p" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500)
 		; p::													vim.paste() ;SendInput,^z{end}{enter}
 	#if
-_Vim_13:
+_Vim_F13:
 	#If Getkeystate("F13","p")
 		p::                                       Vim.Paste()
 		y::                                       SendInput,^{c} 
 		Rshift::                                  SendInput,{pgdn}
 		f19 & lbutton::                           SendInput,^{lbutton}
 		9 & 0::												SendInput,{)}
-		s::                                       SendInput,{home}+{end}
-		c::                                       clip.Append()
-		; c::                                       SendInput,{shiftdown}{altdown}{lwindown}{c}{lwinup}{altup}{shiftup}
-		space::												^space
+		^s::                                       SendInput,{home}+{end}
+		; ^q::                                     	SendInput,{shiftdown}{ctrldown}{,}{ctrlup}{shiftup}				 ;block comment
+
 		z::													backspace
-		]::                                       SendInput,{shiftdown}{altdown}{]}{altup}{shiftup}
+		space::												^space
+		c::                                       sendinput,!^{/}
+		/::	                                    SendInput,!^{/} 
+		^/::	                                 	SendInput,!+^{/}
+		q::                                       SendInput,!^{/}						;line comment
+	; ]::                                       SendInput,{shiftdown}{altdown}{]}{altup}{shiftup}
 		9::													SendInput,{shiftdown}{altdown}{9}{altup}{shiftup}
 		0::													SendInput,{shiftdown}{altdown}{0}{altup}{shiftup}
-		[::                                       SendInput,{shiftdown}{altdown}{[}{altup}{shiftup}
+	; [::                                       SendInput,{shiftdown}{altdown}{[}{altup}{shiftup}
 		$^]::                                     SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
 		$^[::                                     SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
 		^9::                                      SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
 		^0::                                      SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
-		q::                                       Send,+{Home}{home}
+		,::                                       Send,+{Home}{home}
 		f::                                      	sendinput,{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
-		n::                                       SendInput,{altdown}{ctrldown}{g}{ctrlup}{altup}
 		F19::                                     SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 		; f20::                                   SendInput,{pgdn}
-		; q::                                     SendInput,{altdown}{,}{altup}
 		1::                                       SendInput,{F1}
 		2::                                       SendInput,{F2{
 		w::                                       SendInput,{ctrldown}{right}{ctrlup}
 		 4::                                      SendInput,{End}
 		i::                                      	SendInput,{F9}@
+		s::                                      SendInput,{shiftdown}{altdown}{;}{altup}{shiftup}
 		`;::                                      SendInput,{shiftdown}{altdown}{;}{altup}{shiftup}
 		^`;::                                     SendInput,{shiftdown}{ctrldown}{altdown}{;}{ctrlup}{altup}{shiftup}
-		/::	                                    SendInput,{shiftdown}{altdown}{/}{altup}{shiftup}
-		^/::	                                    SendInput,{shiftdown}{altdown}{ctrldown}{/}{ctrlup}{altup}{shiftup}
 		+l::                                      SendInput,{End}
-		.::                                     	SendInput,{shiftdown}{ctrldown}{,}{ctrlup}{shiftup}
-		e::                                       Send,+{end}{right}
+
+		.::                                       Send,+{end}{right} ;end of line
 		a::                                       SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
 		^a::                                      SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
 		v::                                       SendInput,{shiftdown}{altdown}{ctrldown}{v}{ctrlup}{altup}{shiftup}
@@ -293,23 +298,21 @@ _Vim_13:
 		h::                                       SendInput,{left}
 		l::                                       SendInput,{right}
 		x::                                       SendInput,{Delete}
-		; g::                                       SendInput,{shiftdown}{altdown}{lwindown}{g}{lwinup}{altup}{shiftup}
-		; g::                                     SendInput,{ctrldown}{end}{ctrlup}
 		6::                                       SendInput,{HOME}
 		+h::                                      SendInput,{HOME}
 		g::                                    	SendInput,{HOME}
 		d::                                       return
 		b::                                       SendInput,{ctrldown}{left}{Ctrlup}
 		o::                                       SendInput,{end}{enter}
-		,::                                       SendInput,{Altdown}{ctrldown}{/}{ctrlup}{altup}
-		; `::                                     SendInput, {shiftdown}{altdown}{ctrldown}{r}{ctrlup}{altup}{shiftup}
+		]::                                   	  SendInput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup} ;goto next matching word
+		[::                                       SendInput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup} ;go to previous matching word
+		u::                                       sendinput, !+{k}  						;move line up
+		m::                                       sendinput, !+{j}  						;Move line down
+		n::                                       SendInput,{altdown}{ctrldown}{g}{ctrlup}{altup} 			;dublicate line
 
-		m::                                       SendInput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup}
-		u::                                       SendInput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup}
 	; up::                                      SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
+		^'::  													sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
 		'::  													sendinput,{shiftdown}{altdown}{'}{altup}{shiftup}
-		; `;::                                      SendInput,:
-		; i::                                       SendInput,{ctrldown}{i}{Ctrlup}
 		5::                                       SendInput,{shiftdown}{5}{shiftup}
 	`::                                     Vim.ChangeSelection()
 		; r::                                       Vim.ChangeSelection()
@@ -332,8 +335,8 @@ _Vim_13:
 		^b::                                      SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 		^o::                                      SendInput,{Home}{enter}
 	; ^0::                                      SendInput,{shiftdown}{Home}{shiftup}
-		; ^q::                                      SendInput,{shiftdown}{Home 2}{shiftup}
-		^4::                                      SendInput,{shiftdown}{end}{shiftup} 
+		^,::                                      SendInput,{shiftdown}{Home 2}{shiftup}
+		^.::                                      SendInput,{shiftdown}{end}{shiftup} 
 		#if
 		#IfWinActive
 F13::F13 ; 													SendInput,{esc}{ctrlup}{altup}{shiftup}

@@ -6,11 +6,20 @@ Todo:
       regex exitbox and set button
       activate worksheet(%product%)
       excel.Connect()
-  ☐ fix the edit boxes not saving to ini from submit
-  ☐ have varbar fade when cursor is over it
-  ☐ Fix Copy Sample Template Department Detection
+  ✔ fix the edit boxes not saving to ini from submit @done(21-09-21 10:43)
+  ✔ have varbar fade when cursor is over it @done(21-09-21 03:48)
   ✔ Fix Coated Physical not selecting correct dropdown. (extend the wait time too) @done(21-09-16 08:14)
   ✔ shift + ctrl + k = K @done(21-09-14 08:12)
-  ☐ noidle checkmark
-  ☐ have Canada Heavy Metal spec put a 0 for min
-  
+  ✔ noidle checkmark @done(21-09-21 04:07)
+  ✔ have Canada Heavy Metal spec put a 0 for min @done(21-09-21 10:41)
+☐ Fix searchbar not clicking the X on the second click
+☐ Fix Sample selection function so that it filters properly
+☐ Automenues when a window pops up
+☐ 3down to do things other than filter
+
+Last 5:
+☐ Currently working on list
+☐ Parse clipboard of lable copy (Regex practice)
+☐ 
+☐ 
+☐ 

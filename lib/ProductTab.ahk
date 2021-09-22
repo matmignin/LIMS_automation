@@ -66,8 +66,8 @@ Table(){
   LV_ModifyCol(1,50)
   LV_ModifyCol(2,180)
   LV_ModifyCol(3,100)
-  LV_ModifyCol(4,0)
-  LV_ModifyCol(5,0)
+  LV_ModifyCol(4,2)
+  LV_ModifyCol(5,2)
   sleep 100
   CoordMode,mouse,screen
   ScreenEdge_X:=A_ScreenWidth-550

@@ -21,3 +21,6 @@ Error on atC:\Users\mmignin\Documents\VQuest\Vquest.ahk line 102: This dynamic v
 Error on atC:\Users\mmignin\Documents\VQuest\Vquest.ahk line 102: This dynamic variable is blank. If this variable was not intended to be dynamic, remove the % symbols from it.
 Error on atC:\Users\mmignin\Documents\VQuest\Vquest.ahk line 102: This dynamic variable is blank. If this variable was not intended to be dynamic, remove the % symbols from it.
 Error on atC:\Users\mmignin\Documents\VQuest\Vquest.ahk line 102: This dynamic variable is blank. If this variable was not intended to be dynamic, remove the % symbols from it.
+Error on atC:\Users\mmignin\Documents\VQuest\Lib\Test.ahk line 128: Target label does not exist.
+Error on atC:\Users\mmignin\Documents\VQuest\Lib\Test.ahk line 128: Target label does not exist.
+Error on atC:\Users\mmignin\Documents\VQuest\Lib\Test.ahk line 128: Target label does not exist.

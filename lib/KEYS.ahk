@@ -92,18 +92,20 @@ _TestingZone:
 	#if
 
 KEY_DEFAULT:
-F21::clip.Append()
 
+F21::clip.Append()
 _Esc:
 	esc & 1::						send, {shiftdown}{altdown}{-}{altup}{shiftup}
 	esc & 2::						send, {shiftdown}{altdown}{=}{altup}{shiftup}
 	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
 	esc::								esc
+	
 	Media_Prev::					MakeTransparent()
 	Media_Play_Pause::			F16
 	Media_Next::					F17
 	Volume_Down::					F18
 	Volume_up::						F18
+	#lbutton::						F18
 	/ & down::   		      	Varbar.SubIteration(0)
 	/ & up::							Varbar.AddIteration(0)
 	F13 & wheelright::			Varbar.AddIteration(250) 
@@ -120,8 +122,9 @@ _Esc:
 	; F16::							Send, !{tab}
 	j & k::							esc
 	j::j
-	k::k
+
 	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
+	k::k
 	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
 	
 	F15 & Lbutton::				send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
@@ -138,11 +141,15 @@ _Esc:
 	$!F9::							Send, {laltdown}{up}{laltup}
 	$!F8::							Send, {laltdown}{down}{laltup}
 	+Backspace::					backspace
-	+^z::								Send, {shiftup}{Ctrldown}{y}{CtrlUp}
-	~<+rshift::						Send, {lwindown}{right}{lwinup}
-	~>+lshift::						Send, {lwindown}{left}{lwinup}
-	; ~Rshift & up:: 			SendInput, %SampleID%
-	lshift & Appskey::			Return
+	<+^z::							Send, {Ctrldown}{y}{CtrlUp} ;redu
+
+	~rshift & lshift::shiftAltTab
+	~lshift & Rshift::alttab				;Send, {lwindown}{right}{lwinup}  ;shift dance
+	; ~>+lshift::alttabandmenu		;	Send, {lwindown}{left}{lwinup}   ;shift dance alttab
+	; ~<+Rshift::AltTabAndMenu		;	Send, {lwindown}{left}{lwinup}   ;shift dance altta
+; ~Rshift & up:: 			SendInput, %SampleID%
+	lshift & Appskey::			return
+	Lctrl & Appskey::			Return
 	<^`;::
 	FormatTime, CurrentDateTime,, MM/d/yy
 	SendInput %CurrentDateTime%
@@ -157,13 +164,10 @@ _Esc:
 	` & 1::							Test_1()
 	` & 2::							Test_2()
 	` & 3::							Test_3()
-	`::	 							sendraw, ``
-	~>+lbutton::					Send,{shiftDown}{click}{shiftup}
-	$Numlock::						4tap() ;Clip.Paste()      	
+	`::	 								sendraw, ``
 	F20 up:: 	               Clip.Copy()
 	F19 up::      	       		Clip.paste()
-	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
-	rbutton::						2tap()
+	<!c::                      clip.Append()
 
 	>+F20::             			varbar.focus("Batch")
 	>+F19::            		 	varbar.focus("Product")
@@ -189,7 +193,7 @@ F19_And_F20:
 	F19 & backspace::     	Send,{delete}
 	F20 & Rshift::
 	F20 & Insert::        	Clip("OCR")
-	F20 & F7::            	Excel.NextS7heet()
+	F20 & F7::            	Excel.NextSheet()
 	F20 & F6::            	Excel.PrevSheet()
 	F20 & esc::     			run, Taskmgr.exe
 	F20 & backspace::     	Send, {delete}
@@ -315,13 +319,17 @@ _LMS_KEYS:
 						return
 _WFICA32:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-	; F20 & Space::			Send, %Batch%
-	; F19 & space::			Send, %Product%
-	F19 & up::				Send, %sampleID%
-	F19 & left::			Send, %lot%
-	F19 & right::			Send, %coated%
-	F19 & s::	 			Send, %SampleID%
-	F21 & /::	 			Send, %SampleID%
+	; F20 & Space::		 Send, %Batch%
+	; F19 & space::		 Send, %Product%
+	F19 & left::			excel.Nextsheet()
+	F19 & right::			excel.Prevsheet()
+	F19 & down::			Varbar.SubIteration(0)
+	F19 & up::	 			Varbar.AddIteration(0)
+	F20 & /::	 			Send, %SampleID%
+	F20 & Up::				sendInput % Lot
+	F20 & Right::			sendInput % Batch
+	F20 & left::			sendInput % product
+	F20 & Down::			sendInput % Coated
 	; $Rbutton up::		Mouse_RbuttonUP()
 	^`::						Varbar.reset()
 	enter::					click.okay()
@@ -338,15 +346,11 @@ _WFICA32:
 	F6::						3Left()	
 	^Wheeldown::			Blockrepeat(500) clip()
 	^wheelup::				menu.lms()
-	numpadMult::excel.connect()
+	numpadMult::			excel.connect()
 	Rbutton & F19::       	send % WindowInfo() 
 	Rbutton & F6::        	Send, {Backspace}
 	Rbutton & Lbutton::   	Send, {Enter}
 	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
-F20 & wheelUp::				sendInput % Lot
-	F20 & wheelRight::			sendInput % Batch
-	F20 & wheelleft::				sendInput % product
-	F20 & wheelDown::				sendInput % Coated
 #IfWinActive,
 
 _MouseIsOver:
@@ -370,14 +374,14 @@ _MouseIsOver:
 		; return
 #if
 #If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
-	F7::LMS.SearchBar(Batch,"{enter}")
-	F6::LMS.SearchBar(Product,"{enter}")
-	; numpadadd::lms.ProductSpecToggle()
-	; numpadsub::lms.SampleRequestToggle()
-	Numlock::4tap()
-	^Wheeldown::send % Blockrepeat(500) "{click}" clip()
-	; 	click
-	; 	sleep 300
+F7::LMS.SearchBar(Batch,"{enter}")
+F6::LMS.SearchBar(Product,"{enter}")
+; numpadadd::lms.ProductSpecToggle()
+; numpadsub::lms.SampleRequestToggle()
+Numlock::4tap()
+^Wheeldown::send % Blockrepeat(500) "{click}" clip()
+; 	click
+; 	sleep 300
 	; 	4tap()
 	; 	return
 	; space & lbutton::Send, +{click}
