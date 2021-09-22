@@ -1,5 +1,12 @@
-rshift & Appskey::			return
-	; / & up:: 			SendInput, %SampleID%
+
+#ifwinactive, 
+	~>+lbutton::					Send,{shiftDown}{click}{shiftup}
+	$Numlock::						4tap()
+	
+	; 4tap() ;Clip.Paste()      	
+	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
+	rbutton::						2tap()
+	rshift & Appskey::			return
 _Lbuton:
 #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800) 
 	space::             send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
@@ -139,42 +146,26 @@ _Lbuton:
 
 	3tap(){
 		Global 
+		setwindelay, 100
 		if winactive("ahk_exe OUTLOOK.EXE") {
 			click 3
 			Send, ^{c}
 			clip()
 			return
 		}
-			else if winexist("Delete Test - \\Remote") || Winexist("Delete results - \\Remote") || Winexist("Delete sample templates - \\Remote") || WinExist("Delete specification - \\Remote") { ; Press Okay
+			else if winexist("Delete Test - \\Remote") || winexist("Delete Tests - \\Remote") || Winexist("Delete results - \\Remote") || Winexist("Delete sample templates - \\Remote") || WinExist("Delete specification - \\Remote") { ; Press Okay
 			WinActivate, Delete
 			send, y
 			clk(229, 136)
 			return
 		}
-			else if winexist("Release: ") { ; Press Okay
+		else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
+ 			Sendpassword()
+	else if winexist("Release: ") { ; Press Okay
 			WinActivate, 
 			clk(131, 144)
 			return
 		}
-		else if Winactive("NuGenesis LMS - \\Remote"){
-			LMS.DetectTab()
-			if (Tab="Samples")
-				Menu, Menu, add, New &Request, AutoFill
-			else if (Tab="Tests"){
-				Menu,Menu, add, &Delete Retain, Autofill
-				menu.show()
-			}
-			else if (Tab="Specs")
-				; SpecTab.CopySpecTemplate()
-				menu.lms()
-			else if (Tab="Requests")
-				clk(61, 635) ;enter results
-			else if (Tab="Products")
-				clk(67, 754) ;edit results
-			else if (Tab="Samples")
-				clk(107, 319) ;assign Requests
-			return
-			}
 		else if winactive("ahk_exe firefox.exe") 
 			Send, {ctrldown}{click}{ctrlup}
 		else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
@@ -211,8 +202,29 @@ _Lbuton:
 				Send, {enter}
 		else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
 			Send, {lwindown}{e}{lwinup}
-		Else 
-		return
+		else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
+				menu.Remote_Desktop()
+		else if Winactive("NuGenesis LMS - \\Remote"){
+			LMS.DetectTab()
+			if (Tab="Samples")
+				Menu, Menu, add, New &Request, AutoFill
+			else if (Tab="Tests"){
+				Menu,Menu, add, &Delete Retain, Autofill
+				menu.show()
+			}
+			else if (Tab="Specs")
+				; SpecTab.CopySpecTemplate()
+				menu.lms()
+			else if (Tab="Requests")
+				clk(61, 635) ;enter results
+			else if (Tab="Products")
+				clk(67, 754) ;edit results
+			else if (Tab="Samples")
+				clk(107, 319) ;assign Requests
+			return
+			}
+			Else 
+				return
 		; }
 		}
 
@@ -220,19 +232,20 @@ _Lbuton:
 	4tap(){
 		If winactive("NuGenesis LMS - \\Remote") {
 			LMS.Detecttab()
-		if (Tab="Requests" || Tab:="Samples")
-				LMS.CoA()
-			; else if (Tab:="Samples")
+			if (Tab="Requests" || Tab:="Samples")
 				; LMS.CoA()
+				TT("LMS COA")
 			else if (Tab:="Products")
 				{
-				clk(86, 443) ;edit composition
+				TT("edit Compisition")
+				; clk(86, 443) ;edit composition
 				Return
 				}
 			else if (Tab="Specs")
 				{
-				click
-				clk(67, 754) ;edit results
+				TT("EDIT Results")
+				; click
+				; clk(67, 754) ;edit results
 				Return
 				}
 			else
@@ -241,7 +254,7 @@ _Lbuton:
 		else if winactive("PDF Preview - \\Remote")
 			Send, {altdown}{F4}{altup}
 		Else
-			TT("singleTap")
+			Sendinput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
 	}
 
 	4Right(){
@@ -322,7 +335,7 @@ _Lbuton:
 	global
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450)
 	{
-		Send, {F21}
+		Send, {F18}
 	}
 	else
 		click R
