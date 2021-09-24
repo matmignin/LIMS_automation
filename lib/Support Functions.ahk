@@ -299,6 +299,38 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 ;   gui, PopUp:destroy
 ;   return
 ; }
+Pop(Line1,Line2:=""){
+  global
+try {
+  gui, PopUp:destroy ;:
+  settimer, destroyGui, off
+}
+PopupColor1:="CE6D4B"
+PopupColor2:="FFFFFF"
+PopupTrans:=190
+CoordMode, mouse, Screen
+MouseGetPos, PopUp_x,Popup_y,
+popup_y:=Popup_y+30
+Gui, PopUp: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
+
+Gui, PopUp:color,%PopupColor1%, %PopupColor2%  
+Gui, PopUp:Font,s16 cBlack Bold, Consolas
+Gui, PopUp:Add, Text,left, %Line1%
+Gui, PopUp:Font,s10 cBlack Bold, Consolas
+  if (Line2)
+    Gui, PopUp:Add, Text,Center, %Line2%
+Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
+ WinSet, Transparent, %PopUpTrans%, AHK_Id %GUIID%
+CoordMode, mouse, Window
+
+settimer, destroyGui, -1000
+return
+}
+
+DestroyGui:
+  try gui, PopUp:destroy
+return
+
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 	global
