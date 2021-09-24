@@ -25,10 +25,14 @@
 	Mbutton::
 		click
 	enter::
-		Send, ^a^c
-		; clip()
-		winactivate, NuGenesis LMS - \\Remote			
-		LMS.Searchbar(clipboard,"{enter}")
+		ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe	
+		if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") ||(WinControl="Edit4"){
+					Send, ^a^c
+					winactivate, NuGenesis LMS - \\Remote			
+			LMS.Searchbar(clipboard,"{enter}")
+		}
+		if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
+			varbar.show()
 		return
 	; Lbutton::click
 #ifwinactive
@@ -117,13 +121,14 @@ Class VarBar{
 			IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
 					; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
-			; IfWinexist, NuGenesiy LMS - \\Remote
-					; varbar_x:= Varbar_x +500
 			; if ShowSampleID || !Coated
 				; try 
 				MidScreen:=A_ScreenWidth//2
-  				TopScreen:=A_ScreenHeight-35
-		Try Gui, VarBar:Show, h32 x%Varbar_X% y%Varbar_Y%  NoActivate, VarBar
+  				TopScreen:=1 ;A_ScreenHeight-35
+		If Winactive("NuGenesiy LMS - \\Remote")
+			try Gui, VarBar:Show, h32 x%NuX% y%Nuy%  NoActivate, VarBar
+		else
+			Try Gui, VarBar:Show, h32 x%Varbar_X% y%TopScreen%  NoActivate, VarBar
 		Catch 
 			Gui, VarBar:Show, h32 x%MidScreen% y%TopScreen%  NoActivate, VarBar
 		CoordMode, mouse, window
@@ -276,14 +281,14 @@ Class VarBar{
 		}
 		if winactive("ahk_exe explorer.exe") { 
 			; WinGetPos, VarBar_X, VarBar_Y, Varbar_W,Varbar_x, 
-			varbar_wx:=A_ScreenWidth/2
+			varbar_NuX:=A_ScreenWidth/2
 			varbar_wy:=A_ScreenHeight
-			WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_wx, varbar_wy
+			WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_NuX, varbar_wy
 			return
 		}
 		if  winactive("ahk_exe WFICA32.EXE") && !winactive("ahk_exe EXCEL.EXE") && !winactive("ahk_exe Code.exe") && !winactive("ahk_exe OUTLOOK.EXE") { ;&& (ActiveWin="LMS"){
 			lms.Orient()
-			WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_wx, Varbar_wy
+			WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_NuX, Varbar_wy
 			return
 		}
 	}
@@ -336,7 +341,8 @@ Class VarBar{
 		sleep 10
 		Iteration+=1
 		ControlsetText, Static1,%Iteration%,VarBar
-		tt(Iteration,300,Varbar_x,Varbar_y,2,200)
+		Pop(Iteration)
+		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
 		sleep %Speed%
 		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
@@ -348,7 +354,8 @@ Class VarBar{
 		sleep 10
 		Iteration-=1
 		ControlsetText, Static1,%Iteration%,VarBar
-		tt(Iteration,300,Varbar_x,Varbar_y,2,200)
+		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
+		Pop(Iteration)
 		sleep %speed%
 		IniWrite, %Iteration%, data.ini, SavedVariables, 
 		; GuiControl, +redraw, varbar
@@ -382,7 +389,7 @@ Class VarBar{
 
 	exit(){
 		global
-		wingetpos, Varbar_X, Varbar_Y,Wx,Hx, VarBar ahk_class AutoHotkeyGUI
+		wingetpos, Varbar_X, Varbar_Y,,, VarBar ahk_class AutoHotkeyGUI
 
 
 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
