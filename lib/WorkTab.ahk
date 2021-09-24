@@ -292,27 +292,42 @@ Main_EditResults()
 
 SelectTestSample(){
 global
-setWinDelay, 550
+; clipboard:=
+; Department:=
+; setWinDelay, 550
 blockinput on
-MouseGetPos, mx, my
-click
+; MouseGetPos, mx, my
+; click
 ; send, ^c
+; clipwait, 0.5
 ;{
-  clip()
+  ; clip()
+    ; Regexmatch(Clipboard, "\bPhysical\b",Department)
+    ; Regexmatch(Clipboard, "\bMicro\b",Department)
+    ; sleep 200
 ; clip.Regex("Department")
-  sleep 300
- click 647, 75
- sleep 600
+ click 647, 75 ;click assign Samples
 ;  winwait, Select samples for test,,3
- if !Winactive("Select samples for test")
-  winactivate, Select samples for test
- click 463, 71
+;  if !Winactive("Select samples for test:")
+  winactivate, Select samples for test:
+ sleep 900
+  click 467, 71 ;Click Filter button
+  sleep 200
  Breaking.Point()
- Send, {click 244, 69}
- sleep 500
- Send,{click 205, 184}
+ send, {click 248, 68} ;click dropdown then
+ sleep 200
+ send, {click 212, 188}  ; select Batches
  sleep 400
-;  Breaking.Point() 
+ Send, {click 136, 119}^a ;flick filter box
+ if WinActive("Select samples for test: Organoleptic Sensory Test  - \\Remote")
+  send, Physical{enter} ; send department
+ if WinActive("Select samples for test: Microbiological  - \\Remote")
+  send, Micro{enter} ; send department
+
+ sleep 500
+; Send,{click 205, 184}^a
+ sleep 400
+ Breaking.Point() 
 ;  tt(Department)
 ;  Send, {click 171, 127}^{a}
 ;  Send, %department%
@@ -327,7 +342,7 @@ click
   ; my:=my+26
   ; MouseMove, mx, my
   ; sleep 200
-  department:=
+  ; department:=
   blockinput off
   setwindelay, 200
 return
