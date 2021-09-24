@@ -1,12 +1,12 @@
 return
 #IfWinActive,
-F1::Send, {lwindown}{e}{lwinup}
+; F1::Send, {lwindown}{e}{lwinup}
 +F2::
 		Run, SAMPLE TO QC 2021.xlsx, \\10.1.2.118\share\QA FINSHED GOODS\Samples Photo Library\SAMPLES TO QC
 		winwait, File in Use,,1
 		Send, {altdown}{r}{altup}
     return
-F2::
+; F2::
   if winexist("SAMPLE LOG 2021"){
     winactivate
     return

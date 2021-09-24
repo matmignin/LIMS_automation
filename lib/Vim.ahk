@@ -13,9 +13,7 @@ _LCONTROL:
 	+z::                                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
 #if
 _VScode:
-#IfWinActive, ahk_exe Code.exe
-	; +^k::                                     SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
-	; +^j::                                     SendInput,{Altdown}{shiftdown}{ctrldown}{down}{shiftup}{ctrlup}{altup}
+#IfWinActive, ahk_exe Code.exe                                
 	!v:: 														send, {F9}vim.ahk{enter}
 	F20 & .:: 			 									SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 	F15 & tab::                                  SendInput,{ctrldown}{]}{ctrlup}	
@@ -93,8 +91,8 @@ _TAB:
 	F20 & backspace::                            delete
 	F20 & j::                                    SendInput,{shiftdown}{altdown}{lwindown}{down}{lwinup}{altup}{shiftup}
 	F20 & l::                                    SendInput,{shiftdown}{altdown}{lwindown}{right}{lwinup}{altup}{shiftup}
-	F20 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-	F20 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
+	; F20 & Right::                                WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+	; F20 & Down::                                 WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 	F19 & left::                                 SendInput,{shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 	; F19 & up::                                   SendInput,{shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 	F19 & down::                                 SendInput,{shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
@@ -124,9 +122,9 @@ _TAB:
 	; F13 & g::                                  	SendInput,{shiftdown}{altdown}{lwindown}{g}{lwinup}{altup}{shiftup}
 	F13 & lshift::											enter
 
-	F13::F13             ;                         	SendInput,{shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
+	; F13 & appskey::send, {esc}            ;                         	SendInput,{shiftdown}{altdown}{ctrldown}{6}{ctrlup}{altup}{shiftup}
 	; F19::                                        ^c
-	
+	F13::F13
 	
 	#ifwinactive
 
@@ -339,7 +337,7 @@ _Vim_F13:
 		^.::                                      SendInput,{shiftdown}{end}{shiftup} 
 		#if
 		#IfWinActive
-F13::F13 ; 													SendInput,{esc}{ctrlup}{altup}{shiftup}
+ $F13::esc ; 													SendInput,{esc}{ctrlup}{altup}{shiftup}
 F13 & Lbutton::sendinput, {shiftdown}{click}{shiftup}
 F13 & down::sendinput, {shiftdown}{down}{shiftup}
 F13 & up::sendinput, {shiftdown}{up}{shiftup}

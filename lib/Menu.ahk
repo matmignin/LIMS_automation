@@ -1,11 +1,6 @@
 
 return
 class Menu{
-
-    show(){
-    global
-    Try Menu,menu,show
-    }
     
     Delete(){
     global
@@ -64,7 +59,7 @@ LMS(){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
     }
-    This.show()
+    Try Menu,menu,show
   } 
   if winactive("Edit specification - \\Remote"){
     Menu, Menu, add, &Analytical, AutoFill
@@ -73,7 +68,7 @@ LMS(){
     Menu, Menu, add, &Retain, AutoFill
     Menu, Menu, add, &Coated_Physical, AutoFill
     Menu, Menu, add, &Coated_Retain, AutoFill
-  This.show()
+  Try Menu,menu,show
   }
   if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
     ; This.add("&Spec Table","Tests")
@@ -82,7 +77,7 @@ LMS(){
     Menu, Menu, Add, &Canada Heavy Metal,Autofill
     Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
     Menu, Menu, Add, &Report Only Heavy Metal,Autofill
-  This.show()
+  Try Menu,menu,show
   return
   }
   if winactive("Edit specification - \\Remote"){
@@ -94,14 +89,14 @@ LMS(){
     Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
     Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
     Menu,Menu, add, departments, :DepartmentsMenu
-  This.show()
+  Try Menu,menu,show
   return
   }
   if Winactive("Login - \\Remote"){
     Menu,Menu, add, &Login, LMS_Env
     Menu,Menu, add, &Production Server, LMS_Env
     Menu,Menu, add, &Test Server, LMS_Env
-  This.show()
+  Try Menu,menu,show
   }
   else
     return
@@ -136,7 +131,7 @@ Variable(){
       if Weight
         Menu, menu, Add, &Weight `t %Weight%, Variable
     ; Menu,Menu, add, &Variables, :Variables
-    This.show()
+    Try Menu,menu,show
     }
   Tables(){
     try
@@ -144,7 +139,7 @@ Variable(){
     Menu,Menu,add,&Spec Table,Tests
     Menu,Menu,add,&Ingredient Table,Tests
     ;menu,Menu,add,&Rotation Table,Tests
-    This.show()
+    Try Menu,menu,show
     ;Menu,menu,add
     }
   passwords(){
@@ -154,14 +149,14 @@ Variable(){
       Menu,Menu, add, &Test Server, LMS_Env
       Menu, Menu, Add, VQ Login, Passwords
       Menu, Menu, Add, Kilgore, Passwords
-    This.show()
+    Try Menu,menu,show
     }
   Reasons(){
     global
     This.delete()
     menu,menu,add, Fixing Rotation, Reasons
     menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
-    This.show()
+    Try Menu,menu,show
     }
     
   Apps(){
@@ -187,7 +182,7 @@ Variable(){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
       }
-  This.show()
+  Try Menu,menu,show
   }
 
 Varbar(){
@@ -239,7 +234,7 @@ Varbar(){
     Menu,Menu,add,&Ingredient Table,Tests
   ; Menu, Menu, add, &Notes, Notes.Show
     ; }
-  This.show()
+  Try Menu,menu,show
   }
 
 Remote_desktop(){
@@ -263,7 +258,7 @@ Remote_desktop(){
     Menu, Menu, Add, &LMS Login, Passwords
     Menu, Menu, Add, &VQ Login, Passwords
     Menu, Menu, Add,&Kilgore, Passwords
-  This.show()
+  Try Menu,menu,show
   return
   }
 }

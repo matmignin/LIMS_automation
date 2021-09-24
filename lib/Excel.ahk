@@ -22,7 +22,7 @@ Connect(reload:=0){
 		XL.Visible := True
 		sht := XL.ActiveSheet.Name
 			Gui VarBar:+LastFound
-		if (sht = "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
+		if (sht = "PriorMonths" || sht= "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
 			; TT("MenuSheet")
 			return
 			; xl.sheets(PrevProduct).select
@@ -38,6 +38,7 @@ Connect(reload:=0){
 		; return
 	}
 	This.InfoLocations()
+	Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
 												/*  Get each sheet name and turn it into an array
 												For sheet in xl.ActiveWorkbook.Worksheets
 													Products.insert(Sheet.Name)
@@ -61,7 +62,7 @@ Connect(reload:=0){
 		Global
 		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
       RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch%n%)
-      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b)", lot%n%)
+      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", lot%n%)
       RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
       RegExMatch(ctCoated,   "\d{3}-\d{4}", Coated%n%)
 	}

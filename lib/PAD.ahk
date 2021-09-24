@@ -60,6 +60,8 @@ _Lbuton:
 			clk(502, 354)
 		else if winactive("Select samples for test:")
 			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
+		else if winactive("Select tests for request: R")
+			send % Clk(504, 338)  ; add test.
 		else	
 			; Send, {WheelRight}
 	return
@@ -107,12 +109,12 @@ _Lbuton:
 		global
 		if winactive("ahk_exe EXCEL.EXE"){
 			excel.Connect(1)
-			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
+			; tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 			return
 		}
 		If winactive("NuGenesis LMS - \\Remote") {
 				Excel.Connect(1)
-				TT(Product " " Batch "`n`t" Name " - " Customer)
+				;TT(Product " " Batch "`n`t" Name " - " Customer)
 				return
 		}
 		/* 
@@ -210,7 +212,7 @@ _Lbuton:
 				Menu, Menu, add, New &Request, AutoFill
 			else if (Tab="Tests"){
 				Menu,Menu, add, &Delete Retain, Autofill
-				menu.show()
+				Try Menu,menu,show
 			}
 			else if (Tab="Specs")
 				; SpecTab.CopySpecTemplate()

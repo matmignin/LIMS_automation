@@ -30,6 +30,8 @@ clipClip(type){
   global
   ifwinactive, ahk_exe EXCEL.EXE
     return
+  ifwinactive, Select tests for request: R
+    return
   ; Send, ^c
     clip.Regex()
     ; clip.regex("Department")
@@ -68,7 +70,7 @@ Regex(Category:="All"){
     ; If (Category!="Department") {
       RegExMatch(Clipboard, "i)\b[abdefghijkl]\d{3}\b", cProduct)
       RegExMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
-      RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b)", clot)
+      RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
       RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
       RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)

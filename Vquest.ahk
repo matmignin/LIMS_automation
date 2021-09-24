@@ -6,11 +6,11 @@
     #InstallMouseHook
     CheckTime:=500
     ; #HotkeyInterval 50
-    ; #MaxHotkeysPerInterval 500
+    #MaxHotkeysPerInterval 500
     #MaxThreadsBuffer, On
     #InstallKeybdHook
     #InstallMouseHook
-    ; #HotkeyModifierTimeout 80
+    ; #HotkeyModifierTimeout 1
     #maxthreadsperhotkey, 1
     SetControlDelay, 1
     SetKeyDelay, 1, 0.25
@@ -50,14 +50,14 @@ Fade(90)
 ; if winactive("Reason For Change - \\Remote") {
   ; menu.reasons()
   ; WinWaitNotActive, Reason For Change - \\Remote,, 10
-; }
-; If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote"){
-;   wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
-;   WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
-;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy
-;     WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
-;       WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
-; }
+  ; }
+  ; If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote"){
+  ;   wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
+  ;   WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+  ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy
+  ;     WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
+  ;       WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
+  ; }
 if WinExist("Error - \\Remote") {
   ControlSend,, {enter}, Error - \\Remote
   sleep 200
@@ -77,29 +77,15 @@ Fade(FadeAmount:=90){
     WinSet, Transparent, 235, AHK_id %GUIID%
 }
 
-
 Test_4:
-PopupColor1:="CE6D4B"
-PopupColor2:="FFFFFF"
-PopupTrans:=150
-Gui, PopUp: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
-CoordMode, mouse, Screen
-MouseGetPos, PopUp_x,Popup_y,
-popup_y:=Popup_y+30
-Gui, PopUp:Font,s16 cBlack Bold, Consolas
-Gui, PopUp:Add, Text,, %yo%
-Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
-Gui, PopUp:color,%PopupColor1%, %PopupColor2%  
-WinSet, Transparent, %PopUpTrans%, %GUIID%
-settimer, destroyGui, -1000
-return
+msgbox, Xl.Activeworkbook.Name
+return 
 
 
-DestroyGui:
-  gui, PopUp:destroy
+
+
 ; CreateArray(){ ;creating an array and resorting without duplicates
 	 ;Products := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
-return
 			Batches:= StrSplit(A_LoopReadLine, "`n") 
 
 

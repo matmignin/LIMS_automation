@@ -1,9 +1,9 @@
 _explorer:
 #IfWinActive, ahk_exe explorer.exe
 	; F20 & up::           	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, 0, A_ScreenWidth/2, A_ScreenHeight/2
-	F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
-	F20 & down::         	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, A_screenheight/2, A_ScreenWidth/2, A_ScreenHeight/2-45
-	F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
+	; F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
+	; F20 & down::         	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, A_screenheight/2, A_ScreenWidth/2, A_ScreenHeight/2-45
+	; F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
 	F7::                 	Send, {altdown}{right}{altup}
 	F19 & space::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F6::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
@@ -27,16 +27,16 @@ _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
 	F13 & space::					SendInput, +{tab}{tab}
 	; F20 & up::        Send, PRD{tab 2}Mat Mignin{tab 2}%DateString%{ctrldown}{f}{ctrlup}waters.eln{enter}{esc}{tab}1.0.22{tab 2}1.0.52
-	F20 & down::      Send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
-	F20 & right::     FindAndReplaceWord("<English>","English")
-	F20 & left::      
-							clipboard:=
-							sleep 20
-							Send, ^c
-							clipwait, 0.5
-							Send, {up}
-							FindAndReplaceWord("<" clipboard ">",clipboard,"r")
-							return
+	; F20 & down::      Send, MMIGNIN-LPT{down 4}Mat{down 4}Mignin{down 3}mmignin{down 3}SYSTEM
+	; F20 & right::     FindAndReplaceWord("<English>","English")
+	; F20 & left::      
+	; 						clipboard:=
+	; 						sleep 20
+	; 						Send, ^c
+	; 						clipwait, 0.5
+	; 						Send, {up}
+	; 						FindAndReplaceWord("<" clipboard ">",clipboard,"r")
+	; 						return
 	F20 & k::         up
 	F20 & j::         down
 	F20 & h::         left
@@ -106,6 +106,9 @@ _Excel:
 	^wheelup::				Send, {click 3}%SampleID%
 	^wheeldown::			Send, %SampleID%
 #ifwinactive, ahk_exe EXCEL.EXE     
+	F1::F1
+	F2::F2
+	F4::F4
 	Numlock::Send, {shiftdown}{F9}{shiftup}
 	; F9::                 excel.search()
 	F9::						3tap()
@@ -139,11 +142,11 @@ _OUTLOOK:
 	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
 	; F19 & ,::          SendInput % Trim(Batch, OmitChars = " `n") " is updated{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	; Numpadsub::
-	F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, ,1226, -1098, 1489, 1080
+	; F20 & Left::         WinMove, ahk_exe OUTLOOK.EXE, ,1226, -1098, 1489, 1080
 
 	numpadmult::
-	F20 & up::	         WinMove, ahk_exe OUTLOOK.EXE, , 1945, -738, 1076, 1158
-	F20 & right::	      WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
+	; F20 & up::	         WinMove, ahk_exe OUTLOOK.EXE, , 1945, -738, 1076, 1158
+	; F20 & right::	      WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
 	F20::                
 								Send, ^{c}
 								Clip.Copy()
@@ -175,7 +178,7 @@ _OneNote:
 	^4::                 Send,{Ctrldown}{1}{CtrlUp}
 	^5::                 Send,{Ctrldown}{3}{CtrlUp}
 	^`::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
-	F20 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
+	; F20 & right::        WinMove, OneNote for Windows 10, , 1521, -1080, 1605, 1087
 
 	#IfWinActive, ahk_exe ONENOTE.EXE
 	; F9 & Wheelup::       Wheel_2("{F11}")
@@ -189,7 +192,7 @@ _OneNote:
 	$Mbutton up::        SendInput,{ctrlup}
 	; F20 up::             PasteScreenshot()
 	; F21 up::             PasteScreenshot()
-	F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
+	; F20 & Right::        WinMove, OneNote 10, , 1626, -1080, 1612, 1087
 
 #IfWinActive,
 
