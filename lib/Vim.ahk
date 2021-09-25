@@ -296,8 +296,6 @@ _Vim_F13:
 		h::                                       SendInput,{left}
 		l::                                       SendInput,{right}
 		x::                                       SendInput,{Delete}
-		6::                                       SendInput,{HOME}
-		+h::                                      SendInput,{HOME}
 		g::                                    	SendInput,{HOME}
 		d::                                       return
 		b::                                       SendInput,{ctrldown}{left}{Ctrlup}
