@@ -23,34 +23,30 @@ Connect(reload:=0){
 		sht := XL.ActiveSheet.Name
 			Gui VarBar:+LastFound
 		if (sht = "PriorMonths" || sht= "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			; TT("MenuSheet")
 			return
-			; xl.sheets(PrevProduct).select
-			; Gui, VarBar:color, 000000
-			; return
-		
-			; Excel.PrevSheet()
 	}
 	Catch {
-		; Excel.PrevSheet()
 		TT("Didnt connect to workbook", 500,,,1)
-		; excel.connect()
-		; return
 	}
 	This.InfoLocations()
+	A__XLProducts:=[]
 	Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
-												/*  Get each sheet name and turn it into an array
+												; /*  Get each sheet name and turn it into an array
 												For sheet in xl.ActiveWorkbook.Worksheets
-													Products.insert(Sheet.Name)
-												Products.remove(1)
-												Products.remove(1)
-												loop 3{
-													if (Products[A_index] = "Finished")
-														break
-													else
-														DDLProducts .= "|" Products[A_index]
+												{
+													If (Sheet.name = "Main") || (Sheet.name = "Template") || (Sheet.name = "Finished") || (Sheet.name = "Micro Pending") || (Sheet.name = "PriorMonths")
+														continue
+													A__XLProducts.insert(Sheet.Name)
+												}
+												; A__XLProducts.remove(1)
+												; A__XLProducts.remove(1)
+												loop 10{
+													; if (A__XLProducts[A_index] = "Finished") || (A__XLProducts[A_index] = "PriorMonths")
+														; A__XLProducts.remove(A_Index)
+													; else
+														A__DDLXLProducts .= "|" A__XLProducts[A_index]
 												} 
-												*/
+												; */
 
 	Gui VarBar:+LastFound
 	if (Reload = 1)
@@ -69,20 +65,8 @@ Connect(reload:=0){
 InfoLocations(){
 	global
 	GuiControl, -redraw, varbar
-		; Product:=XL.Range("B7").Value
-		; This.RegexCell(XL.Range("B4").Value)
-		; ; Batch:=XL.Range("C4").Value
-		; ; Lot:=XL.Range("E4").Value
-		; ; Coated:=xl.range("F4").value
-		; Name:=XL.Range("B2").Value
-		; Customer:=XL.Range("B3").Value
-		; ShipTo:=XL.Range("A3").Value
-		; ; weight:=XL.Range("B6").Text
-		; ShapeAndSize:=XL.Range("B5").Value
-		; Color:=XL.Range("B6").value
 		Product:=XL.Range("B1").Value
 		This.RegexCell(XL.Range("E1").Value)
-		; This.RegexCell(XL.Range("E2").Value,2)
 		Name:=XL.Range("B2").Value
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value

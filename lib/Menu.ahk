@@ -158,6 +158,16 @@ Variable(){
     menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
     Try Menu,menu,show
     }
+  Products(){
+    global
+    This.delete()
+    loop % A__XLProducts.maxindex(){
+      temp:=A__XLProducts[A_index]
+      menu,menu,add, %temp%, ProductsList
+    }
+    ; menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
+    Try Menu,menu,show
+    }
     
   Apps(){
   global
@@ -447,6 +457,9 @@ Reasons:
 
 		; TT("Fixing Rotation",2000)
 
+ProductsList:
+  XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
+return
 
 
    SwitchEnv(ServerEnv){

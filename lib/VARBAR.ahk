@@ -83,7 +83,7 @@
 	F8::				Varbar.launchTable()
 	Numlock::				send, {click}^a
 		return
-	Rbutton::		menu.Varbar()	
+	Rbutton::		menu.Products()	
 	return
 	numpaddot:: 	 Openapp.Workbook()
 #if

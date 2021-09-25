@@ -78,7 +78,7 @@ Fade(FadeAmount:=90){
 }
 
 Test_4:
-msgbox, Xl.Activeworkbook.Name
+Menu.Products()
 return 
 
 
@@ -141,6 +141,7 @@ return
   #include <Excel>
   #include <vis2>
   #include <Support Functions>
+
 
 
   VQuest_Start:
