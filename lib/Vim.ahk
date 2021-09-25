@@ -242,9 +242,6 @@ _Vim_Doublepress:
 		0::                                       SendInput,{shiftdown}{home}{shiftup}^c{esc}{F5 2}
 	#If (A_PriorHotKey = "v" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500)
 		w::                                       SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-	; #If (A_PriorHotKey = "g" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500)
-; 	g::                                       SendInput,{shiftdown}{ctrldown}{end}{ctrlup}{shiftup}
-	; #If (A_PriorHotKey = "p" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500)
 		; p::													vim.paste() ;SendInput,^z{end}{enter}
 	#if
 _Vim_F13:
@@ -296,7 +293,7 @@ _Vim_F13:
 		h::                                       SendInput,{left}
 		l::                                       SendInput,{right}
 		x::                                       SendInput,{Delete}
-		g::                                    	SendInput,{HOME}
+		g::                                    	SendInput,^g
 		d::                                       return
 		b::                                       SendInput,{ctrldown}{left}{Ctrlup}
 		o::                                       SendInput,{end}{enter}
