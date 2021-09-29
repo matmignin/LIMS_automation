@@ -92,7 +92,41 @@ _TestingZone:
 	#if
 
 _KEY_DEFAULT:
-#c::clip.Append()
+#c::
+if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
+{
+    winc_presses += 1
+    return
+}
+; Otherwise, this is the first press of a new series. Set count to 1 and start
+; the timer:
+winc_presses := 1
+SetTimer, KeyWinC, -400 ; Wait for more presses within a 400 millisecond window.
+return
+
+KeyWinC:
+if (winc_presses = 1) ; The key was pressed once.
+{
+    clip()
+}
+else if (winc_presses = 2) ; The key was pressed twice.
+{
+    clip.Append()  ; Open a different folder.
+}
+else if (winc_presses > 2)
+{
+    clip.Append(A_Space)
+}
+; Regardless of which action above was triggered, reset the count to
+; prepare for the next series of presses:
+winc_presses := 0
+return
+
+
+
+
+
+;#c::clip.Append()
 #x::send % clip.Append() "{backspace}"
 #b::clip.Append(A_space)
 F21::clip.Append()
