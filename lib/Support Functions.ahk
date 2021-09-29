@@ -144,28 +144,6 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 }
 
 
-WindowNames(){
- global
- Loop, Read, WindowNames.ini
- {
-  If A_Index = 1
-   Continue
-  WindowName := StrSplit(A_LoopReadLine, "=")
-  ; MethodGroup := StrSplit(A_LoopReadLine, "|")
-  Selection:= % WindowName[1]
-  ; Group:= % MethodGroup[2]
-  Menu, WindowNameMenu, add, %Selection%, WindowNameMenu
- }
- Menu, WindowNameMenu, Show,
-return
-
-WindowNameMenu:
- sleep 200
- InputVar:=A_ThisMenuItem
- IniRead,vOutput, WindowNames.ini, WindowNames, %InputVar%
- SendInput, %vOutput%{enter}
-return
-}
 
 
 
@@ -243,12 +221,6 @@ DoublePress(action,SecondAction:="", ToolTip:=""){
 	Return
 	}
 
-FlashScreen(){
-	Send, #^{c}
-	sleep 40
-	Send, #^{c}
-	return
-	}
 
 Block(Time:=300, Action:=""){
 	Global N
@@ -259,7 +231,7 @@ Block(Time:=300, Action:=""){
 		sleep 100
 		; TT(TooltipMessage)
 	N:=1
-	SetTimer, BlockInput, -%time%
+	SetTimer, Block, -%time%
 	return
 	
 	Block:
