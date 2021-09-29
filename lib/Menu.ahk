@@ -132,6 +132,44 @@ Variable(){
         Menu, menu, Add, &Weight `t %Weight%, Variable
     ; Menu,Menu, add, &Variables, :Variables
     Try Menu,menu,show
+    Return
+  Variable:
+    sleep 300
+    click
+    if A_thismenuItem contains &Product `t %Product%,
+      send % Product
+    else if A_thismenuItem contains &Batch `t %Batch%
+      send % Batch
+    else if A_thismenuItem contains &name `t %name%
+      send % Name
+    else if A_thismenuItem contains &SampleID `t %SampleID%
+      send % SampleID
+    else if A_thismenuItem contains &lot `t %Lot%
+      send % Lot
+    else if A_thismenuItem contains &Coated `t %Coated%
+      send % Coated
+    else if A_thismenuItem contains Cus&tomer `t %Customer%
+      send % Customer
+    else if A_thismenuItem contains C&olor `t %Color%
+      send % Color
+    else if A_thismenuItem contains Sha&peSize `t %ShapeSize%
+      send % shapesize
+    else if A_thismenuItem contains &Weight `t %Weight%
+      send % Weight
+    else if A_ThisMenuItem is digit
+      {
+        Iteration:=A_Thismenuitem
+        GuiControl, Varbar:Text, iteration, %A_thismenuitem%
+        Clip()
+        sleep 200
+        varbar.Search("Batch")
+      }
+    else
+      Menu,Menu, deleteAll
+    return
+
+
+
     }
   Tables(){
     try
@@ -150,6 +188,23 @@ Variable(){
       Menu, Menu, Add, VQ Login, Passwords
       Menu, Menu, Add, Kilgore, Passwords
     Try Menu,menu,show
+    return
+  Passwords:
+    if (A_ThisMenuItem = "Samples")
+    SendInput, care{enter}
+   else if (A_ThisMenuItem = "Tests")
+    SendInput, lab{enter}
+   else if (A_ThisMenuItem = "Visual")
+    SendInput, open{enter}
+   else if (A_ThisMenuItem = "&VQ Login")
+    SendInput, ?Kilgore7744{enter}
+   else if (A_ThisMenuItem = "&Kilgore")
+    SendInput, Kilgore7744{enter}
+   else if (A_ThisMenuItem = "&LMS Login")
+    SendInput,Mmignin{tab}Kilgore7744{enter}
+   else
+    Menu,Menu, deleteAll
+   return
     }
   Reasons(){
     global
@@ -157,18 +212,23 @@ Variable(){
     menu,menu,add, Fixing Rotation, Reasons
     menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
     Try Menu,menu,show
+    Return
+
+    Reasons:
+		winactivate, Reason For Change - \\Remote
+		Send,{click 143, 118}%A_ThisMenuItem%
+   if A_thismenuitem contains Fixing Rotation
+    send, {click 240, 239}
+  ;  else if A_thismenuItem contains Removing B12 from Rotation AL %daystring%
+    ; ReasonText:="Removing B12 from rotation AL " Daystring
+  ;  else if A_thismenuItem contains Duplicate Entry
+    ; ReasonText:="Duplicate Entry"
+  ;  else
+		; Send,{click 143, 118}%A_ThisMenuItem%{click 240, 239}
+    Menu,Menu, deleteAll
+   return
     }
-  Products(){
-    global
-    This.delete()
-    loop % A__XLProducts.maxindex(){
-      temp:=A__XLProducts[A_index]
-      menu,menu,add, %temp%, ProductsList
-    }
-    ; menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
-    Try Menu,menu,show
-    }
-    
+
   Apps(){
   global
   try This.delete()
@@ -230,12 +290,12 @@ Varbar(){
     Menu, Menu, Add, Show&Coated, ShowCoated 
       if ShowCoated=1  
         menu, menu, Check, Show&Coated
-    Menu, SubMenu, Add, &workBook, !w 
-    Menu, SubMenu, Add, &Test Log, F2 
-    Menu, SubMenu, Add, &Sample Log, +F2 
-    Menu, SubMenu, Add, &Product Checklist, F3 
-    Menu, SubMenu, Add, &All Label Copy, F4 
-  Menu, Menu, add, &WorkSeehts, :SubMenu
+    ; Menu, SubMenu, Add, &workBook, !w 
+    ; Menu, SubMenu, Add, &Test Log, F2 
+    ; Menu, SubMenu, Add, &Sample Log, +F2 
+    ; Menu, SubMenu, Add, &Product Checklist, F3 
+    ; Menu, SubMenu, Add, &All Label Copy, F4 
+  ; Menu, Menu, add, &WorkSeehts, :SubMenu
     if Winexist("Login - \\Remote"){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
@@ -270,65 +330,141 @@ Remote_desktop(){
     Menu, Menu, Add,&Kilgore, Passwords
   Try Menu,menu,show
   return
+  Remote_Desktop:
+    If (A_thisMenuItem = "TESTING LMS"){
+      SendInput,{Click 182, 97}10.1.2.153{enter}
+      winwaitactive, Windows Security,,2
+      if !errorlevel
+      SendInput, Kilgore7744{enter}
+      return
+      }
+    if (A_thisMenuItem = "TEST_LMS")
+      SendInput,{Click 182, 97}10.1.2.152{enter}
+    if (A_thisMenuItem = "TEST_NuGen")
+      SendInput,{Click 182, 97}10.1.2.150{enter}
+    if (A_thisMenuItem = "TEST_SDMS")
+      SendInput,{Click 182, 97}10.1.2.149{enter}
+    if (A_thisMenuItem = "PRD_Citrix_One")
+      SendInput,{Click 182, 97}10.1.2.134{enter}
+    if (A_thisMenuItem = "PRD_Citrix_Two")
+      SendInput,{Click 182, 97}10.1.2.226{enter}
+    if (A_thisMenuItem = "PRD_Citrix_Three")
+      SendInput,{Click 182, 97}10.1.2.227{enter}
+    if (A_thisMenuItem = "LMS_PRD")
+      SendInput,{Click 182, 97}10.1.2.138{enter}
+    if (A_thisMenuItem = "NuGenesis")
+      SendInput,{Click 182, 97}10.1.2.164{enter}
+    if (A_thisMenuItem = "SDMS")
+      SendInput,{Click 182, 97}10.1.2.142{enter}
+    if (A_thisMenuItem = "PRD_EMPCitrix")
+      SendInput,{Click 182, 97}10.1.2.242{enter}
+    if (A_thisMenuItem = "Empower")
+      SendInput,{Click 182, 97}10.1.2.228{enter}
+    else
+      Try Menu,Menu, deleteAll
+    return
+
   }
+
+  
+  Products(){
+    global
+      This.delete()
+    menu,menu,add, [%Product%], ProductsList
+    menu,menu,Disable,[%Product%]
+    menu,menu,add
+    loop % Products.maxindex(){
+      temp:=Products[A_index]
+      menu,menu,add, %temp%, ProductsList
+    if (Products[a_index]=Product)
+          menu,menu,Check, %temp%,
+    }
+    Try Menu,menu,show
+    ProductsList:
+    if !A_ThisMenuItem
+      return
+    try XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
+      ; Pop(Product,Batch " " lot)
+    excel.MatchColor()
+    return
+
+    }
+  Batches(){
+      global
+      This.Delete()
+      loop % Batches.MaxIndex(){
+        temp:=Batches[A_index]
+        menu,menu,add, %temp%, BatchesList
+        if (Batches[a_index]=XL.Range("E1").Value)
+          menu,menu,check, %temp%,
+      }
+      Try Menu,menu,show
+
+      return
+    
+  BatchesList:
+    if !A_ThisMenuItem
+      return
+    excel.RegexCell(A_ThisMenuItem)
+    XL.Range("E1").Value := A_ThisMenuItem
+    	GuiControl, Varbar:Text, lot, %lot%
+      GuiControl, Varbar:Text, Batch, %Batch%
+      GuiControl, Varbar:Text, Coated, %coated%
+    excel.MatchColor()
+    return
+    }
+    SetStatus(){
+      global
+      Status:=["CoA","Specs","Reviewed","Samples","Completed"]
+      This.Delete()
+      loop % Status.MaxIndex(){
+        temp:=Status[A_index]
+        menu,menu,add, %temp%, SetStatusList
+        if (Status[a_index]=XL.Range("B7").Value)
+          menu,menu,check, %temp%,
+      }
+      Try Menu,menu,show
+    
+  SetStatusList:
+    XL.Range("B7").Value := A_ThisMenuItem
+    excel.MatchColor()
+    	; GuiControl, Varbar:Text, lot, %lot%
+      ; GuiControl, Varbar:Text, Batch, %Batch%
+      ; GuiControl, Varbar:Text, Coated, %coated%
+    return
+    }
 }
 return
 
-
-
-Variable:
-    sleep 300
-  click
-  if A_thismenuItem contains &Product `t %Product%,
-    send % Product
-   else if A_thismenuItem contains &Batch `t %Batch%
-    send % Batch
-   else if A_thismenuItem contains &name `t %name%
-    send % Name
-   else if A_thismenuItem contains &SampleID `t %SampleID%
-    send % SampleID
-   else if A_thismenuItem contains &lot `t %Lot%
-    send % Lot
-   else if A_thismenuItem contains &Coated `t %Coated%
-    send % Coated
-   else if A_thismenuItem contains Cus&tomer `t %Customer%
-    send % Customer
-   else if A_thismenuItem contains C&olor `t %Color%
-    send % Color
-   else if A_thismenuItem contains Sha&peSize `t %ShapeSize%
-    send % shapesize
-   else if A_thismenuItem contains &Weight `t %Weight%
-    send % Weight
-   else if A_ThisMenuItem is digit
-    {
-      Iteration:=A_Thismenuitem
-      GuiControl, Varbar:Text, iteration, %A_thismenuitem%
-      Clip()
-      sleep 200
-      varbar.Search("Batch")
-    }
-  else
-    Menu,Menu, deleteAll
-  return
+; ProductsList:
+;   XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
+; return
 
 
 
-  Passwords:
-    if (A_ThisMenuItem = "Samples")
-    SendInput, care{enter}
-   else if (A_ThisMenuItem = "Tests")
-    SendInput, lab{enter}
-   else if (A_ThisMenuItem = "Visual")
-    SendInput, open{enter}
-   else if (A_ThisMenuItem = "&VQ Login")
-    SendInput, ?Kilgore7744{enter}
-   else if (A_ThisMenuItem = "&Kilgore")
-    SendInput, Kilgore7744{enter}
-   else if (A_ThisMenuItem = "&LMS Login")
-    SendInput,Mmignin{tab}Kilgore7744{enter}
-   else
-    Menu,Menu, deleteAll
-   return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;;      ExtraActions:
+
+
 
    Heavy_metals:
     if (A_ThisMenuItem = "USP Heavy Metal")
@@ -389,39 +525,7 @@ Tests:
    else
     Menu,Menu, deleteAll
    return
-Remote_Desktop:
-    If (A_thisMenuItem = "TESTING LMS"){
-      SendInput,{Click 182, 97}10.1.2.153{enter}
-      winwaitactive, Windows Security,,2
-      if !errorlevel
-      SendInput, Kilgore7744{enter}
-      return
-      }
-    if (A_thisMenuItem = "TEST_LMS")
-      SendInput,{Click 182, 97}10.1.2.152{enter}
-    if (A_thisMenuItem = "TEST_NuGen")
-      SendInput,{Click 182, 97}10.1.2.150{enter}
-    if (A_thisMenuItem = "TEST_SDMS")
-      SendInput,{Click 182, 97}10.1.2.149{enter}
-    if (A_thisMenuItem = "PRD_Citrix_One")
-      SendInput,{Click 182, 97}10.1.2.134{enter}
-    if (A_thisMenuItem = "PRD_Citrix_Two")
-      SendInput,{Click 182, 97}10.1.2.226{enter}
-    if (A_thisMenuItem = "PRD_Citrix_Three")
-      SendInput,{Click 182, 97}10.1.2.227{enter}
-    if (A_thisMenuItem = "LMS_PRD")
-      SendInput,{Click 182, 97}10.1.2.138{enter}
-    if (A_thisMenuItem = "NuGenesis")
-      SendInput,{Click 182, 97}10.1.2.164{enter}
-    if (A_thisMenuItem = "SDMS")
-      SendInput,{Click 182, 97}10.1.2.142{enter}
-    if (A_thisMenuItem = "PRD_EMPCitrix")
-      SendInput,{Click 182, 97}10.1.2.242{enter}
-    if (A_thisMenuItem = "Empower")
-      SendInput,{Click 182, 97}10.1.2.228{enter}
-    else
-      Try Menu,Menu, deleteAll
-    return
+
     
     
 
@@ -441,25 +545,11 @@ Remote_Desktop:
    return
 
 
-Reasons:
-		winactivate, Reason For Change - \\Remote
-		Send,{click 143, 118}%A_ThisMenuItem%
-   if A_thismenuitem contains Fixing Rotation
-    send, {click 240, 239}
-  ;  else if A_thismenuItem contains Removing B12 from Rotation AL %daystring%
-    ; ReasonText:="Removing B12 from rotation AL " Daystring
-  ;  else if A_thismenuItem contains Duplicate Entry
-    ; ReasonText:="Duplicate Entry"
-  ;  else
-		; Send,{click 143, 118}%A_ThisMenuItem%{click 240, 239}
-    Menu,Menu, deleteAll
-   return
+
 
 		; TT("Fixing Rotation",2000)
 
-ProductsList:
-  XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
-return
+
 
 
    SwitchEnv(ServerEnv){

@@ -1,5 +1,22 @@
 #ifwinactive,
-	~F20 & Space::
+
+
+
+
+
+
+
+Test_4:
+FileRead, Note2, CurrentCodes.txt 
+ControlsetText, Note2,%Note2%,VarBar
+return 
+
+
+
+
+ 
+
+	~F20 & Space::  ;; Testing Backcycle
 	If !ActiveWindowID
 		WinGet, ActiveWindowID, ID, A
 	cyclebackward:=1
@@ -12,11 +29,11 @@
 		{	
 			; Var:=Product[%ClipCycleCounter%]
 			Var:=Products[ClipCycleCounter]
-			; TT(Var,1000,,,,250,"C")
+			TT(Var,1000,,,,250,"C")
 			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
 			; Gui, History:Add, Text,, %Var%
 			; Gui, History:Show, NoActivate, var 
-			ttext:=% DispToolTipText(Var)
+			; ttext:=% DispToolTipText(Var)
 		}
 		else
 			ttext:="[cancelled]"
@@ -130,7 +147,7 @@ return
 }
 
 return
-test_%n%()
+
 Gui, Add, Text, x10 y12, Load file.
 Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
 Gui, Show, w300 h300,TEST
@@ -146,14 +163,9 @@ Gui, Show, w300 h300,TEST
 Return TextOut
 } 
 
-;Test_A(){  ; cycle tooltip
 
-` & 9:: ; Demonstrates the usage of the Match object.
-	FoundPos := RegExMatch("K288 101-1111 101-2222", "O)([abdefghijkl]\d{3) (?<Batch>)\b\d{3}-\d{4}\b)", SubPat) ; The starting "O)" turns SubPat into an object.
-	Msgbox % SubPat.Count() ": " SubPat.Value(1) " " SubPat.Name(2) "=" SubPat["Batch"] ;>>> Displays "2: Michiganroad nr=72"
-return
 
-;------------------------------------------------lms.dettesting individual regex------------------------------------------------------------------------
+;; 	lms.dettesting individual regex------------------------------------------------------------------------
 ;------------------------------------------------------TEST 1------------------------------------------------------------
 return
 Test_1(){
@@ -172,7 +184,7 @@ Test_1(){
 return
 }
 
-;---------------------------------------------------------parcing a data file and setting to an array---------------------------------------------------------------
+;; 	parcing a data file and setting to an array---------------------------------------------------------------
 ;------------------------------------------------------TEST 2 ------------------------------------------------------------
 Test_2(){ 
 	global
@@ -206,8 +218,8 @@ return
 
 }
 
-;------------------------------------------------------TEST 3------------------------------------------------------------
-;---------------------------------------------------------remove duplicates---------------------------------------------------------------
+;------------------------------------------------------TEST 3----------------------------------------------------------
+;;	 remove duplicates from text file-------------------------------
 ;------------------------------------------------------------------------------------------------------------------------
 
 ;Test_3:
@@ -447,7 +459,8 @@ Return
 }
 
 ClipCheckHistory: ; check for duplicate entries
-newhistory:=[]
+ newhistory:=[] 
+
 for k, v in History
 	{
 	 check:=v.text
@@ -484,7 +497,7 @@ Return
 
 ; 		Msgbox % Batches[0]
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; grep all the product codes out of a file and add them to an array without duplicates 
+;; 	 grep all the product codes out of a file and add them to an array without duplicates 
 /* 	
 products:=[]
 	fileread, ProductList, Data.ini ;read the data.ini file

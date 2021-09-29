@@ -22,20 +22,6 @@ Table(){
   LabelName:=		  []
   DropDownCount:= []
   Sub_Table_height:=0
-  If (XL.Range("A1").Value!=1){ ; old sheets
-    while (Xl.Range("M" . A_Index+7).Value != "") {
-      Position[A_index]     :=  Xl.Range("F" . A_Index+7).Text
-      Name[A_index]         :=  Xl.Range("K" . A_Index+7).text
-      LabelClaim[A_index]   :=	Xl.Range("L" . A_Index+7).Text
-      LabelName[A_index]    :=	Xl.Range("M" . A_Index+7).Text
-      DropDownCount[A_index]:=	Xl.Range("A" . A_Index+7).Text
-      Total_rows            :=	A_index +1
-      Table_Height          :=	A_index
-      if (Xl.Range("F" . A_Index+7).text = "")
-        Sub_Table_Height:=Sub_Table_Height+1
-    }
-  } 
-  Else { ; new sheets
     while (Xl.Range("AK" . A_Index+7).Value != "") {
       Position[A_index]     :=  Xl.Range("AD" . A_Index+7).Text
       Name[A_index]         :=  Xl.Range("AI" . A_Index+7).text
@@ -47,7 +33,6 @@ Table(){
       if (Xl.Range("AD" . A_Index+7).text = "")
         Sub_Table_Height:=Sub_Table_Height+1
     }
-  }
   Table_Height:=Table_height-Sub_table_Height
   Gui,Ingredient_Table:Default
   Gui,Ingredient_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu
@@ -331,63 +316,63 @@ Click 150, 73
   ; GeneralCount=1
 ; tt(GeneralCount)
 if (A_ThisMenuItem ="Generic Ingredient &A")
-  SendInput,{tab}{Home}{right 2}{right 56}
+  SendInput,{tab}{Home}{right 6}{right 56}
 else if (A_ThisMenuItem ="Generic Ingredient &B") || (GeneralCount=2)
-  SendInput,{tab}{Home}{right 2}{right 62}
+  SendInput,{tab}{Home}{right 6}{right 62}
 else if (A_ThisMenuItem ="Generic Ingredient &C") || (GeneralCount=3)
-  SendInput,{tab}{Home}{right 2}{right 68}
+  SendInput,{tab}{Home}{right 6}{right 68}
 else if (A_ThisMenuItem ="Generic Ingredient &D") || (GeneralCount=4)
-  SendInput,{tab}{home}{right 2}{right 74}
+  SendInput,{tab}{home}{right 6}{right 74}
 else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount==5)
-  SendInput,{tab}{Home}{right 2}{right 80}
+  SendInput,{tab}{Home}{right 6}{right 80}
 else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount==6)
-  SendInput,{tab}{Home}{right 2}{right 86}
+  SendInput,{tab}{Home}{right 6}{right 86}
 else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount==7)
-  SendInput,{tab}{Home}{right 2}{right 92}
+  SendInput,{tab}{Home}{right 6}{right 92}
 else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount==8)
-  SendInput,{tab}{Home}{right 2}{right 93}
+  SendInput,{tab}{Home}{right 6}{right 93}
 else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount==9)
-  SendInput,{tab}{Home}{right 2}{right 95}
+  SendInput,{tab}{Home}{right 6}{right 95}
 else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount==10)
-  SendInput,{tab}{Home}{right 2}{right 97}
+  SendInput,{tab}{Home}{right 6}{right 97}
 else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount==11)
-  SendInput,{tab}{Home}{right 2}{right 99}
+  SendInput,{tab}{Home}{right 6}{right 99}
 else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount==12)
-  SendInput,{tab}{Home}{right 2}{right 100}
+  SendInput,{tab}{Home}{right 6}{right 100}
 else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount==13)
-  SendInput,{tab}{Home}{right 2}{right 101}
+  SendInput,{tab}{Home}{right 6}{right 101}
 else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount==14)
-  SendInput,{tab}{Home}{right 2}{right 102}
+  SendInput,{tab}{Home}{right 6}{right 102}
 else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount==15)
-  SendInput,{tab}{Home}{right 2}{right 103}
+  SendInput,{tab}{Home}{right 6}{right 103}
 else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount==16)
-  SendInput,{tab}{Home}{right 2}{right 104}
+  SendInput,{tab}{Home}{right 6}{right 104}
 else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount==17)
-  SendInput,{tab}{Home}{right 2}{right 105}
+  SendInput,{tab}{Home}{right 6}{right 105}
 else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount==18)
-  SendInput,{tab}{Home}{right 2}{right 106}
+  SendInput,{tab}{Home}{right 6}{right 106}
 else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount==19)
-  SendInput,{tab}{Home}{right 2}{right 107}
+  SendInput,{tab}{Home}{right 6}{right 107}
 else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount==20)
-  SendInput,{tab}{Home}{right 2}{right 108}
+  SendInput,{tab}{Home}{right 6}{right 108}
 else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount==21)
-  SendInput,{tab}{Home}{right 2}{right 109}
+  SendInput,{tab}{Home}{right 6}{right 109}
 else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount==22)
-  SendInput,{tab}{Home}{right 2}{right 110}
+  SendInput,{tab}{Home}{right 6}{right 110}
 else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount==23)
-  SendInput,{tab}{Home}{right 2}{right 111}
+  SendInput,{tab}{Home}{right 6}{right 111}
 else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount==24)
-  SendInput,{tab}{Home}{right 2}{right 112}
+  SendInput,{tab}{Home}{right 6}{right 112}
 else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount==25)
-  SendInput,{tab}{Home}{right 2}{right 113}
+  SendInput,{tab}{Home}{right 6}{right 113}
 else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount==26)
-  SendInput,{tab}{Home}{right 2}{right 114}
+  SendInput,{tab}{Home}{right 6}{right 114}
 else if (A_ThisMenuItem ="Ingredient Note 1")
-  SendInput,{tab}{Home}{right 2}{right 139}
+  SendInput,{tab}{Home}{right 6}{right 139}
 else if (A_ThisMenuItem ="Ingredient Note 2")
-  SendInput,{tab}{Home}{right 2}{right 141}
+  SendInput,{tab}{Home}{right 6}{right 141}
 else if (A_ThisMenuItem ="Ingredient Note 3")
-  SendInput,{tab}{Home}{right 2}{right 142}
+  SendInput,{tab}{Home}{right 6}{right 142}
 else if (A_ThisMenuItem ="Total Probiotic")
   SendInput,{tab}{Home}{right 258}
 else if (A_ThisMenuItem ="STOP")

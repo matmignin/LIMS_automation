@@ -191,8 +191,6 @@ F19_And_F20:
 	F20 & 0::            		SavedWindow_Restore()
 	F13 & esc::						Varbar.reset()	
 	F19 & \::            		CreditCard()
-	; F19 & Space::      	  	Send, %product%
-	; F20 & Space::      	  	SendInput, %batch%
 	F19 & backspace::    		Send,{delete}
 	F20 & Rshift::
 	F20 & Insert::       		Clip("OCR")
@@ -233,16 +231,20 @@ F19_And_F20:
 
 
 _Double_press_For_Enter:
-#If (A_PriorHotKey = "F19 & Space" || A_PriorHotKey = "F21 & Space" || A_PriorHotKey = "F20 & Space") && (A_TimeSincePriorHotkey < 2000) 
-	; F19 & space::           Send, {enter}
-	; $space::              Send, {enter} 
-	$rshift::               Send, {tab}
-	F20 & Space::           Send, {enter}
-	F21 & Space::           Send, {enter}
+#If (A_PriorHotKey = "F20 & up" || A_PriorHotKey = "F2O & Down" || A_PriorHotKey = "F20 & left" || A_PriorHotKey = "F20 & right") && (A_TimeSincePriorHotkey < 2000) 
 
-#If (A_PriorhotKey = "F19" || A_PriorHotKey = "F20" || A_PriorHotKey = "F21 & Space") && (A_TimeSincePriorHotkey < 5000) 
+	; F19 & up::           Send, {enter}
+	; $up::              Send, {enter} 
+	$rshift::               Send, {tab}
+	F20 & up::	           Send, {enter}
+	F20 & down::           Send, {enter}
+	F20 & left::           Send, {enter}
+	F20 & right::          Send, {enter}
+
+#If (A_PriorHotKey = "F20") && (A_TimeSincePriorHotkey < 1000) 
 	$rshift::								Send, {tab}
 	; $space::								Send, {enter}
+	F20::										Send, ^v
 #if 
 
 
@@ -321,11 +323,11 @@ _LMS_KEYS:
 						Click.Okay()
 						return
 #ifwinactive, Select tests for request: 
-	wheelright::3right()
-	wheelleft::WorkTab.SelectTestSample()
+	; wheelright::3right()
+	; wheelleft::WorkTab.SelectTestSample()
 #ifwinactive, Select samples for test:
-	wheelright::3right()
-	wheelleft::WorkTab.SelectTestSample()
+	; wheelright::3right()
+	; wheelleft::WorkTab.SelectTestSample()
 
 _WFICA32:
   #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS

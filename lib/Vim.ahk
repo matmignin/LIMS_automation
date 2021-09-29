@@ -10,7 +10,6 @@ _LCONTROL:
 	l::                                        SendInput,{ctrldown}{]}{ctrlup}
 	h::                                        SendInput,{ctrldown}{[}{ctrlup}
 	+z::                                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
-#if
 _VScode:
 #IfWinActive, ahk_exe Code.exe                                
 	!v:: 														send, {F9}vim.ahk{enter}
@@ -18,7 +17,7 @@ _VScode:
 	F15 & tab::                                  SendInput,{ctrldown}{]}{ctrlup}	
 	numpadsub::                                  4left()
 	numpadadd::                                  4right()
-	numpadmult::                                 SendInput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
+	numpadmult::                                 send,+{F9}
 	; numpadmult::                                 SendInput,{shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
 	numpaddot::                                  numpaddot
 	^numpaddot::                                 SendInput,{ctrldown}{w}{ctrlup}
@@ -258,8 +257,8 @@ _Vim_F13:
 		f::                                      	sendinput,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
 		F19::                                     SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 		; f20::                                   SendInput,{pgdn}
-		1::                                       SendInput,{F1}
-		2::                                       SendInput,{F2{
+		; 1::                                       SendInput,{F1}
+		; 2::                                       SendInput,{F2{
 		w::                                       SendInput,{ctrldown}{right}{ctrlup}
 		 4::                                      SendInput,{End}
 		i::                                      	SendInput,{F9}@

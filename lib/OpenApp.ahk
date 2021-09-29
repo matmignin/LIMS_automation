@@ -64,9 +64,10 @@ F4::
 OpenApps:
   <!f::OpenApp.Firefox()
   !v::OpenApp.vsCode()
+  #!v::Run, C:\Users\mmignin\Documents\VQuest
   ; !c::OpenApp.Clickup()
   !e::Send,{LWinDown}{e}{lwinup}
-  !+v::OpenApp.VPN()
+  ; !+v::OpenApp.VPN()
   !o::OpenApp.Outlook()
   !d::OpenApp.Display()
   ; !n::run, notes.ahk, %A_ScriptDir%\lib

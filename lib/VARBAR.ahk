@@ -61,14 +61,24 @@
 			if (winControl="Edit4") {
 				GuiControl, Varbar:Text, Coated,%Coated%
 			}
+;
 			return
 	Mbutton::
+		MouseGetPos,,,,WinControl
+			if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
 				click
 				Send, ^a
-				clip()
+				clip.regex()
 				winactivate, NuGenesis LMS - \\Remote			
 				LMS.Searchbar(clipboard,"{enter}")
 				return
+			}
+			else if (winControl="Edit6") 
+				TT(Wincontrol)
+			else
+				menu.varbar()
+			return
+
 
 
 	WheelUp::      send % Blockrepeat(400) Varbar.AddIteration()
@@ -83,8 +93,24 @@
 	F8::				Varbar.launchTable()
 	Numlock::				send, {click}^a
 		return
-	Rbutton::		menu.Products()	
-	return
+	Rbutton::		
+	MouseGetPos,,,,WinControl
+			if (WinControl="Edit1")
+				menu.Products()	
+			if (WinControl="Edit2") || (WinControl="Edit3")
+				menu.Batches()
+			If (WinControl="Edit4")
+				menu.SetStatus()
+			if (winControl="Edit6") {
+				Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
+				; IniWrite, _, data.ini, Notes, note2
+				varbar.show()
+				; GuiControl, Varbar:Text, Coated,%Coated%
+			}
+			if (winControl="Static1") || (winControl="")
+				menu.Varbar()
+
+		return
 	numpaddot:: 	 Openapp.Workbook()
 #if
 
@@ -125,10 +151,10 @@ Class VarBar{
 				; try 
 				MidScreen:=A_ScreenWidth//2
   				TopScreen:=1 ;A_ScreenHeight-35
-		If Winactive("NuGenesiy LMS - \\Remote")
-			try Gui, VarBar:Show, h32 x%NuX% y%Nuy%  NoActivate, VarBar
-		else
-			Try Gui, VarBar:Show, h32 x%Varbar_X% y%TopScreen%  NoActivate, VarBar
+		; If Winactive("NuGenesiy LMS - \\Remote")
+			; try Gui, VarBar:Show, h32 x%NuX% y%Nuy%  NoActivate, VarBar
+		; else
+			Try Gui, VarBar:Show, h32 x%Varbar_X% y%Varbar_y%  NoActivate, VarBar
 		Catch 
 			Gui, VarBar:Show, h32 x%MidScreen% y%TopScreen%  NoActivate, VarBar
 		CoordMode, mouse, window
@@ -157,14 +183,6 @@ Class VarBar{
 				coordmode, mouse, Screen
 				WinGetPos,VarBar_X,Varbar_Y,w,h
 				sleep 100
-				IniWrite, %note1%, data.ini, Notes, note1
-				IniWrite, %note2%, data.ini, Notes, note2
-				IniWrite, %note3%, data.ini, Notes, note3
-				; IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-				IniWrite, %VarBar_X%, data.ini, Locations, VarBar_X
-				; IniWrite, %Iteration%, data.ini, SavedVariables, yteration
-				IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-				; IniWrite, %Follow%, data.ini, Locations, Follow
 				this.exit()
 				coordmode, mouse, Window
 				sleep 500
@@ -192,10 +210,25 @@ Class VarBar{
 		GUI,VarBar:Font,				s20 107C41, Consolas
 		Gui,VarBar:Add,text,		vIteration								  x+5 65 center y-3 w23,		%Iteration%	; Text1
 		GUI,VarBar:Font,				s9 cBlack,arial Narrow
-		Gui,VarBar:add,Edit,		vNote1 		gNotevarbar1 		     x+3 H29 y1 left, 		 %Note1%     ; edit6
-		Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		     X+2 H29 y1 left,			  %Note2%  	; edit7
-		Gui,VarBar:add,Edit,		vNote3 		gNotevarbar3 		     X+2 H29 y1 left,			  %Note3%  	; edit8
-		Gui,VarBar:add,Edit,		vNote4 		gNotevarbar4 		     X+2 H29 y1 left,			  %Note4%  	; edit9
+		
+		If !Note2
+			Note2:="+"
+		If !Note3
+			Note3:="+"
+		If !Note4
+			Note4:="+"
+		if !note1 || Note1="+"
+			{
+				FileRead, Note1, CurrentCodes.txt 
+				ControlsetText, Note1,%Note1%,VarBar
+			}
+			Gui,VarBar:add,Edit,		vNote1 		gNotevarbar1 		     x+3 H29 y1 left, 		 	  %Note1%     ; edit6
+		If Note1 
+			Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		     X+2 H29 y1 left,			  %Note2%  	; edit7
+		If Note2 && Note2!="+"
+			Gui,VarBar:add,Edit,		vNote3 		gNotevarbar3 		     X+2 H29 y1 left,			  %Note3%  	; edit8
+		If Note3 && Note3!="+"
+			Gui,VarBar:add,Edit,		vNote4 		gNotevarbar4 		     X+2 H29 y1 left,			  %Note4%  	; edit9
 		}
 
 
@@ -261,6 +294,7 @@ Class VarBar{
 		if winactive("VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe")
 			return
 		WinGet, NewWindow, ProcessName, A
+		; WinGetPos, Varbar_ox,Varbar_oy,,,A ;{altdown}{}{altup}NewWindow, ProcessName, A
 		if (NewWindow=CurrentWindow) 
 			return
 			CurrentWindow:=NewWindow
@@ -362,7 +396,7 @@ Class VarBar{
 		return
 		}
 
-	Load(){
+	VarbarLoad(){
 		Global
 		; Iniread, Product, data.ini, SavedVariables, Product
 		Iniread, Batch, data.ini, Batches, Batch
@@ -379,10 +413,10 @@ Class VarBar{
 		Iniread, Coated, data.ini, SavedVariables, Coated
 		Iniread, SampleID, data.ini, SavedVariables, SampleID
 		Iniread, Iteration, data.ini, SavedVariables, Iteration
-		; iniread, note1, data.ini, Notes, note1
-		; Iniread, note2, data.ini, Notes, note2
-		; Iniread, note3, data.ini, Notes, note3
-		; Iniread, note4, data.ini, Notes, note4
+		iniread, note1, data.ini, Notes, note1
+		Iniread, note2, data.ini, Notes, note2
+		Iniread, note3, data.ini, Notes, note3
+		Iniread, note4, data.ini, Notes, note4
 		Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 		Iniread, VarBar_X, data.ini, Locations, VarBar_x
 		}
@@ -390,26 +424,14 @@ Class VarBar{
 	exit(){
 		global
 		wingetpos, Varbar_X, Varbar_Y,,, VarBar ahk_class AutoHotkeyGUI
-
-
+		ControlGetText, Note1, Edit6, VarBar
+		ControlGetText, Note2, Edit7, VarBar
+		ControlGetText, Note3, Edit8, VarBar
+		ControlGetText, Note4, Edit9, VarBar
 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
-		; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 		iniwrite, %Product%, data.ini, Products, Product
 		iniwrite, %Batch%, data.ini, Batches, Batch
-		; iniwrite, %Batch1%, data.ini, SavedVariables, Batch1
-		; loop 3 {
-			; n:=A_index
-			; Item:=Product%n%
-			; iniwrite, %Item%, data.ini, Products, Product%n%
-			; Item:=Batch%n%
-			; iniwrite, %Item%, data.ini, Batches, Batch%n%
-			; }	
-		; iniwrite, %Product0%, data.ini, Products, Product0
-		; iniwrite, %Product1%, data.ini, Products, Product1
-		; iniwrite, %Product2%, data.ini, Products, Product2
-		; iniwrite, %Product3%, data.ini, Products, Product3
-		; iniwrite, %Batch0%, data.ini, SavedVariables, Batch0
 		iniwrite, %Lot%, data.ini, SavedVariables, Lot
 		iniwrite, %Coated%, data.ini, SavedVariables, Coated
 		iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
@@ -426,7 +448,7 @@ Class VarBar{
 		; sleep, 300
 		; FileAppend, %OutputVar%, Products.txt
 		; Notes.Save()
-		Gui,VarBar:Destroy
+		; Gui,VarBar:Destroy
 		}
 
 HistoryMenuItem(){

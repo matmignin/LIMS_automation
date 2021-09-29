@@ -20,53 +20,93 @@ Connect(reload:=0){
 		XL := ComObjActive("Excel.Application")
 		; XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True
+		ComObjConnect(XL,"Excel.")
 		sht := XL.ActiveSheet.Name
+		;btch:= XL.ActiveSheet.Range.("E1")
 			Gui VarBar:+LastFound
 		if (sht = "PriorMonths" || sht= "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
 			return
 	}
 	Catch {
-		TT("Didnt connect to workbook", 500,,,1)
+		TT("Didnt connect to workbook", 5000,,,1)
 	}
 	This.InfoLocations()
-	A__XLProducts:=[]
-	Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
+	;Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
 												; /*  Get each sheet name and turn it into an array
 												For sheet in xl.ActiveWorkbook.Worksheets
 												{
 													If (Sheet.name = "Main") || (Sheet.name = "Template") || (Sheet.name = "Finished") || (Sheet.name = "Micro Pending") || (Sheet.name = "PriorMonths")
 														continue
-													A__XLProducts.insert(Sheet.Name)
+													Products.insert(Sheet.Name)
 												}
-												; A__XLProducts.remove(1)
-												; A__XLProducts.remove(1)
-												loop 10{
-													; if (A__XLProducts[A_index] = "Finished") || (A__XLProducts[A_index] = "PriorMonths")
-														; A__XLProducts.remove(A_Index)
-													; else
-														A__DDLXLProducts .= "|" A__XLProducts[A_index]
-												} 
+												; Products.remove(1)
+												; Products.remove(1)
+												; loop 10{
+												; 	; if (Products[A_index] = "Finished") || (Products[A_index] = "PriorMonths")
+												; 		; Products.remove(A_Index)
+												; 	; else
+												; 		A__DDLXLProducts .= "|" Products[A_index]
+												; } 
 												; */
 
 	Gui VarBar:+LastFound
 	if (Reload = 1)
 		VarBar.show()
-		excel.MatchColor()
+
 	return
 	}
+
+SheetActivate(XL) {
+  global
+  excel.Infolocations()
+  excel.RegexCell()
+  excel.matchColor()
+  ;pop(Product " " Batch)
+}
+
+
+SheetChange(sht,Cell) {
+	Global
+	if (Cell.ActiveCell.Address = "$E$1" || Cell.ActiveCell.Address = "$B$3"){
+		excel.Infolocations()
+	POP(Cell.ActiveCell.value,Shipto)
+	}
+	else
+		return
+	; else
+		; return
+	; xcel.RegexCell()
+	; POP(Cell.address)
+	; ToolTip % "Active Cell changed to " cell.address[5,1]
+	; POP(cell.ActiveSheet.Range("E1").Address)		; XL := Excel_Get()
+		; row_1 := XL.ActiveCell.Row
+		; col_1 := XL.ActiveCell.Column
+		; add_1 := XL.ActiveCell.Address[0,0]
+		
+		; cell_address := XL.Cells(1, col_1).Address[0,0]
+		; stringtrimright, col_1, cell_address, 1
+
+		; cross_hairs := add_1 "," row_1 ":" row_1 "," col_1 ":" col_1  "," add_1
+		; XL.Range(cross_hairs).Select
+	}
+
+
 	RegexCell(vCell,n:=""){
 		Global
 		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
       RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch%n%)
       RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", lot%n%)
       RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
-      RegExMatch(ctCoated,   "\d{3}-\d{4}", Coated%n%)
+      RegExMatch(ctCoated, "\d{3}-\d{4}", Coated%n%)
 	}
 InfoLocations(){
 	global
+	Batches:=[]
 	GuiControl, -redraw, varbar
 		Product:=XL.Range("B1").Value
 		This.RegexCell(XL.Range("E1").Value)
+		while (Xl.Range("BE" . A_index+7).Value != "")
+			Batches[A_index]:=Xl.Range("BE" . A_index+7).Text
 		Name:=XL.Range("B2").Value
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value
@@ -74,11 +114,11 @@ InfoLocations(){
 		ShapeAndSize:=XL.Range("B5").Value
 		Color:=XL.Range("B6").value
 
-	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Product, %Product%
+	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Batch, %Batch%
-	; if Coated
 	GuiControl, Varbar:Text, Coated, %coated%
+	; if Coated
 	GuiControl, Varbar:Text, SampleID,
 	GuiControl, Varbar:Text, name, %name%
 	GuiControl, varbar:text, Color, %Color%
@@ -150,27 +190,25 @@ MatchColor(){
 	Global
 	TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
 	if 		(TabColor = 16777215) ;white
-		Gui, VarBar:color, F2F2F2 ; 
-	else if	(TabColor = 16764057) ;Blue
-		Gui, VarBar:color, 8ea9db ; 
-	else if 	(TabColor = 13434828) ;light green
-		Gui, VarBar:color, A9D08E ; 
-	else if 	(TabColor = 65280) ;green
-		Gui, VarBar:color, 21a366 
+		Gui, VarBar:color,, F2F2F2 ; 
+	else if	(TabColor = 16764057) || (TabColor = 13395456) ;Blue
+		Gui, VarBar:color,, BDD7EE ; 
+	else if 	(TabColor = 13434828) || (TabColor = 32768) || 	(TabColor = 65280) ;light green
+		Gui, VarBar:color,, 339966 
 	else if 	(TabColor = 10092543) ;yellow
-		Gui, VarBar:color, ffff00 
-	else if 	(TabColor = 26367) 	;orange
-		Gui, VarBar:color, fF8966 
-	else if 	(TabColor = 12632256) 	;greay
-		Gui, VarBar:color, 808080 
+		Gui, VarBar:color,, ffff00 
+	else if 	(TabColor = 39423) || (TabColor = 26367)	;orange
+		Gui, VarBar:color,, EE8036 
+	else if 	(TabColor = 12632256) || (TabColor = 8421504) 	;greay
+		Gui, VarBar:color,, 808080 
 	else if 	(TabColor = 10498160) 	;purple
-		Gui, VarBar:color, 7030A0 
+		Gui, VarBar:color,, 7030A0 
 	else if 	(TabColor = 16777215) 	;light purple
-		Gui, VarBar:color, 9966FF 
+		Gui, VarBar:color,, 9966FF 
 	else if 	(TabColor = 0) 	;black
-		Gui, VarBar:color, 000000 
+		Gui, VarBar:color,, 000000 
 	else
-			Gui, VarBar:color, FF9999 ;pink
+			Gui, VarBar:color, 808000 ;pink
 	}
 Get_Current_row(){
 	Global

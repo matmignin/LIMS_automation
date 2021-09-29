@@ -375,8 +375,12 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 	}
 ReloadScript(){
 	global
+	IniWrite, %note1%, data.ini, Notes, note1
+	IniWrite, %note2%, data.ini, Notes, note2
+	IniWrite, %note3%, data.ini, Notes, note3
+	IniWrite, %note4%, data.ini, Notes, note4
 	TT(blank " Reload `t`t" blank,,,,,180)
-	Send,{ctrldown}{s}{altup}{CtrlUp}{ShiftUp}{LWinUp}
+	Send, ^s
 	sleep 200
 	; try
 		run, VQuest.ahk

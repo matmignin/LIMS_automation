@@ -29,7 +29,7 @@
         "*.txt": true,
         "VBA Code/*": true,
         "lib/CL3": true,
-        "lib/clip.ahk": true,
+        "lib/clip.ahk": false,
         "lib/Studio.ahk": true,
         "lib/Tooltip.ahk": true,
         "**/.vimrc": true
@@ -40,5 +40,15 @@
     "autoHide.autoHideSideBar": false,
     "autoHide.autoHidePanel": false,
     "notebook.outline.showCodeCells": true,
-    "cSpell.enabled": false
+    "cSpell.enabled": false,
+    "separators.enabledSymbols": [
+        "Classes",
+        "Constructors",
+        "Enums",
+        "Functions",
+        "Interfaces",
+        "Methods",
+        "Namespaces",
+        "Structs"
+    ]
 }

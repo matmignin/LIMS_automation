@@ -27,26 +27,29 @@
 gosub, vquest_start
 
 
+
+
 Starting_test:
-    Products:=[]
-  iniread VimClip,data.ini, SavedVariables, VimClip 
-  Iniread, Product,  data.ini, Products, Product
-  Iniread, Product1, data.ini, Products, Product1
-  Iniread, Product2, data.ini, Products, Product2
-  Iniread, Product3, data.ini, Products, Product3
-  Iniread, Product4, data.ini, Products, Product4
-          ; Products.Insert(Product)
-          Products.Insert(Product1)
-          Products.Insert(Product2)
-          Products.Insert(Product3)
-          Products.Insert(Product4)
+
+  ;   Products:=[] ;;  add ini data to product array  
+  ; iniread VimClip,data.ini, SavedVariables, VimClip 
+  ; Iniread, Product,  data.ini, Products, Product
+  ; Iniread, Product1, data.ini, Products, Product1
+  ; Iniread, Product2, data.ini, Products, Product2
+  ; Iniread, Product3, data.ini, Products, Product3
+  ; Iniread, Product4, data.ini, Products, Product4
+  ;         ; Products.Insert(Product)
+  ;         Products.Insert(Product1)
+  ;         Products.Insert(Product2)
+  ;         Products.Insert(Product3)
+  ;         Products.Insert(Product4)
   return
 
 
 
 ActiveCheck: ;continuously runing sub
-If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !Winactive("ahk_exe WFICA32.EXE")
-Fade(90)
+; If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !Winactive("ahk_exe WFICA32.EXE")
+  ; Fade(200) ;;  Fade Varbar on hover
 ; if winactive("Reason For Change - \\Remote") {
   ; menu.reasons()
   ; WinWaitNotActive, Reason For Change - \\Remote,, 10
@@ -77,9 +80,7 @@ Fade(FadeAmount:=90){
     WinSet, Transparent, 235, AHK_id %GUIID%
 }
 
-Test_4:
-Menu.Products()
-return 
+
 
 
 

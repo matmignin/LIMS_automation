@@ -94,7 +94,7 @@ CopySpecTemplate(){
 	global 
 	sleep 100
 	if WinActive("NuGenesis LMS - \\Remote"){
-		click
+		; click
 		; Send, ^c
 		; clipwait,1.5 ; Tooltip, %Clipboard%
 		clip("Department")
