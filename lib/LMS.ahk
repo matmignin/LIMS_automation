@@ -4,9 +4,9 @@ SearchBar(Code:="",PostCmd:=""){
 		Global
 		if !winactive("ahk_exe WFICA32.EXE")
 			winactivate, ahk_exe WFICA32.EXE
+		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
-		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Coated, Edit4, VarBar
 		if Showsampleid=1
 			ControlGetText, SampleId, Edit5, VarBar
@@ -22,7 +22,7 @@ SearchBar(Code:="",PostCmd:=""){
 			Send, {click 180, 103,2}%Product%{enter}
 		}
 		else if winactive("NuGenesis LMS - \\Remote") {
-			LMS.Orient()
+			; LMS.Orient()
 			LMS.DetectTab()
 			if (Tab="Products") {
 				If (Code=Product){
@@ -307,7 +307,7 @@ DetectTab(){
 	ifwinnotactive, ahk_exe WFICA32.EXE
 		winactivate, ahk_exe WFICA32.EXE
 	LMS.Orient()
-	; CoordMode, pixel, Relative
+	; CoordMode, pixel, Window
 	if WinActive("NuGenesis LMS - \\Remote") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 				if !Tab1 {
@@ -316,7 +316,8 @@ DetectTab(){
 						Tab=Samples 
 						return Tab
 					}					
-					else {
+					else 
+					{
 					PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 					If FoundRequests {
 						Tab=Requests 
@@ -356,7 +357,7 @@ DetectTab(){
 					}
 					else 
 				return
-				; exit
+				exit
 				}
 				}
 				}
@@ -495,14 +496,14 @@ Orient(){
 	Tab4:=
 	Tab5:=
 	Tab6:=
-	WinGetPos,NuX,NuY,NuW,NuH, NuGenesis LMS - \\Remote
+	WinGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
 	WinGetPos,WbX,WbY,WbW,WbH, LMS Workbook.xlsb - Excel
 	; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
 	WbX:=WbX+400
 	Flovar_x:= wX +900
 	Flovar_y:= wH + wY -28
-	varBar_x:=NuX+450
-	varBar_Y:=NuY
+	varBar_x:=wX+450
+	varBar_Y:=wY
 	TabSelect:=WW-10
 	yTabSelect:=45
 	yTabDropDown:=45

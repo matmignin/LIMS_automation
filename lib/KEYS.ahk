@@ -271,18 +271,18 @@ _NuGenesis_LMS:
 	F20::LMS.SearchbarPaste()
 	^v::LMS.SearchbarPaste()
 	F19::LMS.Searchbar()
-	numpadadd::
-		if SwitchWorkSheets
-			excel.NextSheet()
-		else
-			lms.ProductSpecToggle()
-		return
-	numpadsub::
-		if SwitchWorkSheets
-			excel.Prevsheet()
-		else
-			lms.SampleRequestToggle()
-		return
+	; numpadadd::
+	; 	if SwitchWorkSheets
+	; 		excel.NextSheet()
+	; 	else
+	; 		lms.ProductSpecToggle()
+	; 	return
+	; numpadsub::
+	; 	if SwitchWorkSheets
+	; 		excel.Prevsheet()
+	; 	else
+	; 		lms.SampleRequestToggle()
+	; 	return
 	; F20::Send, ^c  
 	; space & lbutton::Send, +{click}
 	; space up::SendInput, ^{click}

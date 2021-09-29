@@ -139,6 +139,7 @@ Class VarBar{
 				Gui, VarBar:color,DC734F, 97BA7F   
 				; Gui, VarBar:color,016D07, 97BA7F   
 				this.AddBoxes()
+				
 				iniread, note1, data.ini, Notes, note1
 				Iniread, note2, data.ini, Notes, note2
 				Iniread, note3, data.ini, Notes, note3

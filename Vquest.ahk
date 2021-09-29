@@ -74,8 +74,9 @@ ActiveCheck: ;continuously runing sub
 
 
 Test_4:
-GetSampleInfo()
-msgbox % Name " " Customer ": " ShipTo
+LMS.Orient()
+LMS.DetectTab()
+msgbox % Tab "`n " Tab1 ": " Tab2
   return
 
 

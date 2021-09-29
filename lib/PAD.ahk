@@ -62,8 +62,8 @@ _Lbuton:
 			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
 		else if winactive("Select tests for request: R")
 			send % Clk(504, 338)  ; add test.
-		else	
-			; Send, {WheelRight}
+		else if winactive("ahk_exe WFICA32.EXE") 
+			Send, %Batch%
 	return
 	}
 
@@ -87,8 +87,8 @@ _Lbuton:
 			Send, {esc}
 		else if winactive("Select samples for test:")
 			Send, {esc}
-		else 
-			Send, {wheelleft}
+		else if WinActive("ahk_exe WFICA32.EXE")
+			Send, %Product%
 		return
 	}
 
