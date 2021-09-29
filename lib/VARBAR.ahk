@@ -134,7 +134,7 @@ Class VarBar{
 				Iniread, ShowNote3, data.ini, Options, ShowNote3
 				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
 				Gui Varbar:Default
-				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID
+				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID +DPIScale
 				WinSet, Transparent, 100, %GUIID%
 				Gui, VarBar:color,DC734F, 97BA7F   
 				; Gui, VarBar:color,016D07, 97BA7F   

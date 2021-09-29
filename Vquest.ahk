@@ -48,36 +48,80 @@ Starting_test:
 
 
 ActiveCheck: ;continuously runing sub
-; If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !Winactive("ahk_exe WFICA32.EXE")
-  ; Fade(200) ;;  Fade Varbar on hover
-; if winactive("Reason For Change - \\Remote") {
-  ; menu.reasons()
-  ; WinWaitNotActive, Reason For Change - \\Remote,, 10
-  ; }
-  ; If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote"){
-  ;   wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
-  ;   WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
-  ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy
-  ;     WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
-  ;       WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
-  ; }
-if WinExist("Error - \\Remote") {
-  ControlSend,, {enter}, Error - \\Remote
-  sleep 200
-  if WinExist("Register new samples - \\Remote")
-    winactivate,
-      LMS.SearchBar(Product,"{enter}")
-}
+  ; If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !Winactive("ahk_exe WFICA32.EXE")
+    ; Fade(200) ;;  Fade Varbar on hover
+  ; if winactive("Reason For Change - \\Remote") {
+    ; menu.reasons()
+    ; WinWaitNotActive, Reason For Change - \\Remote,, 10
+    ; }
+    ; If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote"){
+    ;   wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
+    ;   WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+    ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy
+    ;     WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
+    ;       WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
+    ; }
+  if WinExist("Error - \\Remote") {
+    ControlSend,, {enter}, Error - \\Remote
+    sleep 200
+    if WinExist("Register new samples - \\Remote")
+      winactivate,
+        LMS.SearchBar(Product,"{enter}")
+  }
+  return
+   
+;;  Test
 
+
+Test_4:
+GetSampleInfo()
+msgbox % Name " " Customer ": " ShipTo
   return
 
 
-Fade(FadeAmount:=90){
-  global
-  WinSet, Transparent, %FadeAmount%, AHK_id %GUIID%
-  while MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !WinActive("VarBar ahk_exe AutoHotkey.exe")
-    sleep 600
-    WinSet, Transparent, 235, AHK_id %GUIID%
+
+GetSampleInfo(){
+  global Customer, Name, ShipToIndex
+	ParsedSample:=[]
+  ; clipboard:=
+  ; send, ^c 
+  ; clipwait, 2
+    ; if errorlevel
+      ; sleep 400
+  Loop, parse, Clipboard, `t
+  ParsedSample.insert(A_LoopField)
+  TotalColumns:=Parsedsample.maxindex()//2
+  
+  Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+  Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+  IniRead,ShipToIndex, Customers.ini, Customers, %Customer%
+  ; if !ShipTo
+    ; ShipTo:=ShipToIndex
+  return ShiptoIndex
+}
+
+
+
+
+DropDown() {
+	Loop, Read, Customers.ini
+	{
+	If A_Index = 1
+		Continue
+	Method := StrSplit(A_LoopReadLine, "=")
+	  ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
+	Selection:= % Method[1]
+    ; Group:= % MethodGroup[2] ;for a second split
+	Menu, Methodmenu, add, %Selection%, DropDown
+	}
+	Menu, MethodMenu, Show,
+	return
+
+	DropDown:
+		InputVar:=A_ThisMenuItem
+		IniRead,vOutput, Customers.ini, Customers, %InputVar%
+		Pop(Inputvar,vOutput)
+		return
 }
 
 
@@ -85,30 +129,31 @@ Fade(FadeAmount:=90){
 
 
 
-; CreateArray(){ ;creating an array and resorting without duplicates
+
+
+
+; CreateArray(){ ;;     creating an array and resorting without duplicates
 	 ;Products := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
-			Batches:= StrSplit(A_LoopReadLine, "`n") 
-
-
-	Products2 := [], oTemp := {}
-	for vKey, vValue in Products
-	{
-		if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-		{
-			if !ObjHasKey(oTemp, vValue+0)
-				Products2.Push(vValue+0), oTemp[vValue+0] := ""
-		}
-		else
-		{
-			if !ObjHasKey(oTemp, "" vValue)
-				Products2.Push("" vValue), oTemp["" vValue] := ""
-		}  
-	}
-	vOutput := ""
-	for vKey, vValue in Products2
-		vOutput .= vKey " " vValue "`r`n"
-	MsgBox, % vOutput
-	return
+	; 		Batches:= StrSplit(A_LoopReadLine, "`n") 
+	; Products2 := [], oTemp := {}
+	; for vKey, vValue in Products
+	; {
+	; 	if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+	; 	{
+	; 		if !ObjHasKey(oTemp, vValue+0)
+	; 			Products2.Push(vValue+0), oTemp[vValue+0] := ""
+	; 	}
+	; 	else
+	; 	{
+	; 		if !ObjHasKey(oTemp, "" vValue)
+	; 			Products2.Push("" vValue), oTemp["" vValue] := ""
+	; 	}  
+	; }
+	; vOutput := ""
+	; for vKey, vValue in Products2
+	; 	vOutput .= vKey " " vValue "`r`n"
+	; MsgBox, % vOutput
+	; return
 
 
 
@@ -142,10 +187,10 @@ Fade(FadeAmount:=90){
   #include <Excel>
   #include <vis2>
   #include <Support Functions>
+#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
 
 
-
-  VQuest_Start:
+VQuest_Start:
 
     ; #MenuMaskKey vkE8
     #WinActivateForce
@@ -188,6 +233,7 @@ Fade(FadeAmount:=90){
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysOff
     try Run, cl3.Ahk, lib\CL3
+
     try Menu, Tray, Icon, Robot.ico
     settimer, ActiveCheck, %CheckTime%
     CopyPasteToggle=0
@@ -212,4 +258,4 @@ Fade(FadeAmount:=90){
 
     Send, {ctrlup}{altup}{shiftup}{lwinup}
     gosub, Starting_test
-  #IfWinActive,
+    #IfWinActive,

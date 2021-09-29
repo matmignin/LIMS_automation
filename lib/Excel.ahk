@@ -42,7 +42,7 @@ Connect(reload:=0){
 												; Products.remove(1)
 												; Products.remove(1)
 												; loop 10{
-												; 	; if (Products[A_index] = "Finished") || (Products[A_index] = "PriorMonths")
+												; 	;; if (Products[A_index] = "Finished") || (Products[A_index] = "PriorMonths")
 												; 		; Products.remove(A_Index)
 												; 	; else
 												; 		A__DDLXLProducts .= "|" Products[A_index]
@@ -110,6 +110,7 @@ InfoLocations(){
 		Name:=XL.Range("B2").Value
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value
+		ShipToIndex:=
 		ServingSize:=XL.Range("B4").Value
 		ShapeAndSize:=XL.Range("B5").Value
 		Color:=XL.Range("B6").value

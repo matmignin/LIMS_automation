@@ -86,6 +86,16 @@ Methods() {
 	}
 	Menu, MethodMenu, Show,
 	return
+
+	Methods:
+		sleep 200
+		InputVar:=A_ThisMenuItem
+		IniRead,vOutput, Methods.ini, Methods, %InputVar%
+		SendInput, %vOutput%{enter}
+		sleep 300
+		click 506, 341
+		SpecTab.Methods()
+		return
 }
 
 
@@ -799,15 +809,7 @@ HM_Prop65(){
 }
 
 
-Methods:
-	sleep 200
-	InputVar:=A_ThisMenuItem
-	IniRead,vOutput, Methods.ini, Methods, %InputVar%
-	SendInput, %vOutput%{enter}
-	sleep 300
-	click 506, 341
-	SpecTab.Methods()
-	return
+
 
 Spec_Table:
 	if (A_GuiEvent = "DoubleClick" ){

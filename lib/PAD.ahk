@@ -109,25 +109,15 @@ _Lbuton:
 		global
 		if winactive("ahk_exe EXCEL.EXE"){
 			excel.Connect(1)
-			; tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
+			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 			return
 		}
 		If winactive("NuGenesis LMS - \\Remote") {
 				Excel.Connect(1)
-				;TT(Product " " Batch "`n`t" Name " - " Customer)
+				TT(Product " " Batch "`n`t" Name " - " Customer)
 				return
 		}
-		/* 
-				LMS.DetectTab()
-					if (Tab="Requests"){
-						click, 2
-						sleep 200
-						Autofill()
-						return
-					}
-					else if (Tab="Products")
-						LMS.ViewCoa()
-		*/
+
 		else if winactive("Edit test (Field Configuration:")
 			Autofill()
 		else if winactive("Register new samples - \\Remote")
@@ -259,6 +249,35 @@ _Lbuton:
 			Sendinput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
 	}
 
+	4Up(){
+		global
+		If winactive("NuGenesis LMS - \\Remote") {
+			LMS.Detecttab()
+			if (Tab="Requests" || Tab:="Samples")
+				Pop("Requests")
+				; LMS.ViewCoA()
+			else if (Tab:="Products")
+				{
+				Pop("edit Compisition")
+				; clk(86, 443) ;edit composition
+				Return
+				}
+			else if (Tab="Specs")
+				{
+				Pop("EDIT Results")
+				; click
+				; clk(67, 754) ;edit results
+				Return
+				}
+			else
+				Pop("nothing")
+		}
+		else if winactive("PDF Preview - \\Remote")
+			Send, {altdown}{F4}{altup}
+		Else
+			Sendinput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
+			return
+	}
 	4Right(){
 		global SwitchWorkSheets
 			if (SwitchWorkSheets==1) {

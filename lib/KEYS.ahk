@@ -81,7 +81,7 @@ _TestingZone:
 	; ^wheeldown::Block(300,"^{c}")
 	; ^wheeldown::Blockrepeat(500) clip()
 	; ^wheeldown::send % Blockrepeat(900) "^{v}"
-	; sleep 500
+	;; sleep 500
 	; return
 	f10::F21
 	F11::F22
@@ -91,7 +91,7 @@ _TestingZone:
 		wheelup::return
 	#if
 
-KEY_DEFAULT:
+_KEY_DEFAULT:
 #c::clip.Append()
 #x::send % clip.Append() "{backspace}"
 #b::clip.Append(A_space)
@@ -256,13 +256,9 @@ _Double_press_For_Enter:
 ;
 
 
-#IfWinActive, Barcode Scanner - \\Remote
-	enter::enter
-	F20::LMS.SearchbarPaste()
-	^v::LMS.SearchbarPaste()
 
-_Main_LMS_Screen:
-#Ifwinactive, NuGenesis LMS - \\Remote
+_NuGenesis_LMS:
+#Ifwinactive, NuGenesis LMS - \\Remote ;; _NuGenesis LMS
 	$Numlock::4tap() ;LMS.COA()
 	; F20 & Left::WinMove, A, , -283, -1196, 1662, 952
 	+F19::lms.searchBar("")
@@ -275,18 +271,18 @@ _Main_LMS_Screen:
 	F20::LMS.SearchbarPaste()
 	^v::LMS.SearchbarPaste()
 	F19::LMS.Searchbar()
-	; numpadadd::
-	; 	if SwitchWorkSheets
-	; 		excel.NextSheet()
-	; 	else
-	; 		lms.ProductSpecToggle()
-	; 	return
-	; numpadsub::
-	; 	if SwitchWorkSheets
-	; 		excel.Prevsheet()
-	; 	else
-	; 		lms.SampleRequestToggle()
-	; 	return
+	numpadadd::
+		if SwitchWorkSheets
+			excel.NextSheet()
+		else
+			lms.ProductSpecToggle()
+		return
+	numpadsub::
+		if SwitchWorkSheets
+			excel.Prevsheet()
+		else
+			lms.SampleRequestToggle()
+		return
 	; F20::Send, ^c  
 	; space & lbutton::Send, +{click}
 	; space up::SendInput, ^{click}
@@ -329,37 +325,42 @@ _LMS_KEYS:
 	; wheelright::3right()
 	; wheelleft::WorkTab.SelectTestSample()
 
-_WFICA32:
-  #IfWinActive, ahk_exe WFICA32.EXE, ;GENERIC LMS
-	; F20 & Space::		 Send, %Batch%
-	; F19 & space::		 Send, %Product%
+_LMS:
+  #IfWinActive, ahk_exe WFICA32.EXE,
+
 	F19 & left::			excel.Nextsheet()
 	F19 & right::			excel.Prevsheet()
 	F19 & down::			Varbar.SubIteration(0)
 	F19 & up::	 			Varbar.AddIteration(0)
-
 	; $Rbutton up::		Mouse_RbuttonUP()
 	^`::						Varbar.reset()
 	enter::					click.okay()
 	esc::						click.esc()
-	; left::						left
-	; Down::						down
-	; right::					right
-	; up::						up
 	numpaddot::				closeWindow()
 	<^r::						ReloadScript()
-	F9::						3up()
+	numpadMult::			4up()
+	F9::						Excel.Connect(1) ;3up()
 	F8::						3Down()
 	F7::						3Right()
 	F6::						3Left()	
-	^Wheeldown::			Blockrepeat(900) clip() POP(Product,Batch " " Lot  " " Coated)
-	^wheelup::				menu.lms()
-	numpadMult::			excel.connect()
+	^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;;	Pinch
+	^wheelup::				LMS.SearchbarPaste() ;; Spread
 	Rbutton & F19::       	send % WindowInfo() 
 	Rbutton & F6::        	Send, {Backspace}
 	Rbutton & Lbutton::   	Send, {Enter}
 	; Rbutton::             	Menu.Env() ;send % Mouse_RbuttonUP()
+
+#IfWinActive, Barcode Scanner - \\Remote
+	enter::enter
+	F20::LMS.SearchbarPaste()
+	^v::LMS.SearchbarPaste()
+
+
+
 #IfWinActive,
+
+
+
 
 _MouseIsOver:
 	return

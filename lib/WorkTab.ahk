@@ -36,9 +36,12 @@ registerNewSamples(){
   }
   Breaking.Point()
   sleep 200
-  if !ShipTo
+  If !ShipTo && !ShipToIndex
     return
-  This.DropdownSelect(ShipTo)
+  else if ShipToIndex
+    This.DropdownSelect(ShipToIndex)
+  else
+    This.DropdownSelect(ShipTo)
   sleep 500
   Breaking.Point()
   SendInput, {enter}
@@ -46,7 +49,7 @@ registerNewSamples(){
   blockinput, off
   winactivate, Register new samples - \\Remote
   sleep 300
-  my:=my+26
+  my:=my+30
   MouseMove, mx, my
   
   ;setwindelay, 200
@@ -69,6 +72,8 @@ DropdownSelect(A_ShipTo){
   Sendinput,{end}{left}{left %Absselection%}
     ; setwindelay, 200
     sleep 400
+if winactive("Edit sample `(Field Configuration:")
+  sleep 400
       ; SetKeyDelay, 1, 0.25
     return
  }

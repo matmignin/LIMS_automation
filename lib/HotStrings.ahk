@@ -141,6 +141,8 @@ _VSCODE_Hotstrings:
 
 
 _WindowNames:
+	:*R:iel`;::If ErrorLevel,
+	:*R:el`;::ErrorLevel
 	:*R:ifwe`;::ifwinexists, 
 	:*:iwe`;::ifwinexists, 
 	:*:vb`;::VarBar ahk_exe AutoHotkey.exe 

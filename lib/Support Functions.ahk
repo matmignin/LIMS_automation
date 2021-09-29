@@ -282,24 +282,16 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 		return
 }
 	
-; Pop(Msg:="yo"){
-; 	global
-; ; CoordMode, Mouse, Relative
-; MouseGetPos, PopUp_x,Popup_y,
-; popup_y:=Popup_y+30
-; Gui, PopUp:+AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow   ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
-; Gui, PopUp:Add, Text,, %msg%
-; Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
-; WinSet, Transparent, 100, %GUIID%
-; Gui, PopUp:color,DC734F, 97BA7F 
-; settimer, destroyGui, -1000
-; return
+Fade(FadeAmount:=90){
+  global
+  WinSet, Transparent, %FadeAmount%, AHK_id %GUIID%
+  while MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !WinActive("VarBar ahk_exe AutoHotkey.exe")
+    sleep 600
+    WinSet, Transparent, 235, AHK_id %GUIID%
+}
 
-; DestroyGui:
-;   gui, PopUp:destroy
-;   return
-; }
-Pop(Line1,Line2:=""){
+
+Pop(Line1,Line2:="",PopupTime:=1000){
   global
 try {
   gui, PopUp:destroy ;:
@@ -323,13 +315,15 @@ Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
  WinSet, Transparent, %PopUpTrans%, AHK_Id %GUIID%
 CoordMode, mouse, Window
 
-settimer, destroyGui, -1000
+settimer, destroyGui, -%PopupTime%
 return
 }
 
 DestroyGui:
   try gui, PopUp:destroy
 return
+
+
 
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
@@ -380,7 +374,7 @@ ReloadScript(){
 	IniWrite, %note3%, data.ini, Notes, note3
 	IniWrite, %note4%, data.ini, Notes, note4
 	TT(blank " Reload `t`t" blank,,,,,180)
-	Send, ^s
+	Send, !s
 	sleep 200
 	; try
 		run, VQuest.ahk

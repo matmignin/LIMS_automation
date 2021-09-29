@@ -1,3 +1,4 @@
+
 #ifwinactive,
 
 
@@ -6,10 +7,7 @@
 
 
 
-Test_4:
-FileRead, Note2, CurrentCodes.txt 
-ControlsetText, Note2,%Note2%,VarBar
-return 
+
 
 
 

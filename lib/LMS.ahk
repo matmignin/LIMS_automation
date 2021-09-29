@@ -87,7 +87,7 @@ SearchBar(Code:="",PostCmd:=""){
 		sleep 200
 		send, ^v
 		sleep 100
-		send, {enter}
+		;send, {enter}
 		return clipboard
 	}
 SearchRequest(Code){    
