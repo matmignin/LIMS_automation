@@ -1,118 +1,117 @@
 
-
-#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-	F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
-	F19::varbar.focus("Product")
-	; F20::varbar.focus("Batch")
-	^enter::                           
-							winactivate, %the_WinTitle%
-							click, %caret_X%, %caret_y%
-							return
-	; mbutton::
-				; Click
-				; if Toggle := !Toggle
-				;  Notes.SHow()
-				; else
-					; notes.Save()
-				; return
-	+numlock::
-			MouseGetPos,,,,WinControl
-			ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-			msgbox, %Wincontrol%
-			Send, ^{a}{backspace}{enter}
-			ControlsetText, Wincontrol,,VarBar
-		Return
-	Mbutton::
-		click
-	enter::
-		ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe	
-		if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") ||(WinControl="Edit4"){
-					Send, ^a^c
-					winactivate, NuGenesis LMS - \\Remote			
-			LMS.Searchbar(clipboard,"{enter}")
-		}
-		if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
-			varbar.show()
-		return
-	; Lbutton::click
-#ifwinactive
-	; ^left::Lms.SelectTab("Left")
-	; ^right::LMs.SelectTab("right")
-
-#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-	; wheelleft::    Excel.PrevSheet()
-	; wheelRight::   excel.Nextsheet()
-	+Mbutton::
-			MouseGetPos,,,,WinControl
-			; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-			if (WinControl="Edit1"){
-				Product1:=Product
-				if Toggle := !Toggle
-					GuiControl, Varbar:Text, Product,%Product1%
-				else
-					GuiControl, Varbar:Text, Product,%Product0%
-				}
-			if (WinControl="Edit2"){
-				Batch:=Batch0
-				}
-			if (WinControl="Edit3"){
-				GuiControl, Varbar:Text, Lot,%Lot%
-				}
-			if (winControl="Edit4") {
-				GuiControl, Varbar:Text, Coated,%Coated%
-			}
-;
-			return
-	Mbutton::
-		MouseGetPos,,,,WinControl
-			if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
-				click
-				Send, ^a
-				clip.regex()
-				winactivate, NuGenesis LMS - \\Remote			
+;; ___KEYBINDINGS
+	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
+		F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+		F19::varbar.focus("Product")
+		; F20::varbar.focus("Batch")
+		^enter::                           
+								winactivate, %the_WinTitle%
+								click, %caret_X%, %caret_y%
+								return
+		; mbutton::
+					; Click
+					; if Toggle := !Toggle
+					;  Notes.SHow()
+					; else
+						; notes.Save()
+					; return
+		+numlock::
+				MouseGetPos,,,,WinControl
+				ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+				msgbox, %Wincontrol%
+				Send, ^{a}{backspace}{enter}
+				ControlsetText, Wincontrol,,VarBar
+			Return
+		Mbutton::
+			click
+		enter::
+			ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe	
+			if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") ||(WinControl="Edit4"){
+						Send, ^a^c
+						winactivate, NuGenesis LMS - \\Remote			
 				LMS.Searchbar(clipboard,"{enter}")
-				return
 			}
-			else if (winControl="Edit6") 
-				TT(Wincontrol)
-			else
-				menu.varbar()
-			return
-
-
-
-	WheelUp::      send % Blockrepeat(400) Varbar.AddIteration()
-	Wheeldown::    send % Blockrepeat(400) Varbar.SubIteration()
-	; wheelright::	Varbar.AddIteration(0)
-	; Wheelleft::   	Varbar.SubIteration(0)
-	up::				Varbar.AddIteration(0)
-	down::   		Varbar.SubIteration(0)
-	F9::           Excel.connect()
-	F7::           Excel.NextSheet()
-	F6::           Excel.PrevSheet()
-	F8::				Varbar.launchTable()
-	Numlock::				send, {click}^a
-		return
-	Rbutton::		
-	MouseGetPos,,,,WinControl
-			if (WinControl="Edit1")
-				menu.Products()	
-			if (WinControl="Edit2") || (WinControl="Edit3")
-				menu.Batches()
-			If (WinControl="Edit4")
-				menu.SetStatus()
-			if (winControl="Edit6") {
-				Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
-				; IniWrite, _, data.ini, Notes, note2
+			if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
 				varbar.show()
-				; GuiControl, Varbar:Text, Coated,%Coated%
-			}
-			if (winControl="Static1") || (winControl="")
-				menu.Varbar()
+			return
+		; Lbutton::click
+	#ifwinactive
+		; ^left::Lms.SelectTab("Left")
+		; ^right::LMs.SelectTab("right")
 
-		return
-	numpaddot:: 	 Openapp.Workbook()
-#if
+	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
+		; wheelleft::    Excel.PrevSheet()
+		; wheelRight::   excel.Nextsheet()
+		+Mbutton::
+				MouseGetPos,,,,WinControl
+				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+				if (WinControl="Edit1"){
+					Product1:=Product
+					if Toggle := !Toggle
+						GuiControl, Varbar:Text, Product,%Product1%
+					else
+						GuiControl, Varbar:Text, Product,%Product0%
+					}
+				if (WinControl="Edit2"){
+					Batch:=Batch0
+					}
+				if (WinControl="Edit3"){
+					GuiControl, Varbar:Text, Lot,%Lot%
+					}
+				if (winControl="Edit4") {
+					GuiControl, Varbar:Text, Coated,%Coated%
+				}
+				return
+		Mbutton::
+			MouseGetPos,,,,WinControl
+				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
+					click
+					Send, ^a
+					clip.regex()
+					winactivate, NuGenesis LMS - \\Remote			
+					LMS.Searchbar(clipboard,"{enter}")
+					return
+				}
+				else if (winControl="Edit6") 
+					TT(Wincontrol)
+				else
+					menu.varbar()
+				return
+
+
+
+		WheelUp::      send % Blockrepeat(400) Varbar.AddIteration()
+		Wheeldown::    send % Blockrepeat(400) Varbar.SubIteration()
+		; wheelright::	Varbar.AddIteration(0)
+		; Wheelleft::   	Varbar.SubIteration(0)
+		up::				Varbar.AddIteration(0)
+		down::   		Varbar.SubIteration(0)
+		F9::           Excel.connect()
+		F7::           Excel.NextSheet()
+		F6::           Excel.PrevSheet()
+		F8::				Varbar.launchTable()
+		Numlock::				send, {click}^a
+			return
+		Rbutton::		
+		MouseGetPos,,,,WinControl
+				if (WinControl="Edit1")
+					menu.Products()	
+				if (WinControl="Edit2") || (WinControl="Edit3")
+					menu.Batches()
+				If (WinControl="Edit4")
+					menu.SetStatus()
+				if (winControl="Edit6") {
+					Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
+					; IniWrite, _, data.ini, Notes, note2
+					varbar.show()
+					; GuiControl, Varbar:Text, Coated,%Coated%
+				}
+				if (winControl="Static1") || (winControl="")
+					menu.Varbar()
+
+			return
+		numpaddot:: 	 Openapp.Workbook()
+	#if
 
 
 Class VarBar{	
@@ -236,7 +235,14 @@ Class VarBar{
 			
 		
 
-
+      FloatAtopWindow(FloatTime:=""){
+			Global Varbar_X, Varbar_Y
+    	  wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
+      WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
+      WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_oX+100, Varbar_oy
+        WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
+				WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
+    }
 		
 		
 		
