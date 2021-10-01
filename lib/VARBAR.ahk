@@ -423,7 +423,7 @@ Class VarBar{
 		iniread, note1, data.ini, Notes, note1
 		Iniread, note2, data.ini, Notes, note2
 		Iniread, note3, data.ini, Notes, note3
-		Iniread, note4, data.ini, Notes, note4
+		Iniread, note4, data.ini, Notes, note4c
 		Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
 		Iniread, VarBar_X, data.ini, Locations, VarBar_x
 		}

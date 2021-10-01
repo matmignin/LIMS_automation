@@ -1,46 +1,23 @@
 return
 #IfWinActive,
 ; F1::Send, {lwindown}{e}{lwinup}
-+F2::
-		Run, SAMPLE TO QC 2021.xlsx, \\10.1.2.118\share\QA FINSHED GOODS\Samples Photo Library\SAMPLES TO QC
-		winwait, File in Use,,1
-		Send, {altdown}{r}{altup}
-    return
 ; F2::
   if winexist("SAMPLE LOG 2021"){
-    winactivate
-    return
-  }
-  Run, SAMPLE LOG 2021.xlsx, \\10.1.2.118\share\QC LAB\
-  winactivate, ahk_exe EXCEL.EXE
-  sleep 200
-  winwait,File in Use,,9
-    if !errorlevel
-      Send, {altdown}{r}{altup}
-  winwait, Password,,2
-    if !errorlevel
-      Send, lab{enter}
-  winwait, SAMPLE LOG 2021.xlsx,, 3
-    if !errorlevel
-      excel.search()
-  return
-F3::
-  if winexist("LMS Products Checklist"){
-    winactivate
-    return
-  }
-  Run, LMS Products Checklist.xlsm, \\10.1.2.118\share\QC LAB\
-  winactivate, ahk_exe EXCEL.EXE
-  sleep 200
-  return
-^F4::
-  if winexist("LMS Products Checklist"){
-    winactivate
-    return
-  }
-  Run, Master Rotation WB 2014 (Start from 10-14-2014).xlsx, \\10.1.2.118\share\QC LAB\
-  winactivate, ahk_exe EXCEL.EXE
-  sleep 200
+      winactivate
+      return
+    }
+    Run, SAMPLE LOG 2021.xlsx, \\10.1.2.118\share\QC LAB\
+    winactivate, ahk_exe EXCEL.EXE
+    sleep 200
+    winwait,File in Use,,9
+      if !errorlevel
+        Send, {altdown}{r}{altup}
+    winwait, Password,,2
+      if !errorlevel
+        Send, lab{enter}
+    winwait, SAMPLE LOG 2021.xlsx,, 3
+      if !errorlevel
+        excel.search()
   return
 F4::
   if winexist("C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"){
@@ -57,6 +34,7 @@ F4::
   sleep 100
   Send, ^{a}%product%
   return
+#+::
 ` & esc::        ;                 Pause, Toggle
 +F1::
   if winexist("AutoHotkey Help")
@@ -66,23 +44,24 @@ F4::
   return
 OpenApps:
   <!f::OpenApp.Firefox()
-  !v::OpenApp.vsCode()
+  <#f::OpenApp.Firefox()
+  <!v::OpenApp.vsCode()
+  <#v::OpenApp.vsCode()
   #!v::Run, C:\Users\mmignin\Documents\VQuest\
-  !c::gosub, F4 ; run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\
-  !e::Send,{LWinDown}{e}{lwinup}
+  ;#c::gosub, F4 ; run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\
+  #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
-  !o::OpenApp.Outlook()
-  !d::OpenApp.Display()
-  ; !n::run, notes.ahk, %A_ScriptDir%\lib
+  #o::OpenApp.Outlook()
+  #d::OpenApp.Display()
   F20 & p::
   F21 & p::
-  !p::OpenApp.YourPhone()
+  #p::OpenApp.YourPhone()
   f20 & n::
-  f21 & n::
-  !n::openApp.OneNote()
-  +!n::openApp.stickyNotes()
-  !w::OpenApp.Workbook()
-  !l::OpenApp.LMS()
+  #n::openApp.notepad()
+  +#n::openApp.Notion()
+  #w::OpenApp.Workbook()
+  F20 & l::
+  #l::OpenApp.LMS()
 #ifwinnotactive
 
 
@@ -225,7 +204,21 @@ Outlook(){
  {
   run, C:\Windows\system32\Notepad.exe
   winactivate, ahk_exe notepad.exe
-  WinMove, ahk_exe notepad.exe, ,-292, -1200, 974, 584,
+  WinMove, ahk_exe notepad.exe, ,17, 122, 505, 504
+ }
+ IfWinNotActive,ahk_exe notepad.exe
+  WinActivate, ahk_exe notepad.exe
+ return
+ }
+ NotePad2(){
+ If WinActive("ahk_exe notepad.exe"){
+  Send,{altDown}{tab}{altup}
+  return
+ }
+ ifwinnotexist,ahk_exe notepad.exe
+ {
+   Run, C:\Windows\system32\notepad.exe
+  winactivate, ahk_exe notepad.exe
  }
  IfWinNotActive,ahk_exe notepad.exe
   WinActivate, ahk_exe notepad.exe
@@ -236,9 +229,10 @@ Outlook(){
   Send,{altDown}{tab}{altup}
   return
  }
- ifwinnotexist,ahk_exe ONENOTE.EXE
+ ifwinnotexist,ahk_exe 
  {
-  run, C:\Program Files\Microsoft Office\root\Office16\ONENOTE.EXE
+   Run, C:\Windows\system32\notepad.exe
+  ; run, C:\Program Files\Microsoft Office\root\Office16\ONENOTE.EXE
   winactivate, ahk_exe ONENOTE.EXE
  }
  IfWinNotActive,ahk_exe ONENOTE.EXE

@@ -38,9 +38,9 @@
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
     "autoHide.autoHideSideBar": false,
-    "autoHide.autoHidePanel": false,
+    "autoHide.autoHidePanel": true,
     "notebook.outline.showCodeCells": true,
-    "cSpell.enabled": false,
+    "cSpell.enabled": true,
     "separators.enabledSymbols": [
         "Classes",
         "Constructors",
@@ -50,5 +50,9 @@
         "Methods",
         "Namespaces",
         "Structs"
+    ],
+    "cSpell.words": [
+        "varbar",
+        "winactivate"
     ]
 }

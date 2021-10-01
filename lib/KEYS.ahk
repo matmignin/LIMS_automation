@@ -1,4 +1,4 @@
-; #ifwinexist, ahk_exe Teams.exe
+; ifwinexist, ahk_exe Teams.exe
 #Ifwinactive,
 
 _TestingZone:
@@ -8,26 +8,6 @@ _TestingZone:
 
 
 
-	MouseGesture(LeftAction:="",RightAction:=""){
-		global
-		MouseGetPos, xi,yi
-		sleep =
-		While GetKeyState(A_ThisHotkey,"P")
-		{
-			MouseGetPos, Xf,Yf
-		}
-		if (xi>Xf){
-			send % leftAction
-			tt("Left")
-			return
-		}
-		if (xi<Xf){
-			send % RightAction
-			tt("Right")
-			return
-		}
-		return
-	}
 
 
 _KEY_DEFAULT:
@@ -156,8 +136,6 @@ F19_And_F20:
 	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
 	F19 & wheelleft::				gosub, F6
 	F19 & wheelright::			GoSub, F7  
-	F19 & Lbutton::				send,{ctrldown}{click}{ctrlup}
-	F19 & Rbutton::				send,{Shiftdown}{click}{shiftup}
 	F20 & /::	 					Send, %SampleID%
 	F20 & up::						sendInput % Coated
 	F20 & right::					sendInput % Lot
@@ -182,11 +160,7 @@ F19_And_F20:
 	F19 & enter::					varbar.focus("Edit1")
 	F20 & enter::					varbar.focus("Edit2")
 	F20 & ,::						varbar.Focus("Edit2")
-
-
-	F20 & l::            		OpenApp.LMS()
 	F20 & F19::          		Send, {F22}
-	; F19 & lbutton::       	^Lbutton
 
 	F19 & Media_Play_pause::
 										my_screenwidth:=A_ScreenWidth-215
@@ -236,6 +210,8 @@ _Double_press_For_Enter:
 _NuGenesis_LMS:
 #Ifwinactive, NuGenesis LMS - \\Remote ;; _NuGenesis LMS
 	Numlock::4tap() ;LMS.COA()
+		F7::						3Right()
+	F6::						3Left()	
 	; F20 & Left::WinMove, A, , -283, -1196, 1662, 952
 	+F19::lms.searchBar("")
 	F19 & space::Send, %Product%{enter}
@@ -268,8 +244,10 @@ _NuGenesis_LMS:
 _Result_Entry:
 	#Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
 		#MaxThreadsPerHotkey 2
-      F9::WorkTab.ChangeTestResults("loop")
+      Numlock::WorkTab.ChangeTestResults("loop")
 		#MaxThreadsPerHotkey 1 
+	wheelup::				send % Blockrepeat(500) Varbar.AddIteration() 
+	wheeldown::   			send % Blockrepeat(500) Varbar.SubIteration()
 
 
 
@@ -322,7 +300,7 @@ _LMS:
 	F8::						3Down()
 	F7::						3Right()
 	F6::						3Left()	
-	^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;;	Pinch
+	^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
 	^wheelup::				LMS.SearchbarPaste() ;; Spread
 	Rbutton & F19::       	send % WindowInfo() 
 	Rbutton & F6::        	Send, {Backspace}
@@ -398,22 +376,6 @@ Numlock::4tap()
 
 ~lbutton::return
 
-F13Click(){
-KeyWait, lbutton, T0.25
-	If ErrorLevel
-	{
-		KeyWait, Lbutton, D T5
-		If !ErrorLevel 
-		{
-			Send, ^{click 3}
-			Send, {CtrlUp}
-		}
-		exit
-	}
-	Send, ^{Click 2}
-	Send, {CtrlUp}
-	return
-	}
 
 
 

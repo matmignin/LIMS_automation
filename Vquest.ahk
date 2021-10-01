@@ -55,13 +55,8 @@ ActiveCheck: ;continuously runing sub
     ; menu.reasons()
     ; WinWaitNotActive, Reason For Change - \\Remote,, 10
     ; }
-    ; If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote"){
-    ;   wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
-    ;   WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
-    ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_ox+100, Varbar_oy
-    ;     WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
-    ;       WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
-    ; }
+    If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
+      varbar.FloatAtopWindow()
   if WinExist("Error - \\Remote") {
     ControlSend,, {enter}, Error - \\Remote
     sleep 200
@@ -75,9 +70,8 @@ ActiveCheck: ;continuously runing sub
 
 
 Test_4:
-LMS.Orient()
-LMS.DetectTab()
-msgbox % Tab "`n " Tab1 ": " Tab2
+LMS.detecttab()
+Pop(Tab)
   return
 
 
@@ -193,8 +187,6 @@ DropDown() {
 
 
 VQuest_Start:
-
-    ; #MenuMaskKey vkE8
     #WinActivateForce
     AutoTrim, On
     OnClipboardChange("clipclip")
@@ -245,7 +237,7 @@ VQuest_Start:
     SetscrolllockState, alwaysOff
     try Run, cl3.Ahk, lib\CL3
 
-    try Menu, Tray, Icon, Robot.ico
+    try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%
     CopyPasteToggle=0
     TabToggle=0

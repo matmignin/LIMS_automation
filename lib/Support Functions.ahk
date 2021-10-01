@@ -7,7 +7,7 @@
 class Breaking {
 	Point(){
 		Global
-		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") {	
+		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") || GetKeyState("Lbutton", "P")  {	
 		TT("Broke")
 			exit
 		}
@@ -241,12 +241,14 @@ Block(Time:=300, Action:=""){
 
 BlockRepeat(Time:=300, ToolTipMessage:=""){
 	Global N
+	sleep 25
 	If N
 		exit
 	If ToolTipMessage
 		TT(TooltipMessage)
 	N:=1
 	SetTimer, BlockInput, -%time%
+	sleep 50
 	return
 	
 	BlockInput:

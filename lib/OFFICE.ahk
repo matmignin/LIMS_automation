@@ -37,10 +37,10 @@ _WORD:
 	; 						Send, {up}
 	; 						FindAndReplaceWord("<" clipboard ">",clipboard,"r")
 	; 						return
-	F20 & k::         up
-	F20 & j::         down
-	F20 & h::         left
-	F20 & l::         right
+	; F20 & k::         up
+	; F20 & j::         down
+	; F20 & h::         left
+	; F20 & l::         right
 	; F19 & space::     Send, +{tab}{tab}
 	F20 & `;::        Send, {tab}
 	F20 & /::         Table_Entry("N/A")

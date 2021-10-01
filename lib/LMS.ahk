@@ -502,8 +502,8 @@ Orient(){
 	WbX:=WbX+400
 	Flovar_x:= wX +900
 	Flovar_y:= wH + wY -28
-	varBar_x:=wX+450
-	varBar_Y:=wY
+	varBar_nuX:=wX+450
+	varBar_nuY:=wY
 	TabSelect:=WW-10
 	yTabSelect:=45
 	yTabDropDown:=45

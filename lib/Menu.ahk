@@ -370,6 +370,10 @@ Remote_desktop(){
   Products(){
     global
       This.delete()
+    If !WinExist("LMS Workbook.xlsb - Excel"){
+      varbar.historymenuItem()
+      return
+    }
     menu,menu,add, [%Product%], ProductsList
     menu,menu,Disable,[%Product%]
     menu,menu,add
@@ -393,6 +397,10 @@ Remote_desktop(){
   Batches(){
       global
       This.Delete()
+      If !WinExist("LMS Workbook.xlsb - Excel"){
+        varbar.historymenuItem()
+        return
+      }
       loop % Batches.MaxIndex(){
         temp:=Batches[A_index]
         menu,menu,add, %temp%, BatchesList

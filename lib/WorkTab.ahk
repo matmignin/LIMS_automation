@@ -207,10 +207,10 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   ;winactivate, Result Entry - \\Remote
   if checkbox_toggle contains loop
   {
-  if keep_running = y
+    if keep_running = y
   {
-  keep_running = n ;signal other thread to stop
-  return
+    keep_running = n ;signal other thread to stop
+    return
   }
   keep_running = y
   ; winactivate, Result Entry - \\Remote
@@ -253,6 +253,8 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
     SendInput,{tab}{tab}
   SendInput,{tab 10}^a
   sleep 100
+  if Checkbox_Toggle Contains toggle
+    return
   Send, %Iteration%
   sleep 100
   if Checkbox_Toggle Not Contains Toggle

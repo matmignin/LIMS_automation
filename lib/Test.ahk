@@ -8,6 +8,26 @@
 
 
 
+	MouseGesture(LeftAction:="",RightAction:=""){
+		global
+		MouseGetPos, xi,yi
+		sleep =
+		While GetKeyState(A_ThisHotkey,"P")
+		{
+			MouseGetPos, Xf,Yf
+		}
+		if (xi>Xf){
+			send % leftAction
+			tt("Left")
+			return
+		}
+		if (xi<Xf){
+			send % RightAction
+			tt("Right")
+			return
+		}
+		return
+	}
 
 
 
