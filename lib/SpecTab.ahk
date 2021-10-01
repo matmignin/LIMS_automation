@@ -102,6 +102,7 @@ Methods() {
 
 CopySpecTemplate(){
 	global 
+	Critical
 	sleep 100
 	if WinActive("NuGenesis LMS - \\Remote"){
 		; click

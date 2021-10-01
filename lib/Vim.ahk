@@ -116,58 +116,49 @@ _TAB:
 
 _F13_CONTROL: 
 #If Getkeystate("F13","p") && Getkeystate("LControl","p")
-	; 5::                                        SendInput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
-	j::                                          SendInput,{shiftdown}{down}{shiftup}
-	l::                                          SendInput,{shiftdown}{right}{shiftup}
-	i::														SendInput,{shiftdown}{altdown}{lwindown}{i}{lwinup}{altup}{shiftup}
-	h::                                          SendInput,{shiftdown}{left}{shiftup}
-	k::                                          SendInput,{shiftdown}{up}{shiftup}
-	^w::                                          SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-	w::                                          SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-	b::                                          SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
-	o::                                          SendInput,{Home}{enter}{up}
-	; 0::                                          SendInput,{shiftdown}{Home 2}{shiftup}
-	6::                                          SendInput,{shiftdown}{Home}{shiftup}
-	t::														SendInput,{F9}test.ahk{enter}
-	4::                                          SendInput,{shiftdown}{end}{shiftup} 
-	v::                                          SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
-	<^v::                                        SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
+	; 5::                                                                                       SendInput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
+	j::                                            SendInput,{shiftdown}{down}{shiftup}
+	l::                                            SendInput,{shiftdown}{right}{shiftup}
+	i::														  SendInput,{shiftdown}{altdown}{lwindown}{i}{lwinup}{altup}{shiftup}
+	h::                                            SendInput,{shiftdown}{left}{shiftup}
+	k::                                            SendInput,{shiftdown}{up}{shiftup}
+	^w::                                           SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	w::                                            SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	b::                                            SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
+	o::                                            SendInput,{Home}{enter}{up}
+	6::                                            SendInput,{shiftdown}{Home}{shiftup}
+	t::														  SendInput,{F9}test.ahk{enter}
+	4::                                            SendInput,{shiftdown}{end}{shiftup} 
+	v::                                            SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
+	<^v::                                          SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
 	[::														
-	<^m::                                        SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
-	^m::                                         SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;highlight Previous
-	m::                                          SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
-	tab::														SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}						
+	<^m::                                          SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	^m::                                           SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;highlight Previous
+	m::                                            SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	tab::														  SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}						
 	]:
-	u::                                          SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
-	^u::                                         SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight next
-	<^u::                                        SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
-	F19::                                        SendInput,{shiftdown}{ctrldown}{altdown}{f6}{altup}{ctrlup}{shiftup} ;previous suggestion
-		'::  													sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
-	^'::  													sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
-		p::														SendInput,{home}{enter}{up}{ctrldown}{v}{ctrlup}
-	Space::                                      SendInput,{shiftdown}{altDown}{a}{shiftup}{altup}{shiftdown}{ctrldown}{]}{ctrlup}{shiftup}
-	; q::                                          SendInput,{shiftdown}{home}{shiftup}
-	e::                                          SendInput,{shiftdown}{end}{shiftup} ;encase
-	; g::                                          SendInput,{shiftdown}{lwindown}{g}{lwinup}{shiftup}
-	; ]::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
-	; [::                                 			    	SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
-	9::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
-	0::                               			    	SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
-		; z::                                        SendInput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup}
-		; ^z::               			                 SendInput,{ctrldown}{z}{ctrlup}
-		; z::           		                          SendInput,{ctrldown}{z}{ctrlup}
-		; f::                                        SendInput,{shiftdown}{altdown}{ctrldown}{f}{ctrlup}{altup}{shiftup}
-	q::                                          SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
-	.::                                      SendInput,{shiftdown}{Home 2}{shiftup}
-	/::                                      SendInput,{shiftdown}{end}{shiftup} 
-	z::											SendInput,{ctrldown}{y}{ctrlup}
-	^z::											SendInput,{ctrldown}{y}{ctrlup}
-	s::                                       SendInput,{home}+{end}
-	^s::                                       SendInput,{home}+{end}
-	c::	                                 	SendInput,!+^{/}
-	,::	                                 	SendInput,!+^{/}
-	^c::	                                 	SendInput,!+^{/}
-	^,::	                                 	SendInput,!+^{/}
+	u::                                            SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
+	^u::                                           SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight next
+	<^u::                                          SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
+	F19::                                          SendInput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;Fold all comments
+		'::  													  sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
+	^'::  													  sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
+		p::													  SendInput,{home}{enter}{up}{ctrldown}{v}{ctrlup}
+	Space::                                        SendInput,{shiftdown}{altDown}{a}{shiftup}{altup}{shiftdown}{ctrldown}{]}{ctrlup}{shiftup}
+	e::                                            SendInput,{shiftdown}{end}{shiftup} ;encase
+	9::                               			     SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
+	0::                               			     SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
+	q::                                            SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
+	.::                                            SendInput,{shiftdown}{Home 2}{shiftup}
+	/::                                            SendInput,{shiftdown}{end}{shiftup} 
+	z::											           SendInput,{ctrldown}{y}{ctrlup}
+	^z::											           SendInput,{ctrldown}{y}{ctrlup}
+	s::                                            SendInput,{home}+{end}
+	^s::                                           SendInput,{home}+{end}
+	c::	                                 	     SendInput,!+^{/}
+	,::	                                 	     SendInput,!+^{/}
+	^c::	                                 	     SendInput,!+^{/}
+	^,::	                                 	     SendInput,!+^{/}
 	#If 
 _F13_SHIFT:    
 #If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")

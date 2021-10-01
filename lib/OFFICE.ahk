@@ -4,10 +4,10 @@ _explorer:
 	; F20 & left::         	WinMove,  ahk_exe explorer.exe, , -292, -943, 1175, 904
 	; F20 & down::         	WinMove,  ahk_exe explorer.exe, , A_ScreenWidth/2, A_screenheight/2, A_ScreenWidth/2, A_ScreenHeight/2-45
 	; F20 & right::        	WinMove,  ahk_exe explorer.exe, , 1836, -1080, 1664, 1087
-	F7::                 	Send, {altdown}{right}{altup}
+	; F7::                 	Send, {altdown}{right}{altup}
 	F19 & space::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
-	F6::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
-	; F19 & Space::				Send, ^{e}%product%{enter}
+	F6::   			sendinput % BlockRepeat(800) product  "{enter}" ;              	Send, {altdown}{left}{altup}
+	F7::				Sendinput, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
 	^w::									closewindow()
 

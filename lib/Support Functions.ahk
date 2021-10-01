@@ -796,6 +796,20 @@ ShowCoated(){
   IniWrite, 0, data.ini, Options, ShowCoated
   Varbar.Show()
   }
+  EnteringRotations(){
+	  global
+	Menu, Tray, ToggleCheck, EnteringRotations
+	If EnteringRotations:= !EnteringRotations
+	{
+		IniWrite, 1, data.ini, Options, EnteringRotations
+		Menu, Tray, Check, EnteringRotations
+	}
+	else 
+	{
+		IniWrite, 0, data.ini, Options, EnteringRotations
+		Menu, Tray, unCheck, EnteringRotations
+	}
+  }
 SwitchWorkSheets(){
 	global
 	Menu, Tray, ToggleCheck, SwitchWorkSheets

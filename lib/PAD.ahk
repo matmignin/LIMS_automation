@@ -112,7 +112,7 @@ _Lbuton:
 			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 			return
 		}
-		If winactive("NuGenesis LMS - \\Remote") {
+		If winactive("NuGenesis LMS - \\Remote") && !winactive("Result Entry - \\Remote") {
 				Excel.Connect(1)
 				TT(Product " " Batch "`n`t" Name " - " Customer)
 				return
@@ -204,9 +204,13 @@ _Lbuton:
 				Menu,Menu, add, &Delete Retain, Autofill
 				Try Menu,menu,show
 			}
-			else if (Tab="Specs")
-				; SpecTab.CopySpecTemplate()
-				menu.lms()
+			else if (Tab="Specs") {
+				if EnteringRotations
+					SpecTab.CopySpecTemplate()
+				else
+					menu.lms()
+				return
+			}
 			else if (Tab="Requests")
 				clk(61, 635) ;enter results
 			else if (Tab="Products")
@@ -227,18 +231,20 @@ _Lbuton:
 			if (Tab="Requests" || Tab:="Samples")
 				; LMS.CoA()
 				TT("LMS COA")
-			else if (Tab:="Products")
-				{
+			else if (Tab:="Products") {
 				TT("edit Compisition")
 				; clk(86, 443) ;edit composition
 				Return
 				}
-			else if (Tab="Specs")
-				{
-				TT("EDIT Results")
+			else if (Tab="Specs") {
+					if EnteringRotations
+						menu.Products()
+					else
+						clk(67, 754) ;edit results
+				return
 				; click
-				; clk(67, 754) ;edit results
-				Return
+				; Return
+					; menu.lms()
 				}
 			else
 				Menu.LMS()

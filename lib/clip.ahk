@@ -376,13 +376,13 @@ Copy(){
   Global
     preclip:=Clipboardall
       Send, {ctrlup}{altup}{shiftup}
-    KeyWait, F20, T0.20
+    KeyWait, F19, T0.20
     If ErrorLevel
     {
-        KeyWait, F20, T0.65
-        if (A_PriorKey!="F20") ;allows for other key combos
+        KeyWait, F19, T0.65
+        if (A_PriorKey!="F19") ;allows for other key combos
           exit
-        if (A_PriorKey="F20") {  
+        if (A_PriorKey="F19") {  
         If !ErrorLevel
         {
           This.Copy("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick

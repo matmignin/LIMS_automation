@@ -384,6 +384,7 @@ Remote_desktop(){
     if !A_ThisMenuItem
       return
     try XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
+    excel.InfoLocations()
       ; Pop(Product,Batch " " lot)
     excel.MatchColor()
     return

@@ -12,6 +12,7 @@
     #InstallMouseHook
     ; #HotkeyModifierTimeout 1
     #maxthreadsperhotkey, 1
+    SetBatchLines, 20ms
     SetControlDelay, 1
     SetKeyDelay, 1, 0.25
     setwindelay, 250
@@ -204,13 +205,22 @@ VQuest_Start:
     SetWorkingDir, %A_ScriptDir%
     Iniread, Iteration, data.ini, SavedVariables, Iteration
     Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+    Iniread, EnteringRotations, data.ini, Options, EnteringRotations
     Iniread, VarBar_X, data.ini, Locations, VarBar_X
     Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
     Menu, Tray, Add, Exit, ExitSub
     Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
     Menu, Tray, Add, Pause, Pause
-      Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
+    
+    Menu, Tray, Add, EnteringRotations, EnteringRotations
+    Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
+    if (EnteringRotations = 1){
+      Menu, Tray, Check, EnteringRotations
+      EnteringRotations:=1
+    }
+    else
+      EnteringRotations:=
     if (SwitchWorkSheets = 1){
       Menu, Tray, Check, SwitchWorkSheets
       SwitchWorkSheets:=1

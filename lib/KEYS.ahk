@@ -1,40 +1,10 @@
 ; #ifwinexist, ahk_exe Teams.exe
 #Ifwinactive,
-#if Winactive("Results Definition - \\Remote")
-	space::sendinput,{ctrldown}{click}{ctrlup}
-	mbutton::Spectab.Table()
-#if
+
 _TestingZone:
-	Volume_Mute::
-	sendlevel 1
-	Send, {F23}
-	sendlevel 0
-	return
-	; drag_enabled := 0
-
-	; +^#F22::
-	; 	if(drag_enabled)
-	; 	{
-	; 		Click up
-	; 		drag_enabled := 0
-	; 	}
-	; 	else
-	; 	{
-	; 		drag_enabled := 1
-	; 		Click down
-	; 	}
-	; 	return
-
-	; LButton::
-	; 	if(drag_enabled)
-	; 	{
-	; 		Click up
-	; 		drag_enabled := 0
-	; 	}
-	; 	else
-	; 		click
-	; 	return
-
+	f10::F21
+	F11::F22
+	F12::Send, {altdown}{tab}{altup}
 
 
 
@@ -56,42 +26,13 @@ _TestingZone:
 			tt("Right")
 			return
 		}
-		; if (yi>Yf+50)
-			; tt("Up")
-		; if (yi<Yf-50)
-			; tt("Down")
 		return
 	}
-	; ^wheelup::   	
-	; 	tt("wheelup", 500)
-	; 	Send, !
-	; 	blockinput, mousemove
-	; 	sleep 500
-	; 	blockinput, mousemoveoff
-	; 	; SetKeyDelay, 1, 0
-	; 	return
-	; ~^wheeldown::  
-	; 	TT("wheeldown",500)
-	; 	blockinput, mousemove
-	; 	sleep 500
-	; 	blockinput, mousemoveoff
-	; 	; SetKeyDelay, 1, 0
-	; 	return
-	; 	; sendlevel 0
-	; ^wheeldown::Block(300,"^{c}")
-	; ^wheeldown::Blockrepeat(500) clip()
-	; ^wheeldown::send % Blockrepeat(900) "^{v}"
-	;; sleep 500
-	; return
-	f10::F21
-	F11::F22
-	F12::Send, {altdown}{tab}{altup}
-	#if (N=1)
-		wheelDown::return
-		wheelup::return
-	#if
+
 
 _KEY_DEFAULT:
++^c::clip.Append()
+!^c::clip.Append(A_Space)
 #c::
 if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
 {
@@ -107,11 +48,12 @@ return
 KeyWinC:
 if (winc_presses = 1) ; The key was pressed once.
 {
-    clip()
+    Clip.Copy()
 }
 else if (winc_presses = 2) ; The key was pressed twice.
 {
-    clip.Append()  ; Open a different folder.
+    clip.Append()  
+	 sleep 300 ; Open a different folder.
 }
 else if (winc_presses > 2)
 {
@@ -201,9 +143,9 @@ _Esc:
 	` & 2::							Test_2()
 	` & 3::							Test_3()
 	`::	 								sendraw, ``
-	F20 up:: 	               Clip.Copy()
+	;F20 up:: 	               Clip.Copy()
 	F19 up::      	       		Clip.paste()
-	<!c::                      clip.Append()
+	; <!c::                      clip.Append()
 
 	>+F20::             			varbar.focus("Batch")
 	>+F19::            		 	varbar.focus("Product")
@@ -278,7 +220,7 @@ _Double_press_For_Enter:
 #If (A_PriorHotKey = "F20") && (A_TimeSincePriorHotkey < 1000) 
 	$rshift::								Send, {tab}
 	; $space::								Send, {enter}
-	F20::										Send, ^v
+	; F20::										Send, ^v
 #if 
 
 
@@ -293,7 +235,7 @@ _Double_press_For_Enter:
 
 _NuGenesis_LMS:
 #Ifwinactive, NuGenesis LMS - \\Remote ;; _NuGenesis LMS
-	$Numlock::4tap() ;LMS.COA()
+	Numlock::4tap() ;LMS.COA()
 	; F20 & Left::WinMove, A, , -283, -1196, 1662, 952
 	+F19::lms.searchBar("")
 	F19 & space::Send, %Product%{enter}
@@ -302,26 +244,32 @@ _NuGenesis_LMS:
 	~Lbutton & F19::Send,{enter}
 	Enter::LMS.SaveCode()
 	numpaddot::blockrepeat(500) excel.connect(1)
-	F20::LMS.SearchbarPaste()
-	^v::LMS.SearchbarPaste()
-	F19::LMS.Searchbar()
+	; F20::LMS.SearchbarPaste()
+	+^v::LMS.SearchbarPaste()
+	; F19::LMS.Searchbar()
 	; numpadadd::
-	; 	if SwitchWorkSheets
-	; 		excel.NextSheet()
-	; 	else
-	; 		lms.ProductSpecToggle()
-	; 	return
-	; numpadsub::
-	; 	if SwitchWorkSheets
-	; 		excel.Prevsheet()
-	; 	else
-	; 		lms.SampleRequestToggle()
-	; 	return
-	; F20::Send, ^c  
-	; space & lbutton::Send, +{click}
-	; space up::SendInput, ^{click}
+		; 	if SwitchWorkSheets
+		; 		excel.NextSheet()
+		; 	else
+		; 		lms.ProductSpecToggle()
+		; 	return
+		; numpadsub::
+		; 	if SwitchWorkSheets
+		; 		excel.Prevsheet()
+		; 	else
+		; 		lms.SampleRequestToggle()
+		; 	return
+		; F20::Send, ^c  
+		; space & lbutton::Send, +{click}
+		; space up::SendInput, ^{click}
 	wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
 	wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
+
+_Result_Entry:
+	#Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
+		#MaxThreadsPerHotkey 2
+      F9::WorkTab.ChangeTestResults("loop")
+		#MaxThreadsPerHotkey 1 
 
 
 
@@ -329,6 +277,8 @@ _Results_Definition:
 	#IfWinActive, Results Definition - \\Remote
 		wheelup::Mouse_click("Edit")
 		numlock::Send, % clk(712, 663) "{esc}"
+		space::sendinput,{ctrldown}{click}{ctrlup}
+		mbutton::Spectab.Table()
 
 
 _Register_new_samples:
@@ -339,11 +289,6 @@ _Register_new_samples:
 			Send, %Product%{enter}
 			return
 
-_Result_Entry:
-	#Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
-		#MaxThreadsPerHotkey 2
-      F9::WorkTab.ChangeTestResults("loop")
-		#MaxThreadsPerHotkey 1 
 
 _LMS_KEYS:
 	#ifwinactive, Reason for Change - \\Remote
@@ -358,7 +303,7 @@ _LMS_KEYS:
 #ifwinactive, Select samples for test:
 	; wheelright::3right()
 	; wheelleft::WorkTab.SelectTestSample()
-
+#if
 _LMS:
   #IfWinActive, ahk_exe WFICA32.EXE,
 
@@ -366,7 +311,7 @@ _LMS:
 	F19 & right::			excel.Prevsheet()
 	F19 & down::			Varbar.SubIteration(0)
 	F19 & up::	 			Varbar.AddIteration(0)
-	; $Rbutton up::		Mouse_RbuttonUP()
+	; Rbutton up::		Mouse_RbuttonUP()
 	^`::						Varbar.reset()
 	enter::					click.okay()
 	esc::						click.esc()
@@ -386,7 +331,7 @@ _LMS:
 
 #IfWinActive, Barcode Scanner - \\Remote
 	enter::enter
-	F20::LMS.SearchbarPaste()
+	; F20::LMS.SearchbarPaste()
 	^v::LMS.SearchbarPaste()
 
 
@@ -419,6 +364,9 @@ _MouseIsOver:
 			; Click 3
 		; clip()
 		; return
+#If MouseIsOver("ahk_exe Snipaste.exe")
+	F8::sendinput, {click}{esc}
+	NumpadDot::sendinput, {click}{esc}
 ; #if
 #If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 F7::LMS.SearchBar(Batch,"{enter}")

@@ -67,8 +67,8 @@ Table(){
 
 
 
-
-  EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){ ;the final input window for adding ingredients
+  EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){  
+;;      the final input window for adding ingredients
     Global
     Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
     Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
@@ -106,7 +106,7 @@ Table(){
 
   DropdownSelect(A_DropdownCount){
     global
-    click, 150, 73 ;click dropdown boxx
+    click, 150, 73 ;click dropdown box
     sleep 100
     Breaking.Point()
 
@@ -149,19 +149,34 @@ Table(){
   }
 
 
-Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
-  global
+Blends(n,Measurment){
+  global ServingSize, Color, ShapeAndSize
    SetWinDelay, 450
   winactivate, Edit Formulation - \\Remote
   click 450, 462, 3
   Send, {click 385, 347}
-  if (n=1)
-    Plural:=""
-  else
+  if (N!=1)
     Plural:="s"
-  if (!color)
+  if (n=1)
+    TextNumber:="{backspace}"
+  if (n=2)
+    TextNumber:="two"
+  if (n=3)
+    TextNumber:="three"
+  if (n=4)
+    TextNumber:="four"
+  if (n=5)
+    TextNumber:="five"
+  if (n=6)
+    TextNumber:="six"
+  if (n=7)
+    TextNumber:="seven"
+  if !color
     Color:="PENDING"
-  Send, Each %textNumber% (%n%){space}%measurment%%plural% ( g) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}%weight%
+  If !ServingSize
+    ServingSize:= " g"
+  Send, Each %textNumber% (%n%){space}%measurment%%plural% (%ServingSize%) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}
+  setwindelay, 250
   exit
 }
 
@@ -189,7 +204,7 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
   } 
 
   EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
-    global Product, ShapeAndSize, color
+    global Product, ShapeAndSize, color, ServingSize
     ; Mouse_Click("Add_Formulation")
     if !winactive("Edit Formulation - \\Remote") && winexist("Edit Formulation - \\Remote")
       winactivate, Edit Formulation - \\Remote,
@@ -197,12 +212,13 @@ Scoops(n,TextNumber:="{backspace}",Measurment:="scoop"){
       Send, {Tab 23} ;{click 268, 578}
       sleep 200
     Breaking.Point()
-    if ShapeAndSize
+    ; if (ServingSize=1 ? "(" ServingSize ")" : "Two (" ServingSize ")" ) ;|| ServingSize=2 || ServingSize=3 || ServingSize=4)
+      ; send, Each %ServingSize% {space} contains {ctrl down}{left}{ctrl up}{left}
     send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
-    ShapeAndsize:=  
+    ; ShapeAndsize:=  
     sleep 200
-    If Color Contains IF(B7
-      color:=
+    If !Color
+      color:="Pending"
     else
       send, {tab 2}^a%Color%{shiftdown}{tab 2}{shiftup}
     sleep 200

@@ -47,12 +47,15 @@ F4::
     winactivate
     sleep 200 
     Send, {ctrldown}{e}{ctrlup}
+    send, ^{a}%Product%
     return
   }
   Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
   winactivate, ahk_exe EXCEL.EXE
   sleep 200 
   Send, {ctrldown}{e}{ctrlup}
+  sleep 100
+  Send, ^{a}%product%
   return
 ` & esc::        ;                 Pause, Toggle
 +F1::
@@ -65,7 +68,7 @@ OpenApps:
   <!f::OpenApp.Firefox()
   !v::OpenApp.vsCode()
   #!v::Run, C:\Users\mmignin\Documents\VQuest\
-  ; !c::OpenApp.Clickup()
+  !c::gosub, F4 ; run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\
   !e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   !o::OpenApp.Outlook()
