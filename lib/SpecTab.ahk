@@ -32,9 +32,10 @@ Table(){
 		CoordMode, mouse, screen
 		ScreenEdge_X:=A_ScreenWidth-350
 		ScreenEdge_Y:=A_Screenheight-150
-		try Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w380, %Product% Spec Table
-		catch Gui, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Spec Table
+		try Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
+		catch Gui, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
 		CoordMode, mouse, window
+		OnMessage(0x0201, "WM_Lbuttondown")
 		return
 		}
 		
@@ -42,8 +43,8 @@ CreateGUI(){
 	global
 	Gui, Spec_Table:Default
 	Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-	GUI, Spec_Table:Font, s12 cBlack Bold, Consolas
+	Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid AltSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+	GUI, Spec_Table:Font, s14 cBlack Bold, Consolas
 	loop, %Total_Rows%{
 		if Position[A_index] =""
 		{
@@ -254,8 +255,8 @@ CopySpecs(){
 	return
 }
 
-
-AutoFill(){
+;; Run through all the menues to add 
+AutoFill(){  
 	global
 	WinActivate, ahk_exe WFICA32.EXE
 		sleep 200
@@ -353,24 +354,6 @@ GetExcelData(){
 	Description:=	[]
 	Requirement:=	[]
 	method:= 		[]
-	; If (XL.Range("A1").Value!=1){
-	; 	while (Xl.Range("M" . A_Index+6).Value != ""){
-	; 		Position[A_index]:=				Xl.Range("F" . A_Index+7).Text
-	; 		Name[A_index]:=					Xl.Range("K" . A_Index+7).text
-	; 		LabelClaim[A_index]:=			Xl.Range("L" . A_Index+7).Text
-	; 		MinLimit[A_index]:=				Xl.Range("G" . A_Index+7).Text
-	; 		MaxLimit[A_index]:=				Xl.Range("H" . A_Index+7).Text
-	; 		Units[A_index]:=					Xl.Range("I" . A_Index+7).Text
-	; 		Percision[A_index]:=				Xl.Range("J" . A_Index+7).Text
-	; 		Description[A_index]:=			Xl.Range("N" . A_Index+7).Text
-	; 		Method[A_index]:=					Xl.Range("D" . A_Index+7).Text
-	; 		Total_rows:=A_index
-	; 		Table_Height:=A_index
-	; 		if (Table_Height > 30)
-	; 			Table_Height = 30
-	; 	}
-	; }
-	; else {
 		while (Xl.Range("AK" . A_Index+6).Value != ""){
 			Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
 			Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
@@ -383,8 +366,8 @@ GetExcelData(){
 			Method[A_index]:=					Xl.Range("AB" . A_Index+7).Text
 			Total_rows:=A_index
 			Table_Height:=A_index
-			if (Table_Height > 30)
-				Table_Height = 30
+			if (Table_Height > 20)
+				Table_Height = 20
 		}
 	; }
 	
@@ -430,8 +413,8 @@ EditSpecification_Analytical(){
 	return
 }
 
-
-ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1){
+;; ___Fill In Test Specs
+ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1){ ; 3rd window
 	Global
 	; TT(CreateRequirements)
 		; normal
@@ -474,7 +457,7 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 			return
 }
 
-TestDefinitionEditor(The_Description){
+TestDefinitionEditor(The_Description){ ; 2nd window
 	Global
 	if The_description is space
 		{
@@ -811,9 +794,11 @@ HM_Prop65(){
 
 
 
-
+WM_LbuttonDown:
 Spec_Table:
-	if (A_GuiEvent = "DoubleClick" ){
+	if (A_GuiEvent = "NORMAL" ){
+	; if (A_GuiEvent := "I" ){
+	
 		SendInput,{space}
 	SpecTab.GetRowText()
 	SpecTab.AutoFill()
