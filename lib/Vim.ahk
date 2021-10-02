@@ -1,4 +1,4 @@
-#If WinActive("ahk_exe Code.exe")  ;;___VSCODE                            
+#If WinActive("ahk_exe Code.exe")  ;;		___VSCODE                            
 		!v:: 										  send, {F9}vim.ahk{enter}
 		F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 		F15 & tab::               SendInput,{ctrldown}{]}{ctrlup}	
@@ -31,7 +31,7 @@
 		<^lwin::                  delete
 		<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 		^s::                      SendInput, {ctrldown}{end}{ctrlup}
-	;;___F19_F20:
+	;;		___F19_F20
 		F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 		F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 		F20 & backspace::         delete
@@ -64,7 +64,7 @@
 		F13 & F11::               WindowInfo()
 		F13 & lshift::						enter
 		F13::F13
-	;;____TAB:
+	;;		____TAB
 		Tab & `:: 	 							
 		Tab & h::               	SendInput,{ctrldown}{[}{ctrlup}
 		Tab & l::               	SendInput,{ctrldown}{]}{ctrlup}
@@ -100,7 +100,7 @@
 
 #if MouseClip && winactive("ahk_exe Code.exe")
 	Mbutton::                                    clip.Click()
-_LCONTROL:
+;; 		___LCONTROL
 #if Getkeystate("LControl","p")
 	z::                        SendInput,{ctrldown}{z}{ctrlup}
 	n:: 											 SendInput,{altdown}{ctrldown}{g}{ctrlup}{altup}
@@ -109,7 +109,7 @@ _LCONTROL:
 	+z::                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
 
 
-_F13_CONTROL: 
+;;		___F13 CONTROL 
 #If Getkeystate("F13","p") && Getkeystate("LControl","p")
 	; 5::                                                                                       SendInput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
 	j::                                            SendInput,{shiftdown}{down}{shiftup}
@@ -126,23 +126,23 @@ _F13_CONTROL:
 	4::                       SendInput,{shiftdown}{end}{shiftup} 
 	v::                       SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
 	<^v::                     SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
-	[::												
 	<^m::                     SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
-	^m::                      SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;highlight Previous
-	m::                       SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+	^m::                      SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;highlight next
+	m::                       SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;select next
 	tab::											SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}						
-	]:
+	[::												sendinput,{right}^{left}+^{right}{[}
+	]::												sendinput,{right}^{left}+^{right}+{[}
+	9::                       SendInput,{right}^{left}+^{right}+{9}
+	0::                       SendInput,{right}^{left}+^{right}+{9}+{'}
 	u::                       SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
-	^u::                      SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight next
+	^u::                      SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight previous
 	<^u::                     SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
 	F19::                     SendInput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;Fold all comments
-		'::  										sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
-	^'::  										sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
+		'::  										sendinput,{right}^{left}+^{right}+{'}
+	^'::  										sendinput,{right}^{left}+^{right}+{'}
 		p::											SendInput,{home}{enter}{up}{ctrldown}{v}{ctrlup}
 	Space::                   SendInput,{shiftdown}{altDown}{a}{shiftup}{altup}{shiftdown}{ctrldown}{]}{ctrlup}{shiftup}
 	e::                       SendInput,{shiftdown}{end}{shiftup} ;encase
-	9::                       SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
-	0::                       SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
 	q::                       SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;block comment
 	.::                       SendInput,{shiftdown}{Home 2}{shiftup}
 	/::                       SendInput,{shiftdown}{end}{shiftup} 
@@ -155,8 +155,8 @@ _F13_CONTROL:
 	^c::	                    SendInput,!+^{/}
 	^,::	                    SendInput,!+^{/}
 	#If 
-_F13_SHIFT:    
-#If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")
+ 
+#If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")  ;; 		___F13 SHIFT   
 	k::                       SendInput,{up 10}
 	+k::                      SendInput,{up 10}
 	j::                       SendInput,{down 10}
@@ -188,8 +188,7 @@ _F13_SHIFT:
 
 
 
-_Vim_Doublepress:
-	#If (A_PriorHotKey = "d" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;Vim Delete
+	#If (A_PriorHotKey = "d" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;; 			_Vim d
 		4::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
 		/::                                       Vim.Yank("+{End}","cut") ;yank end
 		.::                                       Vim.Yank("+{Home}","cut") ;yank end
@@ -202,7 +201,7 @@ _Vim_Doublepress:
 		d::                                       vim.Yank("{Home 2}{shiftdown}{End}{right}{shiftup}","cut")
 		; [::                                  		SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 		; ]::                                       SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
-	#If (A_PriorHotKey = "y" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800)
+	#If (A_PriorHotKey = "y" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;;			_Vim y
 		/::                                       SendInput,{shiftdown}{end}{shiftup}^{c}{F5 2}
 		`;::                                      Vim.Yank("+!{;}") ;^{c}{F5 2} ;incase
 		.::                                       Vim.Yank("{shiftdown}{home}{shiftup}")
@@ -210,18 +209,18 @@ _Vim_Doublepress:
 	; w::                                    		 SendInput,{right}{ctrldown}{left}{shiftdown}{right}{shiftup}{c}{Ctrlup}
 		5::                                       SendInput,^{m}^{c}
 		4::                                       SendInput,{shiftdown}{end}{shiftup}^c{esc}{F5 2}
-		y::                                       SendInput,{home}{shiftdown}{end}{shiftup}^c{esc}{F5 3}
+		y::                                       SendInput % "{home}{shiftdown}{end}{shiftup} "Vim.Yank() 
 		w::                                       SendInput,{shiftdown}{altDown}{ctrldown}{s}{altup}{shiftup}{c}{Ctrlup}{esc}{F5 2}
 		0::                                       SendInput,{shiftdown}{home}{shiftup}^c{esc}{F5 2}
-	#If (A_PriorHotKey = "v" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500)
+	#If (A_PriorHotKey = "v" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 			_Vim v
 		w::                                       SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 		; p::																			vim.paste() ;SendInput,^z{end}{enter}
 	#if
-_Vim_F13:
+;;		___Vim_F13
 	#If Getkeystate("F13","p")
 		p::                                       Vim.Paste()
 		y::                                       SendInput,^{c} 
-		Rshift::                                  SendInput,{pgdn}
+		Rshift::                                  SendInput,{s}
 		9 & 0::																	SendInput,{)}
 		^s::                                       SendInput,{home}+{end}
 		; ^q::                                     	SendInput,{shiftdown}{ctrldown}{,}{ctrlup}{shiftup}				 ;block comment
@@ -233,13 +232,13 @@ _Vim_F13:
 		^,::	                                 	SendInput,!+^{/}
 		q::                                       SendInput,!^{/}						;line comment
 	; ]::                                       SendInput,{shiftdown}{altdown}{]}{altup}{shiftup}
-		9::																				SendInput,{shiftdown}{altdown}{9}{altup}{shiftup}
-		0::																				SendInput,{shiftdown}{altdown}{0}{altup}{shiftup}
+		9::																				SendInput,+{9}
+		0::																				SendInput,+{0}
 	; [::                                       SendInput,{shiftdown}{altdown}{[}{altup}{shiftup}
-		$^]::                                     SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}
-		$^[::                                     SendInput,{shiftdown}{altdown}{lwindown}{[}{lwinup}{altup}{shiftup}
-		^9::                                      SendInput,{shiftdown}{altdown}{lwindown}{9}{lwinup}{altup}{shiftup}
-		^0::                                      SendInput,{shiftdown}{altdown}{lwindown}{0}{lwinup}{altup}{shiftup}
+		; $^]::                                     SendInput,{right}^{left}+^{right}+{[}
+		; $^[::                                     SendInput,{right}^{left}+^{right}{[}
+		^9::                                      SendInput,{right}^{left}+^{right}+{9}
+		^0::                                      SendInput,{right}^{left}+^{right}+{9}+{'}
 		.::      	                                 Send,{Home}
 		f::                                      	sendinput,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
 		F19::                                     SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
@@ -249,9 +248,15 @@ _Vim_F13:
 		w::                                       SendInput,{ctrldown}{right}{ctrlup}
 		 4::                                      SendInput,{End}
 		i::                                      	SendInput,{F9}@
-		s::                                      SendInput,{shiftdown}{altdown}{;}{altup}{shiftup}
-		`;::                                      SendInput,{shiftdown}{altdown}{;}{altup}{shiftup}
-		^`;::                                     SendInput,{shiftdown}{ctrldown}{altdown}{;}{ctrlup}{altup}{shiftup}
+		s::                                      SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
+		`;::                                      SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
+		^`;::                                     SendInput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
+		^]::                                   	  SendInput,{right}^{left}+^{right}+{[}
+		^[::                                       SendInput,{right}^{left}+^{right}{[}
+		]::                                   	  SendInput,+{]}
+		[::                                       SendInput,+{[}
+		^'::  												sendinput,{right}^{left}+^{right}+{'}
+		'::  													sendinput,+{'}
 		+l::                                      SendInput,{End}
 
 		/::                                       Send,+{end}{right} ;end of line
@@ -261,7 +266,7 @@ _Vim_F13:
 		j::                                       SendInput,{down}
 		k::                                       SendInput,{Up}
 		; t::                                     SendInput,{altdown}{down}{altup}
-		t::													SendInput,{F9}test.ahk{ctrldown}{enter}{ctrlup}
+		t::																				SendInput,{F9}test.ahk{ctrldown}{enter}{ctrlup}
 		h::                                       SendInput,{left}
 		l::                                       SendInput,{right}
 		x::                                       SendInput,{Delete}
@@ -269,15 +274,11 @@ _Vim_F13:
 		d::                                       return
 		b::                                       SendInput,{ctrldown}{left}{Ctrlup}
 		o::                                       SendInput,{end}{enter}
-		]::                                   	  SendInput,{shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup} ;goto next matching word
-		[::                                       SendInput,{shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup} ;go to previous matching word
-		u::                                       sendinput, !+{k}  						;move line up
-		m::                                       sendinput, !+{j}  						;Move line down
+		m::                                       sendinput, {shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup} ;goto next matching word
+		u::                                       sendinput, {shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup} ;go to previous matching word
 		n::                                       SendInput,{altdown}{ctrldown}{g}{ctrlup}{altup} 			;dublicate line
 
 	; up::                                      SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
-		^'::  												sendinput,{shiftdown}{lwindown}{altdown}{'}{altup}{lwinup}{shiftup}
-		'::  													sendinput,{shiftdown}{altdown}{'}{altup}{shiftup}
 		5::                      SendInput,{shiftdown}{5}{shiftup}
 	`::                        vim.ChangeSelection()
 		; r::                    Vim.ChangeSelection()
@@ -311,10 +312,8 @@ F13 & up::									    sendinput, {shiftdown}{up}{shiftup}
 F13 & left::									  sendinput, {shiftdown}{left}{shiftup}
 F13 & right::									  sendinput, {shiftdown}{right}{shiftup}
 
-;; 				psudonumpad(){}
 
-_PsudoNumpad:
-	#If Getkeystate("F19","p")
+	#If Getkeystate("F19","p") ;;		 ___psudonumpad
 	0::              SendInput,{-}
 	m::              numpad1
 	+m::             M
@@ -352,7 +351,7 @@ _PsudoNumpad:
 	#if 
 
 
-class Vim{
+class Vim {
 
 	find(){
 		global
@@ -378,45 +377,33 @@ class Vim{
 		return
 	}
 	Yank(Precommand:="",Cut:=""){
-		global VimClip
-		PreClip:=ClipboardAll
-		Clipboard:=
+		global 
 		if Precommand
 			Sendinput % PreCommand
 		Send, ^{c}
 		clipwait, 0.25
-		if !errorlevel
-			vimclip:=clipboard
+			if errorlevel
+				send, {home}+{end}^{c}
 		if Cut
 			Sendinput, {Backspace}
 		else 
-			send, {F5}
-		; RegExReplace(VimClip, "\R+\R", "`r`n") 
-		; RegExReplace(VimClip, "\R+\R", "`r`n") 
-		VimClip := StrReplace(VimClip, "`t","")
-		VimClip := StrReplace(VimClip, "`r`n","")
-		VimClip := StrReplace(VimClip, "`n","")
+			send, {esc}{F5}
 		sleep 20
-		; iniwrite %Vimclip%, data.ini, SavedVariables, Vimclip
-		clipboard:=PreClip
 		return 
 	}
 	
 	Paste(){
-		global Vimclip
-		Preclip:=ClipboardAll
-		clipboard:=
-		sleep 20
-		Clipboard:=Vimclip
-		KeyWait, %A_ThisHotkey%, D T1
-		if errorlevel
+		global 
+
+		KeyWait, p, U T1
+		if errorlevel {
+			Clipboard := StrReplace(Clipboard, A_tab, "")
+			Clipboard := StrReplace(Clipboard, A_space A_space, A_Space)
+			Clipboard:=RegExReplace(Clipboard, "\R+\R", "`r`n")     ; remove empty lines
 			Send,^v
+		}
 		else
 			Send,{end}{enter}^{v}
-		; KeyWait, %A_ThisHotkey% ,D T0.25
-		; sendinput, ^v
-		sleep 20
-		clipboard:=PreClip
 		return
 	}
 	}

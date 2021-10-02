@@ -24,8 +24,9 @@ Connect(reload:=0){
 		sht := XL.ActiveSheet.Name
 		;btch:= XL.ActiveSheet.Range.("E1")
 			Gui VarBar:+LastFound
-		if (sht = "PriorMonths" || sht= "Sheet1" || sht = "Main" || sht = "Template" || sht = "Finished" || sht = "Micro Pending" || sht = "Sheet2" || sht = "Sheet1" || sht = "Item Code" || sht = "Scrap Sheet")
-			return
+		if ((sht := "PriorMonths") || (sht:= "Sheet1") || (sht := "Main") || (sht := "Template") || (sht := "Finished") || (sht := "Micro Pending") || (sht := "Sheet2") || (sht := "Sheet1") || (sht := "Item Code") || (sht := "Scrap Sheet")) {
+			this.NextSheet()
+		}
 	}
 	Catch {
 		TT("Didnt connect to workbook", 5000,,,1)
@@ -35,8 +36,8 @@ Connect(reload:=0){
 												; /*  Get each sheet name and turn it into an array
 												For sheet in xl.ActiveWorkbook.Worksheets
 												{
-													If (Sheet.name = "Main") || (Sheet.name = "Template") || (Sheet.name = "Finished") || (Sheet.name = "Micro Pending") || (Sheet.name = "PriorMonths")
-														continue
+											;		If (Sheet.name := "Main") || (Sheet.name := "Template") || (Sheet.name := "Finished") || (Sheet.name := "Micro Pending") || (Sheet.name := "PriorMonths")
+;														continue
 													Products.insert(Sheet.Name)
 												}
 												; Products.remove(1)
@@ -54,8 +55,9 @@ Connect(reload:=0){
 		VarBar.show()
 
 	return
-	}
 
+
+}
 SheetActivate(XL) {
   global
   excel.Infolocations()
@@ -168,10 +170,11 @@ NextSheet(){
 	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
 	XL.Sheets(NextSheetname).activate
-	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet")
+	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet") {
 		XL.Sheets(NextSheetname).activate
-		excel.connect()
+		;excel.connect()
 	Excel.MatchColor()
+	}
 	; TT(Product "`t" Batch "`n" Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R") 
 	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t" Customer) 
 	GuiControl, +redraw, varbar
@@ -184,9 +187,10 @@ PrevSheet(){
 	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
 	Xl.Sheets(PrevSheet).activate
-	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet")
+	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet") {
 		Xl.Sheets(PrevSheet).activate
-		excel.connect()
+		;excel.connect()
+}
 	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer) 
 	; Excel.MatchColor()
 	Excel.MatchColor()
@@ -213,7 +217,7 @@ MatchColor(){
 	else if 	(TabColor = 16777215) 	;light purple
 		Gui, VarBar:color,, 9966FF 
 	else if 	(TabColor = 0) 	;black
-		Gui, VarBar:color,, 000000 
+		Gui, VarBar:color,, 323130 
 	else
 			Gui, VarBar:color, 808000 ;pink
 	}
