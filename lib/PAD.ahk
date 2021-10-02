@@ -23,6 +23,100 @@
 
 ;;	___3Fingers
 
+3tap(){
+	Global 
+	setwindelay, 100
+	if winactive("ahk_exe OUTLOOK.EXE") {
+		click 3
+		Send, ^{c}
+		clip()
+		return
+	}
+	if WinActive("ahk_exe WFICA32.EXE") {
+		if Winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
+			LMS.DetectTab()
+			; if (Tab="Samples")
+				; Menu, Menu, add, New &Request, AutoFill
+			if (Tab="Tests"){
+				Menu,Menu, add, &Delete Retain, Autofill
+				Try Menu,menu,show
+			}
+			else if (Tab="Specs") {
+				if EnteringRotations
+					SpecTab.CopySpecTemplate()
+				else
+					menu.lms()
+				return
+			}
+			else if (Tab="Requests")
+				clk(61, 635) ;enter results
+			else if (Tab="Products")
+				clk(67, 754) ;edit results
+			else if (Tab="Samples"){
+					clk(124, 294) ;assign Requests
+					sleep 500
+					if !Winactive("Edit request - \\Remote")
+						sleep 500
+					clk(258, 613,,,"Edit request - \\Remote")
+					sleep 500
+					if !WinActive("Select tests for request:")
+						sleep 500
+					clk(31, 102,,,"Select tests for request:")
+			return
+			}
+		}
+		else if winexist("Delete Test - \\Remote") || winexist("Delete Tests - \\Remote") || Winexist("Delete results - \\Remote") || Winexist("Delete sample templates - \\Remote") || WinExist("Delete specification - \\Remote") { ; Press Okay
+			WinActivate, Delete
+			send, y
+			clk(229, 136)
+			return
+		}
+		else if Winactive("Register new samples - \\Remote") 
+				WorkTab.registerNewSamples()
+		else if Winactive("Login - \\Remote") 
+			menu.passwords()
+		else if Winactive("Result Entry - \\Remote") 
+			WorkTab.ChangeTestResults("toggle")
+		else if Winactive("Edit specification - \\Remote")  	
+			menu.LMS()
+		else if Winactive("Composition - \\Remote")  	
+			ProductTab.Table()
+		else if Winactive("Results Definition - \\Remote")  	
+			sendinput, {Blind}{ctrldown}{click}{ctrlup}
+		else if Winactive("Edit Formulation - \\Remote") 
+			productTab.EditFormulation()
+		else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
+			send % clk(107, 66) Product "{enter}{enter}"
+		else if Winactive("Edit Product - \\Remote") 
+			ProductTab.EditProduct() 
+		else If Winactive("Select tests for request:") 
+			WorkTab.SelectTestSample() 
+		else if winexist("Release: ") { ; Press Okay
+			WinActivate, 
+			clk(131, 144)
+			return
+		}
+	}
+	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
+		Sendpassword()
+	else if winactive("ahk_exe firefox.exe") 
+		Send, {ctrldown}{click}{ctrlup}
+	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
+		Sendpassword()
+	else If Winactive("LMS Workbook.xlsb") 
+		Sendinput, +{click}
+	else If Winactive("Paster - Snipaste")
+			Send, ^c
+	else if Winactive("Snipper - Snipaste") 
+			Send, {enter}
+	else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
+		Send, {lwindown}{e}{lwinup}
+	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
+			menu.Remote_Desktop()
+		Else 
+			return
+		}
+
 
 3Right(){
 	global
@@ -44,8 +138,8 @@
 	}
 	else if winactive("Register new samples - \\Remote")
 		clk(502, 354)
-	else if winactive("Select samples for test:")
-		send % Clk(504, 324) "{click, 849, 661}"  ; add test.
+	else if winactive("Select samples for test:") ; selecting the physical or micro
+		send % "{click, 849, 661}"  ; add test. Clk(504, 324) 
 	else if winactive("Select tests for request: R")
 		send % Clk(504, 338)  ; add test.
 	else if winactive("ahk_exe WFICA32.EXE") 
@@ -122,93 +216,6 @@ return
 	
 }
 
-3tap(){
-	Global 
-	setwindelay, 100
-	if winactive("ahk_exe OUTLOOK.EXE") {
-		click 3
-		Send, ^{c}
-		clip()
-		return
-	}
-		else if winexist("Delete Test - \\Remote") || winexist("Delete Tests - \\Remote") || Winexist("Delete results - \\Remote") || Winexist("Delete sample templates - \\Remote") || WinExist("Delete specification - \\Remote") { ; Press Okay
-		WinActivate, Delete
-		send, y
-		clk(229, 136)
-		return
-	}
-	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-		Sendpassword()
-else if winexist("Release: ") { ; Press Okay
-		WinActivate, 
-		clk(131, 144)
-		return
-	}
-	else if winactive("ahk_exe firefox.exe") 
-		Send, {ctrldown}{click}{ctrlup}
-	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
-		Sendpassword()
-	else If Winactive("LMS Workbook.xlsb") 
-		excel.connect()
-	else if Winactive("Register new samples - \\Remote") 
-			WorkTab.registerNewSamples()
-	else if Winactive("Login - \\Remote") 
-		menu.passwords()
-	else if Winactive("Result Entry - \\Remote") 
-		WorkTab.ChangeTestResults("toggle")
-	else if Winactive("Edit specification - \\Remote")  	
-		menu.LMS()
-	else if Winactive("Composition - \\Remote")  	
-		ProductTab.Table()
-	else if Winactive("Results Definition - \\Remote")  	
-		sendinput, {Blind}{ctrldown}{click}{ctrlup}
-	else if Winactive("Edit Formulation - \\Remote") 
-	{
-		productTab.EditFormulation()
-		; mouseclick, left, 455, 472,2,0
-		; clk(250, 284)
-	}
-	else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
-		send % clk(107, 66) Product "{enter}{enter}"
-	else if Winactive("Edit Product - \\Remote") 
-		ProductTab.EditProduct() 
-	else If Winactive("Select tests for request: R") 
-		WorkTab.SelectTestSample() 
-	else If Winactive("Paster - Snipaste")
-			Send, ^c
-	else if Winactive("Snipper - Snipaste") 
-			Send, {enter}
-	else if Winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass") 
-		Send, {lwindown}{e}{lwinup}
-	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
-			menu.Remote_Desktop()
-	else if Winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
-		LMS.DetectTab()
-		if (Tab="Samples")
-			Menu, Menu, add, New &Request, AutoFill
-		else if (Tab="Tests"){
-			Menu,Menu, add, &Delete Retain, Autofill
-			Try Menu,menu,show
-		}
-		else if (Tab="Specs") {
-			if EnteringRotations
-				SpecTab.CopySpecTemplate()
-			else
-				menu.lms()
-			return
-		}
-		else if (Tab="Requests")
-			clk(61, 635) ;enter results
-		else if (Tab="Products")
-			clk(67, 754) ;edit results
-		else if (Tab="Samples")
-			clk(107, 319) ;assign Requests
-		return
-		}
-		Else 
-			return
-	; }
-	}
 
 ;;	___4Fingers
 4tap(){

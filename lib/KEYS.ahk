@@ -210,6 +210,7 @@ _Double_press_For_Enter:
 _NuGenesis_LMS:
 #Ifwinactive, NuGenesis LMS - \\Remote ;; _NuGenesis LMS
 	Numlock::4tap() ;LMS.COA()
+	mbutton::3tap()
 		F7::						3Right()
 	F6::						3Left()	
 	; F20 & Left::WinMove, A, , -283, -1196, 1662, 952
@@ -276,6 +277,7 @@ _LMS_KEYS:
 						Click.Okay()
 						return
 #ifwinactive, Select tests for request: 
+	space::send, ^{click}
 	; wheelright::3right()
 	; wheelleft::WorkTab.SelectTestSample()
 #ifwinactive, Select samples for test:
