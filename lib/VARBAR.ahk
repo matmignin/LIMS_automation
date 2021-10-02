@@ -1,118 +1,4 @@
 
-;; ___KEYBINDINGS
-	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-		F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
-		F19::varbar.focus("Product")
-		; F20::varbar.focus("Batch")
-		^enter::                           
-								winactivate, %the_WinTitle%
-								click, %caret_X%, %caret_y%
-								return
-		; mbutton::
-					; Click
-					; if Toggle := !Toggle
-					;  Notes.SHow()
-					; else
-						; notes.Save()
-					; return
-		+numlock::
-				MouseGetPos,,,,WinControl
-				ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-				msgbox, %Wincontrol%
-				Send, ^{a}{backspace}{enter}
-				ControlsetText, Wincontrol,,VarBar
-			Return
-		Mbutton::
-			click
-		enter::
-			ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe	
-			if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") ||(WinControl="Edit4"){
-						Send, ^a^c
-						winactivate, NuGenesis LMS - \\Remote			
-				LMS.Searchbar(clipboard,"{enter}")
-			}
-			if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
-				varbar.show()
-			return
-		; Lbutton::click
-	#ifwinactive
-		; ^left::Lms.SelectTab("Left")
-		; ^right::LMs.SelectTab("right")
-
-	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-		; wheelleft::    Excel.PrevSheet()
-		; wheelRight::   excel.Nextsheet()
-		+Mbutton::
-				MouseGetPos,,,,WinControl
-				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-				if (WinControl="Edit1"){
-					Product1:=Product
-					if Toggle := !Toggle
-						GuiControl, Varbar:Text, Product,%Product1%
-					else
-						GuiControl, Varbar:Text, Product,%Product0%
-					}
-				if (WinControl="Edit2"){
-					Batch:=Batch0
-					}
-				if (WinControl="Edit3"){
-					GuiControl, Varbar:Text, Lot,%Lot%
-					}
-				if (winControl="Edit4") {
-					GuiControl, Varbar:Text, Coated,%Coated%
-				}
-				return
-		Mbutton::
-			MouseGetPos,,,,WinControl
-				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
-					click
-					Send, ^a
-					clip.regex()
-					winactivate, NuGenesis LMS - \\Remote			
-					LMS.Searchbar(clipboard,"{enter}")
-					return
-				}
-				else if (winControl="Edit6") 
-					TT(Wincontrol)
-				else
-					menu.varbar()
-				return
-
-
-
-		WheelUp::      send % Blockrepeat(600) Varbar.AddIteration()
-		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
-		; wheelright::	Varbar.AddIteration(0)
-		; Wheelleft::   	Varbar.SubIteration(0)
-		up::				Varbar.AddIteration(0)
-		down::   		Varbar.SubIteration(0)
-		F9::           Excel.connect()
-		F7::           Excel.NextSheet()
-		F6::           Excel.PrevSheet()
-		F8::				Varbar.launchTable()
-		Numlock::				send, {click}^a
-			return
-		Rbutton::		
-		MouseGetPos,,,,WinControl
-				if (WinControl="Edit1")
-					menu.Products()	
-				if (WinControl="Edit2") || (WinControl="Edit3")
-					menu.Batches()
-				If (WinControl="Edit4")
-					menu.SetStatus()
-				if (winControl="Edit6") {
-					Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
-					; IniWrite, _, data.ini, Notes, note2
-					varbar.show()
-					; GuiControl, Varbar:Text, Coated,%Coated%
-				}
-				if (winControl="Static1") || (winControl="")
-					menu.Varbar()
-
-			return
-		numpaddot:: 	 Openapp.Workbook()
-	#if
-
 
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -124,16 +10,16 @@ Class VarBar{
 			try Gui,VarBar:Destroy
 			This.loadSavedVariables()
 				Gui Varbar:Default
-				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID +DPIScale
+				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID 
 				WinSet, Transparent, 100, %GUIID%
 				Gui, VarBar:color,DC734F, 97BA7F     
 				this.AddBoxes()
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
-			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y%  NoActivate, VarBar
+			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y% autosize NoActivate, VarBar
 		Catch 
-			Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen%  NoActivate, VarBar
+			Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen% autosize NoActivate, VarBar
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
@@ -144,6 +30,96 @@ Class VarBar{
 ; ControlsetText, Note1,%Note1%,VarBar
 
 	}
+		AddEdit(Variable,Dimensions:="",Font:=""){
+			global
+				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
+				Gui,VarBar:Add,edit,		v%Variable% -wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable%  ; edit1
+		}
+		AddText(Variable,Dimensions:="",Font:=""){
+			global
+				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
+				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  ; edit1
+		}
+	AddBoxes(){
+			global
+			this.AddEdit("Product",	"left h29 x20 y0 w65",			"16,Bold, Consolas")
+			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11, Consolas")
+						If !Lot
+				 L_L:="w25"
+			else 
+					L_L:=
+			this.AddEdit("Lot",			"left h29 x+1 y1 " L_L, 			"11, Consolas")
+			If !Coated
+				 C_L:="w25"
+			else 
+					C_L:=
+				this.AddEdit("Coated",	"left h29 x+1 y1 " c_L,			"9, Arial Narrow")
+			if ShowSampleID
+			this.AddEdit("SampleID","H29 x+1 y1 w85",					"9, Arial Narrow")
+			else
+			this.AddEdit("SampleID","H29 x+1 y1 w0",					"9, Arial Narrow")
+		; GUI,VarBar:Font,			
+		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
+		
+		If !Note2
+			Note2:="+"
+		If !Note3
+			Note3:="+"
+		If !Note4
+			Note4:="+"
+		if !note1 || Note1="+"
+
+			This.addedit("Note1","x+3 H29 y1 left" ,"9 cBlack,arial Narrow") ; edit6
+		If Note1 
+			This.addedit("Note2","X+2 H29 y1 left")			; edit7
+		If Note2 && Note2!="+"
+			This.addedit("Note3","X+2 H29 y1 left")				; edit8
+		If Note3 && Note3!="+"
+			This.addedit("Note4","X+2 H29 y1 left")		;edit9
+			if !Currentcode
+				CC_L:="w200"
+			else 
+				CC_L:=
+
+		This.AddEdit("CurrentCodes","x20 H29 y+2 " CC_L) ; edit10
+		Return
+		
+			ProductVarBar:
+			BatchVarBar:
+			LotVarBar:
+			SampleIDVarBar:
+			Note1VarBar:
+			Note2VarBar:
+			Note3VarBar:
+			Note4VarBar:
+			CoatedVarBar:
+			CurrentCodesVarbar:
+			sleep 100
+			Gui, VarBar:submit,NoHide
+					WinGetPos, ,, varbar_W, Varbar_H, VarBar ahk_class AutoHotkeyGUI
+			NewWidth := Varbar_W - 30
+NewHeight := Varbar_H - 20
+tt(A_GuiWidth)
+GuiControl, Move, CurrentCodes, W%NewWidth% H%NewHeight%
+			return
+
+			VarBarGuiClose:
+				coordmode, mouse, Screen
+				WinGetPos,VarBar_X,Varbar_Y,w,h
+				sleep 100
+				this.exit()
+				coordmode, mouse, Window
+				sleep 500
+			return
+		}
+
+; GuiSize:
+; if (ErrorLevel = 1)  ; The window has been minimized. No action needed.
+;     return
+; ; Otherwise, the window has been resized or maximized. Resize the Edit control to match.
+
+; return
+
 
 	loadSavedVariables(){
 					global
@@ -171,6 +147,7 @@ Class VarBar{
 
 	exit(){
 		global
+
 		wingetpos, Varbar_X, Varbar_Y,,, VarBar ahk_class AutoHotkeyGUI
 		ControlGetText, Note1, Edit6, VarBar
 		ControlGetText, Note2, Edit7, VarBar
@@ -192,76 +169,7 @@ Class VarBar{
 		IniWrite, %note4%, data.ini, Notes, note4
 		IniWrite, %EnteringRotations%, data.ini, Options, EnteringRotations
 		}
-		AddEdit(Variable,Dimensions:="",Font:=""){
-			global
-				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
-				Gui,VarBar:Add,edit,		v%Variable% 	g%Variable%VarBar %Dimensions%,		%    %Variable%  ; edit1
-		}
-		AddText(Variable,Dimensions:="",Font:=""){
-			global
-				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
-				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  ; edit1
-		}
-	AddBoxes(){
-			global
-			this.AddEdit("Product",	"left h29 x20 y0 w65",			"16,Bold, Consolas")
-			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11, Consolas")
-			this.AddEdit("Lot",			"left h29 x+1 y1 w65", 			"11, Consolas")
-			If !Coated
-				 C_L="w25"
-			else 
-					C_L:=
-				this.AddEdit("Coated",	"left h29 x+1 y1" c_L,			"9, Arial Narrow")
-			if ShowSampleID
-			this.AddEdit("SampleID","H29 x+1 y1 w85",					"9, Arial Narrow")
-			else
-			this.AddEdit("SampleID","H29 x+1 y1 w0",					"9, Arial Narrow")
-		; GUI,VarBar:Font,			
-		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
-		
-		If !Note2
-			Note2:="+"
-		If !Note3
-			Note3:="+"
-		If !Note4
-			Note4:="+"
-		if !note1 || Note1="+"
 
-			This.addedit("Note1","x+3 H29 y1 left" ,"9 cBlack,arial Narrow") ; edit6
-		If Note1 
-			This.addedit("Note2","X+2 H29 y1 left")			; edit7
-		If Note2 && Note2!="+"
-			This.addedit("Note3","X+2 H29 y1 left")				; edit8
-		If Note3 && Note3!="+"
-			This.addedit("Note4","X+2 H29 y1 left")		;edit9
-		This.AddEdit("CurrentCodes","x20 H29 y+2 w400") ; edit10
-
-
-		Return
-		
-			ProductVarBar:
-			BatchVarBar:
-			LotVarBar:
-			SampleIDVarBar:
-			Note1VarBar:
-			Note2VarBar:
-			Note3VarBar:
-			Note4VarBar:
-			CoatedVarBar:
-			CurrentCodesVarbar:
-			sleep 100
-			Gui, VarBar:submit,NoHide
-			return
-
-			VarBarGuiClose:
-				coordmode, mouse, Screen
-				WinGetPos,VarBar_X,Varbar_Y,w,h
-				sleep 100
-				this.exit()
-				coordmode, mouse, Window
-				sleep 500
-			return
-		}
 
 
 			
@@ -458,129 +366,117 @@ HistoryMenuItem(){
 	}
 			
 			
-/* 			
-	Class Notes{
-		Show(){  ;array - remove duplicates (case insensitive)
-			global
-			try, GUI, Notes:destroy
-			Iniread, Notes_X, data.ini, Locations, Notes_X
-			Iniread, Notes_Y, data.ini, Locations, Notes_Y
-			my_screenwidth:=Notes_x
-			my_screenheight:=Notes_y
-			MyArray:=[]
-			FileRead, LoadedNotes, lib/Notes.txt
-			MyArray := StrSplit(LoadedNotes,"`r`n")
-			; loop % myarray.maxindex() {
-				; LoadedNotes1:=MyArray[A_index]
-			; }
-			LoadedNotes1:=MyArray[1]
-			LoadedNotes2:=MyArray[2]
-			LoadedNotes3:=MyArray[3]
-			; LoadedNotes4:=MyArray[4]
-			; LoadedNotes5:=MyArray[5]
-			; LoadedNotes8:=MyArray[8]
-			; LoadedNotes6:=MyArray[6]
-			; LoadedNotes7:=MyArray[7]
-			gui Notes:+LastFound +AlwaysOnTop -Caption -ToolWindow +owner
-			gui, Notes:add, button, Hidden default gNotesButtonOK, OK 
-			gui, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
-			; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
-			; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
-			loop 2 {
-				n:=A_index + 1
-				Myedit=myedit%n%
-				Note:=myArray[n]
-				gui, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]	
+;; ___KEYBINDINGS
+	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
+		F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+		F19::varbar.focus("Product")
+		; F20::varbar.focus("Batch")
+		^enter::                           
+								winactivate, %the_WinTitle%
+								click, %caret_X%, %caret_y%
+								return
+		; mbutton::
+					; Click
+					; if Toggle := !Toggle
+					;  Notes.SHow()
+					; else
+						; notes.Save()
+					; return
+		+numlock::
+				MouseGetPos,,,,WinControl
+				ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+				msgbox, %Wincontrol%
+				Send, ^{a}{backspace}{enter}
+				ControlsetText, Wincontrol,,VarBar
+			Return
+		Mbutton::
+			click
+		enter::
+			ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe	
+			if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") ||(WinControl="Edit4"){
+						Send, ^a^c
+						winactivate, NuGenesis LMS - \\Remote			
+				LMS.Searchbar(clipboard,"{enter}")
 			}
-			; OnMessage(0x84, "WM_NCHITTEST")
-			; OnMessage(0x83, "WM_NCCALCSIZE")
-			gui, Notes:color, 21a366
-			; OnMessage(0x203, "Notes.Relocate")
-			Notes_x:=Varbar_x+136
-			Notes_y:=Varbar_Y+30
-			gui, Notes:show, w145 x%Notes_x% y%Notes_y% ,Notes
-			WinSet, Transparent, 195
+			if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
+				varbar.show()
 			return
-			
-		}
-		Add(){
-			global
-			; notes.close()
-			; notes.show
-			; n:=4
-			Myedit:="vmyedit4"
-			loadedNotes:="loadednotes4"
-				gui, Notes:add, edit, w140 -Choose -VScroll +resize %Myedit%, %LoadedNotes%
-			return
-			
-			
-		}
-		close(){
-			global
-				gui, Notes:submit, nohide
-		Filedelete, lib/Notes.txt
-			sleep 200
-			; loop 4
-			IniWrite, %Notes_X%, data.ini, Notes, Notes_X
-			IniWrite, %Notes_y%, data.ini, Notes, Notes_Y
-			Fileappend, %MyEdit1%`n, lib/Notes.txt
-			Fileappend, %MyEdit2%`n, lib/Notes.txt
-			Fileappend, %Myedit3%`n, lib/Notes.txt
-			; Fileappend, %Myedit4%`n, lib/Notes.txt
-			; Fileappend, %Myedit5%`n, lib/Notes.txt
-			gui, Notes:destroy
-		return
-		} 
-			Save(){
-				global
-			gui, Notes:submit, nohide
-			Filedelete, lib/Notes.txt
-			sleep 200
-			Fileappend, %MyEdit1%`n, lib/Notes.txt
-			Fileappend, %MyEdit2%`n, lib/Notes.txt
-			Fileappend, %Myedit3%`n, lib/Notes.txt
-			; Fileappend, %Myedit4%`n, lib/Notes.txt
-			; Fileappend, %Myedit5%`n, lib/Notes.txt
-			; Fileappend, %Myedit6%`n, lib/Notes.txt
-			; Fileappend, %Myedit7%`n, lib/Notes.txt
-			; Fileappend, %Myedit8%`n, lib/Notes.txt
-			; Fileappend, %Myedit9%`n, lib/Notes.txt
-			; Fileappend, %Myedit10%`n, lib/Notes.txt
-			gui, Notes:destroy
-			return
-		}
-		Relocate(){
-				global
-				; PostMessage, 0xA1, 2
-				; keywait, Lbutton, U
-				wingetpos, Notes_x, Notes_y,W,H, Notes ahk_class AutoHotkeyGUI
-				; Excel.Connect()
-				IniWrite, %Notes_x%, data.ini, Locations, Notes_x
-				IniWrite, %Notes_y%, data.ini, Locations, Notes_y
-				sleep 300
+		; Lbutton::click
+	#ifwinactive
+		; ^left::Lms.SelectTab("Left")
+		; ^right::LMs.SelectTab("right")
+
+	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
+		; wheelleft::    Excel.PrevSheet()
+		; wheelRight::   excel.Nextsheet()
+		+Mbutton::
+				MouseGetPos,,,,WinControl
+				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+				if (WinControl="Edit1"){
+					Product1:=Product
+					if Toggle := !Toggle
+						GuiControl, Varbar:Text, Product,%Product1%
+					else
+						GuiControl, Varbar:Text, Product,%Product0%
+					}
+				if (WinControl="Edit2"){
+					Batch:=Batch0
+					}
+				if (WinControl="Edit3"){
+					GuiControl, Varbar:Text, Lot,%Lot%
+					}
+				if (winControl="Edit4") {
+					GuiControl, Varbar:Text, Coated,%Coated%
+				}
 				return
-			}
-		WM_NCCALCSIZE()
-		{
-			if A_Gui
-				return 0    ; Sizes the client area to fill the entire window.
-		}
-		}
-		; ButtonAdd:
-			; gui, Notes:submit
-			; sleep 100
-			; Note:=RegExReplace(Note "`n", "m`a)(?=^\s*;).*\R") ; remove commented lines
-			; Note:=RegExReplace(Note, "\R+\R", "`r`n")     ; remove empty lines
-		NotesButtonOK:
-			notes.Save()
-			notes.Close()
+		Mbutton::
+			MouseGetPos,,,,WinControl
+				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
+					click
+					Send, ^a
+					clip.regex()
+					winactivate, NuGenesis LMS - \\Remote			
+					LMS.Searchbar(clipboard,"{enter}")
+					return
+				}
+				else if (winControl="Edit6") 
+					TT(Wincontrol)
+				else
+					menu.varbar()
+				return
+
+
+
+		WheelUp::      send % Blockrepeat(600) Varbar.AddIteration()
+		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
+		; wheelright::	Varbar.AddIteration(0)
+		; Wheelleft::   	Varbar.SubIteration(0)
+		up::				Varbar.AddIteration(0)
+		down::   		Varbar.SubIteration(0)
+		F9::           Excel.connect()
+		F7::           Excel.NextSheet()
+		F6::           Excel.PrevSheet()
+		F8::				Varbar.launchTable()
+		Numlock::				send, {click}^a
 			return
-			
-			NotesGuiClose:
-			NotesGuiEscape:
-			notes.Save()
-			notes.Close()
-			; gui, Notes:submit, nohide
-			; gui, Notes:destroy
-			return \
-			*/
+		Rbutton::		
+		MouseGetPos,,,,WinControl
+				if (WinControl="Edit1")
+					menu.Products()	
+				if (WinControl="Edit2") || (WinControl="Edit3")
+					menu.Batches()
+				If (WinControl="Edit4")
+					menu.SetStatus()
+				if (winControl="Edit6") {
+					Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
+					; IniWrite, _, data.ini, Notes, note2
+					varbar.show()
+					; GuiControl, Varbar:Text, Coated,%Coated%
+				}
+				if (winControl="Static1") || (winControl="")
+					menu.Varbar()
+
+			return
+		numpaddot:: 	 Openapp.Workbook()
+	#if
+
