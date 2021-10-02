@@ -80,8 +80,8 @@
 
 
 
-		WheelUp::      send % Blockrepeat(400) Varbar.AddIteration()
-		Wheeldown::    send % Blockrepeat(400) Varbar.SubIteration()
+		WheelUp::      send % Blockrepeat(600) Varbar.AddIteration()
+		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
 		; wheelright::	Varbar.AddIteration(0)
 		; Wheelleft::   	Varbar.SubIteration(0)
 		up::				Varbar.AddIteration(0)
@@ -143,28 +143,6 @@ Class VarBar{
 
 ; ControlsetText, Note1,%Note1%,VarBar
 
-			ProductVarBar:
-			BatchVarBar:
-			LotVarBar:
-			SampleIDVarBar:
-			NoteVarBar1:
-			NoteVarBar2:
-			NoteVarBar3:
-			NoteVarBar4:
-			CoatedVarBar:
-			CurrentCodes:
-			sleep 100
-			Gui, VarBar:submit,NoHide
-			return
-
-			VarBarGuiClose:
-				coordmode, mouse, Screen
-				WinGetPos,VarBar_X,Varbar_Y,w,h
-				sleep 100
-				this.exit()
-				coordmode, mouse, Window
-				sleep 500
-			return
 	}
 
 	loadSavedVariables(){
@@ -214,35 +192,32 @@ Class VarBar{
 		IniWrite, %note4%, data.ini, Notes, note4
 		IniWrite, %EnteringRotations%, data.ini, Options, EnteringRotations
 		}
-		AddEdit(Variable,FontSize,eX:=1,eY:=1,Width:="",Font:="Consolas",Option:="left"){
+		AddEdit(Variable,Dimensions:="",Font:=""){
 			global
-				GUI,VarBar:Font,				%FontSize% ;cBlack Bold, %Font%
-				Gui,VarBar:Add,edit,		v%Variable% 	g%Variable%VarBar 		 %Option% h29 x%eX% y%eY%  w%Width% ,		%    %Variable%  ; edit1
+				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
+				Gui,VarBar:Add,edit,		v%Variable% 	g%Variable%VarBar %Dimensions%,		%    %Variable%  ; edit1
+		}
+		AddText(Variable,Dimensions:="",Font:=""){
+			global
+				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
+				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  ; edit1
 		}
 	AddBoxes(){
 			global
-			this.AddEdit("Product","s16 cBlack Bold, Consolas",20,0,65)
-			this.AddEdit("Batch","s11 cBlack, Consolas","+1",1,75)
-			this.AddEdit("Lot","s11 cBlack, Consolas","+1",1,65)
-			this.AddEdit("Coated","s9 cBlack, Arial Narrow","+1",1,65,"Arial Narrow")
-		; GUI,VarBar:Font,				s16 cBlack Bold, Consolas
-		; Gui,VarBar:Add,edit,		vProduct 	gproductVarBar 		 left h29 x20 y0  w65 ,		    %Product%  ; edit1
-		; GUI,VarBar:Font,				s11 cBlack,Consolas
-		; Gui,VarBar:add,Edit,		vBatch 		gbatchVarbar 		    left H29 x+1 y1 w75, 			    %Batch% 	 ; edit2
-		; GUI,VarBar:Font,				s11 cBlack , Consolas
-		; Gui,VarBar:add,Edit,		vlot 			gLotVarbar 		        x+1 left H29 y1 w65, 		    %Lot% 		 ; edit3
-		; GUI,VarBar:Font,				s9 cBlack,arial Narrow
-			; if !Coated
-		; Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    left x+1 H29 y1 w25, 			  %Coated%   ; edit4
-			; else
-		; Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    center x+1 H29 y1 w65, 			%Coated%   ; edit4
+			this.AddEdit("Product",	"left h29 x20 y0 w65",			"16,Bold, Consolas")
+			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11, Consolas")
+			this.AddEdit("Lot",			"left h29 x+1 y1 w65", 			"11, Consolas")
+			If !Coated
+				 C_L="w25"
+			else 
+					C_L:=
+				this.AddEdit("Coated",	"left h29 x+1 y1" c_L,			"9, Arial Narrow")
 			if ShowSampleID
-		Gui,VarBar:add,Edit,		vSampleID 	gSampleIDVarbar 		  x+1 H29 y1 w85, 		       %SampleID%  ; edit5
+			this.AddEdit("SampleID","H29 x+1 y1 w85",					"9, Arial Narrow")
 			else
-		Gui,VarBar:add,Edit,		vSampleID 	gSampleIDVarbar 		  x+1 H29 y1 w0, 		        %SampleID%  ; edit5
-		GUI,VarBar:Font,				s20 107C41, Consolas
-		Gui,VarBar:Add,text,		vIteration								  x+5 65 center y-3 w23,		%Iteration%	; Text1
-		GUI,VarBar:Font,				s9 cBlack,arial Narrow
+			this.AddEdit("SampleID","H29 x+1 y1 w0",					"9, Arial Narrow")
+		; GUI,VarBar:Font,			
+		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 		
 		If !Note2
 			Note2:="+"
@@ -252,14 +227,40 @@ Class VarBar{
 			Note4:="+"
 		if !note1 || Note1="+"
 
-			Gui,VarBar:add,Edit,		vNote1 		gNotevarbar1 		     x+3 H29 y1 left, 		 	  %Note1%     ; edit6
+			This.addedit("Note1","x+3 H29 y1 left" ,"9 cBlack,arial Narrow") ; edit6
 		If Note1 
-			Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		     X+2 H29 y1 left,			  %Note2%  	; edit7
+			This.addedit("Note2","X+2 H29 y1 left")			; edit7
 		If Note2 && Note2!="+"
-			Gui,VarBar:add,Edit,		vNote3 		gNotevarbar3 		     X+2 H29 y1 left,			  %Note3%  	; edit8
+			This.addedit("Note3","X+2 H29 y1 left")				; edit8
 		If Note3 && Note3!="+"
-			Gui,VarBar:add,Edit,		vNote4 		gNotevarbar4 		     X+2 H29 y1 left,			  %Note4%  	; edit9
-		Gui,VarBar:add,Edit,		vCurrentCodes 	gCurrentCodes 		  x20 H29 y+2 w400, 		 CurrentCodes  ; edit5
+			This.addedit("Note4","X+2 H29 y1 left")		;edit9
+		This.AddEdit("CurrentCodes","x20 H29 y+2 w400") ; edit10
+
+
+		Return
+		
+			ProductVarBar:
+			BatchVarBar:
+			LotVarBar:
+			SampleIDVarBar:
+			Note1VarBar:
+			Note2VarBar:
+			Note3VarBar:
+			Note4VarBar:
+			CoatedVarBar:
+			CurrentCodesVarbar:
+			sleep 100
+			Gui, VarBar:submit,NoHide
+			return
+
+			VarBarGuiClose:
+				coordmode, mouse, Screen
+				WinGetPos,VarBar_X,Varbar_Y,w,h
+				sleep 100
+				this.exit()
+				coordmode, mouse, Window
+				sleep 500
+			return
 		}
 
 
