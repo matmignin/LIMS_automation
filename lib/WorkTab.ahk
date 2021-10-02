@@ -327,16 +327,24 @@ blockinput on
  sleep 400
  Send, {click 136, 119}^a ;flick filter box
  if WinActive("Select samples for test: Organoleptic Sensory Test  - \\Remote")
-  send, Physical{enter} ; send department
+  Department:="Physical"
  if WinActive("Select samples for test: Microbiological  - \\Remote")
-  send, Micro{enter} ; send department
+  Department:="Micro"
+send, %Department%{enter} ; send department
 
- sleep 500
-; Send,{click 205, 184}^a
- sleep 400
+ sleep 200
+ 
  Breaking.Point() 
-;  tt(Department)
 ;  Send, {click 171, 127}^{a}
+; Send,{click 205, 184}^a
+ sleep 200
+ send, {click 504, 324} 
+ Breaking.Point() 
+ sleep 200
+ send, {click, 849, 661}
+;  tt(Department)
+ Breaking.Point() 
+ Pop(Department)
 ;  Send, %department%
 ;  sleep 200
 ;  sleep 200

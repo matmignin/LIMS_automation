@@ -117,54 +117,31 @@
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
+				MidScreen:=A_ScreenWidth//2
+				VarBar_H:=32
+				VarBar_T:=235
+				TopScreen:=1 ;A_ScreenHeight-35
 			try Gui,VarBar:Destroy
-			if !WinExist("LMS Workbook.xlsb"){
-				Iniread, Batch, data.ini, SavedVariables, Batch
-				Iniread, Product, data.ini, Products, Product
-				Iniread, Batch0, data.ini, SavedVariables, Batch0
-				Iniread, Batch1, data.ini, SavedVariables, Batch1
-				Iniread, SampleID, data.ini, SavedVariables, SampleID
-				Iniread, Lot, data.ini, SavedVariables, Lot
-				Iniread, Coated, data.ini, SavedVariables, Coated
-			}
-				Iniread, Iteration, data.ini, SavedVariables, Iteration
-				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
-				Iniread, ShowCoated, data.ini, Options, ShowSampleID
-				Iniread, ShowNote3, data.ini, Options, ShowNote3
-				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+			This.loadSavedVariables()
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID +DPIScale
 				WinSet, Transparent, 100, %GUIID%
-				Gui, VarBar:color,DC734F, 97BA7F   
-				; Gui, VarBar:color,016D07, 97BA7F   
+				Gui, VarBar:color,DC734F, 97BA7F     
 				this.AddBoxes()
-				
-				iniread, note1, data.ini, Notes, note1
-				Iniread, note2, data.ini, Notes, note2
-				Iniread, note3, data.ini, Notes, note3
-				Iniread, note4, data.ini, Notes, note4
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
-					; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
-			; if ShowSampleID || !Coated
-				; try 
-				MidScreen:=A_ScreenWidth//2
-  				TopScreen:=1 ;A_ScreenHeight-35
-		; If Winactive("NuGenesiy LMS - \\Remote")
-			; try Gui, VarBar:Show, h32 x%NuX% y%Nuy%  NoActivate, VarBar
-		; else
-			Try Gui, VarBar:Show, h32 x%Varbar_X% y%Varbar_y%  NoActivate, VarBar
+			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y%  NoActivate, VarBar
 		Catch 
-			Gui, VarBar:Show, h32 x%MidScreen% y%TopScreen%  NoActivate, VarBar
+			Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen%  NoActivate, VarBar
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
 		OnMessage(0x203, "VariableBar_Relocate")
-		WinSet, Transparent, 235, AHK_id %GUIID%
+		WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
 		return
 
-
+; ControlsetText, Note1,%Note1%,VarBar
 
 			ProductVarBar:
 			BatchVarBar:
@@ -175,6 +152,7 @@ Class VarBar{
 			NoteVarBar3:
 			NoteVarBar4:
 			CoatedVarBar:
+			CurrentCodes:
 			sleep 100
 			Gui, VarBar:submit,NoHide
 			return
@@ -189,20 +167,75 @@ Class VarBar{
 			return
 	}
 
+	loadSavedVariables(){
+					global
+			if !WinExist("LMS Workbook.xlsb"){
+				Iniread, Batch, data.ini, SavedVariables, Batch
+				Iniread, Product, data.ini, Products, Product
+				Iniread, Batch0, data.ini, SavedVariables, Batch0
+				Iniread, Batch1, data.ini, SavedVariables, Batch1
+				Iniread, SampleID, data.ini, SavedVariables, SampleID
+				Iniread, Lot, data.ini, SavedVariables, Lot
+				Iniread, Coated, data.ini, SavedVariables, Coated
+				; FileRead, CurrentCodes, CurrentCodes.txt 
+				}
+				Iniread, CurrentCodes, data.ini, SavedVariables, CurrentCodes
+				Iniread, Iteration, data.ini, SavedVariables, Iteration
+				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
+				Iniread, ShowCoated, data.ini, Options, ShowSampleID
+				Iniread, ShowNote3, data.ini, Options, ShowNote3
+				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+				iniread, note1, data.ini, Notes, note1
+				Iniread, note2, data.ini, Notes, note2
+				Iniread, note3, data.ini, Notes, note3
+				Iniread, note4, data.ini, Notes, note4
+			}
 
+	exit(){
+		global
+		wingetpos, Varbar_X, Varbar_Y,,, VarBar ahk_class AutoHotkeyGUI
+		ControlGetText, Note1, Edit6, VarBar
+		ControlGetText, Note2, Edit7, VarBar
+		ControlGetText, Note3, Edit8, VarBar
+		ControlGetText, Note4, Edit9, VarBar
+		;ControlGetText, %CurrentCodes%, Edit10, VarBar
+		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+		iniwrite, %Product%, data.ini, Products, Product
+		iniwrite, %Batch%, data.ini, Batches, Batch
+		iniwrite, %Lot%, data.ini, SavedVariables, Lot
+		iniwrite, %Coated%, data.ini, SavedVariables, Coated
+		iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
+		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+		IniWrite, %CurrentCodes%, data.ini, SavedVariables, CurrentCodes
+		IniWrite, %note1%, data.ini, Notes, note1
+		IniWrite, %note2%, data.ini, Notes, note2
+		IniWrite, %note3%, data.ini, Notes, note3
+		IniWrite, %note4%, data.ini, Notes, note4
+		IniWrite, %EnteringRotations%, data.ini, Options, EnteringRotations
+		}
+		AddEdit(Variable,FontSize,eX:=1,eY:=1,Width:="",Font:="Consolas",Option:="left"){
+			global
+				GUI,VarBar:Font,				%FontSize% ;cBlack Bold, %Font%
+				Gui,VarBar:Add,edit,		v%Variable% 	g%Variable%VarBar 		 %Option% h29 x%eX% y%eY%  w%Width% ,		%    %Variable%  ; edit1
+		}
 	AddBoxes(){
 			global
-		GUI,VarBar:Font,				s16 cBlack Bold, Consolas
-		Gui,VarBar:Add,edit,		vProduct 	gproductVarBar 		 left h29 x20 y0  w65 ,		    %Product%  ; edit1
-		GUI,VarBar:Font,				s11 cBlack,Consolas
-		Gui,VarBar:add,Edit,		vBatch 		gbatchVarbar 		    left H29 x+1 y1 w75, 			    %Batch% 	 ; edit2
-		GUI,VarBar:Font,				s11 cBlack , Consolas
-		Gui,VarBar:add,Edit,		vlot 			gLotVarbar 		        x+1 left H29 y1 w65, 		    %Lot% 		 ; edit3
-		GUI,VarBar:Font,				s9 cBlack,arial Narrow
-			if !Coated
-		Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    left x+1 H29 y1 w25, 			  %Coated%   ; edit4
-			else
-		Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    center x+1 H29 y1 w65, 			%Coated%   ; edit4
+			this.AddEdit("Product","s16 cBlack Bold, Consolas",20,0,65)
+			this.AddEdit("Batch","s11 cBlack, Consolas","+1",1,75)
+			this.AddEdit("Lot","s11 cBlack, Consolas","+1",1,65)
+			this.AddEdit("Coated","s9 cBlack, Arial Narrow","+1",1,65,"Arial Narrow")
+		; GUI,VarBar:Font,				s16 cBlack Bold, Consolas
+		; Gui,VarBar:Add,edit,		vProduct 	gproductVarBar 		 left h29 x20 y0  w65 ,		    %Product%  ; edit1
+		; GUI,VarBar:Font,				s11 cBlack,Consolas
+		; Gui,VarBar:add,Edit,		vBatch 		gbatchVarbar 		    left H29 x+1 y1 w75, 			    %Batch% 	 ; edit2
+		; GUI,VarBar:Font,				s11 cBlack , Consolas
+		; Gui,VarBar:add,Edit,		vlot 			gLotVarbar 		        x+1 left H29 y1 w65, 		    %Lot% 		 ; edit3
+		; GUI,VarBar:Font,				s9 cBlack,arial Narrow
+			; if !Coated
+		; Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    left x+1 H29 y1 w25, 			  %Coated%   ; edit4
+			; else
+		; Gui,VarBar:add,Edit,		vCoated 		gCoatedVarbar 		    center x+1 H29 y1 w65, 			%Coated%   ; edit4
 			if ShowSampleID
 		Gui,VarBar:add,Edit,		vSampleID 	gSampleIDVarbar 		  x+1 H29 y1 w85, 		       %SampleID%  ; edit5
 			else
@@ -218,10 +251,7 @@ Class VarBar{
 		If !Note4
 			Note4:="+"
 		if !note1 || Note1="+"
-			{
-				FileRead, Note1, CurrentCodes.txt 
-				ControlsetText, Note1,%Note1%,VarBar
-			}
+
 			Gui,VarBar:add,Edit,		vNote1 		gNotevarbar1 		     x+3 H29 y1 left, 		 	  %Note1%     ; edit6
 		If Note1 
 			Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		     X+2 H29 y1 left,			  %Note2%  	; edit7
@@ -229,6 +259,7 @@ Class VarBar{
 			Gui,VarBar:add,Edit,		vNote3 		gNotevarbar3 		     X+2 H29 y1 left,			  %Note3%  	; edit8
 		If Note3 && Note3!="+"
 			Gui,VarBar:add,Edit,		vNote4 		gNotevarbar4 		     X+2 H29 y1 left,			  %Note4%  	; edit9
+		Gui,VarBar:add,Edit,		vCurrentCodes 	gCurrentCodes 		  x20 H29 y+2 w400, 		 CurrentCodes  ; edit5
 		}
 
 
@@ -398,65 +429,12 @@ Class VarBar{
 		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
 		Pop(Iteration)
 		sleep %speed%
-		IniWrite, %Iteration%, data.ini, SavedVariables, 
+		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
 		}
 
-	VarbarLoad(){
-		Global
-		; Iniread, Product, data.ini, SavedVariables, Product
-		Iniread, Batch, data.ini, Batches, Batch
-		Iniread, Product, data.ini, Products, Product
-		Iniread, Product0, data.ini, Products, Product0
-		Iniread, Product1, data.ini, Products, Product1
-		Iniread, Product2, data.ini, Products, Product2
-		Iniread, Product3, data.ini, Products, Product3
-		Iniread, Batch4, data.ini, Batches, Batch4
-		Iniread, Batch1, data.ini, Batches, Batch1
-		Iniread, Batch2, data.ini, Batches, Batch2
-		Iniread, Batch3, data.ini, Batches, Batch3
-		Iniread, Lot, data.ini, SavedVariables, Lot
-		Iniread, Coated, data.ini, SavedVariables, Coated
-		Iniread, SampleID, data.ini, SavedVariables, SampleID
-		Iniread, Iteration, data.ini, SavedVariables, Iteration
-		iniread, note1, data.ini, Notes, note1
-		Iniread, note2, data.ini, Notes, note2
-		Iniread, note3, data.ini, Notes, note3
-		Iniread, note4, data.ini, Notes, note4c
-		Iniread, VarBar_Y, data.ini, Locations, VarBar_Y
-		Iniread, VarBar_X, data.ini, Locations, VarBar_x
-		}
-
-	exit(){
-		global
-		wingetpos, Varbar_X, Varbar_Y,,, VarBar ahk_class AutoHotkeyGUI
-		ControlGetText, Note1, Edit6, VarBar
-		ControlGetText, Note2, Edit7, VarBar
-		ControlGetText, Note3, Edit8, VarBar
-		ControlGetText, Note4, Edit9, VarBar
-		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
-		iniwrite, %Product%, data.ini, Products, Product
-		iniwrite, %Batch%, data.ini, Batches, Batch
-		iniwrite, %Lot%, data.ini, SavedVariables, Lot
-		iniwrite, %Coated%, data.ini, SavedVariables, Coated
-		iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
-		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-		IniWrite, %note1%, data.ini, Notes, note1
-		IniWrite, %note2%, data.ini, Notes, note2
-		IniWrite, %note3%, data.ini, Notes, note3
-		IniWrite, %note4%, data.ini, Notes, note4
-		; iniwrite, %VarBar_Y%, data.ini, Locations, VarBar_Y
-		; iniwrite, %VarBar_X%, data.ini, Locations, VarBar_x
-		; FileRead, OutputVar, Products.txt  
-		; Sort, OutputVar, u
-		; FileDelete, Products.txt
-		; sleep, 300
-		; FileAppend, %OutputVar%, Products.txt
-		; Notes.Save()
-		; Gui,VarBar:Destroy
-		}
+	
 
 HistoryMenuItem(){
 	global

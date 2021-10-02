@@ -49,7 +49,16 @@ Starting_test:
 
 
 ActiveCheck: ;continuously runing sub
-  ; If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !Winactive("ahk_exe WFICA32.EXE")
+  If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
+    VarBar_H:=63
+    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  }
+  If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
+    VarBar_H:=32
+    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  }
+
+    
     ; Fade(200) ;;  Fade Varbar on hover
   ; if winactive("Reason For Change - \\Remote") {
     ; menu.reasons()
@@ -67,6 +76,21 @@ ActiveCheck: ;continuously runing sub
   return
    
 ;;  Test
+
+
+Test_2:
+WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,60
+return
+
+Test_3:
+
+WinGetTitle, CurrentLMSWindow, ahk_exe WFICA32.EXE
+; Pop(SubStr(CurrentLMSWindow, 1, 20))
+winactivate, ahk_exe Code.exe
+  send, ^{f}
+  sleep 200
+  sendinput % SubStr(CurrentLMSWindow, 1, 25)
+  return
 
 
 Test_4:
@@ -211,8 +235,10 @@ VQuest_Start:
       Menu, Tray, Check, EnteringRotations
       EnteringRotations:=1
     }
-    else
+    else {
+      Menu, Tray, UnCheck, EnteringRotations
       EnteringRotations:=
+    }
     if (SwitchWorkSheets = 1){
       Menu, Tray, Check, SwitchWorkSheets
       SwitchWorkSheets:=1

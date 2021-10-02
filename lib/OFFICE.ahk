@@ -87,6 +87,7 @@ _Excel:
 		*/
 #IfWinActive, LMS Workbook.xlsb
 	F9::    					Excel.Connect(1)
+	F19 & space::    			Excel.CopySheetName()
 	F19 & backspace::    delete
 	F19 & down::         ^down
 	F19 & up::           ^up
@@ -94,6 +95,7 @@ _Excel:
 	F19 & right::        ^right
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
+
 	numpaddot::						
 								excel.Connect(1)
 								ExplorerSearch(Product)

@@ -119,12 +119,14 @@ _Esc:
 	/ & right::	 					Send, %Lot%
 	/::	 							Send, /
 	; ` & space::						Test(Iteration) 
-	` & 1::							Test_1()
-	` & 2::							Test_2()
-	` & 3::							Test_3()
+	` & 1::							Test(1)
+	` & 2::							Test(2)
+	` & 3::							Test(3)
 	`::	 								sendraw, ``
-	;F20 up:: 	               Clip.Copy()
-	F19 up::      	       		Clip.paste()
+	+F20 up:: 	            Clip.append()
+	F20 up:: 	              Clip.Copy()
+	F19 up::      	       	Clip.paste()
+	+F19 up::      	       	lms.searchbarPaste()
 	; <!c::                      clip.Append()
 
 	>+F20::             			varbar.focus("Batch")
@@ -207,7 +209,7 @@ _Double_press_For_Enter:
 
 
 
-_NuGenesis_LMS:
+;;__NuGenesis_LMS:
 #Ifwinactive, NuGenesis LMS - \\Remote ;; _NuGenesis LMS
 	Numlock::4tap() ;LMS.COA()
 	mbutton::3tap()
@@ -215,13 +217,12 @@ _NuGenesis_LMS:
 	F6::						3Left()	
 	; F20 & Left::WinMove, A, , -283, -1196, 1662, 952
 	+F19::lms.searchBar("")
-	F19 & space::Send, %Product%{enter}
-	F20 & space::Send, %Batch%{enter}
-	F19 & /::Send, %lot%{enter}
+	F20 & left::Send, %Product%
+	F20 & down::Send, %Batch%
+	F20 & right::Send, %lot%
 	~Lbutton & F19::Send,{enter}
 	Enter::LMS.SaveCode()
-	numpaddot::blockrepeat(500) excel.connect(1)
-	; F20::LMS.SearchbarPaste()
+	>+F20::LMS.SearchbarPaste()
 	+^v::LMS.SearchbarPaste()
 	; F19::LMS.Searchbar()
 	; numpadadd::
@@ -242,7 +243,7 @@ _NuGenesis_LMS:
 	wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
 	wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
 
-_Result_Entry:
+;;__Result_Entry:
 	#Ifwinactive, Result Entry - \\Remote ;Enter Test Results window
 		#MaxThreadsPerHotkey 2
       Numlock::WorkTab.ChangeTestResults("loop")
@@ -252,7 +253,7 @@ _Result_Entry:
 
 
 
-_Results_Definition:
+;;__Results_Definition:
 	#IfWinActive, Results Definition - \\Remote
 		wheelup::Mouse_click("Edit")
 		numlock::Send, % clk(712, 663) "{esc}"
@@ -260,7 +261,7 @@ _Results_Definition:
 		mbutton::Spectab.Table()
 
 
-_Register_new_samples:
+;;__Register_new_samples:
 	#ifwinactive, Register new samples - \\Remote
 		F7:: 
 			clk(181, 104,2,2)
@@ -269,7 +270,7 @@ _Register_new_samples:
 			return
 
 
-_LMS_KEYS:
+;;__LMS_KEYS:
 	#ifwinactive, Reason for Change - \\Remote
 		F13 & v::
 						send % "Verification" 
@@ -278,6 +279,8 @@ _LMS_KEYS:
 						return
 #ifwinactive, Select tests for request: 
 	space::send, ^{click}
+	rbutton::send, ^{click}
+	Numpaddot::send, {click 837, 656}{
 	; wheelright::3right()
 	; wheelleft::WorkTab.SelectTestSample()
 #ifwinactive, Select samples for test:

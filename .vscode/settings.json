@@ -29,7 +29,7 @@
         "*.txt": true,
         "VBA Code/*": true,
         "lib/CL3": true,
-        "lib/clip.ahk": false,
+        "lib/clip.ahk": true,
         "lib/Studio.ahk": true,
         "lib/Tooltip.ahk": true,
         "**/.vimrc": true

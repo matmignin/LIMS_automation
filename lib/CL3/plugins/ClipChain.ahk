@@ -54,6 +54,7 @@ ClipChainInit:
 	Menu, ClipChainMenu, Add
 	Menu, ClipChainMenu, Delete
 
+
 	Menu, ClipChainMenu, Add, Transparent, ClipChainTrans
 	Menu, ClipChainMenu, Add, Load from Clipboard, ClipChainLoad
 	Menu, ClipChainMenu, Add
@@ -64,17 +65,17 @@ ClipChainInit:
 	Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 
 	Gui, ClipChain:Default
-	Gui, ClipChain:Font, % dpi("s7")
+	Gui, ClipChain:Font, % dpi("s8")
 	Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate
-	Gui, ClipChain:Add, Listview, % dpi("x0 y0 w195 h350 r10 NoSortHdr -hdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
-	LV_ModifyCol(1,dpi()*25)
-	LV_ModifyCol(2,dpi()*160)
+	Gui, ClipChain:Add, Listview, % dpi("x0 y0 w195 h250 r10 NoSortHdr -hdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
+	Gui, ClipChain:Add, Button, % dpi(" gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
+	Gui, ClipChain:Add, Button, % dpi("x+1 gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
+	LV_ModifyCol(1,dpi()*10)
+	LV_ModifyCol(2,dpi()*180)
 	LV_ModifyCol(3,*0)
 	;LV_ModifyCol(2,100) ; debug
 	;LV_ModifyCol(3,30)  ; debug
 	Gosub, ClipChainListview
-	Gui, ClipChain:Add, Button, % dpi("gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
-	Gui, ClipChain:Add, Button, % dpi("x+1 gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
 
 	; Gui, ClipChain:font,% dpi("s8")
 	; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+355 w181 h50 vGbox1"), Chain(s)
@@ -82,14 +83,15 @@ ClipChainInit:
 	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
 	; Gui, ClipChain:font
-	; Gui, ClipChain:font, % dpi("s12 bold")
+; Gui, ClipChain:font, % dpi("s12 bold")	
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
 	; Gui, ClipChain:font
-	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
+ 
+ 	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
 	; Gui, ClipChain:font
 	; Gui, ClipChain:font,% dpi("s8")
-	; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
+	; Gui, ClipChain:Add, IpBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
 	; Gui, ClipChain:Add, Checkbox, % dpi("xp+10 yp+18 w75 h24 vClipChainNoHistory gClipChainCheckboxes"), No History
 	; Gui, ClipChain:Add, Checkbox, % dpi("xp+80 yp    w85 h24 vClipChainTrans     gClipChainCheckboxes"), Transparent
 	; Gui, ClipChain:Add, Checkbox, % dpi("xp-80 yp+30 w75 h24 vClipChainPause     gClipChainCheckboxes"), Pause
@@ -109,11 +111,11 @@ Return
 
 #If Mouse_IsOver("CL3ClipChain")
 	Rbutton::			        gosub, clipchainmenu
-	; wheeldown::			       gosub, ClipchainMoveDown
 	Backspace::			     gosub, ClipChainDel
 #If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
 	+Enter::	
 	F19::						
+
 	; ^Down::			       gosub, ClipchainMoveDown
 	; ^up::			         gosub, ClipchainMoveUp
 	^enter::							
@@ -153,6 +155,47 @@ Return
 
 	; ^v::Gosub, ClipChainPasteDoubleClick
 	; sendlevel 0
+#If ClipChainActive()
+	^Numpadmult::
+	; F20 & up::			   MoveIndicatorUp()
+	^numpaddot::
+	; F20 & Down::			MoveIndicatorDown()
+	Rshift & up::			gosub, ClipchainMoveUp
+	Rshift & down::		gosub, ClipchainMoveDown
+	; gosub, ClipchainMoveDown
+	F20 & delete:: 		gosub, ClipChainClear
+	Delete::			 	   gosub, ClipChainDel
+	^c::			     	   send, ^c
+	F11::
+								clipchaininsert()
+								send, ^x
+								return
+	\::	  					gosub, clipchainmenu
+	F20 & F19::				;Gui, ClipChain:Destroy
+	F22:: 					gosub, ClipChainGuiClose
+	F19::			 			clipchain_C() ;ClipChainInsert()       
+								; clicktext(3)
+								
+								; clipChain_v()
+								return
+	
+	$Rshift::			    
+								sendinput, +{tab}{tab}
+								ClipChainInsert()
+								return
+	>+Enter::			    
+								send, +{tab}{tab}
+								sleep 50
+								clipChain_v()
+								return
+	F21::			       	 ClipChainInsert()
+	; F20::			        ClipChainInsert()
+	; F20::			     		clipChain_c()
+	F20::					gosub, ClipChainPasteDoubleClick
+	numlock::					clipChain_v()
+	Mbutton::  				clipchaininsert()
+	
+#if
 
 Lwin & Lbutton::
 	click
@@ -175,30 +218,31 @@ return
 
 clipChain_v(){
 	Global
+	send, {click}
 	gosub, ClipChainPasteDoubleClick
 }
 
 clipChain_c(){
 	Global
 	sendinput, {ctrlup}{altup}
-	KeyWait, F20, T0.20
+	KeyWait, F19, T0.20
 	If ErrorLevel
 	{
-		KeyWait, F20, T4
-		if (A_PriorKey!="F20")
+		KeyWait, F19, T4
+		if (A_PriorKey!="F19")
 			exit
-		if (A_PriorKey="F20")
+		if (A_PriorKey="F19")
 			If !ErrorLevel
 		{
 			sendinput, {home}+{end}^c
 			ClipChainInsert()
 			exit
 		}
-		KeyWait, F20, T4
+		KeyWait, F19, T4
 		Return
 	}
 	if Errorlevel = 0
-		KeyWait, F20, T4
+		KeyWait, F19, T4
 	if !ErrorLevel
 		ClipChainInsert()
 return
@@ -231,47 +275,9 @@ ClickText(button:="")
 	SetDefaultMouseSpeed, 1
 return
 }
+;; ___KEYBINDINGS
 
-#If ClipChainActive()
-	^Numpadmult::
-	; F20 & up::			   MoveIndicatorUp()
-	^numpaddot::
-	; F20 & Down::			MoveIndicatorDown()
-	Rshift & up::			gosub, ClipchainMoveUp
-	Rshift & down::		gosub, ClipchainMoveDown
-	; gosub, ClipchainMoveDown
-	Delete::			 	   gosub, ClipChainDel
-	^c::			     	   send, ^c
-	F11::
-								clipchaininsert()
-								send, ^x
-								return
-	\::	  					gosub, clipchainmenu
-	F20 & F19::				;Gui, ClipChain:Destroy
-	F22:: 					gosub, ClipChainGuiClose
-	F19::			        
-								clicktext(3)
-								clipChain_v()
-								return
-	
-	$Rshift::			    
-								sendinput, +{tab}{tab}
-								ClipChainInsert()
-								return
-	>+Enter::			    
-								send, +{tab}{tab}
-								sleep 50
-								clipChain_v()
-								return
-	F21::			       	 ClipChainInsert()
-	; F20::			        ClipChainInsert()
-	; F20::			     		clipChain_c()
-	numlock::				clipChain_v()
-	Mbutton::  				clipchaininsert()
-	
-#if
-
-ClipChainInsert(){
+ClipChainInsert(){ ; if nothing is higlighted, it will tripple click the word the carret is on
 	global
 	clipboard:=
 	sendinput, ^c
@@ -319,10 +325,10 @@ ClipChainInsert(){
 	}
 	If (ClipChainInsEdit = 1)
 	{
-		ClipChainData[ClipChainDataIndex]:=ClipChainIns
+		ClipChainData[CI]:=ClipChainIns
 		If (ClipChainInsertCounter = 0)
 			LV_Add(1,,,,1)
-		LV_Modify(ClipChainDataIndex,"Col2",ClipChainHelper(ClipChainIns))
+		LV_Modify(I,"Col2",ClipChainHelper(ClipChainIns))
 	}
 	else
 	{
@@ -371,7 +377,8 @@ return
 ;^#F11::
 hk_clipchain:
 	If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
-		Gui, ClipChain:Show, % dpi("w185 NA x") ClipChainX " y" ClipChainY, CL3ClipChain
+		; Gui, ClipChain:Show, % dpi("w185 NA x") ClipChainX " y" ClipChainY, CL3ClipChain
+		Gui, ClipChain:Show, % dpi("w185 NA x") A_ScreenWidth-190 " y" 0, CL3ClipChain
 	else
 	{
 		Gosub, ClipChainSaveWindowPosition
@@ -542,7 +549,7 @@ ClipChainCheckboxes:
 Return
 ClipChainTrans:
 	if ClipChainTrans := !ClipChainTrans
-		WinSet, Transparent, 180, CL3ClipChain ahk_class AutoHotkeyGUI
+		WinSet, Transparent, 195, CL3ClipChain ahk_class AutoHotkeyGUI
 	else
 		WinSet, Transparent, 250, CL3ClipChain ahk_class AutoHotkeyGUI
 return

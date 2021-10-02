@@ -82,6 +82,8 @@ SearchBar(Code:="",PostCmd:=""){
 		Clipboard := StrReplace(Clipboard, "`n", A_Space)
 		Clipboard := StrReplace(Clipboard, ", ", A_Space)
 		Clipboard := StrReplace(Clipboard, ",", A_Space)
+		Clipboard := StrReplace(Clipboard, "|", "")
+		Clipboard := StrReplace(Clipboard, "/", "")
 		Clipboard := StrReplace(Clipboard, A_tab, A_Space)
 		Clipboard := StrReplace(Clipboard, A_space A_space, A_Space)
 		sleep 200

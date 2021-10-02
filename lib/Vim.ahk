@@ -304,8 +304,8 @@ _Vim_F13:
 		^/::                     SendInput,{shiftdown}{end}{shiftup} 
 		#if
 		#IfWinActive
+F13 & Lbutton::									send, +{click}
  $F13::													esc 
-F13 & Lbutton::									sendinput, {shiftdown}{click}{shiftup}
 F13 & down::									  sendinput, {shiftdown}{down}{shiftup}
 F13 & up::									    sendinput, {shiftdown}{up}{shiftup}
 F13 & left::									  sendinput, {shiftdown}{left}{shiftup}

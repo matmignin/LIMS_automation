@@ -142,25 +142,27 @@ return
 
 Test(n){
 	global
-	if Iteration==1
-	{
-		test_1()
-		Return
-	}
-	else if iteration==2
-	{
-		test_2()
-		; TT("test " n)
-		Return
-	}
-	else if iteration==3
-	{
-		test_3()
-		; TT("test " n)
-		Return
-	}
-	else
-		gosub, test_%n%
+	; if Iteration==1
+	; {
+	; 	test_1()
+	; 	Return
+	; }
+	; else if iteration==2
+	; {
+	; 	test_2()
+	; 	; TT("test " n)
+	; 	Return
+	; }
+	; else if iteration==3
+	; {
+	; 	test_3()
+	; 	; TT("test " n)
+	; 	Return
+	; }
+	; else
+		try gosub, test_%n%
+		Catch e
+			msgbox % e.line "`n" e.error
 return
 }
 
