@@ -1,7 +1,12 @@
-#If WinActive("ahk_exe Code.exe")  ;;		___VSCODE                            
-		!v:: 										  send, {F9}vim.ahk{enter}
+#If WinActive("ahk_exe Code.exe")  ;;	___VSCODE                            
+		; !v:: 										  send, {F9}vim.ahk{enter}
+		^+4::											send, !+{4}
+		^+3::											send, !+{3}
+		^+2::											send, !+{2}
 		F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 		F15 & tab::               SendInput,{ctrldown}{]}{ctrlup}	
+		lbutton & F20:: 					send, !+4
+		lbutton & F19:: 					send, !+3
 		numpadsub::               F7
 		numpadadd::               F6
 		numpadmult::              send,+{F9}
@@ -31,7 +36,7 @@
 		<^lwin::                  delete
 		<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 		^s::                      SendInput, {ctrldown}{end}{ctrlup}
-	;;		___F19_F20
+	;;	___F19_F20
 		F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 		F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 		F20 & backspace::         delete
@@ -64,7 +69,7 @@
 		F13 & F11::               WindowInfo()
 		F13 & lshift::						enter
 		F13::F13
-	;;		____TAB
+	;;	____TAB
 		Tab & `:: 	 							
 		Tab & h::               	SendInput,{ctrldown}{[}{ctrlup}
 		Tab & l::               	SendInput,{ctrldown}{]}{ctrlup}
@@ -216,7 +221,7 @@
 		w::                                       SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 		; p::																			vim.paste() ;SendInput,^z{end}{enter}
 	#if
-;;		___Vim_F13
+;;					___Vim F13___
 	#If Getkeystate("F13","p")
 		p::                                       Vim.Paste()
 		y::                                       SendInput,^{c} 
@@ -313,7 +318,7 @@ F13 & left::									  sendinput, {shiftdown}{left}{shiftup}
 F13 & right::									  sendinput, {shiftdown}{right}{shiftup}
 
 
-	#If Getkeystate("F19","p") ;;		 ___psudonumpad
+	#If Getkeystate("F19","p") ;;	 ___psudonumpad
 	0::              SendInput,{-}
 	m::              numpad1
 	+m::             M

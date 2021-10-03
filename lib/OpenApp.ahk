@@ -43,9 +43,9 @@ F4::
   Run, AutoHotkey.chm, C:\Users\mmignin\Documents
   return
 OpenApps:
-  <!f::OpenApp.Firefox()
+  ; <!f::OpenApp.Firefox()
   <#f::OpenApp.Firefox()
-  <!v::OpenApp.vsCode()
+  ; <!v::OpenApp.vsCode()
   <#v::OpenApp.vsCode()
   #!v::Run, C:\Users\mmignin\Documents\VQuest\
   ;#c::gosub, F4 ; run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\
@@ -53,6 +53,7 @@ OpenApps:
   ; !+v::OpenApp.VPN()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
+  !d::OpenApp.Display()
   F20 & p::
   F21 & p::
   #p::OpenApp.YourPhone()

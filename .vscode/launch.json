@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "autohotkey",
+      "request": "launch",
+      "name": "AutoHotkey Debugger",
+      "program": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk",
+			"args": [],
+			"useDebugDirective": true
+    }
+  ]
+}

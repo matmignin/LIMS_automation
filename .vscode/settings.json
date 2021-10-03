@@ -34,11 +34,10 @@
         "lib/Tooltip.ahk": true,
         "**/.vimrc": true
     },
-    "explorerExclude.backup": null,
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
     "autoHide.autoHideSideBar": false,
-    "autoHide.autoHidePanel": true,
+    "autoHide.autoHidePanel": false,
     "notebook.outline.showCodeCells": true,
     "cSpell.enabled": true,
     "separators.enabledSymbols": [
@@ -51,8 +50,55 @@
         "Namespaces",
         "Structs"
     ],
-    "cSpell.words": [
-        "varbar",
-        "winactivate"
-    ]
+    "code-runner.executorMap": {
+        "javascript": "node",
+        "php": "C:\\php\\php.exe",
+        "python": "python",
+        "autohotkey": "C:\\Program Files\\AutoHotkey\\AutoHotKey.exe",
+        "perl": "perl",
+        "ruby": "C:\\Ruby23-x64\\bin\\ruby.exe",
+        "go": "go run",
+        "html": "\"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe\"",
+        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+    },
+    "code-runner.executorMapByFileExtension": {
+    
+      ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
+      ".vbs": "cscript //Nologo",
+      ".scala": "scala",
+      ".jl": "julia",
+      ".cr": "crystal",
+      ".ml": "ocaml",
+      ".exs": "elixir",
+      ".hx": "haxe --cwd $dirWithoutTrailingSlash --run $fileNameWithoutExt",
+      ".rkt": "racket",
+      ".scm": "csi -script",
+      ".ahk": "C:\\Program Files\\AutoHotkey\\AutoHotKey.exe",
+      ".au3": "autoit3",
+      ".kt": "cd $dir && kotlinc $fileName -include-runtime -d $fileNameWithoutExt.jar && java -jar $fileNameWithoutExt.jar",
+      ".kts": "kotlinc -script",
+      ".dart": "dart",
+      ".pas": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+      ".pp": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",
+      ".d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
+      ".hs": "runhaskell",
+      ".nim": "nim compile --verbosity:0 --hints:off --run",
+      ".csproj": "dotnet run --project",
+      ".fsproj": "dotnet run --project",
+      ".lisp": "sbcl --script",
+      ".kit": "kitc --run",
+      ".v": "v run",
+      ".vsh": "v run",
+      ".sass": "sass --style expanded",
+      ".cu": "cd $dir && nvcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+    },
+    "window.zoomLevel": -1,
+    "workbench.sideBar.location": "right",
+    "code-runner.defaultLanguage": "autohotkey",
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.saveAllFilesBeforeRun": true,
+    "code-runner.cwd": "C:\\Users\\mmignin\\Documents\\VQuest",
+    "code-runner.clearPreviousOutput": true,
+
 }
