@@ -5,12 +5,12 @@
 	rbutton::						2tap()
 	rshift & Appskey::			return
 ;;	___Lbuton:
-	lbutton & /::        	 	clip("ORC")
+	F19 & /::        	 	OCR()
 	Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
 	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
 	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 	F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	Lbutton & ,::          		send % BlockRepeat() clip("OCR")
+	; Lbutton & ,::         OCR()
 	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	; ~>+lbutton::					Send,{shiftDown}{click}{shiftup}
 #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800)  ; DoubleClick while
@@ -18,14 +18,6 @@
 	F20::               Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
 	F19::               Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
 #If
-
-
-
-
-
-
-
-
 
 
 

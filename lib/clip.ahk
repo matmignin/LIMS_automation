@@ -4,7 +4,6 @@ Clip(input=0,Wait:="0.55"){
   ; ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
-    sleep 100
     OCR()
     return
   }

@@ -206,6 +206,7 @@ VQuest_Start:
 #Persistent
     #NoEnv
     #SingleInstance,Force
+    ;SetWorkingDir, C:\Users\mmignin\Documents\VQuest
     #KeyHistory 300
     #InstallKeybdHook
     #InstallMouseHook
