@@ -1,34 +1,33 @@
 
 
-KEY_Snipper:
- #IfWinActive, Snipper - Snipaste ; the capture screen
- sendlevel 1
- numpaddot::Send, {esc} ;Send, {lwindown}{click}{lwinup}
- $rbutton::Send,{enter}
- F8::Send,{ctrldown}{c}{ctrlup}{esc}
-return
+; KEY_Snipper:
+;  #IfWinActive, ahk_exe Snipaste.exe ; the capture screen
+;  numpaddot::
+;  F8::
+;  sendlevel 1
+;  Send, #{Click} ;Send, {lwindown}{click}{lwinup}
+;  sendlevel 0
+; 	return
 
-#IfWinActive, Paster - Snipaste ; the floating window
-
- sendlevel 1
-
-;  F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
+; #IfWinActive, Paster - Snipaste ; the floating window
+	/* sendlevel 1
+ ;  F9 & wheelUp::Wheel("{click right}z1{click right}e{ctrl down}5{ctrl up}")
  F8::
- numpaddot::Send, {lwindown}{click}{lwinup}
+ numpaddot::Send,{esc}
  sendlevel 0
- 
+#i */fwinactive,
   
 ;  F7::Send, ^+{+}
 ;  F6::Send, ^+{-}
-#If MouseIsOver("Paster - Snipaste ahk_class")
- sendlevel 1
- numpaddot::Send, {lwindown}{click}{lwinup}
-  F8::Send,{click}{esc}
- sendlevel 0
-
+; #If MouseIsOver("Paster - Snipaste ahk_class")
+;  sendlevel 1
+; 	numpaddot::Send,{click}{esc}
+;   F8::Send,{click}{esc}
+;  sendlevel 0
+; #if
 	
 
- #if
+;  #if
 
 	Snip_groupChange(){
  Send, {ctrl down}22{Ctrl up}

@@ -111,7 +111,7 @@ Stats_Create()
 	}
 
 Settings_Hotkeys()
-	{
+	{SendInput,^+!{0}
 	 global
 	 local ini,index,keylist
 	 ini:=A_ScriptDir "\settings.ini"

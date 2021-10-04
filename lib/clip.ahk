@@ -44,19 +44,20 @@ return
 Class Clip {
 
 Append(Delimiter:="`n"){
-global
+    global
 		PreClip:=Clipboard
 		Clipboard:=
 		Send, ^{c}
-		clipwait, 0.55
-		if !errorlevel
+		clipwait, 0.75
+		if errorlevel
+      clipboard:=Preclip
+    else  
     {
       clipboard := Preclip Delimiter Clipboard
-      TT(Clipboard,1000,200,200,2,245,"R")
-      return
+      TT(clipboard)
     }
-    clipboard:=Preclip
-    ; Delimiter:=
+
+    ; ; Delimiter:=
     ; tt(Preclip)
 		return 
 }
@@ -396,12 +397,12 @@ Copy(){
     }
     clipboard:=
     Send, ^{c}
-    clipwait, 1.5
+    clipwait, 0.75
     if errorlevel {
       clipboard:=Preclip
       return
     }
-    TT(Clipboard,1000,200,200,2,245,"R")
+    Pop(Clipboard)
     clip.Regex()
 
       return

@@ -45,10 +45,9 @@ F4::
 OpenApps:
   ; <!f::OpenApp.Firefox()
   <#f::OpenApp.Firefox()
-  ; <!v::OpenApp.vsCode()
+  ; !v::OpenApp.vsCode()
   <#v::OpenApp.vsCode()
-  #!v::Run, C:\Users\mmignin\Documents\VQuest\
-  ;#c::gosub, F4 ; run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\
+  ; #!v::Run, C:\Users\mmignin\Documents\VQuest\
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   #o::OpenApp.Outlook()

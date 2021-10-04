@@ -145,7 +145,7 @@ Return
 												gosub, ClipChainInsertGuiOK
 												return
 #IfWinActive, CL3ClipChain
-	Rbutton::			        gosub, clipchainmenu
+	$Rbutton::			        gosub, clipchainmenu
 	; up::			         gosub, ClipchainMoveUp
 	; Down::			       gosub, ClipchainMoveDown
 	Backspace::			     gosub, ClipChainDel
@@ -191,7 +191,7 @@ Return
 	F21::			       	 ClipChainInsert()
 	; F20::			        ClipChainInsert()
 	; F20::			     		clipChain_c()
-	F20::					gosub, ClipChainPasteDoubleClick
+	F20::							gosub, ClipChainPasteDoubleClick
 	numlock::					clipChain_v()
 	Mbutton::  				clipchaininsert()
 	
@@ -228,7 +228,7 @@ clipChain_c(){
 	KeyWait, F19, T0.20
 	If ErrorLevel
 	{
-		KeyWait, F19, T4
+		KeyWait, F19, T2
 		if (A_PriorKey!="F19")
 			exit
 		if (A_PriorKey="F19")
@@ -238,11 +238,11 @@ clipChain_c(){
 			ClipChainInsert()
 			exit
 		}
-		KeyWait, F19, T4
+		KeyWait, F19, T2
 		Return
 	}
 	if Errorlevel = 0
-		KeyWait, F19, T4
+		KeyWait, F19, T2
 	if !ErrorLevel
 		ClipChainInsert()
 return
@@ -325,10 +325,10 @@ ClipChainInsert(){ ; if nothing is higlighted, it will tripple click the word th
 	}
 	If (ClipChainInsEdit = 1)
 	{
-		ClipChainData[CI]:=ClipChainIns
+		ClipChainData[ClipchainIndex]:=ClipChainIns
 		If (ClipChainInsertCounter = 0)
 			LV_Add(1,,,,1)
-		LV_Modify(I,"Col2",ClipChainHelper(ClipChainIns))
+		LV_Modify(ClipChainIndex,"Col2",ClipChainHelper(ClipChainIns))
 	}
 	else
 	{

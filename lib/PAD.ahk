@@ -1,6 +1,6 @@
 
 #ifwinactive, 
-	$Numlock::						4tap()
+	$Numlock::					4tap()
 	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
 	rbutton::						2tap()
 	rshift & Appskey::			return
@@ -21,17 +21,20 @@
 
 
 
+
+
+
+
+
+
+
+
+
 ;;	___3Fingers
 
 3tap(){
 	Global 
 	setwindelay, 100
-	if winactive("ahk_exe OUTLOOK.EXE") {
-		click 3
-		Send, ^{c}
-		clip()
-		return
-	}
 	if WinActive("ahk_exe WFICA32.EXE") {
 		if Winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
 			LMS.DetectTab()
@@ -55,18 +58,18 @@
 			else if (Tab="Samples"){
 				blockinput, on
 				setwindelay, 400
-					send, {click 124, 294} ;assign Requests
+				send, {click 124, 294} ;assign Requests
+				sleep 500
+				if !Winactive("Edit request - \\Remote")
 					sleep 500
-					if !Winactive("Edit request - \\Remote")
-						sleep 500
-						send, {click, 258, 613}
-					sleep 800
-					if !WinActive("Select tests for request: R")
-						sleep 500
-					WinActivate, Select tests for request: R
-						send, {click, 31, 102}
-					setwindelay, 100
-					blockinput, off
+				send, {click, 258, 613}
+				sleep 800
+				if !WinActive("Select tests for request: R")
+					sleep 500
+				WinActivate, Select tests for request: R
+					send, {click, 31, 102}
+				setwindelay, 100
+				blockinput, off
 			return
 			}
 		}
@@ -101,6 +104,16 @@
 			clk(131, 144)
 			return
 		}
+	}
+
+	else if winactive("ahk_exe Code.exe") {
+		send, ^f
+	}
+	else 	if winactive("ahk_exe OUTLOOK.EXE") {
+		click 3
+		Send, ^{c}
+		clip()
+		return
 	}
 	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
 		Sendpassword()
@@ -188,6 +201,8 @@ return
 		LMS.Filter(Clear)
 	else if winactive("Select samples for test:")
 		Clk(853, 657) ; click okay.
+	else if winactive("ahk_exe Snipaste.exe")
+		send, {esc}
 	else
 		return
 	return
@@ -361,22 +376,25 @@ return
 
 CloseWindow(){
 	global
-	WinGetTitle, ThisWindow, A
-		if ThisWindow contains, Inbox - mmignin@vitaquest.com - Outlook
+	SendLevel, 1
+		if Winactive("Inbox - mmignin@vitaquest.com - Outlook")
 			return
-		if ThisWindow contains, PDF Preview - \\Remote, OneNote for Windows 10,ahk_exe OUTLOOK.EXE,OneNote for Windows 10,ahk_exe explorer.exe,
+		else if winactive("ahk_exe Snipaste.exe")
+			send, {esc}
+		else if Winactive("PDF Preview - \\Remote") || winactive("ahk_exe OUTLOOK.EXE") || Winactive("OneNote for Windows 10")|| winactive("ahk_exe explorer.exe")
 			Send, {altdown}{F4}{altup}
-		else If (winactive("Select methods tests - \\Remote") || WinActive("Composition - \\Remote") || WinActive("Test Definition Editor - \\Remote") || WinActive("Results Definition - \\Remote") || winactive("Edit test (Field Configuration:") || winactive("Register new samples - \\Remote") || winactive("Select samples for test:"))
-			Send, {esc}
-		if ThisWindow contains,Results Definition - \\Remote
-			Send, {esc}
-		if ThisWindow contains,ahk_exe firefox.exe, ahk_exe Code.exe, ahk_exe msedge.exe, 
-			Send, {ctrldown}{w}{ctrlup}
-		if ThisWindow contains, NuGenesis LMS - \\Remote
-			LMS.FilterClear()
-		if ThisWindow contains,Adobe Acrobat Reader
-			send {c || winactive("ahk_exe OUTLOOK.EXE")
-			return
+		else If winactive("ahk_exe WFICA32.EXE"){
+			if Winactive("NuGenesis LMS - \\Remote")
+				LMS.FilterClear()
+			else If (winactive("Select methods tests - \\Remote") || WinActive("Composition - \\Remote") || WinActive("Test Definition Editor - \\Remote") || WinActive("Results Definition - \\Remote") || winactive("Edit test (Field Configuration:") || winactive("Register new samples - \\Remote") || winactive("Select samples for test:") || Winactive("Results Definition - \\Remote"))
+				Send, {esc}
+			}
+		else if Winactive("ahk_exe firefox.exe") || Winactive("ahk_exe Code.exe") || Winactive("ahk_exe msedge.exe")
+			Send, ^{w}
+		else Winactive("Adobe Acrobat Reader:")
+			send {esc}
+		sendlevel, 0
+		return
 	}
 
 
@@ -482,7 +500,7 @@ CloseWindow(){
 		Send, {F18}
 	}
 	else
-		click R
+		click Right
 	Return
 }
 

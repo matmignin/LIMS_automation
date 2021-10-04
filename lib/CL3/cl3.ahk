@@ -142,8 +142,8 @@ If ActivateBackup
 	SetTimer, Backup, % BackupTimer*60000 ; minutes
 
 /*
-FILE_NOTIFY_CHANGE_FILE_NAME   = 1   (0x00000001) : Notify about renaming, creating, or deleting a file.
-FILE_NOTIFY_CHANGE_DIR_NAME    = 2   (0x00000002) : Notify about creating or deleting a directory.
+FILE_NOTIFY_CHANGE_FILE_NAME   = 1   (0x00000001) : Notify about renaming, creating,  deleting a file.
+FILE_NOTIFY_CHANGE_DIR_NAME    = 2   (0x00000002) : Notify about creating  deleting a directory.
 FILE_NOTIFY_CHANGE_SIZE        = 8   (0x00000008) : Notify about any file-size change.
 FILE_NOTIFY_CHANGE_LAST_WRITE  = 16  (0x00000010) : Notify about any change to the last write-time of files.
                                = 27
@@ -228,14 +228,14 @@ Return
 
 $^v:: ; v1.91, $ for v1.95 (due to clipchain updates)
 hk_clipchainpaste_defaultpaste:
-If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
+If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")  ClipChainPause
 	{
 	 PasteIt("normal")
 	 Return
 	}
 If WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
 	{
-	 If (hk_clipchainpaste <> "^v") or ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
+	 If (hk_clipchainpaste <> "^v")  ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
 		PasteIt()
 	 else
 		Gosub, ClipChainPasteDoubleClick
@@ -244,9 +244,11 @@ else
 	Gosub, ClipChainPasteDoubleClick
 Return
 
-; Cycle through clipboard history
+; Cycle through clipboard history^e::
 ;#v::
 hk_cyclebackward:
+If GetKeyState("F13","P")
+	return
 If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cyclebackward:=1
@@ -274,11 +276,12 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 ToolTip	
 If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	{
-	 ClipText:=History[ClipCycleCounter].text
-	 ;MenuItemPos:=ClipCycleCounter ; ClipboardHandler will handle deleting it from the chosen position in History
-	 Gosub, ClipboardHandler
-	 stats.cyclepaste++
-	 ClipCycleCounter:=1
+	ClipText:=History[ClipCycleCounter].text
+	;MenuItemPos:=ClipCycleCounter ; ClipboardHandler will handle deleting it from the chosen position in History
+		gosub, ClipboardHandler
+	stats.cyclepaste++
+  ClipCycleCounter:=1
+
 	}
 Return
 
@@ -296,7 +299,7 @@ If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cycleforward:=1
 ClipCycleBackCounter:=1
-If (ClipCycleCounter=1) or (ClipCycleCounter=0)
+If (ClipCycleCounter=1)  (ClipCycleCounter=0)
 	Return
 ClipCycleCounter--
 If (ClipCycleCounter < 1)
@@ -348,7 +351,7 @@ If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cycleforward:=0, cyclebackward:=0	
 CycleFormat:=0
-If (ClipCycleCounter = 0) or (ClipCycleCounter = "")
+If (ClipCycleCounter = 0)  (ClipCycleCounter = "")
 	ClipCycleCounter:=1
 While GetKeyState(hk_cyclemodkey,"D")
 	{
@@ -755,7 +758,7 @@ If CopyDelay
 	Sleep % CopyDelay
 
 WinGet, IconExe, ProcessPath , A
-If ((History.MaxIndex() = 0) or (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
+If ((History.MaxIndex() = 0)  (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
 	History.Insert(1,{"text":"Text","icon": IconExe,"lines": 1})
 
 History_Save:=1
@@ -780,7 +783,7 @@ else ; Excel is active; check CF_METAFILEPICT, if not present we can safely stor
 	If (DllCall("IsClipboardFormatAvailable", "Uint", 3) = 0)
 		ClipboardByPass:=ClipboardAll
 
-if (Clipboard = "") ; or (ScriptClipClipChain = 1) ; avoid empty entries or changes made by script which you don't want to keep
+if (Clipboard = "") ;  (ScriptClipClipChain = 1) ; avoid empty entries  changes made by script which you don't want to keep
 	Return
 
 AutoReplace()

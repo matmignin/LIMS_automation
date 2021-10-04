@@ -1,40 +1,42 @@
-﻿    #Persistent
-    #NoEnv
-    #SingleInstance,Force
-    #KeyHistory 300
-    #InstallKeybdHook
-    #InstallMouseHook
-    CheckTime:=500
-    ; #HotkeyInterval 50
-    #MaxHotkeysPerInterval 500
-    #MaxThreadsBuffer, On
-    #InstallKeybdHook
-    #InstallMouseHook
-    ; #HotkeyModifierTimeout 1
-    #maxthreadsperhotkey, 1
-    SetBatchLines, 20ms
-    SetControlDelay, 1
-    SetKeyDelay, 1, 0.25
-    setwindelay, 250
-    FormatTime, DayString,, MM/d/yy
-    FormatTime, TimeString, R
-    FormatTime, CurrentDateTime,, MM/dd/yy
-    SetNumLockState, on
-    SetscrolllockState, off
-    CoordMode, mouse, Window
-    SetMouseDelay, 1
-    SetDefaultMouseSpeed, 1
-    SetTitleMatchMode, 2
+﻿
 gosub, vquest_start
 
-
-
-
 Starting_test:
-
-
   return
 
+;;        ___Testing Zone
+	+^c::clip.Append()
+	!^c::clip.Append(A_Space)
+	#c::
+		if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
+		{
+				winc_presses += 1
+				return
+		}
+		; Otherwise, this is the first press of a new series. Set count to 1 and start
+		; the timer:
+		winc_presses := 1
+		SetTimer, KeyWinC, -400 ; Wait for more presses within a 400 millisecond window.
+		return
+
+	KeyWinC:
+		if (winc_presses = 1) ; The key was pressed once.
+		{
+				Clip.Copy()
+		}
+		else if (winc_presses = 2) ; The key was pressed twice.
+		{
+				clip.Append()  
+			; sleep 300 ; Open a different folder.
+		}
+		else if (winc_presses > 2)
+		{
+				clip.Append(A_Space)
+		}
+		; Regardless of which action above was triggered, reset the count to
+		; prepare for the next series of presses:
+	winc_presses := 0
+	return
 
 
 ActiveCheck: ;continuously runing sub
@@ -177,10 +179,11 @@ DropDown() {
 
 #IfWinActive,
   #Include <Test>
+  #include <KEYS>
   #include <VIM>
   #include <HotStrings>
   #Include <OFFICE>
-  #include <KEYS>
+  #include <LMS KEYS>
   #include <PAD>
   #Include <clip>
   #Include <OpenApp>
@@ -200,6 +203,33 @@ DropDown() {
 
 
 VQuest_Start:
+#Persistent
+    #NoEnv
+    #SingleInstance,Force
+    #KeyHistory 300
+    #InstallKeybdHook
+    #InstallMouseHook
+    CheckTime:=500
+    ; #HotkeyInterval 50
+    #MaxHotkeysPerInterval 500
+    #MaxThreadsBuffer, On
+    #InstallKeybdHook
+    #InstallMouseHook
+    ; #HotkeyModifierTimeout 1
+    #maxthreadsperhotkey, 1
+    SetBatchLines, 20ms
+    SetControlDelay, 1
+    SetKeyDelay, 1, 0.25
+    setwindelay, 250
+    FormatTime, DayString,, MM/d/yy
+    FormatTime, TimeString, R
+    FormatTime, CurrentDateTime,, MM/dd/yy
+    SetNumLockState, on
+    SetscrolllockState, off
+    CoordMode, mouse, Window
+    SetMouseDelay, 1
+    SetDefaultMouseSpeed, 1
+    SetTitleMatchMode, 2
     #WinActivateForce
     AutoTrim, On
     OnClipboardChange("clipclip")
@@ -251,7 +281,8 @@ VQuest_Start:
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysOff
     try Run, cl3.Ahk, lib\CL3
-
+      catch e
+        msgbox % e.line "  " e.error
     try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%
     CopyPasteToggle=0
@@ -259,6 +290,13 @@ VQuest_Start:
     On:="On"
     Off:="Off"
     Clear:="Clear"
+    snipaste:="ahk_exe Snipaste.exe"
+    LMS:="ahk_exe WFICA32.EXE"
+    Nugenesis:=Main:="NuGenesis LMS - \\Remote"
+    VScode:="ahk_exe Code.exe"
+    Excel:="ahk_exe EXCEL.EXE"
+    Workbook:="LMS Workbook.xlsb - Excel"
+    Outlook:="ahk_exe OUTLOOK.exe"
     yo:="yo"
     ye:="ye"
     Blank:=" `n `n  `t `t `n`t "

@@ -95,10 +95,7 @@ SheetChange(sht,Cell) {
 
 CopySheetName(){
 	SheetName:= xl.ActiveWorkbook.Worksheets.name
-	
-
 }
-
 	RegexCell(vCell,n:=""){
 		Global
 		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
