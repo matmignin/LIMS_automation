@@ -298,7 +298,7 @@ AutoFill(){
 			winwaitactive, Result Editor - \\Remote,,0.5
 				if !errorlevel
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-			blockinput, off
+			; blockinput, off
 			Breaking.Point()
 			sleep 400
 	}
@@ -307,12 +307,12 @@ AutoFill(){
 		winactivate, Result Editor - \\Remote
 		Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
-			blockinput, off
+			; blockinput, off
 			Breaking.Point()
 			return
 	}
 	else
-	Blockinput,off
+	; Blockinput,off
 		return
 }
 

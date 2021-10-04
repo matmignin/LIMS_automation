@@ -133,10 +133,8 @@ Return
 	; 		return
 			
 #IfWinActive, CL3ClipChain Insert text
-#IfWinActive, CL3ClipChain Insert text
 #IfWinActive, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item
 	+Enter::	
-	; F19::						
 	^enter::							
 	; ^enter::							ControlClick, Button1, A, A, left, 1
 												ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
@@ -146,34 +144,24 @@ Return
 												return
 #IfWinActive, CL3ClipChain
 	$Rbutton::			        gosub, clipchainmenu
-	; up::			         gosub, ClipchainMoveUp
-	; Down::			       gosub, ClipchainMoveDown
 	Backspace::			     gosub, ClipChainDel
 
 	#IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
-		; sendlevel 3
 
-	; ^v::Gosub, ClipChainPasteDoubleClick
-	; sendlevel 0
 #If ClipChainActive()
-	^Numpadmult::
-	; F20 & up::			   MoveIndicatorUp()
-	^numpaddot::
-	; F20 & Down::			MoveIndicatorDown()
 	Rshift & up::			gosub, ClipchainMoveUp
 	Rshift & down::		gosub, ClipchainMoveDown
-	; gosub, ClipchainMoveDown
-	F20 & delete:: 		gosub, ClipChainClear
+
 	Delete::			 	   gosub, ClipChainDel
 	^c::			     	   send, ^c
 	F11::
 								clipchaininsert()
 								send, ^x
 								return
-;\::	  					gosub, clipchainmenu
-	F20 & F19::				;Gui, ClipChain:Destroy
+	F20 & F19::				Gui, ClipChain:Destroy
 	F22:: 					gosub, ClipChainGuiClose
-	F19::			 			clipchain_C() ;ClipChainInsert()       
+	;F19::			 			clipchain_C() ;
+	; ClipChainInsert()       
 								; clicktext(3)
 								
 								; clipChain_v()
@@ -188,19 +176,15 @@ Return
 								sleep 50
 								clipChain_v()
 								return
-	F21::			       	 ClipChainInsert()
-	; F20::			        ClipChainInsert()
-	; F20::			     		clipChain_c()
-	; F20::							gosub, ClipChainPasteDoubleClick
 	numlock::					clipChain_v()
 	Mbutton::  				clipchaininsert()
 	
 #if
 
-Lwin & Lbutton::
-	click
-	Gosub, ClipChainPasteDoubleClick
-return
+; Lwin & Lbutton::
+; 	click
+; 	Gosub, ClipChainPasteDoubleClick
+; return
 ; ~Lbutton::
 ; If ClipChainPause
 ; 	Return

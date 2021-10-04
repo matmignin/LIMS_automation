@@ -20,7 +20,7 @@
 		Numpadadd::               SendInput, !^{d} ;go to reference
 		$F9::                     F9
 		tab::                     tab
-		<^r::                     reloadscript()
+		<^r::                     reloadscript()/
 		LCtrl & Appskey::         return
 		<^f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 		<+f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
@@ -124,7 +124,6 @@
 	b::                       SendInput,^+{left}
 	o::                       SendInput,{Home}{enter}{up}
 	6::                       SendInput,{shiftdown}{Home}{shiftup}
-	t::												SendInput,{F9}test.ahk{enter}
 	4::                       SendInput,{shiftdown}{end}{shiftup} 
 	f::												Sendinput,!^{f}
 	v::                       SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}

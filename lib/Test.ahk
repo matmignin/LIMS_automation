@@ -31,52 +31,52 @@
 
 
 
+return
 
- 
 
-	~F20 & Space::  ;; Testing Backcycle
-	If !ActiveWindowID
-		WinGet, ActiveWindowID, ID, A
-	cyclebackward:=1
-	PreviousClipCycleCounter:=0 ; 13/10/2017 test
-	ClipCycleCounter:=1
-	ClipCycleFirst:=1
-	While GetKeyState("F20","D") and cyclebackward
-	{
-		If (ClipCycleCounter <> 0)
-		{	
-			; Var:=Product[%ClipCycleCounter%]
-			Var:=Products[ClipCycleCounter]
-			TT(Var,1000,,,,250,"C")
-			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
-			; Gui, History:Add, Text,, %Var%
-			; Gui, History:Show, NoActivate, var 
-			; ttext:=% DispToolTipText(Var)
-		}
-		else
-			ttext:="[cancelled]"
-		If (oldttext <> ttext)
-		{	
-			ToolTip, % ttext,A_CaretX, A_CaretY,
-			oldttext:=ttext
-		}
-		Sleep 50
-		KeyWait, Space,
-	}
-	Gui, History:Destroy
-	If (ClipCycleCounter > 0) ; If zero we've cancelled it
-	{
-		Gosub, ClipboardHandler
-		ClipCycleCounter:=1
-	}
-Return
+; 	F20 & Space::  ;; Testing Backcycle
+; 	If !ActiveWindowID
+; 		WinGet, ActiveWindowID, ID, A
+; 	cyclebackward:=1
+; 	PreviousClipCycleCounter:=0 ; 13/10/2017 test
+; 	ClipCycleCounter:=1
+; 	ClipCycleFirst:=1
+; 	While GetKeyState("F20","D") and cyclebackward
+; 	{
+; 		If (ClipCycleCounter <> 0)
+; 		{	
+; 			; Var:=Product[%ClipCycleCounter%]
+; 			Var:=Products[ClipCycleCounter]
+; 			TT(Var,1000,,,,250,"C")
+; 			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
+; 			; Gui, History:Add, Text,, %Var%
+; 			; Gui, History:Show, NoActivate, var 
+; 			; ttext:=% DispToolTipText(Var)
+; 		}
+; 		else
+; 			ttext:="[cancelled]"
+; 		If (oldttext <> ttext)
+; 		{	
+; 			ToolTip, % ttext,A_CaretX, A_CaretY,
+; 			oldttext:=ttext
+; 		}
+; 		Sleep 50
+; 		KeyWait, Space,
+; 	}
+; 	Gui, History:Destroy
+; 	If (ClipCycleCounter > 0) ; If zero we've cancelled it
+; 	{
+; 		Gosub, ClipboardHandler
+; 		ClipCycleCounter:=1
+; 	}
+; Return
 
-F20 & Space Up::
-	PreviousClipCycleCounter:=ClipCycleCounter
-	If (ClipCycleFirst = 0)
-		ClipCycleCounter++
-	ClipCycleFirst:=0
-Return   
+; F20 & Space Up::
+; 	PreviousClipCycleCounter:=ClipCycleCounter
+; 	If (ClipCycleFirst = 0)
+; 		ClipCycleCounter++
+; 	ClipCycleFirst:=0
+; Return   
 ClipBoardHandler:
 	oldttext:="", ttext:="", ActiveWindowID:=""
 	If (Var <> Clipboard)
@@ -142,24 +142,6 @@ return
 
 Test(n){
 	global
-	; if Iteration==1
-	; {
-	; 	test_1()
-	; 	Return
-	; }
-	; else if iteration==2
-	; {
-	; 	test_2()
-	; 	; TT("test " n)
-	; 	Return
-	; }
-	; else if iteration==3
-	; {
-	; 	test_3()
-	; 	; TT("test " n)
-	; 	Return
-	; }
-	; else
 		try gosub, test_%n%
 		Catch e
 			msgbox % e.line "`n" e.error
@@ -533,56 +515,7 @@ return
 
 ; 	; }
 
-AddCanceled(){
-	ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
-		winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
-	SendInput,{click 399, 219}{end}'(Canceled'){enter}
-}
 
-ToggleFilter_Test_1(){
-	ifwinnotactive, NuGenesis LMS - \\Remote
-		WinActivate, NuGenesis LMS - \\Remote
-	click 489, 836, R
-	SendInput,{down 2}{enter}
-}
-
-FilterSearch_Test(TestName:="", MethodName:=""){
-	ifwinnotactive, NuGenesis LMS - \\Remote
-		WinActivate, NuGenesis LMS - \\Remote
-	click 1230, 648 ;click name Divider
-	Send, ^a%TestName%{enter}
-	click 1067, 647 ; click method ID Divider
-	Send, ^a%MethodName%{enter}{tab 4}
-}
-
-ListArray(The_Array,Option:="n"){
-	global
-	if (option<>"n"){
-		for Each, Element in The_Array
-			ArrayList .=Element " " Option " "
-		msgbox, %ArrayList%
-		return ArrayList
-	}
-	else {  
-  ; ArrayList := "1: "
-  For Each, Element In The_Array {
-    ;  If (ArrayList <> "1: ") ; ArrayList is not empty, so add a line feed
-        ArrayList .= "`n" A_index ": "
-    ArrayList .= Element
-  }
-  MsgBox, %ArrayList%
-	return ArrayList
-  }
-}
-
-HasValue(haystack, needle) {
-	for index, value in haystack
-		if (value = needle)
-		return index
-	if !(IsObject(haystack))
-		throw Exception("Bad haystack!", -1, haystack)
-return 0
-}
 
 
 /* 			

@@ -1,5 +1,5 @@
 
-
+#IfWinActive,
 
 
 ;;	___3Fingers
@@ -28,7 +28,7 @@
 			else if (Tab="Products")
 				clk(67, 754) ;edit results
 			else if (Tab="Samples"){
-				blockinput, on
+				; blockinput, on
 				setwindelay, 400
 				send, {click 124, 294} ;assign Requests
 				sleep 500
@@ -41,7 +41,7 @@
 				WinActivate, Select tests for request: R
 					send, {click, 31, 102}
 				setwindelay, 100
-				blockinput, off
+				; blockinput, off
 			return
 			}
 		}
@@ -505,3 +505,5 @@ CloseWindow(){
 	return
 	}
 }
+
+~lbutton::return

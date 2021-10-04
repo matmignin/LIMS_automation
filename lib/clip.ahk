@@ -17,7 +17,7 @@ Clip(input=0,Wait:="0.55"){
   if errorlevel
   {
     ; clipboard:=ClipboardSaved
-    if (A_PriorKey != "F20") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
+    if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
     Send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
   }
@@ -243,100 +243,100 @@ IfNothingSelected(Action){
   return
 }
 
-Click(){
-    global
-  MouseGetPos, xx
-  TimeButtonDown = %A_TickCount%
-  ; Wait for it to be released
-  Loop
-  {
-    Sleep 10
-    GetKeyState, LButtonState, LButton, P
-    if LButtonState = U  ; Button has been released.
-    {
-        If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
-        {
-          ;  clip()
-          Send, ^{c}
-          return
-        }
-        break
-    }
-    elapsed = %A_TickCount%
-    elapsed -= %TimeButtonDown%
-    if elapsed > 200  ; Button was held down too long, so assume it's not a double-click.
-    {
-        MouseGetPos x0, y0            ; save start mouse position
-        Loop
-    {
-      Sleep 20                    ; yield time to others
-      GetKeyState keystate, LButton
-      IfEqual keystate, U, {
-        MouseGetPos x, y          ; position when button released
-        break
-      }
-    }
-    if (x-x0 > 5 or x-x0 < -5 or y-y0 > 5 or y-y0 < -5)
-    {                             ; mouse has moved
-        clip0 := ClipBoardAll      ; save old clipboard
-        ClipBoard =
-        ; Clip()                   ; selection -> clipboard
-        Send, {ctrldown}{c}{ctrlup}
-        ClipWait 1, 1              ; restore clipboard if no data
-        IfEqual ClipBoard,, SetEnv ClipBoard, %clip0%
-    }
-        return
-    }
-  }
-  ; Otherwise, button was released quickly enough.  Wait to see if it's a double-click:
-  TimeButtonUp = %A_TickCount%
-  Loop
-  {
-    Sleep 10
-    GetKeyState, LButtonState, LButton, P
-    if LButtonState = D  ; Button has been pressed down again.
-        break
-    elapsed = %A_TickCount%
-    elapsed -= %TimeButtonUp%
-    if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a double-click.
-        return
-  }
-  ;Button pressed down again, it's at least a double-click
-  TimeButtonUp2 = %A_TickCount%
-  Loop
-  {
-    Sleep 10
-    GetKeyState, LButtonState2, LButton, P
-    if LButtonState2 = U  ; Button has been released a 2nd time, let's see if it's a tripple-click.
-        break
-  }
-  ;Button released a 2nd time
-  TimeButtonUp3 = %A_TickCount%
-  Loop
-  {
-    Sleep 10
-    GetKeyState, LButtonState3, LButton, P
-    if LButtonState3 = D  ; Button has been pressed down a 3rd time.
-        break
-    elapsed = %A_TickCount%
-    elapsed -= %TimeButtonUp%
-    if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
-    {  ;Double-click
-        Send, {ctrldown}{c}{ctrlup}
-        ; clip()
-        return
-    }
-  }
-  ;Tripple-click:
-    Sleep, 100
-    Send, {ctrldown}{a}{ctrlup}
-    sleep 100
-    Send, {ctrldown}{c}{ctrlup}
-    ;  clip()
-  return
+; Click(){
+;     global
+;   MouseGetPos, xx
+;   TimeButtonDown = %A_TickCount%
+;   ; Wait for it to be released
+;   Loop
+;   {
+;     Sleep 10
+;     GetKeyState, LButtonState, LButton, P
+;     if LButtonState = U  ; Button has been released.
+;     {
+;         If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
+;         {
+;           ;  clip()
+;           Send, ^{c}
+;           return
+;         }
+;         break
+;     }
+;     elapsed = %A_TickCount%
+;     elapsed -= %TimeButtonDown%
+;     if elapsed > 200  ; Button was held down too long, so assume it's not a double-click.
+;     {
+;         MouseGetPos x0, y0            ; save start mouse position
+;         Loop
+;     {
+;       Sleep 20                    ; yield time to others
+;       GetKeyState keystate, LButton
+;       IfEqual keystate, U, {
+;         MouseGetPos x, y          ; position when button released
+;         break
+;       }
+;     }
+;     if (x-x0 > 5 or x-x0 < -5 or y-y0 > 5 or y-y0 < -5)
+;     {                             ; mouse has moved
+;         clip0 := ClipBoardAll      ; save old clipboard
+;         ClipBoard =
+;         ; Clip()                   ; selection -> clipboard
+;         Send, {ctrldown}{c}{ctrlup}
+;         ClipWait 1, 1              ; restore clipboard if no data
+;         IfEqual ClipBoard,, SetEnv ClipBoard, %clip0%
+;     }
+;         return
+;     }
+;   }
+;   ; Otherwise, button was released quickly enough.  Wait to see if it's a double-click:
+;   TimeButtonUp = %A_TickCount%
+;   Loop
+;   {
+;     Sleep 10
+;     GetKeyState, LButtonState, LButton, P
+;     if LButtonState = D  ; Button has been pressed down again.
+;         break
+;     elapsed = %A_TickCount%
+;     elapsed -= %TimeButtonUp%
+;     if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a double-click.
+;         return
+;   }
+;   ;Button pressed down again, it's at least a double-click
+;   TimeButtonUp2 = %A_TickCount%
+;   Loop
+;   {
+;     Sleep 10
+;     GetKeyState, LButtonState2, LButton, P
+;     if LButtonState2 = U  ; Button has been released a 2nd time, let's see if it's a tripple-click.
+;         break
+;   }
+;   ;Button released a 2nd time
+;   TimeButtonUp3 = %A_TickCount%
+;   Loop
+;   {
+;     Sleep 10
+;     GetKeyState, LButtonState3, LButton, P
+;     if LButtonState3 = D  ; Button has been pressed down a 3rd time.
+;         break
+;     elapsed = %A_TickCount%
+;     elapsed -= %TimeButtonUp%
+;     if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
+;     {  ;Double-click
+;         Send, {ctrldown}{c}{ctrlup}
+;         ; clip()
+;         return
+;     }
+;   }
+;   ;Tripple-click:
+;     Sleep, 100
+;     Send, {ctrldown}{a}{ctrlup}
+;     sleep 100
+;     Send, {ctrldown}{c}{ctrlup}
+;     ;  clip()
+;   return
     
-    return
-  }
+;     return
+;   }
 
 
 

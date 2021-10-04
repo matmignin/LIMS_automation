@@ -9,7 +9,7 @@ registerNewSamples(){
     Coated:=
   If Lot = "ERROR"
     lot:=
-    blockinput, on
+    ; blockinput, on
   ControlGetText, Iteration, Static1, VarBar
   ifwinactive, Register new samples - \\Remote
   MouseGetPos, mx, my
@@ -46,7 +46,7 @@ registerNewSamples(){
   Breaking.Point()
   SendInput, {enter}
   sleep 200
-  blockinput, off
+  ; blockinput, off
   winactivate, Register new samples - \\Remote
   sleep 300
   my:=my+30

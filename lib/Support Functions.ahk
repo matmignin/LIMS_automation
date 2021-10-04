@@ -1,5 +1,32 @@
 
+ListArray(The_Array,Option:="n"){
+	global
+	if (option<>"n"){
+		for Each, Element in The_Array
+			ArrayList .=Element " " Option " "
+		msgbox, %ArrayList%
+		return ArrayList
+	}
+	else {  
+  ; ArrayList := "1: "
+  For Each, Element In The_Array {
+    ;  If (ArrayList <> "1: ") ; ArrayList is not empty, so add a line feed
+        ArrayList .= "`n" A_index ": "
+    ArrayList .= Element
+  }
+  MsgBox, %ArrayList%
+	return ArrayList
+  }
+}
 
+HasValue(haystack, needle) {
+	for index, value in haystack
+		if (value = needle)
+		return index
+	if !(IsObject(haystack))
+		throw Exception("Bad haystack!", -1, haystack)
+return 0
+}
 
 
 
@@ -7,7 +34,7 @@
 class Breaking {
 	Point(){
 		Global
-		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") || GetKeyState("Lbutton", "P")  {	
+		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") {	
 		TT("Broke")
 			exit
 		}
@@ -53,14 +80,14 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
   
   
   
-  WM_LBUTTONDOWN(wParam, lParam)
-			{
-				X := lParam & 0xFFFF
-				Y := lParam >> 16
-				if A_GuiControl
+  ; WM_LBUTTONDOWN(wParam, lParam)
+			; {
+				; X := lParam & 0xFFFF
+				; Y := lParam >> 16
+				; if A_GuiControl
 					Ctrl := "`n(in control " . A_GuiControl . ")"
 				; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
-				PostMessage, 0xA1, 2
+				; PostMessage, 0xA1, 2
 				; sleep 200
 		; keywait, Lbutton, U T0.20
 			; if !errorlevel
@@ -70,7 +97,7 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 						; MouseClick, Left, , , 1, 0, U
 				; keywait, Lbutton, U T5
 		; MouseClick, Left, , , 1, 0, U
-				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+				; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 				; sleep 200
 				; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 				; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
@@ -79,9 +106,9 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 			; }
 			; else
 		; MouseClick, Left, , , 1, 0, U
-		return
+		; return
 					
-} 
+; } 
 
 
 WindowInfo(){
@@ -99,7 +126,7 @@ WindowInfo(){
 	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
 	WinLocation:= wX "," wY "," wW "," wH
 	
-	keywait, F20, U T5
+	; keywait, F20, U T5
 	
 	sleep 500
 	; Tooltip,
@@ -142,11 +169,11 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 	If ToolTipMessage
 		TT(TooltipMessage)
 	N:=1
-	SetTimer, BlockInput, -%time%
+	SetTimer, BlockTheInput, -%time%
 	sleep 50
 	return
 	
-	BlockInput:
+	BlockTheInput:
 		N:=
 		return
 }
@@ -638,7 +665,7 @@ CreditCard(){
 #IfWinActive
 
 
-
+/* 
 PasteScreenshot(){
 	sleep 200
 	SendInput, +^{4}
@@ -660,7 +687,7 @@ PasteScreenshot(){
 	Send, ^v
 	return
 	}
-
+ */
 
 StopSub:
   exitapp

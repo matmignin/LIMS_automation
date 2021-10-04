@@ -277,7 +277,7 @@ GuiControl, Move, CurrentCodes, W%NewWidth% H%NewHeight%
 	Relocate(){
 		global
 				PostMessage, 0xA1, 2
-				keywait, Lbutton, U T2
+				 keywait, Lbutton, U T2
 					Send, ^a
 		return
 	}
@@ -401,7 +401,7 @@ HistoryMenuItem(){
 			if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
 				varbar.show()
 			return
-		; Lbutton::click
+		Lbutton::click
 	#ifwinactive
 		; ^left::Lms.SelectTab("Left")
 		; ^right::LMs.SelectTab("right")

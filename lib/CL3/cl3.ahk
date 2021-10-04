@@ -1,33 +1,4 @@
-/*
 
-Script      : CL3 ( = CLCL CLone ) - AutoHotkey 1.1+ (Ansi and Unicode)
-Version     : 1.99.1
-Author      : hi5
-Purpose     : A lightweight clone of the CLCL clipboard caching utility which can be found at
-              http://www.nakka.com/soft/clcl/index_eng.html written in AutoHotkey 
-Source      : https://github.com/hi5/CL3
-
-Features:
-- Captures text only
-- Limited history (18 items+26 items in secondary menu)
-  (does remember more entries in XML history file though)
-- Delete entries from history
-- No duplicate entries in clipboard (automatically removed)
-- Templates: simply textfiles which are read at start up
-- Plugins: AutoHotkey functions (scripts) defined in seperate files
-  v1.2: Search and Slots for quick pasting
-  v1.3: Cycle through clipboard history, paste current clipboard as plain text
-  v1.4: AutoReplace define find/replace rules to modify clipboard before adding it the clipboard
-  v1.5: ClipChain cycle through a predefined clipboard history
-  v1.6: Compact (reduce size of History) and delete from search search results
-  v1.7: FIFO Paste back in the order in which the entries were added to the clipboard history
-  v1.8: Edit entries in History (via search). Cycle through plugins
-  v1.9: Folder structure for Templates\
-  v1.9.x: sort, api, settings etc see changelog.md
-
-See readme.md for more info and documentation on plugins and templates.
-
-*/
 ; General script settings
 #SingleInstance, Force
 SetBatchlines, -1
@@ -161,6 +132,7 @@ UpdateTemplate(folder,Changes)                        ; WatchFolder() above
 	 Sleep 1000
 	 ExitApp
 	}
+	return
 
 ~^x::
 ~^c::
@@ -228,7 +200,7 @@ Return
 
 $^v:: ; v1.91, $ for v1.95 (due to clipchain updates)
 hk_clipchainpaste_defaultpaste:
-If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") Or ClipChainPause
+If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
 	{
 	 PasteIt("normal")
 	 Return
@@ -244,11 +216,11 @@ else
 	Gosub, ClipChainPasteDoubleClick
 Return
 
-; Cycle through clipboard history^e::
+; Cycle through clipboard 
+;^e::
 ;#v::
+; If GetKeyState("F13","p")
 hk_cyclebackward:
-If GetKeyState("F13","P")
-	return
 If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cyclebackward:=1
@@ -552,8 +524,8 @@ Else
 Menu, ClipMenu, Add, &z. More history, :Submenu4
 Menu, ClipMenu, Icon, &z. More history, res\%iconZ%,,16
 ; Menu, ClipMenu, Add
-Menu, ClipMenu, Add, E&xit (Close menu), MenuHandler
-Menu, ClipMenu, Icon, E&xit (Close menu), res\%iconX%,,16
+; Menu, ClipMenu, Add, E&xit (Close menu), MenuHandler
+; Menu, ClipMenu, Icon, E&xit (Close menu), res\%iconX%,,16
 Return
 
 DispMenuText(TextIn,lines="1")

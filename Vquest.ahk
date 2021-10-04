@@ -1,7 +1,7 @@
 ﻿    #Persistent
     #NoEnv
     #SingleInstance,Force
-    #KeyHistory 300
+    #KeyHistory 
     #InstallKeybdHook
     #InstallMouseHook
     CheckTime:=500
@@ -171,7 +171,6 @@ DropDown() {
 
 
 
-
 ActiveCheck: ;continuously runing sub
   If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
     VarBar_H:=63
@@ -223,7 +222,7 @@ ActiveCheck: ;continuously runing sub
   #include <menu>
   #include <Rotation>
   #include <Excel>
-  #include <vis2>
+  #include <Vis2>
   #include <Support Functions>
 ;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
 
@@ -303,11 +302,10 @@ VQuest_Start:
     SetNumlockState Alwayson
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysOff
-    try Run, cl3.Ahk, lib\CL3
+    Run, cl3.Ahk, lib\CL3
 
     try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%
-    CopyPasteToggle=0
     TabToggle=0
     On:="On"
     Off:="Off"
@@ -326,7 +324,5 @@ VQuest_Start:
       }
     Excel.Connect(1)
     varbar.Show()
-
-    Send, {ctrlup}{altup}{shiftup}{lwinup}
     gosub, Starting_test
     #IfWinActive,

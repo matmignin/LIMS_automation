@@ -1,3 +1,28 @@
+
+AddCanceled(){
+	ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
+		winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
+	SendInput,{click 399, 219}{end}'(Canceled'){enter}
+}
+
+ToggleFilter_Test_1(){
+	ifwinnotactive, NuGenesis LMS - \\Remote
+		WinActivate, NuGenesis LMS - \\Remote
+	click 489, 836, R
+	SendInput,{down 2}{enter}
+}
+
+FilterSearch_Test(TestName:="", MethodName:=""){
+	ifwinnotactive, NuGenesis LMS - \\Remote
+		WinActivate, NuGenesis LMS - \\Remote
+	click 1230, 648 ;click name Divider
+	Send, ^a%TestName%{enter}
+	click 1067, 647 ; click method ID Divider
+	Send, ^a%MethodName%{enter}{tab 4}
+}
+
+
+
 Class LMS {
 
 SearchBar(Code:="",PostCmd:=""){
@@ -256,7 +281,7 @@ FilterBar(Code:="",PostCmd:=""){
 	ControlGetText, SampleId, Edit5, VarBar
 	; ControlGetText, Note1, Edit6, VarBar
 	; ControlGetText, Note2, Edit7, VarBar
-	blockinput on
+	; blockinput on
 	; lms.FilterStatus()
     LMS.DetectTab()
 	; TT(Code " " Product "`n" Tab)
@@ -284,7 +309,7 @@ FilterBar(Code:="",PostCmd:=""){
 		if PostCmd!=""
 					send % PostCmd
 	sleep 300
-	blockinput off
+	; blockinput off
 	return
 	}
 
