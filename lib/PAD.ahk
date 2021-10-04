@@ -1,24 +1,4 @@
 
-#ifwinactive, 
-	$Numlock::					4tap()
-	Mbutton::						3Tap() ;	TMbutton() ;	Clip.Paste()
-	rbutton::						2tap()
-	rshift & Appskey::			return
-;;	___Lbuton:
-	F19 & /::        	 	OCR()
-	Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
-	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-	F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	; Lbutton & ,::         OCR()
-	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	; ~>+lbutton::					Send,{shiftDown}{click}{shiftup}
-#If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800)  ; DoubleClick while
-	rshift & appskey::            	clip("ORC")
-	F20::               Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-	F19::               Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
-#If
-
 
 
 
@@ -107,8 +87,6 @@
 		clip()
 		return
 	}
-	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe")
-		Sendpassword()
 	else if winactive("ahk_exe firefox.exe") 
 		Send, {ctrldown}{click}{ctrlup}
 	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")

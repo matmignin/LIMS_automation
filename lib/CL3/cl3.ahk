@@ -228,14 +228,14 @@ Return
 
 $^v:: ; v1.91, $ for v1.95 (due to clipchain updates)
 hk_clipchainpaste_defaultpaste:
-If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")  ClipChainPause
+If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") Or ClipChainPause
 	{
 	 PasteIt("normal")
 	 Return
 	}
 If WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
 	{
-	 If (hk_clipchainpaste <> "^v")  ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
+	 If (hk_clipchainpaste <> "^v") or  ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
 		PasteIt()
 	 else
 		Gosub, ClipChainPasteDoubleClick
@@ -299,7 +299,7 @@ If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cycleforward:=1
 ClipCycleBackCounter:=1
-If (ClipCycleCounter=1)  (ClipCycleCounter=0)
+If (ClipCycleCounter=1) or (ClipCycleCounter=0)
 	Return
 ClipCycleCounter--
 If (ClipCycleCounter < 1)
@@ -351,7 +351,7 @@ If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cycleforward:=0, cyclebackward:=0	
 CycleFormat:=0
-If (ClipCycleCounter = 0)  (ClipCycleCounter = "")
+If (ClipCycleCounter = 0) or (ClipCycleCounter = "")
 	ClipCycleCounter:=1
 While GetKeyState(hk_cyclemodkey,"D")
 	{
@@ -758,7 +758,7 @@ If CopyDelay
 	Sleep % CopyDelay
 
 WinGet, IconExe, ProcessPath , A
-If ((History.MaxIndex() = 0)  (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
+If ((History.MaxIndex() = 0) or (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
 	History.Insert(1,{"text":"Text","icon": IconExe,"lines": 1})
 
 History_Save:=1
@@ -783,7 +783,7 @@ else ; Excel is active; check CF_METAFILEPICT, if not present we can safely stor
 	If (DllCall("IsClipboardFormatAvailable", "Uint", 3) = 0)
 		ClipboardByPass:=ClipboardAll
 
-if (Clipboard = "") ;  (ScriptClipClipChain = 1) ; avoid empty entries  changes made by script which you don't want to keep
+if (Clipboard = "") ;or (ScriptClipClipChain = 1) ; avoid empty entries  changes made by script which you don't want to keep
 	Return
 
 AutoReplace()
@@ -932,7 +932,7 @@ XA_Save("History", A_ScriptDir "\ClipData\History\History.xml") ; put variable n
 XA_Save("stats", A_ScriptDir "\stats.xml")
 
 ;XA_Save("Slots", A_ScriptDir "\ClipData\Slots\Slots.xml")
-XA_Save("ClipChainData", A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
+; XA_Save("ClipChainData", A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
 ;XA_Save("AutoReplace", A_ScriptDir "\ClipData\AutoReplace\AutoReplace.xml")
 
 If ActivateApi

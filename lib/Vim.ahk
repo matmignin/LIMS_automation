@@ -62,7 +62,6 @@
 		f19 & t::                 SendInput,%wintitle%
 		f19 & w::                 SendInput,%wininfo%
 		f19 & n::                 SendInput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
-		F13 & F11::               WindowInfo()
 		F13 & lshift::						enter
 		F13::F13
 	;;	____TAB
@@ -141,7 +140,7 @@
 	u::                       SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
 	^u::                      SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight previous
 	<^u::                     SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup}
-	F19::                     SendInput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;Fold all comments
+	; F19::                     SendInput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;Fold all comments
 		'::  										sendinput,{right}^{left}+^{right}+{'}
 	^'::  										sendinput,{right}^{left}+^{right}+{'}
 		p::											SendInput,{home}{enter}{up}{ctrldown}{v}{ctrlup}
@@ -257,7 +256,7 @@
 		^s::                    SendInput,{home}+{end}
 		f::                     sendinput,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
 			^f::                  sendinput,+!{s}
-		F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
+		; F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 		; f20::                 SendInput,{pgdn}
 		; 1::                   SendInput,{F1}
 		; 2::                   SendInput,{F2{

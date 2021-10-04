@@ -114,7 +114,7 @@ Return
 	Backspace::			     gosub, ClipChainDel
 #If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
 	+Enter::	
-	F19::						
+	;F19::						
 
 	; ^Down::			       gosub, ClipchainMoveDown
 	; ^up::			         gosub, ClipchainMoveUp
@@ -136,7 +136,7 @@ Return
 #IfWinActive, CL3ClipChain Insert text
 #IfWinActive, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item
 	+Enter::	
-	F19::						
+	; F19::						
 	^enter::							
 	; ^enter::							ControlClick, Button1, A, A, left, 1
 												ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
@@ -170,7 +170,7 @@ Return
 								clipchaininsert()
 								send, ^x
 								return
-	\::	  					gosub, clipchainmenu
+;\::	  					gosub, clipchainmenu
 	F20 & F19::				;Gui, ClipChain:Destroy
 	F22:: 					gosub, ClipChainGuiClose
 	F19::			 			clipchain_C() ;ClipChainInsert()       
@@ -191,7 +191,7 @@ Return
 	F21::			       	 ClipChainInsert()
 	; F20::			        ClipChainInsert()
 	; F20::			     		clipChain_c()
-	F20::							gosub, ClipChainPasteDoubleClick
+	; F20::							gosub, ClipChainPasteDoubleClick
 	numlock::					clipChain_v()
 	Mbutton::  				clipchaininsert()
 	

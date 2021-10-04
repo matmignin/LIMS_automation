@@ -50,6 +50,7 @@ OpenApps:
   ; #!v::Run, C:\Users\mmignin\Documents\VQuest\
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
+  F20 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
   !d::OpenApp.Display()

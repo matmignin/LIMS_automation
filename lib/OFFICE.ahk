@@ -226,8 +226,6 @@ _Firefox:
 
 
 #ifwinactive, Map VQ drive.bat ahk_exe cmd.exe
-	mbutton::
-	F19 & \::sendinput, mmignin{enter}{/}Kilgore7744{enter}
 
 #IfWinActive, Getting Started with Jaspersoft Studio — Mozilla Firefox ahk_exe firefox.exe
 

@@ -1,2 +1,0 @@
-#Persistent 
-SetNumlockState Alwayson

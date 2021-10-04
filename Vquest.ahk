@@ -1,12 +1,38 @@
-﻿
+﻿    #Persistent
+    #NoEnv
+    #SingleInstance,Force
+    #KeyHistory 300
+    #InstallKeybdHook
+    #InstallMouseHook
+    CheckTime:=500
+    ; #HotkeyInterval 50
+    #MaxHotkeysPerInterval 500
+    #MaxThreadsBuffer, On
+    #InstallKeybdHook
+    #InstallMouseHook
+    ; #HotkeyModifierTimeout 1
+    #maxthreadsperhotkey, 1
+    SetBatchLines, 20ms
+    SetControlDelay, 1
+    SetKeyDelay, 1, 0.25
+    setwindelay, 250
+    FormatTime, DayString,, MM/d/yy
+    FormatTime, TimeString, R
+    FormatTime, CurrentDateTime,, MM/dd/yy
+    SetNumLockState, on
+    SetscrolllockState, off
+    CoordMode, mouse, Window
+    SetMouseDelay, 1
+    SetDefaultMouseSpeed, 1
+    SetTitleMatchMode, 2
 gosub, vquest_start
 
 Starting_test:
-  return
+
+return
 
 ;;        ___Testing Zone
-	+^c::clip.Append()
-	!^c::clip.Append(A_Space)
+
 	#c::
 		if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
 		{
@@ -39,35 +65,12 @@ Starting_test:
 	return
 
 
-ActiveCheck: ;continuously runing sub
-  If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
-    VarBar_H:=63
-    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-  }
-  If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
-    VarBar_H:=32
-    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-  }
 
-    
-    ; Fade(200) ;;  Fade Varbar on hover
-  ; if winactive("Reason For Change - \\Remote") {
-    ; menu.reasons()
-    ; WinWaitNotActive, Reason For Change - \\Remote,, 10
-    ; }
-    If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
-      varbar.FloatAtopWindow()
-  if WinExist("Error - \\Remote") {
-    ControlSend,, {enter}, Error - \\Remote
-    sleep 200
-    if WinExist("Register new samples - \\Remote")
-      winactivate,
-        LMS.SearchBar(Product,"{enter}")
-  }
-  return
-   
-;;  Test
+;
+test_1:
 
+return
+ 
 
 Test_2:
 WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,60
@@ -169,27 +172,50 @@ DropDown() {
 
 
 
+ActiveCheck: ;continuously runing sub
+  If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
+    VarBar_H:=63
+    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  }
+  If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
+    VarBar_H:=32
+    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  }
+
+    
+    ; Fade(200) ;;  Fade Varbar on hover
+  ; if winactive("Reason For Change - \\Remote") {
+    ; menu.reasons()
+    ; WinWaitNotActive, Reason For Change - \\Remote,, 10
+    ; }
+    If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
+      varbar.FloatAtopWindow()
+  if WinExist("Error - \\Remote") {
+    ControlSend,, {enter}, Error - \\Remote
+    sleep 200
+    if WinExist("Register new samples - \\Remote")
+      winactivate,
+        LMS.SearchBar(Product,"{enter}")
+  }
+  return
+   
 
 
 
 
 
 
-
-
-#IfWinActive,
   #Include <Test>
-  #include <KEYS>
   #include <VIM>
   #include <HotStrings>
   #Include <OFFICE>
-  #include <LMS KEYS>
+  #include <KEYS>
   #include <PAD>
   #Include <clip>
   #Include <OpenApp>
   #Include <LMS>
   #Include <Snipper>
-  #Include <AutoFill>
+  ;#Include <AutoFill>
   #include <varBar>
   #include <ProductTab>
   #include <WorkTab>
@@ -199,39 +225,35 @@ DropDown() {
   #include <Excel>
   #include <vis2>
   #include <Support Functions>
-#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
+;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
+
+; #IfWinActive,
+;   #include <KEYS>
+;   #include <VIM>
+;   #include <HotStrings>
+;   ; #include <LMS KEYS>
+;   #Include <OFFICE>
+;   #include <PAD>
+;   #Include <clip>
+;   #Include <OpenApp>
+;   #Include <LMS>
+;   #Include <Snipper>
+;   #Include <AutoFill>
+;   #include <varBar>
+;   #include <ProductTab>
+;   #include <WorkTab>
+;   #include <SpecTab>
+;   #include <menu>
+;   #include <Rotation>
+;   #include <Excel>
+;   #include <vis2>
+;   #include <Support Functions>
+;   #Include <Test>
+; ;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
 
 
 VQuest_Start:
-#Persistent
-    #NoEnv
-    #SingleInstance,Force
-    ;SetWorkingDir, C:\Users\mmignin\Documents\VQuest
-    #KeyHistory 300
-    #InstallKeybdHook
-    #InstallMouseHook
-    CheckTime:=500
-    ; #HotkeyInterval 50
-    #MaxHotkeysPerInterval 500
-    #MaxThreadsBuffer, On
-    #InstallKeybdHook
-    #InstallMouseHook
-    ; #HotkeyModifierTimeout 1
-    #maxthreadsperhotkey, 1
-    SetBatchLines, 20ms
-    SetControlDelay, 1
-    SetKeyDelay, 1, 0.25
-    setwindelay, 250
-    FormatTime, DayString,, MM/d/yy
-    FormatTime, TimeString, R
-    FormatTime, CurrentDateTime,, MM/dd/yy
-    SetNumLockState, on
-    SetscrolllockState, off
-    CoordMode, mouse, Window
-    SetMouseDelay, 1
-    SetDefaultMouseSpeed, 1
-    SetTitleMatchMode, 2
-    #WinActivateForce
+#WinActivateForce
     AutoTrim, On
     OnClipboardChange("clipclip")
     OnExit("Varbar.Exit")
@@ -282,8 +304,7 @@ VQuest_Start:
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysOff
     try Run, cl3.Ahk, lib\CL3
-      catch e
-        msgbox % e.line "  " e.error
+
     try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%
     CopyPasteToggle=0
@@ -291,13 +312,6 @@ VQuest_Start:
     On:="On"
     Off:="Off"
     Clear:="Clear"
-    snipaste:="ahk_exe Snipaste.exe"
-    LMS:="ahk_exe WFICA32.EXE"
-    Nugenesis:=Main:="NuGenesis LMS - \\Remote"
-    VScode:="ahk_exe Code.exe"
-    Excel:="ahk_exe EXCEL.EXE"
-    Workbook:="LMS Workbook.xlsb - Excel"
-    Outlook:="ahk_exe OUTLOOK.exe"
     yo:="yo"
     ye:="ye"
     Blank:=" `n `n  `t `t `n`t "
