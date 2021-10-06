@@ -28,11 +28,13 @@
 gosub, vquest_start
 
 Starting_test:
+; tests to start with
+return
 
-  return
+
 ___Testing_Zone:
-
-    #c::
+;; tripple press C
+    !c:: 
       if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
       {
           winc_presses += 1
@@ -41,10 +43,9 @@ ___Testing_Zone:
       ; Otherwise, this is the first press of a new series. Set count to 1 and start
       ; the timer:
       winc_presses := 1
-      SetTimer, KeyWinC, -400 ; Wait for more presses within a 400 millisecond window.
+      SetTimer, KeyAltC, -400 ; Wait for more presses within a 400 millisecond window.
       return
-
-    KeyWinC:
+    KeyAltC:
       if (winc_presses = 1) ; The key was pressed once.
       {
           Clip.Copy()
@@ -52,18 +53,51 @@ ___Testing_Zone:
       else if (winc_presses = 2) ; The key was pressed twice.
       {
           clip.Append()  
+          ; Pop(Clipboard)
         ; sleep 300 ; Open a different folder.
       }
       else if (winc_presses > 2)
       {
-          clip.Append(A_Space)
+          clip.Append("`n","x")
+          ; Pop(Clipboard)
       }
       ; Regardless of which action above was triggered, reset the count to
       ; prepare for the next series of presses:
     winc_presses := 0
     return
+;; Tripple Press !v
+    !v::
+      if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
+      {
+          winc_presses += 1
+          return
+      }
+      ; Otherwise, this is the first press of a new series. Set count to 1 and start
+      ; the timer:
+      winc_presses := 1
+      SetTimer, KeyAltV, -400 ; Wait for more presses within a 400 millisecond window.
+      return
 
-
+    KeyAltV:
+      if (winc_presses = 1) ; The key was pressed once.
+      {
+          Clip.Paste()
+      }
+      else if (winc_presses = 2) ; The key was pressed twice.
+      {
+          clip.Append()  
+          ; Pop(Clipboard)
+        ; sleep 300 ; Open a different folder.
+      }
+      else if (winc_presses > 2)
+      {
+          clip.Append(A_Space)
+          ; Pop(Clipboard)
+      }
+      ; Regardless of which action above was triggered, reset the count to
+      ; prepare for the next series of presses:
+    winc_presses := 0
+    return
 
   ;
   test_1:
@@ -170,7 +204,8 @@ ___Testing_Zone:
 
 
 
-ActiveCheck: ;continuously runing sub
+;__________________continuously runing sub_________________________________________________
+ActiveCheck: 
   If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
     ; GuiControl, Varbar:Show, CurrentCodes
     VarBar_H:=63
