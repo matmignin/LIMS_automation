@@ -207,7 +207,7 @@ If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
 	}
 If WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
 	{
-	 If (hk_clipchainpaste <> "^v") or  ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
+	 If (hk_clipchainpaste <> "^v")  or  ClipChainPause   ;exception so user can use ^v as clipchain hotkey if they wish
 		PasteIt()
 	 else
 		Gosub, ClipChainPasteDoubleClick
@@ -231,8 +231,7 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 	{
 ;	 If !(PreviousClipCycleCounter = ClipCycleCounter) and (oldttext <> ttext)
 	 Indicator:=""
-	 If ( 
-		 ClipCycleCounter = 1) and (ClipboardPrivate = 1)
+	 If (  ClipCycleCounter = 1) and (ClipboardPrivate = 1)
 		Indicator:="*"
 	 If (ClipCycleCounter <> 0)
 		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
