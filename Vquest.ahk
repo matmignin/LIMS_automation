@@ -29,116 +29,113 @@ gosub, vquest_start
 
 Starting_test:
 
-return
-
-;;        ___Testing Zone
-
-	#c::
-		if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
-		{
-				winc_presses += 1
-				return
-		}
-		; Otherwise, this is the first press of a new series. Set count to 1 and start
-		; the timer:
-		winc_presses := 1
-		SetTimer, KeyWinC, -400 ; Wait for more presses within a 400 millisecond window.
-		return
-
-	KeyWinC:
-		if (winc_presses = 1) ; The key was pressed once.
-		{
-				Clip.Copy()
-		}
-		else if (winc_presses = 2) ; The key was pressed twice.
-		{
-				clip.Append()  
-			; sleep 300 ; Open a different folder.
-		}
-		else if (winc_presses > 2)
-		{
-				clip.Append(A_Space)
-		}
-		; Regardless of which action above was triggered, reset the count to
-		; prepare for the next series of presses:
-	winc_presses := 0
-	return
-
-
-
-;
-test_1:
-
-return
- 
-
-Test_2:
-WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,60
-return
-
-Test_3:
-
-WinGetTitle, CurrentLMSWindow, ahk_exe WFICA32.EXE
-; Pop(SubStr(CurrentLMSWindow, 1, 20))
-winactivate, ahk_exe Code.exe
-  send, ^{f}
-  sleep 200
-  sendinput % SubStr(CurrentLMSWindow, 1, 25)
   return
+___Testing_Zone:
+
+    #c::
+      if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
+      {
+          winc_presses += 1
+          return
+      }
+      ; Otherwise, this is the first press of a new series. Set count to 1 and start
+      ; the timer:
+      winc_presses := 1
+      SetTimer, KeyWinC, -400 ; Wait for more presses within a 400 millisecond window.
+      return
+
+    KeyWinC:
+      if (winc_presses = 1) ; The key was pressed once.
+      {
+          Clip.Copy()
+      }
+      else if (winc_presses = 2) ; The key was pressed twice.
+      {
+          clip.Append()  
+        ; sleep 300 ; Open a different folder.
+      }
+      else if (winc_presses > 2)
+      {
+          clip.Append(A_Space)
+      }
+      ; Regardless of which action above was triggered, reset the count to
+      ; prepare for the next series of presses:
+    winc_presses := 0
+    return
 
 
-Test_4:
-LMS.detecttab()
-Pop(Tab)
+
+  ;
+  test_1:
+
   return
-
-
-
-GetSampleInfo(){
-  global Customer, Name, ShipToIndex
-	ParsedSample:=[]
-  ; clipboard:=
-  ; send, ^c 
-  ; clipwait, 2
-    ; if errorlevel
-      ; sleep 400
-  Loop, parse, Clipboard, `t
-  ParsedSample.insert(A_LoopField)
-  TotalColumns:=Parsedsample.maxindex()//2
   
-  Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
-  Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-  IniRead,ShipToIndex, Customers.ini, Customers, %Customer%
-  ; if !ShipTo
-    ; ShipTo:=ShipToIndex
-  return ShiptoIndex
-}
+
+  Test_2:
+  WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,60
+  return
+
+  Test_3:
+
+  WinGetTitle, CurrentLMSWindow, ahk_exe WFICA32.EXE
+  ; Pop(SubStr(CurrentLMSWindow, 1, 20))
+  winactivate, ahk_exe Code.exe
+    send, ^{f}
+    sleep 200
+    sendinput % SubStr(CurrentLMSWindow, 1, 25)
+    return
+
+
+  Test_4:
+  LMS.detecttab()
+  Pop(Tab)
+    return
+
+
+
+  GetSampleInfo(){
+    global Customer, Name, ShipToIndex
+    ParsedSample:=[]
+    ; clipboard:=
+    ; send, ^c 
+    ; clipwait, 2
+      ; if errorlevel
+        ; sleep 400
+    Loop, parse, Clipboard, `t
+    ParsedSample.insert(A_LoopField)
+    TotalColumns:=Parsedsample.maxindex()//2
+    
+    Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+    Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+    IniRead,ShipToIndex, Customers.ini, Customers, %Customer%
+    ; if !ShipTo
+      ; ShipTo:=ShipToIndex
+    return ShiptoIndex
+  }
 
 
 
 
-DropDown() {
-	Loop, Read, Customers.ini
-	{
-	If A_Index = 1
-		Continue
-	Method := StrSplit(A_LoopReadLine, "=")
-	  ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
-	Selection:= % Method[1]
-    ; Group:= % MethodGroup[2] ;for a second split
-	Menu, Methodmenu, add, %Selection%, DropDown
-	}
-	Menu, MethodMenu, Show,
-	return
+  DropDown() {
+    Loop, Read, Customers.ini
+    {
+    If A_Index = 1
+      Continue
+    Method := StrSplit(A_LoopReadLine, "=")
+      ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
+    Selection:= % Method[1]
+      ; Group:= % MethodGroup[2] ;for a second split
+    Menu, Methodmenu, add, %Selection%, DropDown
+    }
+    Menu, MethodMenu, Show,
+    return
 
-	DropDown:
-		InputVar:=A_ThisMenuItem
-		IniRead,vOutput, Customers.ini, Customers, %InputVar%
-		Pop(Inputvar,vOutput)
-		return
-}
-
-
+    DropDown:
+      InputVar:=A_ThisMenuItem
+      IniRead,vOutput, Customers.ini, Customers, %InputVar%
+      Pop(Inputvar,vOutput)
+      return
+  }
 
 
 
@@ -146,7 +143,9 @@ DropDown() {
 
 
 
-; CreateArray(){ ;;     creating an array and resorting without duplicates
+
+
+  ; CreateArray(){ ;;     creating an array and resorting without duplicates
 	 ;Products := ["a","B","c","A","B","C",1,1.0,"1","1.0"]
 	; 		Batches:= StrSplit(A_LoopReadLine, "`n") 
 	; Products2 := [], oTemp := {}
@@ -173,11 +172,13 @@ DropDown() {
 
 ActiveCheck: ;continuously runing sub
   If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
+    ; GuiControl, Varbar:Show, CurrentCodes
     VarBar_H:=63
     WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
   }
   If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
     VarBar_H:=32
+    ; GuiControl, Varbar:Hide, CurrentCodes
     WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
   }
 

@@ -34,14 +34,14 @@
 return
 
 
-; 	F20 & Space::  ;; Testing Backcycle
+; 	F18 & Space::  ;; Testing Backcycle
 ; 	If !ActiveWindowID
 ; 		WinGet, ActiveWindowID, ID, A
 ; 	cyclebackward:=1
 ; 	PreviousClipCycleCounter:=0 ; 13/10/2017 test
 ; 	ClipCycleCounter:=1
 ; 	ClipCycleFirst:=1
-; 	While GetKeyState("F20","D") and cyclebackward
+; 	While GetKeyState("F18","D") and cyclebackward
 ; 	{
 ; 		If (ClipCycleCounter <> 0)
 ; 		{	
@@ -71,7 +71,7 @@ return
 ; 	}
 ; Return
 
-; F20 & Space Up::
+; F18 & Space Up::
 ; 	PreviousClipCycleCounter:=ClipCycleCounter
 ; 	If (ClipCycleFirst = 0)
 ; 		ClipCycleCounter++
@@ -514,10 +514,19 @@ return
 */
 
 ; 	; }
-
-
-
-
+CreateDDL(){
+	global CurrentCodeDDL, CurrentCodes
+	CurrentCode:=[]
+	FileRead, CurrentCodes, CurrentCodes.txt
+	CurrentCode := StrSplit(CurrentCodes,a_space)
+	CurrentCodesDDL:=CurrentCode[1]
+	loop % CurrentCode.maxindex(){
+		if A_Index:=1
+			continue 
+		CurrenwtCodesDDL.="|" CurrentCode[A_index]
+		}
+	Return CurrentCode
+}	
 /* 			
 	Class Notes{
 		Show(){  ;array - remove duplicates (case insensitive)

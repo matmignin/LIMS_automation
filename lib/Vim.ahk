@@ -4,9 +4,9 @@
 		^+4::											send, !+{4}
 		^+3::											send, !+{3}
 		^+2::											send, !+{2}
-		F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
+		F18 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 		F15 & tab::               SendInput,{ctrldown}{]}{ctrlup}	
-		lbutton & F20:: 					send, !+4
+		lbutton & F18:: 					send, !+4
 		lbutton & F19:: 					send, !+3
 		numpadsub::               F7
 		numpadadd::               F6
@@ -32,12 +32,12 @@
 		<^lwin::                  delete
 		<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 		^s::                      SendInput, {ctrldown}{end}{ctrlup}
-	;;	___F19 and F20
-		F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-		F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-		F20 & backspace::         delete
-		; F20 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-		; F20 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
+	;;	___F19 and F18
+		F18 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+		F18 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+		F18 & backspace::         delete
+		; F18 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+		; F18 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 		F19 & left::              SendInput,{shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 		; F19 & up::              SendInput,{shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 		F19 & down::              SendInput,{shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
@@ -345,7 +345,7 @@ F13 & right::									  sendinput, {shiftdown}{right}{shiftup}
 	p::              numpad0
 	=::              =
 	-::              -
-	; F20::            SendInput,{.}
+	; F18::            SendInput,{.}
 	h::              left
 	+h::             H
 	'::              numpad0

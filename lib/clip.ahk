@@ -390,7 +390,7 @@ Copy(){
         }
         Else ;will trigger after 1 sec
           Send, {F22}
-          ; KeyWait, F20,
+          ; KeyWait, F18,
           Return
       }
     }

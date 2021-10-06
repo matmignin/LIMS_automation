@@ -10,22 +10,22 @@
 ;;	___Lbuton:
 	F19 & \:: Sendpassword()
 	F19 & /::        	 	OCR()
-	; Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-	; Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
+	Lbutton & F18::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
+	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
 	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-	F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	F18 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	; Lbutton & ,::        		 OCR()
 	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	; ~>+lbutton::							Send,{shiftDown}{click}{shiftup}
 ; #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800)  ; DoubleClick while
 ; 	rshift::            	clip("ORC")
-; 	; F20::               Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
+; 	; F18::               Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
 ; 	; F19::               Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
 ; #If
 	F10::F21
 	F11::F22
 	F12::Send, {altdown}{tab}{altup}
-/
+
 
 ;;		___KEY_DEFAULT:
 	+^c::clip.Append()
@@ -41,9 +41,6 @@
 	Media_Prev::					MakeTransparent()
 	Media_Play_Pause::			F16
 	Media_Next::					F17
-	Volume_Down::					F18
-	Volume_up::						F18
-	; #lbutton::						send % pop(Clipboard) "{F18}" ;click and paste
 	F13 & -::
 	/ & down::   		      	Varbar.SubIteration(0)
 	F13 & +::
@@ -99,42 +96,42 @@
 	; <!c::                      clip.Append()
 
 
-	;;___F19_And_F20:
-	F20 & \::            		Sendpassword()
-	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
-	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
+	;;___F19_And_F18:
+	F18 & \::            		Sendpassword()
+	F18 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
+	F18 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
 	F19 up::      	       	Clip.paste()
 	+F19 up::      	       	lms.searchbarPaste()
-	>+F20::             			varbar.focus("Batch")
+	>+F18::             			varbar.focus("Batch")
 	>+F19::            		 	varbar.focus("Product")
 	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
 	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
 	F19 & wheelleft::				gosub, F6
 	F19 & wheelright::			GoSub, F7  
-	F20 & up::						sendInput % Coated
-	F20 & right::					sendInput % Lot
-	F20 & left::					sendInput % product
-	F20 & down::					sendInput % Batch
+	F18 & up::						sendInput % Coated
+	F18 & right::					sendInput % Lot
+	F18 & left::					sendInput % product
+	F18 & down::					sendInput % Batch
 	F13 & esc::						Varbar.reset()	
 	; F19 & \::            		CreditCard()
 	F19 & backspace::    		Send,{delete}
-	; F20 & Rshift::
-	F20 & Insert::       		Clip("OCR")
-	F20 & F7::           		Excel.NextSheet()
-	F20 & F6::           		Excel.PrevSheet()
-	F20 & esc::     				run, Taskmgr.exe
-	F20 & backspace::    		Send, {delete}
-	F20 & .::            		WindowInfo()
+	; F18 & Rshift::
+	F18 & Insert::       		Clip("OCR")
+	F18 & F7::           		Excel.NextSheet()
+	F18 & F6::           		Excel.PrevSheet()
+	F18 & esc::     				run, Taskmgr.exe
+	F18 & backspace::    		Send, {delete}
+	F18 & .::            		WindowInfo()
 
-	F20 & =::            		Send,{CtrlDown}{=}{Ctrlup}
-	F20 & -::            		Send,{CtrlDown}{-}{Ctrlup}
+	F18 & =::            		Send,{CtrlDown}{=}{Ctrlup}
+	F18 & -::            		Send,{CtrlDown}{-}{Ctrlup}
 	F19 & enter::					varbar.focus("Edit1")
-	F20 & enter::					varbar.focus("Edit2")
-	; F20 & ,::						varbar.Focus("Edit2")
-	F20 & F19::          		Send, {F22}
+	F18 & enter::					varbar.focus("Edit2")
+	; F18 & ,::						varbar.Focus("Edit2")
+	F18 & F19::          		Send, {F22}
 
-	; +F20 up:: 	            Clip.append()
-	; F20:: 	              Clip.Copy()
+	; +F18 up:: 	            Clip.append()
+	; F18:: 	              Clip.Copy()
 	F19 & Media_Play_pause::
 										my_screenwidth:=A_ScreenWidth-215
 										my_screenheight:=A_Screenheight-115
@@ -147,17 +144,17 @@
 
 
 
-; 	#If (A_PriorHotKey = "F20 & up" || A_PriorHotKey = "F2O & Down" || A_PriorHotKey = "F20 & left" || A_PriorHotKey = "F20 & right") && (A_TimeSincePriorHotkey < 2000) 
+; 	#If (A_PriorHotKey = "F18 & up" || A_PriorHotKey = "F2O & Down" || A_PriorHotKey = "F18 & left" || A_PriorHotKey = "F18 & right") && (A_TimeSincePriorHotkey < 2000) 
 ; 	$rshift::               Send, {tab}
-; 	F20 & up::	           Send, {enter}
-; 	F20 & down::           Send, {enter}
-; 	F20 & left::           Send, {enter}
-; 	F20 & right::          Send, {enter}
+; 	F18 & up::	           Send, {enter}
+; 	F18 & down::           Send, {enter}
+; 	F18 & left::           Send, {enter}
+; 	F18 & right::          Send, {enter}
 
-; 	; #If (A_PriorHotKey = "F20") && (A_TimeSincePriorHotkey < 1000) 
+; 	; #If (A_PriorHotKey = "F18") && (A_TimeSincePriorHotkey < 1000) 
 ; 	; $rshift::								Send, {tab}
 ; 	; $space::								Send, {enter}
-; 	; F20::										Send, ^v
+; 	; F18::										Send, ^v
 ; #if 
 
 
@@ -170,17 +167,17 @@
 	mbutton::3tap()
 		F7::						3Right()
 	F6::						3Left()	
-	; F20 & Left::WinMove, A, , -283, -1196, 1662, 952
+	; F18 & Left::WinMove, A, , -283, -1196, 1662, 952
 	+F19::lms.searchBar("")
-	F20 & left::Send, %Product%
-	F20 & down::Send, %Batch%
-	F20 & right::Send, %lot%
+	F18 & left::Send, %Product%
+	F18 & down::Send, %Batch%
+	F18 & right::Send, %lot%
 	; ~Lbutton & F19::Send,{enter}
 	Enter::LMS.SaveCode()
-	>+F20::LMS.SearchbarPaste()
+	>+F18::LMS.SearchbarPaste()
 	+^v::LMS.SearchbarPaste()
 	; F19::LMS.Searchbar()
-	; F20::Send, ^c  
+	; F18::Send, ^c  
 	; space & lbutton::Send, +{click}
 	; space up::SendInput, ^{click}
 	wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
@@ -257,33 +254,13 @@
 
 	#IfWinActive, Barcode Scanner - \\Remote
 		enter::enter
-		; F20::LMS.SearchbarPaste()
+		; F18::LMS.SearchbarPaste()
 		^v::LMS.SearchbarPaste()
 #IfWinActive,
 
 
 
 
-_MouseIsOver:
-	#If MouseIsOver("ahk_exe Snipaste.exe")
-		F8::send, {click}{esc}
-		NumpadDot::send, {click}{esc}
-	#If MouseIsOver("ahk_exe firefox.exe")
-		numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
-	#If MouseIsOver("ahk_exe OUTLOOK.EXE")
-		^Wheeldown::Blockrepeat(500) clip()
-		Mbutton::
- 					winactivate, ahk_exe OUTLOOK.EXE
- 					3tap()
- 					return
-	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
-		F7::LMS.SearchBar(Batch,"{enter}")
-		F6::LMS.SearchBar(Product,"{enter}")
-		Numlock::4tap()
-		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
-	#If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
-		Wheeldown::LMS.ScrollDown()
-	#if
 
 
 

@@ -4,7 +4,7 @@ Class VarBar{
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
 				MidScreen:=A_ScreenWidth//2
-				VarBar_H:=32
+				VarBar_H:=1
 				VarBar_T:=235
 				TopScreen:=1 ;A_ScreenHeight-35
 			try Gui,VarBar:Destroy
@@ -17,9 +17,10 @@ Class VarBar{
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
-			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y% autosize NoActivate, VarBar
+			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y% w420 NoActivate, VarBar
 		Catch 
-			Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen% autosize NoActivate, VarBar
+			Gui, VarBar:Show, h%varBar_H% x%NuX%+500 y%Nuy% w420 NoActivate, VarBar
+			; Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen% NoActivate, VarBar
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
@@ -32,18 +33,18 @@ Class VarBar{
 	}
 		AddEdit(Variable,Dimensions:="",Font:=""){
 			global
-				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
-				Gui,VarBar:Add,edit,		v%Variable% -wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable%  ; edit1
+				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
+				Gui,VarBar:Add,edit,		v%Variable% -wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable% 
 		}
 		AddText(Variable,Dimensions:="",Font:=""){
 			global
-				GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
-				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  ; edit1
+				GUI,VarBar:Font,			 s%Font%  ;cBlack Bold, %Font%
+				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  
 		}
 	AddBoxes(){
 			global
-			this.AddEdit("Product",	"left h29 x20 y0 w65",			"16,Bold, Consolas")
-			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11, Consolas")
+			this.AddEdit("Product",	"left h29 x20 y0 w65",			"16 Bold")
+			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11,Consolas")
 						If !Lot
 				 L_L:="w25"
 			else 
@@ -71,17 +72,18 @@ Class VarBar{
 
 			This.addedit("Note1","x+3 H29 y1 left" ,"9 cBlack,arial Narrow") ; edit6
 		If Note1 
-			This.addedit("Note2","X+2 H29 y1 left")			; edit7
+			This.addedit("Note2","X+2 H29 y1 left","9")			; edit7
 		If Note2 && Note2!="+"
-			This.addedit("Note3","X+2 H29 y1 left")				; edit8
+			This.addedit("Note3","X+2 H29 y1 left","9")				; edit8
 		If Note3 && Note3!="+"
-			This.addedit("Note4","X+2 H29 y1 left")		;edit9
-			if !Currentcode
-				CC_L:="w200"
-			else 
-				CC_L:=
-
-		This.AddEdit("CurrentCodes","x20 H29 y+2 " CC_L) ; edit10
+			This.addedit("Note4","X+2 H29 y1 left","9")		;edit9
+			; if !Currentcode
+				; CC_L:="w200"
+			; else 
+				; CC_L:=
+			GUI,VarBar:Font,			 s9, Arial Narrow 
+			Gui,VarBar:Add,edit,		vCurrentCodes +wrap gCurrentCodesVarbar x20 H30 y+2, %CurrentCodes% ; edit10
+				;This.AddEdit("CurrentCodes","x20 H29 y+2") ; edit10
 		Return
 		
 			ProductVarBar:
@@ -96,11 +98,11 @@ Class VarBar{
 			CurrentCodesVarbar:
 			sleep 100
 			Gui, VarBar:submit,NoHide
-					WinGetPos, ,, varbar_W, Varbar_H, VarBar ahk_class AutoHotkeyGUI
-			NewWidth := Varbar_W - 30
-NewHeight := Varbar_H - 20
-tt(A_GuiWidth)
-GuiControl, Move, CurrentCodes, W%NewWidth% H%NewHeight%
+					; WinGetPos, ,, varbar_W, Varbar_H, VarBar ahk_class AutoHotkeyGUI
+						; NewWidth := Varbar_W - 30
+						; NewHeight := Varbar_H - 20
+						; tt(A_GuiWidth)
+						; GuiControl, Move, CurrentCodes, W%NewWidth% H%NewHeight%
 			return
 
 			VarBarGuiClose:
@@ -210,7 +212,7 @@ GuiControl, Move, CurrentCodes, W%NewWidth% H%NewHeight%
 			tt("Place bar")
 		if !winactive("NuGenesis = \\Remote"){
 			coordmode, mouse, Screen
-			; keywait, F13, U T2
+			keywait, F13, U T2
 			MouseGetPos,Varbar_X,Varbar_Y
 			Send, {laltup}
 		} 
@@ -277,7 +279,7 @@ GuiControl, Move, CurrentCodes, W%NewWidth% H%NewHeight%
 	Relocate(){
 		global
 				PostMessage, 0xA1, 2
-				 keywait, Lbutton, U T2
+				; keywait, Lbutton, U T2
 					Send, ^a
 		return
 	}
@@ -368,9 +370,9 @@ HistoryMenuItem(){
 			
 ;; ___KEYBINDINGS
 	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-		F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+		F19 & F18::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
 	;	F19::varbar.focus("Product")
-		; F20::varbar.focus("Batch")
+		; F18::varbar.focus("Batch")
 		^enter::                           
 								winactivate, %the_WinTitle%
 								click, %caret_X%, %caret_y%
@@ -480,3 +482,12 @@ HistoryMenuItem(){
 		numpaddot:: 	 Openapp.Workbook()
 	#if
 
+  WM_LBUTTONDOWN(wParam, lParam){
+				X := lParam & 0xFFFF
+				Y := lParam >> 16
+				if A_GuiControl
+					Ctrl := "`n(in control " . A_GuiControl . ")"
+				PostMessage, 0xA1, 2
+				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+		return
+} 

@@ -524,6 +524,7 @@ Orient(){
 	Tab5:=
 	Tab6:=
 	WinGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
+	WinGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
 	WinGetPos,WbX,WbY,WbW,WbH, LMS Workbook.xlsb - Excel
 	; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
 	WbX:=WbX+400

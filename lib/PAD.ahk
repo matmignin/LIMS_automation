@@ -1,8 +1,44 @@
 
-#IfWinActive,
+_MouseIsOver:
+	#If MouseIsOver("ahk_exe Snipaste.exe")
+		F8::send, {click}{esc}
+		NumpadDot::send, {click}{esc}
+	#If MouseIsOver("ahk_exe firefox.exe")
+		numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
+	#If MouseIsOver("ahk_exe OUTLOOK.EXE")
+		^Wheeldown::Blockrepeat(500) clip()
+		Numlock::
+		Mbutton::
+ 					If !winactive("ahk_exe OUTLOOK.EXE")
+						click
+ 					3tap()
+ 					return
+	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
+		F7::LMS.SearchBar(Batch,"{enter}")
+		F6::LMS.SearchBar(Product,"{enter}")
+		Numlock::4tap()
+		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
+	#If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
+		Wheeldown::LMS.ScrollDown()
+	#if
 
+clipCheckIfEmpty(){
+	clipboard:=
+	sendinput, ^c
+	clipwait, 0.25
+	if errorlevel
+	{
+		; If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double click
+		; 	send {click 2}
+		; Else
+			send, {click 3}
+		sendinput, ^c
+		clipwait, 0.25
+	}
+}
 
-;;	___3Fingers
+#IfWinActive
+;;		___3Fingers
 
 3tap(){
 	Global 
@@ -82,8 +118,7 @@
 		send, ^f
 	}
 	else 	if winactive("ahk_exe OUTLOOK.EXE") {
-		click 3
-		Send, ^{c}
+		clipCheckIfEmpty()
 		clip()
 		return
 	}
@@ -207,7 +242,7 @@ return
 }
 
 
-;;	___4Fingers
+;;		___4Fingers
 4tap(){
 	global 
 	If winactive("NuGenesis LMS - \\Remote") {
@@ -247,6 +282,11 @@ return
 			}
 		else
 			Menu.LMS()
+	}
+		else 	if winactive("ahk_exe OUTLOOK.EXE") {
+		clipCheckIfEmpty()
+		clip()
+		return
 	}
 	else if winactive("PDF Preview - \\Remote")
 		Send, {altdown}{F4}{altup}
@@ -461,13 +501,13 @@ CloseWindow(){
 
 
 
-;;	___2Fingers
+;;		___2Fingers
 
 2tap(){
 	global
-	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450)
+	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse
 	{
-		Send, {F18}
+		Send, {F20}
 	}
 	else
 		click Right
@@ -505,5 +545,5 @@ CloseWindow(){
 	return
 	}
 }
-
+ 
 ~lbutton::return

@@ -80,33 +80,33 @@ ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
   
   
   
-  ; WM_LBUTTONDOWN(wParam, lParam)
-			; {
-				; X := lParam & 0xFFFF
-				; Y := lParam >> 16
-				; if A_GuiControl
-					Ctrl := "`n(in control " . A_GuiControl . ")"
-				; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
-				; PostMessage, 0xA1, 2
-				; sleep 200
-		; keywait, Lbutton, U T0.20
-			; if !errorlevel
-			; {
-					; if errorlevel
-						; MouseClick, Left, , , 1, 0, U
-						; MouseClick, Left, , , 1, 0, U
-				; keywait, Lbutton, U T5
-		; MouseClick, Left, , , 1, 0, U
-				; wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-				; sleep 200
-				; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-				; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+  ; WM_LBUTTONDOWN(wParam, lParam) ;move around varbar
+	; 		{
+	; 			X := lParam & 0xFFFF
+	; 			Y := lParam >> 16
+	; 			if A_GuiControl
+	; 				Ctrl := "`n(in control " . A_GuiControl . ")"
+	; 			; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
+	; 			PostMessage, 0xA1, 2
+	; 			; sleep 200
+	; 	; keywait, Lbutton, U T0.20
+	; 		; if !errorlevel
+	; 		; {
+	; 				; if errorlevel
+	; 					; MouseClick, Left, , , 1, 0, U
+	; 					; MouseClick, Left, , , 1, 0, U
+	; 			; keywait, Lbutton, U T5
+	; 	; MouseClick, Left, , , 1, 0, U
+	; 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+	; 			; sleep 200
+	; 			; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
+	; 			; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 					
-				; return
-			; }
-			; else
-		; MouseClick, Left, , , 1, 0, U
-		; return
+	; 			; return
+	; 		; }
+	; 		; else
+	; 	; MouseClick, Left, , , 1, 0, U
+	; 	return
 					
 ; } 
 
@@ -126,7 +126,7 @@ WindowInfo(){
 	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
 	WinLocation:= wX "," wY "," wW "," wH
 	
-	; keywait, F20, U T5
+	; keywait, F18, U T5
 	
 	sleep 500
 	; Tooltip,
@@ -676,7 +676,7 @@ PasteScreenshot(){
 	KeyWait, LButton,
 	; sleep 200
 	sleep 200
-	KeyWait, F20,
+	KeyWait, F18,
 	KeyWait, F21,
 	MouseClick, left,,, 1, 0, u
 	Send,{enter}
