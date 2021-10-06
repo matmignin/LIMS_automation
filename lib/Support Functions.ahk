@@ -1,3 +1,15 @@
+IfKeyPressed(keyPressed,Action:=""){
+  pop("wait for press")
+  Input, Inputkey, L1 M T1
+    If (InputKey!=KeyPressed){
+      sendinput, %Inputkey%
+      exit 
+    }
+    else
+        send % Action
+    Return KeyPressed
+}
+
 
 ListArray(The_Array,Option:="n"){
 	global

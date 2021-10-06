@@ -31,8 +31,26 @@ Starting_test:
 ; tests to start with
 return
 
+BlockRepeatTimer:
+  if (A_TimeSincePriorHotkey > 2000)
+    exit
+else
+; if (A_PriorHotkey := A_ThisHotkey)
+	; NN:="equal"
+; else !(A_PriorHotkey := A_ThisHotkey)
+	; NN:="Not Equal"
+msgbox, %NN%  `n A_thisHotkey  %A_thisHotkey%  `n A_priorhotkey %A_priorhotkey%  `n A_priorkey %A_priorkey% `n A_TimeSincePriorHotkey %A_TimeSincePriorHotkey%
+; if (A_TimeSincePriorHotkey < 2000) {
+; 	if A_PriorHotkey 
+; 		$rshift::								Send, {tab}
+; 		$space::								Send, {enter}
+; 		F18::										Send, ^v
+return
 
 ___Testing_Zone:
+
+
+
 ;; tripple press C
     !c:: 
       if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
@@ -99,10 +117,13 @@ ___Testing_Zone:
     winc_presses := 0
     return
 
-  ;
-  test_1:
-
+  test_1:  ; tested if the 2nd function workd
+    send % "lll"    
+    IfKeyPressed("k","uuuuuu")
+    pop("yo:")
   return
+
+
   
 
   Test_2:
