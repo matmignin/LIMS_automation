@@ -5,7 +5,7 @@ _MouseIsOver:
 		NumpadDot::send, {click}{esc}
 	#If MouseIsOver("ahk_exe firefox.exe")
 		numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
-	#If MouseIsOver("ahk_exe OUTLOOK.EXE")
+	#If MouseIsOver(Outlook)
 		^Wheeldown::Blockrepeat(500) clip()
 		Numlock::
 		Mbutton::

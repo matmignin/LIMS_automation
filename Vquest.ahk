@@ -25,9 +25,17 @@
     SetMouseDelay, 1
     SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
+      snipaste:="ahk_exe Snipaste.exe"
+    LMS:="ahk_exe WFICA32.EXE"
+    Nugenesis:=Main:="NuGenesis LMS - \\Remote"
+    VScode:="ahk_exe Code.exe"
+    Excel:="ahk_exe EXCEL.EXE"
+    Workbook:="LMS Workbook.xlsb - Excel"
+    Outlook:="ahk_exe OUTLOOK.exe"
 gosub, vquest_start
 
 Starting_test:
+
 ; tests to start with
 return
 

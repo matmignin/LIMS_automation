@@ -237,7 +237,7 @@
 		; ^q::                  SendInput,{shiftdown}{ctrldown}{,}{ctrlup}{shiftup}				 ;block comment
 
 		z::											backspace
-		space::									^space
+		space::									sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 		c::                     sendinput,{F22}
 		,::	                    SendInput,!^{/} 
 		^,::	                  SendInput,!+^{/}

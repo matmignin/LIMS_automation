@@ -143,19 +143,16 @@
 	F13 & `::					Test(iteration)
 
 
+;; ___Doubletap F18 & arrows
+#If (A_PriorHotKey = "F18 & up" || A_PriorHotKey = "F18 & Down" || A_PriorHotKey = "F18 & left" || A_PriorHotKey = "F18 & right") && (A_TimeSincePriorHotkey < 2000)
+	$rshift::               Send, {tab}
+	F18 & up::	           Send, {enter}
+	F18 & down::           Send, {enter}
+	F18 & left::           Send, {enter}
+	F18 & right::          Send, {enter}
+#if 
 
-; 	#If (A_PriorHotKey = "F18 & up" || A_PriorHotKey = "F2O & Down" || A_PriorHotKey = "F18 & left" || A_PriorHotKey = "F18 & right") && (A_TimeSincePriorHotkey < 2000) 
-; 	$rshift::               Send, {tab}
-; 	F18 & up::	           Send, {enter}
-; 	F18 & down::           Send, {enter}
-; 	F18 & left::           Send, {enter}
-; 	F18 & right::          Send, {enter}
 
-; 	; #If (A_PriorHotKey = "F18") && (A_TimeSincePriorHotkey < 1000) 
-; 	; $rshift::								Send, {tab}
-; 	; $space::								Send, {enter}
-; 	; F18::										Send, ^v
-; #if 
 
 
 

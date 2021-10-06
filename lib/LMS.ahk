@@ -1,25 +1,4 @@
 
-AddCanceled(){
-	ifwinnotactive, Edit test (Field Configuration: F, Micro) - \\Remote
-		winactivate, Edit test (Field Configuration: F, Micro) - \\Remote
-	SendInput,{click 399, 219}{end}'(Canceled'){enter}
-}
-
-ToggleFilter_Test_1(){
-	ifwinnotactive, NuGenesis LMS - \\Remote
-		WinActivate, NuGenesis LMS - \\Remote
-	click 489, 836, R
-	SendInput,{down 2}{enter}
-}
-
-FilterSearch_Test(TestName:="", MethodName:=""){
-	ifwinnotactive, NuGenesis LMS - \\Remote
-		WinActivate, NuGenesis LMS - \\Remote
-	click 1230, 648 ;click name Divider
-	Send, ^a%TestName%{enter}
-	click 1067, 647 ; click method ID Divider
-	Send, ^a%MethodName%{enter}{tab 4}
-}
 
 
 
@@ -279,10 +258,6 @@ FilterBar(Code:="",PostCmd:=""){
 	ControlGetText, Product, Edit1, VarBar
 	ControlGetText, Coated, Edit4, VarBar
 	ControlGetText, SampleId, Edit5, VarBar
-	; ControlGetText, Note1, Edit6, VarBar
-	; ControlGetText, Note2, Edit7, VarBar
-	; blockinput on
-	; lms.FilterStatus()
     LMS.DetectTab()
 	; TT(Code " " Product "`n" Tab)
 		if (Tab="Products" || Tab="Specs")
@@ -391,28 +366,8 @@ DetectTab(){
 		return Tab
 	}
 
-FilterStatus(){
- global
-	FilterOn:=
-	Filter:=
-	ifwinnotactive, ahk_exe WFICA32.EXE 
-		winactivate, ahk_exe WFICA32.EXE
-	if WinActive("NuGenesis LMS - \\Remote")
-		PixelSearch, FilterOn, FoundY, %xFilterIcon%, %yFilterIcon%, %xFilterIcon%+2, %YFilterIcon%+2, 0xf9e681, 10, Fast RGB
-			if FilterOn
-				Return "On"
-			else 
-				Return "Off" 
-				; clk(xFilterIcon,yFilterIcon)
-				; Return FilterOff
-				
-			; If ErrorLevel  ;is yellow/on?
-			; {
-				; FilterOn="on"
-			; }
-			; else ;is off/blue
-	; return
-	}
+
+
 Filter(x:="Status"){
 	global
 	FilterOn:=
@@ -426,8 +381,6 @@ Filter(x:="Status"){
 		return
 	}
 	if (x="Clear"){	
-		; if (LMS.Filter()=Off)
-			; LMS.Filter(On)
 		If WinActive("Select samples for request")
 			Clk(35, 275,"Right")
 		if winactive("NuGenesis LMS - \\Remote")	
@@ -435,8 +388,6 @@ Filter(x:="Status"){
 		sleep 100
 		Send, {shiftDown}{Tab 2}{shiftup}{enter}
 		sleep 400
-		; if (LMS.Filter()=Off)
-			; LMS.Filter(On)
 		exit
 	}
 	if (x="Off"){	
@@ -483,15 +434,16 @@ CoA(){
 
 SaveCode(){
 	global
-	Batches:=[]
+	RegBatches:=[]
+	RegProducts:=[]
 		Send, {CtrlDown}{a}{Ctrlup}
 		clip(1)
 		sleep 200
 		Send, {enter}
-		FileAppend, %Batch% `n, Batch.txt
-		FileAppend, %product% `n, Products.txt
-		iniwrite, %Batch%, Codes.ini, %Batch%,
-		iniwrite, %Product%, Codes.ini, %Product%, 
+		FileAppend, %RegBatch% `n, Batch.txt
+		FileAppend, %Regproduct% `n, Products.txt
+		iniwrite, %RegBatch%, Codes.ini, %Batch%,
+		iniwrite, %RegProduct%, Codes.ini, %Product%, 
 		return
 
 	}
