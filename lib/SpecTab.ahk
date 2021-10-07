@@ -3,6 +3,8 @@ class SpecTab {
 	
 Table(){
 	Global
+	ShiftTable_X:=-350
+	ShiftTable_Y:=300
 	Try GUI, Spec_Table:destroy
   CoordMode, mouse, Window
 ;  CoordMode, , Screen
@@ -13,8 +15,8 @@ Table(){
 	; Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
 	; Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
 		CoordMode, mouse, window
-	SpecTable_X:=LMS_w+LMS_X-50
-	SpecTable_Y:=LMS_Y+100
+	SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
+	SpecTable_Y:=LMS_Y+ShiftTable_Y
 	Table_height=10
 		CoordMode, mouse, screen
 	Excel.Connect()

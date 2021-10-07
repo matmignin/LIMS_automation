@@ -6,6 +6,8 @@
 
 Table(){
   Global
+  ShiftTable_X:=-250
+  ShiftTable_Y:=200
   try GUI, Ingredient_table:destroy
   CoordMode, mouse, Window
   ; CoordMode, , Screen
@@ -13,8 +15,8 @@ Table(){
     WinActivate, ahk_exe WFICA32.EXE
   WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
   Table_height=10
-  ProductTable_X:= LMS_w+LMS_X-50
-  ProductTable_Y:= LMS_Y+100
+  ProductTable_X:= LMS_w+LMS_X+ShiftTable_X
+  ProductTable_Y:= LMS_Y+ShiftTable_Y
   Excel.Connect()
   Name:=		 	    []
   LabelClaim:=  	[]
