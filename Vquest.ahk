@@ -2,6 +2,7 @@
     #NoEnv
     #SingleInstance,Force
     #KeyHistory 
+    #MenuMaskKey vkE8
     #InstallKeybdHook
     #InstallMouseHook
     CheckTime:=500
@@ -25,13 +26,6 @@
     SetMouseDelay, 1
     SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
-      snipaste:="ahk_exe Snipaste.exe"
-    LMS:="ahk_exe WFICA32.EXE"
-    Nugenesis:=Main:="NuGenesis LMS - \\Remote"
-    VScode:="ahk_exe Code.exe"
-    Excel:="ahk_exe EXCEL.EXE"
-    Workbook:="LMS Workbook.xlsb - Excel"
-    Outlook:="ahk_exe OUTLOOK.exe"
 gosub, vquest_start
 
 Starting_test:
@@ -39,28 +33,18 @@ Starting_test:
 ; tests to start with
 return
 
-BlockRepeatTimer:
-  if (A_TimeSincePriorHotkey > 2000)
-    exit
-else
-; if (A_PriorHotkey := A_ThisHotkey)
-	; NN:="equal"
-; else !(A_PriorHotkey := A_ThisHotkey)
-	; NN:="Not Equal"
-msgbox, %NN%  `n A_thisHotkey  %A_thisHotkey%  `n A_priorhotkey %A_priorhotkey%  `n A_priorkey %A_priorkey% `n A_TimeSincePriorHotkey %A_TimeSincePriorHotkey%
-; if (A_TimeSincePriorHotkey < 2000) {
-; 	if A_PriorHotkey 
-; 		$rshift::								Send, {tab}
-; 		$space::								Send, {enter}
-; 		F18::										Send, ^v
-return
+; BlockRepeatTimer:
+;   if (A_TimeSincePriorHotkey > 2000)
+;     exit
+; msgbox, %NN%  `n A_thisHotkey  %A_thisHotkey%  `n A_priorhotkey %A_priorhotkey%  `n A_priorkey %A_priorkey% `n A_TimeSincePriorHotkey %A_TimeSincePriorHotkey%
+; return
 
 ___Testing_Zone:
 
 
 
 ;; tripple press C
-    !c:: 
+    F19:: 
       if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
       {
           winc_presses += 1
@@ -69,7 +53,7 @@ ___Testing_Zone:
       ; Otherwise, this is the first press of a new series. Set count to 1 and start
       ; the timer:
       winc_presses := 1
-      SetTimer, KeyAltC, -400 ; Wait for more presses within a 400 millisecond window.
+      SetTimer, KeyAltC, -200 ; Wait for more presses within a 400 millisecond window.
       return
     KeyAltC:
       if (winc_presses = 1) ; The key was pressed once.
@@ -84,15 +68,16 @@ ___Testing_Zone:
       }
       else if (winc_presses > 2)
       {
-          clip.Append("`n","x")
+          clip.Append("`n","{x}")
           ; Pop(Clipboard)
       }
       ; Regardless of which action above was triggered, reset the count to
       ; prepare for the next series of presses:
     winc_presses := 0
     return
+
 ;; Tripple Press !v
-    !v::
+    ~F20::
       if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
       {
           winc_presses += 1
@@ -107,11 +92,11 @@ ___Testing_Zone:
     KeyAltV:
       if (winc_presses = 1) ; The key was pressed once.
       {
-          Clip.Paste()
+          send, ^{v}
       }
       else if (winc_presses = 2) ; The key was pressed twice.
       {
-          clip.Append()  
+          send, #v 
           ; Pop(Clipboard)
         ; sleep 300 ; Open a different folder.
       }
@@ -156,49 +141,49 @@ ___Testing_Zone:
 
 
 
-  GetSampleInfo(){
-    global Customer, Name, ShipToIndex
-    ParsedSample:=[]
-    ; clipboard:=
-    ; send, ^c 
-    ; clipwait, 2
-      ; if errorlevel
-        ; sleep 400
-    Loop, parse, Clipboard, `t
-    ParsedSample.insert(A_LoopField)
-    TotalColumns:=Parsedsample.maxindex()//2
+  ; GetSampleInfo(){
+  ;   global Customer, Name, ShipToIndex
+  ;   ParsedSample:=[]
+  ;   ; clipboard:=
+  ;   ; send, ^c 
+  ;   ; clipwait, 2
+  ;     ; if errorlevel
+  ;       ; sleep 400
+  ;   Loop, parse, Clipboard, `t
+  ;   ParsedSample.insert(A_LoopField)
+  ;   TotalColumns:=Parsedsample.maxindex()//2
     
-    Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
-    Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-    IniRead,ShipToIndex, Customers.ini, Customers, %Customer%
-    ; if !ShipTo
-      ; ShipTo:=ShipToIndex
-    return ShiptoIndex
-  }
+  ;   Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+  ;   Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+  ;   IniRead,ShipToIndex, Customers.ini, Customers, %Customer%
+  ;   ; if !ShipTo
+  ;     ; ShipTo:=ShipToIndex
+  ;   return ShiptoIndex
+  ; }
 
 
 
 
-  DropDown() {
-    Loop, Read, Customers.ini
-    {
-    If A_Index = 1
-      Continue
-    Method := StrSplit(A_LoopReadLine, "=")
-      ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
-    Selection:= % Method[1]
-      ; Group:= % MethodGroup[2] ;for a second split
-    Menu, Methodmenu, add, %Selection%, DropDown
-    }
-    Menu, MethodMenu, Show,
-    return
+  ; DropDown() {
+  ;   Loop, Read, Customers.ini
+  ;   {
+  ;   If A_Index = 1
+  ;     Continue
+  ;   Method := StrSplit(A_LoopReadLine, "=")
+  ;     ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
+  ;   Selection:= % Method[1]
+  ;     ; Group:= % MethodGroup[2] ;for a second split
+  ;   Menu, Methodmenu, add, %Selection%, DropDown
+  ;   }
+  ;   Menu, MethodMenu, Show,
+  ;   return
 
-    DropDown:
-      InputVar:=A_ThisMenuItem
-      IniRead,vOutput, Customers.ini, Customers, %InputVar%
-      Pop(Inputvar,vOutput)
-      return
-  }
+  ;   DropDown:
+  ;     InputVar:=A_ThisMenuItem
+  ;     IniRead,vOutput, Customers.ini, Customers, %InputVar%
+  ;     Pop(Inputvar,vOutput)
+  ;     return
+  ; }
 
 
 
@@ -278,6 +263,7 @@ ActiveCheck:
   #Include <clip>
   #Include <OpenApp>
   #Include <LMS>
+  #include <Excel>
   #Include <Snipper>
   ;#Include <AutoFill>
   #include <varBar>
@@ -286,7 +272,6 @@ ActiveCheck:
   #include <SpecTab>
   #include <menu>
   #include <Rotation>
-  #include <Excel>
   #include <Vis2>
   #include <Support Functions>
 ;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk

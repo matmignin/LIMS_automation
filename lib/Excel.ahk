@@ -24,9 +24,10 @@ Connect(reload:=0){
 		sht := XL.ActiveSheet.Name
 		;btch:= XL.ActiveSheet.Range.("E1")
 			Gui VarBar:+LastFound
-		if ((sht := "PriorMonths") || (sht:= "Sheet1") || (sht := "Main") || (sht := "Template") || (sht := "Finished") || (sht := "Micro Pending") || (sht := "Sheet2") || (sht := "Sheet1") || (sht := "Item Code") || (sht := "Scrap Sheet")) {
-			this.NextSheet()
-		}
+		; if ((sht := "PriorMonths") || (sht:= "Sheet1") || (sht := "Main") || (sht := "Template") || (sht := "Finished") || (sht := "Micro Pending") || (sht := "Sheet2") || (sht := "Sheet1") || (sht := "Item Code") || (sht := "Scrap Sheet")) {
+				
+			; this.NextSheet()
+		; }
 	}
 	Catch {
 		TT("Didnt connect to workbook", 5000,,,1)
@@ -34,12 +35,12 @@ Connect(reload:=0){
 	This.InfoLocations()
 	;Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
 												; /*  Get each sheet name and turn it into an array
-												For sheet in xl.ActiveWorkbook.Worksheets
-												{
+											;	For sheet in xl.ActiveWorkbook.Worksheets
+											;	{
 											;		If (Sheet.name := "Main") || (Sheet.name := "Template") || (Sheet.name := "Finished") || (Sheet.name := "Micro Pending") || (Sheet.name := "PriorMonths")
-;														continue
-													Products.insert(Sheet.Name)
-												}
+											;			continue
+											;		Products.insert(Sheet.Name)
+											;	}
 												; Products.remove(1)
 												; Products.remove(1)
 												; loop 10{
@@ -93,9 +94,9 @@ SheetChange(sht,Cell) {
 	}
 
 
-CopySheetName(){
-	SheetName:= xl.ActiveWorkbook.Worksheets.name
-}
+; CopySheetName(){
+; 	SheetName:= xl.ActiveWorkbook.Worksheets.name
+; }
 	RegexCell(vCell,n:=""){
 		Global
 		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
@@ -187,10 +188,10 @@ PrevSheet(){
 	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet") {
 		Xl.Sheets(PrevSheet).activate
 		;excel.connect()
+	Excel.MatchColor()
 }
 	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer) 
 	; Excel.MatchColor()
-	Excel.MatchColor()
 	GuiControl, +redraw, varbar
 	}
 

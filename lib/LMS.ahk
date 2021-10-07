@@ -1,7 +1,3 @@
-
-
-
-
 Class LMS {
 
 SearchBar(Code:="",PostCmd:=""){
@@ -434,16 +430,15 @@ CoA(){
 
 SaveCode(){
 	global
-	RegBatches:=[]
-	RegProducts:=[]
+	Batches:=[]
 		Send, {CtrlDown}{a}{Ctrlup}
 		clip(1)
 		sleep 200
 		Send, {enter}
-		FileAppend, %RegBatch% `n, Batch.txt
-		FileAppend, %Regproduct% `n, Products.txt
-		iniwrite, %RegBatch%, Codes.ini, %Batch%,
-		iniwrite, %RegProduct%, Codes.ini, %Product%, 
+		FileAppend, %Batch% `n, Batch.txt
+		FileAppend, %product% `n, Products.txt
+		iniwrite, %Batch%, Codes.ini, %Batch%,
+		iniwrite, %Product%, Codes.ini, %Product%, 
 		return
 
 	}

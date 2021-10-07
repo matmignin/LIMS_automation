@@ -21,15 +21,15 @@ _explorer:
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
 	F13 & space::					SendInput, +{tab}{tab}
-	F18 & `;::        Send, {tab}
-	F18 & /::         Table_Entry("N/A")
-	F18 & n::         Table_Entry("No")
-	F18 & y::         Table_Entry("Yes")
-	F18 & m::         Table_Entry("Yes")
-	F18 & f::         Table_Entry("FALSE")
-	F18 & ,::         Table_Entry("FALSE")
-	F18 & t::         Table_Entry("TRUE")
-	F18 & .::         Table_Entry("TRUE")
+	F20 & `;::        Send, {tab}
+	F20 & /::         Table_Entry("N/A")
+	F20 & n::         Table_Entry("No")
+	F20 & y::         Table_Entry("Yes")
+	F20 & m::         Table_Entry("Yes")
+	F20 & f::         Table_Entry("FALSE")
+	F20 & ,::         Table_Entry("FALSE")
+	F20 & t::         Table_Entry("TRUE")
+	F20 & .::         Table_Entry("TRUE")
 	F19 & wheeldown:: 
 	F8::              Send, {enter}
 	F19 & Wheelleft:: 
@@ -37,7 +37,7 @@ _WORD:
 	F19 & Wheelright::
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	F19::             Clip.Copy()
-	F18::             Clip.paste()
+	F20::             Clip.paste()
 		
 
 
@@ -79,7 +79,7 @@ _Excel:
 	Media_Prev::         Send,{LWindown}{tab}{lwinup}
 	F19 & F7::           ^F8 ;Excel.NextSheet()
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
-	F19::						Send, ^v
+	F19::									Send, ^v
 #ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 	return::             SendInput, !{i}
 	rbutton & Lbutton::  SendInput, !{i}
@@ -93,12 +93,12 @@ _Excel:
 _OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
-	<+F18::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
-	F18 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
+	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
 
 	numpadmult::
-	F18::                
+	F20::                
 								Send, ^{c}
 								Clip.Copy()
 								return
@@ -117,7 +117,12 @@ _OUTLOOK:
 	F19::						Send, ^{click}
 	
 
-
+_Teams:
+#ifwinexist, Touchpoint | Microsoft Teams
+Numlock::
+winactivate, Microsoft Teams
+send, {shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+return
 
 _OneNote:
 #ifwinactive, OneNote for Windows 10

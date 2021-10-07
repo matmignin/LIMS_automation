@@ -1843,7 +1843,7 @@ class Vis2 {
                color["LightGreen"]            := "0xFF90EE90"
              , color["LightPink"]             := "0xFFFFB6C1"
              , color["LightSalmon"]           := "0xFFFFA07A"
-             , color["LightSeaGreen"]         := "0xFF18B2AA"
+             , color["LightSeaGreen"]         := "0xFF20B2AA"
              , color["LightSkyBlue"]          := "0xFF87CEFA"
              , color["LightSlateGray"]        := "0xFF778899"
              , color["LightSlateGrey"]        := "0xFF778899"

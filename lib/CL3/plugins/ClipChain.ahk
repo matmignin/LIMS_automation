@@ -145,13 +145,13 @@ Return
 #IfWinActive, CL3ClipChain
 	$Rbutton::			        gosub, clipchainmenu
 	Backspace::			     gosub, ClipChainDel
+	~F20 up::return
 
 	#IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
 
 #If ClipChainActive()
 	Rshift & up::			gosub, ClipchainMoveUp
 	Rshift & down::		gosub, ClipchainMoveDown
-
 	Delete::			 	   gosub, ClipChainDel
 	^c::			     	   send, ^c
 	F11::

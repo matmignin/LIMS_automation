@@ -138,7 +138,7 @@ WindowInfo(){
 	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
 	WinLocation:= wX "," wY "," wW "," wH
 	
-	; keywait, F18, U T5
+	; keywait, F20, U T5
 	
 	sleep 500
 	; Tooltip,
@@ -688,7 +688,7 @@ PasteScreenshot(){
 	KeyWait, LButton,
 	; sleep 200
 	sleep 200
-	KeyWait, F18,
+	KeyWait, F20,
 	KeyWait, F21,
 	MouseClick, left,,, 1, 0, u
 	Send,{enter}

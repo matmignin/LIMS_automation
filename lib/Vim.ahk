@@ -4,9 +4,9 @@
 		^+4::											send, !+{4}
 		^+3::											send, !+{3}
 		^+2::											send, !+{2}
-		F18 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
+		F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 		F15 & tab::               SendInput,{ctrldown}{]}{ctrlup}	
-		lbutton & F18:: 					send, !+4
+		lbutton & F20:: 					send, !+4
 		lbutton & F19:: 					send, !+3
 		numpadsub::               F7
 		numpadadd::               F6
@@ -32,12 +32,12 @@
 		<^lwin::                  delete
 		<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 		^s::                      SendInput, {ctrldown}{end}{ctrlup}
-	;;	___F19 and F18
-		F18 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-		F18 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-		F18 & backspace::         delete
-		; F18 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-		; F18 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
+	;;	___F19 and F20
+		F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+		F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+		F20 & backspace::         delete
+		; F20 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+		; F20 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 		F19 & left::              SendInput,{shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 		; F19 & up::              SendInput,{shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 		F19 & down::              SendInput,{shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
@@ -127,7 +127,7 @@
 	4::                       SendInput,{shiftdown}{end}{shiftup} 
 	f::												Sendinput,!^{f}
 	v::                       SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
-	<^v::                     SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
+	; <^v::                     SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
 	<^m::                     SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
 	^m::                      SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;highlight next
 	m::                       SendInput,{shiftdown}{ctrldown}{m}{ctrlup}{shiftup} ;select next
@@ -151,7 +151,7 @@
 	^z::											SendInput,{ctrldown}{y}{ctrlup}
 	s::                       SendInput,{home}+{end}
 	^s::                      SendInput,{home}+{end}
-	^c::	
+	; ^c::	
 	c::	                      clip.append()
 	,::	                      SendInput,!+^{/}
 	^,::	                    SendInput,!+^{/}
@@ -255,7 +255,7 @@
 		^s::                    SendInput,{home}+{end}
 		f::                     sendinput,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
 			^f::                  sendinput,+!{s}
-		; F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
+		F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 		; f20::                 SendInput,{pgdn}
 		; 1::                   SendInput,{F1}
 		; 2::                   SendInput,{F2{
@@ -345,7 +345,7 @@ F13 & right::									  sendinput, {shiftdown}{right}{shiftup}
 	p::              numpad0
 	=::              =
 	-::              -
-	; F18::            SendInput,{.}
+	; F20::            SendInput,{.}
 	h::              left
 	+h::             H
 	'::              numpad0

@@ -207,7 +207,18 @@ Class VarBar{
 		}
 
 
-
+		
+	Focus(Control){
+		global
+		WinGetTitle, the_WinTitle, A
+		caret_x:=A_CaretX
+		caret_y:=A_Carety
+		WinActivate, VarBar ahk_exe AutoHotkey.exe
+		GuiControl Varbar:Focus, %Control%
+		; sleep 100
+		SendInput, ^{a}{ctrlup}{altup}
+		return
+		}	
 
 	Relocate(){
 		global
@@ -303,9 +314,9 @@ HistoryMenuItem(){
 			
 ;; ___KEYBINDINGS
 	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-		F19 & F18::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+		F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
 	;	F19::varbar.focus("Product")
-		; F18::varbar.focus("Batch")
+		; F20::varbar.focus("Batch")
 		^enter::                           
 								winactivate, %the_WinTitle%
 								click, %caret_X%, %caret_y%

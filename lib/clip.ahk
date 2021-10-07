@@ -389,7 +389,7 @@ Copy(){
         }
         Else ;will trigger after 1 sec
           Send, {F22}
-          ; KeyWait, F18,
+          ; KeyWait, F20,
           Return
       }
     }
@@ -472,7 +472,7 @@ ctrl(){
           Else
             return
       }
-            ; Send, ^v
+            ; Send, 
       return
     }
 }

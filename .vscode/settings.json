@@ -93,7 +93,7 @@
       ".sass": "sass --style expanded",
       ".cu": "cd $dir && nvcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
     },
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
     "workbench.sideBar.location": "left",
     "code-runner.defaultLanguage": "autohotkey",
     "code-runner.saveFileBeforeRun": true,
@@ -101,5 +101,7 @@
     "code-runner.cwd": "C:\\Users\\mmignin\\Documents\\VQuest",
     "code-runner.clearPreviousOutput": true,
     "explorerExclude.backup": null,
+    "search.useIgnoreFiles": false,
+    "diffEditor.ignoreTrimWhitespace": false,
 
 }

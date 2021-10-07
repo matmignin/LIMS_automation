@@ -1,42 +1,8 @@
-return
+
 #IfWinActive,
-; F1::Send, {lwindown}{e}{lwinup}
-; F2::
-  if winexist("SAMPLE LOG 2021"){
-      winactivate
-      return
-    }
-    Run, SAMPLE LOG 2021.xlsx, \\10.1.2.118\share\QC LAB\
-    winactivate, ahk_exe EXCEL.EXE
-    sleep 200
-    winwait,File in Use,,9
-      if !errorlevel
-        Send, {altdown}{r}{altup}
-    winwait, Password,,2
-      if !errorlevel
-        Send, lab{enter}
-    winwait, SAMPLE LOG 2021.xlsx,, 3
-      if !errorlevel
-        excel.search()
-  return
-F4::
-  if winexist("C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"){
-    winactivate
-    sleep 200 
-    Send, {ctrldown}{e}{ctrlup}
-    send, ^{a}%Product%
-    return
-  }
-  Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
-  winactivate, ahk_exe EXCEL.EXE
-  sleep 200 
-  Send, {ctrldown}{e}{ctrlup}
-  sleep 100
-  Send, ^{a}%product%
-  return
 #+::
 ` & esc::        ;                 Pause, Toggle
-+F1::
+F1::
   if winexist("AutoHotkey Help")
     winactivate, 
   else
@@ -50,18 +16,17 @@ OpenApps:
   ; #!v::Run, C:\Users\mmignin\Documents\VQuest\
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
-  F18 & o::OpenApp.Outlook()
+  F20 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
   !d::OpenApp.Display()
-  F18 & p::
-  F21 & p::
+  F20 & p::
   #p::OpenApp.YourPhone()
   f20 & n::
   #n::openApp.notepad()
   +#n::openApp.Notion()
   #w::OpenApp.Workbook()
-  F18 & l::
+  F20 & l::
   #l::OpenApp.LMS()
 #ifwinnotactive
 

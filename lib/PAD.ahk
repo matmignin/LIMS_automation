@@ -5,7 +5,7 @@ _MouseIsOver:
 		NumpadDot::send, {click}{esc}
 	#If MouseIsOver("ahk_exe firefox.exe")
 		numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
-	#If MouseIsOver(Outlook)
+	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		^Wheeldown::Blockrepeat(500) clip()
 		Numlock::
 		Mbutton::
@@ -28,9 +28,6 @@ clipCheckIfEmpty(){
 	clipwait, 0.25
 	if errorlevel
 	{
-		; If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double click
-		; 	send {click 2}
-		; Else
 			send, {click 3}
 		sendinput, ^c
 		clipwait, 0.25
@@ -507,7 +504,7 @@ CloseWindow(){
 	global
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse
 	{
-		Send, {F20}
+		Send, {F|18}
 	}
 	else
 		click Right
