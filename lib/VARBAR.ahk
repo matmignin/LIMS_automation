@@ -76,7 +76,9 @@ Class VarBar{
 			This.addedit("Note4","X+2 H29 y1 left","9")		;edit9
 
 			GUI,VarBar:Font,			 s9, Arial Narrow 
-			Gui,VarBar:Add,edit,		vCurrentCodes +wrap gCurrentCodesVarbar x20 H30 y+2, %CurrentCodes% ; edit10
+			Gui,VarBar:Add,edit,		vWorkingOn +wrap gWorkingOnVarbar x20 H30 y+2, %WorkingOn% ; edit10
+			Gui,VarBar:Add,edit,		vOrganolepticPending +wrap gOrganolepticPendingVarbar x+2 H30 , %OrganolepticPending% ; edit10
+			Gui,VarBar:Add,edit,		vMicroPending +wrap gMicroPendingVarbar x+2 H30, %MicroPending% ; edit10
 				;This.AddEdit("CurrentCodes","x20 H29 y+2") ; edit10
 		Return
 		
@@ -89,7 +91,9 @@ Class VarBar{
 			Note3VarBar:
 			Note4VarBar:
 			CoatedVarBar:
-			CurrentCodesVarbar:
+			WorkingOnVarbar:
+			OrganolepticPendingVarbar:
+			MicroPendingVarbar:
 			sleep 100
 			Gui, VarBar:submit,NoHide
 					; WinGetPos, ,, varbar_W, Varbar_H, VarBar ahk_class AutoHotkeyGUI
@@ -123,7 +127,9 @@ Class VarBar{
 				Iniread, Coated, data.ini, SavedVariables, Coated
 				; FileRead, CurrentCodes, CurrentCodes.txt 
 				}
-				Iniread, CurrentCodes, data.ini, SavedVariables, CurrentCodes
+				Iniread, WorkingOn, data.ini, CurrentCodes, WorkingOn
+				Iniread, OrganolepticPending, data.ini, CurrentCodes, OrganolepticPending
+				Iniread, MicroPending, data.ini, CurrentCodes, MicroPending
 				Iniread, Iteration, data.ini, SavedVariables, Iteration
 				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
 				Iniread, ShowCoated, data.ini, Options, ShowSampleID
@@ -143,7 +149,9 @@ Class VarBar{
 		ControlGetText, Note2, Edit7, VarBar
 		ControlGetText, Note3, Edit8, VarBar
 		ControlGetText, Note4, Edit9, VarBar
-		;ControlGetText, %CurrentCodes%, Edit10, VarBar
+		ControlGetText, workingOn, Edit10, VarBar
+		ControlGetText, OrganolepticPending, Edit11, VarBar
+		ControlGetText, MicroPending, Edit12, VarBar
 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 		iniwrite, %Product%, data.ini, Products, Product
@@ -157,6 +165,9 @@ Class VarBar{
 		IniWrite, %note2%, data.ini, Notes, note2
 		IniWrite, %note3%, data.ini, Notes, note3
 		IniWrite, %note4%, data.ini, Notes, note4
+		IniWrite, %WorkingOn%, data.ini, CurrentCodes, WorkingOn
+		IniWrite, %OrganolepticPending%, data.ini, CurrentCodes, OrganolepticPending
+		IniWrite, %MicroPending%, data.ini, CurrentCodes, MicroPending
 		IniWrite, %EnteringRotations%, data.ini, Options, EnteringRotations
 		}
 

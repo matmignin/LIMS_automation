@@ -58,7 +58,7 @@ ___Testing_Zone:
       ; Otherwise, this is the first press of a new series. Set count to 1 and start
       ; the timer:
       winc_presses := 1
-      SetTimer, KeyAltC, -200 ; Wait for more presses within a 400 millisecond window.
+      SetTimer, KeyAltC, -350 ; Wait for more presses within a 400 millisecond window.
       return
     KeyAltC:
       if (winc_presses = 1) ; The key was pressed once.
@@ -91,7 +91,7 @@ ___Testing_Zone:
       ; Otherwise, this is the first press of a new series. Set count to 1 and start
       ; the timer:
       winc_presses := 1
-      SetTimer, KeyAltV, -400 ; Wait for more presses within a 400 millisecond window.
+      SetTimer, KeyAltV, -350 ; Wait for more presses within a 400 millisecond window.
       return
 
     KeyAltV:
