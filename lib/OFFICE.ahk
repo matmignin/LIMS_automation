@@ -21,15 +21,15 @@ _explorer:
 _WORD:
 #IfWinActive, ahk_exe WINWORD.EXE
 	F13 & space::					SendInput, +{tab}{tab}
-	F20 & `;::        Send, {tab}
-	F20 & /::         Table_Entry("N/A")
-	F20 & n::         Table_Entry("No")
-	F20 & y::         Table_Entry("Yes")
-	F20 & m::         Table_Entry("Yes")
-	F20 & f::         Table_Entry("FALSE")
-	F20 & ,::         Table_Entry("FALSE")
-	F20 & t::         Table_Entry("TRUE")
-	F20 & .::         Table_Entry("TRUE")
+	F21 & `;::        Send, {tab}
+	F21 & /::         Table_Entry("N/A")
+	F21 & n::         Table_Entry("No")
+	F21 & y::         Table_Entry("Yes")
+	F21 & m::         Table_Entry("Yes")
+	F21 & f::         Table_Entry("FALSE")
+	F21 & ,::         Table_Entry("FALSE")
+	F21 & t::         Table_Entry("TRUE")
+	F21 & .::         Table_Entry("TRUE")
 	F19 & wheeldown:: 
 	F8::              Send, {enter}
 	F19 & Wheelleft:: 
@@ -37,7 +37,7 @@ _WORD:
 	F19 & Wheelright::
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	F19::             Clip.Copy()
-	F20::             Clip.paste()
+	F21::             Clip.paste()
 		
 
 
@@ -93,12 +93,12 @@ _Excel:
 _OUTLOOK:
 	#IfWinActive, ahk_exe OUTLOOK.EXE
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
-	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F21::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
-	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
+	F21 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
 
 	numpadmult::
-	F20::                
+	F21::                
 								Send, ^{c}
 								Clip.Copy()
 								return

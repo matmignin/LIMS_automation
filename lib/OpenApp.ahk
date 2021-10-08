@@ -16,17 +16,17 @@ OpenApps:
   ; #!v::Run, C:\Users\mmignin\Documents\VQuest\
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
-  F20 & o::OpenApp.Outlook()
+  F21 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
   !d::OpenApp.Display()
-  F20 & p::
+  F21 & p::
   #p::OpenApp.YourPhone()
   f20 & n::
   #n::openApp.notepad()
   +#n::openApp.Notion()
   #w::OpenApp.Workbook()
-  F20 & l::
+  F21 & l::
   #l::OpenApp.LMS()
 #ifwinnotactive
 

@@ -1,4 +1,5 @@
-﻿    #Persistent
+﻿
+    #Persistent
     #NoEnv
     #SingleInstance,Force
     #KeyHistory 
@@ -22,10 +23,14 @@
     FormatTime, CurrentDateTime,, MM/dd/yy
     SetNumLockState, on
     SetscrolllockState, off
+        SetNumlockState Alwayson
+    setcapslockstate alwaysoff
+    ; SetscrolllockState, always
     CoordMode, mouse, Window
     SetMouseDelay, 1
     SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
+
 gosub, vquest_start
 
 Starting_test:
@@ -77,7 +82,7 @@ ___Testing_Zone:
     return
 
 ;; Tripple Press !v
-    ~F20::
+    ~F21::
       if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
       {
           winc_presses += 1
@@ -276,29 +281,6 @@ ActiveCheck:
   #include <Support Functions>
 ;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
 
-; #IfWinActive,
-;   #include <KEYS>
-;   #include <VIM>
-;   #include <HotStrings>
-;   ; #include <LMS KEYS>
-;   #Include <OFFICE>
-;   #include <PAD>
-;   #Include <clip>
-;   #Include <OpenApp>
-;   #Include <LMS>
-;   #Include <Snipper>
-;   #Include <AutoFill>
-;   #include <varBar>
-;   #include <ProductTab>
-;   #include <WorkTab>
-;   #include <SpecTab>
-;   #include <menu>
-;   #include <Rotation>
-;   #include <Excel>
-;   #include <vis2>
-;   #include <Support Functions>
-;   #Include <Test>
-; ;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
 
 
 VQuest_Start:
@@ -315,6 +297,10 @@ VQuest_Start:
     Iniread, EnteringRotations, data.ini, Options, EnteringRotations
     Iniread, VarBar_X, data.ini, Locations, VarBar_X
     Iniread, VarBar_Y, data.ini, Locations, Varbar_Y
+    if !VarBar_x
+      VarBar_x=1
+    if !VarBar_y
+      VarBar_y=1
     Menu, Tray, Add, Exit, ExitSub
     Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
@@ -349,9 +335,7 @@ VQuest_Start:
     Menu, Tray, Add, Exit, ExitSub
     Menu, Tray, Add, windowSpy, WindowSpy
     Menu, Tray, Default, DebugVars
-    SetNumlockState Alwayson
-    setcapslockstate alwaysoff
-    SetscrolllockState, alwaysOff
+
     Run, cl3.Ahk, lib\CL3
 
     try Menu, Tray, Icon, lib\Robot.ico
@@ -374,5 +358,12 @@ VQuest_Start:
       }
     Excel.Connect(1)
     varbar.Show()
+
+
+
+
+    ; if (Keyboard:="Bluetooth" ? Keyboard:="F19" : Keyboard:="F20")
+; Run, Bluetooth Keyboard.Ahk, C:\Program Files\AutoHotkey\lib
     gosub, Starting_test
+
     #IfWinActive,

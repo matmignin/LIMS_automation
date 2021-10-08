@@ -274,7 +274,7 @@ AddSampleLog(count)
   ;Click, xpos, ypos, 2
   ;ypos:= ypos+26
   winwaitactive, Edit test (Field Configuration: I`, Analytical) - \\Remote,, 3
-  SendInput,{Click, 402, 284}{end}(on sample log){click, 334, 618}
+  Send,{Click, 402, 284}{end}(on sample log){click, 334, 618}
   winwaitactive, NuGenesis LMS - \\Remote,,3
   sleep 300
   winactivate, NuGenesis LMS - \\Remote
@@ -326,7 +326,7 @@ blockinput on
  send, {click 212, 188}  ; select Batches
  sleep 400
  Send, {click 136, 119}^a ;flick filter box
- if WinActive("Select samples for test: Organoleptic Sensory Test  - \\Remote")
+ if WinActive("Select samples for test: Organoleptic Sensory Test  - \\Remote") || WinActive("Select samples for test: Average Capsule Weight  - \\Remote") || WinActive("Select samples for test: Average Tablet Weight  - \\Remote")
   Department:="Physical"
  if WinActive("Select samples for test: Microbiological  - \\Remote")
   Department:="Micro"

@@ -1,5 +1,7 @@
 
 _MouseIsOver:
+	; #If MouseIsOver("ahk_exe EXCEL.exe")
+
 	#If MouseIsOver("ahk_exe Snipaste.exe")
 		F8::send, {click}{esc}
 		NumpadDot::send, {click}{esc}
@@ -538,7 +540,7 @@ CloseWindow(){
 			clk(70, 395)
 	Else
 		Send, %Product%
-	sleep 700
+	sleep 700 
 	return
 	}
 }

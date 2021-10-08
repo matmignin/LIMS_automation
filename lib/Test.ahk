@@ -34,14 +34,14 @@
 return
 
 
-; 	F20 & Space::  ;; Testing Backcycle
+; 	F21 & Space::  ;; Testing Backcycle
 ; 	If !ActiveWindowID
 ; 		WinGet, ActiveWindowID, ID, A
 ; 	cyclebackward:=1
 ; 	PreviousClipCycleCounter:=0 ; 13/10/2017 test
 ; 	ClipCycleCounter:=1
 ; 	ClipCycleFirst:=1
-; 	While GetKeyState("F20","D") and cyclebackward
+; 	While GetKeyState("F21","D") and cyclebackward
 ; 	{
 ; 		If (ClipCycleCounter <> 0)
 ; 		{	
@@ -71,7 +71,7 @@ return
 ; 	}
 ; Return
 
-; F20 & Space Up::
+; F21 & Space Up::
 ; 	PreviousClipCycleCounter:=ClipCycleCounter
 ; 	If (ClipCycleFirst = 0)
 ; 		ClipCycleCounter++
