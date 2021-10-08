@@ -1,5 +1,7 @@
 #If WinActive("ahk_exe Code.exe")  ;;	___VSCODE    
-		Mbutton::									send, ^{f}                       
+		Mbutton::sendinput, ^{click}      
+		numlock::									send, ^+{\}                 
+
 		; !v:: 										  send, {F9}vim.ahk{enter}
 		^+4::											send, !+{4}
 		^+3::											send, !+{3}
@@ -31,7 +33,7 @@
 		rshift & space::          SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 		<^lwin::                  delete
 		<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
-		^s::                      SendInput, {ctrldown}{end}{ctrlup}
+		; ^s::                      SendInput, {ctrldown}{end}{ctrlup}
 	;;	___F19 and F21
 		F21 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 		F21 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
@@ -238,7 +240,7 @@
 
 		z::											backspace
 		space::									sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
-		c::                     sendinput,{F22}
+		c::                     sendinput, !+#{g}
 		,::	                    SendInput,!^{/} 
 		^,::	                  SendInput,!+^{/}
 		q::                     SendInput,!^{/}						;line comment
@@ -279,7 +281,7 @@
 		; t::                                     SendInput,{altdown}{down}{altup}
 		t::																				SendInput,{F9}test.ahk{ctrldown}{enter}{ctrlup}
 		x::                                       SendInput,{Delete}
-		g::                                    	SendInput,^g
+		g::                                    	  SendInput,^g ;Git
 		d::                                       return
 		b::                                       SendInput,{ctrldown}{left}{Ctrlup}
 		o::                                       SendInput,{end}{enter}

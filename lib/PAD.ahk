@@ -537,12 +537,12 @@ CloseWindow(){
 		if (Tab="Requests")
 			clk(SamplesTab,yWorkTabs)
 		else If (Tab="Samples")
-			clk(70, 395)
+			clk(70, 395)s
 	Else
 		Send, %Product%
 	sleep 700 
 	return
 	}
+  ;sdf 
 }
- 
 ~lbutton::return

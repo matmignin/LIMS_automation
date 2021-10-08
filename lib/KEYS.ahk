@@ -14,14 +14,9 @@
 	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
 	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 	F21 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	; Lbutton & ,::        		 OCR()
+	; Lbutton & ,::        		 OCR()c
 	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	; ~>+lbutton::							Send,{shiftDown}{click}{shiftup}
-; #If getkeystate("lbutton","p") || (A_PriorhotKey = "lbutton" && A_TimeSincePriorhotkey < 800)  ; DoubleClick while
-; 	rshift::            	clip("ORC")
-; 	; F21::               Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-; 	; F19::               Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
-; #If
+	; ~>+lbutton::							Send,{shiftDownG}{click}{shiftup}
 	F11::F22
 	F12::Send, {altdown}{tab}{altup}
 
