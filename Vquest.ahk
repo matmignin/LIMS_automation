@@ -267,16 +267,16 @@ ActiveCheck:
   #Include <OFFICE>
   #include <KEYS>
   #include <PAD>
+  #Include <LMS>
   #Include <clip>
   #Include <OpenApp>
-  #Include <LMS>
   #include <Excel>
   #Include <Snipper>
   ;#Include <AutoFill>
   #include <varBar>
-  #include <ProductTab>
-  #include <WorkTab>
-  #include <SpecTab>
+  ; #include <ProductTab>
+  ; #include <WorkTab>
+  ; #include <SpecTab>
   #include <menu>
   #include <Rotation>
   #include <Vis2>
