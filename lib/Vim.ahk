@@ -81,11 +81,11 @@
 		Tab & x::               	SendInput,{shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup} ;align vertically
 		Tab & c::               	SendInput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup} ;Align
 		Tab & p::               	SendInput,{shiftdown}{altdown}{ctrldown}{p}{ctrlup}{altup}{shiftup} ;Focus Pannel
-		Tab & 1::               	SendInput,{tab 8}
+		Tab & 1::               	SendInput,+!2
 		tab & space::							SendInput,{shiftdown}{altdown}{lwindown}{8}{lwinup}{altup}{shiftup} ;toggle fold
-		Tab & 2::                 SendInput,{tab 10}
-		Tab & 3::                 SendInput,{tab 12}
-		Tab & 4::                 SendInput,{tab 14}
+		Tab & 2::                 SendInput,+!3
+		Tab & 3::                 SendInput,+!4
+		Tab & 4::                 SendInput,+!5
 		tab & f::                 SendInput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 		Tab & 5::                 SendInput,{tab 26}
 		Tab & 6::                 SendInput,{tab 20}
@@ -103,7 +103,7 @@
 ;; 		___LCONTROL
 #if Getkeystate("LControl","p")
 	z::                        SendInput,{ctrldown}{z}{ctrlup}
-	n:: 											 SendInput,{altdown}{ctrldown}{g}{ctrlup}{altup}
+	n:: 											 SendInput,{ctrldown}{n}{ctrlup}
 	l::                        SendInput,{ctrldown}{]}{ctrlup}
 	h::                        SendInput,{ctrldown}{[}{ctrlup}
 	+z::                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
@@ -287,7 +287,7 @@
 		o::                                       SendInput,{end}{enter}
 		m::                                       sendinput, {shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup} ;goto next matching word
 		u::                                       sendinput, {shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup} ;go to previous matching word
-		n::                                       SendInput,{altdown}{ctrldown}{g}{ctrlup}{altup} 			;dublicate line
+		n::                                       SendInput,{ctrldown}{n}{ctrlup} 			;dublicate line
 
 	; up::                                      SendInput,{Altdown}{shiftdown}{ctrldown}{up}{shiftup}{ctrlup}{altup}
 		5::                      SendInput,{shiftdown}{5}{shiftup}
