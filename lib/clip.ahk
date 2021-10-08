@@ -34,7 +34,9 @@ clipClip(type){
   ; Send, ^c
     clip.Regex()
     ; clip.regex("Department")
-    ; TT(Product " " Batch " " lot " " Coated)
+    if Clipboard
+    tt(clipboard, 1200,100,100,2,230,"R")
+      ; PoP(Clipboard)
 return
 
 }

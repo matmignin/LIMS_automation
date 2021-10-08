@@ -118,7 +118,7 @@ clipCheckIfEmpty(){
 	}
 	else 	if winactive("ahk_exe OUTLOOK.EXE") {
 		clipCheckIfEmpty()
-		clip()
+		; clip()
 		return
 	}
 	else if winactive("ahk_exe firefox.exe") 

@@ -6,6 +6,7 @@ Class VarBar{
 				MidScreen:=A_ScreenWidth//2
 				VarBar_H:=1
 				VarBar_T:=235
+				VarBar_W:=450
 				TopScreen:=1 ;A_ScreenHeight-35
 			try Gui,VarBar:Destroy
 			This.loadSavedVariables()
@@ -17,9 +18,9 @@ Class VarBar{
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
 					LMS.Orient()
-			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y% w420 NoActivate, VarBar
+			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y% w%VarBar_w% NoActivate, VarBar
 		Catch 
-			Gui, VarBar:Show, h%varBar_H% x%NuX%+500 y%Nuy% w420 NoActivate, VarBar
+			Gui, VarBar:Show, h%varBar_H% x%NuX%+500 y%Nuy% w%Varbar_w% NoActivate, VarBar
 			; Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen% NoActivate, VarBar
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
@@ -59,26 +60,26 @@ Class VarBar{
 		; GUI,VarBar:Font,			
 		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 		
-		If !Note2
-			Note2:="+"
-		If !Note3
-			Note3:="+"
-		If !Note4
-			Note4:="+"
-		if !note1 || Note1="+"
+		; If !Note2
+			; Note2:="+"
+		; If !Note3
+			; Note3:="+"
+		; If !Note4.cBlack,arial Narrow
+			; Note4:="+"
+		; if !note1 || Note1="+"
 
-			This.addedit("Note1","x+3 H29 y1 left" ,"9 cBlack,arial Narrow") ; edit6
-		If Note1 
-			This.addedit("Note2","X+2 H29 y1 left","9")			; edit7
-		If Note2 && Note2!="+"
-			This.addedit("Note3","X+2 H29 y1 left","9")				; edit8
-		If Note3 && Note3!="+"
-			This.addedit("Note4","X+2 H29 y1 left","9")		;edit9
+			This.addedit("Note1","x+3 H29 y1 w185 left" ,"9 cBlack,arial Narrow") ; edit6
+		; If Note1 
+			This.addedit("Note2","X3 H29 y+2 w220 left","9 cBlack,arial Narrow")			; edit7
+		; If Note2 && Note2!="+"
+			This.addedit("Note3","X+3 H29  w220 left","9 cBlack,arial Narrow")				; edit8
+		; If Note3 && Note3!="+"
+			; This.addedit("Note4","X+2 H29 y1 left","9")		;edit9
 
-			GUI,VarBar:Font,			 s9, Arial Narrow 
-			Gui,VarBar:Add,edit,		vWorkingOn +wrap gWorkingOnVarbar x20 H30 y+2, %WorkingOn% ; edit10
-			Gui,VarBar:Add,edit,		vOrganolepticPending +wrap gOrganolepticPendingVarbar x+2 H30 , %OrganolepticPending% ; edit10
-			Gui,VarBar:Add,edit,		vMicroPending +wrap gMicroPendingVarbar x+2 H30, %MicroPending% ; edit10
+			; GUI,VarBar:Font,			 s9, Arial Narrow 
+			; Gui,VarBar:Add,edit,		vWorkingOn +wrap gWorkingOnVarbar x20 H30 y+2, %WorkingOn% ; edit10
+			; Gui,VarBar:Add,edit,		vOrganolepticPending +wrap gOrganolepticPendingVarbar x+2 H30 , %OrganolepticPending% ; edit10
+			; Gui,VarBar:Add,edit,		vMicroPending +wrap gMicroPendingVarbar x+2 H30, %MicroPending% ; edit10
 				;This.AddEdit("CurrentCodes","x20 H29 y+2") ; edit10
 		Return
 		
@@ -91,11 +92,12 @@ Class VarBar{
 			Note3VarBar:
 			Note4VarBar:
 			CoatedVarBar:
-			WorkingOnVarbar:
-			OrganolepticPendingVarbar:
-			MicroPendingVarbar:
+			; WorkingOnVarbar:
+			; OrganolepticPendingVarbar:
+			; MicroPendingVarbar:
 			sleep 100
 			Gui, VarBar:submit,NoHide
+			this.exit()
 					; WinGetPos, ,, varbar_W, Varbar_H, VarBar ahk_class AutoHotkeyGUI
 						; NewWidth := Varbar_W - 30
 						; NewHeight := Varbar_H - 20
@@ -127,9 +129,9 @@ Class VarBar{
 				Iniread, Coated, data.ini, SavedVariables, Coated
 				; FileRead, CurrentCodes, CurrentCodes.txt 
 				}
-				Iniread, WorkingOn, data.ini, CurrentCodes, WorkingOn
-				Iniread, OrganolepticPending, data.ini, CurrentCodes, OrganolepticPending
-				Iniread, MicroPending, data.ini, CurrentCodes, MicroPending
+				; Iniread, WorkingOn, data.ini, CurrentCodes, WorkingOn
+				; Iniread, OrganolepticPending, data.ini, CurrentCodes, OrganolepticPending
+				; Iniread, MicroPending, data.ini, CurrentCodes, MicroPending
 				Iniread, Iteration, data.ini, SavedVariables, Iteration
 				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
 				Iniread, ShowCoated, data.ini, Options, ShowSampleID
@@ -138,7 +140,7 @@ Class VarBar{
 				iniread, note1, data.ini, Notes, note1
 				Iniread, note2, data.ini, Notes, note2
 				Iniread, note3, data.ini, Notes, note3
-				Iniread, note4, data.ini, Notes, note4
+				; Iniread, note4, data.ini, Notes, note4
 			}
 
 	exit(){
@@ -148,10 +150,10 @@ Class VarBar{
 		ControlGetText, Note1, Edit6, VarBar
 		ControlGetText, Note2, Edit7, VarBar
 		ControlGetText, Note3, Edit8, VarBar
-		ControlGetText, Note4, Edit9, VarBar
-		ControlGetText, workingOn, Edit10, VarBar
-		ControlGetText, OrganolepticPending, Edit11, VarBar
-		ControlGetText, MicroPending, Edit12, VarBar
+		; ControlGetText, Note4, Edit9, VarBar
+		; ControlGetText, workingOn, Edit10, VarBar
+		; ControlGetText, OrganolepticPending, Edit11, VarBar
+		; ControlGetText, MicroPending, Edit12, VarBar
 		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
 		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
 		iniwrite, %Product%, data.ini, Products, Product
@@ -164,11 +166,11 @@ Class VarBar{
 		IniWrite, %note1%, data.ini, Notes, note1
 		IniWrite, %note2%, data.ini, Notes, note2
 		IniWrite, %note3%, data.ini, Notes, note3
-		IniWrite, %note4%, data.ini, Notes, note4
-		IniWrite, %WorkingOn%, data.ini, CurrentCodes, WorkingOn
-		IniWrite, %OrganolepticPending%, data.ini, CurrentCodes, OrganolepticPending
-		IniWrite, %MicroPending%, data.ini, CurrentCodes, MicroPending
-		IniWrite, %EnteringRotations%, data.ini, Options, EnteringRotations
+		; IniWrite, %note4%, data.ini, Notes, note4
+		; IniWrite, %WorkingOn%, data.ini, CurrentCodes, WorkingOn
+		; IniWrite, %OrganolepticPending%, data.ini, CurrentCodes, OrganolepticPending
+		; IniWrite, %MicroPending%, data.ini, CurrentCodes, MicroPending
+		; IniWrite, %EnteringRotations%, data.ini, Options, EnteringRotations
 		}
 
 
@@ -227,7 +229,7 @@ Class VarBar{
 		WinActivate, VarBar ahk_exe AutoHotkey.exe
 		GuiControl Varbar:Focus, %Control%
 		; sleep 100
-		SendInput, ^{a}{ctrlup}{altup}
+		SendInput, ^{a}
 		return
 		}	
 
@@ -332,13 +334,6 @@ HistoryMenuItem(){
 								winactivate, %the_WinTitle%
 								click, %caret_X%, %caret_y%
 								return
-		; mbutton::
-					; Click
-					; if Toggle := !Toggle
-					;  Notes.SHow()
-					; else
-						; notes.Save()
-					; return
 		Mbutton::
 			click
 		enter::
@@ -349,7 +344,8 @@ HistoryMenuItem(){
 				LMS.Searchbar(clipboard,"{enter}")
 			}
 			if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
-				varbar.show()
+				varbar.exit()
+				;varbar.show()
 			return
 		Lbutton::click
 	#ifwinactive
@@ -379,7 +375,7 @@ HistoryMenuItem(){
 					GuiControl, Varbar:Text, Coated,%Coated%
 				}
 				return
-		Mbutton::
+		Numlock::
 			MouseGetPos,,,,WinControl
 				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
 					click
@@ -407,15 +403,14 @@ HistoryMenuItem(){
 		F7::           Excel.NextSheet()
 		F6::           Excel.PrevSheet()
 		F8::				Varbar.launchTable()
-		Numlock::				send, {click}^a
 			return
-		Rbutton::		
+		mbutton::		
 		MouseGetPos,,,,WinControl
 				if (WinControl="Edit1")
 					menu.Products()	
 				if (WinControl="Edit2") || (WinControl="Edit3")
 					menu.Batches()
-				If (WinControl="Edit4")
+				If (WinControl="Edit4") 
 					menu.SetStatus()
 				if (winControl="Edit6") {
 					Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
@@ -436,6 +431,7 @@ HistoryMenuItem(){
 				if A_GuiControl
 					Ctrl := "`n(in control " . A_GuiControl . ")"
 				PostMessage, 0xA1, 2
+				MouseGetPos,,,,WinControl
 				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 		return
 } 

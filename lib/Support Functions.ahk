@@ -214,7 +214,7 @@ popup_y:=Popup_y+30
 Gui, PopUp: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
 
 Gui, PopUp:color,%PopupColor1%, %PopupColor2%  
-Gui, PopUp:Font,s16 cBlack Bold, Consolas
+Gui, PopUp:Font,s14 cBlack Bold, Consolas
 Gui, PopUp:Add, Text,left, %Line1%
 Gui, PopUp:Font,s10 cBlack Bold, Consolas
   if (Line2)
