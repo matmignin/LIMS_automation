@@ -13,10 +13,10 @@ Todo:
 ✔ noidle checkmark @done(21-09-21 04:07)
 ✔ have Canada Heavy Metal spec put a 0 for min @done(21-09-21 10:41)
 ✔ Fix Sample selection function so that it filters properly @done(21-09-24 18:10)
-☐ vim G to focus github pannel and other commands
-☐ fix (on sample log
-☐ add Edit test (Field Configuration: I, Analytical) - \\Remote  to  4 finger tap
-☐ add Average Weight to sample pick
+✔ vim G to focus github pannel and other commands @done(21-10-08 01:37)
+✔ fix (on sample log @done(21-10-08 01:36)
+✔ add Edit test (Field Configuration: I, Analytical) - \\Remote  to  4 finger tap @done(21-10-08 01:54)
+✔ add Average Weight to sample pick @done(21-10-08 01:54)
 
 Last 5:
 ☐ Fix searchbar not clicking the X on the second click

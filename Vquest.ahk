@@ -251,6 +251,8 @@ ActiveCheck:
       winactivate,
         LMS.SearchBar(Product,"{enter}")
   }
+  if (A_TimeIdle < 9000)
+    setwindelay, 200
   return
    
 

@@ -50,9 +50,8 @@ registerNewSamples(){
   winactivate, Register new samples - \\Remote
   sleep 300
   my:=my+30
-  MouseMove, mx, my
-  
-  ;setwindelay, 200
+  MouseMove, mx, my  
+
     ; return
 }
 
@@ -137,14 +136,12 @@ NewRequest(){
  SetWinDelay, 550
  department:= ; Clip()
  Clipboard:=
-;  sleep 100
  WinActivate, NuGenesis LMS - \\Remote
 click 
  Send, ^c
  clip()
  sleep 50
  sleep 400
-;  tooltip, %department%
  click 64, 300 ;click Assign To New rewuest link
  Breaking.Point()
  winwaitactive, Edit request - \\Remote,,3
@@ -166,7 +163,6 @@ click
  sleep 100
  Breaking.Point()
  Send, %product%{enter}
- ;click 152, 195
  Send,{tab}{CtrlDown}{a}{Ctrlup}
  input, , V T3,{Lbutton}{enter}
  click 504, 338 ; click arrow
@@ -203,8 +199,6 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
   InputBox, Iteration, enter iteration, number please,, , , , , , , 1
   if errorlevel
     reload
-  ;TT(iteration, 5000)
-  ;winactivate, Result Entry - \\Remote
   if checkbox_toggle contains loop
   {
     if keep_running = y
@@ -213,7 +207,6 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
     return
   }
   keep_running = y
-  ; winactivate, Result Entry - \\Remote
   MouseGetPos, xpos, ypos
   loop 25,
   {
@@ -266,16 +259,13 @@ ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
 AddSampleLog(count)
 {
  global
- ;MouseGetPos, xpos, ypos
   setwindelay, 200
  loop, %count%
  {
   click 46, 877
-  ;Click, xpos, ypos, 2
-  ;ypos:= ypos+26
   winwaitactive, Edit test (Field Configuration: I`, Analytical) - \\Remote,, 3
   Send,{Click, 402, 284}{end}(on sample log){click, 334, 618}
-  winwaitactive, NuGenesis LMS - \\Remote,,3
+  winwaitactive, NuGenesis LMS - \\Remote,,2
   sleep 300
   winactivate, NuGenesis LMS - \\Remote
   sleep 500
@@ -292,6 +282,7 @@ Main_EditResults()
 }
 	AddTestDescription(Text){
 		SendInput,{click 305, 294}{end}%TEXT%{click 330, 617}
+    sleep 300
 	}
 
 
@@ -299,23 +290,8 @@ Main_EditResults()
 
 SelectTestSample(){
 global
-; clipboard:=
-; Department:=
-; setWinDelay, 550
 blockinput on
-; MouseGetPos, mx, my
-; click
-; send, ^c
-; clipwait, 0.5
-;{
-  ; clip()
-    ; Regexmatch(Clipboard, "\bPhysical\b",Department)
-    ; Regexmatch(Clipboard, "\bMicro\b",Department)
-    ; sleep 200
-; clip.Regex("Department")
  click 647, 75 ;click assign Samples
-;  winwait, Select samples for test,,3
-;  if !Winactive("Select samples for test:")
   winactivate, Select samples for test:
  sleep 900
   click 467, 71 ;Click Filter button
@@ -331,33 +307,15 @@ blockinput on
  if WinActive("Select samples for test: Microbiological  - \\Remote")
   Department:="Micro"
 send, %Department%{enter} ; send department
-
  sleep 200
- 
  Breaking.Point() 
-;  Send, {click 171, 127}^{a}
-; Send,{click 205, 184}^a
  sleep 200
  send, {click 504, 324} 
  Breaking.Point() 
  sleep 200
  send, {click, 849, 661}
-;  tt(Department)
  Breaking.Point() 
  Pop(Department)
-;  Send, %department%
-;  sleep 200
-;  sleep 200
-;  Send, {enter}{tab}^{a}{click 506, 323}
-;  sleep 300
-;  Send, {click}{click 851, 660} ;click finish
- 
- ; if (department="Analytical")
-  ; Send,
-  ; my:=my+26
-  ; MouseMove, mx, my
-  ; sleep 200
-  ; department:=
   blockinput off
   setwindelay, 200
 return
