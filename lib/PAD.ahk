@@ -43,7 +43,7 @@ clipCheckIfEmpty(){
 	Global 
 	setwindelay, 100
 	if WinActive("ahk_exe WFICA32.EXE") {
-		if Winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
+		if Winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses  
 			LMS.DetectTab()
 			; if (Tab="Samples")
 				; Menu, Menu, add, New &Request, AutoFill
