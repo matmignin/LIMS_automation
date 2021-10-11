@@ -33,3 +33,11 @@ Customers.ini
 Batch.txt
 Codes.ini
 Products.txt
+Products.txt
+data.ini
+Codes.ini
+bin/OCR.png
+bin/OCRoutput.txt
+
+.vscode/settings.json
+Codes.ini

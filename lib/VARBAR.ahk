@@ -199,7 +199,7 @@ Class VarBar{
 			tt("Place bar")
 		if !winactive("NuGenesis = \\Remote"){
 			coordmode, mouse, Screen
-			keywait, F13, U T2
+			keywait, F13, U T1
 			MouseGetPos,Varbar_X,Varbar_Y
 			Send, {laltup}
 		} 

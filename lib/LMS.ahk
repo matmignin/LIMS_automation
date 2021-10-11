@@ -5,6 +5,8 @@
 			F7::						3Right()
 		F6::						3Left()	
 		+F19::lms.searchBar("")
+		F19 & Space::lms.searchBar("")
+		F21 & Space::Varbar.Focus(Product)
 		F21 & left::Send, %Product%
 		F21 & down::Send, %Batch%
 		F21 & right::Send, %lot%
@@ -1114,12 +1116,12 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
 
 	return
-class SpecTab {   	;;   ________________SpecTab class__________________
+class SpecTab {   	;;  	 ________________SpecTab class__________________
 	
 	Table(){
 		Global
 		ShiftTable_X:=-350
-		ShiftTable_Y:=300
+		ShiftTable_Y:=50
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, Window
 	;  CoordMode, , Screen
