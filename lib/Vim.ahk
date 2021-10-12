@@ -40,7 +40,8 @@
 #If WinActive("ahk_exe Code.exe")  ;;	___VSCODE    
 		Mbutton::sendinput, ^{click}      
 		numlock::									send, ^+{\}                 
-
+F5::Varbar.reset()	
+PgDn::F9
 		; !v:: 										  send, {F9}vim.ahk{enter}
 		^+4::											send, !+{4}
 		^+3::											send, !+{3}

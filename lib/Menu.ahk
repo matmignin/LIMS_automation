@@ -32,8 +32,8 @@ class Menu{
     return
 
     productRegexmenu:
-GuiControl, Varbar:text, note1, %A_thismenuitem%
-varbar.show()
+Controlsettext, edit6, %A_thismenuitem%,VarBar
+;varbar.show()
   ;  MsgBox, %A_ThisMenuItem%
     return
     }

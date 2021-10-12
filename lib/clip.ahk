@@ -32,7 +32,7 @@ clipClip(type){
   ifwinactive, Select tests for request: R
     return
   sleep 300
-  gosub, test_2
+  ;gosub, test_2
   ; Send, ^c
     ; clip.Regex()
     ; clip.regex("Department")

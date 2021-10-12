@@ -121,13 +121,13 @@ return
 
 
   
-
+#t::
 Test_2:
   regProducts:=[], regBatches:=[]
 ; send, ^c
     ; Products := [], 
 ; TestText:=Clipboard
-  loop, parse, Clipboard, "`r`n" 
+  loop, parse, testtext, "`r`n" 
   {
     RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
     RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
@@ -190,15 +190,8 @@ Test_2:
 debugText:=listarray(Products)
 filedelete, debug.txt
 sleep 200
-fileAppend `n`n%Debugtext%, debug.txt
+fileAppend %Debugtext%, debug.txt
 menu.productregex()
-DDLProducts:=Products[1]
-	loop % Products.maxindex(){
-	    if A_Index:=1
-		  continue 
-		DDLProducts.="|" Products[A_index]
-  }
-
     return
   ;MsgBox, %
 return
