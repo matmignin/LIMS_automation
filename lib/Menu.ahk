@@ -23,9 +23,18 @@ class Menu{
     ProductRegex(){
     global
 		try Menu,Menu, deleteAll
-		Loop, Read, debug.txt
-			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
+		Loop % Products.MaxIndex()  { ; Read, debug.txt
+    temp:=Products[a_index]
+			Menu, Menu, Add, %temp%, productRegexmenu
+    }
+
 		Menu, Menu, Show
+    return
+
+    productRegexmenu:
+GuiControl, Varbar:text, note1, %A_thismenuitem%
+varbar.show()
+  ;  MsgBox, %A_ThisMenuItem%
     return
     }
     
