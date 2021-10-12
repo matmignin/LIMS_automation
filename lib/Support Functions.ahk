@@ -16,7 +16,7 @@ ListArray(The_Array,Option:="n"){
 	if (option<>"n"){
 		for Each, Element in The_Array
 			ArrayList .=Element " " Option " "
-		msgbox, %ArrayList%
+		; msgbox, %ArrayList%
 		return ArrayList
 	}
 	else {  
@@ -26,7 +26,7 @@ ListArray(The_Array,Option:="n"){
         ArrayList .= "`n" A_index ": "
     ArrayList .= Element
   }
-  MsgBox, %ArrayList%
+  ; MsgBox, %ArrayList%
 	return ArrayList
   }
 }
@@ -285,7 +285,7 @@ ReloadScript(){
 	Send, !s
 	sleep 200
 	; try
-		run, VQuest.ahk
+		run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
 	; catch e ;catch any errors
 	; throw e
 	}

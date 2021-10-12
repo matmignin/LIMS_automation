@@ -1,5 +1,56 @@
 #ifwinactive, 
-;~LWin::Send {Blind}{vkE8}
+    F19:: 
+      if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
+      {
+          CopyPresses += 1
+          return
+      }
+      CopyPresses := 1
+      SetTimer, PressCopy, -350 ; Wait for more presses within a 400 millisecond window.
+      return
+    PressCopy:
+      if (CopyPresses = 1) ; The key was pressed once.
+      {
+          Clip.Copy()
+      }
+      else if (CopyPresses = 2) ; The key was pressed twice.
+      {
+          clip.Append()  
+      }
+      else if (CopyPresses > 2)
+      {
+          clip.Append("`n","{x}")
+          ; Pop(Clipboard)
+      }
+    CopyPresses := 0
+    return
+
+    ~F21::
+      if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
+      {
+          PastePresses += 1
+          return
+      }
+      PastePresses := 1
+      SetTimer, PressPaste, -350 ; Wait for more presses within a 400 millisecond window.
+      return
+
+    PressPaste:
+      if (PastePresses = 1) ; The key was pressed once.
+      {
+          send, ^{v}
+      }
+      else if (PastePresses = 2) ; The key was pressed twice.
+      {
+          send, #v 
+      }
+      else if (PastePresses > 2)
+      {
+          clip.Append(A_Space)
+          ; Pop(Clipboard)
+      }
+    PastePresses := 0
+    return
 
 	$Numlock::				4tap()
 	Mbutton::						3Tap()

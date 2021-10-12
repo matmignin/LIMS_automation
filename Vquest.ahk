@@ -1,5 +1,4 @@
-﻿
-    #Persistent
+﻿    #Persistent
     #NoEnv
     #SingleInstance,Force
     #KeyHistory 
@@ -31,102 +30,178 @@
     SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
 
+
 gosub, vquest_start
 
 Starting_test:
 
-; tests to start with
+testtext:=
+(
+"IF Fast Pwdr Raspb Lemonade 3.1g Stick`tK741`t107-0431`tSlimFast`t0278H1`tMicro`t`t`t107-0431 0278H1| Micro  [Oct-08]`r`nFortifeye Softgel 30's`tH624`t400657`tFortifeye`t0016J1`tMicro`t`t`t400657 0016J1| Micro  [Oct-08]`r`nFish Oil 100 SIGMANU124 100's Unlabeled 1:35 PM`tB324`t105-1172`tVitalize llc`t0656H1`tMicro`t`t`t105-1172 0656H1| Micro  [Oct-08]`r`n"
+)
+; gosub, Test_2
 return
 
-; BlockRepeatTimer:
-;   if (A_TimeSincePriorHotkey > 2000)
-;     exit
-; msgbox, %NN%  `n A_thisHotkey  %A_thisHotkey%  `n A_priorhotkey %A_priorhotkey%  `n A_priorkey %A_priorkey% `n A_TimeSincePriorHotkey %A_TimeSincePriorHotkey%
-; return
 
 ___Testing_Zone:
 
 
 
-;; tripple press C
-    F19:: 
-      if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
+
+
+test_1:  ; tested if the 2nd function workd
+  regProducts:=[], regBatches:=[]
+      ; Products := [], 
+  ; TestText:=Clipboard
+  pos=0
+  while pos := RegexMatch(TestText, "i)(?P<Product>[abdefghijkl]\d{3}\b)(\s(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))?", var, pos+1){
+    if Var
+      regProducts.insert(varProduct " " varBatch)
+    if VarBatch
+      regBatches.insert(varBatch)
+    ; If VarProduct
+      ; regProducts.insert(varProduct)
+  }
+  ; while pos := RegexMatch(TestText, "i)(?P<Product>[abdefghijkl]\d{3}\b)|(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b)", var, pos+1){
+  ;   if VarBatch
+  ;     regBatches.insert(varBatch)
+  ;   If VarProduct
+  ;     regProducts.insert(varProduct)
+  ; }
+                  ; result .= (A_Index = 1 ? "" : "`r`n") var
+      ; Products := [] 
+  Products:=[], oTemp := {}
+    for vKey, vValue in regProducts {
+    if (ObjGetCapacity([vValue], 1) = "") ;is numeric
       {
-          winc_presses += 1
-          return
+        if !ObjHasKey(oTemp, vValue+0)
+          Products.Push(vValue+0), oTemp[vValue+0] := ""
       }
-      ; Otherwise, this is the first press of a new series. Set count to 1 and start
-      ; the timer:
-      winc_presses := 1
-      SetTimer, KeyAltC, -350 ; Wait for more presses within a 400 millisecond window.
-      return
-    KeyAltC:
-      if (winc_presses = 1) ; The key was pressed once.
+      else
       {
-          Clip.Copy()
+        if !ObjHasKey(oTemp, "" vValue)
+          Products.Push("" vValue), oTemp["" vValue] := ""
       }
-      else if (winc_presses = 2) ; The key was pressed twice.
+    }
+        Batches:=[], oTemp := {}
+      for vKey, vValue in regBatches
       {
-          clip.Append()  
-          ; Pop(Clipboard)
-        ; sleep 300 ; Open a different folder.
-      }
-      else if (winc_presses > 2)
-      {
-          clip.Append("`n","{x}")
-          ; Pop(Clipboard)
-      }
-      ; Regardless of which action above was triggered, reset the count to
-      ; prepare for the next series of presses:
-    winc_presses := 0
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  Batches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  Batches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+      ; vOutput := ""
+      ; for vKey, vValue in Batches
+      ;     vOutput .= vKey " " vValue "`r`n"
+      ; MsgBox, % vOutput
+  
     return
+  ;MsgBox, % result
 
-;; Tripple Press !v
-    ~F21::
-      if (winc_presses > 0) ; SetTimer already started, so we log the keypress instead.
-      {
-          winc_presses += 1
-          return
-      }
-      ; Otherwise, this is the first press of a new series. Set count to 1 and start
-      ; the timer:
-      winc_presses := 1
-      SetTimer, KeyAltV, -350 ; Wait for more presses within a 400 millisecond window.
-      return
+  ; Clipboard := result
+  ;send ^v
+  ; Sleep 500
 
-    KeyAltV:
-      if (winc_presses = 1) ; The key was pressed once.
-      {
-          send, ^{v}
-      }
-      else if (winc_presses = 2) ; The key was pressed twice.
-      {
-          send, #v 
-          ; Pop(Clipboard)
-        ; sleep 300 ; Open a different folder.
-      }
-      else if (winc_presses > 2)
-      {
-          clip.Append(A_Space)
-          ; Pop(Clipboard)
-      }
-      ; Regardless of which action above was triggered, reset the count to
-      ; prepare for the next series of presses:
-    winc_presses := 0
-    return
+  ; Gui, Add, Edit, x12 y10 w400 h170
+  ; Gui, Show, h190 w420, Batch EXTRACTOR
 
-  test_1:  ; tested if the 2nd function workd
-    send % "lll"    
-    IfKeyPressed("k","uuuuuu")
-    pop("yo:")
-  return
+  ; Sleep,500
+  ; Control, EditPaste, %Clipboard%, Edit1, A
+  ; Clipboard :=
+  ; result :=
+
+return
 
 
   
 
-  Test_2:
-  WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,60
-  return
+Test_2:
+  regProducts:=[], regBatches:=[]
+; send, ^c
+    ; Products := [], 
+; TestText:=Clipboard
+  loop, parse, Clipboard, "`r`n" 
+  {
+    RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
+    RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
+    RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
+    RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
+    RegExMatch(ctCoated,   "\d{3}-\d{4}", VarCoated)
+      Match:= VarProduct
+      if varBatch
+        Match.= " " VarBatch
+      if varLot
+        match.= " " VarLot    
+      if varCoated
+        match.= " Ct#" VarCoated   
+      ; Match:= VarProduct
+      if Match
+        regProducts.insert(Match)
+  }
+    ; If VarProduct
+      ; regProducts.insert(varProduct)
+  ; }
+  ; while pos := RegexMatch(TestText, "i)(?P<Product>[abdefghijkl]\d{3}\b)|(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b)", var, pos+1){
+  ;   if VarBatch
+  ;     regBatches.insert(varBatch)
+  ;   If VarProduct
+  ;     regProducts.insert(varProduct)
+  ; }
+                  ; result .= (A_Index = 1 ? "" : "`r`n") var
+      ; Products := [] 
+  Products:=[], oTemp := {}
+    for vKey, vValue in regProducts {
+    if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+      {
+        if !ObjHasKey(oTemp, vValue+0)
+          Products.Push(vValue+0), oTemp[vValue+0] := ""
+      }
+      else
+      {
+        if !ObjHasKey(oTemp, "" vValue)
+          Products.Push("" vValue), oTemp["" vValue] := ""
+      }
+    }
+      ;   Batches:=[], oTemp := {}
+      ; for vKey, vValue in regBatches
+      ; {
+      ;     if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+      ;     {
+      ;         if !ObjHasKey(oTemp, vValue+0)
+      ;             Batches.Push(vValue+0), oTemp[vValue+0] := ""
+      ;     }
+      ;     else
+      ;     {
+      ;         if !ObjHasKey(oTemp, "" vValue)
+      ;             Batches.Push("" vValue), oTemp["" vValue] := ""
+      ;     }
+      ;   }
+      ; vOutput := ""
+      ; for vKey, vValue in Batches
+      ;     vOutput .= vKey " " vValue "`r`n"
+      ; MsgBox, % vOutput
+debugText:=listarray(Products)
+filedelete, debug.txt
+sleep 200
+fileAppend `n`n%Debugtext%, debug.txt
+menu.productregex()
+DDLProducts:=Products[1]
+	loop % Products.maxindex(){
+	    if A_Index:=1
+		  continue 
+		DDLProducts.="|" Products[A_index]
+  }
+
+    return
+  ;MsgBox, %
+return
 
   Test_3:
 
@@ -339,6 +414,7 @@ VQuest_Start:
     Menu, Tray, Default, DebugVars
 
     Run, cl3.Ahk, lib\CL3
+    ; Run, Vim.Ahk, lib\
 
     try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%

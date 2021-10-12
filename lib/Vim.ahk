@@ -1,3 +1,42 @@
+    ; #Persistent
+    ; #NoEnv
+    ; #SingleInstance,Force
+    ; ; #KeyHistory 
+    ; #MenuMaskKey vkE8
+		;     ; #MaxHotkeysPerInterval 500
+    ; ; #MaxThreadsBuffer, On
+    ; #InstallKeybdHook
+    ; #InstallMouseHook
+    ; #maxthreadsperhotkey, 1
+    ; SetBatchLines, 20ms
+    ; SetControlDelay, 1
+    ; SetKeyDelay, 1, 0.25
+    ; ; setwindelay, 250
+    ; FormatTime, DayString,, MM/d/yy
+    ; FormatTime, TimeString, R
+    ; FormatTime, CurrentDateTime,, MM/dd/yy
+    ; SetNumLockState, on
+    ; SetscrolllockState, off
+		; SetNumlockState Alwayson
+    ; setcapslockstate alwaysoff
+    ; ; SetscrolllockState, always
+    ; CoordMode, mouse, Window
+    ; SetMouseDelay, 1
+    ; SetDefaultMouseSpeed, 1
+    ; SetTitleMatchMode, 2
+		; SetWorkingDir, C:\Users\mmignin\Documents\VQuest
+		; try Menu, Tray, Icon, lib\Vim.ico
+
+		; #include Vquest.ahk
+		; #include test.ahk
+		; #include KEYS.ahk
+		; #Include PAD.ahk
+		;   #include Vis2.ahk
+
+		
+; return
+
+
 #If WinActive("ahk_exe Code.exe")  ;;	___VSCODE    
 		Mbutton::sendinput, ^{click}      
 		numlock::									send, ^+{\}                 
@@ -8,7 +47,7 @@
 		^+2::											send, !+{2}
 		F21 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 		F15 & tab::               SendInput,{ctrldown}{]}{ctrlup}	
-		lbutton & F21:: 					send, !+4
+		~lbutton & F21:: 					send, !+4
 		lbutton & F19:: 					send, !+3
 		numpadsub::               F7
 		numpadadd::               F6
@@ -22,7 +61,7 @@
 		Numpadadd::               SendInput, !^{d} ;go to reference
 		$F9::                     F9
 		tab::                     tab
-		<^r::                     reloadscript()/
+		<^r::                     reloadscript()
 		LCtrl & Appskey::         return
 		<^f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
 		<+f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}

@@ -27,15 +27,17 @@ Clip(input=0,Wait:="0.55"){
 
 clipClip(type){
   global
-  ifwinactive, ahk_exe EXCEL.EXE
-    return
+  ; ifwinactive, ahk_exe EXCEL.EXE
+    ; return
   ifwinactive, Select tests for request: R
     return
+  sleep 300
+  gosub, test_2
   ; Send, ^c
-    clip.Regex()
+    ; clip.Regex()
     ; clip.regex("Department")
-    if Clipboard
-    tt(clipboard, 1200,100,100,2,230,"R")
+    ; if Clipboard
+    ; tt(clipboard, 1200,100,100,2,230,"R")
       ; PoP(Clipboard)
 return
 

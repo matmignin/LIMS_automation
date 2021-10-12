@@ -20,6 +20,14 @@ class Menu{
 		Menu, Menu, Show
     return
     }
+    ProductRegex(){
+    global
+		try Menu,Menu, deleteAll
+		Loop, Read, debug.txt
+			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
+		Menu, Menu, Show
+    return
+    }
     
     
     
