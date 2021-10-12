@@ -32,12 +32,13 @@ clipClip(type){
   ifwinactive, Select tests for request: R
     return
   sleep 300
-  ;gosub, test_2
+  ; gosub, test_2
   ; Send, ^c
-    ; clip.Regex()
-    ; clip.regex("Department")
-    ; if Clipboard
-    ; tt(clipboard, 1200,100,100,2,230,"R")
+    clip.Parse()
+    clip.Regex()
+    clip.regex("Department")
+    if Clipboard
+      tt(clipboard, 1200,100,100,2,200,"R")
       ; PoP(Clipboard)
 return
 
@@ -64,100 +65,100 @@ Append(Delimiter:="`n",key:="c"){
 		return 
 }
 
+Parse(){
+  global
+  regProducts:=[], regBatches:=[]
+; sleep 200
+ParsedClipboard:=Clipboard
+  if !instr(ParsedClipboard,"`r`n")
+    return
+  loop, parse, ParsedClipboard, "`r`n" 
+  {
+    RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
+    RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
+    RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
+    RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
+      Match:= VarProduct
+        if varBatch
+          Match.= " " VarBatch
+        if varLot
+          match.= " " VarLot    
+        if varCoated
+          match.= " Ct#" VarCoated  
+
+      ; Match:= VarProduct
+      if Match
+        regProducts.insert(Match)
+  }
+    Products:=[], oTemp := {} ;remove duplicates
+      for vKey, vValue in regProducts {
+      if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+        {
+          if !ObjHasKey(oTemp, vValue+0)
+            Products.Push(vValue+0), oTemp[vValue+0] := ""
+        }
+        else
+        {
+          if !ObjHasKey(oTemp, "" vValue)
+            Products.Push("" vValue), oTemp["" vValue] := ""
+        }
+      }
 
 
-Regex(Category:="All"){
-    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department
-    ; global ;Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products
+    return
+}
+
+Regex(Category:="Clipboard"){
+    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, 
+    ; if (Category:="Clipboard")
+      ; Haystack:=Clipboard
+    ; else 
+      ; Haystack:=Category
     sleep      20
-    ; If (Category!="Department") {
       RegExMatch(Clipboard, "i)\b[abdefghijkl]\d{3}\b", cProduct)
       RegExMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
-      RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
-      RegExMatch(ctCoated,   "\d{3}-\d{4}", cCoated)
+      RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
       RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
       If cProduct {
-        ; if (cProduct!=Product) {
-            GuiControl,Varbar:Text, Product, %cProduct%
-            Product4:=Product3
-            Product3:=Product2
-            Product2:=Product1
-            Product1:=Product
-            Product:=cProduct
-
-            IniWrite, %Product3%, data.ini, Products, Product4
-            sleep 20
-            IniWrite, %Product2%, data.ini, Products, Product3
-            sleep 20
-            IniWrite, %Product1%, data.ini, Products, Product2
-            sleep 20
-            ; IniWrite, %Product%,  data.ini, Products, Product1
-            sleep 20
-            IniWrite, %cProduct%, data.ini, Products, Product
-        ; {
-          ; Product.Insert(Product)
-          ; Product.insert(cProduct)
-          ; Product.Insert(Product1)
-          ; Products.Insert(Product2)
-          ; Products.Insert(Product3)
-          ; Products.Insert(Product4)
-          ; loop 4
-          ;   n:=A_index
-          ;   next:=A_index
-          ; msgbox % Product "`n1:" product1 "`n2" Product2 "`n3" Product3 "`n4" Product4
-          ; Product:=
-        ; }
-            ; IniWrite, %cProduct%, data.ini, SavedVariables, %Product%
-            ; IniWrite, %clot% %cCoated%, data.ini, %cProduct%, %cBatch%
-              ; if cBatch
-                ; Fileappend, %cProduct% %cbatch% %cLot% %ctCoated% `n, Products.txt
-              ; else
-                ; Fileappend, %cProduct%`n, Products.txt
+        GuiControl,Varbar:Text, Product, %cProduct%
+        Product:=cProduct
+        IniWrite, %cProduct%, data.ini, Products, Product
       }
       If cBatch {
-        if !(cBatch=Batch)
-        {
-          Batch0:=Batch
-          IniWrite, %Batch0%, data.ini, SavedVariables, Batch0
-        }
         GuiControl,Varbar:Text, Batch, %cBatch%
-            IniWrite, %cBatch%, data.ini, SavedVariables, Batch
-            ; Fileappend, %cBatch%`n, Batch.txt
-        }
-      If cCoated {
-        GuiControl,Varbar:Text, Coated, %cCoated%
-            IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-            ; Fileappend, %cCoated%`n, lib/Coated.txt
-            varbar.show()
-        }
-      ; If !cCoated {
-        ; GuiControl,Varbar:Text, Coated, %cCoated%
-            ; cCoated:=
-            ; IniWrite,%cCoated%, data.ini, SavedVariables, Coated
-            ; varbar.show()
-            ; Fileappend, %cCoated%`n, lib/Coated.txt
-        ; }
+        Batch:=cBatch
+        IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+      }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
-            IniWrite, %cLot%, data.ini, SavedVariables, Lot
-            ; Fileappend, %cLot%`n, lib/Lot.txt
-        }
+        lot:=cLot
+        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+      }
+      If !cLot {
+        ; GuiControl,Varbar:Text, lot, %clot%
+        lot:=cLot
+        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+      }
+      If !cCoated {
+        GuiControl,Vajrbar:Text, Coated, %cCoated%
+        Coated:=cCoated
+        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        varbar.show()
+      }
+      If cCoated {
+        GuiControl,Varbar:Text, Coated, %cCoated%
+        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        varbar.show()
+      }
       If cSampleID {
         GuiControl,Varbar:text, SampleID, %cSampleID%
             IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
-            ; Fileappend, %cSampleID%`n, lib/SampleID.txt
-        }
+      }
+
+
       sleep 20
-    ; }
-    ; if (Category!="Codes"){
-      ; Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      ; Regexmatch(Clipboard, "i)\bF, Micro\b",cMicro)
-      ; Regexmatch(Clipboard, "i)\bI, Retain\b", cRetain)
-      ; Regexmatch(Clipboard, "i)\bI, Physical\b", cPhysical)
-      ; Regexmatch(Clipboard, "i)\bCT, Physical\b", cCTPhysical)
-      ; Regexmatch(Clipboard, "i)\bCT, Retain\b", cCTRetain)
       Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
       Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
       Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
@@ -177,29 +178,6 @@ Regex(Category:="All"){
         Department:="Physical"
       If cCTPhysical
         Department:="Physical (Coated)"
-    ; }
-    ; if cProduct || cBatch || cLot || cCoated || cSampleID || cAnalytical || cMicro || cRetain || cPhysical || cCTPhysical || cCTRetain || Department ;|| Winactive("ahk_exe WFICA32.EXE") 
-    ;   ; TT(cProduct " " cBatch " " cLot " " cCoated " `n`t" Department ,3000,,,3,250,"R")
-    ; if cProduct 
-    ;   Vars:=cProduct
-    ; If cBatch
-    ;   Vars.="`t"cBatch
-    ; If cLot
-    ;   Vars.="`n"cLot
-    ; If cCoated
-    ;   Vars.="`t"cCoated
-    ; If ShowSampleID
-    ;   If cSampleID
-    ;     Vars.="`t"cSampleID
-    ; If cAnalytical
-    ;   Vars.="`n`t"cAnalytical
-    ; If Department
-    ;   Vars.="`n`t"Department
-    ; TT(Vars)
-    ; TT(Vars)
-
-    ; else 
-        ; TT(Clipboard,900,Varbar_x,80,2,175,"R")
   return 
 
 

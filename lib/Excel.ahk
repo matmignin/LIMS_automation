@@ -99,20 +99,20 @@ SheetChange(sht,Cell) {
 ; }
 	RegexCell(vCell,n:=""){
 		Global
-		; RegExMatch(vCell, "i)\b[abdefghijkl]\d{3}\b", Product)
       RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch%n%)
       RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", lot%n%)
-      RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
+      RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?\d{3}-\d{4}\b", ctCoated)
       RegExMatch(ctCoated, "\d{3}-\d{4}", Coated%n%)
 	}
 InfoLocations(){
 	global
 	Batches:=[]
 	GuiControl, -redraw, varbar
+		clipboard:=XL.range("H1").Value
 		Product:=XL.Range("B1").Value
 		This.RegexCell(XL.Range("E1").Value)
-		while (Xl.Range("BE" . A_index+7).Value != "")
-			Batches[A_index]:=Xl.Range("BE" . A_index+7).Text
+		; while (Xl.Range("BE" . A_index+7).Value != "")
+			; Batches[A_index]:=Xl.Range("BE" . A_index+7).Text
 		Name:=XL.Range("B2").Value
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value

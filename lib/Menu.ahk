@@ -25,16 +25,27 @@ class Menu{
 		try Menu,Menu, deleteAll
 		Loop % Products.MaxIndex()  { ; Read, debug.txt
     temp:=Products[a_index]
-			Menu, Menu, Add, %temp%, productRegexmenu
+			Menu, Menu, Add, %temp%, SelectProducts
     }
-
-		Menu, Menu, Show
+		try Menu, Menu, Show
     return
 
-    productRegexmenu:
-Controlsettext, edit6, %A_thismenuitem%,VarBar
-;varbar.show()
-  ;  MsgBox, %A_ThisMenuItem%
+    SelectProducts:
+ Controlsettext, edit6, %A_thismenuitem%,VarBar
+  RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+    if sProduct {
+      Product:=sProduct
+      GuiControl,Varbar:Text, Product, %sProduct%
+    }
+    Batch:=sBatch
+    lot:=slot
+    Coated:=sCoated
+    GuiControl,Varbar:Text, Batch, %sBatch%
+    GuiControl,Varbar:Text, lot, %slot%
+    GuiControl,Varbar:Text, Coated, %sCoated%
+  ; clipboard:=A_ThismenuItem
+; varbar.show()
+  ;  Pop(A_ThisMenuItem,,3000)
     return
     }
     

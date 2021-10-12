@@ -1,40 +1,48 @@
-    #Persistent
-    #NoEnv
-    #SingleInstance,Force
-    ; #KeyHistory 
-    #MenuMaskKey vkE8
-		    ; #MaxHotkeysPerInterval 500
-    ; #MaxThreadsBuffer, On
-    #InstallKeybdHook
-    #InstallMouseHook
-    #maxthreadsperhotkey, 1
-    SetBatchLines, 20ms
-    SetControlDelay, 1
-    SetKeyDelay, 0, 0
-    ; setwindelay, 250
-    FormatTime, DayString,, MM/d/yy
-    FormatTime, TimeString, R
-    FormatTime, CurrentDateTime,, MM/dd/yy
-    SetNumLockState, on
-    SetscrolllockState, off
-		SetNumlockState Alwayson
-    setcapslockstate alwaysoff
-    ; SetscrolllockState, always
-    CoordMode, mouse, Window
-    SetMouseDelay, 1
-    SetDefaultMouseSpeed, 1
-    SetTitleMatchMode, 2
-		SetWorkingDir, C:\Users\mmignin\Documents\VQuest
-		try Menu, Tray, Icon, lib\Vim.ico
+    ; #Persistent
+    ; #NoEnv
+    ; #SingleInstance,Force
+    ; ; #KeyHistory 
+    ; #MenuMaskKey vkE8
+		;     ; #MaxHotkeysPerInterval 500
+    ; ; #MaxThreadsBuffer, On
+    ; #InstallKeybdHook
+    ; #InstallMouseHook
+    ; #maxthreadsperhotkey, 1
+    ; SetBatchLines, 20ms
+    ; SetControlDelay, 1
+    ; SetKeyDelay, 1, 0.25
+    ; ; setwindelay, 250
+    ; FormatTime, DayString,, MM/d/yy
+    ; FormatTime, TimeString, R
+    ; FormatTime, CurrentDateTime,, MM/dd/yy
+    ; SetNumLockState, on
+    ; SetscrolllockState, off
+		; SetNumlockState Alwayson
+    ; setcapslockstate alwaysoff
+    ; ; SetscrolllockState, always
+    ; CoordMode, mouse, Window
+    ; SetMouseDelay, 1
+    ; SetDefaultMouseSpeed, 1
+    ; SetTitleMatchMode, 2
+		; SetWorkingDir, C:\Users\mmignin\Documents\VQuest
+		; try Menu, Tray, Icon, lib\Vim.ico
 
-  #include Support Functions.ahk
+		; #include Vquest.ahk
+		; #include test.ahk
+		; #include KEYS.ahk
+		; #Include PAD.ahk
+		;   #include Vis2.ahk
+
+		
 ; return
 
 
 #If WinActive("ahk_exe Code.exe")  ;;	___VSCODE    
 		Mbutton::sendinput, ^{click}      
 		numlock::									send, ^+{\}                 
-		; !v:: 										send, {F9}vim.ahk{enter}
+F5::Varbar.reset()	
+PgDn::F9
+		; !v:: 										  send, {F9}vim.ahk{enter}
 		^+4::											send, !+{4}
 		^+3::											send, !+{3}
 		^+2::											send, !+{2}

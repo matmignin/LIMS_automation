@@ -22,7 +22,7 @@
     FormatTime, CurrentDateTime,, MM/dd/yy
     SetNumLockState, on
     SetscrolllockState, off
-        SetNumlockState Alwayson
+    SetNumlockState Alwayson
     setcapslockstate alwaysoff
     ; SetscrolllockState, always
     CoordMode, mouse, Window
@@ -35,10 +35,16 @@ gosub, vquest_start
 
 Starting_test:
 
-testtext:=
-(
-"IF Fast Pwdr Raspb Lemonade 3.1g Stick`tK741`t107-0431`tSlimFast`t0278H1`tMicro`t`t`t107-0431 0278H1| Micro  [Oct-08]`r`nFortifeye Softgel 30's`tH624`t400657`tFortifeye`t0016J1`tMicro`t`t`t400657 0016J1| Micro  [Oct-08]`r`nFish Oil 100 SIGMANU124 100's Unlabeled 1:35 PM`tB324`t105-1172`tVitalize llc`t0656H1`tMicro`t`t`t105-1172 0656H1| Micro  [Oct-08]`r`n"
-)
+; Clipboard:=
+; (
+; "IF Fast Pwdr Raspb Lemonade 3.1g Stick`tK741`t107-0431`tSlimFast`t0278H1`tMicro`t`t`t107-0431 0278H1| Micro  [Oct-08]`r`nFish Oil 100 SIGMANU124 100's Unlabeled 1:35 PM`tB324`t105-1172`tVitalize llc`t0656H1`tMicro`t`t`t105-1172 0656H1| Micro  [Oct-08]`r`n
+; K277 `r`
+; J929	910-0128	Renew Life	Micro	 `r`n
+; J837	109-0445	Renew Life	0670I1	Micro	 `r`n
+; H259	109-0359	SlimFast	0555I1/Ct#109-0744	Micro	`r`n
+; K888	108-0888	Santegra ,Inc	0888A8/Ct#188-0688	DT `r`n
+; B086	108-0752	Santegra ,Inc	Bulk/Ct#109-0635	Micro `r`n"
+; )
 ; gosub, Test_2
 return
 
@@ -120,80 +126,15 @@ test_1:  ; tested if the 2nd function workd
 return
 
 
-  
-#t::
+
+#t::  
 Test_2:
-  regProducts:=[], regBatches:=[]
-; send, ^c
-    ; Products := [], 
-; TestText:=Clipboard
-  loop, parse, testtext, "`r`n" 
-  {
-    RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
-    RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
-    RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
-    RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", ctCoated)
-    RegExMatch(ctCoated,   "\d{3}-\d{4}", VarCoated)
-      Match:= VarProduct
-      if varBatch
-        Match.= " " VarBatch
-      if varLot
-        match.= " " VarLot    
-      if varCoated
-        match.= " Ct#" VarCoated   
-      ; Match:= VarProduct
-      if Match
-        regProducts.insert(Match)
-  }
-    ; If VarProduct
-      ; regProducts.insert(varProduct)
-  ; }
-  ; while pos := RegexMatch(TestText, "i)(?P<Product>[abdefghijkl]\d{3}\b)|(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b)", var, pos+1){
-  ;   if VarBatch
-  ;     regBatches.insert(varBatch)
-  ;   If VarProduct
-  ;     regProducts.insert(varProduct)
-  ; }
-                  ; result .= (A_Index = 1 ? "" : "`r`n") var
-      ; Products := [] 
-  Products:=[], oTemp := {}
-    for vKey, vValue in regProducts {
-    if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-      {
-        if !ObjHasKey(oTemp, vValue+0)
-          Products.Push(vValue+0), oTemp[vValue+0] := ""
-      }
-      else
-      {
-        if !ObjHasKey(oTemp, "" vValue)
-          Products.Push("" vValue), oTemp["" vValue] := ""
-      }
-    }
-      ;   Batches:=[], oTemp := {}
-      ; for vKey, vValue in regBatches
-      ; {
-      ;     if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-      ;     {
-      ;         if !ObjHasKey(oTemp, vValue+0)
-      ;             Batches.Push(vValue+0), oTemp[vValue+0] := ""
-      ;     }
-      ;     else
-      ;     {
-      ;         if !ObjHasKey(oTemp, "" vValue)
-      ;             Batches.Push("" vValue), oTemp["" vValue] := ""
-      ;     }
-      ;   }
-      ; vOutput := ""
-      ; for vKey, vValue in Batches
-      ;     vOutput .= vKey " " vValue "`r`n"
-      ; MsgBox, % vOutput
-debugText:=listarray(Products)
-filedelete, debug.txt
-sleep 200
-fileAppend %Debugtext%, debug.txt
-menu.productregex()
-    return
+; clip.Parse()
+
   ;MsgBox, %
+            menu.productregex()
+            
+  ; debug(Products)
 return
 
   Test_3:
@@ -212,7 +153,16 @@ return
   Pop(Tab)
     return
 
-
+Debug(Variable,Delete:="Delete"){
+  if IsObject(Variable) 
+    DebugText:=listarray(Variable)
+  else 
+    DebugText:=Variable
+  if Delete=Delete
+    filedelete, C:\Users\mmignin\Documents\VQuest\debug.txt
+  sleep 200
+  fileAppend %Debugtext%, C:\Users\mmignin\Documents\VQuest\debug.txt
+}
 
   ; GetSampleInfo(){
   ;   global Customer, Name, ShipToIndex
@@ -360,7 +310,6 @@ VQuest_Start:
     OnExit("Varbar.Exit")
     CrLf=`r`n
     FileName:="lib/WinPos.txt"
-    envget, PrevProduct, PrevProduct
     SetWorkingDir, %A_ScriptDir%
     Iniread, Iteration, data.ini, SavedVariables, Iteration
     Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
@@ -407,7 +356,7 @@ VQuest_Start:
     Menu, Tray, Default, DebugVars
 
     Run, cl3.Ahk, lib\CL3
-    ; Run, Vim.Ahk, lib\
+
 
     try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%

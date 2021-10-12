@@ -49,7 +49,7 @@ Class VarBar{
 					L_L:=
 			this.AddEdit("Lot",			"left h29 x+1 y1 " L_L, 			"11, Consolas")
 			If !Coated
-				 C_L:="w25"
+				 C_L:="w35"
 			else 
 					C_L:=
 				this.AddEdit("Coated",	"left h29 x+1 y1 " c_L,			"9, Arial Narrow")
