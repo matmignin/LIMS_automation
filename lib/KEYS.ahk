@@ -1,3 +1,4 @@
+
 #ifwinactive, 
     F19:: 
       if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
@@ -54,8 +55,11 @@
 
 	$Numlock::				4tap()
 	Mbutton::						3Tap()
+	Lwin & AppsKey::   return
+	Lwin up::          menu.PasteStuff()
+	Rbutton & Mbutton::menu.PasteStuff()
 			Rbutton & Lbutton::   	Send, {Enter}
-		; Rbutton::             ;send % Mouse_RbuttonUP() 
+		; Rbutton::             send % Mouse_RbuttonUP() 
 	rbutton up::					2tap()
 	rshift & Appskey::			return
 ;;	___Lbuton:

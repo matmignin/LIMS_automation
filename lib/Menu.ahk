@@ -11,7 +11,22 @@ class Menu{
     global
     Menu,menu,add,%item%,%group%
     }
-    
+
+    PasteStuff(){
+    global
+		try Menu,Menu, deleteAll
+      Menu, Menu, add, All &Products,   F19 & left
+      Menu, Menu, add, All &Batches,    F19 & down
+      Menu, Menu, add, All &WorkSheets, F19 & up
+      Menu, Menu, add, %Product%, F21 & left
+      Menu, Menu, add, %Batch%, F21 & down
+      Menu, Menu, add, %Lot%, F21 & right
+      Menu, Menu, Show
+      KeyWait, Rbutton, U
+        try Menu,Menu, deleteAll
+        
+    }
+
     ProductHistory(){
     global
 		try Menu,Menu, deleteAll
@@ -20,7 +35,7 @@ class Menu{
 		Menu, Menu, Show
     return
     }
-    ProductRegex(){
+    ProductSelection(){
     global
 		try Menu,Menu, deleteAll
 		Loop % Products.MaxIndex()  { ; Read, debug.txt
@@ -31,8 +46,7 @@ class Menu{
     return
 
     SelectProducts:
- Controlsettext, edit6, %A_thismenuitem%,VarBar
-  RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+    RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
     if sProduct {
       Product:=sProduct
       GuiControl,Varbar:Text, Product, %sProduct%
@@ -43,6 +57,7 @@ class Menu{
     GuiControl,Varbar:Text, Batch, %sBatch%
     GuiControl,Varbar:Text, lot, %slot%
     GuiControl,Varbar:Text, Coated, %sCoated%
+    try XL.Sheets(sProduct).activate
   ; clipboard:=A_ThismenuItem
 ; varbar.show()
   ;  Pop(A_ThisMenuItem,,3000)
@@ -72,6 +87,7 @@ LMS(){
   if winactive("NuGenesis LMS - \\Remote"){
     ; LMS.Orient()
     LMS.DetectTab()
+
     ; msgbox, %Tab%
     ; click
     if (Tab="Samples")
@@ -87,6 +103,9 @@ LMS(){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
     }
+      Menu, Menu, add, Paste All &Products,   F19 & Down
+      Menu, Menu, add, Paste All &Batches,    F19 & Left
+      Menu, Menu, add, Paste All &WorkSheets, F19 & up
     Try Menu,menu,show
   } 
   if winactive("Edit specification - \\Remote"){

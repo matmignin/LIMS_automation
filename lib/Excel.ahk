@@ -34,22 +34,7 @@ Connect(reload:=0){
 	}
 	This.InfoLocations()
 	;Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
-												; /*  Get each sheet name and turn it into an array
-											;	For sheet in xl.ActiveWorkbook.Worksheets
-											;	{
-											;		If (Sheet.name := "Main") || (Sheet.name := "Template") || (Sheet.name := "Finished") || (Sheet.name := "Micro Pending") || (Sheet.name := "PriorMonths")
-											;			continue
-											;		Products.insert(Sheet.Name)
-											;	}
-												; Products.remove(1)
-												; Products.remove(1)
-												; loop 10{
-												; 	;; if (Products[A_index] = "Finished") || (Products[A_index] = "PriorMonths")
-												; 		; Products.remove(A_Index)
-												; 	; else
-												; 		A__DDLXLProducts .= "|" Products[A_index]
-												; } 
-												; */
+
 
 	Gui VarBar:+LastFound
 	if (Reload = 1)
@@ -67,6 +52,27 @@ SheetActivate(XL) {
   ;pop(Product " " Batch)
 }
 
+GetAllSheets(){ ; Get each sheet name and turn it into an array
+global
+ProductSheets:=[]
+XL := ComObjActive("Excel.Application")
+												For sheet in xl.ActiveWorkbook.Worksheets
+												{
+													cSheet:=sheet.name
+													; If (cSheet!="Finished")
+														ProductSheets.insert(cSheet)
+												}
+												Productsheets.remove(1)
+												; Productsheets.remove(1)
+														; A__DDLXLProducts .= "|" Products[A_index]
+												 AllWorkSheets:=listarray(ProductSheets,"")
+												  AllWorkSheets:= StrReplace(AllWorkSheets, "Main", " | ")
+												  AllWorkSheets:= StrReplace(AllWorkSheets, "Finished", " | ")
+												  AllWorkSheets:= StrReplace(AllWorkSheets, "Template", "")
+												  AllWorkSheets:= StrReplace(AllWorkSheets, "Micro Pending", " | ")
+												  AllWorkSheets:= StrReplace(AllWorkSheets, A_space A_space, A_space)
+												 Return AllWorkSheets
+												} 
 
 SheetChange(sht,Cell) {
 	Global
@@ -108,9 +114,17 @@ InfoLocations(){
 	global
 	Batches:=[]
 	GuiControl, -redraw, varbar
-		clipboard:=XL.range("H1").Value
 		Product:=XL.Range("B1").Value
 		This.RegexCell(XL.Range("E1").Value)
+		MoreBatches:=XL.range("H1").Value
+		; Products:=[]
+		loop, parse, MoreBatches, `r`n 
+		{
+			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+					if sBatch
+						Products.Insert(Product " " sBatch " " sLot " " sCoated)
+		}
+		; Clip.Parse(MoreBatches)
 		; while (Xl.Range("BE" . A_index+7).Value != "")
 			; Batches[A_index]:=Xl.Range("BE" . A_index+7).Text
 		Name:=XL.Range("B2").Value

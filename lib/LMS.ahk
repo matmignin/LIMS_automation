@@ -63,10 +63,10 @@
 
 	#IfWinActive, ahk_exe WFICA32.EXE, ;;___LMS app
 
-			F19 & left::			excel.Nextsheet()
-			F19 & right::			excel.Prevsheet()
-			F19 & down::			Varbar.SubIteration(0)
-			F19 & up::	 			Varbar.AddIteration(0)
+			; F19 & left::			excel.Nextsheet()
+			; F19 & right::			excel.Prevsheet()
+			; F19 & down::			Varbar.SubIteration(0)
+			; F19 & up::	 			Varbar.AddIteration(0)
 			Rbutton up::		Mouse_RbuttonUP()
 			F14::
 			^`::						Varbar.reset()

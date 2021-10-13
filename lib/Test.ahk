@@ -513,20 +513,20 @@ msgbox % listarray(products)
 return 
 */
 
-; 	; }
-CreateDDL(){
-	global CurrentCodeDDL, CurrentCodes
-	CurrentCode:=[]
-	FileRead, CurrentCodes, CurrentCodes.txt
-	CurrentCode := StrSplit(CurrentCodes,a_space)
-	CurrentCodesDDL:=CurrentCode[1]
-	loop % CurrentCode.maxindex(){
-		if A_Index:=1
-			continue 
-		CurrenwtCodesDDL.="|" CurrentCode[A_index]
-		}
-	Return CurrentCode
-}	
+; ; 	; }
+; CreateDDL(){
+; 	global CurrentCodeDDL, CurrentCodes
+; 	CurrentCode:=[]
+; 	FileRead, CurrentCodes, CurrentCodes.txt
+; 	CurrentCode := StrSplit(CurrentCodes,a_space)
+; 	CurrentCodesDDL:=CurrentCode[1]
+; 	loop % CurrentCode.maxindex(){
+; 		if A_Index:=1
+; 			continue 
+; 		CurrenwtCodesDDL.="|" CurrentCode[A_index]
+; 		}
+; 	Return CurrentCode
+; }	
 /* 			
 	Class Notes{
 		Show(){  ;array - remove duplicates (case insensitive)

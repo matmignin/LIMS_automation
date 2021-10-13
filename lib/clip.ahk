@@ -37,8 +37,8 @@ clipClip(type){
     clip.Parse()
     clip.Regex()
     clip.regex("Department")
-    if Clipboard
-      tt(clipboard, 1200,100,100,2,200,"R")
+    if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
+      tt(clipboard,1000,100,-1000,,200,"R")
       ; PoP(Clipboard)
 return
 
@@ -65,11 +65,14 @@ Append(Delimiter:="`n",key:="c"){
 		return 
 }
 
-Parse(){
+Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[]
 ; sleep 200
-ParsedClipboard:=Clipboard
+if (Value:="")
+  ParsedClipboard:=Clipboard
+else
+  ParsedClipboard:=Value
   if !instr(ParsedClipboard,"`r`n")
     return
   loop, parse, ParsedClipboard, "`r`n" 
@@ -103,7 +106,10 @@ ParsedClipboard:=Clipboard
             Products.Push("" vValue), oTemp["" vValue] := ""
         }
       }
-
+    ;   AllCodes:= Listarray(Products)
+    ; GuiControl,Varbar:Text, Note1, %AllCodes%
+    ; ; ControlsetText, Edit6,%AllProducts%,VarBar
+    ; IniWrite, %AllCodes%, data.ini, Notes, note1
 
     return
 }

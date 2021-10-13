@@ -35,7 +35,7 @@ gosub, vquest_start
 
 Starting_test:
 
-; Clipboard:=
+; TestText:=
 ; (
 ; "IF Fast Pwdr Raspb Lemonade 3.1g Stick`tK741`t107-0431`tSlimFast`t0278H1`tMicro`t`t`t107-0431 0278H1| Micro  [Oct-08]`r`nFish Oil 100 SIGMANU124 100's Unlabeled 1:35 PM`tB324`t105-1172`tVitalize llc`t0656H1`tMicro`t`t`t105-1172 0656H1| Micro  [Oct-08]`r`n
 ; K277 `r`
@@ -45,22 +45,92 @@ Starting_test:
 ; K888	108-0888	Santegra ,Inc	0888A8/Ct#188-0688	DT `r`n
 ; B086	108-0752	Santegra ,Inc	Bulk/Ct#109-0635	Micro `r`n"
 ; )
-; gosub, Test_2
+; gosub, Test_3
 return
 
 
 ___Testing_Zone:
+F19 & down::GetAllBatches()
+F19 & left::GetAllProducts()
+F19 & Up::Sendinput % excel.GetAllSheets()
+
+  Test_3:
+  GetAllBatches()
+  ; Send, %AllBatches%
+  return
 
 
 
+GetAllBatches(){
+  global
+  regBatches:=[]
+  pos=0
+  while pos := RegexMatch(Clipboard, "i)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
+    ; if aBatch
+      regBatches.insert(aBatch)
+  ; }
+      AllBatches:=[], oTemp := {}
+      for vKey, vValue in regBatches
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllBatches:=Listarray(AllBatches,"")
+    AllBatches:= StrReplace(AllBatches, A_space A_space, A_space)
+    GuiControl,Varbar:Text, Note3, %AllBatches%
+    ; ControlsetText, Edit8,%AllBatches%,VarBar
+		IniWrite, %AllBatches%, data.ini, Notes, note3
+    Sendinput, %AllBatches%
+    ; msgbox, %AllBatches%,
+}
+GetAllProducts(){
+  global
+  regProducts:=[]
+  pos=0
+  while pos := RegexMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+    ; if aBatch
+      regProducts.insert(aProduct)
+  ; }
+      AllProducts:=[], oTemp := {}
+      for vKey, vValue in regProducts
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllProducts:=Listarray(AllProducts,"")
+    AllProducts:= StrReplace(AllProducts, A_space A_space, A_space)
+    GuiControl,Varbar:Text, Note2, %AllProducts%
+    ; ControlsetText, Edit7,%AllProducts%,VarBar
+    IniWrite, %AllProducts%, data.ini, Notes, note2
+    Send, %AllProducts%
+
+    ; msgbox, %AllProducts%,
+}
 
 
+return
 test_1:  ; tested if the 2nd function workd
   regProducts:=[], regBatches:=[]
       ; Products := [], 
   ; TestText:=Clipboard
   pos=0
-  while pos := RegexMatch(TestText, "i)(?P<Product>[abdefghijkl]\d{3}\b)(\s(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))?", var, pos+1){
+  while pos := RegexMatch(Clipboard, "i)(?P<Product>[abdefghijkl]\d{3}\b)(\s(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))?", var, pos+1){
     if Var
       regProducts.insert(varProduct " " varBatch)
     if VarBatch
@@ -103,6 +173,7 @@ test_1:  ; tested if the 2nd function workd
                   Batches.Push("" vValue), oTemp["" vValue] := ""
           }
         }
+
       ; vOutput := ""
       ; for vKey, vValue in Batches
       ;     vOutput .= vKey " " vValue "`r`n"
@@ -126,26 +197,20 @@ test_1:  ; tested if the 2nd function workd
 return
 
 
-
+Capslock::
 #t::  
 Test_2:
 ; clip.Parse()
 
   ;MsgBox, %
-            menu.productregex()
+menu.ProductSelection()
             
   ; debug(Products)
 return
 
-  Test_3:
 
-  WinGetTitle, CurrentLMSWindow, ahk_exe WFICA32.EXE
-  ; Pop(SubStr(CurrentLMSWindow, 1, 20))
-  winactivate, ahk_exe Code.exe
-    send, ^{f}
-    sleep 200
-    sendinput % SubStr(CurrentLMSWindow, 1, 25)
-    return
+
+
 
 
   Test_4:
@@ -244,13 +309,11 @@ Debug(Variable,Delete:="Delete"){
 ;__________________continuously runing sub_________________________________________________
 ActiveCheck: 
   If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
-    ; GuiControl, Varbar:Show, CurrentCodes
     VarBar_H:=63
     WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
   }
   If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
     VarBar_H:=32
-    ; GuiControl, Varbar:Hide, CurrentCodes
     WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
   }
 
@@ -269,8 +332,10 @@ ActiveCheck:
       winactivate,
         LMS.SearchBar(Product,"{enter}")
   }
-  if (A_TimeIdle < 9000)
+  if (A_TimeIdle < 9000) {
+    try Menu,Menu, deleteAll
     setwindelay, 200
+  }
   return
    
 
@@ -360,6 +425,7 @@ VQuest_Start:
 
     try Menu, Tray, Icon, lib\Robot.ico
     settimer, ActiveCheck, %CheckTime%
+    copypasteToggle:=0
     TabToggle=0
     On:="On"
     Off:="Off"

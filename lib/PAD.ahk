@@ -506,7 +506,7 @@ CloseWindow(){
 	global
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse
 	{
-		Send, {F|18}
+		Menu.Lms()
 	}
 	else
 		click Right

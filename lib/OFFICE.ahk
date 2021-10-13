@@ -47,10 +47,10 @@ _Excel:
 	F9::    					Excel.Connect(1)
 	F19 & space::    			Excel.CopySheetName()
 	F19 & backspace::    delete
-	F19 & down::         ^down
-	F19 & up::           ^up
-	F19 & left::         ^left
-	F19 & right::        ^right
+	; F19 & down::         ^down
+	; F19 & up::           ^up
+	; F19 & left::         ^left
+	; F19 & right::        ^right
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
 
@@ -151,7 +151,14 @@ _Remote_DESKTOPs:
 	F19::            	 menu.Remote_Desktop()
 
 _Firefox:
+
+;  #IfWinActive, Introduction to JasperReports
+
+
+
  #IfWinActive, ahk_exe firefox.exe 
+	Numlock::send, {click 1801, 1081}
+	Mbutton::send, {click 81, 1093}
  numpaddot::	      sendInput, ^w
  F6::				   	SendInput, !{left}
  F7::				   	Send, !{right}
@@ -163,9 +170,6 @@ _Firefox:
 
 
 #ifwinactive, Map VQ drive.bat ahk_exe cmd.exe
-
-#IfWinActive, Getting Started with Jaspersoft Studio — Mozilla Firefox ahk_exe firefox.exe
-
 
 
 ExplorerSearch(text){

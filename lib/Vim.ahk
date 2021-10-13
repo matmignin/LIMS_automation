@@ -10,8 +10,8 @@
     #maxthreadsperhotkey, 1
     SetBatchLines, 20ms
     SetControlDelay, 1
-    SetKeyDelay, 0, 0
-    ; setwindelay, 250
+    SetKeyDelay, -1, -1
+    setwindelay, 150
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
     FormatTime, CurrentDateTime,, MM/dd/yy
@@ -33,6 +33,7 @@
 
 #If WinActive("ahk_exe Code.exe")  ;;	___VSCODE    
 		Mbutton::sendinput, ^{click}      
+		F2::FindMatchingWindows()
 		numlock::									send, ^+{\}                 
 		; !v:: 										send, {F9}vim.ahk{enter}
 		^+4::											send, !+{4}
@@ -72,10 +73,10 @@
 		F21 & backspace::         delete
 		; F21 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
 		; F21 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
-		F19 & left::              SendInput,{shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
+		; F19 & left::              SendInput,{shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 		; F19 & up::              SendInput,{shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
-		F19 & down::              SendInput,{shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
-		F19 & right::             SendInput,{shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
+		; F19 & down::              SendInput,{shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
+		; F19 & right::             SendInput,{shiftdown}{lwindown}{altdown}{right}{altup}{lwinup}{shiftup}
 		F19 & -::                 SendInput,{ctrldown}{-}{ctrlup}
 		F19 & =::                 SendInput,{ctrldown}{=}{ctrlup}
 		F19 & y::                 SendInput,{ctrldown}{w}{ctrlup}
@@ -444,4 +445,13 @@ class Vim {
 			Send,{end}{enter}^{v}
 		return
 	}
+	}
+	FindMatchingWindows(){
+		global
+	  WinGetTitle, CurrentLMSWindow, ahk_exe WFICA32.EXE
+  ; Pop(SubStr(CurrentLMSWindow, 1, 20))
+  	winactivate, ahk_exe Code.exe
+    send, ^{f}
+    sleep 200
+    sendinput % SubStr(CurrentLMSWindow, 1, 25)
 	}
