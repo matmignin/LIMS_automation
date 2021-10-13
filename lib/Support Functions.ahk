@@ -73,7 +73,7 @@ class Breaking {
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 
  ;GuiControlGet, OutputVar , , %CtrlHwnd%,
-	IniRead,vOutput, Customers.ini, Customers, %OutputVar%
+	IniRead,vOutput, lib\customers.ini, Customers, %OutputVar%
  msgbox, %vOutput%
 }
 

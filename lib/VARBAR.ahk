@@ -126,9 +126,12 @@ Class VarBar{
 		iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
 		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		IniWrite, %CurrentCodes%, data.ini, SavedVariables, CurrentCodes
-		IniWrite, %note1%, data.ini, Notes, note1
-		IniWrite, %note2%, data.ini, Notes, note2
-		IniWrite, %note3%, data.ini, Notes, note3
+		if Note1
+			IniWrite, %note1%, data.ini, Notes, note1
+		if Note2
+			IniWrite, %note2%, data.ini, Notes, note2
+		if Note3
+			IniWrite	, %note3%, data.ini, Notes, note3
 		}
 
 

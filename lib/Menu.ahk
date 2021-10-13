@@ -30,7 +30,7 @@ class Menu{
     ProductHistory(){
     global
 		try Menu,Menu, deleteAll
-		Loop, Read, Products.txt
+		Loop, Read, lib\Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
 		Menu, Menu, Show
     return
@@ -308,14 +308,14 @@ Varbar(){
   try This.delete()
 /* 		;this was code that read a text file and of previous Concated Codes, then made it into a menu
   if (WinControl="Edit1" || WinControl="Edit2" || winControl="Edit3"){
-      		Loop, Read, Products.txt
+      		Loop, Read, lib\Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
       if (A_index > 5)
         return
     }
     else {
     menu, Menu, Add, ProductsMenu, Varbar.HistoryMenuItem
-		Loop, Read, Products.txt
+		Loop, Read, lib\Products.txt
     {
 			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
       if A_index>5

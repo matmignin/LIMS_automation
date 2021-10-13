@@ -243,7 +243,7 @@ Debug(Variable,Delete:="Delete"){
     
   ;   Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
   ;   Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-  ;   IniRead,ShipToIndex, Customers.ini, Customers, %Customer%
+  ;   IniRead,ShipToIndex, lib\customers.ini, Customers, %Customer%
   ;   ; if !ShipTo
   ;     ; ShipTo:=ShipToIndex
   ;   return ShiptoIndex
@@ -253,7 +253,7 @@ Debug(Variable,Delete:="Delete"){
 
 
   ; DropDown() {
-  ;   Loop, Read, Customers.ini
+  ;   Loop, Read, lib\customers.ini
   ;   {
   ;   If A_Index = 1
   ;     Continue
@@ -268,7 +268,7 @@ Debug(Variable,Delete:="Delete"){
 
   ;   DropDown:
   ;     InputVar:=A_ThisMenuItem
-  ;     IniRead,vOutput, Customers.ini, Customers, %InputVar%
+  ;     IniRead,vOutput, lib\customers.ini, Customers, %InputVar%
   ;     Pop(Inputvar,vOutput)
   ;     return
   ; }
@@ -354,7 +354,7 @@ ActiveCheck:
   #Include <clip>
   #Include <OpenApp>
   #include <Excel>
-  #Include <Snipper>
+  ; #Include <Snipper>
   ;#Include <AutoFill>
   #include <varBar>
   ; #include <ProductTab>

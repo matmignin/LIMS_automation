@@ -530,7 +530,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 			sleep 200
 			Send, {enter}
 			FileAppend, %Batch% `n, Batch.txt
-			FileAppend, %product% `n, Products.txt
+			FileAppend, %product% `n, lib\Products.txt
 			iniwrite, %Batch%, lib\codes.ini, %Batch%,
 			iniwrite, %Product%, lib\codes.ini, %Product%, 
 			return

@@ -3,6 +3,8 @@
 Class Excel{
 Connect(reload:=0){
 	Global
+		IF !Winexist("LMS Workbook.xlsb")
+		exit
 	Gui VarBar:+LastFound
 	envget, PrevProduct, PrevProduct
 	; envget, iteration, Iteration
@@ -114,7 +116,9 @@ InfoLocations(){
 	global
 	Batches:=[]
 	GuiControl, -redraw, varbar
-		Product:=XL.Range("B1").Value
+		Try Product:=XL.Range("B1").Value
+		catch 
+			Return
 		This.RegexCell(XL.Range("E1").Value)
 		MoreBatches:=XL.range("H1").Value
 		; Products:=[]
