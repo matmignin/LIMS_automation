@@ -26,10 +26,27 @@
     SetTitleMatchMode, 2
 		SetWorkingDir, C:\Users\mmignin\Documents\VQuest
 		try Menu, Tray, Icon, lib\Vim.ico
+		menu, tray, add, ReloadScript, <^r
+		    Menu, Tray, Default, ReloadScript
 
-  #include Support Functions.ahk
+  ; #include Support Functions.ahk
 ; return
-
+ReloadScript(){
+	global
+	if Note1
+		IniWrite, %note1%, data.ini, Notes, note1
+	if Note2
+		IniWrite, %note2%, data.ini, Notes, note2
+	if Note3
+		IniWrite, %note3%, data.ini, Notes, note3
+	; Tooltip, Reload
+	Send, !s
+	sleep 200
+	; try
+		run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+	; catch e ;catch any errors
+	; throw e
+	}
 
 #If WinActive("ahk_exe Code.exe")  ;;	___VSCODE    
 		Mbutton::sendinput, ^{click}      
@@ -45,8 +62,8 @@
 		lbutton & F19:: 					send, !+3
 		numpadsub::               F7
 		numpadadd::               F6
-		numpadmult::              send,+{F9}
-		; numpadmult::             SendInput,{shiftdown}{altdown}{lwindown}{up}{-}{lwinup}{altup}{shiftup}
+		numpadmult::              send, !+{F9}
+		; numpadmult::             SendInput,{F9}
 		numpaddot::               numpaddot
 		^numpaddot::              SendInput,{ctrldown}{w}{ctrlup}
 		; Lwin::  									SendInput,{shiftdown}{altdown}{i}{altup}{shiftup} ; toggle colun selection mode
@@ -277,12 +294,8 @@
 		,::	                    SendInput,!^{/} 
 		^,::	                  SendInput,!+^{/}
 		q::                     SendInput,!^{/}						;line comment
-	; ]::                     SendInput,{shiftdown}{altdown}{]}{altup}{shiftup}
 		9::											SendInput,+{9}
 		0::											SendInput,+{0}
-	; [::                     SendInput,{shiftdown}{altdown}{[}{altup}{shiftup}
-		; $^]::                 SendInput,{right}^{left}+^{right}+{[}
-		; $^[::                 SendInput,{right}^{left}+^{right}{[}
 		^9::                    SendInput,{right}^{left}+^{right}+{9}
 		^0::                    SendInput,{right}^{left}+^{right}+{9}+{'}
 		.::      	              Send,{Home}
@@ -345,17 +358,18 @@
 		#if
 		#IfWinActive
 F13 & Lbutton::									send, +{click}
- $F13::													esc 
+;  $F13::													esc 
 F13 & down::									  sendinput, {shiftdown}{down}{shiftup}
 F13 & up::									    sendinput, {shiftdown}{up}{shiftup}
 F13 & left::									  sendinput, {shiftdown}{left}{shiftup}
 F13 & right::									  sendinput, {shiftdown}{right}{shiftup}
 
 
-	#If Getkeystate("F19","p") ;;	 ___psudonumpad
+	#If Getkeystate("F19","p") || GetKeyState("Capslock","T")
 	0::              SendInput,{-}
 	m::              numpad1
 	+m::             M
+	F19::						 numpad0
 	,::              numpad2
 	.::              numpad3
 	j::              numpad4

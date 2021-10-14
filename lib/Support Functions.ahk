@@ -1,3 +1,6 @@
+
+
+
 IfKeyPressed(keyPressed,Action:=""){
   pop("wait for press")
   Input, Inputkey, L1 M T1
@@ -12,21 +15,17 @@ IfKeyPressed(keyPressed,Action:=""){
 
 
 ListArray(The_Array,Option:="n"){
-	global
+	; global
 	if (option<>"n"){
 		for Each, Element in The_Array
 			ArrayList .=Element " " Option " "
-		; msgbox, %ArrayList%
 		return ArrayList
 	}
 	else {  
-  ; ArrayList := "1: "
   For Each, Element In The_Array {
-    ;  If (ArrayList <> "1: ") ; ArrayList is not empty, so add a line feed
         ArrayList .= "`n" A_index ": "
     ArrayList .= Element
   }
-  ; MsgBox, %ArrayList%
 	return ArrayList
   }
 }
@@ -207,16 +206,17 @@ try {
 }
 PopupColor1:="CE6D4B"
 PopupColor2:="FFFFFF"
-PopupTrans:=190
+PopupTrans:=250
 CoordMode, mouse, Screen
 MouseGetPos, PopUp_x,Popup_y,
-popup_y:=Popup_y+30
+popup_y:=popup_y-300
+popup_x:=Popup_x
 Gui, PopUp: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
 
 Gui, PopUp:color,%PopupColor1%, %PopupColor2%  
-Gui, PopUp:Font,s14 cBlack Bold, Consolas
-Gui, PopUp:Add, Text,left, %Line1%
 Gui, PopUp:Font,s10 cBlack Bold, Consolas
+Gui, PopUp:Add, Text,left, %Line1%
+Gui, PopUp:Font,s8 cBlack Bold, Consolas
   if (Line2)
     Gui, PopUp:Add, Text,Center, %Line2%
 Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
@@ -257,6 +257,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
    	; WinSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; WinSet, Trans, 200, %W%
 	; CoordMode, ToolTip, screen 
+	CoordMode, ToolTip, Relative
 	SetTimer, RemoveToolTip%N%, -%time% 
 	return
 	RemoveToolTip:
@@ -275,20 +276,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
 		ToolTip,,,,4
 	return
 	}
-ReloadScript(){
-	global
-	IniWrite, %note1%, data.ini, Notes, note1
-	IniWrite, %note2%, data.ini, Notes, note2
-	IniWrite, %note3%, data.ini, Notes, note3
-	IniWrite, %note4%, data.ini, Notes, note4
-	TT(blank " Reload `t`t" blank,,,,,180)
-	Send, !s
-	sleep 200
-	; try
-		run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-	; catch e ;catch any errors
-	; throw e
-	}
+
 	
 LogError(exception) {
 	global
@@ -710,10 +698,10 @@ Run_Display:
   run, Display.url, C:\Users\mmignin\Desktop\
 DebugVars(){
   Run, DebugVars.Ahk, lib\DebugVars
-  }
+}
 CL3(){
   Run, cl3.Ahk, lib\CL3
-  }
+}
 ShowSampleID(){
   global
   Menu, Tray, ToggleCheck, ShowSampleID
@@ -722,7 +710,7 @@ ShowSampleID(){
   else
   IniWrite, 0, data.ini, Options, ShowSampleID
   Varbar.Show()
-  }
+}
 ShowCoated(){
   global
   Menu, Tray, ToggleCheck, ShowCoated
@@ -731,20 +719,34 @@ ShowCoated(){
   else
   IniWrite, 0, data.ini, Options, ShowCoated
   Varbar.Show()
-  }
+}
   EnteringRotations(){
 	  global
-	Menu, Tray, ToggleCheck, EnteringRotations
-	If EnteringRotations:= !EnteringRotations
-	{
-		IniWrite, 1, data.ini, Options, EnteringRotations
-		Menu, Tray, Check, EnteringRotations
-	}
-	else 
-	{
-		IniWrite, 0, data.ini, Options, EnteringRotations
-		Menu, Tray, unCheck, EnteringRotations
-	}
+		Menu, Tray, ToggleCheck, EnteringRotations
+		If EnteringRotations:= !EnteringRotations
+		{
+			IniWrite, 1, data.ini, Options, EnteringRotations
+			Menu, Tray, Check, EnteringRotations
+		}
+		else 
+		{
+			IniWrite, 0, data.ini, Options, EnteringRotations
+			Menu, Tray, unCheck, EnteringRotations
+		}
+  }
+	TempCode(){
+		global
+		Menu, Tray, ToggleCheck, TempCode
+		If TempCode:= !TempCode
+		{
+			IniWrite, 1, data.ini, Options, TempCode
+			Menu, Tray, Check, TempCode
+		}
+		else 
+		{
+			IniWrite, 0, data.ini, Options, TempCode
+			Menu, Tray, unCheck, TempCode
+		}
   }
 SwitchWorkSheets(){
 	global
@@ -760,7 +762,7 @@ SwitchWorkSheets(){
 		Menu, Tray, unCheck, SwitchWorkSheets
 	}
 	Varbar.Show()
-	}
+}
 NoIdle(){
 	global
 	Menu, Tray, ToggleCheck, NoIdle
@@ -775,7 +777,7 @@ NoIdle(){
 		Settimer, NoidleTimer,off
 	}
 	Varbar.Show()
-	}
+}
 	
 NoIdleTimer:
 if (A_TimeIdle > (60*1000)) {
@@ -808,6 +810,6 @@ WindowSpy(){
   Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
   }
 Exitsub(){
-  varbar.exit()
+  varbar.SaveVariables()
   exitapp
   }

@@ -306,43 +306,21 @@ Varbar(){
   global
 	   MouseGetPos,,,,WinControl
   try This.delete()
-/* 		;this was code that read a text file and of previous Concated Codes, then made it into a menu
-  if (WinControl="Edit1" || WinControl="Edit2" || winControl="Edit3"){
-      		Loop, Read, lib\Products.txt
-			Menu, Menu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
-      if (A_index > 5)
-        return
-    }
-    else {
-    menu, Menu, Add, ProductsMenu, Varbar.HistoryMenuItem
-		Loop, Read, lib\Products.txt
-    {
-			Menu, ProductsMenu, Add, %A_LoopReadLine%, Varbar.HistoryMenuItem
-      if A_index>5
-        return
-    } 
-    */
     Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
       if SwitchWorkSheets=1  
         menu, menu, Check, &SwitchWorkSheets
-        
-    Menu, Menu, Add, &ShowNotes, ShowNotes 
-      ; if ShowNotes=1  
-        ; menu, menu, Check, &ShowNotes
-        
+    Menu, Menu, Add, TempCode, TempCode 
+      if TempCode
+        Menu, menu, Check, Tempcode
+    Menu, Menu, Add, EnteringRotations, EnteringRotations 
+      if EnteringRotations
+        Menu, Menu, Check, EnteringRotations
     Menu, Menu, Add, Show&SampleID, ShowSampleID 
       if ShowSampleID=1  
         menu, menu, Check, Show&SampleID
-        
     Menu, Menu, Add, Show&Coated, ShowCoated 
       if ShowCoated=1  
         menu, menu, Check, Show&Coated
-    ; Menu, SubMenu, Add, &workBook, !w 
-    ; Menu, SubMenu, Add, &Test Log, F2 
-    ; Menu, SubMenu, Add, &Sample Log, +F2 
-    ; Menu, SubMenu, Add, &Product Checklist, F3 
-    ; Menu, SubMenu, Add, &All Label Copy, F4 
-  ; Menu, Menu, add, &WorkSeehts, :SubMenu
     if Winexist("Login - \\Remote"){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env

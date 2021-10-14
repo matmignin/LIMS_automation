@@ -27,19 +27,14 @@ Clip(input=0,Wait:="0.55"){
 
 clipClip(type){
   global
-  ; ifwinactive, ahk_exe EXCEL.EXE
-    ; return
   ifwinactive, Select tests for request: R
     return
   sleep 300
-  ; gosub, test_2
-  ; Send, ^c
     clip.Parse()
     clip.Regex()
-    clip.regex("Department")
+    ; clip.regex("Department")
     if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
       tt(clipboard,1000,100,-1000,,200,"R")
-      ; PoP(Clipboard)
 return
 
 }
@@ -60,39 +55,37 @@ Append(Delimiter:="`n",key:="c"){
       clipboard := Preclip Delimiter Clipboard
       tt(clipboard,1500,A_ScreenWidth-500,,2,150)
     }
-    ; ; Delimiter:=
-    ; tt(Preclip)
 		return 
 }
 
 Parse(Value:=""){
   global
-  regProducts:=[], regBatches:=[]
-; sleep 200
-if (Value:="")
-  ParsedClipboard:=Clipboard
-else
-  ParsedClipboard:=Value
+  regProducts:=[], regBatches:=[],
+  sleep 200
+  ; if (Value:="")
+    ParsedClipboard:=Clipboard
+  ; else
+    ; ParsedClipboard:=Value
   if !instr(ParsedClipboard,"`r`n")
     return
-  loop, parse, ParsedClipboard, "`r`n" 
-  {
-    RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
-    RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
-    RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
-    RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
-      Match:= VarProduct
-        if varBatch
-          Match.= " " VarBatch
-        if varLot
-          match.= " " VarLot    
-        if varCoated
-          match.= " Ct#" VarCoated  
+    loop, parse, ParsedClipboard, "`r`n" 
+      {
+        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
+        RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
+        RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
+        RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
+          Match:= VarProduct
+            if varBatch
+              Match.= " " VarBatch
+            if varLot
+              match.= " " VarLot    
+            if varCoated
+              match.= " Ct#" VarCoated  
 
-      ; Match:= VarProduct
-      if Match
-        regProducts.insert(Match)
-  }
+          ; Match:= VarProduct
+          if Match
+            regProducts.insert(Match)
+      }
     Products:=[], oTemp := {} ;remove duplicates
       for vKey, vValue in regProducts {
       if (ObjGetCapacity([vValue], 1) = "") ;is numeric
@@ -106,26 +99,82 @@ else
             Products.Push("" vValue), oTemp["" vValue] := ""
         }
       }
-    ;   AllCodes:= Listarray(Products)
-    ; GuiControl,Varbar:Text, Note1, %AllCodes%
+      sleep 200
+      AllCodes:=Listarray(Products)
+      Pop(AllCodes,,2000)
+  
+      ; GuiControl,Varbar:Text, Note1, %AllCodes%
+    ; ; ControlsetText, Edit6,%AllProducts%,VarBar
+    ; IniWrite, %AllCodes%, data.ini, Notes, note1
+
+    return
+}
+Cl3Parse(){
+  global
+  regProducts:=[], regBatches:=[],
+  sleep 200
+  ; if (Value:="")
+    ParsedClipboard:=Clipboard
+  ; else
+    ; ParsedClipboard:=Value
+  if !instr(ParsedClipboard,"`r`n"){
+    AllCodes:=
+    return
+  }
+    loop, parse, ParsedClipboard, "`r`n" 
+      {
+        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
+        RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
+        RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
+        RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
+          Match:= VarProduct
+            if varBatch
+              Match.= " " VarBatch
+            if varLot
+              match.= " " VarLot    
+            if varCoated
+              match.= " Ct#" VarCoated  
+
+          ; Match:= VarProduct
+          if Match
+            regProducts.insert(Match)
+      }
+    Products:=[], oTemp := {} ;remove duplicates
+      for vKey, vValue in regProducts {
+      if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+        {
+          if !ObjHasKey(oTemp, vValue+0)
+            Products.Push(vValue+0), oTemp[vValue+0] := ""
+        }
+        else
+        {
+          if !ObjHasKey(oTemp, "" vValue)
+            Products.Push("" vValue), oTemp["" vValue] := ""
+        }
+      }
+      sleep 200
+      AllCodes:=Listarray(Products)
+      Pop(AllCodes,,2000)
+  
+      ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
     ; IniWrite, %AllCodes%, data.ini, Notes, note1
 
     return
 }
 
-Regex(Category:="Clipboard"){
+Regex(Category:=""){
     global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, 
-    ; if (Category:="Clipboard")
-      ; Haystack:=Clipboard
-    ; else 
-      ; Haystack:=Category
+    if !Category
+      Haystack:=Clipboard
+    else 
+      Haystack:=Category
     sleep      20
-      RegExMatch(Clipboard, "i)\b[abdefghijkl]\d{3}\b", cProduct)
-      RegExMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
-      RegExMatch(Clipboard, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
-      RegExMatch(Clipboard, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
-      RegExMatch(Clipboard, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
+      RegExMatch(HayStack, "i)\b[abdefghijkl]\d{3}\b", cProduct)
+      RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
+      RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
+      RegExMatch(HayStack, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
+      RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
@@ -165,12 +214,12 @@ Regex(Category:="Clipboard"){
 
 
       sleep 20
-      Regexmatch(Clipboard, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      Regexmatch(Clipboard, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-      Regexmatch(Clipboard, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-      Regexmatch(Clipboard, "i)(\bI, Physical\b|\bPhysical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-      Regexmatch(Clipboard, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
-      Regexmatch(Clipboard, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
+      Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      Regexmatch(HayStack, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+      Regexmatch(HayStack, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+      Regexmatch(HayStack, "i)(\bI, Physical\b|\bPhysical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      Regexmatch(HayStack, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
+      Regexmatch(HayStack, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
       Sleep      20
       If cAnalytical
         Department:="Analytical"

@@ -1,3 +1,23 @@
+  ; GetSampleInfo(){
+  ;   global Customer, Name, ShipToIndex
+  ;   ParsedSample:=[]
+  ;   ; clipboard:=
+  ;   ; send, ^c 
+  ;   ; clipwait, 2
+  ;     ; if errorlevel
+  ;       ; sleep 400
+  ;   Loop, parse, Clipboard, `t
+  ;   ParsedSample.insert(A_LoopField)
+  ;   TotalColumns:=Parsedsample.maxindex()//2
+    
+  ;   Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+  ;   Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+  ;   IniRead,ShipToIndex, lib\customers.ini, Customers, %Customer%
+  ;   ; if !ShipTo
+  ;     ; ShipTo:=ShipToIndex
+  ;   return ShiptoIndex
+  ; }
+
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
 		Numlock::4tap() ;LMS.COA()
@@ -567,7 +587,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		WinGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
 		WinGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
 		WinGetPos,WbX,WbY,WbW,WbH, LMS Workbook.xlsb - Excel
-		; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, NuGenesis LMS - \\Remote,
+		; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
 		WbX:=WbX+400
 		Flovar_x:= wX +900
 		Flovar_y:= wH + wY -28
@@ -1976,15 +1996,15 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
       This.DropdownSelect(ShipToIndex)
     else
       This.DropdownSelect(ShipTo)
-    sleep 500
+    sleep 200
     Breaking.Point()
     SendInput, {enter}
-    sleep 200
+    ; sleep 200
     ; blockinput, off
-    winactivate, Register new samples - \\Remote
-    sleep 300
-    my:=my+30
-    MouseMove, mx, my  
+    ; winactivate, Register new samples - \\Remote
+    ; sleep 300
+    ; my:=my+30
+    ; MouseMove, mx, my  
 
       ; return
   }
@@ -2197,7 +2217,8 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
   loop, %count%
   {
     click 46, 877
-    winwaitactive, Edit test (Field Configuration: I`, Analytical) - \\Remote,, 3
+		if !winactive("Edit test (Field Configuration: ")
+    	winwaitactive, Edit test (Field Configuration: ,, 2
     Send,{Click, 402, 284}{end}(on sample log){click, 334, 618}
     winwaitactive, NuGenesis LMS - \\Remote,,2
     sleep 300

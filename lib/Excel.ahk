@@ -4,10 +4,8 @@ Class Excel{
 Connect(reload:=0){
 	Global
 		IF !Winexist("LMS Workbook.xlsb")
-		exit
+		Return
 	Gui VarBar:+LastFound
-	envget, PrevProduct, PrevProduct
-	; envget, iteration, Iteration
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
 	if WinExist("LMS Workbook.xlsb")
@@ -20,33 +18,21 @@ Connect(reload:=0){
 		}
 	Try {
 		XL := ComObjActive("Excel.Application")
-		; XL.Workbooks.Open("C:\Users\mmignin\OneDrive - Vitaquest International\LMS Workbook.xlsb")
 		XL.Visible := True
 		ComObjConnect(XL,"Excel.")
 		sht := XL.ActiveSheet.Name
-		;btch:= XL.ActiveSheet.Range.("E1")
 			Gui VarBar:+LastFound
-		; if ((sht := "PriorMonths") || (sht:= "Sheet1") || (sht := "Main") || (sht := "Template") || (sht := "Finished") || (sht := "Micro Pending") || (sht := "Sheet2") || (sht := "Sheet1") || (sht := "Item Code") || (sht := "Scrap Sheet")) {
-				
-			; this.NextSheet()
-		; }
 	}
-	Catch {
+	Catch 
 		TT("Didnt connect to workbook", 5000,,,1)
-	}
 	This.InfoLocations()
-	;Pop(Product "`n" Batch " " Lot  " " Coated,Name " " Customer) 
-
-
 	Gui VarBar:+LastFound
 	if (Reload = 1)
 		VarBar.show()
-
 	return
-
-
 }
-SheetActivate(XL) {
+
+SheetActivate(XL){
   global
   excel.Infolocations()
   excel.RegexCell()

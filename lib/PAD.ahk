@@ -7,9 +7,16 @@ _MouseIsOver:
 		NumpadDot::send, {click}{esc}
 	#If MouseIsOver("ahk_exe firefox.exe")
 		numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
+
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		^Wheeldown::Blockrepeat(500) clip()
 		Numlock::
+		 			If !winactive("ahk_exe OUTLOOK.EXE")
+					click
+ 					3tap()
+					winactivate, NuGenesis LMS - \\Remote			
+					LMS.Searchbar(clipboard,"{enter}")
+ 					return
 		Mbutton::
  					If !winactive("ahk_exe OUTLOOK.EXE")
 						click
@@ -37,7 +44,7 @@ clipCheckIfEmpty(){
 }
 
 #IfWinActive
-;;		___3Fingers
+;;	_____3Fingers
 
 3tap(){
 	Global 
@@ -103,7 +110,7 @@ clipCheckIfEmpty(){
 		else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
 			send % clk(107, 66) Product "{enter}{enter}"
 		else if Winactive("Edit Product - \\Remote") 
-			ProductTab.EditProduct() 
+			ProductTab.EditProduct() --
 		else If Winactive("Select tests for request: R") 
 			WorkTab.SelectTestSample() 
 		else if winexist("Release: ") { ; Press Okay
@@ -241,7 +248,7 @@ return
 }
 
 
-;;		___4Fingers
+;;	_____4Fingers
 4tap(){
 	global 
 	If winactive("NuGenesis LMS - \\Remote") {
@@ -263,8 +270,8 @@ return
 					clk(68, 630) ;enter results
 				return
 			}	
-			; else If (tab:="Samples")
-			; 	LMS.CoA()
+			else If (tab:="Samples")
+				menu.Setstatus()
 		else if (Tab:="Products") {
 				clk(86, 443) ;edit composition
 			Return
@@ -282,15 +289,23 @@ return
 		else
 			Menu.LMS()
 	}
-		else 	if winactive("ahk_exe OUTLOOK.EXE") {
+	else if WinActive("Composition - \\Remote")
+		ProductTab.AddCOASpace()
+	else if WinActive("LMS Workbook.xlsb - Excel")
+		menu.SetStatus()
+
+	
+	else if winactive("Edit test (Field Configuration: ")
+		send % "{click 384, 222}{tab 2}{end 2}(on sample log){Click 334, 618}"
+		; AddSampleLog(count)
+		; LMS.AddSampleLog(1)
+	else 	if winactive("ahk_exe OUTLOOK.EXE") {
 		clipCheckIfEmpty()
 		clip()
 		return
 	}
 	else if winactive("PDF Preview - \\Remote")
 		Send, {altdown}{F4}{altup}
-	Else
-		Sendinput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
 }
 
 4Up(){
@@ -500,13 +515,23 @@ CloseWindow(){
 
 
 
-;;		___2Fingers
+;;	______2Fingers
 
 2tap(){
 	global
+If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
+					MouseGetPos,,,,WinControl
+				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
+					menu.ProductSelection()
+				else
+					menu.Varbar()
+				return
+	}
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse
 	{
-		Menu.Lms()
+		Send, {F18}
+		return
 	}
 	else
 		click Right

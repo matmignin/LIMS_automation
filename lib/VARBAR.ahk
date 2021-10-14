@@ -3,11 +3,11 @@
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
-				MidScreen:=A_ScreenWidth//2
-				VarBar_H:=1
-				VarBar_T:=235
-				VarBar_W:=450
 				TopScreen:=1 ;A_ScreenHeight-35
+				MidScreen:=A_ScreenWidth//2
+				VarBar_H=1
+				VarBar_T:=235
+				VarBar_W=450
 			try Gui,VarBar:Destroy
 			This.loadSavedVariables()
 				Gui Varbar:Default
@@ -17,11 +17,8 @@ Class VarBar{
 				this.AddBoxes()
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
-					LMS.Orient()
-			Try Gui, VarBar:Show, h%varBar_H% x%Varbar_X% y%Varbar_y% w%VarBar_w% NoActivate, VarBar
-		Catch 
-			Gui, VarBar:Show, h%varBar_H% x%NuX%+500 y%Nuy% w%Varbar_w% NoActivate, VarBar
-			; Gui, VarBar:Show, h%varBar_H% x%MidScreen% y%TopScreen% NoActivate, VarBar
+			LMS.Orient()
+			Gui, VarBar:Show,  x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% NoActivate, VarBar
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
@@ -32,7 +29,7 @@ Class VarBar{
 		AddEdit(Variable,Dimensions:="",Font:=""){
 			global
 				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
-				Gui,VarBar:Add,edit,		v%Variable% -wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable% 
+				Gui,VarBar:Add,edit,		v%Variable% +wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable% 
 		}
 		AddText(Variable,Dimensions:="",Font:=""){
 			global
@@ -74,16 +71,13 @@ Class VarBar{
 			CoatedVarBar:
 			sleep 100
 			Gui, VarBar:submit,NoHide
-			; this.exit()
+			; this.SaveVariables()
 			return
 
 			VarBarGuiClose:
-				coordmode, mouse, Screen
-				WinGetPos,VarBar_X,Varbar_Y,w,h
+			VarBarGuiEscape:
 				sleep 100
-				this.exit()
-				coordmode, mouse, Window
-				sleep 500
+				this.SaveVariables()
 			return
 		}
 
@@ -100,6 +94,8 @@ Class VarBar{
 				Iniread, Lot, data.ini, SavedVariables, Lot
 				Iniread, Coated, data.ini, SavedVariables, Coated
 				}
+				IniRead, Varbar_X, data.ini, Locations, VarBar_X
+				IniRead, Varbar_Y, data.ini, Locations, VarBar_Y
 				Iniread, Iteration, data.ini, SavedVariables, Iteration
 				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
 				Iniread, ShowCoated, data.ini, Options, ShowSampleID
@@ -110,15 +106,9 @@ Class VarBar{
 				Iniread, note3, data.ini, Notes, note3
 			}
 
-	exit(){
-		global
 
-		wingetpos, Varbar_X, Varbar_Y,,, VarBar ahk_class AutoHotkeyGUI
-		ControlGetText, Note1, Edit6, VarBar
-		ControlGetText, Note2, Edit7, VarBar
-		ControlGetText, Note3, Edit8, VarBar
-		IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-		IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+	SaveVariables(){
+		global
 		iniwrite, %Product%, data.ini, Products, Product
 		iniwrite, %Batch%, data.ini, Batches, Batch
 		iniwrite, %Lot%, data.ini, SavedVariables, Lot
@@ -143,9 +133,9 @@ Class VarBar{
 			Global Varbar_X, Varbar_Y
     	  wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
       WinGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
-      WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_oX+100, Varbar_oy
+      WinMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,varbar_oX+100, Varbar_oy
         WinWaitNotActive,  ;- \\Remote,, 20, NuGenesis LMS - \\Remote
-				WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
+				WinMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
     }
 		
 		
@@ -157,21 +147,12 @@ Class VarBar{
 
 	Reset(){
 		Global
-			tt("Place bar")
-		if !winactive("NuGenesis = \\Remote"){
 			coordmode, mouse, Screen
-			keywait, F13, U T1
+			; keywait, Lbutton, U T2
 			MouseGetPos,Varbar_X,Varbar_Y
-			Send, {laltup}
-		} 
-		else {
-			WinGetPos, LMS_X, LMS_Y, LMS_W,LMS_H, NuGenesis LMS - \\Remote
-			xpos := LMS_X+1000
-			ypos := LMS_Y
-		}
-		tooltip,
-		IniWrite, %ypos%, data.ini, Locations, VarBar_Y
-		IniWrite, %xpos%, data.ini, Locations, VarBar_X
+		; tooltip,
+		IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+		IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
 		IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
 		IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 
@@ -197,7 +178,7 @@ Class VarBar{
 	Relocate(){
 		global
 				PostMessage, 0xA1, 2
-				; keywait, Lbutton, U T2
+				keywait, Lbutton, U T2
 					Send, ^a
 		return
 	}
@@ -286,7 +267,7 @@ HistoryMenuItem(){
 	}
 			
 			
-;; ___KEYBINDINGS
+;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
 	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
 		F19 & F21::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
 	;	F19::varbar.focus("Product")
@@ -305,10 +286,18 @@ HistoryMenuItem(){
 				LMS.Searchbar(clipboard,"{enter}")
 			}
 			if (WinControl="Edit6") || (WinControl="Edit7") || (WinControl="Edit8") || (WinControl="Edit9")
-				varbar.exit()
+				varbar.SaveVariables()
 				;varbar.show()
 			return
-		Lbutton::click
+		; Lbutton::click
+			; Rbutton::					
+			; MouseGetPos,,,,WinControl
+			; ; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+			; if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
+			; 	menu.ProductSelection()
+			; else
+			; 	menu.Varbar()
+			; return
 	#ifwinactive
 		; ^left::Lms.SelectTab("Left")
 		; ^right::LMs.SelectTab("right")
@@ -316,27 +305,15 @@ HistoryMenuItem(){
 	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
 		; wheelleft::    Excel.PrevSheet()
 		; wheelRight::   excel.Nextsheet()
-		Rbutton::					menu.ProductSelection()
-		+Mbutton::
-				MouseGetPos,,,,WinControl
-				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-				if (WinControl="Edit1"){
-					Product1:=Product
-					if Toggle := !Toggle
-						GuiControl, Varbar:Text, Product,%Product1%
-					else
-						GuiControl, Varbar:Text, Product,%Product0%
-					}
-				if (WinControl="Edit2"){
-					Batch:=Batch0
-					}
-				if (WinControl="Edit3"){
-					GuiControl, Varbar:Text, Lot,%Lot%
-					}
-				if (winControl="Edit4") {
-					GuiControl, Varbar:Text, Coated,%Coated%
-				}
-				return
+		; +Mbutton::
+		; Rbutton::					
+		; 		MouseGetPos,,,,WinControl
+		; 		; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
+		; 		if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
+		; 			menu.ProductSelection()
+		; 		else
+		; 			menu.Varbar()
+		; 		return
 		Numlock::
 			MouseGetPos,,,,WinControl
 				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
@@ -370,29 +347,36 @@ HistoryMenuItem(){
 		MouseGetPos,,,,WinControl
 				if (WinControl="Edit1")
 					menu.Products()	
-				if (WinControl="Edit2") || (WinControl="Edit3")
+				else if (WinControl="Edit2") || (WinControl="Edit3")
 					menu.Batches()
-				If (WinControl="Edit4") 
+				else if (winControl="Static1")
+					menu.Varbar()
+				else
 					menu.SetStatus()
 				; if (winControl="Edit6") {
 				; 	Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
 					; IniWrite, _, data.ini, Notes, note2
-					varbar.show()
+					; varbar.show()
 					; GuiControl, Varbar:Text, Coated,%Coated%
-				if (winControl="Static1") || (winControl="")
-					menu.Varbar()
 
 			return
 		numpaddot:: 	 Openapp.Workbook()
 	#if
 
   WM_LBUTTONDOWN(wParam, lParam){
+		PostMessage, 0xA1, 2
 				X := lParam & 0xFFFF
 				Y := lParam >> 16
 				if A_GuiControl
 					Ctrl := "`n(in control " . A_GuiControl . ")"
 				PostMessage, 0xA1, 2
 				MouseGetPos,,,,WinControl
-				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+				setTimer, SaveVarBarLocaton, -2000
+
 		return
+				SaveVarBarLocaton:
+				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+				IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+				IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
+				return
 } 
