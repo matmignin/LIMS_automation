@@ -426,7 +426,7 @@ Copy(){
         }
         Else ;will trigger after 1 sec
           Send, {F22}
-          ; KeyWait, F21,
+          ; KeyWait, F20,
           Return
       }
     }
@@ -459,7 +459,7 @@ global Clippaste
         if (A_PriorKey="F19")
         If !ErrorLevel
         {
-          ; Send, {F21}
+          ; Send, {F20}
           Return
         }
           KeyWait, F19, T2
@@ -493,7 +493,7 @@ ctrl(){
         if (A_PriorKey="F19")
         If !ErrorLevel
         {
-          ; Send, {F21}
+          ; Send, {F20}
           Return
         }
           KeyWait, F19, T4

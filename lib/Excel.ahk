@@ -55,6 +55,7 @@ XL := ComObjActive("Excel.Application")
 														; A__DDLXLProducts .= "|" Products[A_index]
 												 AllWorkSheets:=listarray(ProductSheets,"")
 												  AllWorkSheets:= StrReplace(AllWorkSheets, "Main", " | ")
+												  AllWorkSheets:= StrReplace(AllWorkSheets, "Vitamin A", " | ")
 												  AllWorkSheets:= StrReplace(AllWorkSheets, "Finished", " | ")
 												  AllWorkSheets:= StrReplace(AllWorkSheets, "Template", "")
 												  AllWorkSheets:= StrReplace(AllWorkSheets, "Micro Pending", " | ")
@@ -172,7 +173,7 @@ NextSheet(){
 	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
 	XL.Sheets(NextSheetname).activate
-	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet") {
+	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Vitamin A" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet") {
 		XL.Sheets(NextSheetname).activate
 		;excel.connect()
 	Excel.MatchColor()
@@ -189,7 +190,7 @@ PrevSheet(){
 	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
 	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
 	Xl.Sheets(PrevSheet).activate
-	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet") {
+	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || Prevsheetname != "Vitamin A" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet") {
 		Xl.Sheets(PrevSheet).activate
 		;excel.connect()
 	Excel.MatchColor()

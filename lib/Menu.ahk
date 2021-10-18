@@ -18,9 +18,9 @@ class Menu{
       Menu, Menu, add, All &Products,   F19 & left
       Menu, Menu, add, All &Batches,    F19 & down
       Menu, Menu, add, All &WorkSheets, F19 & up
-      Menu, Menu, add, %Product%, F21 & left
-      Menu, Menu, add, %Batch%, F21 & down
-      Menu, Menu, add, %Lot%, F21 & right
+      Menu, Menu, add, %Product%, F20 & left
+      Menu, Menu, add, %Batch%, F20 & down
+      Menu, Menu, add, %Lot%, F20 & right
       Menu, Menu, Show
       KeyWait, Rbutton, U
         try Menu,Menu, deleteAll

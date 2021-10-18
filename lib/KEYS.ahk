@@ -51,7 +51,7 @@
 				}
 			CopyPresses := 0
 		return
-		F21::
+		F20::
 			if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
 			{
 					PastePresses += 1
@@ -80,6 +80,31 @@ return
 	!^c::clip.Append(A_Space)
 	!^x::send % clip.Append() "{backspace}"	
 
+;; 	___Send Codes
+	>+F20::             			varbar.focus("Batch")
+	>+F19::            		 	varbar.focus("Product")
+	<#1::
+	F20 & left::					sendInput % product
+	<#2::
+	F20 & down::					sendInput % Batch
+	<#3::
+	F20 & right::					sendInput % Lot
+	<#4::
+	F20 & up::						sendInput % Coated
+F13 & 1::
+<!left::
+F19 & left::						GetAllProducts()
+<!down::
+F13 & 2::
+F19 & down::						GetAllBatches()
+<!up::
+F13 & 3::
+F19 & Up::							Sendinput % excel.GetAllSheets()
+<#Space::GetAllProducts()
+<#lshift::GetAllProducts("`n")
+<#enter::GetAllProducts("`n")
+<#tab::GetAllProducts(A_tab)
+
 
 
 	Scrolllock::SetCapsLockState % !GetKeyState("CapsLock", "T")
@@ -97,12 +122,29 @@ return
 	F19 & \:: 								Sendpassword()
 	^+6::
 	F19 & /::        	 				OCR()
-	Lbutton & F21::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
+	Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
+	lbutton & lwin::
+	Lbutton & Mbutton:: send, {lbutton up}^x         	;cut selected word
+	lbutton & Lalt::
+	Lbutton & Numlock::     ; cut selected word and paste clipboard
+	send, {lbutton up}
+	preclip:=clipboard
+	clipboard:=
+	send, ^x
+	Clipwait, 0.25
+	postclip:=clipboard
+	clipboard:=
+	clipboard:=Preclip
+	clipwait, 0.25
+	send, ^v     
+	clipboard:=PostClip
+	return   	
+
+	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}" ; a pic take 
 	Lbutton & Space::       Send, ^a
 	Lbutton & Rbutton::       Send, ^a
 	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-	F21 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F11::F22
 
@@ -168,10 +210,10 @@ return
 	; <!c::                      clip.Append()
 
 
-	;;	___F19_And_F21:
-	F21 & \::            		Sendpassword()
-	F21 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
-	F21 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
+	;;	___F19_And_F20:
+	F20 & \::            		Sendpassword()
+	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
+	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
 	; F19 up::      	       	Clip.paste()
 
 	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
@@ -179,41 +221,24 @@ return
 	F19 & wheelleft::				gosub, F6
 	F19 & wheelright::			GoSub, F7  
 
-;; 	___Send Codes
-	>+F21::             			varbar.focus("Batch")
-	>+F19::            		 	varbar.focus("Product")
-	<^1::
-	F21 & left::					sendInput % product
-	<^2::
-	F21 & down::					sendInput % Batch
-	<^3::
-	F21 & right::					sendInput % Lot
-	<^4::
-	F21 & up::						sendInput % Coated
-F13 & 1::
-F19 & left::						GetAllProducts()
-F13 & 2::
-F19 & down::						GetAllBatches()
-F13 & 3::
-F19 & Up::							Sendinput % excel.GetAllSheets()
 
 
 
 	F13 & esc::						Varbar.reset()	
 	F19 & ]::            		CreditCard()
 	F19 & backspace::    		Send,{delete}
-	F21 & Insert::       		Clip("OCR")
-	F21 & F7::           		Excel.NextSheet()
-	F21 & F6::           		Excel.PrevSheet()
-	F21 & esc::     				run, Taskmgr.exe
-	F21 & backspace::    		Send, {delete}
-	F21 & .::            		WindowInfo()
+	F20 & Insert::       		Clip("OCR")
+	F20 & F7::           		Excel.NextSheet()
+	F20 & F6::           		Excel.PrevSheet()
+	F20 & esc::     				run, Taskmgr.exe
+	F20 & backspace::    		Send, {delete}
+	F20 & .::            		WindowInfo()
 
-	F21 & =::            		Send,{CtrlDown}{=}{Ctrlup}
-	F21 & -::            		Send,{CtrlDown}{-}{Ctrlup}
+	F20 & =::            		Send,{CtrlDown}{=}{Ctrlup}
+	F20 & -::            		Send,{CtrlDown}{-}{Ctrlup}
 	F19 & enter::					varbar.focus("Edit1")
-	F21 & enter::					varbar.focus("Edit2")
-	F21 & F19::          		Send, {F22}
+	F20 & enter::					varbar.focus("Edit2")
+	F20 & F19::          		Send, {F22}
 
 	F19 & Media_Play_pause::
 										my_screenwidth:=A_ScreenWidth-215
@@ -227,12 +252,12 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 
 
 
-#If (A_PriorHotKey = "F21 & up" || A_PriorHotKey = "F21 & Down" || A_PriorHotKey = "F21 & left" || A_PriorHotKey = "F21 & right") && (A_TimeSincePriorHotkey < 2000) ;;	 ___Doubletap F21 & arrows
+#If (A_PriorHotKey = "F20 & up" || A_PriorHotKey = "F20 & Down" || A_PriorHotKey = "F20 & left" || A_PriorHotKey = "F20 & right") && (A_TimeSincePriorHotkey < 2000) ;;	 ___Doubletap F20 & arrows
 	$rshift::               Send, {tab}
-	F21 & up::	           Send, {enter}
-	F21 & down::           Send, {enter}
-	F21 & left::           Send, {enter}
-	F21 & right::          Send, {enter}
+	F20 & up::	           Send, {enter}
+	F20 & down::           Send, {enter}
+	F20 & left::           Send, {enter}
+	F20 & right::          Send, {enter}
 #if 
 
 
@@ -262,15 +287,15 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 
 #IfWinActive, ahk_exe WINWORD.EXE ;; 	___WORD
 	F13 & space::					SendInput, +{tab}{tab}
-	F21 & `;::        Send, {tab}
-	F21 & /::         Table_Entry("N/A")
-	F21 & n::         Table_Entry("No")
-	F21 & y::         Table_Entry("Yes")
-	F21 & m::         Table_Entry("Yes")
-	F21 & f::         Table_Entry("FALSE")
-	F21 & ,::         Table_Entry("FALSE")
-	F21 & t::         Table_Entry("TRUE")
-	F21 & .::         Table_Entry("TRUE")
+	F20 & `;::        Send, {tab}
+	F20 & /::         Table_Entry("N/A")
+	F20 & n::         Table_Entry("No")
+	F20 & y::         Table_Entry("Yes")
+	F20 & m::         Table_Entry("Yes")
+	F20 & f::         Table_Entry("FALSE")
+	F20 & ,::         Table_Entry("FALSE")
+	F20 & t::         Table_Entry("TRUE")
+	F20 & .::         Table_Entry("TRUE")
 	F19 & wheeldown:: 
 	F8::              Send, {enter}
 	F19 & Wheelleft:: 
@@ -278,7 +303,7 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 	F19 & Wheelright::
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	F19::             Clip.Copy()
-	F21::             Clip.paste()
+	F20::             Clip.paste()
 		
 
 
@@ -334,12 +359,12 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 
 	#IfWinActive, ahk_exe OUTLOOK.EXE ;; 	___OUTLOOK
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
-	<+F21::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
+	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
-	F21 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
+	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
 
 	numpadmult::
-	F21::                
+	F20::                
 								Send, ^{c}
 								Clip.Copy()
 								return
@@ -465,6 +490,73 @@ Table_Entry(Entry){
 	}
 
 
+
+
+
+GetAllBatches(){
+  global
+  regBatches:=[]
+  pos=0
+  while pos := RegexMatch(Clipboard, "i)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
+    ; if aBatch
+      regBatches.insert(aBatch)
+  ; }
+      AllBatches:=[], oTemp := {}
+      for vKey, vValue in regBatches
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllBatches:=Listarray(AllBatches,"")
+    AllBatches:= StrReplace(AllBatches, A_space A_space, A_space)
+    GuiControl,Varbar:Text, Note3, %AllBatches%
+    ; ControlsetText, Edit8,%AllBatches%,VarBar
+		IniWrite, %AllBatches%, data.ini, Notes, note3
+    Sendinput, %AllBatches%
+    ; msgbox, %AllBatches%,
+}
+GetAllProducts(Delimiter:=" "){
+  global
+  regProducts:=[]
+  pos=0
+  while pos := RegexMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+    ; if aBatch
+      regProducts.insert(aProduct)
+  ; }
+      AllProducts:=[], oTemp := {}
+      for vKey, vValue in regProducts
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllProducts:=Listarray(AllProducts,"")
+    AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
+    GuiControl,Varbar:Text, Note2, %AllProducts%
+    ; ControlsetText, Edit7,%AllProducts%,VarBar
+    IniWrite, %AllProducts%, data.ini, Notes, note2
+    clipboard:=AllProducts
+    sleep 200
+    send, ^v
+    ; Send, {blind}%AllProducts%
+
+    ; msgbox, %AllProducts%,
+}
 
 
 

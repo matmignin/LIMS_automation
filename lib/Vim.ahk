@@ -56,9 +56,9 @@ ReloadScript(){
 		^+4::											send, !+{4}
 		^+3::											send, !+{3}
 		^+2::											send, !+{2}
-		F21 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
+		F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 		F15 & tab::               SendInput,{ctrldown}{]}{ctrlup}	
-		~lbutton & F21:: 					send, !+4
+		~lbutton & F20:: 					send, !+4
 		lbutton & F19:: 					send, !+3
 		numpadsub::               F7
 		numpadadd::               F6
@@ -84,12 +84,12 @@ ReloadScript(){
 		<^lwin::                  delete
 		<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 		; ^s::                      SendInput, {ctrldown}{end}{ctrlup}
-	;;	___F19 and F21
-		F21 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-		F21 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-		F21 & backspace::         delete
-		; F21 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
-		; F21 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
+	;;	___F19 and F20
+		F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+		F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+		F20 & backspace::         delete
+		; F20 & Right::           WinMove, ahk_exe Code.exe, , 1858, -1080, 1642, 1087
+		; F20 & Down::            WinMove, ahk_exe Code.exe, , 603, 14, 1963, 1354
 		; F19 & left::              SendInput,{shiftdown}{lwindown}{altdown}{left}{altup}{lwinup}{shiftup}
 		; F19 & up::              SendInput,{shiftdown}{lwindown}{altdown}{up}{altup}{lwinup}{shiftup}
 		; F19 & down::              SendInput,{shiftdown}{lwindown}{altdown}{down}{altup}{lwinup}{shiftup}
@@ -160,7 +160,7 @@ ReloadScript(){
 
 
 
-;;					___VIM + CONTROL 
+;;			___VIM + CONTROL 
 #If Getkeystate("F13","p") && Getkeystate("LControl","p")
 	; 5::                                                                                       SendInput,{shiftdown}{ctrldown}{/}{ctrlup}{shiftup}
 	j::                       SendInput,{shiftdown}{down}{shiftup}
@@ -209,7 +209,7 @@ ReloadScript(){
 	^,::	                    SendInput,!+^{/}
 	#If 
  
-#If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")  ;; 					___VIM +SHIFT   
+#If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")  ;; 			___VIM +SHIFT   
 	k::                       SendInput,{up 10}
 	+k::                      SendInput,{up 10}
 	j::                       SendInput,{down 10}
@@ -251,7 +251,8 @@ ReloadScript(){
 		5::                              			SendInput,{shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
 		w::                                       vim.Yank("{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}","cut")
 		b::                                       vim.Yank("{ctrldown}{shiftdown}{left}{ctrlup}{shiftup}","cut")
-		d::                                       vim.Yank("{Home 2}{shiftdown}{End}{right}{shiftup}","cut")
+		; d::                                       vim.Yank("{Home 2}{shiftdown}{End}{right}{shiftup}","cut")
+		d::                                       sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}{backspace}
 		; [::                                  		SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 		; ]::                                       SendInput,{shiftdown}{altDown}{ctrldown}{9}{ctrlup}{altup}{shiftup}{delete}
 	#If (A_PriorHotKey = "y" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;;			_Vim y
@@ -269,7 +270,7 @@ ReloadScript(){
 		w::                                       SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
 		; p::																			vim.paste() ;SendInput,^z{end}{enter}
 	#if
-;;					___Vim F13___
+;;			___Vim F13___
 	#If Getkeystate("F13","p")
 		h::                       SendInput,{left}
 		l::                       SendInput,{right}
@@ -394,7 +395,7 @@ F13 & right::									  sendinput, {shiftdown}{right}{shiftup}
 	p::              numpad0
 	=::              =
 	-::              -
-	; F21::            SendInput,{.}
+	; F20::            SendInput,{.}
 	h::              left
 	+h::             H
 	'::              numpad0

@@ -26,12 +26,12 @@
 		F6::						3Left()	
 		+F19::lms.searchBar("")
 		F19 & Space::lms.searchBar("")
-		F21 & Space::Varbar.Focus(Product)
-		F21 & left::Send, %Product%
-		F21 & down::Send, %Batch%
-		F21 & right::Send, %lot%
+		F20 & Space::Varbar.Focus(Product)
+		F20 & left::Send, %Product%
+		F20 & down::Send, %Batch%
+		F20 & right::Send, %lot%
 		Enter::LMS.SaveCode()
-		>+F21::LMS.SearchbarPaste()
+		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::      	       	lms.searchbarPaste()
 		wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
@@ -107,7 +107,7 @@
 
 		#IfWinActive, Barcode Scanner - \\Remote
 			enter::enter
-			; F21::LMS.SearchbarPaste()
+			; F20::LMS.SearchbarPaste()
 			^v::LMS.SearchbarPaste()
 	#IfWinActive,
 

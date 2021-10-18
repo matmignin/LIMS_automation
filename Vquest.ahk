@@ -1,143 +1,51 @@
-﻿    #Persistent
-    #NoEnv
-    #SingleInstance,Force
-    #KeyHistory 
-    #MenuMaskKey vkE8
-    #InstallKeybdHook
-    #InstallMouseHook
-    CheckTime:=500
-    ; #HotkeyInterval 50
-    #MaxHotkeysPerInterval 500
-    #MaxThreadsBuffer, On
-    #InstallKeybdHook
-    #InstallMouseHook
-    ; #HotkeyModifierTimeout 1
-    #maxthreadsperhotkey, 1
-    SetBatchLines, 20ms
-    SetControlDelay, 1
-    SetKeyDelay, 1, 0.25
-    setwindelay, 250
-    FormatTime, DayString,, MM/d/yy
-    FormatTime, TimeString, R
-    FormatTime, CurrentDateTime,, MM/dd/yy
-    SetNumLockState, on
-    SetscrolllockState, off
-    SetNumlockState Alwayson
-    setcapslockstate alwaysoff
-    ; SetscrolllockState, always
-    CoordMode, mouse, Window
-    SetMouseDelay, 1
-    SetDefaultMouseSpeed, 1
-    SetTitleMatchMode, 2
-
-
-gosub, vquest_start
-
+﻿    gosub, vquest_start 
 Starting_test:
 
-; TestText:=
-; (
-; "IF Fast Pwdr Raspb Lemonade 3.1g Stick`tK741`t107-0431`tSlimFast`t0278H1`tMicro`t`t`t107-0431 0278H1| Micro  [Oct-08]`r`nFish Oil 100 SIGMANU124 100's Unlabeled 1:35 PM`tB324`t105-1172`tVitalize llc`t0656H1`tMicro`t`t`t105-1172 0656H1| Micro  [Oct-08]`r`n
-; K277 `r`
-; J929	910-0128	Renew Life	Micro	 `r`n
-; J837	109-0445	Renew Life	0670I1	Micro	 `r`n
-; H259	109-0359	SlimFast	0555I1/Ct#109-0744	Micro	`r`n
-; K888	108-0888	Santegra ,Inc	0888A8/Ct#188-0688	DT `r`n
-; B086	108-0752	Santegra ,Inc	Bulk/Ct#109-0635	Micro `r`n"
-; )
-; gosub, Test_3
+
 return
+SelectHeavyMetalTest:
+  send {click 225, 70}{click}icp-ms (chem{enter}
+  sleep 200
+  send, {click 506, 339}{click 846, 657} ;click it over
+  return
 
-;;    ___Temp Code
-#If MouseIsOver("ahk_exe firefox.exe") && TempCode
-		Mbutton:: ;pause WAters video
-			send, {click}
-			; ~Lbutton::
-			sleep 100
-			WinGetPos, wX, wY, wW, wH, A
-			ypos:=WH-40
-			clk(76, 990)
-			return		
-		NumLock::  ;pause WAters video
-			send, {click}
-			sleep 100
-			WinGetPos, wX, wY, wW, wH, A
-			xpos:=ww-50
-			ypos:=WH-50
-			clk(1523, 993)
-			return
+AddRAE:
+  Send, {Click 58, 757} ; click Edit Results  "NuGenesis LMS - \\Remote"
+  sleep 200
+  send, {click 80, 66} ; Click edit Results  "Definition - \\Remote"
+  sleep 600
+  send, {tab 5}mcg%A_space%rae{click 505, 568}{click 464, 547} ; tab to units and select mcg rae 284, 197 ;click scrollbar then Requirement window "Result Editor - \\Remote"
+  send, {end}%a_space%RAE
+  sleep 200
+  send, {click 377, 649} ;click done
+  return
+NewVersionRAE:
+  send, {click 64, 243} ;click new version
+  sleep 400
+  sendinput, {click 429, 184}^{a}Update All Vitamin A Units with RAE ;click description "Edit specification - \\Remote"
+    return	
 
+#If Winactive("Edit specification - \\Remote") && TempCode
+  mbutton::send, {click 332, 621} ;click okay 
+#If Winactive("Select methods tests - \\Remote") && TempCode
+
+
+#If Winactive("Results Definition - \\Remote") && TempCode
+    Mbutton::send, {enter}
+    rbutton::menu.lms()
+    ; Lbutton::
+#If mouseisover("NuGenesis LMS - \\Remote") && TempCode
+  Mbutton:: gosub, NewVersionRAE
+  NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+    return
 #if
+
 ;;   __________Testing Zone
 
 
   Test_3:
 ProductTab.AddCOASpace()
   return
-
-
-
-GetAllBatches(){
-  global
-  regBatches:=[]
-  pos=0
-  while pos := RegexMatch(Clipboard, "i)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
-    ; if aBatch
-      regBatches.insert(aBatch)
-  ; }
-      AllBatches:=[], oTemp := {}
-      for vKey, vValue in regBatches
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
-    AllBatches:=Listarray(AllBatches,"")
-    AllBatches:= StrReplace(AllBatches, A_space A_space, A_space)
-    GuiControl,Varbar:Text, Note3, %AllBatches%
-    ; ControlsetText, Edit8,%AllBatches%,VarBar
-		IniWrite, %AllBatches%, data.ini, Notes, note3
-    Sendinput, %AllBatches%
-    ; msgbox, %AllBatches%,
-}
-GetAllProducts(){
-  global
-  regProducts:=[]
-  pos=0
-  while pos := RegexMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
-    ; if aBatch
-      regProducts.insert(aProduct)
-  ; }
-      AllProducts:=[], oTemp := {}
-      for vKey, vValue in regProducts
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
-    AllProducts:=Listarray(AllProducts,"")
-    AllProducts:= StrReplace(AllProducts, A_space A_space, A_space)
-    GuiControl,Varbar:Text, Note2, %AllProducts%
-    ; ControlsetText, Edit7,%AllProducts%,VarBar
-    IniWrite, %AllProducts%, data.ini, Notes, note2
-    Send, %AllProducts%
-
-    ; msgbox, %AllProducts%,
-}
 
 
 return
@@ -232,6 +140,20 @@ Debug(Variable,Delete:="Delete"){
 
 
 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
 
 
   ; DropDown() {
@@ -283,12 +205,16 @@ ActiveCheck:
         winactivate,
           LMS.SearchBar(Product,"{enter}")
     }
-  if (A_TimeIdlePhysical > 3000) && !Getkeystate("Rctrl","D") && !Getkeystate("Shift","D") && !Getkeystate("Alt","D"){
-    try Menu,Menu, deleteAll
-    send, {ctrl up}{alt up}{lwin up}
-    setwindelay, 200
-    SetCapsLockState, off
-  }
+  if WinActive("Information - \\Remote")
+    send, {enter}
+  ; if (A_TimeIdlePhysical > 6000){
+  ;   try Menu,Menu, deleteAll
+  ;   sendlevel 2
+  ;   send, {ctrl up}{alt up}{lwin up}
+  ;   sendlevel 0
+  ;   setwindelay, 200
+  ;   SetCapsLockState, off
+  ; }
   return
    
 
@@ -316,7 +242,38 @@ ActiveCheck:
 
 
 VQuest_Start:
-#WinActivateForce
+    #Persistent
+    #NoEnv
+    #SingleInstance,Force
+    #KeyHistory 300
+    #MenuMaskKey vkE8
+    #InstallKeybdHook
+    #InstallMouseHook
+    CheckTime:=500
+    ; #HotkeyInterval 50
+    #MaxHotkeysPerInterval 500
+    #MaxThreadsBuffer, On
+    #InstallKeybdHook
+    #InstallMouseHook
+    ; #HotkeyModifierTimeout 1
+    #maxthreadsperhotkey, 1
+    SetBatchLines, 20ms
+    SetControlDelay, 1
+    SetKeyDelay, 1, 0.25
+    setwindelay, 250
+    FormatTime, DayString,, MM/d/yy
+    FormatTime, TimeString, R
+    FormatTime, CurrentDateTime,, MM/dd/yy
+    SetNumLockState, on
+    SetscrolllockState, off
+    SetNumlockState Alwayson
+    setcapslockstate alwaysoff
+    ; SetscrolllockState, always
+    CoordMode, mouse, Window
+    SetMouseDelay, 1
+    SetDefaultMouseSpeed, 1
+    SetTitleMatchMode, 2
+    #WinActivateForce
     AutoTrim, On
     OnClipboardChange("clipclip")
     OnExit("Varbar.SaveVariables")

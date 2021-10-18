@@ -269,9 +269,9 @@ HistoryMenuItem(){
 			
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
 	#IfWinActive, VarBar ahk_exe AutoHotkey.exe 
-		F19 & F21::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
+		F19 & F20::Send, {tab}{shiftdown}{tab}{shiftup} ;varbar.focus("Batch")
 	;	F19::varbar.focus("Product")
-		; F21::varbar.focus("Batch")
+		; F20::varbar.focus("Batch")
 		^enter::                           
 								winactivate, %the_WinTitle%
 								click, %caret_X%, %caret_y%
