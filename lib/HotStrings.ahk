@@ -149,7 +149,7 @@ _WindowNames:
 	:*:varbar`;::VarBar ahk_exe AutoHotkey.exe 
 	:*:nu`;::NuGenesis LMS - \\Remote                                            
 	:*:main`;::NuGenesis LMS - \\Remote 
-	:*:lms`;::ahk_exe WFICA32.EXE   
+	:*:lmswin`;::ahk_exe WFICA32.EXE   
 	:*:vs`;::ahk_exe Code.exe
 	:*:code`;::ahk_exe Code.exe
 	:*:remote`;::ahk_exe mstsc.exe
@@ -166,17 +166,78 @@ _WindowNames:
 	:*:exe`;::
 	sendinput, ahk_exe %Process%
 	return
-	:*:title`;::
-	sendinput, %winTitle%
-	return
+	
+	:*:#ifwalms`;::
+		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		; winactivate, ahk_exe WFICA32.EXE
+		; windowInfo()
+		; winactivate, ahk_exe Code.exe
+		; send % Wintitle
+		sendraw, #if winactive("
+		sendinput, %winTitle%
+		sendraw, ")
+		return
+	:*:ifwalms`;::
+		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		; winactivate, ahk_exe WFICA32.EXE
+		; windowInfo()
+		; winactivate, ahk_exe Code.exe
+		; send % Wintitle
+		sendraw, if winactive("
+		sendinput, %winTitle%
+		sendraw, ")
+		return
+	:*:walms`;::
+		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		; winactivate, ahk_exe WFICA32.EXE
+		; windowInfo()
+		; winactivate, ahk_exe Code.exe
+		; send % Wintitle
+		sendraw, winactive("
+		sendinput, %winTitle%
+		sendraw, ")
+		return
+	:*:lms`;::
+		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		; winactivate, ahk_exe WFICA32.EXE
+		; windowInfo()
+		; winactivate, ahk_exe Code.exe
+		; send % Wintitle
+		sendinput, %winTitle%
+		return
+	:*:clk`;::
+		if !MousePosition
+			iniread MousePosition, data.ini, SavedVariables, WindowMousePosition 
+		sendraw, clk( 
+		sendinput % Mouseposition 
+		sendraw, )
+		return
+	:*:click`;::
+		if !MousePosition
+			iniread MousePosition, data.ini, SavedVariables, WindowMousePosition 
+		sendraw, {click 
+		sendinput % Mouseposition 
+		sendraw, }
+		return
+	:*:px`;::
+	:*:pixel`;::
+		if !PixelColor
+			iniread PixelColor, data.ini, SavedVariables, PixelColor 
+		sendinput % PixelColor 
+		return
+	:*:cur`;::
+	:*:cursor`;::
+		if !MousePosition
+			iniread MousePosition, data.ini, SavedVariables, WindowMousePosition 
+		sendinput % Mouseposition 
+		return
 	:*:Control`;::
 	sendinput, %wincontrol%
 	return
-	:*:Control`;::
+	:*:Position`;::
 	sendinput, %winPosition%
 	return
 	:*:mouse`;::
-	sendinput, %mouseposition%
 	return
 	:*:cursor`;::
 	sendinput, %mouseposition%

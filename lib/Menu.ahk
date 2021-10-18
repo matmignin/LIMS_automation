@@ -65,11 +65,50 @@ class Menu{
     }
     
     
+    VsCode(){
+    global
+		try Menu,Menu, deleteAll
+    if WinActive("ahk_exe Code.exe")
+      Menu, Menu, add, &LMS Title, InputToVsCode
+    Menu, Menu, add, Window Title, InputToVsCode
+    Menu, Menu, add, Window Process, InputToVsCode
+    Menu, Menu, add, Click Position, InputToVsCode
+    Menu, Menu, add, Mouse Position, InputToVsCode
+    Menu, Menu, add, Window Location, InputToVsCode
+    try Menu, Menu, Show
+    return
     
-    
-    
-    
-    
+    InputToVSCode:
+    if A_thismenuItem contains &LMS Title  
+    {
+      winactivate, ahk_exe WFICA32.EXE
+      windowInfo()
+      winactivate, ahk_exe Code.exe
+      send % Wintitle
+      return
+    }
+    else 
+    pop("find window and click Mbutton")
+    KeyWait, Space, d
+    WindowInfo()
+    winactivate, ahk_exe Code.exe
+    sleep 200
+    if A_thismenuItem contains Window Title
+      send % Wintitle
+    else if A_thismenuItem contains Window Process
+      send % Process
+    else if A_thismenuItem contains Click Position
+      send % "{click " MousePosition "}"
+    else if A_thismenuItem contains Mouse Position
+      send % MousePosition
+    else if A_thismenuItem contains Window Location
+      send % WinLocation
+    ; sendinput, %A_thismenuItem%
+    try Menu,Menu, deleteAll
+    return
+    }
+
+
   CopyPasteSpec(){
     global copypasteToggle
      click

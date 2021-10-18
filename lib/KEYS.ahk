@@ -313,6 +313,8 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 	F9::    					Excel.Connect(1)
 	F19 & space::    			Excel.CopySheetName()
 	F19 & backspace::    delete
+	; F19::
+
 	; F19 & down::         ^down
 	; F19 & up::           ^up
 	; F19 & left::         ^left
@@ -345,7 +347,7 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 	Media_Prev::         Send,{LWindown}{tab}{lwinup}
 	F19 & F7::           ^F8 ;Excel.NextSheet()
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
-	F19::									Send, ^v
+	; F19::									Send, ^v
 #ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
 	return::             SendInput, !{i}
 	rbutton & Lbutton::  SendInput, !{i}

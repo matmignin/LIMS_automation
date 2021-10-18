@@ -37,7 +37,7 @@
     "editor.hideCursorInOverviewRuler": true,
     "editor.hover.delay": 500,
     "autoHide.autoHideSideBar": false,
-    "autoHide.autoHidePanel": false,
+    "autoHide.autoHidePanel": true,
     "notebook.outline.showCodeCells": true,
     "cSpell.enabled": true,
     "separators.enabledSymbols": [

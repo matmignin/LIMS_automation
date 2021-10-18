@@ -25,6 +25,73 @@ NewVersionRAE:
   sendinput, {click 429, 184}^{a}Update All Vitamin A Units with RAE ;click description "Edit specification - \\Remote"
     return	
 
+CheckExcelRow:
+  LMSwb:=ComObjActive("Excel.Application")
+loop 8 {
+  clipboard:=
+  send, ^c
+  clipwait, 1
+  sleep 200
+  send, {down}
+  RT:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,4)
+  Status:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,3)
+  if IsPixel(1203, 899,"F3EFEA")
+      RT.Value:=""
+    else
+      RT.Value:="RT"
+    sleep 400
+    ; }
+    ; if (A_thisHotkey="Right") 
+    ; else if (A_thisHotkey="Left")
+    }
+  return
+  CopyProductRotation:
+    clipboard:=
+    send, ^c
+    clipwait, 1
+    sleep 400
+    filename:= "C:\Users\mmignin\Documents\VQuest\Rotations\" Product ".txt"
+    FileDelete, %FileName%
+    FileAppend, %Clipboard%, %Filename%
+    LMSwb:=ComObjActive("Excel.Application")
+    Rotation:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,5)
+    Rotation.Value:=Product ".txt"
+    ; iniwrite %Clipboard%, data.ini, Rotations, %Product%
+    return  
+  PasteProductRotation:
+    filename:= "C:\Users\mmignin\Documents\VQuest\Rotations\" Product ".txt"
+    FileRead, Clipboard, %Filename%
+    ; iniread Clipboard,data.ini, Rotations, %Product%
+    LMSwb:=ComObjActive("Excel.Application")
+    RotationDone:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,6)
+    RotationDone.Value:="1"
+    sleep 200
+    send, ^v
+    return
+
+isPixel(X,Y,SearchColor){
+  MouseGetPos, mX, mY
+  ; if x:="mX" || y:="mY"
+    PixelGetColor, MouseColor, %mX%, %mY%
+  ; else
+    PixelGetColor, FoundColor, %X%, %Y%
+    ; Yellow = FFD353
+    ; White = FFFFFF
+    ; Light Blue = EAEFF3
+  if FoundColor contains %SearchColor%
+    ; Pop("Match",SearchColor,4000)
+    return "Match"
+  else
+    Pop(MouseColor)
+    ; return MouseColor
+  return
+}
+
+
+#If Winactive("Book") && TempCode
+  F15::
+  F21::gosub, CopyProductRotation
+
 #If Winactive("Edit specification - \\Remote") && TempCode
   mbutton::send, {click 332, 621} ;click okay 
 #If Winactive("Select methods tests - \\Remote") && TempCode
@@ -36,8 +103,14 @@ NewVersionRAE:
     ; Lbutton::
 #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
   Mbutton:: gosub, NewVersionRAE
-  NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+  ; NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+  ; F20::gosub, CheckExcelRow
+  ; F15::gosub, CheckExcelRow
     return
+#If TempCode
+  F15::GoSub, PasteProductRotation
+  numlock::Gosub, CopyProductRotation
+      return
 #if
 
 ;;   __________Testing Zone
@@ -50,60 +123,11 @@ ProductTab.AddCOASpace()
 
 return
 test_1:  ; tested if the 2nd function workd
-  regProducts:=[], regBatches:=[]
-      ; Products := [], 
-  ; TestText:=Clipboard
-  pos=0
-  while pos := RegexMatch(Clipboard, "i)(?P<Product>[abdefghijkl]\d{3}\b)(\s(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))?", var, pos+1){
-    if Var
-      regProducts.insert(varProduct " " varBatch)
-    if VarBatch
-      regBatches.insert(varBatch)
-    ; If VarProduct
-      ; regProducts.insert(varProduct)
-  }
-  ; while pos := RegexMatch(TestText, "i)(?P<Product>[abdefghijkl]\d{3}\b)|(?P<Batch>(?<!Ct#)\d{3}-\d{4}\b)", var, pos+1){
-  ;   if VarBatch
-  ;     regBatches.insert(varBatch)
-  ;   If VarProduct
-  ;     regProducts.insert(varProduct)
-  ; }
-                  ; result .= (A_Index = 1 ? "" : "`r`n") var
-      ; Products := [] 
-  Products:=[], oTemp := {}
-    for vKey, vValue in regProducts {
-    if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-      {
-        if !ObjHasKey(oTemp, vValue+0)
-          Products.Push(vValue+0), oTemp[vValue+0] := ""
-      }
-      else
-      {
-        if !ObjHasKey(oTemp, "" vValue)
-          Products.Push("" vValue), oTemp["" vValue] := ""
-      }
-    }
-        Batches:=[], oTemp := {}
-      for vKey, vValue in regBatches
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  Batches.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  Batches.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
 
-      ; vOutput := ""
-      ; for vKey, vValue in Batches
-      ;     vOutput .= vKey " " vValue "`r`n"
-      ; MsgBox, % vOutput
-  
-    return
+Menu.VScode()
+
+
+return
 
 
 return
