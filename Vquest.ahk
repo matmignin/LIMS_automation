@@ -99,7 +99,8 @@ MenuCheckboxes:
       }
     Excel.Connect(1)
 
-  #Include, <Temp>
+  #Include <Temp>
+  #Include <Checklist>
   #Include <Test>
   #include <VIM>
   #include <HotStrings>

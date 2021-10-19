@@ -1,24 +1,24 @@
 
 
-#If Winactive("Book") && TempCode
-  F15::
-  F21::gosub, CopyProductRotation
+#If Winactive("Select Iterations - \\Remote")
+  F20::GoSub, PasteProductRotation
+#If Winactive("Book")
+  F19::Gosub, CopyProductRotation
+  Mbutton::send, ^{c}
 
 #If Winactive("Edit specification - \\Remote") && TempCode
-  mbutton::send, {click 332, 621} ;click okay 
+  Mbutton:: gosub, NewVersionRAE
 #If Winactive("Select methods tests - \\Remote") && TempCode
 #If Winactive("Results Definition - \\Remote") && TempCode
     Mbutton::send, {enter}
+    numlock::gosub, AddRAE_ResultsDefinition
     rbutton::menu.lms()
     ; Lbutton::
 #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
-  Mbutton:: gosub, NewVersionRAE
-  ; NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+  NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
   ; F20::gosub, CheckExcelRow
   ; F15::gosub, CheckExcelRow
 #If TempCode
-  F15::GoSub, PasteProductRotation
-  numlock::Gosub, CopyProductRotation
 #if
 
 
@@ -31,17 +31,18 @@ return
 AddRAE:
   Send, {Click 58, 757} ; click Edit Results  "NuGenesis LMS - \\Remote"
   sleep 200
+AddRAE_ResultsDefinition:
   send, {click 80, 66} ; Click edit Results  "Definition - \\Remote"
-  sleep 600
+  sleep 800
   send, {tab 5}mcg%A_space%rae{click 505, 568}{click 464, 547} ; tab to units and select mcg rae 284, 197 ;click scrollbar then Requirement window "Result Editor - \\Remote"
   send, {end}%a_space%RAE
   sleep 200
   send, {click 377, 649} ;click done
 return
 NewVersionRAE:
-  send, {click 64, 243} ;click new version
-  sleep 400
-  sendinput, {click 429, 184}^{a}Update All Vitamin A Units with RAE ;click description "Edit specification - \\Remote"
+  ; send, {click 64, 243} ;click new version
+  ; sleep 400
+  sendinput, {click 429, 184}^{a}Update All Vitamin A Units with RAE{click 338, 616} ;click description "Edit specification - \\Remote"
 return	
 
 CheckExcelRow: ;goes down a lms search and fills out a excel table depending on a pixel search
@@ -138,7 +139,7 @@ return
 
 return
 test_1:  
-  menu.ProductSelection()
+	New Checklist(Products, ReturnFunction := "Validated")`
   
 return
 
