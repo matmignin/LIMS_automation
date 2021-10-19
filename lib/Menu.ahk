@@ -45,6 +45,20 @@ class Menu{
       temp:=Products[a_index]
         Menu, Menu, Add, %temp%, SelectProducts
     }
+    GuiControl,Varbar:Text, Product, %Product%
+    GuiControl,Varbar:Text, Batch, %Batch%
+    GuiControl,Varbar:Text, lot, %lot%
+    GuiControl,Varbar:Text, Coated, %Coated%
+    if product
+      selectedItem:= product 
+    if Batch
+      selectedItem.= " " Batch
+    if lot
+      selectedItem.= " " lot
+    if Coated
+      selectedItem.= " Ct#" Coated
+    try menu,menu,default, %selectedItem%
+    ;  try menu,menu,default, %product%
 		try Menu, Menu, Show
     return
 
@@ -57,6 +71,7 @@ class Menu{
     Batch:=sBatch
     lot:=slot
     Coated:=sCoated
+    n:=A_ThisMenuItemPos
     GuiControl,Varbar:Text, Batch, %sBatch%
     GuiControl,Varbar:Text, lot, %slot%
     GuiControl,Varbar:Text, Coated, %sCoated%

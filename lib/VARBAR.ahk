@@ -127,6 +127,9 @@ Menu(){
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
 			Iniread, note3, data.ini, Notes, note3
+			Products:=[]
+        FileRead, LoadedNotes, lib\Data\CurrentCodes.txt
+        Products := StrSplit(LoadedNotes,"`r`n")
 		}
 
 

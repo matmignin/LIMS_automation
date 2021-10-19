@@ -88,9 +88,51 @@ return
 
 
 
+#t::
+Test_2:
 
+  n-=1
+  Haystack:=Products[n]
+  whereAt:=listarray(Products)
+ whereatsplit:=StrReplace(whereAt, n ": ","`t" )
+pop(whereatsplit)
+  RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+    if sProduct {
+      Product:=sProduct
+      GuiControl,Varbar:Text, Product, %sProduct%
+    }
+    Batch:=sBatch
+    lot:=slot
+    Coated:=sCoated
+    GuiControl,Varbar:Text, Batch, %sBatch%
+    GuiControl,Varbar:Text, lot, %slot%
+    GuiControl,Varbar:Text, Coated, %sCoated%
+    try XL.Sheets(sProduct).activate
+    return
+
+#h::
 Test_3:
-  ProductTab.AddCOASpace()
+  n+=1
+  Haystack:=Products[n]
+  whereAt:=listarray(Products)
+ whereatsplit:=StrReplace(whereAt, n ": ","`t" )
+pop(whereatsplit)
+  RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+    if sProduct {
+      Product:=sProduct
+      GuiControl,Varbar:Text, Product, %sProduct%
+    }
+    Batch:=sBatch
+    lot:=slot
+    Coated:=sCoated
+    GuiControl,Varbar:Text, Batch, %sBatch%
+    GuiControl,Varbar:Text, lot, %slot%
+    GuiControl,Varbar:Text, Coated, %sCoated%
+    try XL.Sheets(sProduct).activate
+    return
+
+
+
 return
 
 
@@ -102,6 +144,8 @@ return
 
 
 Test_4:
+
+
 return
 
 
