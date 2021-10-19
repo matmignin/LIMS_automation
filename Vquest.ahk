@@ -25,7 +25,7 @@ NewVersionRAE:
   sendinput, {click 429, 184}^{a}Update All Vitamin A Units with RAE ;click description "Edit specification - \\Remote"
     return	
 
-CheckExcelRow:
+CheckExcelRow: ;goes down a lms search and fills out a excel table depending on a pixel search
   LMSwb:=ComObjActive("Excel.Application")
 loop 8 {
   clipboard:=
@@ -122,20 +122,13 @@ ProductTab.AddCOASpace()
 
 
 return
-test_1:  ; tested if the 2nd function workd
-
-Menu.VScode()
-
+test_1:  
 
 return
 
 
-return
 
 
-Capslock::
-#t::
-Test_2:
 menu.ProductSelection()
 
 return
@@ -145,10 +138,9 @@ return
 
 
 
-  Test_4:
-  LMS.detecttab()
-  Pop(Tab)
-    return
+ Test_4:
+ 
+ return
 
 Debug(Variable,Delete:="Delete"){
   if IsObject(Variable) 
@@ -180,23 +172,24 @@ Debug(Variable,Delete:="Delete"){
 
 
 
-  ; DropDown() {
-  ;   Loop, Read, lib\customers.ini
+  ; makeADropDown(inifile,Category) {
+    try menu, DropdownMenu, destroyall
+  ;   Loop, Read, %inifile% ;lib\customers.ini
   ;   {
   ;   If A_Index = 1
   ;     Continue
-  ;   Method := StrSplit(A_LoopReadLine, "=")
+  ;   ParseList := StrSplit(A_LoopReadLine, "=")
   ;     ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
-  ;   Selection:= % Method[1]
+  ;   Selection:= % ParseList[1]
   ;     ; Group:= % MethodGroup[2] ;for a second split
-  ;   Menu, Methodmenu, add, %Selection%, DropDown
+  ;   Menu, Dropdownmenu, add, %Selection%, DropDownhandler
   ;   }
-  ;   Menu, MethodMenu, Show,
+  ;   Menu, DropdownMenu, Show,
   ;   return
 
-  ;   DropDown:
+  ;   DropDownhandler:
   ;     InputVar:=A_ThisMenuItem
-  ;     IniRead,vOutput, lib\customers.ini, Customers, %InputVar%
+  ;     IniRead,vOutput, %inifile%, %Category%, %InputVar%
   ;     Pop(Inputvar,vOutput)
   ;     return
   ; }
