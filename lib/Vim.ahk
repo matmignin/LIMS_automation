@@ -27,7 +27,7 @@
 		SetWorkingDir, C:\Users\mmignin\Documents\VQuest
 		try Menu, Tray, Icon, lib\Vim.ico
 		menu, tray, add, ReloadScript, <^r
-		    Menu, Tray, Default, ReloadScript
+		Menu, Tray, Default, ReloadScript
 
   ; #include Support Functions.ahk
 ; return

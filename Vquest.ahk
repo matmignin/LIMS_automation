@@ -253,7 +253,7 @@ ActiveCheck:
   #include <menu>
   #include <Rotation>
   #include <Vis2>
-  #include <Support Functions>
+  #include <Functions>
 ;#Include C:\Users\mmignin\Documents\VQuest\lib\DebugVars\TreeListView.ahk
 
 
