@@ -1315,6 +1315,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Clipwait,1
 		Description:=Clipboard
 		sleep 200
+		StrReplace(Description, "eurofins",Note1) 
+		; StrReplace(Description, "(Send out)","") 
 		MouseClick, left, 464, 532,2,0
 		sleep 150
 		click.TestDefinitionEditor_Results()

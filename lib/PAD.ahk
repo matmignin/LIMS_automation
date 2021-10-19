@@ -93,6 +93,11 @@ clipCheckIfEmpty(){
 			clk(229, 136)
 			return
 		}
+		else if Winactive("Result Editor - \\Remote") && (copyPasteTOggle=1) {
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+			WinWaitActive, NuGenesis LMS - \\Remote, 10
+			copyPasteTOggle=0
+		}
 		else if Winactive("Register new samples - \\Remote") 
 				WorkTab.registerNewSamples()
 		else if Winactive("Login - \\Remote") 
@@ -110,14 +115,15 @@ clipCheckIfEmpty(){
 		else if Winactive("Select Product - \\Remote ahk_exe WFICA32.EXE") 
 			send % clk(107, 66) Product "{enter}{enter}"
 		else if Winactive("Edit Product - \\Remote") 
-			ProductTab.EditProduct() --
+			ProductTab.EditProduct()
 		else If Winactive("Select tests for request: R") 
 			WorkTab.SelectTestSample() 
-		else if winexist("Release: ") { ; Press Okay
+		else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule - \\Remote") { ; Press Okay
 			WinActivate, 
 			clk(131, 144)
-			return
 		}
+		else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
+			Sendpassword()
 	}
 
 	else if winactive("ahk_exe Code.exe") {
@@ -130,8 +136,6 @@ clipCheckIfEmpty(){
 	}
 	else if winactive("ahk_exe firefox.exe") 
 		Send, {ctrldown}{click}{ctrlup}
-	else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
-		Sendpassword()
 	else If Winactive("LMS Workbook.xlsb") 
 		Sendinput, +{click}
 	else If Winactive("Paster - Snipaste")
