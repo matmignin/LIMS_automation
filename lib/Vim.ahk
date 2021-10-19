@@ -25,7 +25,7 @@
     SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
 		SetWorkingDir, C:\Users\mmignin\Documents\VQuest
-		try Menu, Tray, Icon, lib\Vim.ico
+		try Menu, Tray, Icon, lib\Data\Vim.ico
 		menu, tray, add, ReloadScript, <^r
 		Menu, Tray, Default, ReloadScript
 

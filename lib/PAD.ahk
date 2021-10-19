@@ -525,7 +525,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
 					menu.ProductSelection()
 				else
-					menu.Varbar()
+					VarBar.Menu()
 				return
 	}
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse

@@ -30,7 +30,7 @@ class Menu{
     ProductHistory(){
     global
 		try Menu,Menu, deleteAll
-		Loop, Read, lib\Products.txt
+		Loop, Read, lib\data\Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
 		Menu, Menu, Show
     return
@@ -38,9 +38,12 @@ class Menu{
     ProductSelection(){
     global
 		try Menu,Menu, deleteAll
-		Loop % Products.MaxIndex()  { ; Read, debug.txt
-    temp:=Products[a_index]
-			Menu, Menu, Add, %temp%, SelectProducts
+     Products:=[]
+        FileRead, LoadedNotes, lib\Data\CurrentCodes.txt
+        Products := StrSplit(LoadedNotes,"`r`n")
+		Loop % Products.MaxIndex(){ ; Read, debug.txt
+      temp:=Products[a_index]
+        Menu, Menu, Add, %temp%, SelectProducts
     }
 		try Menu, Menu, Show
     return
@@ -341,40 +344,15 @@ Variable(){
   Try Menu,menu,show
   }
 
-Varbar(){
-  global
-	   MouseGetPos,,,,WinControl
-  try This.delete()
-    Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
-      if SwitchWorkSheets=1  
-        menu, menu, Check, &SwitchWorkSheets
-    Menu, Menu, Add, TempCode, TempCode 
-      if TempCode
-        Menu, menu, Check, Tempcode
-    Menu, Menu, Add, EnteringRotations, EnteringRotations 
-      if EnteringRotations
-        Menu, Menu, Check, EnteringRotations
-    Menu, Menu, Add, Show&SampleID, ShowSampleID 
-      if ShowSampleID=1  
-        menu, menu, Check, Show&SampleID
-    Menu, Menu, Add, Show&Coated, ShowCoated 
-      if ShowCoated=1  
-        menu, menu, Check, Show&Coated
-    if Winexist("Login - \\Remote"){
-      Menu,Menu, add, &Production Server, LMS_Env
-      Menu,Menu, add, &Test Server, LMS_Env
-      }
-          Menu,Menu,add,&Spec Table,Tests
-    Menu,Menu,add,&Ingredient Table,Tests
-  ; Menu, Menu, add, &Notes, Notes.Show
-    ; }
-  Try Menu,menu,show
-  }
+
 
 Remote_desktop(){
   global
-  try
-  This.delete()
+  try This.delete()
+      if Winexist("Login - \\Remote"){
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
+      }
     Menu, Menu, Add, TESTING LMS, Remote_desktop
     Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
     Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop

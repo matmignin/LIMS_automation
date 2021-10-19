@@ -81,30 +81,53 @@ Class VarBar{
 			return
 		}
 
-
+Menu(){
+  global
+	   MouseGetPos,,,,WinControl
+  try Menu, VarBarmenu, DeleteAll
+    Menu, Menu, Add,		 		&SwitchWorkSheets, 			SwitchWorkSheets 
+      if SwitchWorkSheets=1  
+        menu, menu, Check, 	&SwitchWorkSheets
+    Menu, VarBarMenu, Add,		 		TempCode, 							TempCode 
+      if TempCode
+        Menu, VarBarmenu, Check, 	Tempcode
+    Menu, VarBarMenu, Add,		 		EnteringRotations, 			EnteringRotations 
+      if EnteringRotations
+        Menu, VarBarMenu, Check, 	EnteringRotations
+    Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID 
+      if ShowSampleID=1  
+        menu, VarBarmenu, Check, 	Show&SampleID
+    Menu, VarBarMenu, Add,		 		Tables, 					Varbar.LaunchTable 
+		
+		If WinExist("LMS Workbook.xlsb - Excel"){ 
+			Menu,VarBarMenu,add,				&Spec Table,						Tests
+			Menu,VarBarMenu,add,				&Ingredient Table,			Tests
+		}
+  Try Menu,VarBarmenu,show
+  }
 
 	loadSavedVariables(){
-					global
-			if !WinExist("LMS Workbook.xlsb"){
-				Iniread, Batch, data.ini, SavedVariables, Batch
-				Iniread, Product, data.ini, Products, Product
-				Iniread, Batch0, data.ini, SavedVariables, Batch0
-				Iniread, Batch1, data.ini, SavedVariables, Batch1
-				Iniread, SampleID, data.ini, SavedVariables, SampleID
-				Iniread, Lot, data.ini, SavedVariables, Lot
-				Iniread, Coated, data.ini, SavedVariables, Coated
-				}
-				IniRead, Varbar_X, data.ini, Locations, VarBar_X
-				IniRead, Varbar_Y, data.ini, Locations, VarBar_Y
-				Iniread, Iteration, data.ini, SavedVariables, Iteration
-				Iniread, ShowSampleID, data.ini, Options, ShowSampleID
-				Iniread, ShowCoated, data.ini, Options, ShowSampleID
-				Iniread, ShowNote3, data.ini, Options, ShowNote3
-				Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
-				iniread, note1, data.ini, Notes, note1
-				Iniread, note2, data.ini, Notes, note2
-				Iniread, note3, data.ini, Notes, note3
+		global
+		if !WinExist("LMS Workbook.xlsb") || !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}\b"){
+			Iniread, Batch, data.ini, SavedVariables, Batch
+			Iniread, Product, data.ini, Products, Product
+			Iniread, Batch0, data.ini, SavedVariables, Batch0
+			Iniread, Batch1, data.ini, SavedVariables, Batch1
+			Iniread, SampleID, data.ini, SavedVariables, SampleID
+			Iniread, Lot, data.ini, SavedVariables, Lot
+			Iniread, Coated, data.ini, SavedVariables, Coated
 			}
+			IniRead, Varbar_X, data.ini, Locations, VarBar_X
+			IniRead, Varbar_Y, data.ini, Locations, VarBar_Y
+			Iniread, Iteration, data.ini, SavedVariables, Iteration
+			Iniread, ShowSampleID, data.ini, Options, ShowSampleID
+			Iniread, ShowCoated, data.ini, Options, ShowSampleID
+			Iniread, ShowNote3, data.ini, Options, ShowNote3
+			Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+			iniread, note1, data.ini, Notes, note1
+			Iniread, note2, data.ini, Notes, note2
+			Iniread, note3, data.ini, Notes, note3
+		}
 
 
 	SaveVariables(){
@@ -189,20 +212,20 @@ Class VarBar{
 		try GUI ingredient_table:destroy
 		try GUI Spec_table:destroy
 		excel.connect(1)
-		if winexist("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote")
+		ifwinnotactive, ahk_exe WFICA32.EXE 
+		winactivate, ahk_exe WFICA32.EXE
+		lms.DetectTab()
+		if winexist("Result Editor - \\Remote") || Winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote") || (Tab="Specs")
 			SpecTab.Table()
-		if winexist("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote")
+		if winexist("Composition - \\Remote") || WinActive("Edit Ingredient - \\Remote") || (Tab="Products")
 			ProductTab.Table()
 		else {
-			ifwinnotactive, ahk_exe WFICA32.EXE 
-			winactivate, ahk_exe WFICA32.EXE
-		lms.DetectTab()
-			If (Tab="Products")
-				ProductTab.Table()
-			else If (Tab="Specs")
-				SpecTab.Table()
-			else	
 				Menu.Tables()
+			; If (Tab="Products")
+				; ProductTab.Table()
+			; else If (Tab="Specs")
+				; SpecTab.Table()
+			; else	
 		}
 		return
 	}
@@ -296,15 +319,19 @@ HistoryMenuItem(){
 			; if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
 			; 	menu.ProductSelection()
 			; else
-			; 	menu.Varbar()
+			; 	VarBar.Menu()
 			; return
 	#ifwinactive
 		; ^left::Lms.SelectTab("Left")
 		; ^right::LMs.SelectTab("right")
 
+	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && WinExist("LMS Workbook.xlsb - Excel")
+		wheelleft::Excel.PrevSheet()
+		wheelright::excel.Nextsheet()   
+												
 	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-		; wheelleft::    Excel.PrevSheet()
-		; wheelRight::   excel.Nextsheet()
+		wheelright::	Varbar.AddIteration(0)
+		wheelleft::Varbar.SubIteration(0)
 		; +Mbutton::
 		; Rbutton::					
 		; 		MouseGetPos,,,,WinControl
@@ -312,7 +339,7 @@ HistoryMenuItem(){
 		; 		if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
 		; 			menu.ProductSelection()
 		; 		else
-		; 			menu.Varbar()
+		; 			VarBar.Menu()
 		; 		return
 		Numlock::
 			MouseGetPos,,,,WinControl
@@ -327,15 +354,15 @@ HistoryMenuItem(){
 				else if (winControl="Edit6") 
 					TT(Wincontrol)
 				else
-					menu.varbar()
+					VarBar.Menu()
 				return
 
 
 
 		WheelUp::      send % Blockrepeat(600) Varbar.AddIteration()
 		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
-		; wheelright::	Varbar.AddIteration(0)
-		; Wheelleft::   	Varbar.SubIteration(0)
+		+wheelup::	Varbar.AddIteration(0)
+		+wheeldown::Varbar.SubIteration(0)
 		up::				Varbar.AddIteration(0)
 		down::   		Varbar.SubIteration(0)
 		F9::           Excel.connect()
@@ -350,15 +377,9 @@ HistoryMenuItem(){
 				else if (WinControl="Edit2") || (WinControl="Edit3")
 					menu.Batches()
 				else if (winControl="Static1")
-					menu.Varbar()
+					VarBar.Menu()
 				else
 					menu.SetStatus()
-				; if (winControl="Edit6") {
-				; 	Gui,VarBar:add,Edit,		vNote2 		gNotevarbar2 		    W10 X+2 H29 y1 left,			  %Note2%
-					; IniWrite, _, data.ini, Notes, note2
-					; varbar.show()
-					; GuiControl, Varbar:Text, Coated,%Coated%
-
 			return
 		numpaddot:: 	 Openapp.Workbook()
 	#if
@@ -374,9 +395,9 @@ HistoryMenuItem(){
 				setTimer, SaveVarBarLocaton, -2000
 
 		return
-				SaveVarBarLocaton:
-				wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-				IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-				IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
-				return
+		SaveVarBarLocaton:
+			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
+			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
+			IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
+			return
 } 

@@ -22,18 +22,18 @@ lib/dbgp_test.ahk
 lib/dbgp.ahk
 
 .vscode/*
-lib\Products.txt
+lib\data\Products.txt
 Batch.txt
 lib\codes.ini
 .vscode/settings.json
 Batch.txt
 lib\codes.ini
-lib\Products.txt
-lib\customers.ini
+lib\data\Products.txt
+lib\data\customers.ini
 Batch.txt
 lib\codes.ini
-lib\Products.txt
-lib\Products.txt
+lib\data\Products.txt
+lib\data\Products.txt
 data.ini
 lib\codes.ini
 bin/OCR.png

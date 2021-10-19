@@ -1,4 +1,34 @@
 
+isPixel(X,Y,SearchColor){
+  MouseGetPos, mX, mY
+  ; if x:="mX" || y:="mY"
+    PixelGetColor, MouseColor, %mX%, %mY%
+  ; else
+    PixelGetColor, FoundColor, %X%, %Y%
+    ; Yellow = FFD353
+    ; White = FFFFFF
+    ; Light Blue = EAEFF3
+  if FoundColor contains %SearchColor%
+    ; Pop("Match",SearchColor,4000)
+    return "Match"
+  else
+    Pop(MouseColor)
+    ; return MouseColor
+  return
+}
+
+Debug(Variable,Delete:="Delete"){
+  if IsObject(Variable) 
+    DebugText:=listarray(Variable)
+  else 
+    DebugText:=Variable
+  if Delete=Delete
+    filedelete, C:\Users\mmignin\Documents\VQuest\lib\data\debug.txt
+  sleep 200
+  fileAppend %Debugtext%, C:\Users\mmignin\Documents\VQuest\lib\data\debug.txt
+}
+
+
 
 
 IfKeyPressed(keyPressed,Action:=""){
@@ -72,7 +102,7 @@ class Breaking {
 ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
 
  ;GuiControlGet, OutputVar , , %CtrlHwnd%,
-	IniRead,vOutput, lib\customers.ini, Customers, %OutputVar%
+	IniRead,vOutput, lib\data\customers.ini, Customers, %OutputVar%
  msgbox, %vOutput%
 }
 

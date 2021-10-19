@@ -1,4 +1,5 @@
 
+
 Clip(input=0,Wait:="0.55"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
   ; ClipboardSaved:=Clipboardall
@@ -25,14 +26,17 @@ Clip(input=0,Wait:="0.55"){
   return
 }
 
-clipClip(type){
+clipChange(type){
   global
   ifwinactive, Select tests for request: R
     return
   sleep 300
+    ; if !instr(Clipboard,"`r`n")
     clip.Parse()
-    clip.Regex()
-    ; clip.regex("Department")
+    ; clip.Regex()
+    if WinActive("ahk_exe WFICA32.EXE")
+      clip.Departmentregex()
+
     if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
       tt(clipboard,1000,100,-1000,,200,"R")
 return
@@ -62,46 +66,55 @@ Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[],
   sleep 200
-  ; if (Value:="")
-    ParsedClipboard:=Clipboard
-  ; else
-    ; ParsedClipboard:=Value
-  if !instr(ParsedClipboard,"`r`n")
-    return
+    If !Value
+      ParsedClipboard:=Clipboard
+    else 
+      ParsedClipboard:=Value
     loop, parse, ParsedClipboard, "`r`n" 
       {
         RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
         RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
-          Match:= VarProduct
+          if VarProduct {
+            Match:= VarProduct
             if varBatch
               Match.= " " VarBatch
             if varLot
               match.= " " VarLot    
             if varCoated
               match.= " Ct#" VarCoated  
-
+          }
           ; Match:= VarProduct
-          if Match
+          if Match && A_Index = 1
+              clip.Singleregex()
+          else if Match && A_Index > 1
             regProducts.insert(Match)
       }
-    Products:=[], oTemp := {} ;remove duplicates
-      for vKey, vValue in regProducts {
-      if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-        {
-          if !ObjHasKey(oTemp, vValue+0)
-            Products.Push(vValue+0), oTemp[vValue+0] := ""
+    if (RegProducts.maxindex() > 1) {
+        Products:=[], oTemp := {} ;remove duplicates
+        for vKey, vValue in regProducts {
+        if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+            if !ObjHasKey(oTemp, vValue+0)
+              Products.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+            if !ObjHasKey(oTemp, "" vValue)
+              Products.Push("" vValue), oTemp["" vValue] := ""
+          }
         }
-        else
-        {
-          if !ObjHasKey(oTemp, "" vValue)
-            Products.Push("" vValue), oTemp["" vValue] := ""
-        }
-      }
       sleep 200
-      AllCodes:=Listarray(Products)
-      Pop(AllCodes,,2000)
+        filedelete, lib\Data\CurrentCodes.txt
+        For Each, Element In Products 
+          CurrentCodes .= Element "`n"
+        FileAppend, %CurrentCodes%, lib\Data\CurrentCodes.txt
+      }
+
+
+      ; AllCodes:=Listarray(Products)
+      Pop(CurrentCodes,,2000)
   
       ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
@@ -118,7 +131,7 @@ Cl3Parse(){
   ; else
     ; ParsedClipboard:=Value
   if !instr(ParsedClipboard,"`r`n"){
-    AllCodes:=
+    CurrentCodes:=
     return
   }
     loop, parse, ParsedClipboard, "`r`n" 
@@ -162,7 +175,53 @@ Cl3Parse(){
 
     return
 }
-
+SingleRegex(){
+    global Batch, Product, lot, coated, sampleid, Products, CurrentCodes
+      Haystack:=Clipboard
+    sleep      20
+      RegExMatch(HayStack, "i)\b[abdefghijkl]\d{3}\b", cProduct)
+      RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
+      RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
+      RegExMatch(HayStack, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
+      RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
+      If cProduct {
+        ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
+        FileAppend, `n%ConnectedProduct%`n, lib\Data\CurrentCodes.txt
+        ; FileAppend, `n%CurrentCodes%, lib\Data\CurrentCodes.txt
+        ; CurrentCodes.= ConnectedProduct
+        ; products.Push("`n"ConnectedProduct)
+        GuiControl,Varbar:Text, Product, %cProduct%
+        Product:=cProduct
+        IniWrite, %cProduct%, data.ini, Products, Product
+      }
+      If cBatch {
+        GuiControl,Varbar:Text, Batch, %cBatch%
+        Batch:=cBatch
+        IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+      }
+      If cLot {
+        GuiControl,Varbar:Text, lot, %clot%
+        lot:=cLot
+        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+      }
+      If !cLot {
+        ; GuiControl,Varbar:Text, lot, %clot%
+        lot:=cLot
+        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+      }
+      If !cCoated {
+        GuiControl,Vajrbar:Text, Coated, %cCoated%
+        Coated:=cCoated
+        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        varbar.show()
+      }
+      If cCoated {
+        GuiControl,Varbar:Text, Coated, %cCoated%
+        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        varbar.show()
+      }
+      }
+  
 Regex(Category:=""){
     global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, 
     if !Category
@@ -176,10 +235,13 @@ Regex(Category:=""){
       RegExMatch(HayStack, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
       RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
+      ; If cProduct && cBatch && clot 
+        ; FileAppend, %cProduct% %cBatch% %clot% %Coated%`n, lib\Data\CurrentCodes.txt
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
+        FileAppend, `n`t%cProduct% %cBatch% %clot% %Coated%, lib\Data\CurrentCodes.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
@@ -237,7 +299,32 @@ Regex(Category:=""){
 
 
   }
+DepartmentRegex(){
+    global analytical,micro,retain,physical,CTphysical,CTretain, Department, 
+      Haystack:=Clipboard
+      Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
+      Regexmatch(HayStack, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
+      Regexmatch(HayStack, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
+      Regexmatch(HayStack, "i)(\bI, Physical\b|\bPhysical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      Regexmatch(HayStack, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
+      Regexmatch(HayStack, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
+      Sleep      20
+      If cAnalytical
+        Department:="Analytical"
+      If cMicro
+        Department:="Micro"
+      If cRetain
+        Department:="Retain"
+      If cCTRetain
+        Department:="Retain (Coated)"
+      If cPhysical
+        Department:="Physical"
+      If cCTPhysical
+        Department:="Physical (Coated)"
+  return 
 
+
+  }
 IfNothingSelected(Action){
   global
     ClipboardSaved:=ClipboardAll
@@ -513,3 +600,5 @@ ctrl(){
       return
     }
 }
+
+  #include Vis\Vis2.ahk

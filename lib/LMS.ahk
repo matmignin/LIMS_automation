@@ -12,7 +12,7 @@
     
   ;   Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
   ;   Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-  ;   IniRead,ShipToIndex, lib\customers.ini, Customers, %Customer%
+  ;   IniRead,ShipToIndex, lib\data\customers.ini, Customers, %Customer%
   ;   ; if !ShipTo
   ;     ; ShipTo:=ShipToIndex
   ;   return ShiptoIndex
@@ -550,7 +550,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 			sleep 200
 			Send, {enter}
 			FileAppend, %Batch% `n, Batch.txt
-			FileAppend, %product% `n, lib\Products.txt
+			FileAppend, %product% `n, lib\data\Products.txt
 			iniwrite, %Batch%, lib\codes.ini, %Batch%,
 			iniwrite, %Product%, lib\codes.ini, %Product%, 
 			return
@@ -1214,7 +1214,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		WinActivate, Select methods tests - \\Remote
 		click, 229, 72,2
 		Send, ^a
-		Loop, Read, lib\Methods.ini
+		Loop, Read, lib\data\Methods.ini
 		{
 		If A_Index = 1
 			Continue
@@ -1230,7 +1230,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Methods:
 			sleep 200
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, lib\Methods.ini, Methods, %InputVar%
+			IniRead,vOutput, lib\data\Methods.ini, Methods, %InputVar%
 			SendInput, %vOutput%{enter}
 			sleep 300
 			click 506, 341

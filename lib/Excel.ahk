@@ -47,26 +47,26 @@ XL := ComObjActive("Excel.Application")
 												For sheet in xl.ActiveWorkbook.Worksheets
 												{
 													cSheet:=sheet.name
-													; If (cSheet!="Finished")
+													if RegexMatch(cSheet, "i)[abdefghijkl]\d{3}\b")
 														ProductSheets.insert(cSheet)
 												}
-												Productsheets.remove(1)
+												; Productsheets.remove(1)
 												; Productsheets.remove(1)
 														; A__DDLXLProducts .= "|" Products[A_index]
 												 AllWorkSheets:=listarray(ProductSheets,"")
-												  AllWorkSheets:= StrReplace(AllWorkSheets, "Main", " | ")
-												  AllWorkSheets:= StrReplace(AllWorkSheets, "Vitamin A", " | ")
-												  AllWorkSheets:= StrReplace(AllWorkSheets, "Finished", " | ")
-												  AllWorkSheets:= StrReplace(AllWorkSheets, "Template", "")
-												  AllWorkSheets:= StrReplace(AllWorkSheets, "Micro Pending", " | ")
-												  AllWorkSheets:= StrReplace(AllWorkSheets, A_space A_space, A_space)
+												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Main", " | ")
+												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Vitamin A", " | ")
+												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Finished", " | ")
+												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Template", "")
+												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Micro Pending", " | ")
+												  ; AllWorkSheets:= StrReplace(AllWorkSheets, A_space A_space, A_space)
 												 Return AllWorkSheets
 												} 
 
 SheetChange(sht,Cell) {
 	Global
-	if (Cell.ActiveCell.Address = "$E$1" || Cell.ActiveCell.Address = "$B$3"){
-		excel.Infolocations()
+	if (Cell.ActiveCell.Address = "$E$1" || Cell.ActiveCell.Address = "$B$3") {
+			excel.Infolocaions()
 	POP(Cell.ActiveCell.value,Shipto)
 	}
 	else
@@ -101,6 +101,9 @@ SheetChange(sht,Cell) {
 	}
 InfoLocations(){
 	global
+		SheetName:=XL.ActiveSheet.Name
+		if !RegexMatch(SheetName,"i)[abdefghijkl]\d{3}\b")
+			return
 	Batches:=[]
 	GuiControl, -redraw, varbar
 		Try Product:=XL.Range("B1").Value

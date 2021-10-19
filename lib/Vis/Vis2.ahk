@@ -3,8 +3,8 @@
 ; Date:      2017-08-19
 ; Recent:    2018-04-04
 
-#include <Gdip_All>
-#include <JSON>
+#include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
+#include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
 
 
 ; ImageIdentify() - Label and identify objects in images.
