@@ -68,11 +68,13 @@ iconlist:="a,c,s,t,x,y,z"
 	Menu, SubMenu3, Add, TempText, MenuHandler
 	Menu, SubMenu4, Add, TempText, MenuHandler
 
+
+
 ; load clipboard history and templates
 IfNotExist, %A_ScriptDir%\ClipData\History\History.xml
 	Error:=1
 
-if (XA_Load( A_ScriptDir "\ClipData\History\History.xml") = 1) ; the name of the variable containing the array is returned OR the value 1 in case of error
+if (XA_Load(A_ScriptDir "\ClipData\History\History.xml") = 1) ; the name of the variable containing the array is returned OR the value 1 in case of error
 	Error:=1
 
 If (Error = 1)
@@ -167,8 +169,6 @@ Return
 
 
 
-
-
 ;!^v::
 hk_menu:
 Gosub, FifoInit
@@ -216,9 +216,9 @@ else
 	Gosub, ClipChainPasteDoubleClick
 Return
 
-; Cycle through clipboard 
-;^e::
-;#v::
+
+
+
 ; If GetKeyState("F13","p")
 hk_cyclebackward:
 If !ActiveWindowID
@@ -707,7 +707,7 @@ FuncOnClipboardChange() {
 ; 1 if it contains something that can be expressed as text (this includes files copied from an Explorer window);
 ; 2 if it contains something entirely non-text such as a picture.
 
-If (A_EventInfo <> 1)
+If (A_EventInfo <> 1) || (A_PriorKey:="1")
 	Return
 
 ;ProcesshWnd:=DllCall("GetClipboardOwner", Ptr) ; may not work for all Executables

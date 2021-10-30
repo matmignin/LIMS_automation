@@ -301,8 +301,8 @@ Variable(){
    else if (A_ThisMenuItem = "Visual")
     SendInput, open{enter}
    else if (A_ThisMenuItem = "&VQ Login")
-    SendInput, ?Kilgore7744{enter}
-   else if (A_ThisMenuItem = "&Kilgore")
+    SendInput, +Kilgore7744{enter}
+   else if (A_ThisMenuItem = "+Kilgore")
     SendInput, Kilgore7744{enter}
    else if (A_ThisMenuItem = "&LMS Login")
     SendInput,Mmignin{tab}Kilgore7744{enter}
@@ -372,7 +372,7 @@ Remote_desktop(){
     Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
     Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
     Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
-  Menu, Menu, Add, Other Servers, Remote_desktop
+    Menu, Menu, Add, Other Servers, Remote_desktop
     Menu, SubMenu, Add, TEST_LMS, Remote_desktop
     Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
     Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
@@ -381,7 +381,7 @@ Remote_desktop(){
     Menu, SubMenu, Add, SDMS, Remote_desktop
     Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
     Menu, SubMenu, Add,empower, Remote_desktop
-  Menu, Menu, add, Other Servers, :SubMenu
+    Menu, Menu, add, Other Servers, :SubMenu
     Menu, Menu, Add, &LMS Login, Passwords
     Menu, Menu, Add, &VQ Login, Passwords
     Menu, Menu, Add,&Kilgore, Passwords
@@ -389,34 +389,34 @@ Remote_desktop(){
   return
   Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
-      SendInput,{Click 182, 97}10.1.2.153{enter}
-      winwaitactive, Windows Security,,2
-      if !errorlevel
-      SendInput, Kilgore7744{enter}
+      SendInput,{Click 182, 97}10.1.2.153 ;{enter}
+      ; winwaitactive, Windows Security,,2
+      ; if !errorlevel
+      ; SendInput, Kilgore7744 ;{enter}
       return
       }
     if (A_thisMenuItem = "TEST_LMS")
-      SendInput,{Click 182, 97}10.1.2.152{enter}
+      SendInput,{Click 182, 97}10.1.2.152 ;{enter}
     if (A_thisMenuItem = "TEST_NuGen")
-      SendInput,{Click 182, 97}10.1.2.150{enter}
+      SendInput,{Click 182, 97}10.1.2.150 ;{enter}
     if (A_thisMenuItem = "TEST_SDMS")
-      SendInput,{Click 182, 97}10.1.2.149{enter}
+      SendInput,{Click 182, 97}10.1.2.149 ;{enter}
     if (A_thisMenuItem = "PRD_Citrix_One")
-      SendInput,{Click 182, 97}10.1.2.134{enter}
+      SendInput,{Click 182, 97}10.1.2.134 ;{enter}
     if (A_thisMenuItem = "PRD_Citrix_Two")
-      SendInput,{Click 182, 97}10.1.2.226{enter}
+      SendInput,{Click 182, 97}10.1.2.226 ;{enter}
     if (A_thisMenuItem = "PRD_Citrix_Three")
-      SendInput,{Click 182, 97}10.1.2.227{enter}
+      SendInput,{Click 182, 97}10.1.2.227 ;{enter}
     if (A_thisMenuItem = "LMS_PRD")
-      SendInput,{Click 182, 97}10.1.2.138{enter}
+      SendInput,{Click 182, 97}10.1.2.138 ;{enter}
     if (A_thisMenuItem = "NuGenesis")
-      SendInput,{Click 182, 97}10.1.2.164{enter}
+      SendInput,{Click 182, 97}10.1.2.164 ;{enter}
     if (A_thisMenuItem = "SDMS")
-      SendInput,{Click 182, 97}10.1.2.142{enter}
+      SendInput,{Click 182, 97}10.1.2.142 ;{enter}
     if (A_thisMenuItem = "PRD_EMPCitrix")
-      SendInput,{Click 182, 97}10.1.2.242{enter}
+      SendInput,{Click 182, 97}10.1.2.242 ;{enter}
     if (A_thisMenuItem = "Empower")
-      SendInput,{Click 182, 97}10.1.2.228{enter}
+      SendInput,{Click 182, 97}10.1.2.228 ;{enter}
     else
       Try Menu,Menu, deleteAll
     return
@@ -427,7 +427,7 @@ Remote_desktop(){
   Products(){
     global
       This.delete()
-    If !WinExist("LMS Workbook.xlsb - Excel"){
+    If !WinExist("Mats LMS Workbook.xlsb - Excel"){
       varbar.historymenuItem()
       return
     }
@@ -454,7 +454,7 @@ Remote_desktop(){
   Batches(){
       global
       This.Delete()
-      If !WinExist("LMS Workbook.xlsb - Excel"){
+      If !WinExist("Mats LMS Workbook.xlsb - Excel"){
         varbar.historymenuItem()
         return
       }

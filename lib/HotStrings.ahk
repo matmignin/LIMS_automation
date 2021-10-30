@@ -160,8 +160,8 @@ _WindowNames:
 	:*:explor`;::ahk_exe explorer.exe
 	:*:onenote`;::ahk_exe ONENOTE.EXE
 	:*:exel`;::ahk_exe EXCEL.EXE
-	:*:wb`;::LMS Workbook.xlsb - Excel
-	:*:lmswb`;::LMS Workbook.xlsb - Excel
+	:*:wb`;::Mats LMS Workbook.xlsb - Excel
+	:*:lmswb`;::Mats LMS Workbook.xlsb - Excel
 	:*:note`;::ahk_exe ONENOTE.EXE
 	:*:exe`;::
 	sendinput, ahk_exe %Process%
@@ -293,30 +293,30 @@ _LMS_HOTSTRINGS:
 	ProductTab.Blends(5,ShapeAndSize)
 	:*:5scoop::
 	ProductTab.Blends(6,ShapeAndSize)
-	:*:6scoop::
+	:*:1scoop::
 	ProductTab.Blends(1,"Scoop")
 	:*:2scoops::
-	ProductTab.Blends(2,"Scoop")
+	ProductTab.Blends(2,"Scoops")
 	:*:3scoops::
-	ProductTab.Blends(3,"Scoop")
+	ProductTab.Blends(3,"Scoops")
 	:*:4scoops::
-	ProductTab.Blends(4,"Scoop")
+	ProductTab.Blends(4,"Scoops")
 	:*:5scoops::
-	ProductTab.Blends(5,"Scoop")
+	ProductTab.Blends(5,"Scoops")
 	:*:6scoops::
-	ProductTab.Blends(6,"Scoop")
+	ProductTab.Blends(6,"Scoops")
 	:*:1stick::
 	ProductTab.Blends(1,"stick packet")
 	:*:2sticks::
-	ProductTab.Blends(2,"stick packet")
+	ProductTab.Blends(2,"stick packets")
 	:*:3sticks::
-	ProductTab.Blends(3,"stick packet")
+	ProductTab.Blends(3,"stick packets")
 	:*:1Packet::
 	ProductTab.Blends(1,"packet")
 	:*:2packets::
-	ProductTab.Blends(2,"packet")
+	ProductTab.Blends(2,"packets")
 	:*:3packets::
-	ProductTab.Blends(3,"stick packet")
+	ProductTab.Blends(3,"packets")
 	return
 
 

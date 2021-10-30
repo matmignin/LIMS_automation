@@ -1,5 +1,8 @@
 
 #ifwinactive, 
+	<^1::                 return
+	<^2::                 return ;,{Ctrldown}{2}{CtrlUp}
+	<^3::                 return ;Send,{Ctrldown}{0}{CtrlUp}
 ;;	___ClipCopy&Paste
 	Rbutton & F19::
 		if (CutPresses > 0) ; SetTimer already started, so we log the keypress instead.
@@ -113,7 +116,7 @@ F13 & lshift::GetAllProducts("`n")
 
 
 	Scrolllock::SetCapsLockState % !GetKeyState("CapsLock", "T")
-	f15::sendinput, {click 3}
+	; f15::sendinput, {click 3}
 	$Numlock::				4tap()
 	Mbutton::						3Tap()
 	Lwin & AppsKey::   return
@@ -179,7 +182,7 @@ F13 & lshift::GetAllProducts("`n")
 	numpadMult::         		4up()
 	numpaddot::          		CloseWindow()
 	pause::							Suspend, Toggle 
-	F15 & Lbutton::				send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
+	; F15 & Lbutton::				send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
 	F16 & Lbutton::				send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}							
 
 	$#F7::							Send, {lwindown}{right}{lwinup}
@@ -215,23 +218,13 @@ F13 & lshift::GetAllProducts("`n")
 	; <!c::                      clip.Append()
 
 
-	;;	___F19_And_F20:
+	;;F20:
 	F20 & \::            		Sendpassword()
 	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
 	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
-	; F19 up::      	       	Clip.paste()
-
-	F19 & wheeldown::				Send % Blockrepeat(500) "{F8}"
-	F19 & wheelup::				send % Blockrepeat(500) "{F9}"
-	F19 & wheelleft::				gosub, F6
-	F19 & wheelright::			GoSub, F7  
-
-
-
 
 	F13 & esc::						Varbar.reset()	
-	F19 & ]::            		CreditCard()
-	F19 & backspace::    		Send,{delete}
+	F20 & ]::            		CreditCard()
 	F20 & Insert::       		Clip("OCR")
 	F20 & F7::           		Excel.NextSheet()
 	F20 & F6::           		Excel.PrevSheet()
@@ -246,11 +239,11 @@ F13 & lshift::GetAllProducts("`n")
 	F20 & F19::          		Send, {F22}
 
 	F19 & Media_Play_pause::
-										my_screenwidth:=A_ScreenWidth-215
-										my_screenheight:=A_Screenheight-115
-										IniWrite, %my_screenwidth%, data.ini, Locations, Notes_x
-										IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
-										Return
+			my_screenwidth:=A_ScreenWidth-215
+			my_screenheight:=A_Screenheight-115
+			IniWrite, %my_screenwidth%, data.ini, Locations, Notes_x
+			IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
+			Return
 	
 
 	F13 & `::					Test(iteration)
@@ -317,7 +310,7 @@ F13 & lshift::GetAllProducts("`n")
 	^wheeldown::send, ^{wheeldown}
 	^wheelup::send, ^{wheelup}
 
-#IfWinActive, LMS Workbook.xlsb ;; 	___Excel
+#IfWinActive, Mats LMS Workbook.xlsb ;; 	___Excel
 	F9::    					Excel.Connect(1)
 	F19 & space::    			Excel.CopySheetName()
 	F19 & backspace::    delete

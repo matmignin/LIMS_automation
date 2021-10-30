@@ -1,4 +1,5 @@
-List = 
+
+List =
 	(
 	Item:		1
 	Item:		2
@@ -22,9 +23,18 @@ List =
 	Item:		20
 	)
 	
-	New Checklist(List, ReturnFunction := "Validated")
-	Exit
+
 	
+	; New Checklist(List, ReturnFunction := "Validated")
+	; msgbox, Yo
+	; Return
+	
+
+
+	GuiClose:
+Gui,Destroy 
+return
+
 	Validated(){
 		MsgBox % "All Items on Checklist Have Been Reviewd.`n`nPress Okay to being next Process."
 	}
@@ -64,17 +74,17 @@ List =
 	
 			Array := StrSplit(Obj.List, "`n")
 				for each, item in Array {
-					Gui, Add, Checkbox, Wrap y+20 wp +hwndh%each% -Theme, % item 
+					Gui, Add, Checkbox, Wrap y+1 wp +hwndh%each% -Theme, % item 
 					Obj["Checklist"]["h"each] := h%each%
-					If (A_Index = 5) or (A_Index = 10) or (A_Index = 15){
-						GuiControl, Text, SysTabControl321, % (A_Index = 5) ? "|Page 1|Page 2" : (A_Index = 10) ? "|Page 1|Page 2|Page 3" : (A_Index = 15) ? "|Page 1|Page 2| Page 3|Page 4" :
-						Gui, Tab, % (A_Index = 5) ? "2" : (A_Index = 10) ? "3" : (A_Index = 15) ? "4" :
+					If (A_Index = 10) or (A_Index = 20) or (A_Index = 30){
+						GuiControl, Text, SysTabControl321, % (A_Index = 10) ? "|Page 1|Page 2" : (A_Index = 20) ? "|Page 1|Page 2|Page 3" : (A_Index = 30) ? "|Page 1|Page 2| Page 3|Page 4" :
+						Gui, Tab, % (A_Index = 10) ? "2" : (A_Index = 20) ? "3" : (A_Index = 30) ? "4" :
 					}  
 				}
 	
 			Gui, Tab  
 			
-			Gui, Add, Button, xp y+5 wp  +hwndhOkay , Okay
+			Gui, Add, Button, xp y+1 wp  +hwndhOkay , Okay
 	
 			MenuHandler := ObjBindMethod(this,"ValidateChecklist", Obj)
 			GuiControl +g, % hOkay , % MenuHandler

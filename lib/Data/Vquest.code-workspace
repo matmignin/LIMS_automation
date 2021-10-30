@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "..\\.."
+		}
+	],
+	"settings": {
+		"autoHide.autoHideSideBar": false,
+		"autoHide.autoHidePanel": true,
+		"notebook.outline.showCodeCells": true,
+		"window.zoomLevel": 0,
+		"workbench.sideBar.location": "left"
+	}
+}

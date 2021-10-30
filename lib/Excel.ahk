@@ -3,13 +3,13 @@
 Class Excel{
 Connect(reload:=0){
 	Global
-		IF !Winexist("LMS Workbook.xlsb")
+		IF !Winexist("Mats LMS Workbook.xlsb")
 		Return
 	Gui VarBar:+LastFound
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if WinExist("LMS Workbook.xlsb")
-		ControlSend,ahk_parent,{esc}, LMS Workbook.xlsb
+	if WinExist("Mats LMS Workbook.xlsb")
+		ControlSend,ahk_parent,{esc}, Mats LMS Workbook.xlsb
 	else {
 		TT("no notebook open",500) 
 				; VarBar.load()

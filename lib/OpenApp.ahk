@@ -137,14 +137,14 @@ Outlook(){
  }
 
   workbook(){
- If WinActive("LMS Workbook.xlsb - Excel"){
+ If WinActive("Mats LMS Workbook.xlsb - Excel"){
   Send,{altDown}{tab}{altup}
   return
  }
- ifwinnotexist, LMS Workbook.xlsb - Excel
-  run, LMS Workbook.xlsb, C:\Users\mmignin\OneDrive - Vitaquest International\
- IfWinNotActive,LMS Workbook.xlsb - Excel
-  WinActivate, LMS Workbook.xlsb - Excel
+ ifwinnotexist, Mats LMS Workbook.xlsb - Excel
+  run, Mats LMS Workbook.xlsb, C:\Users\mmignin\OneDrive - Vitaquest International\LMS Team\
+ IfWinNotActive,Mats LMS Workbook.xlsb - Excel
+  WinActivate, Mats LMS Workbook.xlsb - Excel
  return
  }
  VScode(){

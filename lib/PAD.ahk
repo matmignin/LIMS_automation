@@ -21,17 +21,17 @@ _MouseIsOver:
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		^Wheeldown::Blockrepeat(500) clip()
 		Numlock::
-		 			If !winactive("ahk_exe OUTLOOK.EXE")
-					click
- 					3tap()
-					winactivate, NuGenesis LMS - \\Remote			
-					LMS.Searchbar(clipboard,"{enter}")
- 					return
+			If !winactive("ahk_exe OUTLOOK.EXE")
+			click
+			3tap()
+			winactivate, NuGenesis LMS - \\Remote			
+			LMS.Searchbar(clipboard,"{enter}")
+			return
 		Mbutton::
- 					If !winactive("ahk_exe OUTLOOK.EXE")
-						click
- 					3tap()
- 					return
+			If !winactive("ahk_exe OUTLOOK.EXE")
+				click
+			3tap()
+			return
 	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 		F7::LMS.SearchBar(Batch,"{enter}")
 		F6::LMS.SearchBar(Product,"{enter}")
@@ -146,7 +146,7 @@ clipCheckIfEmpty(){
 	}
 	else if winactive("ahk_exe firefox.exe") 
 		Send, {ctrldown}{click}{ctrlup}
-	else If Winactive("LMS Workbook.xlsb") 
+	else If Winactive("Mats LMS Workbook.xlsb") 
 		Sendinput, +{click}
 	else If Winactive("Paster - Snipaste")
 			Send, ^c
@@ -303,9 +303,10 @@ return
 		else
 			Menu.LMS()
 	}
+
 	else if WinActive("Composition - \\Remote")
 		ProductTab.AddCOASpace()
-	else if WinActive("LMS Workbook.xlsb - Excel")
+	else if WinActive("Mats LMS Workbook.xlsb - Excel")
 		menu.SetStatus()
 
 	
@@ -326,9 +327,9 @@ return
 	global
 	If winactive("NuGenesis LMS - \\Remote") {
 		LMS.Detecttab()
-		if (Tab="Requests" || Tab:="Samples")
-			LMS.SampleRequestToggle()
-			; LMS.ViewCoA()
+		if (Tab="Requests") || (Tab:="Samples")
+			; LMS.SampleRequestToggle()
+			LMS.ViewCoA()
 		else if (Tab:="Products")
 			{
 			Pop("Products")
@@ -337,7 +338,7 @@ return
 			}
 		else if (Tab="Specs")
 			{
-			Pop(" specs")
+			Pop("specs")
 			; click
 			; clk(67, 754) ;edit results
 			Return
@@ -345,16 +346,18 @@ return
 		else
 			Pop("nothing")
 	}
+		else if WinActive("Results Definition - \\Remote")
+		menu.lms()
 	else if winactive("PDF Preview - \\Remote")
 		Send, {altdown}{F4}{altup}
 	Else
-		Sendinput, {altdown}{ctrldown}{tab}{ctrlup}{altup}
+		Sendinput, #{up}
 		return
 }
 4Right(){
 	global 
 		If winactive("ahk_exe Code.exe")
-			SendInput, ^{d} ;go to Deffinition
+			SendInput, ^{d} ;go to Definition
 		if (SwitchWorkSheets==1) {
 				excel.nextsheet()
 			return
@@ -362,27 +365,28 @@ return
 		else { 
 			If winactive("ahk_exe OUTLOOK.EXE")
 				WinMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
-			else If winactive("NuGenesis LMS - \\Remote") {
-				LMS.Detecttab()
-				if (Tab="Requests" || Tab:="Samples")
-					LMS.SampleRequestToggle()
-					; LMS.ViewCoA()
-				else if (Tab:="Products")
-					{
-					Pop("Products")
-					; clk(86, 443) ;edit composition
-					Return
-					}
-				else if (Tab="Specs")
-					{
-					Pop(" specs")
-					; click
-					; clk(67, 754) ;edit results
-					Return
-					}
-		else
-			Pop("nothing")
-	}
+			else If winactive("NuGenesis LMS - \\Remote") ;{
+					LMS.SearchBar(Batch,"{enter}","Add")
+				; LMS.Detecttab()
+				; if (Tab="Requests" || Tab:="Samples")
+				; 	LMS.SampleRequestToggle()
+				; 	; LMS.ViewCoA()
+				; else if (Tab:="Products")
+				; 	{
+				; 	Pop("Products")
+				; 	; clk(86, 443) ;edit composition
+				; 	Return
+				; 	}
+				; else if (Tab="Specs")
+				; 	{
+				; 	Pop(" specs")
+				; 	; click
+				; 	; clk(67, 754) ;edit results
+				; 	Return
+				; 	}
+		; else
+			; Pop("nothing")
+	; }
 		If winactive("ahk_exe WFICA32.EXE")
 			excel.nextsheet()
 		else
@@ -402,7 +406,8 @@ return
 			If winactive("ahk_exe OUTLOOK.EXE")
 				WinMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
 			else If winactive("NuGenesis LMS - \\Remote")
-					lms.SampleRequestToggle()
+				LMS.SearchBar(Product,"{enter}","Add")
+					; lms.SampleRequestToggle()
 			else If winactive("ahk_exe WFICA32.EXE")
 				excel.Prevsheet()
 			else 

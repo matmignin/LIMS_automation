@@ -16,7 +16,7 @@ Clip(input=0,Wait:="0.55"){
   clipwait,%Wait%
   sleep %input%
   if errorlevel
-  {
+  { (Intertek)
     ; clipboard:=ClipboardSaved
     if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
@@ -30,15 +30,27 @@ clipChange(type){
   global
   ifwinactive, Select tests for request: R
     return
-  sleep 300
+  ; if A_PriorKey:="^1"
+    ; exit
+  sleep 100
     ; if !instr(Clipboard,"`r`n")
     clip.Parse()
     ; clip.Regex()
-    if WinActive("ahk_exe WFICA32.EXE")
+    if WinActive("ahk_exe WFICA32.EXE"){
       clip.Departmentregex()
-    exit
-    if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && (A_PriorKey!="1") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
-      tt(clipboard,1000,100,-500,,200,"R")
+      StringReplace, Clipboard, Clipboard,Value,111Skin Limited
+      ; RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
+      tt(Clipboard,1000)
+      exit
+    }
+    ; if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
+      ; exit
+    if A_PriorKey = c
+      tt(clipboard,600,100,-1500,,150,"R")
+    if A_PriorKey = x
+      tt(clipboard,600,100,-1500,,150,"R")
+    if A_PriorKey = b
+      return
 return
 
 }
@@ -76,6 +88,7 @@ Parse(Value:=""){
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
         RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
+        RegExMatch(A_loopfield, "i)(s|\$)\d{8}-\d{3}\b", VarSampleID)
           if VarProduct {
             Match:= VarProduct
             if varBatch
@@ -83,7 +96,9 @@ Parse(Value:=""){
             if varLot
               match.= " " VarLot    
             if varCoated
-              match.= " Ct#" VarCoated  
+              match.= " Ct#" VarCoated 
+            If ShowSampleId && VarSampleID 
+              match.= " | " VarSampleID 
           }
           ; Match:= VarProduct
           if Match && A_Index = 1
@@ -114,7 +129,7 @@ Parse(Value:=""){
 
 
       ; AllCodes:=Listarray(Products)
-      Pop(CurrentCodes,,2000,"Window")
+      Pop(CurrentCodes,,1000,"Right")
   
       ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
@@ -183,7 +198,8 @@ SingleRegex(){
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       RegExMatch(HayStack, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
-      RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
+      If ShowSampleID
+        RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       If cProduct {
         ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
         FileAppend, `n%ConnectedProduct%`n, lib\Data\CurrentCodes.txt
@@ -218,6 +234,10 @@ SingleRegex(){
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
         IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        varbar.show()
+      }
+      If cSampleID {
+        GuiControl,Varbar:Text, SampleID, %cSampleID%
         varbar.show()
       }
       }
@@ -366,6 +386,119 @@ IfNothingSelected(Action){
   return
 }
 
+ClickText(button:=""){
+	mousegetpos, mousex, mousey
+	SetDefaultMouseSpeed, 0
+	Click, %A_CaretX% %A_caretY%, %button%
+	mousemove, %mousex%, %mousey%, 0
+	SetDefaultMouseSpeed, 1
+}
+
+Copy(){
+  Global
+    preclip:=Clipboardall
+      Send, {ctrlup}{altup}{shiftup}
+    KeyWait, F19, T0.20
+    If ErrorLevel
+    {
+        KeyWait, F19, T0.65
+        if (A_PriorKey!="F19") ;allows for other key combos
+          exit
+        if (A_PriorKey="F19") {  
+        If !ErrorLevel
+        {
+          This.Copy("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick
+          Return
+        }
+        Else ;will trigger after 1 sec
+          Send, {F22}
+          ; KeyWait, F20,
+          Return
+      }
+    }
+    clipboard:=
+    Send, ^{c}
+    clipwait, 0.75
+    if errorlevel {
+      clipboard:=Preclip
+      return
+    }
+    TT(Clipboard)
+    clip.Regex()
+
+      return
+  }
+
+
+Paste(){
+  global Clippaste
+    if (ClipPaste) {
+      Send, ^{v}
+      return
+  }
+    KeyWait, F19, T0.30
+    If ErrorLevel
+    {
+        KeyWait, F19, T2
+        if (A_PriorKey!="F19")
+          exit
+        if (A_PriorKey="F19")
+        If !ErrorLevel
+        {
+          ; Send, {F20}
+          Return
+        }
+          KeyWait, F19, T2
+          Return
+      }
+    if Errorlevel = 0
+    KeyWait, F19, T0.60
+      if !ErrorLevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
+            send % BlockRepeat(300) "^{v}"
+            ; wheel_paste()
+          Else
+          Clip.Append()
+            return
+      }
+      return
+    }
+ctrl(){
+  Global clippaste
+      if (ClipPaste = 1){
+        Send, {ctrldown}{v}{ctrlup}
+        return
+      }
+    KeyWait, F19, T0.30
+    If ErrorLevel
+    {
+        KeyWait, F19, T2
+        if (A_PriorKey!="F19")
+          exit
+        if (A_PriorKey="F19")
+        If !ErrorLevel
+        {
+          ; Send, {F20}
+          Return
+        }
+          KeyWait, F19, T4
+          Return
+      }
+    if Errorlevel = 0
+    KeyWait, F19, T0.60
+      if !ErrorLevel
+      {
+        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
+          send % BlockRepeat(300) "^{v}"
+            ; wheel_paste()
+          Else
+            return
+      }
+            ; Send, 
+      return
+    }
+}
 ; Click(){
 ;     global
 ;   MouseGetPos, xx
@@ -463,13 +596,7 @@ IfNothingSelected(Action){
 
 
 
-ClickText(button:=""){
-	mousegetpos, mousex, mousey
-	SetDefaultMouseSpeed, 0
-	Click, %A_CaretX% %A_caretY%, %button%
-	mousemove, %mousex%, %mousey%, 0
-	SetDefaultMouseSpeed, 1
-}
+
 
 ; Paste(){
 ;   global Clippaste, varbar_x, Varbar_y
@@ -495,110 +622,3 @@ ClickText(button:=""){
 ;   }
 
 
-Copy(){
-  Global
-    preclip:=Clipboardall
-      Send, {ctrlup}{altup}{shiftup}
-    KeyWait, F19, T0.20
-    If ErrorLevel
-    {
-        KeyWait, F19, T0.65
-        if (A_PriorKey!="F19") ;allows for other key combos
-          exit
-        if (A_PriorKey="F19") {  
-        If !ErrorLevel
-        {
-          This.Copy("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick
-          Return
-        }
-        Else ;will trigger after 1 sec
-          Send, {F22}
-          ; KeyWait, F20,
-          Return
-      }
-    }
-    clipboard:=
-    Send, ^{c}
-    clipwait, 0.75
-    if errorlevel {
-      clipboard:=Preclip
-      return
-    }
-    TT(Clipboard)
-    clip.Regex()
-
-      return
-  }
-
-
-Paste(){
-global Clippaste
-    if (ClipPaste) {
-      Send, ^{v}
-      return
-  }
-    KeyWait, F19, T0.30
-    If ErrorLevel
-    {
-        KeyWait, F19, T2
-        if (A_PriorKey!="F19")
-          exit
-        if (A_PriorKey="F19")
-        If !ErrorLevel
-        {
-          ; Send, {F20}
-          Return
-        }
-          KeyWait, F19, T2
-          Return
-      }
-    if Errorlevel = 0
-    KeyWait, F19, T0.60
-      if !ErrorLevel
-      {
-        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-            send % BlockRepeat(300) "^{v}"
-            ; wheel_paste()
-          Else
-          Clip.Append()
-            return
-      }
-      return
-    }
-ctrl(){
-  Global clippaste
-      if (ClipPaste = 1){
-        Send, {ctrldown}{v}{ctrlup}
-        return
-      }
-    KeyWait, F19, T0.30
-    If ErrorLevel
-    {
-        KeyWait, F19, T2
-        if (A_PriorKey!="F19")
-          exit
-        if (A_PriorKey="F19")
-        If !ErrorLevel
-        {
-          ; Send, {F20}
-          Return
-        }
-          KeyWait, F19, T4
-          Return
-      }
-    if Errorlevel = 0
-    KeyWait, F19, T0.60
-      if !ErrorLevel
-      {
-        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-          send % BlockRepeat(300) "^{v}"
-            ; wheel_paste()
-          Else
-            return
-      }
-            ; Send, 
-      return
-    }
-}
-
-  ; #include Vis\Vis2.ahk

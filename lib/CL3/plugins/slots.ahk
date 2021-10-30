@@ -15,6 +15,7 @@ History:
 
 */
 
+
 SlotsInit:
 
 If !IsObject(Slots)
@@ -68,16 +69,61 @@ else
 	Gui, Slots:Hide
 Return
 
-;>^1::
-;>^2::
-;>^3::
-;>^4::
-;>^5::
-;>^6::
-;>^7::
-;>^8::
-;>^9::
-;>^0::
+
+#if WinActive("CL3Slots")
+	<^Space::send, !{s}
+  <^1::
+		ControlFocus, Edit1, CL3Slots,
+		send, ^{a}
+		return
+  <^2::
+		ControlFocus, Edit2, CL3Slots,
+		send, ^{a}
+		return
+  <^3::
+		ControlFocus, Edit3, CL3Slots,
+		send, ^{a}
+		return
+  <^4::
+		ControlFocus, Edit4, CL3Slots,
+		send, ^{a}
+		return
+  <^5::
+		ControlFocus, Edit5, CL3Slots,
+		send, ^{a}
+		return
+  <^6::
+		ControlFocus, Edit6, CL3Slots,
+		send, ^{a}
+		return
+  <^7::
+		ControlFocus, Edit7, CL3Slots,
+		send, ^{a}
+		return
+  <^8::
+		ControlFocus, Edit8, CL3Slots,
+		send, ^{a}
+		return
+  <^9::
+		ControlFocus, Edit9, CL3Slots,
+		send, ^{a}
+		return
+  <^0::
+		ControlFocus, Edit0, CL3Slots,
+		send, ^{a}
+		return
+
+#if
+^1::
+^2::
+^3::
+^4::
+^5::
+^6::
+^7::
+^8::
+^9::
+^0::
 hk_slotpaste:
 OnClipboardChange("FuncOnClipboardChange", 0)
 Clipboard:=Slots[SubStr(A_thisHotkey,0)]

@@ -114,7 +114,7 @@
 
 Class LMS {    			;;_____________________Generl LMS_________________________
 
-	SearchBar(Code:="",PostCmd:=""){
+	SearchBar(Code:="",PostCmd:="",Overwrite:="Overwrite"){
 			Global
 			if !winactive("ahk_exe WFICA32.EXE")
 				winactivate, ahk_exe WFICA32.EXE
@@ -141,13 +141,19 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 				if (Tab="Products") {
 					If (Code=Product){
 						clk(x%Tab%Search,yProductsSearch)
-						Send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
+						Send, {ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							Send, ^{x}	
+						Send, %Product%{ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
+						ControlsetText, Edit8,%Clipboard%,VarBar	
 						Send, {ctrlup}	
 					exit
 					}
-						If (Code=Batch) {
+						If (Code=Batch) { ;click something edit comp
 						clk(40, 384)
 						sleep 200
 						clk(455, 472,,2)
@@ -157,9 +163,15 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 				if (Tab="Specs") {
 					; If (Code=Product) {
 					clk(x%Tab%Search,yProductsSearch)
-						Send, {ctrldown}{a}{ctrlup}%Product%{ctrldown}{a}{ctrlup}
+						Send, {ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							Send, ^{x}	
+						Send, %Product%{ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
+						ControlsetText, Edit8,%Clipboard%,VarBar	
 						Send, {ctrlup}	
 					exit
 					; }
@@ -170,21 +182,41 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 				}
 				If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 						clk(x%Tab%Search,yWorkTabSearch,,2)
-						; clk(x%Tab%Search,yWorkTabSearch)
-					Send,{ctrldown}{a}{ctrlup}%code%
-					if PostCmd!=""
-						send % PostCmd
-								Send, {ctrlup}
+						Send, {ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							Send, ^{x}	
+						Send, %Code%{ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							send, {right}{space}^{v}^{a}^{c}
+						if PostCmd!=""
+							send % PostCmd
+						ControlsetText, Edit8,%Clipboard%,VarBar	
+						Send, {ctrlup}	
+					; 	; clk(x%Tab%Search,yWorkTabSearch)
+					; Send,{ctrldown}{a}{ctrlup}%code%
+					; if PostCmd!=""
+					; 	send % PostCmd
+					; 			Send, {ctrlup}
 					exit
 				}
 				If (Tab="Requests") {
 						clk(x%Tab%Search-40,yWorkTabSearch,,2)
 						sleep 20
-						clk(x%Tab%Search,yWorkTabSearch)
-					Send,{ctrldown}{a}{ctrlup}%Code%
-					if PostCmd!=""
-						send % PostCmd
-						Send, {ctrlup}
+						Send, {ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							Send, ^{x}	
+						Send, %Code%{ctrldown}{a}{ctrlup}
+						If Overwrite=Add
+							send, {right}{space}^{v}^{a}^{c}
+						if PostCmd!=""
+							send % PostCmd
+						ControlsetText, Edit8,%Clipboard%,VarBar	
+						Send, {ctrlup}	
+					; 	clk(x%Tab%Search,yWorkTabSearch)
+					; Send,{ctrldown}{a}{ctrlup}%Code%
+					; if PostCmd!=""
+					; 	send % PostCmd
+					; 	Send, {ctrlup}
 					exit
 				}
 			}
@@ -529,13 +561,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		ViewCoA(){
 		global
 		lms.DetectTab()
-		if (Tab = "Samples")
+		if Tab=Samples
 			This.CoA()
-		If (Tab= "Requests")
-			clk(xEnter_Resulsts, yEnter_Resulsts)
-		If (Tab = "Products")
+		else If Tab=Requests
+			; clk(xEnter_Resulsts, yEnter_Resulsts)
+			This.CoA()
+		else If Tab=Products
 			clk(xEdit_Composition,yEdit_Composition)
-		If (Tab="Specs")
+		else If Tab=Specs
 			clk(xAdd_Methods,yAdd_Methods)
 		else
 			TT(Tab)
@@ -549,10 +582,10 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 			clip(1)
 			sleep 200
 			Send, {enter}
-			FileAppend, %Batch% `n, Batch.txt
-			FileAppend, %product% `n, lib\data\Products.txt
-			iniwrite, %Batch%, lib\codes.ini, %Batch%,
-			iniwrite, %Product%, lib\codes.ini, %Product%, 
+			; FileAppend, %Batch% `n, Batch.txt
+			; FileAppend, %product% `n, lib\data\Products.txt
+			; iniwrite, %Batch%, lib\codes.ini, %Batch%,
+			; iniwrite, %Product%, lib\codes.ini, %Product%, 
 			return
 
 		}
@@ -586,7 +619,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		Tab6:=
 		WinGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
 		WinGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
-		WinGetPos,WbX,WbY,WbW,WbH, LMS Workbook.xlsb - Excel
+		WinGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
 		; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
 		WbX:=WbX+400
 		Flovar_x:= wX +900

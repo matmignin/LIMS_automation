@@ -3,8 +3,11 @@
 ; Date:      2017-08-19
 ; Recent:    2018-04-04
 
-#include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
-#include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
+; #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
+#include <Gdip_All>
+; #include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
+#include <JSON>
+
 
 
 ; ImageIdentify() - Label and identify objects in images.
@@ -83,9 +86,9 @@ class Vis2 {
             Vis2.obj.subtitle := new Vis2.Graphics.Subtitle("Vis2_Hermes")
 
             Vis2.obj.style1_back := {"x":"center", "y":"83%", "padding":"1.35%", "color":"DD000000", "radius":8}
-            Vis2.obj.style1_text := {"q":4, "size":"2.23%", "font":"Arial", "z":"Arial Narrow", "justify":"left", "color":"White"}
+            Vis2.obj.style1_text := {"q":4, "size":"2.23%", "font":"Consolas", "z":"Consolas", "justify":"left", "color":"White"}
             Vis2.obj.style2_back := {"x":"center", "y":"83%", "padding":"1.35%", "color":"FF88EAB6", "radius":8}
-            Vis2.obj.style2_text := {"q":4, "size":"2.23%", "font":"Arial", "z":"Arial Narrow", "justify":"left", "color":"Black"}
+            Vis2.obj.style2_text := {"q":4, "size":"2.23%", "font":"Consolas", "z":"Consolas", "justify":"left", "color":"Black"}
             Vis2.obj.subtitle.render(Vis2.obj.tooltip, Vis2.obj.style1_back, Vis2.obj.style1_text)
 
             return Vis2.core.ux.waitForUserInput()
@@ -345,8 +348,8 @@ class Vis2 {
                         }
                         Vis2.obj.Subtitle.Hide()
                         Vis2.Graphics.Subtitle.Render(Vis2.obj.dialogue
-                           , {"time":t, "x":"center", "y":"83%", "padding":"1.35%", "color":"Black", "radius":8}, {"q":4, "size":"2.23%", "font":"Arial", "z":"Arial Narrow", "justify":"left", "color":"White"})
-                        Vis2.Graphics.Subtitle.Render("Saved to Clipboard.", "time: " t ", x: center, y: 75%, p: 1.35%, c: F9E486, r: 8", "c: 0x000000, s:2.23%, f:Arial")
+                           , {"time":t, "x":"center", "y":"83%", "padding":"1.35%", "color":"Black", "radius":8}, {"q":4, "size":"2.23%", "font":"Consolas", "z":"Consolas", "justify":"left", "color":"White"})
+                        Vis2.Graphics.Subtitle.Render("Saved to Clipboard.", "time: " t ", x: center, y: 75%, p: 1.35%, c: F9E486, r: 8", "c: 0x000000, s:2.23%, f:Consolas")
                      }
                      Vis2.obj.EXITCODE := 1
                   }
@@ -1325,7 +1328,7 @@ class Vis2 {
 
             Gdip_SetSmoothingMode(pGraphics, _q)
             Gdip_SetTextRenderingHint(pGraphics, q) ; 4 = Anti-Alias, 5 = Cleartype
-            hFamily := (___ := Gdip_FontFamilyCreate(f)) ? ___ : Gdip_FontFamilyCreate("Arial")
+            hFamily := (___ := Gdip_FontFamilyCreate(f)) ? ___ : Gdip_FontFamilyCreate("Consolas")
             hFont := Gdip_FontCreate(hFamily, s, style)
             hFormat := Gdip_StringFormatCreate(n)
             Gdip_SetStringFormatAlign(hFormat, j)

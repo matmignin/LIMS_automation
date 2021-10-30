@@ -42,7 +42,7 @@ return
 NewVersionRAE:
   ; send, {click 64, 243} ;click new version
   ; sleep 400
-  sendinput, {click 429, 184}^{a}Update All Vitamin A Units with RAE{click 338, 616} ;click description "Edit specification - \\Remote"
+  send, {click 429, 184}^{a}Update All Vitamin A Units with RAE{click 338, 616} ;click description "Edit specification - \\Remote"
 return	
 
 CheckExcelRow: ;goes down a lms search and fills out a excel table depending on a pixel search
@@ -138,8 +138,17 @@ return
 
 
 return
-test_1:  
-	New Checklist(Products, ReturnFunction := "Validated")`
+test_1:
+    Temp:=[]
+     RecentProducts:=
+        FileRead, LoadedNotes, RecentProducts.txt
+        Temp := StrSplit(LoadedNotes,"`r`n")
+		Loop % Temp.MaxIndex(){ 
+      RecentProducts.=Temp[a_index]"`r`n"
+    }
+
+    sleep 200
+	New Checklist(RecentProducts, ReturnFunction := "Validated")
   
 return
 
@@ -151,7 +160,68 @@ return
 
 
 
-
+~F15:: ;MouseGesture(LeftAction:="{left}",RightAction:="{Right}")
+		MouseGetPos, xi,yi
+      ; tt("x: " x "`ny: " y,1300,xi,yi)
+    ; pop(" ",,3000,"right")
+		; sleep = 2
+      ; setkeydelay -1,1
+      ; SetBatchLines, 5000ms
+		While GetKeyState("F15","P")
+		{
+			MouseGetPos, Xf,Yf
+      x:=((xf-xi)//15)
+      y:=((yf-yi)//10)
+      tt("x: " x "`ny: " y,1300,xi,yi)
+      if abs(x) < 2 && abs(y) < 2
+        continue
+      if (abs(x) > 2 && abs(y) > 2)
+        continue
+      if (abs(x) <= 2 && abs(y) >= 2){
+        if y >= 2
+          send, {down}
+        if y <= -2
+          send, {up}
+        ; sleep % 20
+        ; SetKeyDelay % abs(y)
+        yi:=yF
+        continue
+      }
+      if (abs(x) >= 2 && abs(y) <= 2){
+        if x >= 2
+          send, {right}
+        if x <= -2
+          send, {left}
+        ; sleep % 50
+        xi:=xF
+        ; SetKeyDelay % abs(x)
+        continue
+      }
+      ; setkeydelay, 1,0.25 
+      ; MaxHotkeysPerInterval 500
+      ; SetBatchLines, 10ms
+      ; if abs(y) < 20
+      ; if (abs(x) < 20 && abs(y) < 20){
+        ; continue
+      ; if x > 20 && abs(y) < 20 ; && y > -20
+        ; send, {right}
+      ; if x < 20 && abs(y) < 20 ; && y > -20
+        ; send, {left}
+      ;  sleep 100
+      ; sleep % abs(x) +20
+      ; sleep %n%
+		}
+		; if (xi>Xf){
+			; tt("Left")
+			; return
+		; }
+		; if (xi<Xf){
+			; send % RightAction
+			; tt("Right")
+			; return
+		; }
+		return
+	; }
  
  
  

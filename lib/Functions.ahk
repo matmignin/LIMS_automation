@@ -233,7 +233,7 @@ Fade(FadeAmount:=90){
 }
 
 
-Pop(Line1,Line2:="",PopupTime:=1000){
+Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
   global
 try {
   gui, PopUp:destroy ;:
@@ -242,10 +242,26 @@ try {
 PopupColor1:="CE6D4B"
 PopupColor2:="FFFFFF"
 PopupTrans:=250
-CoordMode, mouse, Screen
+CoordMode, mouse, Window
+WinGetPos,PopUp_wX,PopUp_wY,PopUp_wW,PopUp_wH, A
+; CoordMode, mouse, Screen
 MouseGetPos, PopUp_x,Popup_y,
-popup_y:=popup_y-300
-popup_x:=Popup_x
+if (Location:="Window"){
+	popup_y:=Popup_wx
+	popup_x:=Popup_Wy
+	}
+if (Location:="Right"){
+	popup_y:=Popup_WW-100
+	popup_x:=Popup_Wy
+	}
+if (Location:="Screen"){
+	popup_y:=1
+	popup_x:=1
+	}
+else {
+	popup_y:=popup_y-300
+	popup_x:=Popup_x
+	}
 Gui, PopUp: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
 
 Gui, PopUp:color,%PopupColor1%, %PopupColor2%  
@@ -256,7 +272,6 @@ Gui, PopUp:Font,s8 cBlack Bold, Consolas
     Gui, PopUp:Add, Text,Center, %Line2%
 Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
  WinSet, Transparent, %PopUpTrans%, AHK_Id %GUIID%
-CoordMode, mouse, Window
 
 settimer, destroyGui, -%PopupTime%
 return
@@ -269,7 +284,7 @@ return
 
 
 
-TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="R") {
+TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
 	if (Position:="S")
 		CoordMode, ToolTip, Screen

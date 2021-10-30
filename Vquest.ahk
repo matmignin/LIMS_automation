@@ -15,7 +15,7 @@ VQuest_Start:
     #InstallMouseHook
     ; #HotkeyModifierTimeout 1
     #maxthreadsperhotkey, 1
-    SetBatchLines, 20ms
+    SetBatchLines, 10ms
     SetControlDelay, 1
     SetKeyDelay, 1, 0.25
     setwindelay, 250
@@ -40,8 +40,11 @@ VQuest_Start:
     SetWorkingDir, %A_ScriptDir%
     Iniread, Iteration, data.ini, SavedVariables, Iteration
     ; Products:=[]
-    ; FileRead, CurrentCodes, lib\Data\CurrentCodes.txt
       ; Products := StrSplit(CurrentCodes,"`r`n")
+    Filegettime, filetime, lib\Data\CurrentCodes.txt
+    TimeSince:= A_Now - FileTime
+    if TimeSince >  100000
+      FileDelete, lib\Data\CurrentCodes.txt
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
@@ -56,7 +59,6 @@ VQuest_Start:
     Menu, Tray, Add, Exit, ExitSub
     Menu, Tray, Add, windowSpy, WindowSpy
     Menu, Tray, Default, DebugVars
-    
 MenuCheckboxes:
   Iniread, EnteringRotationsStatus, data.ini, Options, EnteringRotations
     Menu, Tray, Add, EnteringRotations, EnteringRotations
@@ -74,19 +76,14 @@ MenuCheckboxes:
     if SwitchWorkSheets
       Menu, Tray, Check, SwitchWorkSheets
 
-    Run, cl3.Ahk, lib\CL3
-
+    try Run, cl3.Ahk, lib\CL3
+    try Run, Vim.Ahk, lib\
     varbar.Show()
 
     try Menu, Tray, Icon, lib\Data\Robot.ico
     settimer, ActiveCheck, %CheckTime%
     copypasteToggle:=0
     TabToggle=0
-    On:="On"
-    Off:="Off"
-    Clear:="Clear"
-    yo:="yo"
-    ye:="ye"
     Blank:=" `n `n  `t `t `n`t "
     CurrentWindow:=A
     IfWinExist, ahk_exe WFICA32.EXE
@@ -113,6 +110,7 @@ MenuCheckboxes:
   #include <varBar>
   #include <menu>
   #include <Rotation>
+  #include <Vis2>
   #include <Functions>
   #IfWinActive,
 return

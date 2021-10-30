@@ -99,7 +99,7 @@ Menu(){
         menu, VarBarmenu, Check, 	Show&SampleID
     Menu, VarBarMenu, Add,		 		Tables, 					Varbar.LaunchTable 
 		
-		If WinExist("LMS Workbook.xlsb - Excel"){ 
+		If WinExist("Mats LMS Workbook.xlsb - Excel"){ 
 			Menu,VarBarMenu,add,				&Spec Table,						Tests
 			Menu,VarBarMenu,add,				&Ingredient Table,			Tests
 		}
@@ -108,7 +108,7 @@ Menu(){
 
 	loadSavedVariables(){
 		global
-		if !WinExist("LMS Workbook.xlsb") || !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}\b"){
+		if !WinExist("Mats LMS Workbook.xlsb") || !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){
 			Iniread, Batch, data.ini, SavedVariables, Batch
 			Iniread, Product, data.ini, Products, Product
 			Iniread, Batch0, data.ini, SavedVariables, Batch0
@@ -117,6 +117,7 @@ Menu(){
 			Iniread, Lot, data.ini, SavedVariables, Lot
 			Iniread, Coated, data.ini, SavedVariables, Coated
 			}
+			
 			IniRead, Varbar_X, data.ini, Locations, VarBar_X
 			IniRead, Varbar_Y, data.ini, Locations, VarBar_Y
 			Iniread, Iteration, data.ini, SavedVariables, Iteration
@@ -135,13 +136,20 @@ Menu(){
 
 	SaveVariables(){
 		global
-		iniwrite, %Product%, data.ini, Products, Product
-		iniwrite, %Batch%, data.ini, Batches, Batch
-		iniwrite, %Lot%, data.ini, SavedVariables, Lot
-		iniwrite, %Coated%, data.ini, SavedVariables, Coated
-		iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
-		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-		IniWrite, %CurrentCodes%, data.ini, SavedVariables, CurrentCodes
+		if Product
+			iniwrite, %Product%, data.ini, Products, Product
+		if Batch
+			iniwrite, %Batch%, data.ini, Batches, Batch
+		if Lot
+			iniwrite, %Lot%, data.ini, SavedVariables, Lot
+		if Coated
+			iniwrite, %Coated%, data.ini, SavedVariables, Coated
+		if SampleID
+			iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
+		if Iteration
+			IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+		if CurrentCodes
+			IniWrite, %CurrentCodes%, data.ini, SavedVariables, CurrentCodes
 		if Note1
 			IniWrite, %note1%, data.ini, Notes, note1
 		if Note2
@@ -328,7 +336,7 @@ HistoryMenuItem(){
 		; ^left::Lms.SelectTab("Left")
 		; ^right::LMs.SelectTab("right")
 
-	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && WinExist("LMS Workbook.xlsb - Excel")
+	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && WinExist("Mats LMS Workbook.xlsb - Excel")
 		wheelleft::Excel.PrevSheet()
 		wheelright::excel.Nextsheet()   
 												

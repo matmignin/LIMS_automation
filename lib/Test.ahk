@@ -77,24 +77,24 @@ return
 ; 		ClipCycleCounter++
 ; 	ClipCycleFirst:=0
 ; Return   
-ClipBoardHandler:
-	oldttext:="", ttext:="", ActiveWindowID:=""
-	If (Var <> Clipboard)
-	{
-		StrReplace(ClipText,"`n", "`n", Count)
-	}
-	Clipboard:=Var
-	;  StartTime:=A_TickCount
-	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
-	; Return
-	;  WinActivate, ahk_id %ActiveWindowID%
-	; Sleep, 20
-	send % BlockRepeat(25) "^v"
-	; Send, ^v
-	;  PasteTime := A_TickCount
-	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
-	; sleep 300
-Return
+; ClipBoardHandler2:
+; 	oldttext:="", ttext:="", ActiveWindowID:=""
+; 	If (Var <> Clipboard)
+; 	{
+; 		StrReplace(ClipText,"`n", "`n", Count)
+; 	}
+; 	Clipboard:=Var
+; 	;  StartTime:=A_TickCount
+; 	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
+; 	; Return
+; 	;  WinActivate, ahk_id %ActiveWindowID%
+; 	; Sleep, 20
+; 	send % BlockRepeat(25) "^v"
+; 	; Send, ^v
+; 	;  PasteTime := A_TickCount
+; 	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+; 	; sleep 300
+; Return
 
 ` & Space::FloVar()
 	; Product:=[]
@@ -150,20 +150,21 @@ return
 
 return
 
-Gui, Add, Text, x10 y12, Load file.
-Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
-Gui, Show, w300 h300,TEST
-#ifwinactive#
-	DispToolTipText(TextIn,Format=0)
-{
-	TextOut:=RegExReplace(TextIn,"^\s*")
-	TextOut:=SubStr(TextOut,1,750)
-	;StringReplace,TextOut,TextOut,`;,``;,All
-	FormatFunc:=StrReplace(CyclePlugins[Format]," ")
-	If IsFunc(FormatFunc)
-		TextOut:=%FormatFunc%(TextOut)
-Return TextOut
-} 
+; Gui, Add, Text, x10 y12, Load file.
+; Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
+; Gui, Show, w300 h300,TEST
+
+; #ifwinactive
+; 	DispToolTipText(TextIn,Format=0)
+; {
+; 	TextOut:=RegExReplace(TextIn,"^\s*")
+; 	TextOut:=SubStr(TextOut,1,750)
+; 	;StringReplace,TextOut,TextOut,`;,``;,All
+; 	FormatFunc:=StrReplace(CyclePlugins[Format]," ")
+; 	If IsFunc(FormatFunc)
+; 		TextOut:=%FormatFunc%(TextOut)
+; Return TextOut
+; } 
 
 
 
@@ -195,8 +196,9 @@ Test_2(){
 	Gui, Show, w300 h300,TEST
 	Products:=[]
 return
-GuiClose:
-ExitApp 
+GuiClose2:
+; Gui,Destroy 
+return
 loadfile:
 	FileSelectFile, eFile, 3, , Open the file, All FIles (*.*) ;* ; *.html; *.csv)
 	fileread,contents,%eFile%
