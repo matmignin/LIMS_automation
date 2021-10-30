@@ -43,7 +43,7 @@ VQuest_Start:
       ; Products := StrSplit(CurrentCodes,"`r`n")
     Filegettime, filetime, lib\Data\CurrentCodes.txt
     TimeSince:= A_Now - FileTime
-    if TimeSince >  100000
+    if TimeSince >  50000
       FileDelete, lib\Data\CurrentCodes.txt
     if !VarBar_x
       VarBar_x=1
@@ -56,7 +56,6 @@ VQuest_Start:
     menu, tray, add, ShowSampleID, showSampleID
     Menu, tray, NoStandard
     Menu, Tray, Add, KeyHistory, KeyHistory
-    Menu, Tray, Add, Exit, ExitSub
     Menu, Tray, Add, windowSpy, WindowSpy
     Menu, Tray, Default, DebugVars
 MenuCheckboxes:
@@ -81,6 +80,7 @@ MenuCheckboxes:
     varbar.Show()
 
     try Menu, Tray, Icon, lib\Data\Robot.ico
+    Menu, Tray, Add, Exit, ExitSub
     settimer, ActiveCheck, %CheckTime%
     copypasteToggle:=0
     TabToggle=0

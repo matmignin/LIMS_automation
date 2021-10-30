@@ -16,7 +16,7 @@ Clip(input=0,Wait:="0.55"){
   clipwait,%Wait%
   sleep %input%
   if errorlevel
-  { (Intertek)
+  { 
     ; clipboard:=ClipboardSaved
     if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
