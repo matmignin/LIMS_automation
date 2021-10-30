@@ -36,9 +36,9 @@ clipChange(type){
     ; clip.Regex()
     if WinActive("ahk_exe WFICA32.EXE")
       clip.Departmentregex()
-
-    if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
-      tt(clipboard,1000,100,-1000,,200,"R")
+    exit
+    if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && (A_PriorKey!="1") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
+      tt(clipboard,1000,100,-500,,200,"R")
 return
 
 }
@@ -72,7 +72,7 @@ Parse(Value:=""){
       ParsedClipboard:=Value
     loop, parse, ParsedClipboard, "`r`n" 
       {
-        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
+        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
         RegExMatch(A_loopfield, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", Var)
@@ -114,7 +114,7 @@ Parse(Value:=""){
 
 
       ; AllCodes:=Listarray(Products)
-      Pop(CurrentCodes,,2000)
+      Pop(CurrentCodes,,2000,"Window")
   
       ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
@@ -179,7 +179,7 @@ SingleRegex(){
     global Batch, Product, lot, coated, sampleid, Products, CurrentCodes
       Haystack:=Clipboard
     sleep      20
-      RegExMatch(HayStack, "i)\b[abdefghijkl]\d{3}\b", cProduct)
+      RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       RegExMatch(HayStack, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
@@ -229,7 +229,7 @@ Regex(Category:=""){
     else 
       Haystack:=Category
     sleep      20
-      RegExMatch(HayStack, "i)\b[abdefghijkl]\d{3}\b", cProduct)
+      RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       RegExMatch(HayStack, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?P<Coated>\d{3}-\d{4})", c)
@@ -601,4 +601,4 @@ ctrl(){
     }
 }
 
-  #include Vis\Vis2.ahk
+  ; #include Vis\Vis2.ahk

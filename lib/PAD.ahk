@@ -5,6 +5,16 @@ _MouseIsOver:
 	#If MouseIsOver("ahk_exe Snipaste.exe")
 		F8::send, {click}{esc}
 		NumpadDot::send, {click}{esc}
+		wheeldown::send % Blockrepeat(50) "{wheelDown}"
+		wheelup::send % Blockrepeat(50) "{WheelUp}"
+		^wheeldown::
+			winactivate, ahk_exe Snipaste.exe
+			send, ^{wheeldown}
+			return
+		^wheelup::
+			winactivate, ahk_exe Snipaste.exe
+			send, ^{wheelup}
+			return
 	#If MouseIsOver("ahk_exe firefox.exe")
 		numpaddot::controlSend, ahk_exe firefox.exe,  ^{w}
 

@@ -75,11 +75,13 @@
 						; Pop(Clipboard)
 				}
 				PastePresses := 0
-return
+	return
 	+^c::clip.Append()
 	!^c::clip.Append(A_Space)
 	!^x::send % clip.Append() "{backspace}"	
-
+	; ^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
+	; ^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
+	; ^3::                 Send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
 ;; 	___Send Codes
 	>+F20::             			varbar.focus("Batch")
 	>+F19::            		 	varbar.focus("Product")
@@ -100,10 +102,13 @@ F19 & down::						GetAllBatches()
 <!up::
 F13 & 3::
 F19 & Up::							Sendinput % excel.GetAllSheets()
+F13 & Space::GetAllProducts()
+F13 & lshift::GetAllProducts("`n")
 <#Space::GetAllProducts()
 <#lshift::GetAllProducts("`n")
 <#enter::GetAllProducts("`n")
-<#tab::GetAllProducts(A_tab)
+<#tab::GetAllProducts(A_tab)	
+
 
 
 
@@ -306,8 +311,11 @@ F19 & Up::							Sendinput % excel.GetAllSheets()
 	F20::             Clip.paste()
 		
 
-
-
+#ifwinactive, ahk_exe Snipaste.exe ;;	___Snipaste
+	wheeldown::send % Blockrepeat(100) "{-}"
+	wheelup::send % Blockrepeat(100) "{=}"
+	^wheeldown::send, ^{wheeldown}
+	^wheelup::send, ^{wheelup}
 
 #IfWinActive, LMS Workbook.xlsb ;; 	___Excel
 	F9::    					Excel.Connect(1)
