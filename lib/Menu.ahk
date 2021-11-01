@@ -359,6 +359,31 @@ Variable(){
   Try Menu,menu,show
   }
 
+TaskBar(){
+  global
+  try This.delete()
+    ; Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
+    Menu, Menu, Add, &Downloads , #^F1
+    Menu, Menu, Add, &VQuest , #^v 
+    menu, menu, add
+    Menu, Menu, Add, &mmignin, #^F4
+    Menu, Menu, Add, &OneDrive, #^F5
+    Menu, Menu, Add, &CofA Team, #^F6
+    Menu, Menu, Add, &LMS Team, #^F7
+    ; Menu, Menu, Add, &Workbook, !w 
+    Menu, SubMenu, Add, &Label Copy Foldier, #^F2
+    Menu, SubMenu, Add, &All Label Copy, #^F3
+    ; Menu, Menu, Add, &WorkSheets, Tests 
+    Menu, SubMenu, Add, &Final Labels, #^F8
+    Menu, SubMenu, Add, &Final C_O_A, #^F9
+  Menu, Menu, add, &Label Copy, :SubMenu
+    if Winexist("Mats Workbook"){
+      Menu,Menu,add,				&Spec Table,						Tests
+			Menu,Menu,add,				&Ingredient Table,			Tests
+      }
+  Try Menu,menu,show
+  }
+
 
 
 Remote_desktop(){

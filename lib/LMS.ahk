@@ -22,8 +22,8 @@
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
 		Numlock::4tap() ;LMS.COA()
 		mbutton::3tap()
-			F7::						3Right()
-		F6::						3Left()	
+			F7::		  3Right()
+		F6::			  3Left()	
 		+F19::lms.searchBar("")
 		F19 & Space::lms.searchBar("")
 		F20 & Space::Varbar.Focus(Product)

@@ -52,12 +52,12 @@ VQuest_Start:
     ; Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
     Menu, Tray, Add, Pause, Pause
-    Menu, Tray, Add, Exit, ExitSub
     menu, tray, add, ShowSampleID, showSampleID
     Menu, tray, NoStandard
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, windowSpy, WindowSpy
     Menu, Tray, Default, DebugVars
+    Menu, Tray, Add, Exit, ExitSub
 MenuCheckboxes:
   Iniread, EnteringRotationsStatus, data.ini, Options, EnteringRotations
     Menu, Tray, Add, EnteringRotations, EnteringRotations

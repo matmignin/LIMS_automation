@@ -57,8 +57,8 @@ Class VarBar{
 		; GUI,VarBar:Font,			
 		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
-			This.addedit("Note2","X3 H29 y+2 w220 left","9 cBlack,arial Narrow")			; edit7
-			This.addedit("Note3","X+3 H29  w220 left","9 cBlack,arial Narrow")				; edit8
+			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")			; edit7
+			; This.addedit("Note3","X+3 H29  w220 left","9 cBlack,arial Narrow")				; edit8
 		Return
 		
 			ProductVarBar:
@@ -127,7 +127,7 @@ Menu(){
 			Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
-			Iniread, note3, data.ini, Notes, note3
+			; Iniread, note3, data.ini, Notes, note3
 			Products:=[]
         FileRead, LoadedNotes, lib\Data\CurrentCodes.txt
         Products := StrSplit(LoadedNotes,"`r`n")
@@ -154,8 +154,8 @@ Menu(){
 			IniWrite, %note1%, data.ini, Notes, note1
 		if Note2
 			IniWrite, %note2%, data.ini, Notes, note2
-		if Note3
-			IniWrite	, %note3%, data.ini, Notes, note3
+		; if Note3
+			; IniWrite	, %note3%, data.ini, Notes, note3
 		}
 
 

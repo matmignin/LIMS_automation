@@ -119,7 +119,6 @@ F13 & lshift::GetAllProducts("`n")
 	; f15::sendinput, {click 3}
 	$Numlock::				4tap()
 	Mbutton::						3Tap()
-	Lwin & AppsKey::   return
 	Rbutton & Mbutton::menu.PasteStuff()
 	Rbutton & Lbutton::   	Send, {Enter}
 	; Rbutton up::             send % Mouse_RbuttonUP() 
@@ -149,11 +148,11 @@ F13 & lshift::GetAllProducts("`n")
 	return   	
 
 	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}" ; a pic take 
-	Lbutton & Space::       Send, ^a
+	Lbutton & Space::       	Send, ^a
 	Lbutton & Rbutton::       Send, ^a
 	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 	F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	Lbutton & down::           Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+	Lbutton & down::          Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F11::F22
 
 
@@ -165,10 +164,10 @@ F13 & lshift::GetAllProducts("`n")
 	esc & 2::						send, {shiftdown}{altdown}{=}{altup}{shiftup}
 	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
 	esc::								esc
-	
+	F17::								send, {ctrl down}{click}{ctrl up}
 	Media_Prev::					MakeTransparent()
 	Media_Play_Pause::			F16
-	Media_Next::					F17
+	Media_Next::						F17
 	F13 & -::
 	/ & down::   		      	Varbar.SubIteration(0)
 	F13 & +::

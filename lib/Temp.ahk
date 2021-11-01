@@ -4,10 +4,10 @@
   F20::GoSub, PasteProductRotation
 #If Winactive("Book")
   F19::Gosub, CopyProductRotation
-  Mbutton::send, ^{c}
+
 
 #If Winactive("Edit specification - \\Remote") && TempCode
-  Mbutton:: gosub, NewVersionRAE
+  ; Mbutton:: gosub, NewVersionRAE
 #If Winactive("Select methods tests - \\Remote") && TempCode
 #If Winactive("Results Definition - \\Remote") && TempCode
     Mbutton::send, {enter}
@@ -154,16 +154,122 @@ return
 
 
 Test_4:
+Gui, Add, Checkbox, vMyCheckBoxVar gMyCheckBoxSub, Add item to do
+Gui, Add, Edit, Disabled vToDoItemVar
+Gui, Add, Button, gSaveSub, Save
+Gui, Show
 
-;
+MyCheckBoxSub:
+  Gui, Submit, NoHide                      ; Save all states to variables so that we can check whether the checkbox has just been checked or unchecked
+  If MyCheckBoxVar                         ; If the checkbox has been checked...
+    GuiControl, Enable, ToDoItemVar        ; ...enable the edit box
+  Else GuiControl, Disable, ToDoItemVar    ; ...otherwise, disable the edit box
 return
 
+SaveSub:
+  Gui, Submit, NoHide                      ; Save all states to variables so that we can write what is in the edit box to the INI file
+  ; Add IniWrite line here and use %ToDoItemVar% as the "value" to write
+return
+;
+Return
 
 
 
- 
- #if GetKeyState
- 
+
+
+
+
+
+
+
+; Lwin & AppsKey::return ;, send, {lwin}
+
+; Lwin Up::return ;send, {esc};,;
+; Lwin:: ;MouseGesture(LeftAction:="{left}",RightAction:="{Right}")
+; 		MouseGetPos, xi,yi
+;       ; tt("x: " x "`ny: " y,1300,xi,yi)
+;     ; pop(" ",,3000,"right")
+; 		; sleep = 2
+;       ; setkeydelay -1,1
+;       ; SetBatchLines, 5000ms
+; 		While GetKeyState("Lwin","P")
+; 		{
+; 			MouseGetPos, Xf,Yf
+;       x:=((xf-xi)//20)
+;       y:=((yf-yi)//20)
+;       tt("x: " x "`ny: " y,1300,xi,yi)
+;       if abs(x) < 15 && abs(y) < 15
+;         continue
+;       ; if (abs(x) > 20 && abs(y) > 20)
+;         ; continue
+;       if (abs(x) <= 15 && abs(y) >= 15){
+;         if y >= 15
+;           send, #{down}
+;         if y <= -15
+;           send, #{up}
+;         ; yi:=yF
+;         sleep, 1100
+;         Return
+;       }
+;       if (abs(x) >= 15 && abs(y) <= 15){
+;         if x >= 15
+;           send, #{right}
+;         if x <= -15
+;           send, #{left}
+;         ; xi:=xF      
+;         sleep, 1100
+;         Return
+;       }
+;       sleep 2000
+
+;       ; if abs(y) < 20
+;       ; if (abs(x) < 20 && abs(y) < 20){
+;         ; continue
+;       ; if x > 20 && abs(y) < 20 ; && y > -20
+;         ; send, {right}
+;       ; if x < 20 && abs(y) < 20 ; && y > -20
+;         ; send, {left}
+;       ;  sleep 100
+;       ; sleep % abs(x) +20
+;       ; sleep %n%
+; 		}
+; 		; if (xi>Xf){
+; 			; tt("Left")
+; 			; return
+; 		; }
+; 		; if (xi<Xf){
+; 			; send % RightAction
+; 			; tt("Right")
+; 			; return
+; 		; }
+; 		return
+; 	; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

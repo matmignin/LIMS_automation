@@ -1,7 +1,11 @@
 
 _MouseIsOver:
 	; #If MouseIsOver("ahk_exe EXCEL.exe")
-
+#if mouseisover("ahk_class Shell_TrayWnd")
+		wheelup::Send % blockrepeat(1000) "{lwin down}e{lwin up}"
+		F15::menu.TaskBar()
+		mbutton::Send, {lwin down}e{lwin up}
+		Space::Send, {lwin down}d{lwin up}
 	#If MouseIsOver("ahk_exe Snipaste.exe")
 		F8::send, {click}{esc}
 		NumpadDot::send, {click}{esc}
@@ -58,8 +62,8 @@ clipCheckIfEmpty(){
 
 3tap(){
 	Global 
-	setwindelay, 100
-	if WinActive("ahk_exe WFICA32.EXE") {
+	; setwindelay, 100
+	If WinActive("ahk_exe WFICA32.EXE") {
 		if Winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses  
 			LMS.DetectTab()
 			; if (Tab="Samples")
@@ -156,7 +160,6 @@ clipCheckIfEmpty(){
 		Send, {lwindown}{e}{lwinup}
 	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 			menu.Remote_Desktop()
-		Else 
 			return
 		}
 

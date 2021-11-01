@@ -13,7 +13,16 @@ OpenApps:
   <#f::OpenApp.Firefox()
   ; !v::OpenApp.vsCode()
   <#v::OpenApp.vsCode()
-  ; #!v::Run, C:\Users\mmignin\Documents\VQuest\
+  #^v::Run, C:\Users\mmignin\Documents\VQuest\
+  #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
+  #^F2::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\
+  #^F1::Run, Downloads
+  #^F4::Run, \\10.1.2.118\users\vitaquest\mmignin
+  #^F5::Run, C:\Users\mmignin\OneDrive - Vitaquest International
+  #^F6::Run, C:\Users\mmignin\OneDrive - Vitaquest International\CofA Team
+  #^F7::Run, C:\Users\mmignin\OneDrive - Vitaquest International\LMS Team
+  #^F8::Run, \\10.1.2.118\share\QA\Final Labels (Temp)
+  #^F9::Run, \\10.1.2.118\Final_C_O_A
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()
