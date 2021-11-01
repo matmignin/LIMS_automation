@@ -214,6 +214,7 @@ F13 & lshift::GetAllProducts("`n")
 	` & 1::							Test(1)
 	` & 2::							Test(2)
 	` & 3::							Test(3)
+	` & 4::							Test(4)
 	`::	 								sendraw, ``
 	; <!c::                      clip.Append()
 
