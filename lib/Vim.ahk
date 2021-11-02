@@ -21,7 +21,7 @@
 		try Menu, Tray, Icon, lib\Data\Vim.ico
 		menu, tray, add, ReloadScript, <^r
 		Menu, Tray, Add, E&xit, ExitSub
-		Menu, Tray, Default, ExitSub
+		Menu, Tray, Default, E&xit
 
    #include Functions.ahk
 ; return
@@ -73,6 +73,13 @@ return
 	F2::FindMatchingWindows()
 	F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 	F13 & Space::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
+	Lbutton & F13::
+		send, ^c
+		tt(Clipboard,1000,100,-400,,160)
+		return
+	F13 & Lbutton::send, {click}^{v} ;{F19}
+	F13 & Rbutton::send, ^{x} ;{F20}
+	; F13 & Mbutton::send, ^{x}
 	numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{}{lwin up}{ctrlup}{altup}
@@ -203,8 +210,8 @@ return
 	^.::
 	w::                       
 	^w::											sendinput, +{home}{backspace}										
-	e::                       
-	^e::											sendinput, +{end}{backspace}										
+	x::                       
+	^x::											sendinput, +{end}{backspace}										
 	q::												SendInput,^{a}{backspace}
 	^q::											SendInput,^{a}{backspace}
 	.::												SendInput,+^{right}{ctrl up}{shift up}
@@ -292,12 +299,14 @@ return
 	Rshift::                SendInput,{s}
 	9 & 0::									SendInput,{)}
 
-	q::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
-	^q::                  	SendInput,^{a}{backspace}			 ;block comment
+	e::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
+	^e::                  	SendInput,^{a}{backspace}			 ;block comment
+	q::
 	w::											sendinput, {backspace}
+	^q::
 	^w::											sendinput, +{Home}{backspace}
-	e::											sendinput, {delete}
-	^e::										sendinput, +{end}{backspace}
+	x::											sendinput, {delete}
+	^x::										sendinput, +{end}{backspace}
 
 	t::                     SendInput,+!{F9}
 	space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
@@ -327,7 +336,10 @@ return
 	c::                  ifNothingSelected("copy","^c") ;  send,^{c}
 		
 	v::                     Send, ^{v}
-	x::                     ifNothingSelected("cut","^x")
+	; x::                     Delete ;ifNothingSelected("cut","^x")
+	; ^x::                     Delete ;ifNothingSelected("cut","^x")
+
+
 	ifNothingSelected(Action, Button){
 	  ClipboardSaved:=ClipboardAll
     clipboard:=
@@ -335,10 +347,10 @@ return
     Send % Button
 		tt(clipboard,750)
       ; clipwait,0.10
-  if !clipboard ;if nothing selected
-	{
-		clipboard:=ClipboardSaved
-		if Action=copy 
+		if !clipboard ;if nothing selected
+		{
+			clipboard:=ClipboardSaved
+			if Action=copy 
 		{
 			if winactive("ahk_exe Code.exe"){
 				sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}
@@ -363,15 +375,14 @@ return
 			send, {delete}
 		}
 	}
-ClickText(){
-	global
-	mousegetpos, mousex, mousey
-	SetDefaultMouseSpeed, 0
-	Click, %A_CaretX% %A_caretY%,
-	mousemove, %mousex%, %mousey%, 0
-	SetDefaultMouseSpeed, 1
-}
-	return
+	ClickText(){
+		global
+		mousegetpos, mousex, mousey
+		SetDefaultMouseSpeed, 0
+		Click, %A_CaretX% %A_caretY%,
+		mousemove, %mousex%, %mousey%, 0
+		SetDefaultMouseSpeed, 1
+	}
 	j::                     SendInput,{down}
 	k::                     SendInput,{Up}
 	; t::											sendinput,{ctrldown}{enter}{ctrlup}
@@ -395,13 +406,12 @@ ClickText(){
 	^o::                     SendInput,{Home}{enter}
 	^m::                     SendInput,{shiftdown}{Home}{shiftup}
 	^/::                     SendInput,{shiftdown}{end}{shiftup} 
-	Lbutton::									send, +{click}
 	down::									  sendinput, {shiftdown}{down}{shiftup}
 	up::									    sendinput, {shiftdown}{up}{shiftup}
 	left::									  sendinput, {shiftdown}{left}{shiftup}
 	right::									  sendinput, {shiftdown}{right}{shiftup}
 	#if
-	
+	F13::F13
 ; ~lShift:: ;MouseGesture(LeftAction:="{left}",RightAction:="{Right}")
 		; {
 			; if z=1
@@ -525,13 +535,15 @@ ReloadScript(){
 	tt("`nRELOAD `n ",300)
 	sleep 100
 	WinSet, Transparent, off, ahk_exe Code.exe
-	try Run, cl3.Ahk, lib\CL3
-		catch
-			return
+;	try Run, cl3.Ahk, lib\CL3
+	;	catch
+	;		return
 	try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-		catch
-			return
-			; sleep 50"
+
+	sleep 200
+	;	catch
+		;	return
+		; sleep 50"
 	 ;catch ; e ;catch any errors
 	 	;return
 		; throw e
