@@ -20,7 +20,8 @@
 		SetWorkingDir, C:\Users\mmignin\Documents\VQuest
 		try Menu, Tray, Icon, lib\Data\Vim.ico
 		menu, tray, add, ReloadScript, <^r
-		Menu, Tray, Default, ReloadScript
+		Menu, Tray, Add, E&xit, ExitSub
+		Menu, Tray, Default, ExitSub
 
    #include Functions.ahk
 ; return
@@ -63,15 +64,20 @@ return
 	RShift::         SendInput,{Tab}
 #if 
 #If WinActive("ahk_exe Code.exe")  ;;___VSCODE___    
-!f:: 	                  
+	!f:: 	                  
 	send, !#+{f 2}
 	Input, output, L1 V, {F13}{enter}{esc}
 	send, {enter}{esc}
 	return
 	Mbutton::sendinput, ^{click}      
 	F2::FindMatchingWindows()
+	F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 	F13 & Space::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
-	numlock::									send, ^+{\}                 
+	numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
+	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}
+	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{}{lwin up}{ctrlup}{altup}
+	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup}
+	; numlock::									send, ^+{\}                 
 	; !v:: 										send, {F9}vim.ahk{enter}
 	; ^+4::											send, !+{4}
 	; ^+3::											send, !+{3}
@@ -199,7 +205,7 @@ return
 	^w::											sendinput, +{home}{backspace}										
 	e::                       
 	^e::											sendinput, +{end}{backspace}										
-	q:												SendInput,^{a}{backspace}
+	q::												SendInput,^{a}{backspace}
 	^q::											SendInput,^{a}{backspace}
 	.::												SendInput,+^{right}{ctrl up}{shift up}
 	; ^e::                
@@ -315,7 +321,7 @@ return
 	]::                     SendInput, {f7}
 	
 	;^'::  									sendinput,{right}^{left}+^{right}+{'}
-	'::  										SendInput,+{'}
+	'::  										SendInput,!{'}
 	a::                     SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
 	^a::                    SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
 	c::                  ifNothingSelected("copy","^c") ;  send,^{c}

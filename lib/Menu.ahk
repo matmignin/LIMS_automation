@@ -383,7 +383,7 @@ TaskBar(){
     Menu, LabelCopyFolder, Add, &Final Labels, #^F8
     Menu, LabelCopyFolder, Add, &Final C_O_A, #^F9
   Menu, Menu, add, &Label Copy, :LabelCopyFolder
-    if Winexist("Mats Workbook" && WinActive("NuGenesis LMS - \\Remote"){
+    if Winexist("Mats Workbook") && WinActive("NuGenesis LMS - \\Remote"){
       Menu,Menu,add,				&Spec Table,						Tests
 			Menu,Menu,add,				&Ingredient Table,			Tests
       }

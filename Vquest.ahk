@@ -1,8 +1,8 @@
 ﻿
 VQuest_Start:
+    #SingleInstance,Force
     #Persistent
     #NoEnv
-    #SingleInstance,Force
     #KeyHistory 300
     #MenuMaskKey vkE8
     #InstallKeybdHook
@@ -51,51 +51,31 @@ VQuest_Start:
       VarBar_y=1
     ; Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
-    Menu, Tray, Add, Pause, Pause
+    ; Menu, Tray, Add, Pause, Pause
     menu, tray, add, ShowSampleID, showSampleID
     Menu, tray, NoStandard
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, windowSpy, WindowSpy
     Menu, Tray, Default, DebugVars
-    Menu, Tray, Add, Exit, ExitSub
-MenuCheckboxes:
-  Iniread, EnteringRotationsStatus, data.ini, Options, EnteringRotations
-    Menu, Tray, Add, EnteringRotations, EnteringRotations
-    EnteringRotations:= EnteringRotationsStatus = 1 ? 1 : ""
-    if EnteringRotations
-      Menu, Tray, Check, EnteringRotations
-  Iniread, TempCodeStatus, data.ini, Options, TempCode
-    Menu, Tray, Add, TempCode, TempCode
-    Tempcode:= TempcodeStatus = 1 ? 1 : ""
-    if TempCode
-      Menu, Tray, Check, TempCode
-  Iniread, SwitchWorkSheetsStatus, data.ini, Options, SwitchWorkSheets
-    SwitchWorkSheets:= SwitchWorkSheetsStatus = 1 ? 1 : ""
-    Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
-    if SwitchWorkSheets
-      Menu, Tray, Check, SwitchWorkSheets
+    ShowVarBar:=togglemenu("showVarbar")
+    TempCode:=togglemenu("TempCode")
+    EnteringRotations:=togglemenu("EnteringRotations")
+    SwitchWorkSheets:=togglemenu("SwitchWorkSheets")
+    Menu, Tray, Add, E&xit, ExitSub
 
     try Run, cl3.Ahk, lib\CL3
     try Run, Vim.Ahk, lib\
     varbar.Show()
 
     try Menu, Tray, Icon, lib\Data\Robot.ico
-    Menu, Tray, Add, Exit, ExitSub
     settimer, ActiveCheck, %CheckTime%
-    copypasteToggle:=0
-    TabToggle=0
     Blank:=" `n `n  `t `t `n`t "
     CurrentWindow:=A
     IfWinExist, ahk_exe WFICA32.EXE
     LMS.Orient()
-    if (ShowSampleID = 1)
-      Menu, Tray, Check, showsampleID
-    else {
-      Menu, Tray, unCheck, showsampleID
-      showsampleID:=
-      }
-    Excel.Connect(1)
 
+    Excel.Connect(1)
+  #include <Toggles>
   #Include <Temp>
   #Include <Checklist>
   #Include <Test>
@@ -114,13 +94,6 @@ MenuCheckboxes:
   #include <Functions>
   #IfWinActive,
 return
-
-
-
-
-
-
-
 
 
 ;__________________continuously runing sub_________________________________________________
@@ -145,6 +118,12 @@ ActiveCheck:
     }
   if WinActive("Information - \\Remote")
     send, {enter}
+NoIdleTimer:
+if (A_TimeIdle > (60*1000) && NoIdle) {
+  MouseMove, 1,0,0,R
+  SLEEP 50
+  MouseMove, -1,0,0,R
+}
   return
    
 

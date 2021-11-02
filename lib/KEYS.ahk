@@ -165,7 +165,7 @@ F13 & lshift::GetAllProducts("`n")
 	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
 	esc::								esc
 	F17::								send, {ctrl down}{click}{ctrl up}
-	Media_Prev::					MakeTransparent()
+	Media_Prev::					F15 ;MakeTransparent()
 	Media_Play_Pause::			F16
 	Media_Next::						F17
 	F13 & -::

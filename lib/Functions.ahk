@@ -75,7 +75,7 @@ return 0
 class Breaking {
 	Point(){
 		Global
-		If GetKeyState("Space", "P") || GetKeyState("Esc", "P") || GetKeyState("Lbutton", "P") {	
+		If GetKeyState("Lbutton", "P") {	
 		TT("Broke")
 			exit
 		}
@@ -92,33 +92,8 @@ class Breaking {
 		keep_running = y
 	}
 	}
-	
-	
 
 
-	
-	
-	
-ctrlEvent(CtrlHwnd, GuiEvent, EventInfo, ErrLevel:=""){
-
- ;GuiControlGet, OutputVar , , %CtrlHwnd%,
-	IniRead,vOutput, lib\data\customers.ini, Customers, %OutputVar%
- msgbox, %vOutput%
-}
-
-
-
-
-
-; ReadSpecIntoDataBase:
-;   iniread, full, data.ini, %Product%,ecc738
-;   Test_Specs:= strsplit(Full,"=")
-;   Test:=Test_Specs[1]
-;   Specs:= strsplit(Test_Specs[2],"|")
-;   msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
-;   LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-;   Return 
-  
   
   
   ; WM_LBUTTONDOWN(wParam, lParam) ;move around varbar
@@ -439,12 +414,7 @@ class click{
 		click 74, 900
 		return
 	}
-	MoveOverTest_1(){
-		if winactive("Select Methods Tests")
-			Send,{Click}{click 506, 341}
-		Else
-			return
-	}
+
 	Orient(){
 		if winactive("Result Entry")
 			click 843, 202, 2
@@ -511,7 +481,6 @@ Return
 MouseIsOver(WinTitle){
 	Global
 	MouseGetPos,,, Win
-	MouseGetPos, ,, OutputVarWin, OutputVarControl, 1|2|3]
 	Return WinExist(WinTitle . " ahk_id " . Win)
 }
 
@@ -562,113 +531,6 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	
 	; sleep 50
 	;  return, {Click, %x%,%y%,}
-}
-
-Mouse_Click(Link){
-	global
-	Mouse_Save()
-	if Link contains Save_ProductTab.EditProduct
-		click 275, 578
-	else If link contains Results_Definition_edit
-		click 78,63
-	else If link contains Result_Editor_Ok
-		click 370,660
-	else If link contains Results_Definition_ok
-		click 1336,592
-	else If link contains Requests_tab
-		click 865,83
-	else If link contains MyWork_Tab
-		click 761,44
-	else If link contains Mywork_Searchbar
-		click 500,127, 2
-	else if Link contains Save_Composition
-		click 1236, 888
-	else if Link contains Save_Composition
-		click
-	else if Link Contains OK_ProductTab.EditIngredient
-		click 265, 561
-	else if Link contains OK_ResultEntry
-		click, 1028, 808
-	else if Link contains Orient_ResultEntry
-		click 843, 202, 2
-	else if Link contains main_enter_results
-		click 74, 776
-	else if Link contains ScrollDown_EditFormulation
-		click 453, 444
-	else if Link contains Dropdown_ProductTab.EditIngredient
-		click 272, 67
-	else if Link contains SearchBar_SelectMethodsTests
-		click 225, 69, 2
-	else if Link contains MoveOverTest_SelectMethodsTests
-		Send,{Click}{click 506, 341}
-	else if Link contains Add
-		click 45, 65
-	else if Link contains Edit
-		click 84, 65
-	else if Link Contains Main_EditTest
-		SendInput,{click, 56, 784 }
-	else if Link Contains Add_Formulation
-		click, 73, 280
-	else if Link contains AddNewSampleTemplate
-		click 103, 325
-	else if Link contains Orient_SpecTab.TestDefinitionEditor
-		Click, 187, 200
-	else if Link contains Save_SpecTab.TestDefinitionEditor
-		Click 341, 618
-	else if Link contains Select_TestsForRequests
-	{
-		SendInput,{Click 500, 340}{click, 845, 658}
-		winwaitactive, Edit request - \\Remote, ,3
-		SendInput,{tab}{enter}
-	}
-	else if Link Contains Products_Tab
-		SendInput,{click, 550, 35}{tab}%Product%+{Tab 7}
-	else if Link contains SearchBar_Product
-	{
-		if winactive("Select methods tests - \\Remote")
-		{
-			click, 246,77, 2
-			return
-		}
-		else If WinActive("NuGenesis LMS - \\Remote")
-		{
-			;click 366, 44
-			;sleep 300
-			click 518, 89, 2
-			SendInput, %Product%
-			sleep 200
-			Send,{enter}
-		}
-		return
-	}
-	else if Link contains SearchBar_Batch
-	{
-		if winactive("Select methods tests - \\Remote")
-		{
-			click, 246,77, 2
-			return
-		}
-		else If WinActive("NuGenesis LMS - \\Remote")
-		{
-			click 783, 45
-			sleep 400
-			click 487, 125, 2
-			SendInput, %Batch%
-			sleep 200
-			Send,{enter}
-			winwaitactive, Warning - \\Remote, ,2
-			if errorlevel
-				return
-			else
-				SendInput,{esc}
-			return
-		}
-		Return
-	}
-	else
-		msgbox, yo
-	Send, %mouseReturn%
-	return
 }
 
 
@@ -753,107 +615,12 @@ DebugVars(){
 CL3(){
   Run, cl3.Ahk, lib\CL3
 }
-ShowSampleID(){
-  global
-  Menu, Tray, ToggleCheck, ShowSampleID
-  If ShowSampleID := !ShowSampleID
-  IniWrite, 1, data.ini, Options, ShowSampleID
-  else
-  IniWrite, 0, data.ini, Options, ShowSampleID
-  Varbar.Show()
-}
-ShowCoated(){
-  global
-  Menu, Tray, ToggleCheck, ShowCoated
-  If ShowCoated := !ShowCoated
-  IniWrite, 1, data.ini, Options, ShowCoated
-  else
-  IniWrite, 0, data.ini, Options, ShowCoated
-  Varbar.Show()
-}
-  EnteringRotations(){
-	  global
-		Menu, Tray, ToggleCheck, EnteringRotations
-		If EnteringRotations:= !EnteringRotations
-		{
-			IniWrite, 1, data.ini, Options, EnteringRotations
-			Menu, Tray, Check, EnteringRotations
-		}
-		else 
-		{
-			IniWrite, 0, data.ini, Options, EnteringRotations
-			Menu, Tray, unCheck, EnteringRotations
-		}
-  }
-	TempCode(){
-		global
-		Menu, Tray, ToggleCheck, TempCode
-		If TempCode:= !TempCode
-		{
-			IniWrite, 1, data.ini, Options, TempCode
-			Menu, Tray, Check, TempCode
-		}
-		else 
-		{
-			IniWrite, 0, data.ini, Options, TempCode
-			Menu, Tray, unCheck, TempCode
-		}
-  }
-SwitchWorkSheets(){
-	global
-	Menu, Tray, ToggleCheck, SwitchWorkSheets
-	If SwitchWorkSheets:= !SwitchWorkSheets
-	{
-		IniWrite, 1, data.ini, Options, SwitchWorkSheets
-		Menu, Tray, Check, SwitchWorkSheets
-	}
-	else 
-	{
-		IniWrite, 0, data.ini, Options, SwitchWorkSheets
-		Menu, Tray, unCheck, SwitchWorkSheets
-	}
-	Varbar.Show()
-}
-NoIdle(){
-	global
-	Menu, Tray, ToggleCheck, NoIdle
-	If NoIdle:= !NoIdle
-	{
-		SetTimer, NoidleTimer, % (3*60*1000)
-		Menu, Tray, Check, NoIdle
-	}
-	else 
-	{
-		Menu, Tray, unCheck, NoIdle
-		Settimer, NoidleTimer,off
-	}
-	Varbar.Show()
-}
+
+
 	
-NoIdleTimer:
-if (A_TimeIdle > (60*1000)) {
-  MouseMove, 1,0,0,R
-  SLEEP 100
-  MouseMove, -1,0,0,R
-}
+
 Return
-ShowNotes(){
-  global
-  ;  Menu, Tray, ToggleCheck, ShowNotes
-  If ShowNotes:= !ShowNotes
-  {
-  IniRead, Note1, data.ini, Notes, Note1
-  IniRead, Note2, data.ini, Notes, Note2
-  IniRead, Note3, data.ini, Notes, Note3
-  	Notes.Show()
-  }
-  else
-  iniWrite, %Note1%, data.ini, Notes, Note1
-  iniWrite, %Note2%, data.ini, Notes, Note2
-  iniWrite, %Note3%, data.ini, Notes, Note3
-  Notes.Close()
-  Varbar.Show()
-  }
+
 KeyHistory(){
   KeyHistory
   }
@@ -861,9 +628,12 @@ WindowSpy(){
   Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
   }
 Exitsub(){
+	global
   varbar.SaveVariables()
 	CloseScript("cl3.ahk")
+	sleep 200
 	CloseScript("Vim.ahk")
+	Sleep 200
   exitapp
   }
 	;Success:=CloseScript("Case insensitive script name")

@@ -91,6 +91,9 @@ Menu(){
     Menu, VarBarMenu, Add,		 		TempCode, 							TempCode 
       if TempCode
         Menu, VarBarmenu, Check, 	Tempcode
+    Menu, VarBarMenu, Add,		 		ShowVarBar, 							ShowVarBar 
+      if ShowVarBar
+        Menu, VarBarmenu, Check, 	ShowVarBar
     Menu, VarBarMenu, Add,		 		EnteringRotations, 			EnteringRotations 
       if EnteringRotations
         Menu, VarBarMenu, Check, 	EnteringRotations

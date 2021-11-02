@@ -36,7 +36,6 @@ iconlist:="a,c,s,t,x,y,z"
 	Menu, tray, NoStandard
 	Menu, tray, Add, %name% %version%     , DoubleTrayClick
 	Menu, tray, Icon, %name% %version%    , res\cl3.ico
-	Menu, tray, Default, %name% %version% 
 	Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
 	Menu, tray, Add, &Settings            , TrayMenuHandler
 	Menu, tray, Icon,&Settings            , dsuiext.dll, 36
@@ -60,8 +59,9 @@ iconlist:="a,c,s,t,x,y,z"
 	Menu, tray, Add, 
 	Menu, tray, Add, &Pause clipboard history, TrayMenuHandler
 	Menu, tray, Add, 
-	Menu, tray, Add, Exit                 , SaveSettings
+	Menu, tray, Add, E&xit                 , SaveSettings
 	Menu, tray, Icon, %MenuPadding%Exit   , shell32.dll, 132
+	Menu, tray, Default, E&xit 
 	Menu, ClipMenu, Add, TempText, MenuHandler
 	Menu, SubMenu1, Add, TempText, MenuHandler
 	Menu, SubMenu2, Add, TempText, MenuHandler
@@ -886,7 +886,7 @@ Else If (A_ThisMenuItem = "&Usage statistics")
 
 ; Settings menu
 
-Else If (Trim(A_ThisMenuItem) = "Exit")
+Else If (Trim(A_ThisMenuItem) = "E&xit")
 	ExitApp
 
 Return

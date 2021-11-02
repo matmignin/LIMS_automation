@@ -1,22 +1,22 @@
-  ; GetSampleInfo(){
-  ;   global Customer, Name, ShipToIndex
-  ;   ParsedSample:=[]
-  ;   ; clipboard:=
-  ;   ; send, ^c 
-  ;   ; clipwait, 2
-  ;     ; if errorlevel
-  ;       ; sleep 400
-  ;   Loop, parse, Clipboard, `t
-  ;   ParsedSample.insert(A_LoopField)
-  ;   TotalColumns:=Parsedsample.maxindex()//2
+  GetSampleInfo(){
+    global Customer, Name, ShipToIndex
+    ParsedSample:=[]
+    ; clipboard:=
+    ; send, ^c 
+    ; clipwait, 2
+      ; if errorlevel
+        ; sleep 400
+    Loop, parse, Clipboard, `t
+    ParsedSample.insert(A_LoopField)
+    TotalColumns:=Parsedsample.maxindex()//2
     
-  ;   Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
-  ;   Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-  ;   IniRead,ShipToIndex, lib\data\customers.ini, Customers, %Customer%
-  ;   ; if !ShipTo
-  ;     ; ShipTo:=ShipToIndex
-  ;   return ShiptoIndex
-  ; }
+    Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+    Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+    IniRead,ShipToIndex, lib\data\customers.ini, Customers, %Customer%
+    ; if !ShipTo
+      ; ShipTo:=ShipToIndex
+    return ShiptoIndex
+  }
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
@@ -49,7 +49,7 @@
 
 
 	#IfWinActive, Results Definition - \\Remote ;;__Results_Definition:
-		wheelup::Mouse_click("Edit")
+	; wheelup::Mouse_click("Edit")
 		numlock::Send, % clk(712, 663) "{esc}"
 		space::sendinput,{ctrldown}{click}{ctrlup}
 		mbutton::Spectab.Table()
@@ -99,7 +99,7 @@
 			F8::						3Down()
 			F7::						3Right()
 			F6::						3Left()	
-		;^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
+		^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
 			^wheelup::				LMS.SearchbarPaste() ;; Spread
 			Rbutton & F19::       	send % WindowInfo() 
 			Rbutton & F6::        	Send, {Backspace}
@@ -803,7 +803,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       WinActivate, Composition - \\Remote
       Breaking.Point()
       sleep 200
-      click 57, 65 ;Mouse_Click("add_Composition")
+      click 57, 65 
       sleep 150
       Breaking.Point()
       this.DropdownSelect(Dropdown_count)
@@ -930,7 +930,6 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
     EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
       global Product, ShapeAndSize, color, ServingSize
-      ; Mouse_Click("Add_Formulation")
       if !winactive("Edit Formulation - \\Remote") && winexist("Edit Formulation - \\Remote")
         winactivate, Edit Formulation - \\Remote,
       Send, {tab}%product%
@@ -955,33 +954,27 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     HM_ReportOnly(){ 
     SetWinDelay, 450 ;testing out
     click 125,120 ;click 1st row
-    ;  Mouse_Click("add") ;trying to eliminate mouseclick function
+    
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
     SendInput,{click 150,73}{tab}{right 11} ;arsenic
     Breaking.Point()
-
     WinWaitClose, Edit Ingredient - \\Remote,,4
     click 125,140 ;click 2nd row
-    ;  Mouse_Click("add") ;trying to eliminate mouseclick function
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
     SendInput,{click 150,73}{tab}{right 167} ;lead
     Breaking.Point()
-
     click 390, 659	;click okay
     WinWaitClose, Edit Ingredient - \\Remote,,4
     click 125,180 ;click 3rd row
-    ;  Mouse_Click("add") ;trying to eliminate mouseclick function
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
     SendInput,{click 150,73}{tab}{right 23} ;cadmium
     Breaking.Point()
-
     click 390, 659	;click okay
     WinWaitClose, Edit Ingredient - \\Remote,,4
     click 125,200 ;click 4th row
-    ;  Mouse_Click("add") ;trying to eliminate mouseclick function
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
     SendInput,{click 150,73}{tab}{right 189} ;mercury
@@ -1404,8 +1397,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		WinWaitActive, Results Definition,,0.25
 			if errorlevel
 				WinActivate, Results Definition
-		; Mouse_Click("edit") ;trying to eliminate mouseclick funct
-		clk(84, 65)
+		click 84, 65
 		winwaitactive, Result Editor - \\Remote,,0.25
 			if errorlevel
 				WinActivate, Result Editor - \\Remote
@@ -2203,7 +2195,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     if keep_running = n ;another signal to stop
     return
     click
-    Mouse_Click("Orient_ResultEntry")
+		click 843, 202, 2
     if keep_running = n ;another signal to stop
     return
     Send,{tab}{Space}{tab}{Space}
@@ -2228,7 +2220,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     }
     MouseGetPos, xpos, ypos
     click
-    Mouse_Click("Orient_ResultEntry")
+		click 843, 202, 2
     if Checkbox_Toggle Contains Toggle
       SendInput,{tab}{Space}{tab}{Space}
     else
