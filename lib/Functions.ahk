@@ -511,6 +511,7 @@ Return
 MouseIsOver(WinTitle){
 	Global
 	MouseGetPos,,, Win
+	MouseGetPos, ,, OutputVarWin, OutputVarControl, 1|2|3]
 	Return WinExist(WinTitle . " ahk_id " . Win)
 }
 

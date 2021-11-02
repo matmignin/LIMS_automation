@@ -195,10 +195,12 @@ return
 	h::                       SendInput,{shiftdown}{left}{shiftup}
 	k::                       SendInput,{shiftdown}{up}{shiftup}
 	^.::
-	q::                       
-	^q::											sendinput, +{home}{backspace}										
 	w::                       
-	^w::											sendinput, +{end}{backspace}										
+	^w::											sendinput, +{home}{backspace}										
+	e::                       
+	^e::											sendinput, +{end}{backspace}										
+	q:												SendInput,^{a}{backspace}
+	^q::											SendInput,^{a}{backspace}
 	.::												SendInput,+^{right}{ctrl up}{shift up}
 	; ^e::                
 	; e::                       SendInput,^+!{0}
@@ -228,8 +230,6 @@ return
 	/::                       SendInput,{shiftdown}{end}{shiftup} 
 	; z::											  SendInput,{ctrldown}{y}{ctrlup}
 	; ^z::											SendInput,{ctrldown}{y}{ctrlup}
-	e::												SendInput,^{a}{backspace}
-	^e::											SendInput,^{a}{backspace}
 	s::                       SendInput,{home}+{end}
 	^s::                      SendInput,{home}+{end}
 	c::	                      clip.append()
@@ -283,15 +283,16 @@ return
 	/::                     Send,+{end}{right} ;end of line
 	m::      	              Send,{Home}
 	^k::                     SendInput,{shiftdown}{up}{shiftup}
-	e::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
-	; ^e::                    SendInput,!+^{0}
 	Rshift::                SendInput,{s}
 	9 & 0::									SendInput,{)}
-		^e::                  	SendInput,^{a}{backspace}			 ;block comment
-	q::											sendinput, {backspace}
-	^q::											sendinput, +{Home}{backspace}
-	w::											sendinput, {delete}
-	^w::										sendinput, +{end}{backspace}
+
+	q::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
+	^q::                  	SendInput,^{a}{backspace}			 ;block comment
+	w::											sendinput, {backspace}
+	^w::											sendinput, +{Home}{backspace}
+	e::											sendinput, {delete}
+	^e::										sendinput, +{end}{backspace}
+
 	t::                     SendInput,+!{F9}
 	space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 	`;::        						SendInput,!^{/}

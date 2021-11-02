@@ -366,18 +366,24 @@ TaskBar(){
     Menu, Menu, Add, &Downloads , #^F1
     Menu, Menu, Add, &VQuest , #^v 
     menu, menu, add
+    Menu, Menu, Add, &Screenshots, #^+s
     Menu, Menu, Add, &mmignin, #^F4
-    Menu, Menu, Add, &OneDrive, #^F5
-    Menu, Menu, Add, &CofA Team, #^F6
-    Menu, Menu, Add, &LMS Team, #^F7
+    ; Menu, OneDrive, Add, &OneDrive, #^F5
+    Menu, OneDrive, Add, &CofA Team, #^F6
+    Menu, OneDrive, Add, &LMS Team, #^F7
+    Menu, Menu, add, &OneDrive, :OneDrive
     ; Menu, Menu, Add, &Workbook, !w 
-    Menu, SubMenu, Add, &Label Copy Foldier, #^F2
-    Menu, SubMenu, Add, &All Label Copy, #^F3
+    Menu, LabelCopyFolder, Add, &Label Copy Foldier, #^F2
+    Menu, LabelCopyFolder, Add, &All Label Copy, #^F3
+    Menu, LabelCopyFolder, Add, &Sample Log, #^F5
+    Menu, LabelCopyFolder, Add, &QC SAMPLE (1), #^F11
+    Menu, LabelCopyFolder, Add, &QC SAMPLE (2), #^F12
     ; Menu, Menu, Add, &WorkSheets, Tests 
-    Menu, SubMenu, Add, &Final Labels, #^F8
-    Menu, SubMenu, Add, &Final C_O_A, #^F9
-  Menu, Menu, add, &Label Copy, :SubMenu
-    if Winexist("Mats Workbook"){
+    Menu, LabelCopyFolder, Add, &QC Appearance, #^10
+    Menu, LabelCopyFolder, Add, &Final Labels, #^F8
+    Menu, LabelCopyFolder, Add, &Final C_O_A, #^F9
+  Menu, Menu, add, &Label Copy, :LabelCopyFolder
+    if Winexist("Mats Workbook" && WinActive("NuGenesis LMS - \\Remote"){
       Menu,Menu,add,				&Spec Table,						Tests
 			Menu,Menu,add,				&Ingredient Table,			Tests
       }

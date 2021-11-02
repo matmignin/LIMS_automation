@@ -3,8 +3,8 @@ _MouseIsOver:
 	; #If MouseIsOver("ahk_exe EXCEL.exe")
 #if mouseisover("ahk_class Shell_TrayWnd")
 		wheelup::Send % blockrepeat(1000) "{lwin down}e{lwin up}"
+		mbutton::
 		F15::menu.TaskBar()
-		mbutton::Send, {lwin down}e{lwin up}
 		Space::Send, {lwin down}d{lwin up}
 	#If MouseIsOver("ahk_exe Snipaste.exe")
 		F8::send, {click}{esc}

@@ -14,15 +14,20 @@ OpenApps:
   ; !v::OpenApp.vsCode()
   <#v::OpenApp.vsCode()
   #^v::Run, C:\Users\mmignin\Documents\VQuest\
+  #^+s::Run, C:\Users\mmignin\OneDrive - Vitaquest International\Screenshots
   #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
   #^F2::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\
   #^F1::Run, Downloads
   #^F4::Run, \\10.1.2.118\users\vitaquest\mmignin
-  #^F5::Run, C:\Users\mmignin\OneDrive - Vitaquest International
+  #^F5::Run, \\10.1.2.118\share\QC LAB\SAMPLE LOG 2021.xlsx
+  ; #^F5::Run, C:\Users\mmignin\OneDrive - Vitaquest International
   #^F6::Run, C:\Users\mmignin\OneDrive - Vitaquest International\CofA Team
   #^F7::Run, C:\Users\mmignin\OneDrive - Vitaquest International\LMS Team
   #^F8::Run, \\10.1.2.118\share\QA\Final Labels (Temp)
   #^F9::Run, \\10.1.2.118\Final_C_O_A
+  #^F10::Run, \\10.1.2.118\share\QC LAB\QC_Appearance Test.xlsx
+  #^F11::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021 (2) .xlsx
+  #^F12::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021.xlsx
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()
