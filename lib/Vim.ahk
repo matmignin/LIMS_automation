@@ -17,13 +17,14 @@
     ; SetMouseDelay, 1
     ; SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
-		SetWorkingDir, C:\Users\mmignin\Documents\VQuest
-		try Menu, Tray, Icon, lib\Data\Vim.ico
+
+		try Menu, Tray, Icon, data\Vim.ico
 		menu, tray, add, ReloadScript, <^r
 		Menu, Tray, Add, E&xit, ExitSub
 		Menu, Tray, Default, E&xit
 
-   #include Functions.ahk
+   #include Functions.ahk 
+	;  #include C:\Users\mmignin\Documents\VQuest\Vquest.ahk
 ; return
 return
 #If Getkeystate("F19","p") ;|| GetKeyState("Capslock","T")
@@ -65,9 +66,9 @@ return
 #if 
 #If WinActive("ahk_exe Code.exe")  ;;___VSCODE___    
 	!f:: 	                  
-	send, !#+{f 2}
-	Input, output, L1 V, {F13}{enter}{esc}
-	send, {enter}{esc}
+	sendinput, !#+{f 2}
+	Input, output, L2 V, {left}{up}{right}{down}{F13}{enter}{esc}
+	sendinput, {enter}{esc 2}
 	return
 	Mbutton::sendinput, ^{click}      
 	F2::FindMatchingWindows()
@@ -76,15 +77,15 @@ return
 	Lbutton & F13::
 		send, ^c
 		tt(Clipboard,1000,100,-400,,160)
-		return
+		return  
 	F13 & Lbutton::send, {click}^{v} ;{F19}
 	F13 & Rbutton::send, ^{x} ;{F20}
 	; F13 & Mbutton::send, ^{x}
+	F13::F13
 	numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{}{lwin up}{ctrlup}{altup}
-	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup}
-	; numlock::									send, ^+{\}                 
+	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup}              
 	; !v:: 										send, {F9}vim.ahk{enter}
 	; ^+4::											send, !+{4}
 	; ^+3::											send, !+{3}
@@ -145,7 +146,7 @@ return
 	f19 & t::                 SendInput,%wintitle%
 	f19 & w::                 SendInput,%wininfo%
 	f19 & /::                 SendInput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
-	F13 & lshift::						enter
+	; F13 & lshift::						enter
 	; F13::F13
 ;;		---TAB---
 	Tab & `:: 	 							
@@ -189,8 +190,8 @@ return
 	h::                        SendInput,{ctrldown}{[}{ctrlup}
 	+z::                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
 	y::                        SendInput,	^{n}
-	0::return
-	9::return
+	Lshift::               		 SendInput, {ctrldown}{z}{ctrlup}
+	Rshift::                SendInput, {ctrldown}{y}{ctrlup}
 	8::return
 	7::return
 	6::return
@@ -203,23 +204,23 @@ return
 
 
 #If Getkeystate("F13","p")									&& Getkeystate("LControl","p") ;;		||| VIM + CONTROL ||| 
+
 	j::                       SendInput,{shiftdown}{down}{shiftup}
 	l::                       SendInput,{shiftdown}{right}{shiftup}
 	h::                       SendInput,{shiftdown}{left}{shiftup}
 	k::                       SendInput,{shiftdown}{up}{shiftup}
-	^.::
-	w::                       
-	^w::											sendinput, +{home}{backspace}										
+		w::                       
+			^w::									sendinput, +{home}{backspace}										
 	x::                       
-	^x::											sendinput, +{end}{backspace}										
+		^x::										sendinput, +{end}{backspace}										
 	q::												SendInput,^{a}{backspace}
 	^q::											SendInput,^{a}{backspace}
-	.::												SendInput,+^{right}{ctrl up}{shift up}
-	; ^e::                
-	; e::                       SendInput,^+!{0}
+	.::												SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	^.::											SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	,::
-	^b::
-	b::                       SendInput,^+{left}
+		^,::
+			^b::
+				b::                 SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 	o::                       SendInput,{Home}{enter}{up}
 	f::												Sendinput,!^{f}
 	; v::                       SendInput,{shiftdown}{altdown}{lwindown}{v}{lwinup}{altup}{shiftup}
@@ -241,13 +242,9 @@ return
 	m::                       SendInput,{shiftdown}{Home 2}{shiftup}
 	^/::                       SendInput,{shiftdown}{end}{shiftup} 
 	/::                       SendInput,{shiftdown}{end}{shiftup} 
-	; z::											  SendInput,{ctrldown}{y}{ctrlup}
-	; ^z::											SendInput,{ctrldown}{y}{ctrlup}
 	s::                       SendInput,{home}+{end}
 	^s::                      SendInput,{home}+{end}
 	c::	                      clip.append()
-	; /::	                      SendInput,!+^{/}
-	; ^/::	                    SendInput,!+^{/}
 	#If 
  
 #If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")  ;; 		||| VIM +SHIFT |||  
@@ -255,27 +252,37 @@ return
 	+k::                      SendInput,{up 10}
 	j::                       SendInput,{down 10}
 	+j::                      SendInput,{down 10}
-	1::		                    SendInput,{tab 8}
-	2::		                    SendInput,{tab 10}
-	3::		                    SendInput,{tab 12}
-	4::		                    SendInput,{tab 14}
-	5::		                    SendInput,{tab 26}
-	6::		                    SendInput,{tab 20}
+	; 1::		                    SendInput,{tab 8}
+	; 2::		                    SendInput,{tab 10}
+	; 3::		                    SendInput,{tab 12}
+	; 4::		                    SendInput,{tab 14}
+	; 5::		                    SendInput,{tab 26}
+	; 6::		                    SendInput,{tab 20}
 	#if
 
 #If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;; 	 	_d Vim_
-	4::                                       SendInput,{shiftdown}{end}{shiftup}^{x}
 	/::                                       Vim.Yank("+{End}","cut") ;yank end
 	m::                                       Vim.Yank("+{Home}","cut") ;yank end
 	`;::                                      Vim.Yank("+!{;}","cut") ;encase
 	l::                                       SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^{x}
 	h::                                       SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{x}
-	5::                              			SendInput,{shiftdown}{ctrldown}{lwindown}{d}{lwinup}{ctrlup}{shiftup}
-	.::
+		.::
 	w::                                       sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
-	,::
+		,::
 	b::                                       vim.Yank("{ctrldown}{shiftdown}{left}{ctrlup}{shiftup}","cut")
 	d::                                       sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}{backspace}
+
+#If (A_PriorHotKey = "y" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800) ;; 	 	_y Vim_
+	/::                                       Vim.Yank("+{End}") ;yank end
+	m::                                       Vim.Yank("+{Home}") ;yank end
+	`;::                                      Vim.Yank("+!{;}") ;encase
+	l::                                       Send,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^{c}
+	h::                                       Send,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{c}
+	.::
+	w::                                       send, {ctrldown}{right}{shiftdown}{left}{shiftup}{c}{ctrlup}
+	,::
+	b::                                       Send, {ctrldown}{shiftdown}{left}{shiftup}{c}{ctrlup}
+	d::                            sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}
 	
 #If Getkeystate("F13","p") ;;	=|||-VIM F13-|||=
 	h::                       SendInput,{left}
@@ -284,19 +291,20 @@ return
 	+l::                      SendInput,{End}
 	^j::                     SendInput,{shiftdown}{down}{shiftup}
 	^l::                     SendInput,{shiftdown}{right}{shiftup}
-	^.::                    SendInput,+^{right}
-	.::                     SendInput,^{right}
-	p::											Sendinput, ^{n}
-	b::
+	.::                     SendInput,{ctrldown}{right}{ctrlup}
+	; ^.::                    SendInput,{blind}{kkshiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	,::                     SendInput,{ctrldown}{left}{Ctrlup}
-	^,::										SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup} ;go back a word
+	; ^,::										SendInput,{blind}{shiftdown}{ctrldown}{left}{ctrlup}{shiftup} ;go back a word
+	b::											sendinput,{ctrldown}{left}{ctrlup}
 	^b::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
+	p::											Sendinput, ^{n}
 	u::                     sendinput, {shiftdown}{ctrldown}{altDown}{[}{altup}{Ctrlup}{shiftup} ;go to previous matching word
 	n::                     sendinput, {shiftdown}{ctrldown}{altDown}{]}{Ctrlup}{altup}{shiftup} ;goto next matching word
 	/::                     Send,+{end}{right} ;end of line
 	m::      	              Send,{Home}
 	^k::                     SendInput,{shiftdown}{up}{shiftup}
-	Rshift::                SendInput,{s}
+
+
 	9 & 0::									SendInput,{)}
 
 	e::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
@@ -328,17 +336,39 @@ return
 	; [::                     SendInput,+#{[} ;go to bracket left
 	[::                     SendInput, {F6} 
 	]::                     SendInput, {f7}
-	
-	;^'::  									sendinput,{right}^{left}+^{right}+{'}
 	'::  										SendInput,!{'}
 	a::                     SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
 	^a::                    SendInput,{altDown}{ctrldown}{a}{ctrlup}{altup}
-	c::                  ifNothingSelected("copy","^c") ;  send,^{c}
-		
+	c::                  		send, ^{c} ;  send,^{c}
+	^c::                  	send, ^{x} ;  send,^{c}
 	v::                     Send, ^{v}
-	; x::                     Delete ;ifNothingSelected("cut","^x")
-	; ^x::                     Delete ;ifNothingSelected("cut","^x")
-
+	j::                     SendInput,{down}
+	k::                     SendInput,{Up}
+	; t::											sendinput,{ctrldown}{enter}{ctrlup}
+	g::                     SendInput,^g ;Git
+	d::                     return
+	o::                     SendInput,{end}{enter}
+	5::                      SendInput,{shiftdown}{5}{shiftup}
+	; ^y::										send, ^{F18}
+	z::                      send, {F18}
+	^z::                      send, ^{F18}
+	; r::                    Vim.ChangeSelection()
+	Enter::                  SendInput,{shiftdown}{enter}{shiftup}
+	^space::                 SendInput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}
+	; lshift::                 SendInput,{pgup} 
+	<^right::                SendInput,{ctrldown}{]}{ctrlup}
+	<^down::                 SendInput,{ctrldown}{down}{ctrlup}
+	<^left::                 SendInput,{ctrldown}{[}{ctrlup}
+	<^up::                   SendInput,{ctrldown}{up}{ctrlup}
+	+o::                     SendInput,{Home}{enter}
+	^o::                     SendInput,{Home}{enter}
+	^m::                     SendInput,{shiftdown}{Home}{shiftup}
+	^/::                     SendInput,{shiftdown}{end}{shiftup} 
+	down::									  sendinput, {shiftdown}{down}{shiftup}
+	up::									    sendinput, {shiftdown}{up}{shiftup}
+	left::									  sendinput, {shiftdown}{left}{shiftup}
+	right::									  sendinput, {shiftdown}{right}{shiftup}
+	#if
 
 	ifNothingSelected(Action, Button){
 	  ClipboardSaved:=ClipboardAll
@@ -383,75 +413,20 @@ return
 		mousemove, %mousex%, %mousey%, 0
 		SetDefaultMouseSpeed, 1
 	}
-	j::                     SendInput,{down}
-	k::                     SendInput,{Up}
-	; t::											sendinput,{ctrldown}{enter}{ctrlup}
-	g::                     SendInput,^g ;Git
-	d::                     return
-	o::                     SendInput,{end}{enter}
-	5::                      SendInput,{shiftdown}{5}{shiftup}
-	y::^x
-	; ^y::										send, ^{F18}
-	z::                      send, {F18}
-	^z::                      send, ^{F18}
-	; r::                    Vim.ChangeSelection()
-	Enter::                  SendInput,{shiftdown}{enter}{shiftup}
-	^space::                 SendInput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}
-	; lshift::                 SendInput,{pgup}
-	<^right::                SendInput,{ctrldown}{]}{ctrlup}
-	<^down::                 SendInput,{ctrldown}{down}{ctrlup}
-	<^left::                 SendInput,{ctrldown}{[}{ctrlup}
-	<^up::                   SendInput,{ctrldown}{up}{ctrlup}
-	+o::                     SendInput,{Home}{enter}
-	^o::                     SendInput,{Home}{enter}
-	^m::                     SendInput,{shiftdown}{Home}{shiftup}
-	^/::                     SendInput,{shiftdown}{end}{shiftup} 
-	down::									  sendinput, {shiftdown}{down}{shiftup}
-	up::									    sendinput, {shiftdown}{up}{shiftup}
-	left::									  sendinput, {shiftdown}{left}{shiftup}
-	right::									  sendinput, {shiftdown}{right}{shiftup}
-	#if
-	F13::F13
-; ~lShift:: ;MouseGesture(LeftAction:="{left}",RightAction:="{Right}")
-		; {
-			; if z=1
-				; continue
-      ; x:=abs(xf-xi)
-      ; y:=abs(yf-yi)
-				; z:=1
-			; }
-				; tt("x: " x "`ny: " y,1300,xi,yi)
 
 
-      ; x:=((xf-xi)//15)
-      ; y:=((yf-yi)//10)
-      ; if abs(x) < 2 && abs(y) < 2
-      ;   continue
-      ; if (abs(x) > 2 && abs(y) > 2)
-      ;   continue
-      ; if (abs(x) <= 2 && abs(y) >= 2){
-      ;   if y >= 2
-      ;     send, {down}
-      ;   if y <= -2
-      ;     send, {up}
-      ;   yi:=yF
-      ;   continue
-      ; }
-      ; if (abs(x) >= 2 && abs(y) <= 2){
-      ;   if x >= 2
-      ;     send, {right}
-      ;   if x <= -2
-      ;     send, {left}
-      ;   xi:=xF
-      ;   continue
-      ; }
-			
-    ; }
-		; if x > 1 || y > 1
-		; z:=0
+ifPriorHotkey(The_PriorHotKey,FunctionOrAction){
+	if A_PriorHotkey contains The_PriorHotkey 
+	{
+		if IsFunc(FunctionName)
+			func(FunctionOrAction)
+		else
+			sendinput % FunctionOrAction
+		return ;FunctionOrAction
+	}
+	else
 		return
-
-
+}
 
 
 class Vim {
