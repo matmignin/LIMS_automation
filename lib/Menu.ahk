@@ -30,7 +30,7 @@ class Menu{
     ProductHistory(){
     global
 		try Menu,Menu, deleteAll
-		Loop, Read, lib\data\Products.txt
+		Loop, Read, data\Products.txt
 			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
 		Menu, Menu, Show
     return
@@ -39,7 +39,7 @@ class Menu{
     global
 		try Menu,Menu, deleteAll
      Products:=[]
-        FileRead, LoadedNotes, lib\Data\CurrentCodes.txt
+        FileRead, LoadedNotes, data\CurrentCodes.txt
         Products := StrSplit(LoadedNotes,"`r`n")
 		Loop % Products.MaxIndex(){ ; Read, debug.txt
       temp:=Products[a_index]
@@ -379,7 +379,7 @@ TaskBar(){
     Menu, LabelCopyFolder, Add, &QC SAMPLE (1), #^F11
     Menu, LabelCopyFolder, Add, &QC SAMPLE (2), #^F12
     ; Menu, Menu, Add, &WorkSheets, Tests 
-    Menu, LabelCopyFolder, Add, &QC Appearance, #^10
+    Menu, LabelCopyFolder, Add, &QC Appearance, #^F10
     Menu, LabelCopyFolder, Add, &Final Labels, #^F8
     Menu, LabelCopyFolder, Add, &Final C_O_A, #^F9
   Menu, Menu, add, &Label Copy, :LabelCopyFolder

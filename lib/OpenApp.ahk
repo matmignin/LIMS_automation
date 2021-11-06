@@ -1,7 +1,5 @@
 
 #IfWinActive,
-#+::
-` & esc::        ;                 Pause, Toggle
 F1::
   if winexist("AutoHotkey Help")
     winactivate, 
@@ -13,6 +11,7 @@ OpenApps:
   <#f::OpenApp.Firefox()
   ; !v::OpenApp.vsCode()
   <#v::OpenApp.vsCode()
+  ^F1::Varbar.reset()
   #^v::Run, C:\Users\mmignin\Documents\VQuest\
   #^+s::Run, C:\Users\mmignin\OneDrive - Vitaquest International\Screenshots
   #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
@@ -34,8 +33,8 @@ OpenApps:
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
   !d::OpenApp.Display()
-  F20 & p::
-  #p::OpenApp.YourPhone()
+  ; F20 & p::
+  ; #p::OpenApp.YourPhone()
   f20 & n::
   #n::openApp.notepad()
   +#n::openApp.Notion()

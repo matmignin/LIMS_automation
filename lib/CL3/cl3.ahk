@@ -5,6 +5,7 @@ SetBatchlines, -1
 SendMode, Input
 SetWorkingDir, %A_ScriptDir%
 AutoTrim, on
+Process, Priority, , High
 StringCaseSense, On
 name:="CL3 "
 version:="v1.99.1"
@@ -60,7 +61,7 @@ iconlist:="a,c,s,t,x,y,z"
 	Menu, tray, Add, &Pause clipboard history, TrayMenuHandler
 	Menu, tray, Add, 
 	Menu, tray, Add, E&xit                 , SaveSettings
-	Menu, tray, Icon, %MenuPadding%Exit   , shell32.dll, 132
+	Menu, tray, Icon, %MenuPadding%E&xit   , shell32.dll, 132
 	Menu, tray, Default, E&xit 
 	Menu, ClipMenu, Add, TempText, MenuHandler
 	Menu, SubMenu1, Add, TempText, MenuHandler
@@ -219,7 +220,6 @@ Return
 
 
 
-; If GetKeyState("F13","p")
 hk_cyclebackward:
 If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A

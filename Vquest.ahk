@@ -2,12 +2,14 @@
 VQuest_Start:
     #SingleInstance,Force
     #Persistent
+;#ErrorStdOut
+    Process, Priority, , High
     #NoEnv
     #KeyHistory 300
-    #MenuMaskKey vkE8
     #InstallKeybdHook
     #InstallMouseHook
     CheckTime:=500
+    #ClipboardTimeout 1501
     ; #HotkeyInterval 50
     #MaxHotkeysPerInterval 500
     #MaxThreadsBuffer, On
@@ -41,60 +43,65 @@ VQuest_Start:
     Iniread, Iteration, data.ini, SavedVariables, Iteration
     ; Products:=[]
       ; Products := StrSplit(CurrentCodes,"`r`n")
-    Filegettime, filetime, lib\Data\CurrentCodes.txt
+    Filegettime, filetime, data\CurrentCodes.txt
     TimeSince:= A_Now - FileTime
     if TimeSince >  50000
-      FileDelete, lib\Data\CurrentCodes.txt
+      FileDelete, data\CurrentCodes.txt
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
       VarBar_y=1
     ; Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
-    ; Menu, Tray, Add, Pause, Pause
-    menu, tray, add, ShowSampleID, showSampleID
     Menu, tray, NoStandard
+    ; Menu, tray, Click, 
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, windowSpy, WindowSpy
-    Menu, Tray, Default, DebugVars
-    ShowVarBar:=togglemenu("showVarbar")
-    TempCode:=togglemenu("TempCode")
-    EnteringRotations:=togglemenu("EnteringRotations")
-    SwitchWorkSheets:=togglemenu("SwitchWorkSheets")
+    HideVarBar:=CreateMenu("showVarbar")
+    HideVarBar:=CreateMenu("ShowSampleID")
+    TempCode:=CreateMenu("TempCode")
+    EnteringRotations:=CreateMenu("EnteringRotations")
+    SwitchWorkSheets:=CreateMenu("SwitchWorkSheets")
+    DebuggingScript:=CreateMenu("DebuggingScript")
+    HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
+    Menu, Tray, Default, E&xit
+
 
     try Run, cl3.Ahk, lib\CL3
-    try Run, Vim.Ahk, lib\
-    varbar.Show()
+    ; try Run, Vim.Ahk, lib\
+    If !HideVarBar
+      varbar.Show()
 
-    try Menu, Tray, Icon, lib\Data\Robot.ico
+    try Menu, Tray, Icon, bin\Robot.ico
     settimer, ActiveCheck, %CheckTime%
     Blank:=" `n `n  `t `t `n`t "
     CurrentWindow:=A
     IfWinExist, ahk_exe WFICA32.EXE
     LMS.Orient()
-
     Excel.Connect(1)
+
   #include <Toggles>
   #Include <Temp>
-  #Include <Checklist>
-  #Include <Test>
+  ; #Include <Checklist>
   #include <VIM>
+  #Include <Test>
   #include <HotStrings>
+
   #include <KEYS>
   #include <PAD>
   #Include <LMS>
+  #include <VScode>
   #Include <clip>
   #Include <OpenApp>
   #include <Excel>
   #include <varBar>
   #include <menu>
-  #include <Rotation>
-  #include <Vis2>
+  ;#include <Rotation>
+  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
   #include <Functions>
   #IfWinActive,
 return
-
 
 ;__________________continuously runing sub_________________________________________________
 ActiveCheck: 
@@ -124,7 +131,7 @@ if (A_TimeIdle > (60*1000) && NoIdle) {
   SLEEP 50
   MouseMove, -1,0,0,R
 }
-  return
+return
    
 
 

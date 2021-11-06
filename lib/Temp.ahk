@@ -1,24 +1,27 @@
 
-#If TempCode
-  space::msgbox, yo
-#If Winactive("Select Iterations - \\Remote")
-  F20::GoSub, PasteProductRotation
-#If Winactive("Book")
-  F19::Gosub, CopyProductRotation
+; #If TempCode
+;   Mbutton::    
+;   send, {click 39, 611}
+; 		if !winactive("Edit test (Field Configuration: ")
+;     	winwaitactive, Edit test (Field Configuration: ,, 2
+;     Send,{Click, 402, 284}{end}(on sample log){click, 334, 618}
+;     return
 
 
-#If Winactive("Edit specification - \\Remote") && TempCode
-  ; Mbutton:: gosub, NewVersionRAE
-#If Winactive("Select methods tests - \\Remote") && TempCode
-#If Winactive("Results Definition - \\Remote") && TempCode
-    Mbutton::send, {enter}
-    numlock::gosub, AddRAE_ResultsDefinition
-    rbutton::menu.lms()  
-    ; Lbutton::
-#If mouseisover("NuGenesis LMS - \\Remote") && TempCode
-  NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
-  ; F20::gosub, CheckExcelRow
-  ; F15::gosub, CheckExcelRow
+
+; #If Winactive("Edit specification - \\Remote") && TempCode
+;   ; Mbutton:: gosub, NewVersionRAE
+; #If Winactive("Select methods tests - \\Remote") && TempCode
+; #If Winactive("Results Definition - \\Remote") && TempCode
+;     Mbutton::send, {enter}
+;     numlock::gosub, AddRAE_ResultsDefinition
+;     rbutton::menu.lms()  
+;     ; Lbutton::
+; #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
+;   ; NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+;   ; F20::gosub, CheckExcelRow
+;   ; F15::gosub, CheckExcelRow
+
 
 #if
 
@@ -63,35 +66,13 @@ CheckExcelRow: ;goes down a lms search and fills out a excel table depending on 
     sleep 400
   }
 return
-CopyProductRotation:
-  clipboard:=
-  send, ^c
-  clipwait, 1
-  sleep 400
-  filename:= "C:\Users\mmignin\Documents\VQuest\Rotations\" Product ".txt"
-  FileDelete, %FileName%
-  FileAppend, %Clipboard%, %Filename%
-  LMSwb:=ComObjActive("Excel.Application")
-  Rotation:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,5)
-  Rotation.Value:=Product ".txt"
-  ; iniwrite %Clipboard%, data.ini, Rotations, %Product%
-return  
-PasteProductRotation:
-  filename:= "C:\Users\mmignin\Documents\VQuest\Rotations\" Product ".txt"
-  FileRead, Clipboard, %Filename%
-  ; iniread Clipboard,data.ini, Rotations, %Product%
-  LMSwb:=ComObjActive("Excel.Application")
-  RotationDone:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,6)
-  RotationDone.Value:="1"
-  sleep 200
-  send, ^v
-return
+
 
 
 
 
 #t::
-Test_2:
+Test_2: ;;Move to previous Batch in Array
 
   n-=1
   Haystack:=Products[n]
@@ -113,12 +94,12 @@ pop(whereatsplit)
     return
 
 #h::
-Test_3:
+Test_3: ;;Move to next Batch in Array
   n+=1
   Haystack:=Products[n]
   whereAt:=listarray(Products)
- whereatsplit:=StrReplace(whereAt, n ": ","`t" )
-pop(whereatsplit)
+  whereatsplit:=StrReplace(whereAt, n ": ","`t" )
+  pop(whereatsplit)
   RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
     if sProduct {
       Product:=sProduct
@@ -246,46 +227,9 @@ Return
 ; 		return
 ; 	; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   makeADropDown(inifile,Category) {
     try menu,DropdownMenu, Deleteall
-    Loop, Read, %inifile% ;lib\data\customers.ini
+    Loop, Read, %inifile% ;data\customers.ini
     {
     If A_Index = 1
       Continue

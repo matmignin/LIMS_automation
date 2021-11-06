@@ -23,59 +23,61 @@ MenuCheckboxes:
       Menu, Tray, Check, TempCode
 
 	TempCode(){
-		global
-		Menu, Tray, ToggleCheck, TempCode
-		If TempCode:= !TempCode
-		{
-			IniWrite, 1, data.ini, Options, TempCode
-			Menu, Tray, Check, TempCode
-		}
-		else 
-		{
-			IniWrite, 0, data.ini, Options, TempCode
-			Menu, Tray, unCheck, TempCode  
-		}
+
+	; 	global
+	; 	Menu, Tray, ToggleCheck, TempCode
+	; 	If TempCode
+	; 	{
+	; 		IniWrite, 1, data.ini, Options, TempCode
+	; 		Menu, Tray, Check, TempCode
+	; 	}
+	; 	else 
+	; 	{
+	; 		IniWrite, 0, data.ini, Options, TempCode
+	; 		Menu, Tray, unCheck, TempCode  
+	; 	}
   }
 
-showVarbar(){
-	global
-	msgbox, %showVarBar%
-	}
 
 ToggleHandler(VarName, ItemName, ItemPos, MenuName){
 	global
 	; VarName:=%ItemName%
 		
 		; PassedVar:=ItemName
-		Menu, Tray, ToggleCheck, % ItemName
+		Menu, %MenuName%, ToggleCheck, % ItemName
 		If VarNameStatus:=!VarNameStatus
 		{
-			Menu, Tray, Check,  % ItemName
+			Menu, %MenuName%, Check,  % ItemName
 			; Menu, Tray, Check,  % VarName
 			IniWrite, 1, data.ini, Options, %ItemName%
 		}
 		else 
 		{
-			Menu, Tray, unCheck, % ItemName
+			Menu, %MenuName%, unCheck, % ItemName
 			null:=""
 			IniWrite, %null%, data.ini, Options, %ItemName%
 
     }
 		Iniread, %ItemName%, data.ini, Options, %ItemName%
-		return 
+
+		return ItemName
 }
 
-togglemenu(VarName){ 
+CreateMenu(VarName,MenuType:="Tray"){ 
 		global
 		VarNameFunc:= Func("ToggleHandler").Bind(%VarName%)
 		; VarNameFunc:= Func(VarName) ;.Bind(VarName)
-		Iniread, VarNameStatus, data.ini, Options, %VarName%
-    VarNameCheck:= VarNameStatus = 1 ? 1 : ""
-    Menu, Tray, Add, %VarName%, % VarNameFunc
-		if VarNameCheck
-      Menu, Tray, Check, % VarName
-			; Varname:=VarNameCheck
-		return VarNameCheck
+		Iniread, VarNamecheck, data.ini, Options, %VarName%
+		sleep 50
+		Menu, %MenuType%, Add, %VarName%, % VarNameFunc
+		if VarNamecheck=1
+      Menu, %MenuType%, Check, % VarName
+		else
+      Menu, %MenuType%, UnCheck, % VarName
+    ; VarNameCheck:= VarNamecheck= 1 ? 1 : ""
+			return VarNamecheck= 1 ? 1 : ""
+		; else
+			; return ""
       }
 
   Iniread, SwitchWorkSheetsStatus, data.ini, Options, SwitchWorkSheets
@@ -104,21 +106,21 @@ ShowNotes(){
   Varbar.Show()
   }
 
-	SwitchWorkSheets(){
-	global
-	Menu, Tray, ToggleCheck, SwitchWorkSheets
-	If SwitchWorkSheets:= !SwitchWorkSheets
-	{
-		IniWrite, 1, data.ini, Options, SwitchWorkSheets
-		Menu, Tray, Check, SwitchWorkSheets
-	}
-	else 
-	{
-		IniWrite, 0, data.ini, Options, SwitchWorkSheets
-		Menu, Tray, unCheck, SwitchWorkSheets
-	}
-	Varbar.Show()
-}
+; 	SwitchWorkSheets(){
+; 	global
+; 	Menu, Tray, ToggleCheck, SwitchWorkSheets
+; 	If SwitchWorkSheets:= !SwitchWorkSheets
+; 	{
+; 		IniWrite, 1, data.ini, Options, SwitchWorkSheets
+; 		Menu, Tray, Check, SwitchWorkSheets
+; 	}
+; 	else 
+; 	{
+; 		IniWrite, 0, data.ini, Options, SwitchWorkSheets
+; 		Menu, Tray, unCheck, SwitchWorkSheets
+; 	}
+; 	Varbar.Show()
+; }
 NoIdle(){
 	global
 	Menu, Tray, ToggleCheck, NoIdle
@@ -153,17 +155,17 @@ ShowCoated(){
   IniWrite, 0, data.ini, Options, ShowCoated
   Varbar.Show()
 }
-  EnteringRotations(){
-	  global
-		Menu, Tray, ToggleCheck, EnteringRotations
-		If EnteringRotations:= !EnteringRotations
-		{
-			IniWrite, 1, data.ini, Options, EnteringRotations
-			Menu, Tray, Check, EnteringRotations
-		}
-		else 
-		{
-			IniWrite, 0, data.ini, Options, EnteringRotations
-			Menu, Tray, unCheck, EnteringRotations
-		}
-  }
+  ; EnteringRotations(){
+	;   global
+	; 	Menu, Tray, ToggleCheck, EnteringRotations
+	; 	If EnteringRotations:= !EnteringRotations
+	; 	{
+	; 		IniWrite, 1, data.ini, Options, EnteringRotations
+	; 		Menu, Tray, Check, EnteringRotations
+	; 	}
+	; 	else 
+	; 	{
+	; 		IniWrite, 0, data.ini, Options, EnteringRotations
+	; 		Menu, Tray, unCheck, EnteringRotations
+	; 	}
+  ; }

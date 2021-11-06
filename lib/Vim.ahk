@@ -1,7 +1,7 @@
     #Persistent
     #NoEnv
     #SingleInstance,Force
-    ; #MenuMaskKey vkFF
+
     #InstallKeybdHook
     #InstallMouseHook
     #maxthreadsperhotkey, 1
@@ -14,12 +14,12 @@
     SetscrolllockState, off
 		SetNumlockState Alwayson
     setcapslockstate alwaysoff
-		; #ClipboardTimeout 1501
-    ; SetMouseDelay, 1
-    ; SetDefaultMouseSpeed, 1
+		#ClipboardTimeout 1500
+    SetMouseDelay, 1
+    SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
-		; Process, Priority, , High
-		try Menu, Tray, Icon, bin\Vim.ico
+		Process, Priority, , High
+		try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 		menu, tray, add, ReloadScript, <^r
 		Menu, Tray, Add, E&xit, ExitSub
 		Menu, Tray, Default, E&xit
@@ -30,7 +30,12 @@
 	 #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
 return
 
-
+#If Getkeystate("Lwin","p") ;|| GetKeyState("Capslock","T") ;; PsudoNumpad
+	F7::right
+	F6::left
+	F9::up
+	F8::down
+	#if
 
 #If Getkeystate("F19","p") ;|| GetKeyState("Capslock","T") ;; PsudoNumpad
 	m::              numpad1
@@ -94,21 +99,24 @@ return
 	1::return
 	#if 
 	
+tab & appskey::return ;Send, {tab}
 #if Getkeystate("Tab","p")
 	`::							sendinput, ^!{0} ;unfold all
 	h::									SendInput,{ctrldown}{[}{ctrlup}
 	l::               	SendInput,{ctrldown}{]}{ctrlup}
 	`;::               	SendInput,!^{/} ;unfold all
 	j::               	down
+	^j::               	send, {shiftdown}{down}{shiftup}
+	^k::               	send, {shiftdown}{up}{shiftup}
 	k::               	up
 	,::               	sendinput, +!^{left}
 	.::               	sendinput, +!^{.}
 	a::               	SendInput,{shiftdown}{altdown}{lwindown}{a}{lwinup}{altup}{shiftup} ;align vertically
 	w::               	SendInput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;fold all regions except current
 	f13::             	SendInput,{shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup} ;unfold All
+	s::               	SendInput,{shiftdown}{altdown}{lwindown}{s}{lwinup}{altup}{shiftup} ;toggle column selection
 	m::               	SendInput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;fold comments
 	z::               	SendInput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup} ;align cursors
-	s::               	SendInput,{shiftdown}{altdown}{lwindown}{s}{lwinup}{altup}{shiftup} ;toggle column selection
 	x::               	SendInput,{shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup} ;align vertically
 	c::               	SendInput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup} ;Align
 	p::               	SendInput,{shiftdown}{altdown}{ctrldown}{p}{ctrlup}{altup}{shiftup} ;Focus Pannel
@@ -117,11 +125,11 @@ return
 	2::                 SendInput,^!{2} ;fold level 2
 	3::                 SendInput,+!#{w} ;fold all except selected
 	4::                 SendInput,^!{/} 
-	f::                 SendInput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
-	q::     Keys, 	            SendInput,{ctrldown}{]}{ctrlup}
+	f::                SendInput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
+	q::                SendInput,{ctrldown}{]}{ctrlup}
 	#if
-		tab up::SendInput, Keys, {tab}
-	Lbutton & tab::						sendinput, {shiftdown}{altdown}{\}{altup}{shiftup} ;switch column select
+	$tab::send, {tab}
+	~Lbutton & tab::						sendinput, {shiftdown}{altdown}{\}{altup}{shiftup} ;switch column select
 	q & tab::                 SendInput,{ctrldown}{[}{ctrlup}
 	q & u::										SendInput, {q}{u}
 	q::q
@@ -176,7 +184,9 @@ return
 	; 6::		                    SendInput,{tab 20}
 	#if
 
-#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 300) ;; 	 	_d Vim_
+#If (A_PriorHotKey = "Space" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_space Vim_
+	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
+#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_d Vim_
 	/::                    Sendinput, +{End}{delete}
 	m::                    Sendinput, +{Home}{delete}
 	`;::                   Sendinput, +!{;}{delete}
@@ -186,13 +196,14 @@ return
 	w::                    sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
 	,::
 	b::                    Sendinput, {ctrldown}{shiftdown}{left}{ctrlup}{shiftup}{delete}
-	d::                    sendinput, {backspace}
+	d::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
+	; d::                    sendinput, {home 2}{shiftdown}{end}{shiftup} ;select line
 	x::                    sendinput, ^{x}
 	c::                    sendinput, ^{c}
 
 #If (A_PriorHotKey = "y"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 300) ;; 	 	_y Vim_
 	/::                             Vim.Yank("+{End}") ;yank end
-	m::                             Vim.Yank("+{Home}") ;yank end
+	m::                             Vim.Yank("+{Home}") ;yank end{shiftdown}{altdown}{`;}{altup}{shiftup}
 	`;::                            Vim.Yank("+!{;}") ;encase
 	l::                             Send,{shiftdown}{}ctrldown{right}{ctrlup}{shiftup}^{c}
 	h::                             Send,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{c}
@@ -232,7 +243,9 @@ return
 		; 	sendinput, {shiftdown}{altdown}{ctrldown}{[}{ctrlup}{altup}{shiftup}{esc 2}
 		; 	return
 	9 & 0::									SendInput,{)}
-	d::											sendinput, {home 2}{shiftdown}{end}{shiftup} ;select line
+	Space::									sendinput, {shiftdown}{altdown}{w}{altup}{shiftup}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
+	d::											SendInput,{home 2}{shiftdown}{end}{shiftup}
+
 	^d::										sendinput, {ctrldown}{a}{ctrlup} ;select all
 	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
 	^e::                  	SendInput,^{a}{backspace}			 ;block comment
@@ -243,7 +256,7 @@ return
 	x::											sendinput, {delete}
 	^x::										sendinput, ^{x}
 	t::                     SendInput,+!{F9}
-	space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
+	; space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 	`;::        						SendInput,!^{/}
 	^`;::                   SendInput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
 	9::											SendInput,+{9}
@@ -255,7 +268,7 @@ return
 	; ::                     ,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
 	; ^s:: 	                  sendinput,+!{s}
 	F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
-	p::                     SendInput,{F9}
+	; p::                     SendInput,{F9}
 	^]::                    SendInput,{right}^{left}+^{right}+{[}
 	^[::                    SendInput,{right}^{left}+^{right}{[}
 	; ]::                     SendInput,+!#{]} ;go to bracket right

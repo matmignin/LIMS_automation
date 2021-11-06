@@ -1,165 +1,154 @@
+return
 
 #ifwinactive, 
 	<^1::                 return
 	<^2::                 return ;,{Ctrldown}{2}{CtrlUp}
 	<^3::                 return ;Send,{Ctrldown}{0}{CtrlUp}
+	F13 & 1::							sendinput,%product%%A_space%
+	F13 & 2::							sendinput, %Batch%%A_Space%
+	F13 & 3::							sendinput, %Lot%%A_space%
+	F13 & 4::							GetAllProducts()
+; sendlevel
 ;;	___ClipCopy&Paste
-	Rbutton & F19::
-		if (CutPresses > 0) ; SetTimer already started, so we log the keypress instead.
-			{
-					CutPresses += 1
-					return
-			}
-			CutPresses := 1
-			SetTimer, PressCut, -450 ; Wait for more presses within a 400 millisecond window.
-			return
-			PressCut:
-				if (CutPresses = 1) ; The key was pressed once.
-				{
-						send, ^x
-				}
-				else if (CutPresses = 2) ; The key was pressed twice.
-				{
-						clip.Append("`n","{x}")  
-				}
-				else if (CutPresses > 2)
-				{
-						clip.Append(A_Space,"{x}")
-						; Pop(Clipboard)
-				}
-			CutPresses := 0
+; F13 & Mbutton::
++F20::
+	if (CutPresses > 0) ; SetTimer already started, so we log the keypress instead.
+		{
+				CutPresses += 1
+				return
+		}
+		CutPresses := 1
+		SetTimer, PressCut, -450 ; Wait for more presses within a 400 millisecond window.
 		return
-		F19:: 
-			if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
+		PressCut:
+			if (CutPresses = 1) ; The key was pressed once.
 			{
-					CopyPresses += 1
-					return
+					send, ^x
 			}
-			CopyPresses := 1
-			SetTimer, PressCopy, -450 ; Wait for more presses within a 400 millisecond window.
-			return
-			PressCopy:
-				if (CopyPresses = 1) ; The key was pressed once.
-				{
-						Clip.Copy()
-				}
-				else if (CopyPresses = 2) ; The key was pressed twice.
-				{
-						clip.Append()  
-				}
-				else if (CopyPresses > 2)
-				{
-						clip.Append("`t")
-						; Pop(Clipboard)
-				}
-			CopyPresses := 0
-		return
-		F20::
-			if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
+			else if (CutPresses = 2) ; The key was pressed twice.
 			{
-					PastePresses += 1
-					return
+					clip.Append("`n","{x}")  
 			}
-			PastePresses := 1
-			SetTimer, PressPaste, -450 ; Wait for more presses within a 400 millisecond window.
+			else if (CutPresses > 2)
+			{
+					clip.Append(A_Space,"{x}")
+					; Pop(Clipboard)
+			}
+		CutPresses := 0
+return
+
+		
+F19:: 
+	if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
+	{
+			CopyPresses += 1
 			return
-			PressPaste:
-				if (PastePresses = 1) ; The key was pressed once.
-				{
-						send, ^{v}
-				}
-				else if (PastePresses = 2) ; The key was pressed twice.
-				{
-						send, #v 
-				}
-				else if (PastePresses > 2)
-				{
-						clip.Append("`t")
-						; Pop(Clipboard)
-				}
-				PastePresses := 0
+	}
+	CopyPresses := 1
+	SetTimer, PressCopy, -450 ; Wait for more presses within a 400 millisecond window.
 	return
-	+^c::clip.Append()
-	!^c::clip.Append(A_Space)
-	!^x::send % clip.Append() "{backspace}"	
-	; ^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
-	; ^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
-	; ^3::                 Send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
-;; 	___Send Codes
-	>+F20::             			varbar.focus("Batch")
-	>+F19::            		 	varbar.focus("Product")
-	<#1::
-	F20 & left::					sendInput % product
-	<#2::
-	F20 & down::					sendInput % Batch
-	<#3::
-	F20 & right::					sendInput % Lot
-	<#4::
-	F20 & up::						sendInput % Coated
-F13 & 1::
-<!left::
-F19 & left::						GetAllProducts()
-<!down::
-F13 & 2::
-F19 & down::						GetAllBatches()
-<!up::
-F13 & 3::
-F19 & Up::							Sendinput % excel.GetAllSheets()
-F13 & Space::GetAllProducts()
-F13 & lshift::GetAllProducts("`n")
-<#Space::GetAllProducts()
-<#lshift::GetAllProducts("`n")
-<#enter::GetAllProducts("`n")
-<#tab::GetAllProducts(A_tab)	
+	PressCopy:
+		if (CopyPresses = 1) ; The key was pressed once.
+		{
+				Clip.Copy()
+		}
+		else if (CopyPresses = 2) ; The key was pressed twice.
+		{
+				clip.Append()  
+		}
+		else if (CopyPresses > 2)
+		{
+				clip.Append("`t")
+				; Pop(Clipboard)
+		}
+	CopyPresses := 0
+return
+F13 & Rbutton::
+F20::
+	if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
+	{
+			PastePresses += 1
+			return
+	}
+	PastePresses := 1
+	SetTimer, PressPaste, -450 ; Wait for more presses within a 400 millisecond window.
+	return
+	PressPaste:
+		if (PastePresses = 1) ; The key was pressed once.
+		{
+				send, ^{v}
+		}
+		else if (PastePresses = 2) ; The key was pressed twice.
+		{
+				send, #v 
+		}
+		else if (PastePresses > 2)
+		{
+				clip.Append("`t")
+				; Pop(Clipboard)
+		}
+		PastePresses := 0
+return
++^c::clip.Append()
+!^c:: clip.Append(A_Space)
+!^x:: send % clip.Append() "{backspace}"
 
 
 
 
-	Scrolllock::SetCapsLockState % !GetKeyState("CapsLock", "T")
-	; f15::sendinput, {click 3}
-	$Numlock::				4tap()
-	Mbutton::						3Tap()
-	Rbutton & Mbutton::menu.PasteStuff()
-	Rbutton & Lbutton::   	Send, {Enter}
-	; Rbutton up::             send % Mouse_RbuttonUP() 
-	Rbutton UP::      2Tap() ;      send % Mouse_RbuttonUP() 
-	; rbutton up::					2tap()
-	rshift & Appskey::			return
+;; 	___Send Codes___
+
+>+F20::             	varbar.focus("Batch")
+>+F19::            		varbar.focus("Product")
+F20 & left::					sendInput % product
+F20 & down::					sendInput % Batch
+F20 & right::					sendInput % Lot
+F20 & up::						sendInput % Coated
+F13 & `::								sendInput % Lot
+F19 & left::								GetAllProducts()
+F19 & down::								GetAllBatches()
+F19 & Up::									Sendinput % excel.GetAllSheets()
+F13 & Space::								GetAllProducts()
+F13 & lshift::							GetAllProducts("`n")
+<#Space::										GetAllProducts()
+<!Space::										GetAllBatches()
+<#lshift::									GetAllProducts("`n")
+<!lshift::									GetAllProducts("`n")
+<#enter::										GetAllProducts("`n")
+
+rwin::return
+<#tab::										GetAllProducts(A_tab)	
+Scrolllock::							SetCapsLockState % !GetKeyState("CapsLock", "T")
+$Numlock::								4tap()
+Mbutton::									3Tap()
+Rbutton & Mbutton::				menu.PasteStuff()
+Rbutton & Lbutton:: 			Send, {Enter}
+Rbutton UP::     	   			2Tap()     
+Rbutton & F20::          	Send, {delete}
+Rbutton & F19::          	Send, {backspace}
+Rbutton & wheelup::       Send, ^{c}
+Rbutton & wheeldown::     Send, ^{v}
+~Lbutton & Rbutton::      send, ^{x}
+Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}^{c}
+
+rbutton & Appskey::				2Tap()
+rshift & Appskey::				return
+F19 & \:: 								Sendpassword()
+^+7::
 ;;	___Lbuton:
-	F19 & \:: 								Sendpassword()
-	^+6::
-	F19 & /::        	 				OCR()
-	Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-	lbutton & lwin::
-	Lbutton & Mbutton:: send, {lbutton up}^x         	;cut selected word
-	lbutton & Lalt::
-	Lbutton & Numlock::     ; cut selected word and paste clipboard
-	send, {lbutton up}
-	preclip:=clipboard
-	clipboard:=
-	send, ^x
-	Clipwait, 0.25
-	postclip:=clipboard
-	clipboard:=
-	clipboard:=Preclip
-	clipwait, 0.25
-	send, ^v     
-	clipboard:=PostClip
-	return   	
+Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
+Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
+; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 
-	Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}" ; a pic take 
-	Lbutton & Space::       	Send, ^a
-	Lbutton & Rbutton::       Send, ^a
-	F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-	F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	Lbutton & down::          Send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
-	F11::F22
+F20 & /::        	 				OCR()
+F21::OCR()
+
+F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 
 
-;; ________KEY_DEFAULT:
 
-	;#b::clip.Append(A_space)
-	;;	___Esc:
+;;	___Esc:
 	esc & 1::						send, {shiftdown}{altdown}{-}{altup}{shiftup}
 	esc & 2::						send, {shiftdown}{altdown}{=}{altup}{shiftup}
 	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
@@ -168,64 +157,47 @@ F13 & lshift::GetAllProducts("`n")
 	Media_Prev::					F15 ;MakeTransparent()
 	Media_Play_Pause::			F16
 	Media_Next::						F17
-	F13 & -::
-	/ & down::   		      	Varbar.SubIteration(0)
-	F13 & +::
-	/ & up::							Varbar.AddIteration(0)
-	F13 & wheelright::			Varbar.AddIteration(250) 
-	F13 & wheelleft::   			Varbar.SubIteration()
-	F13 & wheelup::				send % Blockrepeat(300) Varbar.AddIteration() 
-	F13 & wheeldown::   			send % Blockrepeat(300) Varbar.SubIteration()
 	numpadsub::          		4Left()
 	numpadadd::          		4right()
 	numpadMult::         		4up()
-	numpaddot::          		CloseWindow()
+	numpaddot::          		4down()
 	pause::							Suspend, Toggle 
-	; F15 & Lbutton::				send, {shiftdown}{ctrldown}{5}{ctrlup}{shiftup}
-	F16 & Lbutton::				send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}							
+	LWin::									vkFF
+	;; _System Actions_
 
-	$#F7::							Send, {lwindown}{right}{lwinup}
-	$#F6::							Send, {lwindown}{left}{lwinup}
-	$#F9::							Send, {lwindown}{up}{lwinup}
-	$#F8::							Send, {lwindown}{down}{lwinup}
-	$!F7::							Send, {laltdown}{right}{laltup}
-	$!F6::							Send, {laltdown}{left}{laltup}
-	$!F9::							Send, {laltdown}{up}{laltup}
-	$!F8::							Send, {laltdown}{down}{laltup}
-	+Backspace::					backspace
-	<+^z::							Send, {Ctrldown}{y}{CtrlUp} ;redu
-
-	~rshift & lshift::shiftAltTab
+	!F7::							Send, {laltdown}{right}{laltup}
+	!F6::							Send, {laltdown}{left}{laltup}
+	!F9::							Send, {laltdown}{up}{laltup}
+	!F8::							Send, {laltdown}{down}{laltup}
 	~lshift & Rshift::alttab	
+	~rshift & lshift::shiftAltTab
+	<!z::							Send, {Ctrldown}{y}{CtrlUp} ;redu
+
+	+Backspace::			Delete
+	^Media_Next::			MakeTransparent()
 
 	lshift & Appskey::			return
 	Lctrl & Appskey::				Return
-	<^`;::
-	FormatTime, CurrentDateTime,, MM/d/yy
-	SendInput %CurrentDateTime%
-	return
-	
-	^Media_Next::					MakeTransparent()
-	/ & .::							Send, {?}
+	<^`;::SendInput %CurrentDateTime%	
+	/ & .::						Send, {?}
 	/::	 							Send, /
 
-	; ` & space::						Test(Iteration) 
+	` & F13::					Test(iteration)
 	` & 1::							Test(1)
 	` & 2::							Test(2)
 	` & 3::							Test(3)
 	` & 4::							Test(4)
+	` & esc::						Varbar.reset()
 	`::	 								sendraw, ``
-	; <!c::                      clip.Append()
 
 
-	;;F20:
+	;; _F20_
 	F20 & \::            		Sendpassword()
 	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
 	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
 
-	F13 & esc::						Varbar.reset()	
+	
 	F20 & ]::            		CreditCard()
-	F20 & Insert::       		Clip("OCR")
 	F20 & F7::           		Excel.NextSheet()
 	F20 & F6::           		Excel.PrevSheet()
 	F20 & esc::     				run, Taskmgr.exe
@@ -236,31 +208,13 @@ F13 & lshift::GetAllProducts("`n")
 	F20 & -::            		Send,{CtrlDown}{-}{Ctrlup}
 	F19 & enter::					varbar.focus("Edit1")
 	F20 & enter::					varbar.focus("Edit2")
-	F20 & F19::          		Send, {F22}
-
-	F19 & Media_Play_pause::
-			my_screenwidth:=A_ScreenWidth-215
-			my_screenheight:=A_Screenheight-115
-			IniWrite, %my_screenwidth%, data.ini, Locations, Notes_x
-			IniWrite, %my_screenheight%, data.ini, Locations, Notes_y
-			Return
-	
-
-	F13 & `::					Test(iteration)
-
-
-
-#If (A_PriorHotKey = "F20 & up" || A_PriorHotKey = "F20 & Down" || A_PriorHotKey = "F20 & left" || A_PriorHotKey = "F20 & right") && (A_TimeSincePriorHotkey < 2000) ;;	 ___Doubletap F20 & arrows
-	$rshift::               Send, {tab}
-	F20 & up::	           Send, {enter}
-	F20 & down::           Send, {enter}
-	F20 & left::           Send, {enter}
-	F20 & right::          Send, {enter}
-#if 
+	F20 & F19::          		Send, +{F18}
 
 
 
 
+
+#if
 
 
 #IfWinActive, ahk_exe explorer.exe ;;	___explorer:
@@ -268,23 +222,11 @@ F13 & lshift::GetAllProducts("`n")
 	F6::   			sendinput % BlockRepeat(800) product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F7::				Sendinput, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
-	^w::									closewindow()
-
-#ifwinactive, Task View, 
-	F7::										Send, {right}
-	F6::										Send, {left}
-	F9::										Send, {up}
-	F8::										Send, {down}
-	Mbutton::								Send, {space}
-	Numpaddiv::							
-												Send, {Click R}
-												sleep 100 
-												Send, {up}{enter}
-												return
+	^w::									4down()
 
 
 #IfWinActive, ahk_exe WINWORD.EXE ;; 	___WORD
-	F13 & space::					SendInput, +{tab}{tab}
+	F13 & space::			SendInput, +{tab}{tab}
 	F20 & `;::        Send, {tab}
 	F20 & /::         Table_Entry("N/A")
 	F20 & n::         Table_Entry("No")
@@ -311,11 +253,13 @@ F13 & lshift::GetAllProducts("`n")
 	^wheelup::send, ^{wheelup}
 
 #IfWinActive, Mats LMS Workbook.xlsb ;; 	___Excel
+	Numpadmult::send, {Home}
 	F9::    					Excel.Connect(1)
 	F19 & space::    			Excel.CopySheetName()
 	F19 & backspace::    delete
 	; F19::
-
+	F15::sendinput, {pgup}
+	F16::sendinput, {pgdn}
 	; F19 & down::         ^down
 	; F19 & up::           ^up
 	; F19 & left::         ^left
@@ -354,7 +298,7 @@ F13 & lshift::GetAllProducts("`n")
 	rbutton & Lbutton::  SendInput, !{i}
 #ifwinactive, Formula Updates.xlsm - Excel
 	F13::
-	Mbutton::
+	; Mbutton::
 	SendInput, MM{tab}
 	FormatTime, CurrentDateTime,, MM/d/yy
 	SendInput %CurrentDateTime%
@@ -364,7 +308,7 @@ F13 & lshift::GetAllProducts("`n")
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
 	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
-	F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 3}{CtrlUp}{ShiftUp}"	
+	;F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
 
 	numpadmult::
 	F20::                
@@ -402,22 +346,22 @@ return
 	^5::                 Send,{Ctrldown}{3}{CtrlUp}
 	^`::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
 
-	#IfWinActive, ahk_exe ONENOTE.EXE
+#IfWinActive, ahk_exe ONENOTE.EXE
 	F9::                 Send,{AltDown}{w}{i}{Altup}
 	F6::                 SendInput,{wheelleft 20}
 	F7::                 SendInput,{Wheelright 10}
 	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
-	^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
+	^2::         	        Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
 	^3::                 Send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
 	^4::                 Send,{Ctrldown}{1}{CtrlUp}
 #IfWinActive,
 
 
-#IfWinActive, Remote Desktop Connection ;;	___Remote_DESKTOPs:
-#ifwinactive, ahk_class #32770
-	F19::              menu.Remote_Login()
-#ifwinactive, ahk_class TscShellContainerClass
-	F19::            	 menu.Remote_Desktop()
+; #IfWinActive, Remote Desktop Connection ;;	___Remote_DESKTOPs:
+; #ifwinactive, ahk_class #32770
+	; F19::              menu.Remote_Login()
+; #ifwinactive, ahk_class TscShellContainerClass
+	; F19::            	 menu.Remote_Desktop()
 
 
 

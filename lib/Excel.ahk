@@ -45,11 +45,11 @@ global
 ProductSheets:=[]
 XL := ComObjActive("Excel.Application")
 												For sheet in xl.ActiveWorkbook.Worksheets
-												{
+												; {
 													cSheet:=sheet.name
-													if RegexMatch(cSheet, "i)[abdefghijkl]\d{3}\b")
-														ProductSheets.insert(cSheet)
-												}
+													; if RegexMatch(cSheet, "i)[abdefghijkl]\d{3}\b")
+														; ProductSheets.insert(cSheet)
+												; }
 												; Productsheets.remove(1)
 												; Productsheets.remove(1)
 														; A__DDLXLProducts .= "|" Products[A_index]
@@ -102,8 +102,8 @@ SheetChange(sht,Cell) {
 InfoLocations(){
 	global
 		SheetName:=XL.ActiveSheet.Name
-		if !RegexMatch(SheetName,"i)[abdefghijkl]\d{3}\b")
-			return
+		; if !RegexMatch(SheetName,"i)[abdefghijkl]\d{3}\b")
+			; return
 	Batches:=[]
 	GuiControl, -redraw, varbar
 		Try Product:=XL.Range("B1").Value

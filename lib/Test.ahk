@@ -2,7 +2,7 @@
 #ifwinactive,
 
 
-
+return
 
 
 
@@ -227,14 +227,14 @@ return
 ;------------------------------------------------------------------------------------------------------------------------
 
 ;Test_3:
-Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\lib\data\Products.txt"){
-	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\lib\data\Products.txt")
-	FileRead, OutputVar, lib\data\Products.txt 
+Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\data\Products.txt"){
+	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\data\Products.txt")
+	FileRead, OutputVar, data\Products.txt 
 	Sort, OutputVar, u
 	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
-	FileDelete, lib\data\Products.txt
+	FileDelete, data\Products.txt
 	sleep, 300
-	FileAppend, %OutputVar%, lib\data\Products.txt
+	FileAppend, %OutputVar%, data\Products.txt
 
 }
 ; Loop

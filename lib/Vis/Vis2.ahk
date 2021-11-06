@@ -3,10 +3,10 @@
 ; Date:      2017-08-19
 ; Recent:    2018-04-04
 
-; #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
-#include <Gdip_All>
-; #include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
-#include <JSON>
+#include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
+;#include <Gdip_All>
+#include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
+;#include <JSON>
 
 
 

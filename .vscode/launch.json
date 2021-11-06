@@ -6,7 +6,6 @@
       "type": "autohotkey",
       "request": "launch",
       "name": "AutoHotkey Debugger",
-      "Runtime": "C:\\Program Files\\AutoHotkey\\AutoHotkey.exe",
       "port":"9002-9010",
       "program": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk",
 			"args": [],

@@ -113,7 +113,8 @@ Return
 	Rbutton::			        gosub, clipchainmenu
 	Backspace::			     gosub, ClipChainDel
 #If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
-	+Enter::	
+	+Enter::
+	;mbutton::	
 	;F19::						
 
 	; ^Down::			       gosub, ClipchainMoveDown
@@ -158,8 +159,8 @@ Return
 								clipchaininsert()
 								send, ^x
 								return
-	F20 & F19::				Gui, ClipChain:Destroy
-	F22:: 					gosub, ClipChainGuiClose
+	F20 & F19::				;Gui, ClipChain:Destroy
+	+F18:: 						gosub, ClipChainGuiClose
 	;F19::			 			clipchain_C() ;
 	; ClipChainInsert()       
 								; clicktext(3)
@@ -177,7 +178,8 @@ Return
 								clipChain_v()
 								return
 	numlock::					clipChain_v()
-	Mbutton::  				clipchaininsert()
+	^v::clipchaininsert()
+	;Mbutton::  				clipchaininsert()
 	
 #if
 
@@ -231,8 +233,8 @@ clipChain_c(){
 		ClipChainInsert()
 return
 }
-
-F20 & Space::
+   
+#x::
 	clipboard:=
 	send, ^{c}
 	clipwait, 0.4
@@ -240,7 +242,7 @@ F20 & Space::
 return
 
 ; ::
-#x::
+F20 & Space::
 	clipboard:=
 	send, ^{c}
 	clipwait, 0.5
@@ -360,6 +362,7 @@ return
 
 ;^#F11::
 hk_clipchain:
+
 	If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
 		; Gui, ClipChain:Show, % dpi("w185 NA x") ClipChainX " y" ClipChainY, CL3ClipChain
 		Gui, ClipChain:Show, % dpi("w185 NA x") A_ScreenWidth-190 " y" 0, CL3ClipChain

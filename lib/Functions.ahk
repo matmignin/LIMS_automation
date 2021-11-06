@@ -1,4 +1,64 @@
 
+	ifNothingSelected(Action, Button){
+	  ClipboardSaved:=ClipboardAll
+    clipboard:=
+    sleep 20
+    Send % Button
+		tt(clipboard,750)
+      ; clipwait,0.10
+		if !clipboard ;if nothing selected
+		{
+			clipboard:=ClipboardSaved
+			if Action=copy 
+		{
+			if winactive("ahk_exe Code.exe"){
+				sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}
+				tt(clipboard,750)
+				return
+				}
+			else {
+			mousegetpos, mousex, mousey
+			SetDefaultMouseSpeed, 0
+			Click, %A_CaretX% %A_caretY%
+			Click, %A_CaretX% %A_caretY%
+			mousemove, %mousex%, %mousey%, 0
+			SetDefaultMouseSpeed, 1
+			send, ^c
+			sleep 20
+			tt(clipboard,500)
+			return
+			}
+		}
+			; clicktext()
+		if Action=cut
+			send, {delete}
+		}
+	}
+
+	ClickText2(){
+		global
+		mousegetpos, mousex, mousey
+		SetDefaultMouseSpeed, 0
+		Click, %A_CaretX% %A_caretY%,
+		mousemove, %mousex%, %mousey%, 0
+		SetDefaultMouseSpeed, 1
+	}
+
+
+ifPriorHotkey(The_PriorHotKey,FunctionOrAction){
+	if A_PriorHotkey contains The_PriorHotkey 
+	{
+		if IsFunc(FunctionName)
+			func(FunctionOrAction)
+		else
+			sendinput % FunctionOrAction
+		return ;FunctionOrAction
+	}
+	else
+		return
+}
+
+
 isPixel(X,Y,SearchColor){
   MouseGetPos, mX, mY
   ; if x:="mX" || y:="mY"
@@ -23,9 +83,9 @@ Debug(Variable,Delete:="Delete"){
   else 
     DebugText:=Variable
   if Delete=Delete
-    filedelete, C:\Users\mmignin\Documents\VQuest\lib\data\debug.txt
+    filedelete, C:\Users\mmignin\Documents\VQuest\data\debug.txt
   sleep 200
-  fileAppend %Debugtext%, C:\Users\mmignin\Documents\VQuest\lib\data\debug.txt
+  fileAppend %Debugtext%, C:\Users\mmignin\Documents\VQuest\data\debug.txt
 }
 
 
@@ -630,10 +690,10 @@ WindowSpy(){
 Exitsub(){
 	global
   varbar.SaveVariables()
-	CloseScript("cl3.ahk")
-	sleep 200
-	CloseScript("Vim.ahk")
-	Sleep 200
+	; CloseScript("cl3.ahk")
+	; sleep 200
+	; CloseScript("Vim.ahk")
+	; Sleep 200
   exitapp
   }
 	;Success:=CloseScript("Case insensitive script name")

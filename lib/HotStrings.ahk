@@ -1,3 +1,5 @@
+return
+
 _General:
 :*:ol`;::
 SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
@@ -113,9 +115,9 @@ _VSCODE_Hotstrings:
 	sendraw,{altdown}{ctrldown}{}{ctrlup}{altup}
 	SendInput,{left 16}
 	return
-	:*r:wa`;::                                                
-	:*r:aw`;::                                                
-	sendraw,{altdown}{lwindown}{}{lwinup}{altup}
+	:*r:wc`;::                                                
+	:*r:cw`;::                                                
+	sendraw,{ctrldown}{lwindown}{}{lwinup}{ctrlup}
 	SendInput,{left 16}
 	return 
 
@@ -144,6 +146,7 @@ _WindowNames:
 	:*R:iel`;::If ErrorLevel,
 	:*R:el`;::ErrorLevel
 	:*R:ifwe`;::ifwinexists, 
+	:*R:si`;::SendInput, 
 	:*:iwe`;::ifwinexists, 
 	:*:vb`;::VarBar ahk_exe AutoHotkey.exe 
 	:*:varbar`;::VarBar ahk_exe AutoHotkey.exe 
@@ -254,7 +257,6 @@ _WindowNames:
 
 
 _LMS_HOTSTRINGS:
-	:*R:?`;::?Kilgore7744
 	:*R:mm`;::mmignin
 	:*:MM`;::MM{tab}%DateString%
 #IfWinActive,ahk_exe WFICA32.EXE
@@ -271,15 +273,23 @@ _LMS_HOTSTRINGS:
 	:*R:5.5 oblong`;::Oblong / 0.750`" x 0.313`"
 	:*R:5.5 oval`;::Oval / 0.625`" x 0.344`""
 	:*R:5 oblong`;::Oblong / 0.750`" x 0.250`""
-	:*:1`;::`Each (1){space} contains {ctrl down}{left}{ctrl up}{left}
-	:*:2`;::`Each two (2){space} contains {ctrl down}{left}{ctrl up}{left}
-	:*:3`;::`Each three (3){space} contains {ctrl down}{left}{ctrl up}{left}
-	:*:4`;::`Each four (4){space} contains {ctrl down}{left}{ctrl up}{left}
-	:*:5`;::`Each five (5){space} contains {ctrl down}{left}{ctrl up}{left}
-	:*:6`;::`Each six (6){space} contains {ctrl down}{left}{ctrl up}{left}
-	:*:7`;::`Each seven (7){space} contains {ctrl down}{left}{ctrl up}{left}
+	:*:1c`;::`Each (1) capsule contains {ctrl down}{left}{ctrl up}{left}
+	:*:2c`;::`Each two (2) capsules contains {ctrl down}{left}{ctrl up}{left}
+	:*:3c`;::`Each three (3) capsules contains {ctrl down}{left}{ctrl up}{left}
+	:*:4c`;::`Each four (4) capsules contains {ctrl down}{left}{ctrl up}{left}
+	:*:5c`;::`Each five (5) capsules contains {ctrl down}{left}{ctrl up}{left}
+	:*:6c`;::`Each six (6) capsules contains {ctrl down}{left}{ctrl up}{left}
+	:*:7c`;::`Each seven (7) capsules contains {ctrl down}{left}{ctrl up}{left}
+	:*:1t`;::`Each (1) tablet contains {ctrl down}{left}{ctrl up}{left}
+	:*:2t`;::`Each two (2) tablets contains {ctrl down}{left}{ctrl up}{left}
+	:*:3t`;::`Each three (3) tablets contains {ctrl down}{left}{ctrl up}{left}
+	:*:4t`;::`Each four (4) tablets contains {ctrl down}{left}{ctrl up}{left}
+	:*:5t`;::`Each five (5) tablets contains {ctrl down}{left}{ctrl up}{left}
+	:*:6t`;::`Each six (6) tablets contains {ctrl down}{left}{ctrl up}{left}
+	:*:7t`;::`Each seven (7) tablets contains {ctrl down}{left}{ctrl up}{left}
 	:*:H`;::Heavy Metals `*
-	:*:*H::`* Heavy Metals results are based on a daily dose of (1) capsule{ctrl down}{left}{left}{ctrl up}{right}
+	:*:H1`;::`* Heavy Metals results are based on a daily dose of (1) capsule{ctrl down}{left}{left}{ctrl up}{right}
+	:*:H2`;::`* Heavy Metals results are based on a daily dose of twi (2) capsules{ctrl down}{left}{left}{ctrl up}{right}
 	:*:stick`;::stick packet ( g){left 3}{tab}Blend+{tab}
 	:*:1blend`;::
 	ProductTab.Blends(1,ShapeAndSize)
@@ -294,17 +304,17 @@ _LMS_HOTSTRINGS:
 	:*:5scoop::
 	ProductTab.Blends(6,ShapeAndSize)
 	:*:1scoop::
-	ProductTab.Blends(1,"Scoop")
+	ProductTab.Blends(1,"scoop")
 	:*:2scoops::
-	ProductTab.Blends(2,"Scoops")
+	ProductTab.Blends(2,"scoops")
 	:*:3scoops::
-	ProductTab.Blends(3,"Scoops")
+	ProductTab.Blends(3,"scoops")
 	:*:4scoops::
-	ProductTab.Blends(4,"Scoops")
+	ProductTab.Blends(4,"scoops")
 	:*:5scoops::
-	ProductTab.Blends(5,"Scoops")
+	ProductTab.Blends(5,"scoops")
 	:*:6scoops::
-	ProductTab.Blends(6,"Scoops")
+	ProductTab.Blends(6,"scoops")
 	:*:1stick::
 	ProductTab.Blends(1,"stick packet")
 	:*:2sticks::

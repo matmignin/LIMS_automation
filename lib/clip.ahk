@@ -36,13 +36,13 @@ clipChange(type){
     ; if !instr(Clipboard,"`r`n")
     clip.Parse()
     ; clip.Regex()
-    if WinActive("ahk_exe WFICA32.EXE"){
-      clip.Departmentregex()
-      StringReplace, Clipboard, Clipboard,Value,111Skin Limited
+    ; if WinActive("ahk_exe WFICA32.EXE"){
+      ; clip.Departmentregex()
+      ; StringReplace, Clipboard, Clipboard,Value,111Skin Limited
       ; RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
       tt(Clipboard,1000)
-      exit
-    }
+      ; exit
+    ; }
     ; if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
       ; exit
     if A_PriorKey = c
@@ -57,7 +57,19 @@ return
 
 
 Class Clip {
-
+CutSwap(){
+  send, {lbutton up}
+  preclip:=clipboard
+  clipboard:=
+  send, ^x
+  Clipwait, 0.25
+  postclip:=clipboard
+  clipboard:=
+  clipboard:=Preclip
+  clipwait, 0.25
+  send, ^v     
+  clipboard:=PostClip
+}
 Append(Delimiter:="`n",key:="c"){
     global
 		PreClip:=Clipboard
@@ -121,10 +133,10 @@ Parse(Value:=""){
           }
         }
       sleep 200
-        filedelete, lib\Data\CurrentCodes.txt
+        filedelete, data\CurrentCodes.txt
         For Each, Element In Products 
           CurrentCodes .= Element "`n"
-        FileAppend, %CurrentCodes%, lib\Data\CurrentCodes.txt
+        FileAppend, %CurrentCodes%, data\CurrentCodes.txt
       }
 
 
@@ -202,8 +214,8 @@ SingleRegex(){
         RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       If cProduct {
         ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
-        FileAppend, `n%ConnectedProduct%`n, lib\Data\CurrentCodes.txt
-        ; FileAppend, `n%CurrentCodes%, lib\Data\CurrentCodes.txt
+        FileAppend, `n%ConnectedProduct%`n, data\CurrentCodes.txt
+        ; FileAppend, `n%CurrentCodes%, data\CurrentCodes.txt
         ; CurrentCodes.= ConnectedProduct
         ; products.Push("`n"ConnectedProduct)
         GuiControl,Varbar:Text, Product, %cProduct%
@@ -256,12 +268,12 @@ Regex(Category:=""){
       RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       StringReplace, cSampleID, cSampleID, $, S
       ; If cProduct && cBatch && clot 
-        ; FileAppend, %cProduct% %cBatch% %clot% %Coated%`n, lib\Data\CurrentCodes.txt
+        ; FileAppend, %cProduct% %cBatch% %clot% %Coated%`n, data\CurrentCodes.txt
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
-        FileAppend, `n`t%cProduct% %cBatch% %clot% %Coated%, lib\Data\CurrentCodes.txt
+        FileAppend, `n`t%cProduct% %cBatch% %clot% %Coated%, data\CurrentCodes.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
@@ -411,7 +423,7 @@ Copy(){
           Return
         }
         Else ;will trigger after 1 sec
-          Send, {F22}
+          Send, +{F18}
           ; KeyWait, F20,
           Return
       }

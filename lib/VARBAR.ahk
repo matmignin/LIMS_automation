@@ -83,20 +83,14 @@ Class VarBar{
 
 Menu(){
   global
-	   MouseGetPos,,,,WinControl
+	MouseGetPos,,,,WinControl
   try Menu, VarBarmenu, DeleteAll
-    Menu, Menu, Add,		 		&SwitchWorkSheets, 			SwitchWorkSheets 
-      if SwitchWorkSheets=1  
-        menu, menu, Check, 	&SwitchWorkSheets
-    Menu, VarBarMenu, Add,		 		TempCode, 							TempCode 
-      if TempCode
-        Menu, VarBarmenu, Check, 	Tempcode
-    Menu, VarBarMenu, Add,		 		ShowVarBar, 							ShowVarBar 
-      if ShowVarBar
-        Menu, VarBarmenu, Check, 	ShowVarBar
-    Menu, VarBarMenu, Add,		 		EnteringRotations, 			EnteringRotations 
-      if EnteringRotations
-        Menu, VarBarMenu, Check, 	EnteringRotations
+	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
+    TempCode:=CreateMenu("TempCode","VarBarMenu")
+    EnteringRotations:=CreateMenu("EnteringRotations","VarBarMenu")
+    SwitchWorkSheets:=CreateMenu("SwitchWorkSheets","VarBarMenu")
+    DebuggingScript:=CreateMenu("DebuggingScript","VarBarMenu")
+    HideVarbar:=CreateMenu("HideVarbar","VarBarMenu")
     Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID 
       if ShowSampleID=1  
         menu, VarBarmenu, Check, 	Show&SampleID
@@ -111,7 +105,7 @@ Menu(){
 
 	loadSavedVariables(){
 		global
-		if !WinExist("Mats LMS Workbook.xlsb") || !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){
+		if !WinExist("Mats LMS Workbook.xlsb") { ;|| !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){
 			Iniread, Batch, data.ini, SavedVariables, Batch
 			Iniread, Product, data.ini, Products, Product
 			Iniread, Batch0, data.ini, SavedVariables, Batch0
@@ -130,9 +124,8 @@ Menu(){
 			Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
-			; Iniread, note3, data.ini, Notes, note3
 			Products:=[]
-        FileRead, LoadedNotes, lib\Data\CurrentCodes.txt
+        FileRead, LoadedNotes, data\CurrentCodes.txt
         Products := StrSplit(LoadedNotes,"`r`n")
 		}
 
@@ -326,7 +319,7 @@ HistoryMenuItem(){
 				varbar.SaveVariables()
 				;varbar.show()
 			return
-		; Lbutton::click
+		Lbutton::click
 			; Rbutton::					
 			; MouseGetPos,,,,WinControl
 			; ; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
@@ -377,14 +370,14 @@ HistoryMenuItem(){
 		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
 		+wheelup::	Varbar.AddIteration(0)
 		+wheeldown::Varbar.SubIteration(0)
-		up::				Varbar.AddIteration(0)
-		down::   		Varbar.SubIteration(0)
+		; up::				Varbar.AddIteration(0)
+		; down::   		Varbar.SubIteration(0)
 		F9::           Excel.connect()
 		F7::           Excel.NextSheet()
 		F6::           Excel.PrevSheet()
 		F8::				Varbar.launchTable()
 			return
-		mbutton::		
+		; mbutton::		
 		MouseGetPos,,,,WinControl
 				if (WinControl="Edit1")
 					menu.Products()	
