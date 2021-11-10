@@ -484,18 +484,24 @@ Remote_desktop(){
     }
   Batches(){
       global
+      Batches:=[]
       This.Delete()
       If !WinExist("Mats LMS Workbook.xlsb - Excel"){
         varbar.historymenuItem()
         return
       }
+      ListOfBatches:=XL.Range("H1").Value
+      Batches:= StrSplit(ListOfBatches,"`n")
+      Sleep 50
       loop % Batches.MaxIndex(){
         temp:=Batches[A_index]
+        if (Batches[A_index]){
         menu,menu,add, %temp%, BatchesList
-        if (Batches[a_index]=XL.Range("E1").Value)
+        if (Batches[a_index]=Batch) ;XL.Range("E1").Value)
           menu,menu,check, %temp%,
+        }
       }
-      Try Menu,menu,show
+      Menu,menu,show
 
       return
     

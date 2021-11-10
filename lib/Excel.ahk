@@ -32,6 +32,16 @@ Connect(reload:=0){
 	return
 }
 
+FindAndReplace(A_Find,A_Replace,A_Range,OffsetX:=0,OffsetY:=0){ 
+	global
+  XlWb:=ComObjActive("Excel.Application")
+  CellToChange:=XlWb.ActiveSheet.Range(A_Range).Find(A_Find).offset(OffsetX,OffsetY)
+	sleep 200
+      CellToChange.value:=A_Replace
+}
+
+
+
 SheetActivate(XL){
   global
   excel.Infolocations()
@@ -96,8 +106,9 @@ SheetChange(sht,Cell) {
 		Global
       RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch%n%)
       RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", lot%n%)
-      RegExMatch(vCell, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)(?\d{3}-\d{4}\b", ctCoated)
-      RegExMatch(ctCoated, "\d{3}-\d{4}", Coated%n%)
+      ; RegExMatch(vCell, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?\d{3}-\d{4}\b", ctCoated)
+      RegExMatch(vCell, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<oated>\d{3}-\d{4})", c)
+      ; RegExMatch(ctCoated, "\d{3}-\d{4}", Coated%n%)
 	}
 InfoLocations(){
 	global

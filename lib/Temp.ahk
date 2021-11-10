@@ -1,6 +1,6 @@
 
-; #If TempCode
-;   Mbutton::    
+#If TempCode
+  Mbutton::excel.FindAndReplace("Stage","Specs","B:B",0,1)
 ;   send, {click 39, 611}
 ; 		if !winactive("Edit test (Field Configuration: ")
 ;     	winwaitactive, Edit test (Field Configuration: ,, 2
@@ -22,7 +22,7 @@
 ;   ; F20::gosub, CheckExcelRow
 ;   ; F15::gosub, CheckExcelRow
 
-
+return
 #if
 
 
@@ -68,6 +68,7 @@ CheckExcelRow: ;goes down a lms search and fills out a excel table depending on 
 return
 
 
+return
 
 
 

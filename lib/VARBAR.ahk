@@ -285,13 +285,13 @@ HistoryMenuItem(){
 	ControlsetText, Edit2,%rBatch%, VarBar
 	RegExMatch(A_ThisMenuItem, "i)(\b\d{4}\w\d\w?|\bBulk\b)", rlot)
 	ControlsetText, Edit3,%rLot%, VarBar
-	RegExMatch(A_ThisMenuItem, "i)(coated: |/?ct#/s|Ct#|ct/s|coated/s)\d{3}-\d{4}\b", rCoated)
+	RegExMatch(A_ThisMenuItem, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}\b", rCoated)
 	RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
 	ControlsetText, Edit4,%rCoated%, VarBar 
 	Product:=rProduct
 	Batch:=rBatch
 	Lot:=rLot
-	Coated:=rRoated 
+	Coated:=rCoated 
 	return
 	}
 	}
@@ -339,15 +339,6 @@ HistoryMenuItem(){
 	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
 		wheelright::	Varbar.AddIteration(0)
 		wheelleft::Varbar.SubIteration(0)
-		; +Mbutton::
-		; Rbutton::					
-		; 		MouseGetPos,,,,WinControl
-		; 		; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-		; 		if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
-		; 			menu.ProductSelection()
-		; 		else
-		; 			VarBar.Menu()
-		; 		return
 		Numlock::
 			MouseGetPos,,,,WinControl
 				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
@@ -377,17 +368,17 @@ HistoryMenuItem(){
 		F6::           Excel.PrevSheet()
 		F8::				Varbar.launchTable()
 			return
-		; mbutton::		
-		MouseGetPos,,,,WinControl
-				if (WinControl="Edit1")
-					menu.Products()	
-				else if (WinControl="Edit2") || (WinControl="Edit3")
-					menu.Batches()
-				else if (winControl="Static1")
-					VarBar.Menu()
-				else
-					menu.SetStatus()
-			return
+		; Rbutton::		
+		; MouseGetPos,,,,WinControl
+		; 		if (WinControl="Edit1")
+		; 			menu.Products()	
+		; 		else if (WinControl="Edit2") || (WinControl="Edit3")
+		; 			menu.Batches()
+		; 		else if (winControl="Static1")
+		; 			VarBar.Menu()
+		; 		else
+		; 			menu.SetStatus()
+		; 	return
 		numpaddot:: 	 Openapp.Workbook()
 	#if
 

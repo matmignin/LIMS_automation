@@ -536,7 +536,13 @@ clipCheckIfEmpty(){
 If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					MouseGetPos,,,,WinControl
 				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
-				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3") || (WinControl="Edit4")
+				if (WinControl="Edit1") 
+					menu.Products()
+				else if (WinControl="Edit2")
+					Menu.Batches()
+				else if (WinControl="Edit3") || (WinControl="Edit4")
+					menu.ProductSelection()
+				else if (WinControl="Edit6") || (WinControl="Edit7")
 					menu.ProductSelection()
 				else
 					VarBar.Menu()

@@ -2234,7 +2234,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
       return
     Send, %Iteration%
     sleep 100
-    if Checkbox_Toggle Not Contains Toggle
+    if Checkbox_Toggle Not Contains toggle
       mousemove, xpos, ypos+26 
     setwindelay, 200
     return
