@@ -258,6 +258,13 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 		N:=
 		return
 }
+
+
+MuteTeamsMicrophone(){
+  winactivate, Vitaquest Touchpoint | Microsoft Teams
+  Send, {shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
+  TT("Muted/Unmuted")
+  }
 	
 Fade(FadeAmount:=90){
   global

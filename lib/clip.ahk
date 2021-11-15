@@ -5,7 +5,10 @@ Clip(input=0,Wait:="0.55"){
   ; ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
+    ; BlockInput, on
     OCR()
+    ; sleep 200
+    ; BlockInput, Off
     return
   }
   clipboard:=
@@ -40,14 +43,17 @@ clipChange(type){
       ; clip.Departmentregex()
       ; StringReplace, Clipboard, Clipboard,Value,111Skin Limited
       ; RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
-      tt(Clipboard,1000)
+      ; tt(Clipboard,1000)
+    if !PreventPopUp
+      Pop(Clipboard,,1000)
       ; exit
-    ; }
+    ; } 
     ; if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
       ; exit
     if A_PriorKey = c
       tt(clipboard,600,100,-1500,,150,"R")
-    if A_PriorKey = x
+      ; Pop(clipboard,,600) ;100,-1500,,150,"R")
+    else if A_PriorKey = x
       tt(clipboard,600,100,-1500,,150,"R")
     if A_PriorKey = b
       return
@@ -90,6 +96,7 @@ Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[],
   sleep 200
+  PreventPopup:=1
     If !Value
       ParsedClipboard:=Clipboard
     else 
@@ -142,7 +149,7 @@ Parse(Value:=""){
 
       ; AllCodes:=Listarray(Products)
       Pop(CurrentCodes,,1000,"Right")
-  
+      PreventPopup:=
       ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
     ; IniWrite, %AllCodes%, data.ini, Notes, note1
@@ -212,10 +219,11 @@ SingleRegex(){
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       RegExMatch(HayStack, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
-      If ShowSampleID
-        RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
+      ; If ShowSampleID
+        ; RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       If cProduct {
         ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
+        sleep 50
         FileAppend, `n%ConnectedProduct%`n, data\CurrentCodes.txt
         ; FileAppend, `n%CurrentCodes%, data\CurrentCodes.txt
         ; CurrentCodes.= ConnectedProduct

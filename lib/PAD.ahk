@@ -1,9 +1,10 @@
 
 _MouseIsOver:
+
 #if mouseisover("ahk_class Shell_TrayWnd")
-		;mbutton::
+		mbutton::
 		F15::menu.TaskBar()
-		; Space::Send, {lwin down}d{lwin up}
+		Space::Send, {lwin down}d{lwin up}
 	#If MouseIsOver("ahk_exe Snipaste.exe")
 		F8::send, {click}{esc}
 		NumpadDot::send, {click}{esc}
@@ -19,7 +20,7 @@ _MouseIsOver:
 			return
 
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
-		^Wheeldown::Blockrepeat(500) clip()
+		;^Wheeldown::Blockrepeat(500) clip()
 		Numlock::
 			If !winactive("ahk_exe OUTLOOK.EXE")
 			click
@@ -27,6 +28,7 @@ _MouseIsOver:
 			winactivate, NuGenesis LMS - \\Remote			
 			LMS.Searchbar(clipboard,"{enter}")
 			return
+		F15::
 		Mbutton::
 			If !winactive("ahk_exe OUTLOOK.EXE")
 				click
@@ -137,7 +139,7 @@ clipCheckIfEmpty(){
 		}
 		else 	if winactive("ahk_exe OUTLOOK.EXE") {
 			clipCheckIfEmpty()
-			; clip()
+			clip()
 			return
 		}
 		else if winactive("ahk_exe firefox.exe") 
@@ -582,7 +584,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 		if (Tab="Requests")
 			clk(SamplesTab,yWorkTabs)
 		else If (Tab="Samples")
-			clk(70, 395)s
+			clk(70, 395)
 	Else
 		Send, %Product%
 	sleep 700 
@@ -590,4 +592,6 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	}
   ;sdf 
 }
-~lbutton::return
+F21::clip("OCR")
+
+~lbutton::Return

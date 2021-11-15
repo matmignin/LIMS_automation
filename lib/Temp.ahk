@@ -1,6 +1,9 @@
 
 #If TempCode
-  Mbutton::excel.FindAndReplace("Stage","Specs","B:B",0,1)
+  ; Mbutton::     ;excel.FindAndReplace("Stage","Specs","B:B",0,1)
+  F15::
+
+  return
 ;   send, {click 39, 611}
 ; 		if !winactive("Edit test (Field Configuration: ")
 ;     	winwaitactive, Edit test (Field Configuration: ,, 2

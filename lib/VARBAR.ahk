@@ -319,7 +319,7 @@ HistoryMenuItem(){
 				varbar.SaveVariables()
 				;varbar.show()
 			return
-		Lbutton::click
+		;Lbutton::click
 			; Rbutton::					
 			; MouseGetPos,,,,WinControl
 			; ; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe

@@ -113,8 +113,9 @@ F13 & lshift::							GetAllProducts("`n")
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
 <#lshift::									GetAllProducts("`n")
-<!lshift::									GetAllProducts("`n")
+<!lshift::									GetAllBatches("`n")
 <#enter::										GetAllProducts("`n")
+
 
 rwin::return
 <#tab::										GetAllProducts(A_tab)	
@@ -128,7 +129,7 @@ Rbutton & F20::          	Send, {delete}
 Rbutton & F19::          	Send, {backspace}
 Rbutton & wheelup::       Send, ^{c}
 Rbutton & wheeldown::     Send, ^{v}
-~Lbutton & Rbutton::      send, ^{x}
+Lbutton & Rbutton::      send, ^{x}
 Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}^{c}
 
 rbutton & Appskey::				2Tap()
@@ -141,7 +142,6 @@ Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 
 F20 & /::        	 				OCR()
-F21::OCR()
 
 F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
@@ -224,7 +224,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F9::ExplorerSearch(Product)
 	^w::									4down()
 
-
+ #ifwinactive, Connection Information 
+	mbutton::sendinput, doR314Nle{enter}
 #IfWinActive, ahk_exe WINWORD.EXE ;; 	___WORD
 	F13 & space::			SendInput, +{tab}{tab}
 	F20 & `;::        Send, {tab}
@@ -251,6 +252,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	wheelup::send % Blockrepeat(100) "{=}"
 	^wheeldown::send, ^{wheeldown}
 	^wheelup::send, ^{wheelup}
+	^+2::send, {Mbutton}
+	F15::send, {Mbutton}
 
 #IfWinActive, Mats LMS Workbook.xlsb ;; 	___Excel
 	Numpadmult::send, {Home}
@@ -332,11 +335,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 
 
 #ifwinexist, Touchpoint | Microsoft Teams ;; 	___Teams
-Numlock::
-winactivate, Microsoft Teams
-send, {shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
-return
-
+Numlock::MuteTeamsMicrophone()
+F15::MuteTeamsMicrophone()
 
 #ifwinactive, OneNote for Windows 10 ;; 	___OneNote
 	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
@@ -440,11 +440,14 @@ Table_Entry(Entry){
 
 
 
-GetAllBatches(){
+GetAllBatches(Delimiter:=" "){
   global
   regBatches:=[]
   pos=0
-  while pos := RegexMatch(Clipboard, "i)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
+	PreventPopup:=1
+		; PreClipboard:=clipboardAll
+		; clipboard:=
+  while pos := RegexMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", aBatch, pos+1) ; {
     ; if aBatch
       regBatches.insert(aBatch)
   ; }
@@ -463,11 +466,15 @@ GetAllBatches(){
           }
         }
     AllBatches:=Listarray(AllBatches,"")
-    AllBatches:= StrReplace(AllBatches, A_space A_space, A_space)
-    GuiControl,Varbar:Text, Note3, %AllBatches%
+    AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
+    ; GuiControl,Varbar:Text, Note3, %AllBatches%
     ; ControlsetText, Edit8,%AllBatches%,VarBar
-		IniWrite, %AllBatches%, data.ini, Notes, note3
-    Sendinput, %AllBatches%
+		; IniWrite, %AllBatches%, Data\Batches.txt, Notes, note3
+
+		; clipboard:=PreClipboard
+		Sendinput, %AllBatches%
+
+		PreventPopup:=
     ; msgbox, %AllBatches%,
 }
 GetAllProducts(Delimiter:=" "){
@@ -496,7 +503,7 @@ GetAllProducts(Delimiter:=" "){
     AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
     GuiControl,Varbar:Text, Note2, %AllProducts%
     ; ControlsetText, Edit7,%AllProducts%,VarBar
-    IniWrite, %AllProducts%, data.ini, Notes, note2
+    ; IniWrite, %AllProducts%, data.ini, Notes, note2
     clipboard:=AllProducts
     sleep 200
     send, ^v

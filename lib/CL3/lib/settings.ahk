@@ -50,7 +50,7 @@ Settings_Default()
 	{
 	 global
  	 Settings_Plugins:={ Plugins : "Title`,Lower`,Upper`,LowerReplaceSpace" }
-	 Settings_Hotkeys:={ hk_menu         :"F21"
+	 Settings_Hotkeys:={ hk_menu         :"F18"
 		, hk_plaintext     :"^+v"
 		, hk_slots         :"^#F12"
 		, hk_clipchain     :"^#F11"
@@ -116,7 +116,7 @@ Settings_Hotkeys()
 	 local ini,index,keylist
 	 ini:=A_ScriptDir "\settings.ini"
 
-	 IniRead, hk_menu          , %ini%, Hotkeys, hk_menu          ,F21
+	 IniRead, hk_menu          , %ini%, Hotkeys, hk_menu          ,F18
 	 IniRead, hk_plaintext     , %ini%, Hotkeys, hk_plaintext     ,^+v
 	 IniRead, hk_slots         , %ini%, Hotkeys, hk_slots         ,^#F12
 	 IniRead, hk_clipchain     , %ini%, Hotkeys, hk_clipchain     ,^#F11

@@ -129,7 +129,7 @@ tab & appskey::return ;Send, {tab}
 	q::                SendInput,{ctrldown}{]}{ctrlup}
 	#if
 	$tab::send, {tab}
-	~Lbutton & tab::						sendinput, {shiftdown}{altdown}{\}{altup}{shiftup} ;switch column select
+	Lbutton & tab::						sendinput, {shiftdown}{altdown}{\}{altup}{shiftup} ;switch column select
 	q & tab::                 SendInput,{ctrldown}{[}{ctrlup}
 	q & u::										SendInput, {q}{u}
 	q::q
@@ -186,7 +186,7 @@ tab & appskey::return ;Send, {tab}
 
 #If (A_PriorHotKey = "Space" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_space Vim_
 	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
-#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_d Vim_
+#If (A_PriorHotKey = "s" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_d Vim_
 	/::                    Sendinput, +{End}{delete}
 	m::                    Sendinput, +{Home}{delete}
 	`;::                   Sendinput, +!{;}{delete}
@@ -196,8 +196,9 @@ tab & appskey::return ;Send, {tab}
 	w::                    sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
 	,::
 	b::                    Sendinput, {ctrldown}{shiftdown}{left}{ctrlup}{shiftup}{delete}
-	d::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
-	; d::                    sendinput, {home 2}{shiftdown}{end}{shiftup} ;select line
+	s::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
+	; d::											
+	d::                    sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace 2} ;select line
 	x::                    sendinput, ^{x}
 	c::                    sendinput, ^{c}
 
@@ -244,17 +245,19 @@ tab & appskey::return ;Send, {tab}
 		; 	return
 	9 & 0::									SendInput,{)}
 	Space::									sendinput, {shiftdown}{altdown}{w}{altup}{shiftup}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
-	d::											SendInput,{home 2}{shiftdown}{end}{shiftup}
 
-	^d::										sendinput, {ctrldown}{a}{ctrlup} ;select all
+	s::											SendInput,{home 2}{shiftdown}{end}{shiftup}
+	^s::										sendinput, {ctrldown}{a}{ctrlup} ;select all
 	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
 	^e::                  	SendInput,^{a}{backspace}			 ;block comment
 	; q::											sendinput, {backspace}
 	; ^q::
 	; w::
-	; ^w::											sendinput, +{Home}{backspace}
-	x::											sendinput, {delete}
-	^x::										sendinput, ^{x}
+	d::											backspace
+	^d::                    sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
+	x::											delete
+	^x::                    sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}{delete}
+	; ^x::										sendinput, ^{x}
 	t::                     SendInput,+!{F9}
 	; space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 	`;::        						SendInput,!^{/}
@@ -278,8 +281,7 @@ tab & appskey::return ;Send, {tab}
 	'::  										SendInput,!{'}
 	a::                     backspace
 	^a::										sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
-	s::                    	delete
-	^s::                    sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}{delete}
+	; s::                    	delete
 	y::                    	sendinput, {shiftdown}{altdown}{a}{altup}{shiftup} ;select all occurances
 	c::                  		send, ^{c} ;  send,^{c}
 	^c::                  	send, ^{x} ;  send,^{c}

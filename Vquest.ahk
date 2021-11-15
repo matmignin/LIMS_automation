@@ -3,7 +3,7 @@ VQuest_Start:
     #SingleInstance,Force
     #Persistent
 ;#ErrorStdOut
-    Process, Priority, , High
+    ;Process, Priority, , High
     #NoEnv
     #KeyHistory 300
     #InstallKeybdHook
@@ -126,11 +126,11 @@ ActiveCheck:
   if WinActive("Information - \\Remote")
     send, {enter}
 NoIdleTimer:
-if (A_TimeIdle > (60*1000) && NoIdle) {
-  MouseMove, 1,0,0,R
-  SLEEP 50
-  MouseMove, -1,0,0,R
-}
+; if (A_TimeIdle > (60*1000) && NoIdle) {
+;   MouseMove, 1,0,0,R
+;   SLEEP 50
+;   MouseMove, -1,0,0,R
+; }
 return
    
 
