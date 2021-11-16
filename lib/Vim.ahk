@@ -235,14 +235,6 @@ tab & appskey::return ;Send, {tab}
 	m::      	              Send,{Home}
 	^k::                     SendInput,{shiftdown}{up}{shiftup}
 	f:: 	                 sendinput, !#+{f 2}
-		; 	Input, output, T2 V, {left}{up}{right}{down}{F13}{enter}{esc}
-		; 	sendinput, {enter}{esc 2}
-		; 	return
-		; ^f:: 	                  
-		; 	sendinput, !#+{f 2}
-		; 	Input, output, T2 V, {left}{up}{right}{down}{F13}{enter}{esc}
-		; 	sendinput, {shiftdown}{altdown}{ctrldown}{[}{ctrlup}{altup}{shiftup}{esc 2}
-		; 	return
 	9 & 0::									SendInput,{)}
 	Space::									sendinput, {shiftdown}{altdown}{w}{altup}{shiftup}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
 
@@ -250,9 +242,6 @@ tab & appskey::return ;Send, {tab}
 	^s::										sendinput, {ctrldown}{a}{ctrlup} ;select all
 	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
 	^e::                  	SendInput,^{a}{backspace}			 ;block comment
-	; q::											sendinput, {backspace}
-	; ^q::
-	; w::
 	d::											backspace
 	^d::                    sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
 	x::											delete

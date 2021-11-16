@@ -210,7 +210,8 @@ Cl3Parse(){
     return
 }
 SingleRegex(){
-    global Batch, Product, lot, coated, sampleid, Products, CurrentCodes
+    global Batch, Product, lot, coated, sampleid, Products, CurrentCodes, ConnectedProducts
+    ConnectedProducts:=[]
       Haystack:=Clipboard
     sleep      20
       RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
@@ -227,7 +228,7 @@ SingleRegex(){
         FileAppend, `n%ConnectedProduct%`n, data\CurrentCodes.txt
         ; FileAppend, `n%CurrentCodes%, data\CurrentCodes.txt
         ; CurrentCodes.= ConnectedProduct
-        ; products.Push("`n"ConnectedProduct)
+        Connectedproducts.Push("`n"ConnectedProduct)
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
@@ -275,15 +276,15 @@ Regex(Category:=""){
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       RegExMatch(HayStack, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
-      RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
-      StringReplace, cSampleID, cSampleID, $, S
+      ; RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
+      ; StringReplace, cSampleID, cSampleID, $, S
       ; If cProduct && cBatch && clot 
         ; FileAppend, %cProduct% %cBatch% %clot% %Coated%`n, data\CurrentCodes.txt
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
-        FileAppend, `n`t%cProduct% %cBatch% %clot% %Coated%, data\CurrentCodes.txt
+        FileAppend, `n`t%cProduct% %cBatch% %clot% %cCoated%, data\CurrentCodes.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%

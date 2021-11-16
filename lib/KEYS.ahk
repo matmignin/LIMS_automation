@@ -8,6 +8,7 @@ return
 	F13 & 2::							sendinput, %Batch%%A_Space%
 	F13 & 3::							sendinput, %Lot%%A_space%
 	F13 & 4::							GetAllProducts()
+	F13 & 5::							GetAllBatches()
 ; sendlevel
 ;;	___ClipCopy&Paste
 ; F13 & Mbutton::
@@ -115,8 +116,6 @@ F13 & lshift::							GetAllProducts("`n")
 <#lshift::									GetAllProducts("`n")
 <!lshift::									GetAllBatches("`n")
 <#enter::										GetAllProducts("`n")
-
-
 rwin::return
 <#tab::										GetAllProducts(A_tab)	
 Scrolllock::							SetCapsLockState % !GetKeyState("CapsLock", "T")
@@ -471,16 +470,20 @@ GetAllBatches(Delimiter:=" "){
     ; ControlsetText, Edit8,%AllBatches%,VarBar
 		; IniWrite, %AllBatches%, Data\Batches.txt, Notes, note3
 
-		; clipboard:=PreClipboard
-		Sendinput, %AllBatches%
+		clipboard:=AllBatches
+		sleep 200
+		send, ^v
+		; Sendinput, %AllBatches%
 
 		PreventPopup:=
+		return AllBatches
     ; msgbox, %AllBatches%,
 }
 GetAllProducts(Delimiter:=" "){
   global
   regProducts:=[]
   pos=0
+	PreventPopup:=1
   while pos := RegexMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
     ; if aBatch
       regProducts.insert(aProduct)
@@ -507,6 +510,9 @@ GetAllProducts(Delimiter:=" "){
     clipboard:=AllProducts
     sleep 200
     send, ^v
+		PreventPopup:=
+
+		Return AllProducts
     ; Send, {blind}%AllProducts%
 
     ; msgbox, %AllProducts%,
