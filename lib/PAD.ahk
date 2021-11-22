@@ -213,6 +213,8 @@ clipCheckIfEmpty(){
 			send % Clk(40, 105) 
 		else if WinActive("ahk_exe WFICA32.EXE")
 			Send, %Product%
+		else if winactive("ahk_exe explorer.exe")
+			ExplorerSearch(Product)
 		return
 	}
 
@@ -252,7 +254,7 @@ clipCheckIfEmpty(){
 			menu.LMS()
 		else {
 			Excel.Connect(1)
-			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")wq
+			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 		}
 		return
 		
@@ -558,7 +560,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 			Send, {F18}
 		return
 	}
-	else
+	else if (A_PriorHotKey != A_ThisHotKey) 
 		click Right
 	Return
 }

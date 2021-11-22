@@ -217,8 +217,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 
 
 #IfWinActive, ahk_exe explorer.exe ;;	___explorer:
-	F19 & space::   send % BlockRepeat(400) product  "{enter}" ;              	Send, {altdown}{left}{altup}
-	F6::   			sendinput % BlockRepeat(800) product  "{enter}" ;              	Send, {altdown}{left}{altup}
+	F19 & space::   send % BlockRepeat(400) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
+	F6::   			sendinput % BlockRepeat(800) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F7::				Sendinput, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
 	^w::									4down()
@@ -383,15 +383,14 @@ F15::MuteTeamsMicrophone()
 
 
 ExplorerSearch(text){
-		excel.connect(1)
+		;excel.connect(1)
 		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
 		SearchWindow:="search-ms:displayname"
-		IfWinNotExist, %Sea% && ifwinNotexist, %AllLabelCopy%	
+		IfWinNotExist, %SearchWindow% && ifwinNotexist, %AllLabelCopy%	
 			return									
 		;  Run, %AllLabelCopy%
 		; IfWinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
 			; run, %AllLabelCopy%
-		IfWinExist, %Sear% 
 		IfWinExist, %SearchWindow% 
 			winactivate, %AllLabelCopy%
 		winwait, %AllLabelCopy%, ,2

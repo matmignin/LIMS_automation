@@ -301,31 +301,31 @@ _LMS_HOTSTRINGS:
 	ProductTab.Blends(4,ShapeAndSize)
 	:*:4blend`;::
 	ProductTab.Blends(5,ShapeAndSize)
-	:*:5scoop::
+	:*:5blend::
 	ProductTab.Blends(6,ShapeAndSize)
 	:*:1scoop::
 	ProductTab.Blends(1,"scoop")
-	:*:2scoops::
+	:*:2scoop::
 	ProductTab.Blends(2,"scoops")
-	:*:3scoops::
+	:*:3scoop::
 	ProductTab.Blends(3,"scoops")
-	:*:4scoops::
+	:*:4scoop::
 	ProductTab.Blends(4,"scoops")
-	:*:5scoops::
+	:*:5scoop::
 	ProductTab.Blends(5,"scoops")
-	:*:6scoops::
+	:*:6scoop::
 	ProductTab.Blends(6,"scoops")
 	:*:1stick::
 	ProductTab.Blends(1,"stick packet")
-	:*:2sticks::
+	:*:2stick::
 	ProductTab.Blends(2,"stick packets")
-	:*:3sticks::
+	:*:3stick::
 	ProductTab.Blends(3,"stick packets")
 	:*:1Packet::
 	ProductTab.Blends(1,"packet")
-	:*:2packets::
+	:*:2packet::
 	ProductTab.Blends(2,"packets")
-	:*:3packets::
+	:*:3packet::
 	ProductTab.Blends(3,"packets")
 	return
 

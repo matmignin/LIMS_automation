@@ -827,8 +827,10 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       Sleep 200
       Current_Row:= Current_Row+1
       Breaking.Point()
-      Send,{enter}
+			If !ManualInput
+				Send,{enter}
       Tooltip,
+			ManualInput:=
       return
       }
 
@@ -901,9 +903,9 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       TextNumber:="seven"
     if !color
       Color:="PENDING"
-    If !ServingSize
-      ServingSize:= " g"
-    Send, Each %textNumber% (%n%){space}%measurment%%plural% (%ServingSize%) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}
+    If !ShapeAndSize
+      ShapeAndSize:= " g"
+    Send, Each %textNumber% (%n%){space}%measurment%%plural% (%ShapeAndSize%) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}
     setwindelay, 250
     exit
   }
@@ -989,7 +991,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
     DropDown_Ingredient(){
     global
-      SetWinDelay, 450
+      SetWinDelay, 350
     ; if (GeneralCount=2){
       ; SendInput,{tab}{Home}{right 2}{right 62}
       ; return
@@ -1032,7 +1034,8 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     ; Menu,IngredientMenu,Add,Quercetin Dihydrate,IngredientMenuHandler
     ; Menu,IngredientMenu,Add,Taurine,IngredientMenuHandler
     Menu,IngredientMenu,Add,Total Probiotic,IngredientMenuHandler
-      Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
+		Menu,IngredientMenu,Add,Manual,IngredientMenuHandler
+		Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
     Menu,IngredientMenu,Show,
     return
     }
@@ -1105,13 +1108,17 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
   else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount==26)
     SendInput,{tab}{Home}{right 6}{right 114}
   else if (A_ThisMenuItem ="Ingredient Note 1")
-    SendInput,{tab}{Home}{right 6}{right 139}
+    SendInput,{tab}{Home}{right 6}{right 140}
   else if (A_ThisMenuItem ="Ingredient Note 2")
     SendInput,{tab}{Home}{right 6}{right 141}
   else if (A_ThisMenuItem ="Ingredient Note 3")
     SendInput,{tab}{Home}{right 6}{right 142}
   else if (A_ThisMenuItem ="Total Probiotic")
-    SendInput,{tab}{Home}{right 258}
+    SendInput,{tab}{Home}{right 221}
+  else if (A_ThisMenuItem ="Manual"){
+    SendInput,{tab}{Home}
+		ManualInput=1
+	}
   else if (A_ThisMenuItem ="STOP")
     Reload
   else
