@@ -154,6 +154,9 @@ clipCheckIfEmpty(){
 			Send, {lwindown}{e}{lwinup}
 		else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 				menu.Remote_Desktop()
+
+		else if winactive("TIBCO Jaspersoft")
+			REQUESTGUID()
 				return
 			}
 
@@ -552,7 +555,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					VarBar.Menu()
 				return
 	}
-	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse
+	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
 	{
 		If MouseIsOver("ahk_class Shell_TrayWnd")
 			menu.TaskBar()
@@ -560,7 +563,11 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 			Send, {F18}
 		return
 	}
-	else if (A_PriorHotKey != A_ThisHotKey) 
+	else if (A_PriorHotKey != A_ThisHotKey and A_TimeSincePriorHotkey < 550)
+		return
+	else if (A_PriorHotKey = A_ThisHotKey AND A_TimeSincePriorHotkey > 450)
+		return
+	else
 		click Right
 	Return
 }

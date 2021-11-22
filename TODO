@@ -6,6 +6,9 @@ Todo:
       `regex exitbox and set button`
       `activate worksheet(%product%)`
       `excel.Connect()`
+
+☐ fix Checkboxes not checking right
+☐ fix the random times win E hapens when i type character 
 ✔ fix the edit boxes not saving to ini from submit @done(21-09-21 10:43)
 ✔ have varbar fade when cursor is over it @done(21-09-21 03:48)
 ✔ Fix Coated Physical not selecting correct dropdown. (extend the wait time too) @done(21-09-16 08:14)
@@ -19,7 +22,7 @@ Todo:
 ✔ add Average Weight to sample pick @done(21-10-08 01:54)
 
 Last 5:
-☐ Fix searchbar not clicking the X on the second click
+✔ Fix searchbar not clicking the X on the second click @done(21-11-22 10:08)
 ✔ have excel autodetect when cells/sheets are changed. @done(21-09-28 17:01)
-☐ have clipboard be able to make an array if multiple matches. (google it first)
+✔ have clipboard be able to make an array if multiple matches. (google it first) @done(21-11-22 10:08)
 ✔ make varbar dropdown notes more trustworthy. @done(21-10-11 14:56)

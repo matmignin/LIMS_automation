@@ -20,7 +20,7 @@ return
 	<^r::                     reloadscript()
 ;;	---modifiers---        
 	$lwin::return
-	LCtrl & Appskey::         return
+		LCtrl & Appskey::         return
 	RShift::										sendinput,+!{i}
 	Rshift & appsKey::   			Return             
 	Lshift & appsKey::   			Return             
@@ -34,8 +34,12 @@ return
 	F15::ReloadScript()
 	; F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 	; F13 & Space::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
-	F13 & Lbutton::send, {click}^{v} ;{F19}
-	F13 & Rbutton::send, ^{x} ;{F20}
+	F13 & Lbutton::
+		click Down left
+		keywait F13
+		click Up left
+		return ;send, {click}^{v} ;{F19}
+	F13 & Lalt::sendinput, ^{click}
 	F13 & tab::								SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13::F13
 ;;		---F19 and F20---

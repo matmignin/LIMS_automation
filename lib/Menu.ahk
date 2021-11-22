@@ -369,6 +369,9 @@ TaskBar(){
     Menu, Menu, Add, &Screenshots, #^+s
     Menu, Menu, Add, &mmignin, #^F4
     ; Menu, OneDrive, Add, &OneDrive, #^F5
+    Menu, JasperSoft, Add, My &Reports, +#^F11
+    Menu, JasperSoft, Add, COA &EXAMPLEs, +#^F10
+    Menu, Menu, add, &JasperSoft, :JasperSoft
     Menu, OneDrive, Add, &CofA Team, #^F6
     Menu, OneDrive, Add, &LMS Team, #^F7
     Menu, Menu, add, &OneDrive, :OneDrive
@@ -381,7 +384,8 @@ TaskBar(){
     ; Menu, Menu, Add, &WorkSheets, Tests 
     Menu, LabelCopyFolder, Add, &QC Appearance, #^F10
     Menu, LabelCopyFolder, Add, &Final Labels, #^F8
-    Menu, LabelCopyFolder, Add, &Final C_O_A, #^F9
+    Menu, LabelCopyFolder, Add, &FINAL C_O_A, #^F9
+    Menu, LabelCopyFolder, Add, &Rotations, +#^F12
   Menu, Menu, add, &Label Copy, :LabelCopyFolder
     if Winexist("Mats Workbook") && WinActive("NuGenesis LMS - \\Remote"){
       Menu,Menu,add,				&Spec Table,						Tests

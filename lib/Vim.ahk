@@ -186,6 +186,10 @@ tab & appskey::return ;Send, {tab}
 
 #If (A_PriorHotKey = "Space" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_space Vim_
 	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
+#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_space Vim_
+	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
+	b::                     SendInput,{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}{backspace}
+	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
 #If (A_PriorHotKey = "s" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_d Vim_
 	/::                    Sendinput, +{End}{delete}
 	m::                    Sendinput, +{Home}{delete}
@@ -226,6 +230,8 @@ tab & appskey::return ;Send, {tab}
 	; ^.::                    SendInput,{blind}{kkshiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	,::                     SendInput,{ctrldown}{left}{Ctrlup}
 	; ^,::										SendInput,{blind}{shiftdown}{ctrldown}{left}{ctrlup}{shiftup} ;go back a word
+	w::											sendinput,{ctrldown}{right}{ctrlup}
+	^w::                    SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	b::											sendinput,{ctrldown}{left}{ctrlup}
 	^b::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 	i::											Sendinput, ^{i}
@@ -240,7 +246,7 @@ tab & appskey::return ;Send, {tab}
 
 	s::											SendInput,{home 2}{shiftdown}{end}{shiftup}
 	^s::										sendinput, {ctrldown}{a}{ctrlup} ;select all
-	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace} ;delete word
+	 ;delete word
 	^e::                  	SendInput,^{a}{backspace}			 ;block comment
 	d::											backspace
 	^d::                    sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}

@@ -246,6 +246,7 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F20::             Clip.paste()
 		
 
+
 #ifwinactive, ahk_exe Snipaste.exe ;;	___Snipaste
 	wheeldown::send % Blockrepeat(100) "{-}"
 	wheelup::send % Blockrepeat(100) "{=}"

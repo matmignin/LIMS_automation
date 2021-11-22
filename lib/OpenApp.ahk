@@ -27,6 +27,9 @@ OpenApps:
   #^F10::Run, \\10.1.2.118\share\QC LAB\QC_Appearance Test.xlsx
   #^F11::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021 (2) .xlsx
   #^F12::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021.xlsx
++#^F12::run, \\10.1.2.118\share\QC LAB\Master Rotation WB 2014 (Start from 10-14-2014).xlsx
++#^F11::run, C:\Users\mmignin\OneDrive - Vitaquest International\My JasperSoft Reports
++#^F10::run, \\10.1.2.118\users\vitaquest\mmignin\COA EXAMPLES
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()
@@ -42,6 +45,9 @@ OpenApps:
   F20 & l::
   #l::OpenApp.LMS()
 #ifwinnotactive
+
+return
+
 
 
 class OpenApp{
