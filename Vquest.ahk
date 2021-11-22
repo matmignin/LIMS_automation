@@ -24,6 +24,9 @@ VQuest_Start:
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
     FormatTime, CurrentDateTime,, MM/dd/yy
+    FormatTime, The_Day,, MMMM d
+    FormatTime, The_Hour,, htt
+    FormatTime, The_Time,, hh:mm
     SetNumLockState, on
     SetscrolllockState, off
     SetNumlockState Alwayson
@@ -43,10 +46,10 @@ VQuest_Start:
     Iniread, Iteration, data.ini, SavedVariables, Iteration
     ; Products:=[]
       ; Products := StrSplit(CurrentCodes,"`r`n")
-    Filegettime, filetime, data\CurrentCodes.txt
-    TimeSince:= A_Now - FileTime
-    if TimeSince >  50000
-      FileDelete, data\CurrentCodes.txt
+    ; Filegettime, filetime, data\CurrentCodes.txt
+    ; TimeSince:= A_Now - FileTime
+    ; if TimeSince >  50000
+      ; FileDelete, data\CurrentCodes.txt
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y

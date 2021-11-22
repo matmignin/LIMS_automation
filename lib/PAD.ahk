@@ -539,9 +539,9 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					MouseGetPos,,,,WinControl
 				; ControlGetFocus,WinControl,VarBar ahk_exe AutoHotkey.exe
 				if (WinControl="Edit1") 
-					menu.Products()
+					menu.ProductSelection()
 				else if (WinControl="Edit2")
-					Menu.Batches()
+					menu.ProductSelection()
 				else if (WinControl="Edit3") || (WinControl="Edit4")
 					menu.ProductSelection()
 				else if (WinControl="Edit6") || (WinControl="Edit7")
@@ -552,7 +552,10 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	}
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 450) ;double click right mouse
 	{
-		Send, {F18}
+		If MouseIsOver("ahk_class Shell_TrayWnd")
+			menu.TaskBar()
+		else
+			Send, {F18}
 		return
 	}
 	else

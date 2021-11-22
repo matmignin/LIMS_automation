@@ -22,8 +22,8 @@ class Menu{
       Menu, Menu, add, %Batch%, F20 & down
       Menu, Menu, add, %Lot%, F20 & right
       Menu, Menu, Show
-      KeyWait, Rbutton, U
-        try Menu,Menu, deleteAll
+      ; KeyWait, Rbutton, U
+        ; try Menu,Menu, deleteAll
         
     }
 
@@ -77,7 +77,7 @@ class Menu{
     GuiControl,Varbar:Text, Coated, %sCoated%
     try XL.Sheets(sProduct).activate
   ; clipboard:=A_ThismenuItem
-; varbar.show()
+    ; varbar.show()
   ;  Pop(A_ThisMenuItem,,3000)
     return
     }
@@ -501,7 +501,7 @@ Remote_desktop(){
           menu,menu,check, %temp%,
         }
       }
-      Menu,menu,show
+      Try Menu,menu,show
 
       return
     

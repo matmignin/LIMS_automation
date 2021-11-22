@@ -38,15 +38,15 @@ Class VarBar{
 		}
 	AddBoxes(){
 			global
-			this.AddEdit("Product",	"left h29 x10 y0 w65",			"16 Bold")
+			this.AddEdit("Product",	"left h29 x10 y1 w65",			"16 Bold")
 			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11,Consolas")
-						If !Lot
-				 L_L:="w25"
+			If !Lot
+				 L_L:="w60"
 			else 
 					L_L:=
-			this.AddEdit("Lot",			"left h29 x+1 y1 " L_L, 			"11, Consolas")
+			this.AddEdit("Lot",			"left h29 x+1 y1 " L_L , 			"9, Consolas")
 			If !Coated
-				 C_L:="w35"
+				 C_L:="w45"
 			else 
 					C_L:=
 				this.AddEdit("Coated",	"left h29 x+1 y1 " c_L,			"9, Arial Narrow")
@@ -125,7 +125,7 @@ Menu(){
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
 			Products:=[]
-        FileRead, LoadedNotes, data\CurrentCodes.txt
+        FileRead, LoadedNotes, Data\CurrentCodes.txt
         Products := StrSplit(LoadedNotes,"`r`n")
 		}
 
@@ -145,7 +145,7 @@ Menu(){
 		if Iteration
 			IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
 		if CurrentCodes
-			IniWrite, %CurrentCodes%, data.ini, SavedVariables, CurrentCodes
+			IniWrite, `n%CurrentCodes%, Data\Products.ini, %The_Day%, %The_Hour%
 		if Note1
 			IniWrite, %note1%, data.ini, Notes, note1
 		if Note2
@@ -390,7 +390,7 @@ HistoryMenuItem(){
 					Ctrl := "`n(in control " . A_GuiControl . ")"
 				PostMessage, 0xA1, 2
 				MouseGetPos,,,,WinControl
-				setTimer, SaveVarBarLocaton, -2000
+				setTimer, SaveVarBarLocaton, -1000
 
 		return
 		SaveVarBarLocaton:

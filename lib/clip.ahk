@@ -35,7 +35,7 @@ clipChange(type){
     return
   ; if A_PriorKey:="^1"
     ; exit
-  sleep 100
+  sleep 50
     ; if !instr(Clipboard,"`r`n")
     clip.Parse()
     ; clip.Regex()
@@ -45,16 +45,16 @@ clipChange(type){
       ; RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
       ; tt(Clipboard,1000)
     if !PreventPopUp
-      Pop(Clipboard,,1000)
+      ; Pop(Clipboard,,1000)
       ; exit
     ; } 
     ; if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
       ; exit
     if A_PriorKey = c
-      tt(clipboard,600,100,-1500,,150,"R")
-      ; Pop(clipboard,,600) ;100,-1500,,150,"R")
+      tt(clipboard,200,100,-1500,,,"R")
+      ; Pop(clipboard,,400) ;100,-1500,,150,"R")
     else if A_PriorKey = x
-      tt(clipboard,600,100,-1500,,150,"R")
+      tt(clipboard,200,100,-1500,,150,"R")
     if A_PriorKey = b
       return
 return
@@ -87,7 +87,7 @@ Append(Delimiter:="`n",key:="c"){
     else  
     {
       clipboard := Preclip Delimiter Clipboard
-      tt(clipboard,1500,A_ScreenWidth-500,,2,150)
+      tt(clipboard,1000,A_ScreenWidth-500,,2,150)
     }
 		return 
 }
@@ -95,7 +95,7 @@ Append(Delimiter:="`n",key:="c"){
 Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[],
-  sleep 200
+  sleep 150
   PreventPopup:=1
     If !Value
       ParsedClipboard:=Clipboard
@@ -115,12 +115,13 @@ Parse(Value:=""){
             if varLot
               match.= " " VarLot    
             if varCoated
-              match.= " Ct#" VarCoated 
+              match.= " " VarCoated 
             If ShowSampleId && VarSampleID 
               match.= " | " VarSampleID 
           }
           ; Match:= VarProduct
           if Match && A_Index = 1
+              ; clip.regex()
               clip.Singleregex()
           else if Match && A_Index > 1
             regProducts.insert(Match)
@@ -139,21 +140,15 @@ Parse(Value:=""){
               Products.Push("" vValue), oTemp["" vValue] := ""
           }
         }
-      sleep 200
+      sleep 100
         filedelete, data\CurrentCodes.txt
         For Each, Element In Products 
           CurrentCodes .= Element "`n"
         FileAppend, %CurrentCodes%, data\CurrentCodes.txt
       }
-
-
-      ; AllCodes:=Listarray(Products)
-      Pop(CurrentCodes,,1000,"Right")
+      ; Pop(CurrentCodes,,500,"Right")
       PreventPopup:=
-      ; GuiControl,Varbar:Text, Note1, %AllCodes%
-    ; ; ControlsetText, Edit6,%AllProducts%,VarBar
-    ; IniWrite, %AllCodes%, data.ini, Notes, note1
-
+    IniWrite, `n%AllCodes%, Data\Products.ini, %The_Day%, %The_Hour%
     return
 }
 Cl3Parse(){
@@ -170,7 +165,7 @@ Cl3Parse(){
   }
     loop, parse, ParsedClipboard, "`r`n" 
       {
-        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}\b", VarProduct)
+        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
         RegExMatch(A_loopfield, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
@@ -201,17 +196,19 @@ Cl3Parse(){
       }
       sleep 200
       AllCodes:=Listarray(Products)
-      Pop(AllCodes,,2000)
+      ; Pop(AllCodes,,2000)
   
       ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
-    ; IniWrite, %AllCodes%, data.ini, Notes, note1
+    ;IniWrite, %AllCodes%, Data\Products.ini, Products, AllCodes
+
 
     return
 }
 SingleRegex(){
     global Batch, Product, lot, coated, sampleid, Products, CurrentCodes, ConnectedProducts
     ConnectedProducts:=[]
+
       Haystack:=Clipboard
     sleep      20
       RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
@@ -225,10 +222,11 @@ SingleRegex(){
       If cProduct {
         ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
         sleep 50
-        FileAppend, `n%ConnectedProduct%`n, data\CurrentCodes.txt
+        FileAppend, `n`t%ConnectedProduct%`n, data\CurrentCodes.txt
+        ; FileAppend, %ConnectedProduct%`n, data\RecentProducts.txt
         ; FileAppend, `n%CurrentCodes%, data\CurrentCodes.txt
         ; CurrentCodes.= ConnectedProduct
-        Connectedproducts.Push("`n"ConnectedProduct)
+        Connectedproducts.Push("`n" ConnectedProduct "`n")
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
@@ -242,11 +240,13 @@ SingleRegex(){
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
         IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        ; varbar.show()
       }
       If !cLot {
         ; GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
         IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        ; varbar.show()
       }
       If !cCoated {
         GuiControl,Vajrbar:Text, Coated, %cCoated%
@@ -263,7 +263,7 @@ SingleRegex(){
         GuiControl,Varbar:Text, SampleID, %cSampleID%
         varbar.show()
       }
-      }
+    }
   
 Regex(Category:=""){
     global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, 
@@ -284,7 +284,7 @@ Regex(Category:=""){
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
-        FileAppend, `n`t%cProduct% %cBatch% %clot% %cCoated%, data\CurrentCodes.txt
+        FileAppend, `n`t%cProduct% %cBatch% %clot% %cCoated% `n, Data\CurrentCodes.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
@@ -295,17 +295,19 @@ Regex(Category:=""){
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
         IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        ; varbar.show()
       }
       If !cLot {
         ; GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
         IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        ; varbar.show()
       }
       If !cCoated {
         GuiControl,Vajrbar:Text, Coated, %cCoated%
         Coated:=cCoated
         IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-        varbar.show()
+        ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
@@ -447,7 +449,7 @@ Copy(){
       return
     }
     TT(Clipboard)
-    clip.Regex()
+    ; clip.Regex()
 
       return
   }
