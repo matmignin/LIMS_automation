@@ -75,7 +75,7 @@ return
 
 
 
-#t::
+#h::
 Test_2: ;;Move to previous Batch in Array
 
   n-=1
@@ -97,7 +97,19 @@ pop(whereatsplit)
     try XL.Sheets(sProduct).activate
     return
 
-#h::
+F13 & t::
+; TEST_5:
+TESTREQUESTGUID()
+return
+
+
+
+ADD_A_TODO_LIST_ITEM_IN_VSCODE:
+InputBox, TODO, Write a Todo
+VSCODEToDo:= "☐ " TODO "`n"
+FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
+Return
+
 Test_3: ;;Move to next Batch in Array
   n+=1
   Haystack:=Products[n]
@@ -164,6 +176,27 @@ Return
 
 
 
+REQUESTGUID() {
+		global
+		Loop, Read, data\REQUESTGUID.ini
+		{
+		If A_Index = 1
+			Continue
+		REQUESTGUID := StrSplit(A_LoopReadLine, "=")
+		Selection:= % REQUESTGUID[1]
+		Menu, REQUESTGUIDmenu, add, %Selection%, REQUESTGUID
+		}
+		Menu, REQUESTGUIDmenu, Show,
+		return
+
+		REQUESTGUID:
+			sleep 200
+			InputVar:=A_ThisMenuItem
+			IniRead,vOutput, data\REQUESTGUID.ini, REQUESTGUID, %InputVar%
+			SendInput, %vOutput%
+      menu, REQUESTGUIDmenu, DeleteAll
+			return
+	}
 
 
 
