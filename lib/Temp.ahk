@@ -100,6 +100,7 @@ pop(whereatsplit)
 F13 & t::
 ; TEST_5:
 REQUESTGUID()
+
 return
 
 
@@ -187,6 +188,7 @@ REQUESTGUID() {
 		Menu, Menu, add, %Selection%, REQUESTGUID
 		}
 		Menu, Menu, Show,
+
 		return
 
 		REQUESTGUID:
