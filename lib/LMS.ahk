@@ -135,7 +135,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 			if winactive("Select methods tests - \\Remote")
 				clk(246,77, 2)
 			else If winactive("Register new samples - \\Remote") {
-				; Clk(180, 103, 2)
+				Clk(180, 103, 2)
 				Send, {click 180, 103,2}%Product%{enter}
 			}
 			else if winactive("NuGenesis LMS - \\Remote") {

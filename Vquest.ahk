@@ -2,7 +2,7 @@
 VQuest_Start:
     #SingleInstance,Force
     #Persistent
-;#ErrorStdOut
+    ;#ErrorStdOut
     ;Process, Priority, , High
     #NoEnv
     #KeyHistory 300
@@ -122,9 +122,13 @@ ActiveCheck:
     if WinExist("Error - \\Remote") {
       ControlSend,, {enter}, Error - \\Remote
       sleep 200
-      if WinExist("Register new samples - \\Remote")
+      if WinExist("Register new samples - \\Remote"){
         winactivate,
-          LMS.SearchBar(Product,"{enter}")
+				Send, {click 180, 103,2}%Product%{enter}
+				; Clk(180, 103, 2)
+			}
+          ; LMS.SearchBar(Product,"{enter}")
+          
     }
   if WinActive("Information - \\Remote")
     send, {enter}
