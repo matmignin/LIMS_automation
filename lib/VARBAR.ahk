@@ -103,6 +103,24 @@ Menu(){
   Try Menu,VarBarmenu,show
   }
 
+
+HoverAction(Size:=100){
+  global
+	If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=Size ){
+		; ControlGetFocus, GUIFocus, VarBar
+    VarBar_H:=Size
+    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+	}
+	else If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
+		ControlGetFocus, GUIFocus, VarBar
+		if GUIFocus
+			return
+		VarBar_H:=32
+    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+	}
+}
+
+
 	loadSavedVariables(){
 		global
 		if !WinExist("Mats LMS Workbook.xlsb") { ;|| !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){

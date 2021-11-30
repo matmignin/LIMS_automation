@@ -107,15 +107,9 @@ VQuest_Start:
 return
 
 ;__________________continuously runing sub_________________________________________________
-ActiveCheck: 
-  If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=63 ){
-    VarBar_H:=63
-    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-  }
-  If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
-    VarBar_H:=32
-    WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-  }
+ActiveCheck:
+  Varbar.HoverAction()
+
 
     If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
       varbar.FloatAtopWindow()

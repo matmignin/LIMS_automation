@@ -194,12 +194,13 @@ WindowInfo(){
 	WinGetPos,wX,wY,wW,wH, A
 	WinGetTitle, winTitle, A
 	WinGetClass, Winclass, A
+	ControlGetFocus, GUIFocus, VarBar
 	WinGet, WinProcess, ProcessName, A
 	; MouseGetPos, MouseX, MouseY
 PixelGetColor, PixelColor, %MX%, %MY%
 	MousePosition:=mX "`, " mY
 	Sleep, 100
-	TT(MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH "`n" PixelColor,3000,,,2)
+	TT(MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH "`n" PixelColor "`n Focus Control: " GUIFocus,3000,,,2)
 	Process:= "ahk_exe " WinProcess
 	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
 	WinLocation:= wX "," wY "," wW "," wH
