@@ -2050,8 +2050,8 @@ class Vis2 {
 		
 		class Tesseract {
 			
-			static leptonica := A_ScriptDir "\bin\leptonica_util\leptonica_util.exe"
-			static tesseract := "C:\Program Files\Tesseract-OCR\tesseract.exe   	;A_ScriptDir "\bin\tesseract\tesseract.exe"
+			static leptonica := "C:\Users\mmignin\Documents\VQuest\bin\leptonica_util\leptonica_util.exe"
+			static tesseract := "C:\Program Files\Tesseract-OCR\tesseract.exe"   	;A_ScriptDir "\tesseract\tesseract.exe"
 			static tessdata_best := "C:\Program Files\Tesseract-OCR\tessdata" 	;A_ScriptDir "\bin\tesseract\tessdata_best"
 			static tessdata_fast := "C:\Program Files\Tesseract-OCR\tessdata" 	;A_ScriptDir "\bin\tesseract\tessdata_fast"
 			

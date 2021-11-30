@@ -44,7 +44,13 @@ VQuest_Start:
     FileName:="lib/WinPos.txt"
     SetWorkingDir, %A_ScriptDir%
     Iniread, Iteration, data.ini, SavedVariables, Iteration
-    ; Products:=[]
+    Iniread, Mode, data.ini, Options, Mode
+      ; IniWrite, 0, data.ini, Options, Mode
+     ;}
+    ; IniRead, EnteringRotationsStatus, data.ini, Options, EnteringRotations
+		; IniRead, TempCodeStatus, data.ini, Options, TempCode
+		; IniRead, SwitchWorkSheetsStatus, data.ini, Options, SwitchWorkSheets
+; Products:=[]
       ; Products := StrSplit(CurrentCodes,"`r`n")
     ; Filegettime, filetime, data\CurrentCodes.txt
     ; TimeSince:= A_Now - FileTime
@@ -60,13 +66,17 @@ VQuest_Start:
     ; Menu, tray, Click, 
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, windowSpy, WindowSpy
+    if Mode
+      Menu, Tray, Add, %Mode%, %MODE%Radio
     HideVarBar:=CreateMenu("showVarbar")
-    HideVarBar:=CreateMenu("ShowSampleID")
-    TempCode:=CreateMenu("TempCode")
-    EnteringRotations:=CreateMenu("EnteringRotations")
-    SwitchWorkSheets:=CreateMenu("SwitchWorkSheets")
+    HideShowSampleID:=CreateMenu("ShowSampleID")
+    ; TempCode:=CreateMenu("TempCode")
+    ; EnteringRotations:=CreateMenu("EnteringRotations")
+    ; SwitchWorkSheets:=CreateMenu("SwitchWorkSheets")
     DebuggingScript:=CreateMenu("DebuggingScript")
     HideVarbar:=CreateMenu("HideVarbar")
+    if Mode
+    Menu, Tray, Check, %Mode%
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
 

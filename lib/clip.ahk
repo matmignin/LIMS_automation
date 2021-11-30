@@ -33,7 +33,7 @@ clipChange(type){
   global
   ifwinactive, Select tests for request: R
     return
-  ; if A_PriorKey:="^1"
+  ; if A_PriorKey:="^1"If
     ; exit
   sleep 50
     ; if !instr(Clipboard,"`r`n")
@@ -63,6 +63,25 @@ return
 
 
 Class Clip {
+		EditBox(){
+    Global EditBox
+		try Gui, EditBox:Destroy
+		result := Clipboard
+		Gui EditBox: +AlwaysOnTop +ToolWindow +resize +owner +HwndGUIID
+			GUI, EditBox:Font, s12 cBlack, Consolas
+			Gui, EditBox:Add, Edit, x1 y1 W400 H200 +VScroll + Resize vEditBox , % Result 
+			gui, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
+			Gui, EditBox:Show,, GUI Clipboard
+			return
+			EditBoxGuiClose:
+			EditBoxGuiEscape:
+			EditBoxButtonOK:
+			Gui, EditBox:submit
+			clipboard:=EditBox
+			return
+		}
+
+
 CutSwap(){
   send, {lbutton up}
   preclip:=clipboard

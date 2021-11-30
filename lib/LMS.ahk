@@ -1999,10 +1999,10 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     ; SetWinDelay, 450
     mx:=
     my:=
-    If Coated = "ERROR"
-      Coated:=
-    If Lot = "ERROR"
-      lot:=
+    ; If Coated = "ERROR"
+      ; Coated:=
+    ; If Lot = "ERROR"
+      ; lot:=
       ; blockinput, on
     ControlGetText, Iteration, Static1, VarBar
     ifwinactive, Register new samples - \\Remote
@@ -2039,12 +2039,12 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     sleep 200
     Breaking.Point()
     SendInput, {enter}
-    ; sleep 200
-    ; blockinput, off
-    ; winactivate, Register new samples - \\Remote
-    ; sleep 300
-    ; my:=my+30
-    ; MouseMove, mx, my  
+    sleep 100
+    blockinput, off
+    winactivate, Register new samples - \\Remote
+    sleep 300
+    my:=my+30
+    MouseMove, mx, my  
 
       ; return
   }

@@ -71,7 +71,7 @@ clipCheckIfEmpty(){
 					Try Menu,menu,show
 				}
 				else if (Tab="Specs") {
-					if EnteringRotations
+					if (EnteringRotations) || (Mode:="EnteringRotations")
 						SpecTab.CopySpecTemplate()
 					else
 						menu.lms()
@@ -270,7 +270,7 @@ clipCheckIfEmpty(){
 		If winactive("NuGenesis LMS - \\Remote") {
 			LMS.Detecttab()
 			if (Tab="Requests") {
-					if EnteringRotations {
+					if (EnteringRotations) || (Mode:="EnteringRotations") {
 						MouseGetPos, mx, mY
 						send, {click 2}
 						sleep 300
@@ -293,7 +293,7 @@ clipCheckIfEmpty(){
 				Return
 				}
 			else if (Tab="Specs") {
-					if EnteringRotations
+					if (EnteringRotations) || (Mode:="EnteringRotations")
 						menu.Products()
 					else
 						clk(67, 754) ;edit results
@@ -360,7 +360,7 @@ clipCheckIfEmpty(){
 		global 
 			If winactive("ahk_exe Code.exe")
 				SendInput, ^{d} ;go to Definition
-			if (SwitchWorkSheets==1) {
+			if (SwitchWorkSheets==1) || (Mode:="SwitchWorkSheets") {
 					excel.nextsheet()
 				return
 			}
@@ -400,7 +400,7 @@ clipCheckIfEmpty(){
 		global 
 			If winactive("ahk_exe Code.exe")
 				SendInput, !^{d} ;go to reference
-			if (SwitchWorkSheets==1) {
+			if (SwitchWorkSheets==1) || (Mode:="SwitchWorkSheets") {
 					excel.Prevsheet()
 				return
 			}
@@ -557,9 +557,9 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	}
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
 	{
-		If MouseIsOver("ahk_class Shell_TrayWnd")
-			menu.TaskBar()
-		else
+		; If MouseIsOver("ahk_class Shell_TrayWnd")
+			; menu.TaskBar()
+		; else
 			Send, {F18}
 		return
 	}
@@ -567,7 +567,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 		; return
 	; else if (A_PriorHotKey = A_ThisHotKey AND A_TimeSincePriorHotkey > 450)
 		; return
-	else
+	else if (A_TimeSincePriorHotkey > 550)
 		click Right
 	Return
 }

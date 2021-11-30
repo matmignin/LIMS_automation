@@ -26,6 +26,7 @@ Class VarBar{
 		WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
 		return
 	}
+
 		AddEdit(Variable,Dimensions:="",Font:=""){
 			global
 				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
@@ -57,10 +58,44 @@ Class VarBar{
 		; GUI,VarBar:Font,			
 		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
-			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")			; edit7
-			; This.addedit("Note3","X+3 H29  w220 left","9 cBlack,arial Narrow")				; edit8
+			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")
+						; edit7
+			Gui, Varbar:add, DDL, vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode
+			GuiControl, ChooseString, ComboBox1, %Mode%
+			; Gui, VarBar:Add, Radio, vEnteringRotations Checked%EnteringRotationsStatus% gEnteringRotationsRadio, Entering Rotations
+			;this.RadioButton("TempCode","Temp","Add")
+			; Gui, VarBar:Add, Radio, vSwitchWorkSheets Checked%SwitchWorkSheetsStatus% x+1 gSwitchWorkSheetsRadio, Switch WorkSheets
+			; Gui, VarBar:add, Radio, vTempCode Checked%TempCodeStatus% gTempCodeRadio x+1, Temp
 		Return
 		
+		ModeDDL:
+		Gui, VarBar:submit,NoHide
+		sleep 200
+		IniWrite, %Mode%, data.ini, Options, Mode
+			; IniWrite, 0, data.ini, Options, EnteringRotations
+			; IniWrite, 0, data.ini, Options, SwitchWorkSheets
+			; IniWrite, 0, data.ini, Options, TempCode
+			sleep 200
+			Menu, Tray, Check, % Mode
+			IniWrite, 1, data.ini, Options, % Mode
+		return
+
+		EnteringRotationsRadio:
+			Mode:="EnteringRotations"
+				gosub, RadioHandler
+				return
+		TempCodeRadio:
+			Mode:="TempCode"
+			; this.RadioButton("TempCode","Temp")
+				gosub, RadioHandler
+				return
+		SwitchworksheetsRadio:
+			Mode:="SwitchWorksheets"
+				gosub, RadioHandler
+				return
+		RadioHandler:
+			Return
+
 			ProductVarBar:
 			BatchVarBar:
 			LotVarBar:
@@ -81,16 +116,17 @@ Class VarBar{
 			return
 		}
 
+
 Menu(){
   global
 	MouseGetPos,,,,WinControl
   try Menu, VarBarmenu, DeleteAll
 	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
-    TempCode:=CreateMenu("TempCode","VarBarMenu")
-    EnteringRotations:=CreateMenu("EnteringRotations","VarBarMenu")
-    SwitchWorkSheets:=CreateMenu("SwitchWorkSheets","VarBarMenu")
-    DebuggingScript:=CreateMenu("DebuggingScript","VarBarMenu")
-    HideVarbar:=CreateMenu("HideVarbar","VarBarMenu")
+    ; TempCode:=CreateMenu("TempCode","VarBarMenu")
+    ; EnteringRotations:=CreateMenu("EnteringRotations","VarBarMenu")
+    ; SwitchWorkSheets:=CreateMenu("SwitchWorkSheets","VarBarMenu")
+    ; DebuggingScript:=CreateMenu("DebuggingScript","VarBarMenu")
+    ; HideVarbar:=CreateMenu("HideVarbar","VarBarMenu")
     Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID 
       if ShowSampleID=1  
         menu, VarBarmenu, Check, 	Show&SampleID
@@ -142,6 +178,7 @@ HoverAction(Size:=100){
 			Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
+			Iniread, Mode, data.ini, Options, Mode
 			Products:=[]
         FileRead, LoadedNotes, Data\CurrentCodes.txt
         Products := StrSplit(LoadedNotes,"`r`n")
@@ -168,6 +205,7 @@ HoverAction(Size:=100){
 			IniWrite, %note1%, data.ini, Notes, note1
 		if Note2
 			IniWrite, %note2%, data.ini, Notes, note2
+			IniWrite, %Mode%, data.ini, Options, Mode
 		; if Note3
 			; IniWrite	, %note3%, data.ini, Notes, note3
 		}
@@ -415,5 +453,6 @@ HistoryMenuItem(){
 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 			IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
+			;IniWrite, %Mode%, data.ini, Options, Mode
 			return
 } 

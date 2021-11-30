@@ -13,7 +13,7 @@ MenuCheckboxes:
   Iniread, EnteringRotationsStatus, data.ini, Options, EnteringRotations
     Menu, Tray, Add, EnteringRotations, EnteringRotations
     EnteringRotations:= EnteringRotationsStatus = 1 ? 1 : ""
-    if EnteringRotations
+    if (Mode:="EnteringRotations")
       Menu, Tray, Check, EnteringRotations
 
   Iniread, TempCodeStatus, data.ini, Options, TempCode

@@ -87,7 +87,7 @@ return
 	y::                        SendInput,	^+{y}
 	; Lshift::               		 SendInput, {ctrldown}{z}{ctrlup}
 	; Rshift::                SendInput, {ctrldown}{y}{ctrlup}
-	n::                       F7 
+	n::                       F7
 	u::                      	F6
 	8::return
 	7::return
@@ -205,7 +205,7 @@ return
 	x::                    sendinput, ^{x}
 	c::                    sendinput, ^{c}
 
-#If (A_PriorHotKey = "p"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 2500) ;; 	 	_p Vim_
+#If (A_PriorHotKey = "p"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 1000) ;; 	 	_p Vim_
 	q::										
 		send, Vquest.ahk
 		sleep 200

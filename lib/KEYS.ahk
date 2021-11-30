@@ -18,9 +18,9 @@ return
 	<^1::                 return
 	<^2::                 return ;,{Ctrldown}{2}{CtrlUp}
 	<^3::                 return ;Send,{Ctrldown}{0}{CtrlUp}
-	F13 & 1::							sendinput,%product%%A_space%
-	F13 & 2::							sendinput, %Batch%%A_Space%
-	F13 & 3::							sendinput, %Lot%%A_space%
+	F13 & 1::							sendinput,%product%
+	F13 & 2::							sendinput, %Batch%
+	F13 & 3::							sendinput, %Lot%
 	F13 & 4::							GetAllProducts()
 	F13 & 5::							GetAllBatches()
 ; sendlevel
@@ -95,12 +95,12 @@ F20::
 		}
 		else if (PastePresses = 2) ; The key was pressed twice.
 		{
-				send, #v 
+		Clip.EditBox()
 		}
 		else if (PastePresses > 2)
 		{
-				clip.Append("`t")
-				; Pop(Clipboard)
+				Send, +{F18}
+				; send, #v 
 		}
 		PastePresses := 0
 return
@@ -138,8 +138,8 @@ Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
 Rbutton UP::     	   			2Tap()     
-Rbutton & F20::          	Send, {delete}
-Rbutton & F19::          	Send, {backspace}
+Rbutton & wheelleft::          	Send % blockRepeat(50) "{Delete}"
+Rbutton & wheelright::          Send % blockRepeat(50) "{backspace}"
 Rbutton & wheelup::       Send, ^{c}
 Rbutton & wheeldown::     Send, ^{v}
 Lbutton & Rbutton::      send, ^{x}
@@ -322,6 +322,9 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	return
 
 	#IfWinActive, ahk_exe OUTLOOK.EXE ;; 	___OUTLOOK
+		F13 & 1::							sendinput,%product%%A_space%
+	F13 & 2::							sendinput, %Batch%%A_Space%
+	F13 & 3::							sendinput, %Lot%%A_space%
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
 	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
 	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
