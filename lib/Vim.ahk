@@ -35,6 +35,8 @@ return
 	F6::left
 	F9::up
 	F8::down
+	wheelup::pgup
+	wheeldown::pgdn
 	#if
 
 #If Getkeystate("F19","p") ;|| GetKeyState("Capslock","T") ;; PsudoNumpad
@@ -82,7 +84,7 @@ return
 	z::                        SendInput,{ctrldown}{z}{ctrlup}
 	/:: 											 SendInput,{ctrldown}{n}{ctrlup}
 	l::                        SendInput,{ctrldown}{]}{ctrlup}
-	h::                        SendInput,{ctrldown}{[}{ctrlup}
+h::                        SendInput,{ctrldown}{[}{ctrlup}
 	+z::                       SendInput,{shiftup}{Ctrldown}{y}{CtrlUp}
 	y::                        SendInput,	^+{y}
 	; Lshift::               		 SendInput, {ctrldown}{z}{ctrlup}
@@ -143,8 +145,9 @@ return
 	k::                       SendInput,{shiftdown}{up}{shiftup}                      
 	^w::
 	.::												SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-	,::
-	^b::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
+	^,::											SendInput,{shiftdown}{ctrldown}{Left}{ctrlup}{shiftup}
+	,::												SendInput,{shiftdown}{ctrldown}{Left}{ctrlup}{shiftup}
+	^b::                      SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 	^x::											sendinput, ^{x}								
 	^.::											SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	o::                       SendInput,{Home}{enter}{up}
@@ -185,20 +188,29 @@ return
 
 #If (A_PriorhotKey = "'" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 1100) ;; 	 	_' Vim_
 	'::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} ;select brackets
-#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_d Vim_
-	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
+#If (A_PriorKey = "d" 									   && Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_d Vim_
+	; w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
 	b::                     SendInput,{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}{backspace}
-	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
-#If (A_PriorHotKey = "s" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_s Vim_
-	/::                    Sendinput, +{End}{delete}
-	m::                    Sendinput, +{Home}{delete}
-	`;::                   Sendinput, +!{;}{delete}
-	l::                    SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}{backspace}
-	h::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
+	e::
+	/::                    	Sendinput, {ctrldown}{z}{ctrlup}+{End}{delete}	
+	w::
+	m::                     Sendinput, +{Home}{Backspace}
+	,::                     SendInput,{ctrldown}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
+	.::                     SendInput, {ctrldown}{z}{shiftdown}{right}{ctrlup}{shiftup}{delete}
+	a::											Sendinput, {ctrldown}{a}{ctrlup}{delete}
+  s:: 										SendInput,{home 2}{shiftdown}{end}{shiftup}{Backspace 2}
+	space::                 sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup}{delete}
+#If (A_PriorKey = "s" 										&& Getkeystate("F13","p")) ;&& A_TimeSincePriorHotkey < 900) ;; 	 	_s Vim_
+	a::                    Sendinput, {{shiftdown}{altdown}{a}{altup}{shiftup}
+	/::                    Sendinput, +{End}
+	m::                    Sendinput, +{Home}
+	`;::                   Sendinput, +!{;}
+	l::                    SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	h::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 	.::
-	w::                    sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
+	w::                    sendinput, {F3 3}{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 	,::
-	b::                    Sendinput, {ctrldown}{shiftdown}{left}{ctrlup}{shiftup}{delete}
+	b::                    Sendinput, {ctrldown}{shiftdown}{left}{ctrlup}{shiftup}
 	s::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
 	; d::											
 	d::                    sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace 2} ;select line
@@ -331,30 +343,25 @@ return
 	f:: 	                 sendinput, !#+{f 2}
 	9 & 0::									SendInput,{)}
 	; Space::									sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
-
-	s::											SendInput,{home 2}{shiftdown}{end}{shiftup}
-	^s::										sendinput, {ctrldown}{a}{ctrlup} ;select all
+	Space::									sendinput, {_}
+	a::											SendInput,{home 2}{shiftdown}{end}{shiftup} ;select whole line
+	^a::											SendInput, {ctrldown}{a}{ctrlup} ;select All
+	^s::										Sendinput, {shiftdown}{altdown}{a}{altup}{shiftup} ;select all of word
 	 ;delete word
 	^e::                  	SendInput,^{a}{backspace}			 ;block comment
 	d::											backspace
 	^d::                    sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
 	x::											delete
 	^x::                    sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}{delete}
-	; ^x::										sendinput, ^{x}
 	t::                     SendInput,+!{F9}
-	space::return
-	; space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {left}{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
+	s::sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
 	`;::        						SendInput,!^{/}
 	^`;::                   SendInput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
 	9::											SendInput,+{9}
 	0::											SendInput,+{0}
 	^9::                    SendInput,{right}^{left}+^{right}+{9}
 	^0::                    SendInput,{right}^{left}+^{right}+{9}+{'}
-	; s::                     SendInput,+!{s}
-	; ^s::                    SendInput,{home}+{end}
-	; ::                     ,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
-	; ^s:: 	                  sendinput,+!{s}
-	F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
+	Tab::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 	p::                     SendInput,{F9}
 	^]::                    SendInput,{right}^{left}+^{right}+{[}
 	^[::                    SendInput,{right}^{left}+^{right}{[}
@@ -365,12 +372,10 @@ return
 	; '::  										SendInput,!{'} go back to previous ediet
 	; '::  										sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
 	'::sendinput, {left}{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
-	a::                     backspace
-	^a::										sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
-	; s::                    	delete
+
 	y::                    	sendinput, {shiftdown}{altdown}{a}{altup}{shiftup} ;select all occurances
-	c::                  		send, ^{c} ;  send,^{c}
-	^c::                  	send, ^{x} ;  send,^{c}
+	; c::                  		send, ^{c} ;  send,^{c}
+	; ^c::                  	send, ^{x} ;  send,^{c}
 
 	; v::                  Send, ^{v}
 	j::                     SendInput,{down}
@@ -383,7 +388,8 @@ return
 	; ^y::										send, ^{F18}
 
 	; ::                      send, {F18}
-	z::                      send, {F18}
+	z::                      send, {F3}
+	v::                      send, {F18}
 	; r::                    Vim.ChangeSelection()
 	Enter::                  SendInput,{shiftdown}{enter}{shiftup}
 	^space::                 SendInput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}

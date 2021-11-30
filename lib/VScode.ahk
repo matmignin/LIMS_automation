@@ -33,9 +33,9 @@ return
 	F2::FindMatchingWindows()
 	F15::ReloadScript()
 	; F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-	; F13 & Space::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
+	; F13 & s::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
 ;send, {click}^{v} ;{F19}
-	F13 & Space::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
+	; F13 & s::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
 	F13 & Lalt::sendinput, ^{click}
 	F13 & tab::								SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13::F13

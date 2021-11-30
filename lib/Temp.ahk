@@ -28,92 +28,7 @@
 return
 #if
 
-
-SelectHeavyMetalTest: 
-  send {click 225, 70}{click}icp-ms (chem{enter}
-  sleep 200
-  send, {click 506, 339}{click 846, 657} ;click it over
-return
-
-AddRAE:
-  Send, {Click 58, 757} ; click Edit Results  "NuGenesis LMS - \\Remote"
-  sleep 200
-AddRAE_ResultsDefinition:
-  send, {click 80, 66} ; Click edit Results  "Definition - \\Remote" 
-  sleep 800
-  send, {tab 5}mcg%A_space%rae{click 505, 568}{click 464, 547} ; tab to units and select mcg rae 284, 197 ;click scrollbar then Requirement window "Result Editor - \\Remote"
-  send, {end}%a_space%RAE
-  sleep 200
-  send, {click 377, 649} ;click done
-return
-NewVersionRAE:
-  ; send, {click 64, 243} ;click new version
-  ; sleep 400
-  send, {click 429, 184}^{a}Update All Vitamin A Units with RAE{click 338, 616} ;click description "Edit specification - \\Remote"
-return	
-
-CheckExcelRow: ;goes down a lms search and fills out a excel table depending on a pixel search
-  LMSwb:=ComObjActive("Excel.Application")
-  loop 8 {
-  clipboard:=
-  send, ^c
-  clipwait, 1
-  sleep 200
-  send, {down}
-  RT:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,4)
-  Status:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,3)
-  if IsPixel(1203, 899,"F3EFEA")
-      RT.Value:=""
-    else
-      RT.Value:="RT"
-    sleep 400
-  }
-return
-
-
-return
-
-
-
-#h::
-Test_2: ;;Move to previous Batch in Array
-
-  n-=1
-  Haystack:=Products[n]
-  whereAt:=listarray(Products)
- whereatsplit:=StrReplace(whereAt, n ": ","`t" )
-pop(whereatsplit)
-  RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-    if sProduct {
-      Product:=sProduct
-      GuiControl,Varbar:Text, Product, %sProduct%
-    }
-    Batch:=sBatch
-    lot:=slot
-    Coated:=sCoated
-    GuiControl,Varbar:Text, Batch, %sBatch%
-    GuiControl,Varbar:Text, lot, %slot%
-    GuiControl,Varbar:Text, Coated, %sCoated%
-    try XL.Sheets(sProduct).activate
-    return
-
-F13 & t::REQUESTGUID()
-Tab & t::gosub, ADD_A_DROPDOWN_Variable_ITEM
-return
-
-
-ADD_A_TODO_LIST_ITEM_IN_VSCODE:
-InputBox, TODO, Write a Todo
-VSCODEToDo:= "☐ " TODO "`n"
-FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
-Return
-ADD_A_DROPDOWN_Variable_ITEM:
-InputBox, Variable, Variable Name = Variable 
-VARIABLEITEM:= "`n" Variable 
-FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\REQUESTGUID.ini
-Return
-
-Test_3: ;;Move to next Batch in Array
+Select_next_batch_in_array:
   n+=1
   Haystack:=Products[n]
   whereAt:=listarray(Products)
@@ -137,28 +52,55 @@ Test_3: ;;Move to next Batch in Array
 
 return
 
+Test_2: ;;Move to previous Batch in Array
+  Select_Previous_Batch_In_Array:
+    n-=1
+    Haystack:=Products[n]
+    whereAt:=listarray(Products)
+    whereatsplit:=StrReplace(whereAt, n ": ","`t" )
+    pop(whereatsplit)
+    RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(? <Coated>(\d{3}-\d{4})?)", s)
+      if sProduct {
+        Product:=sProduct
+        GuiControl,Varbar:Text, Product, %sProduct%
+      }
+      Batch:=sBatch
+      lot:=slot
+      Coated:=sCoated
+      GuiControl,Varbar:Text, Batch, %sBatch%
+      GuiControl,Varbar:Text, lot, %slot%
+      GuiControl,Varbar:Text, Coated, %sCoated%
+      try XL.Sheets(sProduct).activate
+  return
 
-return
+
 test_1:
+  Create_a_CheckList_From_recent_products:
     Temp:=[]
-     RecentProducts:=
+    RecentProducts:=
         FileRead, LoadedNotes, RecentProducts.txt
         Temp := StrSplit(LoadedNotes,"`r`n")
 		Loop % Temp.MaxIndex(){ 
       RecentProducts.=Temp[a_index]"`r`n"
     }
-
     sleep 200
-	New Checklist(RecentProducts, ReturnFunction := "Validated")
-  
+    New Checklist(RecentProducts, ReturnFunction := "Validated")
 return
 
 
 Test_4:
-Gui, Add, Checkbox, vMyCheckBoxVar gMyCheckBoxSub, Add item to do
-Gui, Add, Edit, Disabled vToDoItemVar
-Gui, Add, Button, gSaveSub, Save
-Gui, Show
+  add_a_ToDo_item:
+    Gui, Add, Checkbox, vMyCheckBoxVar gMyCheckBoxSub, Add item to do
+    Gui, Add, Edit, Disabled vToDoItemVar
+    Gui, Add, Button, gSaveSub, Save
+    Gui, Show
+return
+
+
+
+
+return
+
 
 MyCheckBoxSub:
   Gui, Submit, NoHide                      ; Save all states to variables so that we can check whether the checkbox has just been checked or unchecked
@@ -178,8 +120,10 @@ Return
 
 
 
+F13 & t::REQUESTGUID()
+Tab & t::gosub, ADD_A_DROPDOWN_REQUESTGUID_ITEM
 
-REQUESTGUID() {
+REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile 
 		global
 		Loop, Read, data\REQUESTGUID.ini
 		{
@@ -190,9 +134,7 @@ REQUESTGUID() {
 		Menu, Menu, add, %Selection%, REQUESTGUID
 		}
 		Menu, Menu, Show,
-
 		return
-
 		REQUESTGUID:
 			sleep 200
 			InputVar:=A_ThisMenuItem
@@ -200,73 +142,20 @@ REQUESTGUID() {
 			SendInput, %vOutput%
       menu, Menu, DeleteAll
 			return
-	}
+}
 
 
+ADD_A_TODO_LIST_ITEM_IN_VSCODE:
+InputBox, TODO, Write a Todo
+VSCODEToDo:= "☐ " TODO "`n"
+FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
+Return
+ADD_A_DROPDOWN_REQUESTGUID_ITEM:
+InputBox, Variable, Variable Name = Variable 
+VARIABLEITEM:= "`n" Variable 
+FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\REQUESTGUID.ini
+Return
 
-
-; Lwin & AppsKey::return ;, send, {lwin}
-
-; Lwin Up::return ;send, {esc};,;
-; Lwin:: ;MouseGesture(LeftAction:="{left}",RightAction:="{Right}")
-; 		MouseGetPos, xi,yi
-;       ; tt("x: " x "`ny: " y,1300,xi,yi)
-;     ; pop(" ",,3000,"right")
-; 		; sleep = 2
-;       ; setkeydelay -1,1
-;       ; SetBatchLines, 5000ms
-; 		While GetKeyState("Lwin","P")
-; 		{
-; 			MouseGetPos, Xf,Yf
-;       x:=((xf-xi)//20)
-;       y:=((yf-yi)//20)
-;       tt("x: " x "`ny: " y,1300,xi,yi)
-;       if abs(x) < 15 && abs(y) < 15
-;         continue
-;       ; if (abs(x) > 20 && abs(y) > 20)
-;         ; continue
-;       if (abs(x) <= 15 && abs(y) >= 15){
-;         if y >= 15
-;           send, #{down}
-;         if y <= -15
-;           send, #{up}
-;         ; yi:=yF
-;         sleep, 1100
-;         Return
-;       }
-;       if (abs(x) >= 15 && abs(y) <= 15){
-;         if x >= 15
-;           send, #{right}
-;         if x <= -15
-;           send, #{left}
-;         ; xi:=xF      
-;         sleep, 1100
-;         Return
-;       }
-;       sleep 2000
-
-;       ; if abs(y) < 20
-;       ; if (abs(x) < 20 && abs(y) < 20){
-;         ; continue
-;       ; if x > 20 && abs(y) < 20 ; && y > -20
-;         ; send, {right}
-;       ; if x < 20 && abs(y) < 20 ; && y > -20
-;         ; send, {left}
-;       ;  sleep 100
-;       ; sleep % abs(x) +20
-;       ; sleep %n%
-; 		}
-; 		; if (xi>Xf){
-; 			; tt("Left")
-; 			; return
-; 		; }
-; 		; if (xi<Xf){
-; 			; send % RightAction
-; 			; tt("Right")
-; 			; return
-; 		; }
-; 		return
-; 	; }
 
   makeADropDown(inifile,Category) {
     try menu,DropdownMenu, Deleteall
@@ -290,3 +179,20 @@ REQUESTGUID() {
       return
   }
 
+
+
+NoIdle(){
+	global
+	Menu, Tray, ToggleCheck, NoIdle
+	If NoIdle:= !NoIdle
+	{
+		SetTimer, NoidleTimer, % (3*60*1000)
+		Menu, Tray, Check, NoIdle
+	}
+	else 
+	{
+		Menu, Tray, unCheck, NoIdle
+		Settimer, NoidleTimer,off
+	}
+	Varbar.Show()
+}

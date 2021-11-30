@@ -113,6 +113,7 @@ return
 
 ;; 	___Send Codes___
 
+
 >+F20::             	varbar.focus("Batch")
 >+F19::            		varbar.focus("Product")
 F20 & left::					sendInput % product
@@ -123,7 +124,7 @@ F13 & `::								sendInput % Lot
 F19 & left::								GetAllProducts()
 F19 & down::								GetAllBatches()
 F19 & Up::									Sendinput % excel.GetAllSheets()
-F13 & Space::								GetAllProducts()
+; F13 & Space::								GetAllProducts()
 F13 & lshift::							GetAllProducts("`n")
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
@@ -138,11 +139,11 @@ Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
 Rbutton UP::     	   			2Tap()     
-Rbutton & wheelleft::          	Send % blockRepeat(50) "{Delete}"
-Rbutton & wheelright::          Send % blockRepeat(50) "{backspace}"
+Rbutton & wheelleft::     Send % blockRepeat(50) "{Delete}"
+Rbutton & wheelright::    Send % blockRepeat(50) "{backspace}"
 Rbutton & wheelup::       Send, ^{c}
 Rbutton & wheeldown::     Send, ^{v}
-Lbutton & Rbutton::      send, ^{x}
+Lbutton & Rbutton::       send, ^{x}
 Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}^{c}
 
 rbutton & Appskey::				2Tap()
@@ -283,6 +284,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	; F19 & right::        ^right
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
+	F13 & u::sendinput, {ctrldown}{up}{ctrlup}
+	F13 & n::sendinput, {ctrldown}{down}{ctrlup}
 
 	numpaddot::						
 								excel.Connect(1)

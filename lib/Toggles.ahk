@@ -121,21 +121,7 @@ ShowNotes(){
 ; 	}
 ; 	Varbar.Show()
 ; }
-NoIdle(){
-	global
-	Menu, Tray, ToggleCheck, NoIdle
-	If NoIdle:= !NoIdle
-	{
-		SetTimer, NoidleTimer, % (3*60*1000)
-		Menu, Tray, Check, NoIdle
-	}
-	else 
-	{
-		Menu, Tray, unCheck, NoIdle
-		Settimer, NoidleTimer,off
-	}
-	Varbar.Show()
-}
+
 
 ShowSampleID(){
   global
