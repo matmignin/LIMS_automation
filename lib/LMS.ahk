@@ -906,7 +906,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     If !ShapeAndSize
       ShapeAndSize:= " g"
     Send, Each %textNumber% (%n%){space}%measurment%%plural% (%ShapeAndSize%) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}
-    setwindelay, 250
+    setwindelay, 200
     exit
   }
 
@@ -930,11 +930,11 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       This.EditFormulation()
       ; clk(287, 578) ;click save
       return
-      ;setwindelay, 200
+      setwindelay, 200
     } 
 
     EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
-      global Product, ShapeAndSize, color, ServingSize
+      global Product, ShapeAndSize, color, ServingSize, ServingType
       if !winactive("Edit Formulation - \\Remote") && winexist("Edit Formulation - \\Remote")
         winactivate, Edit Formulation - \\Remote,
       Send, {tab}%product%
@@ -942,7 +942,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
         sleep 200
       Breaking.Point()
       ; if (ServingSize=1 ? "(" ServingSize ")" : "Two (" ServingSize ")" ) ;|| ServingSize=2 || ServingSize=3 || ServingSize=4)
-        ; send, Each %ServingSize% {space} contains {ctrl down}{left}{ctrl up}{left}
+         send, Each %ServingType% {space} contains {ctrl down}{left}{ctrl up}{left}
       send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
       ; ShapeAndsize:=  
       sleep 200
@@ -991,7 +991,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
     DropDown_Ingredient(){
     global
-      SetWinDelay, 350
+      ; SetWinDelay, 350
     ; if (GeneralCount=2){
       ; SendInput,{tab}{Home}{right 2}{right 62}
       ; return
@@ -1027,6 +1027,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     Menu,IngredientMenu,Add,Ingredient Note 1,IngredientMenuHandler
     Menu,IngredientMenu,Add,Ingredient Note 2,IngredientMenuHandler
     Menu,IngredientMenu,Add,Ingredient Note 3,IngredientMenuHandler
+    Menu,IngredientMenu,Add,Ingredient Note 10,IngredientMenuHandler
     Menu,IngredientMenu,Add,Methylsulfonylmethane (MSM),IngredientMenuHandler
     ; Menu,IngredientMenu,Add,Molybdenum,IngredientMenuHandler
     ;Menu,IngredientMenu,Add,PABA,IngredientMenuHandler
@@ -1056,65 +1057,67 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     ; GeneralCount=1
   ; tt(GeneralCount)
   if (A_ThisMenuItem ="Generic Ingredient &A")
-    SendInput,{tab}{Home}{right 6}{right 56}
+    SendInput,{tab}{Home}{right 8}{right 56}
   else if (A_ThisMenuItem ="Generic Ingredient &B") || (GeneralCount=2)
-    SendInput,{tab}{Home}{right 6}{right 62}
+    SendInput,{tab}{Home}{right 8}{right 62}
   else if (A_ThisMenuItem ="Generic Ingredient &C") || (GeneralCount=3)
-    SendInput,{tab}{Home}{right 6}{right 68}
+    SendInput,{tab}{Home}{right 8}{right 68}
   else if (A_ThisMenuItem ="Generic Ingredient &D") || (GeneralCount=4)
     SendInput,{tab}{home}{right 6}{right 74}
   else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount==5)
-    SendInput,{tab}{Home}{right 6}{right 80}
+    SendInput,{tab}{Home}{right 8}{right 80}
   else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount==6)
-    SendInput,{tab}{Home}{right 6}{right 86}
+    SendInput,{tab}{Home}{right 8}{right 86}
   else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount==7)
-    SendInput,{tab}{Home}{right 6}{right 92}
+    SendInput,{tab}{Home}{right 8}{right 92}
   else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount==8)
-    SendInput,{tab}{Home}{right 6}{right 93}
+    SendInput,{tab}{Home}{right 8}{right 93}
   else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount==9)
-    SendInput,{tab}{Home}{right 6}{right 95}
+    SendInput,{tab}{Home}{right 8}{right 95}
   else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount==10)
-    SendInput,{tab}{Home}{right 6}{right 97}
+    SendInput,{tab}{Home}{right 8}{right 97}
   else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount==11)
-    SendInput,{tab}{Home}{right 6}{right 99}
+    SendInput,{tab}{Home}{right 8}{right 99}
   else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount==12)
-    SendInput,{tab}{Home}{right 6}{right 100}
+    SendInput,{tab}{Home}{right 8}{right 100}
   else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount==13)
-    SendInput,{tab}{Home}{right 6}{right 101}
+    SendInput,{tab}{Home}{right 8}{right 101}
   else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount==14)
-    SendInput,{tab}{Home}{right 6}{right 102}
+    SendInput,{tab}{Home}{right 8}{right 102}
   else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount==15)
-    SendInput,{tab}{Home}{right 6}{right 103}
+    SendInput,{tab}{Home}{right 8}{right 103}
   else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount==16)
-    SendInput,{tab}{Home}{right 6}{right 104}
+    SendInput,{tab}{Home}{right 8}{right 104}
   else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount==17)
-    SendInput,{tab}{Home}{right 6}{right 105}
+    SendInput,{tab}{Home}{right 8}{right 105}
   else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount==18)
-    SendInput,{tab}{Home}{right 6}{right 106}
+    SendInput,{tab}{Home}{right 8}{right 106}
   else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount==19)
-    SendInput,{tab}{Home}{right 6}{right 107}
+    SendInput,{tab}{Home}{right 8}{right 107}
   else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount==20)
-    SendInput,{tab}{Home}{right 6}{right 108}
+    SendInput,{tab}{Home}{right 8}{right 108}
   else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount==21)
-    SendInput,{tab}{Home}{right 6}{right 109}
+    SendInput,{tab}{Home}{right 8}{right 109}
   else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount==22)
-    SendInput,{tab}{Home}{right 6}{right 110}
+    SendInput,{tab}{Home}{right 8}{right 110}
   else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount==23)
-    SendInput,{tab}{Home}{right 6}{right 111}
+    SendInput,{tab}{Home}{right 8}{right 111}
   else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount==24)
-    SendInput,{tab}{Home}{right 6}{right 112}
+    SendInput,{tab}{Home}{right 8}{right 112}
   else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount==25)
-    SendInput,{tab}{Home}{right 6}{right 113}
+    SendInput,{tab}{Home}{right 8}{right 113}
   else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount==26)
-    SendInput,{tab}{Home}{right 6}{right 114}
+    SendInput,{tab}{Home}{right 8}{right 114}
   else if (A_ThisMenuItem ="Ingredient Note 1")
-    SendInput,{tab}{Home}{right 6}{right 140}
-  else if (A_ThisMenuItem ="Ingredient Note 2")
-    SendInput,{tab}{Home}{right 6}{right 141}
+    SendInput,{tab}{Home}{right 8}{right 140}
+  else if (A_ThisMenuItem ="Ingredient Note 10")
+    SendInput,{tab}{Home}{right 8}{right 141}
+	else if (A_ThisMenuItem ="Ingredient Note 2")
+    SendInput,{tab}{Home}{right 8}{right 143}
   else if (A_ThisMenuItem ="Ingredient Note 3")
-    SendInput,{tab}{Home}{right 6}{right 142}
+    SendInput,{tab}{Home}{right 8}{right 144}
   else if (A_ThisMenuItem ="Total Probiotic")
-    SendInput,{tab}{Home}{right 221}
+    SendInput,{tab}{End}{Left 20}
   else if (A_ThisMenuItem ="Manual"){
     SendInput,{tab}{Home}
 		ManualInput=1
@@ -1993,7 +1996,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 Class WorkTab { 		;;___________________WorkTab Class______________________
   registerNewSamples(){
     global
-    SetWinDelay, 450
+    ; SetWinDelay, 450
     mx:=
     my:=
     If Coated = "ERROR"
@@ -2070,7 +2073,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
   DeleteRetain(){
     gLOBAL
-    SetWinDelay, 25
+    ; SetWinDelay, 25
       SetMouseDelay, -1
     SetDefaultMouseSpeed, 0
     CoordMode, mouse, Relative
@@ -2185,7 +2188,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
   ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
     global
-    SetWinDelay, 550
+    ; SetWinDelay, 550
     if (Iteration = "ERROR")
     InputBox, Iteration, enter iteration, number please,, , , , , , , 1
     if errorlevel
@@ -2243,7 +2246,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     sleep 100
     if Checkbox_Toggle Not Contains toggle
       mousemove, xpos, ypos+26 
-    setwindelay, 200
+    ; setwindelay, 200
     return
     }
 

@@ -34,11 +34,8 @@ return
 	F15::ReloadScript()
 	; F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 	; F13 & Space::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
-	F13 & Lbutton::
-		click Down left
-		keywait F13
-		click Up left
-		return ;send, {click}^{v} ;{F19}
+;send, {click}^{v} ;{F19}
+	F13 & Space::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
 	F13 & Lalt::sendinput, ^{click}
 	F13 & tab::								SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13::F13

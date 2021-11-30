@@ -155,7 +155,7 @@ clipCheckIfEmpty(){
 		else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 				menu.Remote_Desktop()
 
-		else if winactive("TIBCO Jaspersoft")
+		else if winactive("TIBCO Jaspersoft") || WinActive("REQUESTGUID")
 			REQUESTGUID()
 				return
 			}
@@ -563,10 +563,10 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 			Send, {F18}
 		return
 	}
-	else if (A_PriorHotKey != A_ThisHotKey and A_TimeSincePriorHotkey < 550)
-		return
-	else if (A_PriorHotKey = A_ThisHotKey AND A_TimeSincePriorHotkey > 450)
-		return
+	; else if (A_PriorHotKey != A_ThisHotKey and A_TimeSincePriorHotkey < 550)
+		; return
+	; else if (A_PriorHotKey = A_ThisHotKey AND A_TimeSincePriorHotkey > 450)
+		; return
 	else
 		click Right
 	Return

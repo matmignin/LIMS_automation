@@ -97,18 +97,20 @@ pop(whereatsplit)
     try XL.Sheets(sProduct).activate
     return
 
-F13 & t::
-; TEST_5:
-REQUESTGUID()
-
+F13 & t::REQUESTGUID()
+Tab & t::gosub, ADD_A_DROPDOWN_Variable_ITEM
 return
-
 
 
 ADD_A_TODO_LIST_ITEM_IN_VSCODE:
 InputBox, TODO, Write a Todo
 VSCODEToDo:= "☐ " TODO "`n"
 FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
+Return
+ADD_A_DROPDOWN_Variable_ITEM:
+InputBox, Variable, Variable Name = Variable 
+VARIABLEITEM:= "`n" Variable 
+FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\REQUESTGUID.ini
 Return
 
 Test_3: ;;Move to next Batch in Array

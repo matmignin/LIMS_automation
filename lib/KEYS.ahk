@@ -1,6 +1,20 @@
 return
 
 #ifwinactive, 
+	F13 & Lbutton::
+		click Down left
+		keywait F13
+		click Up left
+		return 
+	Tab & lbutton::
+		send, {ctrldown}
+		click left
+		send, {ctrlup}
+		return
+	Tab & wheeldown::sendinput, ^{down}
+	Tab & wheelup::sendinput, ^{up}
+	Tab & wheelleft::sendinput, ^{down}
+	Tab & wheelright::sendinput, ^{right}
 	<^1::                 return
 	<^2::                 return ;,{Ctrldown}{2}{CtrlUp}
 	<^3::                 return ;Send,{Ctrldown}{0}{CtrlUp}
@@ -11,7 +25,7 @@ return
 	F13 & 5::							GetAllBatches()
 ; sendlevel
 ;;	___ClipCopy&Paste
-; F13 & Mbutton::
+; F13 & Mbutton::	
 +F20::
 	if (CutPresses > 0) ; SetTimer already started, so we log the keypress instead.
 		{
@@ -64,7 +78,7 @@ F19::
 		}
 	CopyPresses := 0
 return
-F13 & Rbutton::
+; F13 & Rbutton::
 F20::
 	if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
 	{
@@ -136,8 +150,8 @@ rshift & Appskey::				return
 F19 & \:: 								Sendpassword()
 ^+7::
 ;;	___Lbuton:
-Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{3}{ctrlup}{shiftup}"
-Lbutton & F20::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
+Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
+Lbutton & F20::          	clip("OCR") ;Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 
 F20 & /::        	 				OCR()

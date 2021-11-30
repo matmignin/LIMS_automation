@@ -76,9 +76,9 @@ return
 
 
 
-;; 		---LCONTROL---
 
-#if Getkeystate("LControl","p")  
+
+#if Getkeystate("LControl","p")  ;; 	      -||| LCONTROL ||-
 	z::                        SendInput,{ctrldown}{z}{ctrlup}
 	/:: 											 SendInput,{ctrldown}{n}{ctrlup}
 	l::                        SendInput,{ctrldown}{]}{ctrlup}
@@ -98,8 +98,7 @@ return
 	2::return
 	1::return
 	#if 
-	
-tab & appskey::return ;Send, {tab}
+	tab & appskey::return ;Send, {tab}
 #if Getkeystate("Tab","p")
 	`::							sendinput, ^!{0} ;unfold all
 	h::									SendInput,{ctrldown}{[}{ctrlup}
@@ -145,7 +144,7 @@ tab & appskey::return ;Send, {tab}
 	^w::
 	.::												SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	,::
-		^b::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
+	^b::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 	^x::											sendinput, ^{x}								
 	^.::											SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	o::                       SendInput,{Home}{enter}{up}
@@ -184,13 +183,13 @@ tab & appskey::return ;Send, {tab}
 	; 6::		                    SendInput,{tab 20}
 	#if
 
-#If (A_PriorHotKey = "Space" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_space Vim_
-	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
-#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_space Vim_
+#If (A_PriorhotKey = "'" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 1100) ;; 	 	_' Vim_
+	'::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} ;select brackets
+#If (A_PriorHotKey = "d" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 900) ;; 	 	_d Vim_
 	w::                     SendInput,{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}{backspace}
 	b::                     SendInput,{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}{backspace}
 	space::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
-#If (A_PriorHotKey = "s" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_d Vim_
+#If (A_PriorHotKey = "s" 										&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 500) ;; 	 	_s Vim_
 	/::                    Sendinput, +{End}{delete}
 	m::                    Sendinput, +{Home}{delete}
 	`;::                   Sendinput, +!{;}{delete}
@@ -206,6 +205,95 @@ tab & appskey::return ;Send, {tab}
 	x::                    sendinput, ^{x}
 	c::                    sendinput, ^{c}
 
+#If (A_PriorHotKey = "p"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 2500) ;; 	 	_p Vim_
+	q::										
+		send, Vquest.ahk
+		sleep 200
+		send, {enter}
+		return
+	b::										
+		send, VARBAR.ahk
+		sleep 200
+		send, {enter}
+		return
+	v::										
+		send, VIM.ahk
+		sleep 200
+		send, {enter}
+		return
+	e::										
+		send, Excel.ahk 
+		sleep 200
+		send, {enter}
+		return
+	l::										
+		send, LMS.ahk 
+		sleep 200
+		send, {enter}
+		return
+	t::										
+		send, temp.ahk 
+		sleep 200
+		send, {enter}
+		return
+	^t::										
+		send, Test.ahk 
+		sleep 200
+		send, {enter}
+		return
+	s::										
+		send, VScode.ahk 
+		sleep 200
+		send, {enter}
+		return
+	d::										
+		send, data.ini 
+		sleep 200
+		send, {enter}
+		return
+	o::										
+		send, OpenApp.ahk 
+		sleep 200
+		send, {enter}
+		return
+	m::										
+		send, Menu.ahk 
+		sleep 200
+		send, {enter}
+		return
+	f::										
+		send, Functions.ahk 
+		sleep 200
+		send, {enter}
+		return
+	c::										
+		send, clip.ahk 
+		sleep 200
+		send, {enter}
+		return
+	h::										
+		send, HotStrings.ahk 
+		sleep 200
+		send, {enter}
+		return
+	k::										
+		send, KEYS.ahk
+		sleep 200
+		send, {enter}
+		return
+	^k::										
+	j::										
+		send, Pad.ahk 
+		sleep 200
+		send, {enter}
+		return
+	p::										
+		send, {down}
+		sleep 200
+		send, {enter}
+		return
+
+
 #If (A_PriorHotKey = "y"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 300) ;; 	 	_y Vim_
 	/::                             Vim.Yank("+{End}") ;yank end
 	m::                             Vim.Yank("+{Home}") ;yank end{shiftdown}{altdown}{`;}{altup}{shiftup}
@@ -219,7 +307,7 @@ tab & appskey::return ;Send, {tab}
 	d::                            sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{x}
 	y::                            sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}
 	
-#If Getkeystate("F13","p") ;;	=|||-VIM F13-|||=
+#If Getkeystate("F13","p") 																							;;          	=|||- VIM F13 -|||=
 	h::                       SendInput,{left}
 	^h::                     SendInput,{shiftdown}{left}{shiftup}
 	l::                       SendInput,{right}
@@ -242,7 +330,7 @@ tab & appskey::return ;Send, {tab}
 	^k::                     SendInput,{shiftdown}{up}{shiftup}
 	f:: 	                 sendinput, !#+{f 2}
 	9 & 0::									SendInput,{)}
-	Space::									sendinput, {shiftdown}{altdown}{w}{altup}{shiftup}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
+	; Space::									sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
 
 	s::											SendInput,{home 2}{shiftdown}{end}{shiftup}
 	^s::										sendinput, {ctrldown}{a}{ctrlup} ;select all
@@ -254,7 +342,8 @@ tab & appskey::return ;Send, {tab}
 	^x::                    sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}{delete}
 	; ^x::										sendinput, ^{x}
 	t::                     SendInput,+!{F9}
-	; space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
+	space::return
+	; space::									SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}	;sendinput, {left}{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 	`;::        						SendInput,!^{/}
 	^`;::                   SendInput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
 	9::											SendInput,+{9}
@@ -266,14 +355,16 @@ tab & appskey::return ;Send, {tab}
 	; ::                     ,!#+{f 2} ;{shiftdown}{altdown}{lwindown}{f}{lwinup}{altup}{shiftup}
 	; ^s:: 	                  sendinput,+!{s}
 	F19::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
-	; p::                     SendInput,{F9}
+	p::                     SendInput,{F9}
 	^]::                    SendInput,{right}^{left}+^{right}+{[}
 	^[::                    SendInput,{right}^{left}+^{right}{[}
 	; ]::                     SendInput,+!#{]} ;go to bracket right
 	; [::                     SendInput,+#{[} ;go to bracket left
 	[::                     SendInput, {F6} 
 	]::                     SendInput, {f7}
-	'::  										SendInput,!{'}
+	; '::  										SendInput,!{'} go back to previous ediet
+	; '::  										sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
+	'::sendinput, {left}{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
 	a::                     backspace
 	^a::										sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
 	; s::                    	delete

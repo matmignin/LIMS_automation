@@ -67,50 +67,51 @@ If !WinExist("CL3Slots ahk_class AutoHotkeyGUI")
 	Gui, Slots:Show, ,CL3Slots
 else
 	Gui, Slots:Hide
+send, {ctrlup}{lwinup}
 Return
 
 
 #if WinActive("CL3Slots")
-	<^Space::send, !{s}
+	<^Space::send, !{s}{ctrlup}{lwinup}
   <^1::
 		ControlFocus, Edit1, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^2::
 		ControlFocus, Edit2, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^3::
 		ControlFocus, Edit3, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^4::
 		ControlFocus, Edit4, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^5::
 		ControlFocus, Edit5, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^6::
 		ControlFocus, Edit6, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^7::
 		ControlFocus, Edit7, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^8::
 		ControlFocus, Edit8, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^9::
 		ControlFocus, Edit9, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
   <^0::
 		ControlFocus, Edit0, CL3Slots,
-		send, ^{a}
+		send, ^{a}{ctrlup}{lwinup}
 		return
 
 #if
@@ -132,6 +133,7 @@ Sleep 100
 Clipboard:=History[1].text
 OnClipboardChange("FuncOnClipboardChange", 1)
 stats.slots++
+send, {ctrlup}{lwinup}
 Return
 
 ~Esc::
@@ -204,6 +206,7 @@ Loop, 10
 	 GuiControl,Slots:, Slot%Index%, % Slots[Index]
 	 Index++
 	}
+send, {ctrlup}{lwinup}
 Return
 
 ; not public

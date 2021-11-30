@@ -136,7 +136,20 @@ InfoLocations(){
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value
 		ShipToIndex:=
-		ServingSize:=XL.Range("B4").Value
+		ServingSizeType:=StrSplit(XL.Range("B4").Value, A_Space,"stick packet")
+		if ServingSizeAndType.maxindex() < 2 {
+			ServingSize:="1"
+			ServingType:= ServingSizeType[1]
+		}
+		if ServingSizeAndType.maxindex() > 2 {
+			ServingSize:=ServingSizeType[1]
+			ServingType:= ServingSizeType[2] " " ServingSizeType[3]
+		}
+		else {
+			ServingSize:=ServingSizeType[1]
+			ServingType:= ServingSizeType[2]
+		}
+		; ServingSize:=XL.Range("C4").Value
 		ShapeAndSize:=XL.Range("B5").Value
 		Color:=XL.Range("B6").value
 

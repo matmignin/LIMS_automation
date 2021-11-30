@@ -81,6 +81,7 @@ WHERE ingredient NOT IN ('Pesticides', 'Residual Solvents') AND ingredient_group
   coa_results.expiration_date,
   coa_results.carton_lot,
   coa_results.fill_weight,
+  coa_results.po_number,
   (SELECT COUNT(1) FROM testresult tr WHERE tr.testguid = coa_results.testguid AND UPPER(tr.resultid) LIKE 'QAC%' AND tr.resultvaluation IS NOT NULL ) AS coa_qac,
   coa_results.approvedby AS coa_userid,
   e.employeefirstname||' '||e.employeename AS coa_name,
@@ -129,6 +130,7 @@ LEFT JOIN (
     tr3.textresult AS carton_lot,
     tr4.numericalresulttext||' '||DECODE(tr4.numericalresulttext,NULL,NULL,tr4.unit) AS fill_weight,
     tr6.textresult AS customer_lot,
+    tr7.textresult AS po_number,
     trq.approvedby,
     trq.approvaldate
   FROM testrequest trq
@@ -141,6 +143,7 @@ LEFT JOIN (
     LEFT JOIN testresult tr4 on tr4.testguid = t.testguid AND tr4.resultid = 'Fill Weight' AND tr4.resultvaluation = 'OK' AND tr4.deletion = 'N'
     LEFT JOIN testresult tr5 on tr5.testguid = t.testguid AND tr5.resultid = 'Expiration Date Format' AND tr5.resultvaluation = 'OK' AND tr5.deletion = 'N'
     LEFT JOIN testresult tr6 on tr6.testguid = t.testguid AND tr6.resultid = 'Customer Lot' AND tr6.resultvaluation = 'OK' AND tr6.deletion = 'N'
+    LEFT JOIN testresult tr7 on tr7.testguid = t.testguid AND tr7.resultid = 'PO' AND tr7.resultvaluation = 'OK' AND tr7.deletion = 'N'
   WHERE trq.batchnumber IS NOT NULL AND trq.product IS NOT NULL AND trq.formulationid IS NOT NULL
   ) coa_results ON coa_results.product = trq.product AND coa_results.formulationid = trq.formulationid AND coa_results.batchnumber = ps.batchnumber AND ((ps.generic01 IS NOT NULL AND coa_results.generic01 = ps.generic01) OR ps.generic01 IS NULL) AND ((ps.generic04 IS NOT NULL AND coa_results.generic04 = ps.generic04) OR ps.generic04 IS NULL)
 LEFT JOIN employee e ON e.empid = coa_results.approvedby
