@@ -230,7 +230,9 @@ PrevSheet(){
 MatchColor(){
 	Global
 	TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
-	if 		(TabColor = 16777215) ;white
+	if (A_mode=="TempCode")
+		Gui, VarBar:color,272822, FFFFFF     
+	else if  (TabColor = 16777215) ;white
 		Gui, VarBar:color,, F2F2F2 ; 
 	else if	(TabColor = 16764057) || (TabColor = 13395456) ;Blue
 		Gui, VarBar:color,, BDD7EE ; 
@@ -248,8 +250,10 @@ MatchColor(){
 		Gui, VarBar:color,, 9966FF 
 	else if 	(TabColor = 0) 	;black
 		Gui, VarBar:color,, 323130 
+	else If (A_Mode=="Debugging")
+		Gui, VarBar:color,, 808000 ;pink
 	else
-			Gui, VarBar:color, 808000 ;pink
+		Gui, VarBar:color,DC734F, 97BA7F 
 	}
 Get_Current_row(){
 	Global

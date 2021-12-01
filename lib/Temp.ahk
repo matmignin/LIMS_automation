@@ -1,9 +1,14 @@
 
-#If TempCode
-  ; Mbutton::     ;excel.FindAndReplace("Stage","Specs","B:B",0,1)
-  F15::
+#If A_Mode=="TempCode"
+  Mbutton:: 
+            Gui Varbar:Default
+  					GuiControl, ChooseString, ComboBox1, EnteringRotations			
+						Excel.Connect(1) 
+            TT(A_mode)
+						return    ;excel.FindAndReplace("Stage","Specs","B:B",0,1)
+  ; F15:
 
-  return
+
 ;   send, {click 39, 611}
 ; 		if !winactive("Edit test (Field Configuration: ")
 ;     	winwaitactive, Edit test (Field Configuration: ,, 2
@@ -195,4 +200,13 @@ NoIdle(){
 		Settimer, NoidleTimer,off
 	}
 	Varbar.Show()
+  
+NoIdleTimer:
+  if (A_TimeIdle > (60*1000) && NoIdle) {
+    MouseMove, 1,0,0,R
+    SLEEP 50
+    MouseMove, -1,0,0,R
+  }
+
+
 }

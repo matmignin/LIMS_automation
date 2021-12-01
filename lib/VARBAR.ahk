@@ -13,7 +13,8 @@ Class VarBar{
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +ToolWindow +owner +HwndGUIID 
 				WinSet, Transparent, 100, %GUIID%
-				Gui, VarBar:color,DC734F, 97BA7F     
+				This.SetColor()
+		
 				this.AddBoxes()
 			CoordMode, mouse, screen
 			IfWinexist, NuGenesis LMS - \\Remote
@@ -54,47 +55,22 @@ Class VarBar{
 			if ShowSampleID
 			this.AddEdit("SampleID","H29 x+1 y1 w85",					"9, Arial Narrow")
 			else
-			this.AddEdit("SampleID","H29 x+1 y1 w0",					"9, Arial Narrow")
-		; GUI,VarBar:Font,			
-		This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
+			this.AddEdit("SampleID","H29 x+1 y1 w0",					"9, Arial Narrow")		
+			This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
 			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")
 						; edit7
-			Gui, Varbar:add, DDL, vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode
-			GuiControl, ChooseString, ComboBox1, %Mode%
-			; Gui, VarBar:Add, Radio, vEnteringRotations Checked%EnteringRotationsStatus% gEnteringRotationsRadio, Entering Rotations
-			;this.RadioButton("TempCode","Temp","Add")
-			; Gui, VarBar:Add, Radio, vSwitchWorkSheets Checked%SwitchWorkSheetsStatus% x+1 gSwitchWorkSheetsRadio, Switch WorkSheets
-			; Gui, VarBar:add, Radio, vTempCode Checked%TempCodeStatus% gTempCodeRadio x+1, Temp
+			Gui, Varbar:add, DDL, vA_Mode gA_ModeDDL, |EnteringRotations|SwitchWorkSheets|Disconnect Excel|TempCode|Debugging
+			GuiControl, ChooseString, ComboBox1, %A_Mode%
 		Return
 		
-		ModeDDL:
+		A_ModeDDL:
 		Gui, VarBar:submit,NoHide
 		sleep 200
-		IniWrite, %Mode%, data.ini, Options, Mode
-			; IniWrite, 0, data.ini, Options, EnteringRotations
-			; IniWrite, 0, data.ini, Options, SwitchWorkSheets
-			; IniWrite, 0, data.ini, Options, TempCode
+		varbar.Setcolor()
+		IniWrite, %A_Mode%, data.ini, Options, A_Mode
 			sleep 200
-			Menu, Tray, Check, % Mode
-			IniWrite, 1, data.ini, Options, % Mode
 		return
-
-		EnteringRotationsRadio:
-			Mode:="EnteringRotations"
-				gosub, RadioHandler
-				return
-		TempCodeRadio:
-			Mode:="TempCode"
-			; this.RadioButton("TempCode","Temp")
-				gosub, RadioHandler
-				return
-		SwitchworksheetsRadio:
-			Mode:="SwitchWorksheets"
-				gosub, RadioHandler
-				return
-		RadioHandler:
-			Return
 
 			ProductVarBar:
 			BatchVarBar:
@@ -122,11 +98,6 @@ Menu(){
 	MouseGetPos,,,,WinControl
   try Menu, VarBarmenu, DeleteAll
 	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
-    ; TempCode:=CreateMenu("TempCode","VarBarMenu")
-    ; EnteringRotations:=CreateMenu("EnteringRotations","VarBarMenu")
-    ; SwitchWorkSheets:=CreateMenu("SwitchWorkSheets","VarBarMenu")
-    ; DebuggingScript:=CreateMenu("DebuggingScript","VarBarMenu")
-    ; HideVarbar:=CreateMenu("HideVarbar","VarBarMenu")
     Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID 
       if ShowSampleID=1  
         menu, VarBarmenu, Check, 	Show&SampleID
@@ -139,6 +110,19 @@ Menu(){
   Try Menu,VarBarmenu,show
   }
 
+SetColor(){
+			global
+		GuiControl, -redraw, varbar
+		if (A_mode=="TempCode")
+			Gui, VarBar:color,272822, FFFFFF     
+		else If (A_Mode=="Debugging")
+			Gui, VarBar:color,272822, 808000 ;pink
+		else if WinExist("Mats LMS Workbook.xlsb - Excel")
+			excel.matchcolor()
+		else
+			Gui, VarBar:color,DC734F, 97BA7F
+		GuiControl, +redraw, varbar
+		} 
 
 HoverAction(Size:=100){
   global
@@ -175,10 +159,10 @@ HoverAction(Size:=100){
 			Iniread, ShowSampleID, data.ini, Options, ShowSampleID
 			Iniread, ShowCoated, data.ini, Options, ShowSampleID
 			Iniread, ShowNote3, data.ini, Options, ShowNote3
-			Iniread, SwitchWorkSheets, data.ini, Options, SwitchWorkSheets
+
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
-			Iniread, Mode, data.ini, Options, Mode
+			Iniread, A_Mode, data.ini, Options, A_Mode
 			Products:=[]
         FileRead, LoadedNotes, Data\CurrentCodes.txt
         Products := StrSplit(LoadedNotes,"`r`n")
@@ -205,7 +189,7 @@ HoverAction(Size:=100){
 			IniWrite, %note1%, data.ini, Notes, note1
 		if Note2
 			IniWrite, %note2%, data.ini, Notes, note2
-			IniWrite, %Mode%, data.ini, Options, Mode
+			IniWrite, %A_Mode%, data.ini, Options, A_Mode
 		; if Note3
 			; IniWrite	, %note3%, data.ini, Notes, note3
 		}
@@ -453,6 +437,6 @@ HistoryMenuItem(){
 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 			IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
-			;IniWrite, %Mode%, data.ini, Options, Mode
+			;IniWrite, %A_Mode%, data.ini, Options, A_Mode
 			return
 } 

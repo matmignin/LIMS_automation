@@ -71,7 +71,7 @@ clipCheckIfEmpty(){
 					Try Menu,menu,show
 				}
 				else if (Tab="Specs") {
-					if (EnteringRotations) || (Mode:="EnteringRotations")
+					if (A_Mode:="EnteringRotations")
 						SpecTab.CopySpecTemplate()
 					else
 						menu.lms()
@@ -255,7 +255,7 @@ clipCheckIfEmpty(){
 			ProductTab.AddCOASpace()
 		else if Winactive("Results Definition - \\Remote")  	
 			menu.LMS()
-		else {
+		else If (Mode!="Disconnect Excel"){
 			Excel.Connect(1)
 			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 		}
@@ -270,7 +270,7 @@ clipCheckIfEmpty(){
 		If winactive("NuGenesis LMS - \\Remote") {
 			LMS.Detecttab()
 			if (Tab="Requests") {
-					if (EnteringRotations) || (Mode:="EnteringRotations") {
+					if (A_Mode:="EnteringRotations") {
 						MouseGetPos, mx, mY
 						send, {click 2}
 						sleep 300
@@ -293,7 +293,7 @@ clipCheckIfEmpty(){
 				Return
 				}
 			else if (Tab="Specs") {
-					if (EnteringRotations) || (Mode:="EnteringRotations")
+					if (A_Mode:="EnteringRotations")
 						menu.Products()
 					else
 						clk(67, 754) ;edit results
@@ -360,7 +360,7 @@ clipCheckIfEmpty(){
 		global 
 			If winactive("ahk_exe Code.exe")
 				SendInput, ^{d} ;go to Definition
-			if (SwitchWorkSheets==1) || (Mode:="SwitchWorkSheets") {
+			if (A_Mode:="SwitchWorkSheets") {
 					excel.nextsheet()
 				return
 			}
@@ -400,7 +400,7 @@ clipCheckIfEmpty(){
 		global 
 			If winactive("ahk_exe Code.exe")
 				SendInput, !^{d} ;go to reference
-			if (SwitchWorkSheets==1) || (Mode:="SwitchWorkSheets") {
+			if (A_Mode:="SwitchWorkSheets") {
 					excel.Prevsheet()
 				return
 			}

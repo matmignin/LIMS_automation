@@ -105,7 +105,7 @@
 		^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
 			^wheelup::				LMS.SearchbarPaste() ;; Spread
 			Rbutton & F19::       	send % WindowInfo() 
-			Rbutton & F6::        	Send, {Backspace}
+			Rbutton & wheelleft::        	Send, {Backspace}
 
 
 		#IfWinActive, Barcode Scanner - \\Remote

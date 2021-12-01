@@ -44,18 +44,7 @@ VQuest_Start:
     FileName:="lib/WinPos.txt"
     SetWorkingDir, %A_ScriptDir%
     Iniread, Iteration, data.ini, SavedVariables, Iteration
-    Iniread, Mode, data.ini, Options, Mode
-      ; IniWrite, 0, data.ini, Options, Mode
-     ;}
-    ; IniRead, EnteringRotationsStatus, data.ini, Options, EnteringRotations
-		; IniRead, TempCodeStatus, data.ini, Options, TempCode
-		; IniRead, SwitchWorkSheetsStatus, data.ini, Options, SwitchWorkSheets
-; Products:=[]
-      ; Products := StrSplit(CurrentCodes,"`r`n")
-    ; Filegettime, filetime, data\CurrentCodes.txt
-    ; TimeSince:= A_Now - FileTime
-    ; if TimeSince >  50000
-      ; FileDelete, data\CurrentCodes.txt
+    Iniread, A_Mode, data.ini, Options, A_Mode
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
@@ -66,23 +55,15 @@ VQuest_Start:
     ; Menu, tray, Click, 
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, windowSpy, WindowSpy
-    if Mode
-      Menu, Tray, Add, %Mode%, %MODE%Radio
-    HideVarBar:=CreateMenu("showVarbar")
+    ShowVarBar:=CreateMenu("showVarbar")
     HideShowSampleID:=CreateMenu("ShowSampleID")
-    ; TempCode:=CreateMenu("TempCode")
-    ; EnteringRotations:=CreateMenu("EnteringRotations")
-    ; SwitchWorkSheets:=CreateMenu("SwitchWorkSheets")
     DebuggingScript:=CreateMenu("DebuggingScript")
     HideVarbar:=CreateMenu("HideVarbar")
-    if Mode
-    Menu, Tray, Check, %Mode%
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
 
 
     try Run, cl3.Ahk, lib\CL3
-    ; try Run, Vim.Ahk, lib\
     If !HideVarBar
       varbar.Show()
 
@@ -92,15 +73,15 @@ VQuest_Start:
     CurrentWindow:=A
     IfWinExist, ahk_exe WFICA32.EXE
     LMS.Orient()
-    Excel.Connect(1)
-
+    GuiControl, -redraw, varbar
+    If Mode!="Disconnect Excel"
+      Excel.Connect(1)
+    GuiControl, +redraw, varbar
   #include <Toggles>
   #Include <Temp>
-  ; #Include <Checklist>
   #include <VIM>
   #Include <Test>
   #include <HotStrings>
-
   #include <KEYS>
   #include <PAD>
   #Include <LMS>
@@ -119,29 +100,26 @@ return
 ;__________________continuously runing sub_________________________________________________
 ActiveCheck:
   Varbar.HoverAction()
-
-
     If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
       varbar.FloatAtopWindow()
-    if WinExist("Error - \\Remote") {
+    if WinActive("Error - \\Remote") {
       ControlSend,, {enter}, Error - \\Remote
       sleep 200
       if WinExist("Register new samples - \\Remote"){
         winactivate,
 				Send, {click 180, 103,2}%Product%{enter}
-				; Clk(180, 103, 2)
-			}
-          ; LMS.SearchBar(Product,"{enter}")
-          
+			}   
     }
-  if WinActive("Information - \\Remote")
-    send, {enter}
-NoIdleTimer:
-; if (A_TimeIdle > (60*1000) && NoIdle) {
-;   MouseMove, 1,0,0,R
-;   SLEEP 50
-;   MouseMove, -1,0,0,R
-; }
+    if WinActive("Information - \\Remote")
+      send, {enter}
+    If (Iteration = -1 && A_WinDelay!=200)
+      setwindelay, 200
+    else If (Iteration = -2  && A_WinDelay!=300)
+      setwindelay, 300
+    else If (Iteration = -3  && A_WinDelay!=400)
+      setwindelay, 300
+    else 
+      setwindelay, 100
 return
    
 

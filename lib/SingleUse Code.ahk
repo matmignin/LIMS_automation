@@ -83,3 +83,11 @@ Paste_Screenshot:
 	; CLICK, %Mx%, %My%
 	Send, ^v
 	return
+
+
+
+Delete_a_file_if_its_old:
+    Filegettime, filetime, data\CurrentCodes.txt
+    TimeSince:= A_Now - FileTime
+    if TimeSince >  50000
+      FileDelete, data\CurrentCodes.txt

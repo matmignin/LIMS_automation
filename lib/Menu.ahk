@@ -335,8 +335,7 @@ Variable(){
 
   Apps(){
   global
-  try This.delete()
-    Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
+  try This.delete() 
     menu, menu, add
     Menu, Menu, Add, &LMS , !l 
     Menu, Menu, Add, &VScode , !v 

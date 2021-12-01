@@ -10,33 +10,7 @@ TabToggle=0
 return
 
 MenuCheckboxes:
-  Iniread, EnteringRotationsStatus, data.ini, Options, EnteringRotations
-    Menu, Tray, Add, EnteringRotations, EnteringRotations
-    EnteringRotations:= EnteringRotationsStatus = 1 ? 1 : ""
-    if (Mode:="EnteringRotations")
-      Menu, Tray, Check, EnteringRotations
-
-  Iniread, TempCodeStatus, data.ini, Options, TempCode
-    Menu, Tray, Add, TempCode, TempCode
-    Tempcode:= TempcodeStatus = 1 ? 1 : ""
-    if TempCode
-      Menu, Tray, Check, TempCode
-
-	TempCode(){
-
-	; 	global
-	; 	Menu, Tray, ToggleCheck, TempCode
-	; 	If TempCode
-	; 	{
-	; 		IniWrite, 1, data.ini, Options, TempCode
-	; 		Menu, Tray, Check, TempCode
-	; 	}
-	; 	else 
-	; 	{
-	; 		IniWrite, 0, data.ini, Options, TempCode
-	; 		Menu, Tray, unCheck, TempCode  
-	; 	}
-  }
+return
 
 
 ToggleHandler(VarName, ItemName, ItemPos, MenuName){
@@ -80,13 +54,6 @@ CreateMenu(VarName,MenuType:="Tray"){
 			; return ""
       }
 
-  Iniread, SwitchWorkSheetsStatus, data.ini, Options, SwitchWorkSheets
-    SwitchWorkSheets:= SwitchWorkSheetsStatus = 1 ? 1 : "" 
-    Menu, Tray, Add, SwitchWorkSheets, SwitchWorkSheets
-    if SwitchWorkSheets
-      Menu, Tray, Check, SwitchWorkSheets
-
-
 ;; ===Handlers===
 ShowNotes(){
   global
@@ -106,21 +73,6 @@ ShowNotes(){
   Varbar.Show()
   }
 
-; 	SwitchWorkSheets(){
-; 	global
-; 	Menu, Tray, ToggleCheck, SwitchWorkSheets
-; 	If SwitchWorkSheets:= !SwitchWorkSheets
-; 	{
-; 		IniWrite, 1, data.ini, Options, SwitchWorkSheets
-; 		Menu, Tray, Check, SwitchWorkSheets
-; 	}
-; 	else 
-; 	{
-; 		IniWrite, 0, data.ini, Options, SwitchWorkSheets
-; 		Menu, Tray, unCheck, SwitchWorkSheets
-; 	}
-; 	Varbar.Show()
-; }
 
 
 ShowSampleID(){
@@ -141,17 +93,3 @@ ShowCoated(){
   IniWrite, 0, data.ini, Options, ShowCoated
   Varbar.Show()
 }
-  ; EnteringRotations(){
-	;   global
-	; 	Menu, Tray, ToggleCheck, EnteringRotations
-	; 	If EnteringRotations:= !EnteringRotations
-	; 	{
-	; 		IniWrite, 1, data.ini, Options, EnteringRotations
-	; 		Menu, Tray, Check, EnteringRotations
-	; 	}
-	; 	else 
-	; 	{
-	; 		IniWrite, 0, data.ini, Options, EnteringRotations
-	; 		Menu, Tray, unCheck, EnteringRotations
-	; 	}
-  ; }
