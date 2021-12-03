@@ -371,12 +371,19 @@ TaskBar(){
     Menu, Menu, Add, Downloads , #^F1
     Menu, Menu, Add, Desktop , +#^F1
     Menu, Menu, Add, &VQuest , #^v 
-    Menu, Menu, Add, &Data.ini , +#^F8 
+    Menu, Menu, Add, &Settings.ini , +#^F8 
     Menu, DataFiles, Add, CurrentCodes.txt, +#^F9 
     Menu, DataFiles, Add, REQUESTGUID.ini, +#^F9 
     Menu, DataFiles, Add, Methods.ini, +#^F9 
     Menu, DataFiles, Add, Debug.txt, +#^F9 
     Menu, Menu, add, Data Files, :DataFiles
+    Menu, ExampleCode, Add, AHK Regex, +#^F7
+    Menu, ExampleCode, Add, AHK Regex Advanced, +#^F7
+    Menu, ExampleCode, Add, ClipboardHistory, +#^F7
+    Menu, ExampleCode, Add, RegexTester, +#^F7
+    Menu, Menu, add, &Example Code, :ExampleCode
+    menu, menu, add, AHK Help, F1
+
 
     menu, menu, add
     Menu, Menu, Add, &Screenshots, #^+s
@@ -388,6 +395,7 @@ TaskBar(){
     Menu, OneDrive, Add, &CofA Team, #^F6
     Menu, OneDrive, Add, &LMS Team, #^F7
     Menu, Menu, add, &OneDrive, :OneDrive
+
     ; Menu, Menu, Add, &Workbook, !w 
     Menu, LabelCopyFolder, Add, &Label Copy Foldier, #^F2
     Menu, LabelCopyFolder, Add, &All Label Copy, #^F3

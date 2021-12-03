@@ -136,6 +136,8 @@ clipCheckIfEmpty(){
 			else if Winexist("Sign :") || winexist("Windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 				Sendpassword()
 		}
+		else if winactive("ahk_exe Jaspersoft Studio.exe") || WinActive("Parameter: REQUESTGUID")
+			REQUESTGUID()
 		else 	if winactive("ahk_exe OUTLOOK.EXE") {
 			clipCheckIfEmpty()
 			clip()
@@ -153,8 +155,6 @@ clipCheckIfEmpty(){
 				menu.Remote_Desktop()
 		else if WinActive("ahk_exe Code.exe")
 				sendinput, +{F9}
-		else if winactive("TIBCO Jaspersoft") || WinActive("REQUESTGUID")
-			REQUESTGUID()
 				return
 			}
 

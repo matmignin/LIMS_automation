@@ -123,11 +123,11 @@ _VSCODE_Hotstrings:
 
 	:*R:iniw`;::                                            
 	sendraw, iniwrite 
-	SendInput,{Space}`%`%{,}{Space}data.ini{,}{Space}SavedVariables{,}{Space}
+	SendInput,{Space}`%`%{,}{Space}Settings.ini{,}{Space}SavedVariables{,}{Space}
 	return
 	:*R:inir`;::                                            
 	sendraw, iniread 
-	SendInput,{space}{,}data.ini{,}{space}SavedVariables{,}{space}
+	SendInput,{space}{,}Settings.ini{,}{space}SavedVariables{,}{space}
 	return
 	
 	:*R:#ifw`;::                                            
@@ -210,14 +210,14 @@ _WindowNames:
 		return
 	:*:clk`;::
 		if !MousePosition
-			iniread MousePosition, data.ini, SavedVariables, WindowMousePosition 
+			iniread MousePosition, Settings.ini, SavedVariables, WindowMousePosition 
 		sendraw, clk( 
 		sendinput % Mouseposition 
 		sendraw, )
 		return
 	:*:click`;::
 		if !MousePosition
-			iniread MousePosition, data.ini, SavedVariables, WindowMousePosition 
+			iniread MousePosition, Settings.ini, SavedVariables, WindowMousePosition 
 		sendraw, {click 
 		sendinput % Mouseposition 
 		sendraw, }
@@ -225,13 +225,13 @@ _WindowNames:
 	:*:px`;::
 	:*:pixel`;::
 		if !PixelColor
-			iniread PixelColor, data.ini, SavedVariables, PixelColor 
+			iniread PixelColor, Settings.ini, SavedVariables, PixelColor 
 		sendinput % PixelColor 
 		return
 	:*:cur`;::
 	:*:cursor`;::
 		if !MousePosition
-			iniread MousePosition, data.ini, SavedVariables, WindowMousePosition 
+			iniread MousePosition, Settings.ini, SavedVariables, WindowMousePosition 
 		sendinput % Mouseposition 
 		return
 	:*:Control`;::

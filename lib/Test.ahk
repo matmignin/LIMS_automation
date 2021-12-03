@@ -125,16 +125,16 @@ GuiControl, FloVar:Text, MyText, %Product% %Batch%
 return
 	; loop 4 {
 	; 	temp:=Product A_Index
-	; 	Iniread, Temp, data.ini, SavedVariables, Temp
+	; 	Iniread, Temp, Settings.ini, SavedVariables, Temp
 	; 	 if hasValue(Product, Temp) ;check to see if duplicate value from list
 	; 	continue
 	; 	Product.Push(Temp)
 	; 	msgbox % Product[A_index]
-	;  iniwrite, %Temp%, data.ini, Products, Product
-		; iniwrite, K111, data.ini, Products, Product1
-		; iniwrite, K222, data.ini, Products, Product2
-		; iniwrite, K333, data.ini, Products, Product3
-		; iniwrite, K444, data.ini, Products, Product4
+	;  iniwrite, %Temp%, Settings.ini, Products, Product
+		; iniwrite, K111, Settings.ini, Products, Product1
+		; iniwrite, K222, Settings.ini, Products, Product2
+		; iniwrite, K333, Settings.ini, Products, Product3
+		; iniwrite, K444, Settings.ini, Products, Product4
 	; }
 return
 
@@ -505,7 +505,7 @@ Return
 ;; 	 grep all the product codes out of a file and add them to an array without duplicates 
 /* 	
 products:=[]
-	fileread, ProductList, Data.ini ;read the data.ini file
+	fileread, ProductList, Settings.ini ;read the Settings.ini file
 pos=0
 while pos := RegexMatch(productlist, "i)[abdefghijkl]\d{3}", var, pos+1) { ;fine each regex match in the ini file
 								if hasValue(Products, Var) ;check to see if duplicate value from list
@@ -535,8 +535,8 @@ return
 		Show(){  ;array - remove duplicates (case insensitive)
 			global
 			try, GUI, Notes:destroy
-			Iniread, Notes_X, data.ini, Locations, Notes_X
-			Iniread, Notes_Y, data.ini, Locations, Notes_Y
+			Iniread, Notes_X, Settings.ini, Locations, Notes_X
+			Iniread, Notes_Y, Settings.ini, Locations, Notes_Y
 			my_screenwidth:=Notes_x
 			my_screenheight:=Notes_y
 			MyArray:=[]
@@ -593,8 +593,8 @@ return
 		Filedelete, lib/Notes.txt
 			sleep 200
 			; loop 4
-			IniWrite, %Notes_X%, data.ini, Notes, Notes_X
-			IniWrite, %Notes_y%, data.ini, Notes, Notes_Y
+			IniWrite, %Notes_X%, Settings.ini, Notes, Notes_X
+			IniWrite, %Notes_y%, Settings.ini, Notes, Notes_Y
 			Fileappend, %MyEdit1%`n, lib/Notes.txt
 			Fileappend, %MyEdit2%`n, lib/Notes.txt
 			Fileappend, %Myedit3%`n, lib/Notes.txt
@@ -627,8 +627,8 @@ return
 				; keywait, Lbutton, U
 				wingetpos, Notes_x, Notes_y,W,H, Notes ahk_class AutoHotkeyGUI
 				; Excel.Connect()
-				IniWrite, %Notes_x%, data.ini, Locations, Notes_x
-				IniWrite, %Notes_y%, data.ini, Locations, Notes_y
+				IniWrite, %Notes_x%, Settings.ini, Locations, Notes_x
+				IniWrite, %Notes_y%, Settings.ini, Locations, Notes_y
 				sleep 300
 				return
 			}

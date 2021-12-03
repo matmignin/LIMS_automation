@@ -14,7 +14,7 @@ return
 	; 	return  
 	#h::send, !{F2}
 	#p::send, +!{h}
-	#s::send, ^+{h}
+	#k::send, ^+{h}
 	numpadsub::               sendinput, {shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;open file
 	numpadadd::               sendinput, {shiftdown}{altdown}{ctrldown}{.}{ctrlup}{altup}{shiftup}
 	numpadmult::              send, ^{F9} ;switch workplace

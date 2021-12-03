@@ -175,8 +175,8 @@ class Breaking {
 	; 	; MouseClick, Left, , , 1, 0, U
 	; 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 	; 			; sleep 200
-	; 			; IniWrite, %Varbar_X%, data.ini, Locations, VarBar_X
-	; 			; IniWrite, %Varbar_Y%, data.ini, Locations, VarBar_Y
+	; 			; IniWrite, %Varbar_X%, Settings.ini, Locations, VarBar_X
+	; 			; IniWrite, %Varbar_Y%, Settings.ini, Locations, VarBar_Y
 					
 	; 			; return
 	; 		; }
@@ -205,8 +205,8 @@ PixelGetColor, PixelColor, %MX%, %MY%
 	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
 	WinLocation:= wX "," wY "," wW "," wH
 	; PixelColor:=PixelColor
-	iniwrite %MousePosition%, data.ini, SavedVariables, WindowMousePosition
-	iniwrite %PixelColor%, data.ini, SavedVariables, PixelColor
+	iniwrite %MousePosition%, Settings.ini, SavedVariables, WindowMousePosition
+	iniwrite %PixelColor%, Settings.ini, SavedVariables, PixelColor
 	; if Value Return
 	; keywait, F20, U T5
 	
@@ -330,6 +330,7 @@ return
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
+	sleep 20
 	if (Position:="S")
 		CoordMode, ToolTip, Screen
 	if (Position:="R")

@@ -71,7 +71,7 @@ Class VarBar{
 		Gui, VarBar:submit,NoHide
 		sleep 200
 		This.Setcolor()
-		IniWrite, %Mode%, data.ini, Options, Mode
+		IniWrite, %Mode%, Settings.ini, Options, Mode
 			sleep 200
 		return
 
@@ -153,27 +153,27 @@ HoverAction(Size:=90){
 	loadSavedVariables(){
 		global
 		if !WinExist("Mats LMS Workbook.xlsb") || !ExcelConnect { ;|| !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){
-			Iniread, Batch, data.ini, SavedVariables, Batch
-			Iniread, Product, data.ini, Products, Product
-			Iniread, Batch0, data.ini, SavedVariables, Batch0
-			Iniread, Batch1, data.ini, SavedVariables, Batch1
-			Iniread, Lot, data.ini, SavedVariables, Lot
-			Iniread, ShowCoated, data.ini, Options, ShowSampleID
-			Iniread, Coated, data.ini, SavedVariables, Coated
+			Iniread, Batch, Settings.ini, SavedVariables, Batch
+			Iniread, Product, Settings.ini, Products, Product
+			Iniread, Batch0, Settings.ini, SavedVariables, Batch0
+			Iniread, Batch1, Settings.ini, SavedVariables, Batch1
+			Iniread, Lot, Settings.ini, SavedVariables, Lot
+			Iniread, ShowCoated, Settings.ini, Options, ShowSampleID
+			Iniread, Coated, Settings.ini, SavedVariables, Coated
 			}
 			
-			IniRead, Varbar_X, data.ini, Locations, VarBar_X
-			IniRead, Varbar_Y, data.ini, Locations, VarBar_Y
-			Iniread, Iteration, data.ini, SavedVariables, Iteration
-			Iniread, ShowSampleID, data.ini, Options, ShowSampleID
-			Iniread, ShowNote3, data.ini, Options, ShowNote3
+			IniRead, Varbar_X, Settings.ini, Locations, VarBar_X
+			IniRead, Varbar_Y, Settings.ini, Locations, VarBar_Y
+			Iniread, Iteration, Settings.ini, SavedVariables, Iteration
+			Iniread, ShowSampleID, Settings.ini, Options, ShowSampleID
+			Iniread, ShowNote3, Settings.ini, Options, ShowNote3
 			If ShowSampleID
-				Iniread, SampleID, data.ini, SavedVariables, SampleID
+				Iniread, SampleID, Settings.ini, SavedVariables, SampleID
 
-			iniread, note1, data.ini, Notes, note1
-			Iniread, note2, data.ini, Notes, note2
-			Iniread, ExcelConnect, data.ini, Options, ExcelConnect
-			Iniread, Mode, data.ini, Options, Mode
+			iniread, note1, Settings.ini, Notes, note1
+			Iniread, note2, Settings.ini, Notes, note2
+			Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
+			Iniread, Mode, Settings.ini, Options, Mode
 			Products:=[]
         FileRead, LoadedNotes, Data\CurrentCodes.txt
         Products := Trim(StrSplit(LoadedNotes,"`r`n"))
@@ -183,28 +183,28 @@ HoverAction(Size:=90){
 	SaveVariables(){
 		global
 		if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
-			iniwrite, %Product%, data.ini, Products, Product
+			iniwrite, %Product%, Settings.ini, Products, Product
 		if Batch
-			iniwrite, %Batch%, data.ini, Batches, Batch
+			iniwrite, %Batch%, Settings.ini, Batches, Batch
 		if Lot
-			iniwrite, %Lot%, data.ini, SavedVariables, Lot
+			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
 		if Coated
-			iniwrite, %Coated%, data.ini, SavedVariables, Coated
+			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
 		if SampleID
-			iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
+			iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		if Iteration
-			IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; if CurrentCodes
 			; IniWrite, `n%CurrentCodes%, Data\Products.ini, %The_Day%, %The_Hour%
 		if Note1
-			IniWrite, %note1%, data.ini, Notes, note1
+			IniWrite, %note1%, Settings.ini, Notes, note1
 		if Note2
-			IniWrite, %note2%, data.ini, Notes, note2
-			IniWrite, %Mode%, data.ini, Options, Mode
-			IniWrite, %ExcelConnect%, data.ini, Options, ExcelConnect
+			IniWrite, %note2%, Settings.ini, Notes, note2
+			IniWrite, %Mode%, Settings.ini, Options, Mode
+			IniWrite, %ExcelConnect%, Settings.ini, Options, ExcelConnect
 		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		; if Note3
-			; IniWrite	, %note3%, data.ini, Notes, note3
+			; IniWrite	, %note3%, Settings.ini, Notes, note3
 		}
 
 
@@ -234,8 +234,8 @@ HoverAction(Size:=90){
 			; keywait, Lbutton, U T2
 			MouseGetPos,Varbar_X,Varbar_Y
 		; tooltip,
-		IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-		IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
+		IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
+		IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
 		IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
 		IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 
@@ -309,7 +309,7 @@ HoverAction(Size:=90){
 		Pop(Iteration)
 		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
 		sleep %Speed%
-		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
 		}
@@ -322,7 +322,7 @@ HoverAction(Size:=90){
 		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
 		Pop(Iteration)
 		sleep %speed%
-		IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
+		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
 		}
@@ -451,8 +451,8 @@ HistoryMenuItem(){
 		return
 		SaveVarBarLocaton:
 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
-			IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
-			;IniWrite, %Mode%, data.ini, Options, Mode
+			IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
+			IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
+			;IniWrite, %Mode%, Settings.ini, Options, Mode
 			return
 } 

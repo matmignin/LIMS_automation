@@ -182,7 +182,7 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	pause::							Suspend, Toggle 
 	#h::return ;send, !{F2}
 	#p::return ;send, +!{h}
-	#s::return
+	#k::return
 	LWin::									vkFF
 	;; _System Actions_
 
@@ -543,7 +543,7 @@ GetAllProducts(Delimiter:=" "){
     AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
     GuiControl,Varbar:Text, Note2, %AllProducts%
     ; ControlsetText, Edit7,%AllProducts%,VarBar
-    ; IniWrite, %AllProducts%, data.ini, Notes, note2
+    ; IniWrite, %AllProducts%, Settings.ini, Notes, note2
     clipboard:=AllProducts
     sleep 200
     send, ^v

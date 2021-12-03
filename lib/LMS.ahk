@@ -1186,8 +1186,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		WinActivate, ahk_exe WFICA32.EXE
 	WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
 	
-		; Iniread, SpecTable_X, data.ini, Locations, SpecTable_X
-		; Iniread, SpecTable_Y, data.ini, Locations, SpecTable_Y
+		; Iniread, SpecTable_X, Settings.ini, Locations, SpecTable_X
+		; Iniread, SpecTable_Y, Settings.ini, Locations, SpecTable_Y
 			CoordMode, mouse, window
 		SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		SpecTable_Y:=LMS_Y+ShiftTable_Y
@@ -1238,7 +1238,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 				LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
 				temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 				Test:= Name[A_index]
-				; Iniwrite, %Temp%, data.ini, %Product%, %Test%
+				; Iniwrite, %Temp%, Settings.ini, %Product%, %Test%
 			}
 		}
 	}
@@ -2328,14 +2328,14 @@ CopyProductRotation(){
   LMSwb:=ComObjActive("Excel.Application")
   Rotation:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,5)
   Rotation.Value:=Product ".txt"
-  ; iniwrite %Clipboard%, data.ini, Rotations, %Product%
+  ; iniwrite %Clipboard%, Settings.ini, Rotations, %Product%
 }
  
 PasteProductRotation(){
 	global
   filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
   FileRead, Clipboard, %Filename%
-  ; iniread Clipboard,data.ini, Rotations, %Product%
+  ; iniread Clipboard,Settings.ini, Rotations, %Product%
   LMSwb:=ComObjActive("Excel.Application")
   RotationDone:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,6)
   RotationDone.Value:="1"
@@ -2344,7 +2344,7 @@ PasteProductRotation(){
 }
 }
 
-
+;;edit
 
 class LMSclick {
 	OKay(sleeptime:=""){

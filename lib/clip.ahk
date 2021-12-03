@@ -111,7 +111,6 @@ Append(Delimiter:="`n",key:="c"){
 		return 
 }
 
-;MsgBox, % (Clipboard ~= "i)[abdefghijkl]\d{3}")
 
 Parse(Value:=""){
   global
@@ -250,34 +249,34 @@ SingleRegex(){
         Connectedproducts.Push("`n" Trim(ConnectedProduct) "`n")
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
-        IniWrite, %cProduct%, data.ini, Products, Product
+        IniWrite, %cProduct%, Settings.ini, Products, Product
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
         Batch:=cBatch
-        IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+        IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
       }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cLot {
         ; GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cCoated {
         GuiControl,Vajrbar:Text, Coated, %cCoated%
         Coated:=cCoated
-        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
-        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         ; varbar.show()
       }
       If cSampleID {
@@ -304,40 +303,40 @@ Regex(Category:=""){
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
-        IniWrite, %cProduct%, data.ini, Products, Product
+        IniWrite, %cProduct%, Settings.ini, Products, Product
         FileAppend, `n`t%cProduct% %cBatch% %clot% %cCoated% `n, Data\CurrentCodes.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
         Batch:=cBatch
-        IniWrite, %cBatch%, data.ini, SavedVariables, Batch
+        IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
       }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cLot {
         ; GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, data.ini, SavedVariables, Lot
+        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cCoated {
         GuiControl,Vajrbar:Text, Coated, %cCoated%
         Coated:=cCoated
-        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
-        IniWrite, %cCoated%, data.ini, SavedVariables, Coated
+        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         varbar.show()
       }
       If cSampleID {
         GuiControl,Varbar:text, SampleID, %cSampleID%
-            IniWrite, %cSampleID%, data.ini, SavedVariables, SampleID
+            IniWrite, %cSampleID%, Settings.ini, SavedVariables, SampleID
       }
 
 

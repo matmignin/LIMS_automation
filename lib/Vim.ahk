@@ -220,8 +220,8 @@ return
 	s::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
 	; d::											
 	d::                    sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace 2} ;select line
-	x::                    sendinput, ^{x}
-	c::                    sendinput, ^{c}
+	x::                    sendinput % "^{x}" tt(Clipboard,1000)
+	c::                    sendinput % "^{c}" tt(Clipboard,1000)
 
 #If (A_PriorHotKey = "p"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 1000) ;; 	 	_p Vim_
 	q::										
@@ -265,7 +265,7 @@ return
 		send, {enter}
 		return
 	d::										
-		send, data.ini 
+		send, Settings.ini 
 		sleep 200
 		send, {enter}
 		return
@@ -289,6 +289,10 @@ return
 		sleep 200
 		send, {enter}
 		return
+	`;::send, +!#{b}
+		; sleep 200
+		; send, {enter}
+		; return
 	h::										
 		send, HotStrings.ahk 
 		sleep 200
@@ -313,17 +317,17 @@ return
 
 
 #If (A_PriorHotKey = "y"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 2000) ;; 	 	_y Vim_
-	/::                             sendinput, {End}^c{F3}
-	m::                             Sendinput, +{Home}^c{F3} ;yank end{shiftdown}{altdown}{`;}{altup}{shiftup}
-	`;::                            Sendinput, +!{;}^c{F3} ;encase
-	l::                             Sendinput,{shiftdown}{}ctrldown{right}{ctrlup}{shiftup}^{c}{F3}
-	h::                             Sendinput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{c}{F3}
-	.::															sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^c{F3}
-	w::                             sendinput, {ctrldown}{right}{shiftdown}{left}{shiftup}{c}{ctrlup}{F3}
-	,::															sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{c}{F3}
-	b::                             Sendinput, {ctrldown}{shiftdown}{left}{shiftup}{c}{ctrlup}{F3}
-	d::                            sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{x}
-	y::                            sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}{F3}
+	/::                             sendinput % "{End}^c{F3}" tt(Clipboard,1000)
+	m::                             Sendinput % "+{Home}^c{F3}" tt(Clipboard,1000) ;yank end{shiftdown}{altdown}{`;}{altup}{shiftup}
+	`;::                            Sendinput % "+!{;}^c{F3}" tt(Clipboard,1000) ;encase
+	l::                             Sendinput % "{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^{c}{F3}" tt(Clipboard,1000)
+	h::                             Sendinput % "{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{c}{F3}" tt(Clipboard,1000)
+	.::															sendinput % "{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}^c{F3}" tt(Clipboard,1000)
+	w::                             sendinput % "{ctrldown}{right}{shiftdown}{left}{shiftup}{c}{ctrlup}{F3}" tt(Clipboard,1000)
+	,::															sendinput % "{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}^{c}{F3}" tt(Clipboard,1000)
+	b::                             Sendinput % "{ctrldown}{shiftdown}{left}{shiftup}{c}{ctrlup}{F3}" tt(Clipboard,1000)
+	d::                            sendinput % "{Home 2}{shiftdown}{End}{right}{shiftup}^{x}" tt(Clipboard,1000)
+	y::                            sendinput % "{Home 2}{shiftdown}{End}{right}{shiftup}^{c}{F3}" tt(Clipboard,1000)
 	
 #If Getkeystate("F13","p") 																							;;          	=|||- VIM F13 -|||=
 	h::                       SendInput,{left}

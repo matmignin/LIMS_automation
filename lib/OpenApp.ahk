@@ -4,7 +4,9 @@ F1::
   if winexist("AutoHotkey Help")
     winactivate, 
   else
-  Run, AutoHotkey.chm, C:\Users\mmignin\Documents
+    Run, AutoHotkey.chm, C:\Users\mmignin\Documents
+  sleep 200
+  send, {altdown}{s}{altup}
   return
 OpenApps:
   ; <!f::OpenApp.Firefox()
@@ -32,8 +34,14 @@ OpenApps:
 +#^F11::run, C:\Users\mmignin\OneDrive - Vitaquest International\My JasperSoft Reports
 +#^F10::run, \\10.1.2.118\users\vitaquest\mmignin\COA EXAMPLES
 +#^F9::run, C:\Users\mmignin\Documents\VQuest\Data\%A_ThisMenuItem%
-+#^F8::run, C:\Users\mmignin\Documents\VQuest\data.ini
-;+#^F7::run, 
++#^F8::run, C:\Users\mmignin\Documents\VQuest\Settings.ini
++#^F7::
+WinActivate, ahk_exe Code.exe
+send, {F9}
+sleep 100 
+send, %A_ThisMenuItem%
+return
+
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()

@@ -5,9 +5,9 @@ VQuest_Start:
     ;#ErrorStdOut
     ;Process, Priority, , High
     #NoEnv
-    Iniread, Iteration, data.ini, SavedVariables, Iteration
-    Iniread, Mode, data.ini, Options, Mode
-    Iniread, ExcelConnect, data.ini, Options, ExcelConnect
+    Iniread, Iteration, Settings.ini, SavedVariables, Iteration
+    Iniread, Mode, Settings.ini, Options, Mode
+    Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
     #KeyHistory 1000
     #InstallKeybdHook
     #InstallMouseHook

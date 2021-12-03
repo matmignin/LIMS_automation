@@ -176,7 +176,7 @@ SearchWorkbook(SearchWord:=""){
 
 SaveToDataBase(){
 	global
-;  iniread, full, data.ini, %Product%, ;ecc738
+;  iniread, full, Settings.ini, %Product%, ;ecc738
  Test_Specs:= strsplit(Full,"=")
  Test:=Test_Specs[1]
  Specs:= strsplit(Test_Specs[2],"|")
