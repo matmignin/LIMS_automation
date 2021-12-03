@@ -2053,10 +2053,10 @@ class Vis2 {
 
       class Tesseract {
 
-         static leptonica := A_ScriptDir "\leptonica_util\leptonica_util.exe"
-         static tesseract := A_ScriptDir "\tesseract\tesseract.exe"
-         static tessdata_best := A_ScriptDir "\tesseract\tessdata_best"
-         static tessdata_fast := A_ScriptDir "\tesseract\tessdata_fast"
+         static leptonica := "C:\Users\mmignin\Documents\VQuest\bin\leptonica_util\leptonica_util.exe"
+         static tesseract := "C:\Users\mmignin\Documents\VQuest\bin\tesseract\tesseract.exe"
+         static tessdata_best := "C:\Users\mmignin\Documents\VQuest\bin\tesseract\tessdata_best"
+         static tessdata_fast := "C:\Users\mmignin\Documents\VQuest\bin\tesseract\tessdata_fast"
 
          uuid := Vis2.stdlib.CreateUUID()
          file := A_Temp "\Vis2_screenshot" this.uuid ".bmp"

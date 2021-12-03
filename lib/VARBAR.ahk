@@ -24,7 +24,7 @@ Class VarBar{
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
 		OnMessage(0x203, "VariableBar_Relocate")
-		; WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
+		WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
 		return
 	}
 

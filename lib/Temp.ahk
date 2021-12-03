@@ -25,7 +25,8 @@ B086 108-0752 Bulk Ct#109-0635"
 
 
 #If Mode=="TempCode"
-  Mbutton:: 
+  Mbutton::GetAllBatches()
+
   Select_DropDown_Menu_on_VarBar:
             Gui Varbar:Default
   					GuiControl, ChooseString, ComboBox1, Debugging			
@@ -62,6 +63,8 @@ return
 #if
 
 Test_2:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+GetAllBatches()
+return
 Select_next_batch_in_array:
   n+=1
   Haystack:=Products[n]
@@ -221,7 +224,7 @@ REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile
 			sleep 200
 			InputVar:=A_ThisMenuItem
 			IniRead,vOutput, data\REQUESTGUID.ini, REQUESTGUID, %InputVar%
-			SendInput, %vOutput%
+			SendInput, %vOutput%{LWinUp}
       menu, Menu, DeleteAll
 			return
 }

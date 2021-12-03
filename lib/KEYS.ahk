@@ -159,7 +159,7 @@ Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}
 Lbutton & F20::          	clip("OCR") ;Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 
-F20 & /::        	 				OCR()
+F20 & /::        	 				clip("OCR")
 
 F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
@@ -401,7 +401,7 @@ F15::MuteTeamsMicrophone()
  #IfWinActive, ahk_exe firefox.exe ;; 	___Firefox
  numpaddot::	      sendInput, ^w
 ;  F6::				   	SendInput, !{left}
-	mbutton::space
+	;mbutton::space
 	F6::sendinput, +{wheelleft 10}
 	F7::sendinput, +{wheelright 10}
 	F8::sendinput, +{wheeldown 10}
@@ -479,7 +479,7 @@ GetAllBatches(Delimiter:=" "){
   pos=0
 	PreventPopup:=1
 		; PreClipboard:=clipboardAll
-		clipboard:=
+		;clipboard:=
 		; FileRead, clipboard, Data\CurrentCodes.txt
   while pos := RegexMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", aBatch, pos+1) ; {
     ; if aBatch
@@ -503,7 +503,7 @@ GetAllBatches(Delimiter:=" "){
     AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
     ; GuiControl,Varbar:Text, Note3, %AllBatches%
     ; ControlsetText, Edit8,%AllBatches%,VarBar
-		; IniWrite, %AllBatches%, Data\Batches.txt, Notes, note3
+		FileAppend, AllBatches,Data\Batches.txt
 
 		clipboard:=AllBatches
 		sleep 200

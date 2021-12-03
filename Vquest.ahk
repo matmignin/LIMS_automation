@@ -76,9 +76,7 @@ VQuest_Start:
     try Run, cl3.Ahk, lib\CL3
     If !HideVarBar
       varbar.Show()
-
     try Menu, Tray, Icon, bin\Robot.ico
-    settimer, ActiveCheck, %CheckTime%
     Blank:=" `n `n  `t `t `n`t "
     CurrentWindow:=A
     IfWinExist, ahk_exe WFICA32.EXE
@@ -87,6 +85,7 @@ VQuest_Start:
     If ExcelConnect
       Excel.Connect(1)
     GuiControl, +redraw, varbar
+    settimer, ActiveCheck, %CheckTime%
   #include <Toggles>
   #Include <Temp>
   #include <VIM>
@@ -109,6 +108,8 @@ return
 
 ;__________________continuously runing sub_________________________________________________
 ActiveCheck:
+  if Debugging
+    return
   Varbar.HoverAction()
   ; If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=90 ){
   ;   VarBar_H:=90
