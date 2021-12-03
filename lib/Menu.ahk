@@ -368,14 +368,15 @@ TaskBar(){
   global
   try This.delete()
     ; Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
-    Menu, Menu, Add, &Downloads , #^F1
+    Menu, Menu, Add, Downloads , #^F1
+    Menu, Menu, Add, Desktop , +#^F1
     Menu, Menu, Add, &VQuest , #^v 
     Menu, Menu, Add, &Data.ini , +#^F8 
-    Menu, Data, Add, CurrentCodes.txt, +#^F9 
-    Menu, Data, Add, REQUESTGUID.ini, +#^F9 
-    Menu, Data, Add, Methods.ini, +#^F9 
-    Menu, Data, Add, Debug.txt, +#^F9 
-    Menu, Menu, add, Data, :Data
+    Menu, DataFiles, Add, CurrentCodes.txt, +#^F9 
+    Menu, DataFiles, Add, REQUESTGUID.ini, +#^F9 
+    Menu, DataFiles, Add, Methods.ini, +#^F9 
+    Menu, DataFiles, Add, Debug.txt, +#^F9 
+    Menu, Menu, add, Data Files, :DataFiles
 
     menu, menu, add
     Menu, Menu, Add, &Screenshots, #^+s

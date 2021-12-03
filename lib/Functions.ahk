@@ -278,10 +278,11 @@ Fade(FadeAmount:=90){
 
 Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
   global
-try {
-  gui, PopUp:destroy ;:
-  settimer, destroyGui, off
-}
+	sleep 20
+; try {
+  ; gui, PopUp:destroy ;:
+  ; settimer, destroyGui, off
+; }
 PopupColor1:="CE6D4B"
 PopupColor2:="FFFFFF"
 PopupTrans:=250

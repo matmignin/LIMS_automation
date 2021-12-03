@@ -5,11 +5,14 @@ VQuest_Start:
     ;#ErrorStdOut
     ;Process, Priority, , High
     #NoEnv
-    #KeyHistory 300
+    Iniread, Iteration, data.ini, SavedVariables, Iteration
+    Iniread, Mode, data.ini, Options, Mode
+    Iniread, ExcelConnect, data.ini, Options, ExcelConnect
+    #KeyHistory 1000
     #InstallKeybdHook
     #InstallMouseHook
-    CheckTime:=500
-    #ClipboardTimeout 1501
+    CheckTime:=300
+    #ClipboardTimeout 1500
     ; #HotkeyInterval 50
     #MaxHotkeysPerInterval 500
     #MaxThreadsBuffer, On
@@ -18,9 +21,21 @@ VQuest_Start:
     ; #HotkeyModifierTimeout 1
     #maxthreadsperhotkey, 1
     SetBatchLines, 10ms
-    SetControlDelay, 1
-    SetKeyDelay, 1, 0.25
-    setwindelay, 250
+    If (Iteration = -1){
+      SetControlDelay, -1
+      setkeydelay, -1
+      setMousedelay, -1
+      setwindelay, -1
+      SetDefaultMouseSpeed, 0
+    }
+    else {
+      SetControlDelay, 1
+      SetKeyDelay, 1, 0.25
+      SetMouseDelay, 1
+      setwindelay, 250
+      SetDefaultMouseSpeed, 1
+    }
+    SetTitleMatchMode, 2
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
     FormatTime, CurrentDateTime,, MM/dd/yy
@@ -33,9 +48,6 @@ VQuest_Start:
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysoff
     CoordMode, mouse, Window
-    SetMouseDelay, 1
-    SetDefaultMouseSpeed, 1
-    SetTitleMatchMode, 2
     #WinActivateForce
     AutoTrim, On
     OnClipboardChange("clipChange")
@@ -43,8 +55,6 @@ VQuest_Start:
     CrLf=`r`n
     FileName:="lib/WinPos.txt"
     SetWorkingDir, %A_ScriptDir%
-    Iniread, Iteration, data.ini, SavedVariables, Iteration
-    Iniread, A_Mode, data.ini, Options, A_Mode
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
@@ -61,8 +71,8 @@ VQuest_Start:
     HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
-
-
+    if Debugging
+      try Run, Vim.Ahk, lib\
     try Run, cl3.Ahk, lib\CL3
     If !HideVarBar
       varbar.Show()
@@ -74,7 +84,7 @@ VQuest_Start:
     IfWinExist, ahk_exe WFICA32.EXE
     LMS.Orient()
     GuiControl, -redraw, varbar
-    If Mode!="Disconnect Excel"
+    If ExcelConnect
       Excel.Connect(1)
     GuiControl, +redraw, varbar
   #include <Toggles>
@@ -100,9 +110,18 @@ return
 ;__________________continuously runing sub_________________________________________________
 ActiveCheck:
   Varbar.HoverAction()
+  ; If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=90 ){
+  ;   VarBar_H:=90
+  ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  ; }
+  ; If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
+  ;   VarBar_H:=32
+  ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  ; }
+
     If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
       varbar.FloatAtopWindow()
-    if WinActive("Error - \\Remote") {
+    else if WinActive("Error - \\Remote") {
       ControlSend,, {enter}, Error - \\Remote
       sleep 200
       if WinExist("Register new samples - \\Remote"){
@@ -110,16 +129,15 @@ ActiveCheck:
 				Send, {click 180, 103,2}%Product%{enter}
 			}   
     }
-    if WinActive("Information - \\Remote")
+    else if WinActive("Information - \\Remote")
       send, {enter}
-    If (Iteration = -1 && A_WinDelay!=200)
-      setwindelay, 200
-    else If (Iteration = -2  && A_WinDelay!=300)
+
+    If (Iteration = -2  && A_WinDelay!=300)
       setwindelay, 300
     else If (Iteration = -3  && A_WinDelay!=400)
       setwindelay, 300
     else 
-      setwindelay, 100
+      setwindelay, 200
 return
    
 

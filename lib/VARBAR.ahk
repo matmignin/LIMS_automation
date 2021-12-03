@@ -24,7 +24,7 @@ Class VarBar{
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
 		OnMessage(0x203, "VariableBar_Relocate")
-		WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
+		; WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
 		return
 	}
 
@@ -41,7 +41,7 @@ Class VarBar{
 	AddBoxes(){
 			global
 			this.AddEdit("Product",	"left h29 x10 y1 w65",			"16 Bold")
-			this.AddEdit("Batch",		"left h29 x+1 y1 w75", 			"11,Consolas")
+			this.AddEdit("Batch",		"left h29 x+1 y1 w85", 			"12,Consolas")
 			If !Lot
 				 L_L:="w60"
 			else 
@@ -52,25 +52,31 @@ Class VarBar{
 			else 
 					C_L:=
 				this.AddEdit("Coated",	"left h29 x+1 y1 " c_L,			"9, Arial Narrow")
-			if ShowSampleID
-			this.AddEdit("SampleID","H29 x+1 y1 w85",					"9, Arial Narrow")
-			else
-			this.AddEdit("SampleID","H29 x+1 y1 w0",					"9, Arial Narrow")		
 			This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
 			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")
 						; edit7
-			Gui, Varbar:add, DDL, vA_Mode gA_ModeDDL, |EnteringRotations|SwitchWorkSheets|Disconnect Excel|TempCode|Debugging
-			GuiControl, ChooseString, ComboBox1, %A_Mode%
+			Gui, VarBar:add, Checkbox, x10 y+5 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel-Link
+			Gui, Varbar:add, DDL, x+3 Y65 vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode|Debugging
+			GuiControl, ChooseString, ComboBox1, %Mode%
+
+			if ShowSampleID
+				this.AddEdit("SampleID","x+1 w85",					"9, Arial Narrow")
+			else
+				this.AddEdit("SampleID"," x+1 w0",					"9, Arial Narrow")		
+
 		Return
 		
-		A_ModeDDL:
+		ModeDDL:
 		Gui, VarBar:submit,NoHide
 		sleep 200
-		varbar.Setcolor()
-		IniWrite, %A_Mode%, data.ini, Options, A_Mode
+		This.Setcolor()
+		IniWrite, %Mode%, data.ini, Options, Mode
 			sleep 200
 		return
+
+
+			ExcelConnectCheck:
 
 			ProductVarBar:
 			BatchVarBar:
@@ -80,9 +86,11 @@ Class VarBar{
 			Note2VarBar:
 			Note3VarBar:
 			CoatedVarBar:
-			sleep 100
 			Gui, VarBar:submit,NoHide
-			; this.SaveVariables()
+			sleep 100
+			; if ExcelConnect
+				; excel.Connect(1)
+			this.SaveVariables()
 			return
 
 			VarBarGuiClose:
@@ -112,30 +120,31 @@ Menu(){
 
 SetColor(){
 			global
-		GuiControl, -redraw, varbar
+		; GuiControl, -redraw, varbar
 		if (A_mode=="TempCode")
 			Gui, VarBar:color,272822, FFFFFF     
-		else If (A_Mode=="Debugging")
+		else If (Mode=="Debugging")
 			Gui, VarBar:color,272822, 808000 ;pink
 		else if WinExist("Mats LMS Workbook.xlsb - Excel")
 			excel.matchcolor()
 		else
 			Gui, VarBar:color,DC734F, 97BA7F
-		GuiControl, +redraw, varbar
+		; GuiControl, +redraw, varbar
 		} 
 
-HoverAction(Size:=100){
+HoverAction(Size:=90){
   global
 	If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=Size ){
 		; ControlGetFocus, GUIFocus, VarBar
     VarBar_H:=Size
     WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
 	}
-	else If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
+	If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
 		ControlGetFocus, GUIFocus, VarBar
 		if GUIFocus
-			return
-		VarBar_H:=32
+			VarBar_H:=90
+		else 
+			VarBar_H:=32
     WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
 	}
 }
@@ -143,13 +152,13 @@ HoverAction(Size:=100){
 
 	loadSavedVariables(){
 		global
-		if !WinExist("Mats LMS Workbook.xlsb") { ;|| !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){
+		if !WinExist("Mats LMS Workbook.xlsb") || !ExcelConnect { ;|| !RegexMatch(XL.ActiveSheet.Name, "i)[abdefghijkl]\d{3}"){
 			Iniread, Batch, data.ini, SavedVariables, Batch
 			Iniread, Product, data.ini, Products, Product
 			Iniread, Batch0, data.ini, SavedVariables, Batch0
 			Iniread, Batch1, data.ini, SavedVariables, Batch1
-			Iniread, SampleID, data.ini, SavedVariables, SampleID
 			Iniread, Lot, data.ini, SavedVariables, Lot
+			Iniread, ShowCoated, data.ini, Options, ShowSampleID
 			Iniread, Coated, data.ini, SavedVariables, Coated
 			}
 			
@@ -157,21 +166,23 @@ HoverAction(Size:=100){
 			IniRead, Varbar_Y, data.ini, Locations, VarBar_Y
 			Iniread, Iteration, data.ini, SavedVariables, Iteration
 			Iniread, ShowSampleID, data.ini, Options, ShowSampleID
-			Iniread, ShowCoated, data.ini, Options, ShowSampleID
 			Iniread, ShowNote3, data.ini, Options, ShowNote3
+			If ShowSampleID
+				Iniread, SampleID, data.ini, SavedVariables, SampleID
 
 			iniread, note1, data.ini, Notes, note1
 			Iniread, note2, data.ini, Notes, note2
-			Iniread, A_Mode, data.ini, Options, A_Mode
+			Iniread, ExcelConnect, data.ini, Options, ExcelConnect
+			Iniread, Mode, data.ini, Options, Mode
 			Products:=[]
         FileRead, LoadedNotes, Data\CurrentCodes.txt
-        Products := StrSplit(LoadedNotes,"`r`n")
+        Products := Trim(StrSplit(LoadedNotes,"`r`n"))
 		}
 
 
 	SaveVariables(){
 		global
-		if Product
+		if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
 			iniwrite, %Product%, data.ini, Products, Product
 		if Batch
 			iniwrite, %Batch%, data.ini, Batches, Batch
@@ -183,13 +194,15 @@ HoverAction(Size:=100){
 			iniwrite, %SampleID%, data.ini, SavedVariables, SampleID
 		if Iteration
 			IniWrite, %Iteration%, data.ini, SavedVariables, Iteration
-		if CurrentCodes
-			IniWrite, `n%CurrentCodes%, Data\Products.ini, %The_Day%, %The_Hour%
+		; if CurrentCodes
+			; IniWrite, `n%CurrentCodes%, Data\Products.ini, %The_Day%, %The_Hour%
 		if Note1
 			IniWrite, %note1%, data.ini, Notes, note1
 		if Note2
 			IniWrite, %note2%, data.ini, Notes, note2
-			IniWrite, %A_Mode%, data.ini, Options, A_Mode
+			IniWrite, %Mode%, data.ini, Options, Mode
+			IniWrite, %ExcelConnect%, data.ini, Options, ExcelConnect
+		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		; if Note3
 			; IniWrite	, %note3%, data.ini, Notes, note3
 		}
@@ -317,7 +330,7 @@ HoverAction(Size:=100){
 	
 
 HistoryMenuItem(){
-	global
+	global Product, Batch, Lot, Coated,
 	sleep 200
 	RegExMatch(A_ThisMenuItem, "i)[abdefghijkl]\d{3}\b", rProduct)
 	ControlsetText, Edit1,%rProduct%, VarBar
@@ -328,10 +341,15 @@ HistoryMenuItem(){
 	RegExMatch(A_ThisMenuItem, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}\b", rCoated)
 	RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
 	ControlsetText, Edit4,%rCoated%, VarBar 
-	Product:=rProduct
-	Batch:=rBatch
-	Lot:=rLot
-	Coated:=rCoated 
+	if rProduct
+		Product:=rProduct
+	if rBatch
+		Batch:=rBatch
+	if rLot
+		Lot:=rLot
+	if rCoated 
+		Coated:=rCoated 
+
 	return
 	}
 	}
@@ -377,8 +395,8 @@ HistoryMenuItem(){
 		wheelright::excel.Nextsheet()   
 												
 	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-		wheelright::	Varbar.AddIteration(0)
-		wheelleft::Varbar.SubIteration(0)
+		wheelright::	gosub, Select_next_Batch_In_Array
+		wheelleft::   gosub, Select_Previous_Batch_In_Array
 		Numlock::
 			MouseGetPos,,,,WinControl
 				if (WinControl="Edit1") || (WinControl="Edit2") || (WinControl="Edit3"){
@@ -394,15 +412,13 @@ HistoryMenuItem(){
 				else
 					VarBar.Menu()
 				return
-
-
-
 		WheelUp::      send % Blockrepeat(600) Varbar.AddIteration()
 		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
 		+wheelup::	Varbar.AddIteration(0)
 		+wheeldown::Varbar.SubIteration(0)
 		; up::				Varbar.AddIteration(0)
 		; down::   		Varbar.SubIteration(0)
+		F15::						ReloadScript()
 		F9::           Excel.connect()
 		F7::           Excel.NextSheet()
 		F6::           Excel.PrevSheet()
@@ -437,6 +453,6 @@ HistoryMenuItem(){
 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 			IniWrite, %VarBar_y%, data.ini, Locations, VarBar_Y
 			IniWrite, %varbar_x%, data.ini, Locations, VarBar_X
-			;IniWrite, %A_Mode%, data.ini, Options, A_Mode
+			;IniWrite, %Mode%, data.ini, Options, Mode
 			return
 } 

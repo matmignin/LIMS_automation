@@ -1,10 +1,13 @@
 
-#If A_Mode=="TempCode"
+#If Mode=="TempCode"
   Mbutton:: 
+  Select_DropDown_Menu_on_VarBar:
             Gui Varbar:Default
-  					GuiControl, ChooseString, ComboBox1, EnteringRotations			
+  					GuiControl, ChooseString, ComboBox1, Debugging			
 						Excel.Connect(1) 
+            gui, Varbar:Submit, nohide
             TT(A_mode)
+            Varbar.SetColor()
 						return    ;excel.FindAndReplace("Stage","Specs","B:B",0,1)
   ; F15:
 
@@ -33,6 +36,7 @@
 return
 #if
 
+Test_2:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
 Select_next_batch_in_array:
   n+=1
   Haystack:=Products[n]
@@ -56,15 +60,14 @@ Select_next_batch_in_array:
 
 
 return
-
-Test_2: ;;Move to previous Batch in Array
-  Select_Previous_Batch_In_Array:
+Test_1:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+  Select_Previous_Batch_In_Array: ;Move to previous Batch in Array
     n-=1
     Haystack:=Products[n]
     whereAt:=listarray(Products)
     whereatsplit:=StrReplace(whereAt, n ": ","`t" )
     pop(whereatsplit)
-    RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(? <Coated>(\d{3}-\d{4})?)", s)
+    RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
       if sProduct {
         Product:=sProduct
         GuiControl,Varbar:Text, Product, %sProduct%
@@ -78,22 +81,71 @@ Test_2: ;;Move to previous Batch in Array
       try XL.Sheets(sProduct).activate
   return
 
-
-test_1:
-  Create_a_CheckList_From_recent_products:
-    Temp:=[]
-    RecentProducts:=
-        FileRead, LoadedNotes, RecentProducts.txt
-        Temp := StrSplit(LoadedNotes,"`r`n")
-		Loop % Temp.MaxIndex(){ 
-      RecentProducts.=Temp[a_index]"`r`n"
-    }
-    sleep 200
-    New Checklist(RecentProducts, ReturnFunction := "Validated")
+RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\Duplicate Test - Copy.txt")
+; test_3() ; delete duplicates
 return
 
 
-Test_4:
+RemoveFileDuplicates(File,Sorting:="U CL R"){
+	global
+	FileRead, OutputVar, % File
+  OutputVar:=Trim(OutputVar, " `t")
+	Sort, OutputVar, % Sorting
+
+	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
+	FileDelete, % File
+	sleep, 300
+	FileAppend, %OutputVar%, % File
+}
+
+
+
+
+
+
+
+
+create_CurrentCodes_DropDown:
+menu.ProductSelection()
+return
+Test_4:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 4 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+    try menu,DropdownMenu, Deleteall
+    Loop, Read, data\CurrentCodes.Txt
+    {
+    ; If A_Index = 1 ;for if its an INI file
+      ; Continue
+    ParseList := StrSplit(A_LoopReadLine, "`n")
+    ; Sort, ParseList, U
+      ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
+    Selection:= % "&" A_index " " ParseList[1]
+      ; Group:= % MethodGroup[2] ;for a second split
+    Menu, Dropdownmenu, add, %Selection%, CurrentCodesMenu
+    }
+    Menu, DropdownMenu, Show,
+    return
+    
+    CurrentCodesMenu:
+      sleep 200
+    RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+      if sProduct {
+        Product:=sProduct
+        GuiControl,Varbar:Text, Product, %sProduct%
+      }
+      Batch:=sBatch
+      lot:=slot
+      Coated:=sCoated
+      GuiControl,Varbar:Text, Batch, %sBatch%
+      GuiControl,Varbar:Text, lot, %slot%
+      GuiControl,Varbar:Text, Coated, %sCoated%
+      try XL.Sheets(sProduct).activate
+
+      ; IniRead,vOutput, %inifile%, %Category%, %InputVar%
+      Pop(A_ThisMenuItem,vOutput)
+      return
+
+
+
+
   add_a_ToDo_item:
     Gui, Add, Checkbox, vMyCheckBoxVar gMyCheckBoxSub, Add item to do
     Gui, Add, Edit, Disabled vToDoItemVar
@@ -168,7 +220,7 @@ Return
     {
     If A_Index = 1
       Continue
-    ParseList := StrSplit(A_LoopReadLine, "=")
+    ParseList := StrSplit(A_LoopReadLine, "`n")
       ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
     Selection:= % ParseList[1]
       ; Group:= % MethodGroup[2] ;for a second split

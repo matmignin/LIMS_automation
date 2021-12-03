@@ -38,8 +38,9 @@ data.ini
 lib\codes.ini
 bin/OCR.png
 bin/OCRoutput.txt
-
-.vscode/settings.json
 lib\codes.ini
 .vscode/settings.json
-Data/Products.ini
+lib/Menu.ahk
+bin/OCRoutput.txt
+Data/*
+**/bin/OCR.png

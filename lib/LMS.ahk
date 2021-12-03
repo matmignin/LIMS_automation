@@ -24,7 +24,6 @@
 		mbutton::3tap()
 		F7::		  3Right()
 		F6::			  3Left()	
-		+F19::lms.searchBar("")
 		F19 & Space::lms.searchBar("")
 		F20 & Space::Varbar.Focus(Product)
 		F20 & left::Send, %Product%
@@ -96,7 +95,6 @@
 			enter::					 LMSclick.okay()
 			esc::						 LMSclick.esc()
 			numpaddot::			4down()
-			<^r::						ReloadScript()
 			numpadMult::		4up()
 			F9::						Excel.Connect(1) ;3up()
 			F8::						3Down()
@@ -1341,7 +1339,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 	CopySpecs(){
 		global
 		WinActivate, NuGenesis LMS - \\Remote
-		; BlockInput, on
+		BlockInput, on
 		clipboard:=
 		click 57, 715 ; edit Test
 		; click 57, 750 ; edit results
@@ -1356,9 +1354,11 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		sleep 200
 		StrReplace(Description, "eurofins",Note1) 
 		; StrReplace(Description, "(Send out)","") 
-		MouseClick, left, 464, 532,2,0
+		; MouseClick, left, 464, 532,2,0 
+		MouseClick, left, 464, 533,1,0 
 		sleep 150
-		 LMSclick.TestDefinitionEditor_Results()
+		MouseClick, left, 245, 489,1,0 
+		;  LMSclick.TestDefinitionEditor_Results()
 		WinActivate, Results Definition - \\Remote
 		WinWaitActive, Results Definition,,0.25
 		if errorlevel
@@ -1369,7 +1369,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		clipboard:=
 		sleep 20
 		Send, ^c
-		clipwait, 1
+		clipwait, 3
 		if ErrorLevel
 			msgbox, yo
 		; sendlevel,0
@@ -1384,7 +1384,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		FullRequirements:=Parsedspecs[20]
 		Units:=Parsedspecs[21]
 		sleep 200
-		; blockinput off
+		blockinput off
 		Send, {esc}
 		copypastetoggle=1
 		exit
@@ -1402,10 +1402,9 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		click 418, 202
 		SpecTab.TestDefinitionEditor(Description) ; the pre window
 		sleep 200
-		MouseClick, left, 464, 532,2,0
-		sleep 200
-		click 232, 244 ;click resulst
-		sleep 200
+		MouseClick, left, 464, 533,1,0 
+		sleep 150
+		MouseClick, left, 245, 489,1,0 
 		WinActivate, Results Definition - \\Remote
 		WinWaitActive, Results Definition,,0.25
 			if errorlevel
@@ -1624,7 +1623,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			{
 				If CreateRequirements=1
 					SendInput, %Min_Limit% - %Max_Limit% %The_Units%
-				else if CreateRequirements!=1)
+				else if CreateRequirements!=1
 					SendInput, %CreateRequirements%
 			; SendInput, %Requirement%
 			}
@@ -2323,7 +2322,7 @@ CopyProductRotation(){
   send, ^c
   clipwait, 1
   sleep 400
-  filename:= "C:\Users\mmignin\Documents\VQuest\Rotations\" Product ".txt"
+  filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
   FileDelete, %FileName%
   FileAppend, %Clipboard%, %Filename%
   LMSwb:=ComObjActive("Excel.Application")
@@ -2334,7 +2333,7 @@ CopyProductRotation(){
  
 PasteProductRotation(){
 	global
-  filename:= "C:\Users\mmignin\Documents\VQuest\Rotations\" Product ".txt"
+  filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
   FileRead, Clipboard, %Filename%
   ; iniread Clipboard,data.ini, Rotations, %Product%
   LMSwb:=ComObjActive("Excel.Application")

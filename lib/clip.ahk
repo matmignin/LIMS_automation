@@ -111,6 +111,8 @@ Append(Delimiter:="`n",key:="c"){
 		return 
 }
 
+;MsgBox, % (Clipboard ~= "i)[abdefghijkl]\d{3}")
+
 Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[],
@@ -241,11 +243,11 @@ SingleRegex(){
       If cProduct {
         ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
         sleep 50
-        FileAppend, `n`t%ConnectedProduct%`n, data\CurrentCodes.txt
+        ; FileAppend, `n%ConnectedProduct%`n, data\CurrentCodes.txt
         ; FileAppend, %ConnectedProduct%`n, data\RecentProducts.txt
         ; FileAppend, `n%CurrentCodes%, data\CurrentCodes.txt
         ; CurrentCodes.= ConnectedProduct
-        Connectedproducts.Push("`n" ConnectedProduct "`n")
+        Connectedproducts.Push("`n" Trim(ConnectedProduct) "`n")
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, data.ini, Products, Product
@@ -271,16 +273,16 @@ SingleRegex(){
         GuiControl,Vajrbar:Text, Coated, %cCoated%
         Coated:=cCoated
         IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-        varbar.show()
+        ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
         IniWrite, %cCoated%, data.ini, SavedVariables, Coated
-        varbar.show()
+        ; varbar.show()
       }
       If cSampleID {
         GuiControl,Varbar:Text, SampleID, %cSampleID%
-        varbar.show()
+        ; varbar.show()
       }
     }
   

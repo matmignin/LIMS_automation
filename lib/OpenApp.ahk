@@ -17,6 +17,7 @@ OpenApps:
   #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
   #^F2::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\
   #^F1::Run, C:\Users\mmignin\Downloads\
+  +#^F1::Run, C:\Users\mmignin\Desktop\
   #^F4::Run, \\10.1.2.118\users\vitaquest\mmignin
   #^F5::Run, \\10.1.2.118\share\QC LAB\SAMPLE LOG 2021.xlsx
   ; #^F5::Run, C:\Users\mmignin\OneDrive - Vitaquest International

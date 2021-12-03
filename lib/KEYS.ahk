@@ -13,8 +13,8 @@ return
 		return
 	Tab & wheeldown::sendinput, ^{down}
 	Tab & wheelup::sendinput, ^{up}
-	Tab & wheelleft::sendinput, ^{down}
-	Tab & wheelright::sendinput, ^{right}
+	Tab & wheelleft::^[
+	Tab & wheelright::^]	
 	<^1::                 return
 	<^2::                 return ;,{Ctrldown}{2}{CtrlUp}
 	<^3::                 return ;Send,{Ctrldown}{0}{CtrlUp}
@@ -114,22 +114,22 @@ return
 ;; 	___Send Codes___
 
 
->+F20::             	varbar.focus("Batch")
+; >+F20::             	varbar.focus("Batch")
 >+F19::            		varbar.focus("Product")
+<+F19::								Sendinput, {_}
 F20 & left::					sendInput % product
 F20 & down::					sendInput % Batch
 F20 & right::					sendInput % Lot
 F20 & up::						sendInput % Coated
-F13 & `::								sendInput % Lot
+F13 & `::										menu.ProductSelection()
 F19 & left::								GetAllProducts()
 F19 & down::								GetAllBatches()
-F19 & Up::									Sendinput % excel.GetAllSheets()
+F19 & up::									Sendinput % excel.GetAllSheets()
 ; F13 & Space::								GetAllProducts()
-F13 & lshift::							GetAllProducts("`n")
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
-<#lshift::									GetAllProducts("`n")
-<!lshift::									GetAllBatches("`n")
+<#F13::											GetAllProducts("`n")
+<!F13::											GetAllBatches("`n")
 <#enter::										GetAllProducts("`n")
 rwin::return
 <#tab::										GetAllProducts(A_tab)	
@@ -141,10 +141,14 @@ Rbutton & Lbutton:: 			Send, {Enter}
 Rbutton UP::     	   			2Tap()     
 Rbutton & wheelleft::     Send % blockRepeat(50) "{Delete}"
 Rbutton & wheelright::    Send % blockRepeat(50) "{backspace}"
-Rbutton & wheelup::       Send, ^{c}
+Rbutton & wheelup::       
+Send % Blockrepeat(800) "^{c}" pop(Clipboard,,1000,"Window")
+sleep 20
+; pop(Clipboard,,1000,"Window")
+return
 Rbutton & wheeldown::     Send, ^{v}
 Lbutton & Rbutton::       send, ^{x}
-Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}^{c}
+Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
 
 rbutton & Appskey::				2Tap()
 rshift & Appskey::				return
@@ -176,6 +180,9 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	numpadMult::         		4up()
 	numpaddot::          		4down()
 	pause::							Suspend, Toggle 
+	#h::return ;send, !{F2}
+	#p::return ;send, +!{h}
+	#s::return
 	LWin::									vkFF
 	;; _System Actions_
 
@@ -201,6 +208,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	` & 2::							Test(2)
 	` & 3::							Test(3)
 	` & 4::							Test(4)
+	` & 5::							Test(5)
+	` & 6::							Test(6)
 	` & esc::						Varbar.reset()
 	`::	 								sendraw, ``
 
@@ -330,7 +339,7 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F13 & 3::							sendinput, %Lot%%A_space%
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
 	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	<+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
+	; <+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
 	;F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
 
 	numpadmult::
@@ -391,8 +400,13 @@ F15::MuteTeamsMicrophone()
 
  #IfWinActive, ahk_exe firefox.exe ;; 	___Firefox
  numpaddot::	      sendInput, ^w
- F6::				   	SendInput, !{left}
- F7::				   	Send, !{right}
+;  F6::				   	SendInput, !{left}
+	mbutton::space
+	F6::sendinput, +{wheelleft 10}
+	F7::sendinput, +{wheelright 10}
+	F8::sendinput, +{wheeldown 10}
+	F9::sendinput, +{wheelup 10}
+;  F7::				   	Send, !{right}
  F13::				  	Send, {ctrldown}{/}{ctrlup}
 ;  +F13::				 	Send, {esc}
  numpadadd::send, {lwindown}{right}{lwinup}
@@ -465,7 +479,8 @@ GetAllBatches(Delimiter:=" "){
   pos=0
 	PreventPopup:=1
 		; PreClipboard:=clipboardAll
-		; clipboard:=
+		clipboard:=
+		; FileRead, clipboard, Data\CurrentCodes.txt
   while pos := RegexMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", aBatch, pos+1) ; {
     ; if aBatch
       regBatches.insert(aBatch)
@@ -504,6 +519,8 @@ GetAllProducts(Delimiter:=" "){
   regProducts:=[]
   pos=0
 	PreventPopup:=1
+	clipboard:=
+	FileRead, clipboard, Data\CurrentCodes.txt
   while pos := RegexMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
     ; if aBatch
       regProducts.insert(aProduct)

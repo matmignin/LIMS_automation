@@ -142,9 +142,9 @@ return
 
 Test(n){
 	global
-		try gosub, test_%n%
-		Catch e
-			msgbox % e.line "`n" e.error
+		gosub, test_%n%
+		; Catch e
+			; msgbox % e.line "`n" e.error
 return
 }
 
@@ -227,16 +227,17 @@ return
 ;------------------------------------------------------------------------------------------------------------------------
 
 ;Test_3:
-Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\data\Products.txt"){
+Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Data\CurrentCodes.txt"){
 	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\data\Products.txt")
-	FileRead, OutputVar, data\Products.txt 
-	Sort, OutputVar, u
+	FileRead, OutputVar, data\CurrentCodes.txt
+	Sort, OutputVar, u CL
 	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
-	FileDelete, data\Products.txt
+	FileDelete, data\CurrentCodes.txt
 	sleep, 300
-	FileAppend, %OutputVar%, data\Products.txt
+	FileAppend, %OutputVar%, data\CurrentCodes.txt
 
 }
+
 ; Loop
 ; {
 ; 	Sleep, 1
@@ -655,3 +656,4 @@ return
 			; gui, Notes:destroy
 			return \
 			*/
+

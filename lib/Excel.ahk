@@ -129,9 +129,9 @@ InfoLocations(){
 					if sBatch
 						Products.Insert(Product " " sBatch " " sLot " " sCoated)
 		}
-		; Clip.Parse(MoreBatches)
-		; while (Xl.Range("BE" . A_index+7).Value != "")
-			; Batches[A_index]:=Xl.Range("BE" . A_index+7).Text
+		;Clip.Parse(MoreBatches)
+		 while (Xl.Range("BE" . A_index+7).Value != "")
+			Batches[A_index]:=Xl.Range("BE" . A_index+7).Text
 		Name:=XL.Range("B2").Value
 		Customer:=XL.Range("B3").Value
 		ShipTo:=XL.Range("C3").Value
@@ -250,7 +250,7 @@ MatchColor(){
 		Gui, VarBar:color,, 9966FF 
 	else if 	(TabColor = 0) 	;black
 		Gui, VarBar:color,, 323130 
-	else If (A_Mode=="Debugging")
+	else If (Mode=="Debugging")
 		Gui, VarBar:color,, 808000 ;pink
 	else
 		Gui, VarBar:color,DC734F, 97BA7F 
