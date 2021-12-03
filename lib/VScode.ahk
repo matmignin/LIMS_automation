@@ -1,7 +1,10 @@
 return
 #IfWinActive,ahk_exe Code.exe  ;;___VSCODE___    
-	Mbutton::sendinput, +{F9}      
-	numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
+	; Mbutton::sendinput, +{F9}  
+	<^h::[    
+	<^l::]    
+	Numlock::ReloadScript()
+	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
 	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev  
@@ -9,7 +12,9 @@ return
 	; 	send, ^c
 	; 	tt(Clipboard,1000,100,-400,,160)
 	; 	return  
-	
+	#h::send, !{F2}
+	#p::send, +!{h}
+	#s::send, ^+{h}
 	numpadsub::               sendinput, {shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;open file
 	numpadadd::               sendinput, {shiftdown}{altdown}{ctrldown}{.}{ctrlup}{altup}{shiftup}
 	numpadmult::              send, ^{F9} ;switch workplace
@@ -17,7 +22,6 @@ return
 	^numpaddot::              SendInput,{ctrldown}{w}{ctrlup}
 	; Numpadsub::               SendInput, ^{d} ;go to Deffinition
 	; Numpadadd::               SendInput, !^{d} ;go to reference
-	<^r::                     reloadscript()
 ;;	---modifiers---        
 	$lwin::return
 		LCtrl & Appskey::         return
@@ -38,11 +42,11 @@ return
 	; F13 & s::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
 	F13 & Lalt::sendinput, ^{click}
 	F13 & tab::								SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
+	F13 & `::sendinput, {ctrldown}{F8}{ctrlup}
 	F13::F13
 ;;		---F19 and F20---
 	F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
 	<^f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
-	<+f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}   
 	F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
 	F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	F20 & backspace::         delete
@@ -101,16 +105,17 @@ class Vim {
 	}
 	Yank(Precommand:="",Cut:=""){
 		global 
+		clipboard:=
 		if Precommand
 			Sendinput % PreCommand
 		Send, ^{c}
 		clipwait, 0.25
-			if errorlevel
-				send, {home}+{end}^{c}
+			; if errorlevel
+				; send, {home}+{end}^{c}
 		if Cut
 			Sendinput, {Backspace}
 		else 
-			send, {esc}{F5}
+			send, {esc}{F3}
 		sleep 20
 		return 
 	}
@@ -142,18 +147,14 @@ class Vim {
 
 ReloadScript(){
 	global
-	if Note1
-		IniWrite, %note1%, data.ini, Notes, note1
-	if Note2
-		IniWrite, %note2%, data.ini, Notes, note2
+	varbar.SaveVariables()
 	Send, !s
 	WinSet, Transparent, 155, ahk_exe Code.exe
 	sleep 100
 	WinSet, Transparent, off, ahk_exe Code.exe
 	; try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-	sleep 200
-	if DebuggingScript
-		ControlSend, , {F5}, ahk_exe Code.exe
+	if Debugging
+		ControlSend, , ^+{r}, ahk_exe Code.exe
 	else
 		reload
 	}

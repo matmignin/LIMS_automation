@@ -15,16 +15,22 @@ class Menu{
     PasteStuff(){
     global
 		try Menu,Menu, deleteAll
-      Menu, Menu, add, All &Products,   F19 & left
-      Menu, Menu, add, All &Batches,    F19 & down
+      Menu, Menu, add, All &Products,   <#Space
+      Menu, Menu, add, All &Batches,    <!Space
       Menu, Menu, add, All &WorkSheets, F19 & up
-      Menu, Menu, add, %Product%, F20 & left
-      Menu, Menu, add, %Batch%, F20 & down
-      Menu, Menu, add, %Lot%, F20 & right
+      ; Menu, Menu, add, %Product%, F20 & left
+      Menu, Menu, add, Products_Tab, <#space 
+      Menu, Menu, add, Batches_Tab, <!space 
+      if WinActive("ahk_exe Code.exe")
+        Menu, Menu, add, &LMS Title, InputToVsCode
+        Menu, Menu, add, Window &Title, InputToVsCode
+        Menu, Menu, add, Window &Process, InputToVsCode
+        Menu, Menu, add, &Click Position, InputToVsCode
+        Menu, Menu, add, &Mouse Position, InputToVsCode
+        Menu, Menu, add, Window Location, InputToVsCode
       Menu, Menu, Show
       ; KeyWait, Rbutton, U
         ; try Menu,Menu, deleteAll
-        
     }
 
     ProductHistory(){
@@ -111,13 +117,13 @@ class Menu{
     WindowInfo()
     winactivate, ahk_exe Code.exe
     sleep 200
-    if A_thismenuItem contains Window Title
+    if A_thismenuItem contains Window &Title
       send % Wintitle
-    else if A_thismenuItem contains Window Process
+    else if A_thismenuItem contains Window &Process
       send % Process
-    else if A_thismenuItem contains Click Position
+    else if A_thismenuItem contains &Click Position
       send % "{click " MousePosition "}"
-    else if A_thismenuItem contains Mouse Position
+    else if A_thismenuItem contains &Mouse Position
       send % MousePosition
     else if A_thismenuItem contains Window Location
       send % WinLocation
@@ -364,6 +370,13 @@ TaskBar(){
     ; Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
     Menu, Menu, Add, &Downloads , #^F1
     Menu, Menu, Add, &VQuest , #^v 
+    Menu, Menu, Add, &Data.ini , +#^F8 
+    Menu, Data, Add, CurrentCodes.txt, +#^F9 
+    Menu, Data, Add, REQUESTGUID.ini, +#^F9 
+    Menu, Data, Add, Methods.ini, +#^F9 
+    Menu, Data, Add, Debug.txt, +#^F9 
+    Menu, Menu, add, Data, :Data
+
     menu, menu, add
     Menu, Menu, Add, &Screenshots, #^+s
     Menu, Menu, Add, &mmignin, #^F4

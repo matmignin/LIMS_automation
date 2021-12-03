@@ -16,7 +16,7 @@ OpenApps:
   #^+s::Run, C:\Users\mmignin\OneDrive - Vitaquest International\Screenshots
   #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
   #^F2::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\
-  #^F1::Run, Downloads
+  #^F1::Run, C:\Users\mmignin\Downloads\
   #^F4::Run, \\10.1.2.118\users\vitaquest\mmignin
   #^F5::Run, \\10.1.2.118\share\QC LAB\SAMPLE LOG 2021.xlsx
   ; #^F5::Run, C:\Users\mmignin\OneDrive - Vitaquest International
@@ -25,11 +25,14 @@ OpenApps:
   #^F8::Run, \\10.1.2.118\share\QA\Final Labels (Temp)
   #^F9::Run, \\10.1.2.118\Final_C_O_A
   #^F10::Run, \\10.1.2.118\share\QC LAB\QC_Appearance Test.xlsx
-  #^F11::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021 (2) .xlsx
-  #^F12::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021.xlsx
+  #^F11::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021.xlsx
+  #^F12::Run, \\10.1.2.118\share\QA FINSHED GOODS\SAMPLES TO QC\SAMPLE TO QC 2021 (2) .xlsx
 +#^F12::run, \\10.1.2.118\share\QC LAB\Master Rotation WB 2014 (Start from 10-14-2014).xlsx
 +#^F11::run, C:\Users\mmignin\OneDrive - Vitaquest International\My JasperSoft Reports
 +#^F10::run, \\10.1.2.118\users\vitaquest\mmignin\COA EXAMPLES
++#^F9::run, C:\Users\mmignin\Documents\VQuest\Data\%A_ThisMenuItem%
++#^F8::run, C:\Users\mmignin\Documents\VQuest\data.ini
+;+#^F7::run, 
   #e::Send,{LWinDown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()

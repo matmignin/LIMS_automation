@@ -1,10 +1,9 @@
 
 _MouseIsOver:
-
-#if mouseisover("ahk_class Shell_TrayWnd")
+	#if mouseisover("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
 		mbutton::
 		F15::menu.TaskBar()
-		Space::Send, {lwin down}d{lwin up}
+		;Space::Send, {lwin down}d{lwin up}
 	#If MouseIsOver("ahk_exe Snipaste.exe")
 		F8::send, {click}{esc}
 		NumpadDot::send, {click}{esc}
@@ -71,7 +70,7 @@ clipCheckIfEmpty(){
 					Try Menu,menu,show
 				}
 				else if (Tab="Specs") {
-					if (A_Mode:="EnteringRotations")
+					if (Mode:="EnteringRotations")
 						SpecTab.CopySpecTemplate()
 					else
 						menu.lms()
@@ -142,8 +141,6 @@ clipCheckIfEmpty(){
 			clip()
 			return
 		}
-		else if winactive("ahk_exe firefox.exe") 
-			Send, {ctrldown}{click}{ctrlup}
 		else If Winactive("Mats LMS Workbook.xlsb") 
 			Sendinput, +{click}
 		else If Winactive("Paster - Snipaste")
@@ -154,7 +151,8 @@ clipCheckIfEmpty(){
 			Send, {lwindown}{e}{lwinup}
 		else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 				menu.Remote_Desktop()
-
+		else if WinActive("ahk_exe Code.exe")
+				sendinput, +{F9}
 		else if winactive("TIBCO Jaspersoft") || WinActive("REQUESTGUID")
 			REQUESTGUID()
 				return
@@ -218,6 +216,8 @@ clipCheckIfEmpty(){
 			Send, %Product%
 		else if winactive("ahk_exe explorer.exe")
 			ExplorerSearch(Product)
+		else
+			send, %Product%
 		return
 	}
 
@@ -255,7 +255,7 @@ clipCheckIfEmpty(){
 			ProductTab.AddCOASpace()
 		else if Winactive("Results Definition - \\Remote")  	
 			menu.LMS()
-		else If (Mode!="Disconnect Excel"){
+		else If ConnectExcel {
 			Excel.Connect(1)
 			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
 		}
@@ -270,7 +270,7 @@ clipCheckIfEmpty(){
 		If winactive("NuGenesis LMS - \\Remote") {
 			LMS.Detecttab()
 			if (Tab="Requests") {
-					if (A_Mode:="EnteringRotations") {
+					if (Mode:="EnteringRotations") {
 						MouseGetPos, mx, mY
 						send, {click 2}
 						sleep 300
@@ -293,7 +293,7 @@ clipCheckIfEmpty(){
 				Return
 				}
 			else if (Tab="Specs") {
-					if (A_Mode:="EnteringRotations")
+					if (Mode:="EnteringRotations")
 						menu.Products()
 					else
 						clk(67, 754) ;edit results
@@ -360,7 +360,7 @@ clipCheckIfEmpty(){
 		global 
 			If winactive("ahk_exe Code.exe")
 				SendInput, ^{d} ;go to Definition
-			if (A_Mode:="SwitchWorkSheets") {
+			if (Mode:="SwitchWorkSheets") {
 					excel.nextsheet()
 				return
 			}
@@ -400,7 +400,7 @@ clipCheckIfEmpty(){
 		global 
 			If winactive("ahk_exe Code.exe")
 				SendInput, !^{d} ;go to reference
-			if (A_Mode:="SwitchWorkSheets") {
+			if (Mode:="SwitchWorkSheets") {
 					excel.Prevsheet()
 				return
 			}
@@ -413,7 +413,7 @@ clipCheckIfEmpty(){
 				else If winactive("ahk_exe WFICA32.EXE")
 					excel.Prevsheet()
 				else 
-				SendInput, #{left}
+				SendInput, {lwindown}{left}{lwinup}
 			}
 				; lms.SampleRequestToggle()
 			return
@@ -557,9 +557,9 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	}
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
 	{
-		; If MouseIsOver("ahk_class Shell_TrayWnd")
-			; menu.TaskBar()
-		; else
+		If MouseIsOver("NuGenesis LMS - \\Remote")
+			menu.LMS()
+		else
 			Send, {F18}
 		return
 	}
@@ -606,4 +606,4 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 }
 F21::clip("OCR")
 
-~lbutton::Return
+
