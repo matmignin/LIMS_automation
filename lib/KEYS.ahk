@@ -23,6 +23,7 @@ return
 	F13 & 3::							sendinput, %Lot%
 	F13 & 4::							GetAllProducts()
 	F13 & 5::							GetAllBatches()
+	
 ; sendlevel
 ;;	___ClipCopy&Paste
 ; F13 & Mbutton::	
@@ -133,7 +134,7 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 <#enter::										GetAllProducts("`n")
 rwin::return
 <#tab::										GetAllProducts(A_tab)	
-Scrolllock::							SetCapsLockState % !GetKeyState("CapsLock", "T")
+Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
 $Numlock::								4tap()
 Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
@@ -271,6 +272,8 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 		
 
 
+
+
 #ifwinactive, ahk_exe Snipaste.exe ;;	___Snipaste
 	wheeldown::send % Blockrepeat(100) "{-}"
 	wheelup::send % Blockrepeat(100) "{=}"
@@ -282,7 +285,7 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 #IfWinActive, Mats LMS Workbook.xlsb ;; 	___Excel
 	Numpadmult::send, {Home}
 	F9::    					Excel.Connect(1)
-	F19 & space::    			Excel.CopySheetName()
+	F19 & space::    	LMS.searchBar(Product)
 	F19 & backspace::    delete
 	; F19::
 	F15::sendinput, {pgup}

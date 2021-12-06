@@ -110,6 +110,11 @@ return
 ActiveCheck:
   if Debugging
     return
+  If winactive("ahk_exe SketchUp.exe")
+    Suspend, On
+  else
+    Suspend, Off
+  
   Varbar.HoverAction()
   ; If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=90 ){
   ;   VarBar_H:=90

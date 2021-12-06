@@ -98,7 +98,7 @@ SheetChange(sht,Cell) {
 		; XL.Range(cross_hairs).Select
 	}
 
-
+		
 ; CopySheetName(){
 ; 	SheetName:= xl.ActiveWorkbook.Worksheets.name
 ; }

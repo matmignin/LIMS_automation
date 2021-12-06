@@ -33,6 +33,8 @@
 	;  #Include *i C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
 
 return
+; #ifwinactive, ahk_exe SketchUp.exe
+; 	~Mbutton::return ;mbutton
 
 #If Getkeystate("Lwin","p") ;|| GetKeyState("Capslock","T") ;; PsudoNumpad
 	F7::right
@@ -105,15 +107,23 @@ return
 	1::return
 	#if 
 	tab & appskey::return ;Send, {tab}
-#if Getkeystate("Tab","p")
-	`::				sendinput, ^!{0} ;unfold all
+	#if Getkeystate("Tab","p") 									&& Getkeystate("F13","p")
 	h::			   SendInput,{ctrldown}{[}{ctrlup}
 	l::        SendInput,{ctrldown}{]}{ctrlup}
-	`;::       SendInput,!^{/} ;unfold all
 	j::        down
+	k::        up
+#if Getkeystate("Tab","p")
+	`::				sendinput, ^!{0} ;unfold all
+	`;::       SendInput,!^{/} ;unfold all
+	h::			   SendInput,{ctrldown}{altdown}{[}{altup}{ctrlup}
+	l::        SendInput,{ctrldown}{altdown}{]}{altup}{ctrlup}
+	j::        sendinput, {shiftdown}{altdown}{ctrldown}{'}{ctrlup}{altup}{shiftup}
+	k::        sendinput, {shiftdown}{altdown}{k}{altup}{shiftup}
 	^j::       send, {shiftdown}{down}{shiftup}
 	^k::       send, {shiftdown}{up}{shiftup}
-	k::        up
+
+	n::        sendinput, {shiftdown}{lwindown}{h}{lwinup}{shiftup}
+	u::        sendinput, {shiftdown}{lwindown}{k}{lwinup}{shiftup}
 	,::        sendinput, +!^{left}
 	.::        sendinput, +!^{.}
 	a::        SendInput,{shiftdown}{altdown}{lwindown}{a}{lwinup}{altup}{shiftup} ;align vertically
@@ -139,7 +149,7 @@ return
 	q & u::										SendInput, {q}{u}
 	q::q
 	`::`
-
+;;    Vim_Tab
 
 ;;		||| VIM + CONTROL ||| 
 #If Getkeystate("F13","p")									&& Getkeystate("LControl","p") 
@@ -156,12 +166,12 @@ return
 	^.::											SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	o::                       SendInput,{Home}{enter}{up}
 	f::												Sendinput,{altdown}{ctrldown}{f}{ctrlup}{altup}
-	^n::                      SendInput,{shiftdown}{ctrldown}{n}{ctrlup}{shiftup} ;highlight next
 	tab::											SendInput,{shiftdown}{altdown}{lwindown}{]}{lwinup}{altup}{shiftup}						
 	[::												sendinput,{right}^{left}+^{right}{[}
 	]::												sendinput,{right}^{left}+^{right}+{[}
 	9::                       SendInput,{right}^{left}+^{right}+{9}
 	0::                       SendInput,{right}^{left}+^{right}+{9}+{'}
+	^n::                      SendInput,{shiftdown}{ctrldown}{n}{ctrlup}{shiftup} ;highlight next
 	^u::                      SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight previous
 	; '::  										sendinput,{right}^{left}+^{right}+{'}
 	^'::  										sendinput,{right}{ctrldown}{left}{shiftdown}{right}{'}{ctrlup}{shiftup}
@@ -175,10 +185,6 @@ return
 	; s::                    	
 	^s::                    sendinput, {shiftdown}{altdown}{s}{altup}{shiftup}
 	c::	                      clip.append()
-	; 1::							GetAllProducts()
-	; 2::							GetAllBatches()
-	; 3::							GetAllProducts("`n")
-	; 4::							GetAllBatches("`n")
 	#If 
 ;; 		||| VIM +SHIFT |||
 #If Getkeystate("Lshift","p") 							&& Getkeystate("F13","p")    
@@ -206,23 +212,30 @@ return
 	a::											Sendinput, {ctrldown}{a}{ctrlup}{delete}
   s:: 										SendInput,{home 2}{shiftdown}{end}{shiftup}{Backspace 2}
 	space::                 sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup}{delete}
-#If (A_PriorKey = "s" 										&& Getkeystate("F13","p")) ;&& A_TimeSincePriorHotkey < 900) ;; 	 	_s Vim_
-	a::                    Sendinput, {{shiftdown}{altdown}{a}{altup}{shiftup}
-	/::                    Sendinput, +{End}
-	m::                    Sendinput, +{Home}
-	`;::                   Sendinput, +!{;}
-	l::                    SendInput,{shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
-	h::                    SendInput,{shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
+#If (A_PriorKey = "s" 							&& Getkeystate("F13","p")) ;&& A_TimeSincePriorHotkey < 900) ;; 	 	_s Vim_
+	a::                    Sendinput, {shiftdown}{altdown}{a}{altup}{shiftup}
+	/::                    Sendinput, {F3 3}+{End}
+	m::                    Sendinput, {F3 3}+{Home}
+	n::                    
+												 Sendinput, {shiftdown}{ctrldown}{n}
+												 keywait F13
+												 sendinput {ctrlup}{shiftup}
+												 return
+	u::                    
+												 Sendinput, {shiftdown}{ctrldown}{u}
+												 keywait F13
+												 sendinput {ctrlup}{shiftup}
+												 return
 	.::
-	w::                    sendinput, {F3 3}{ctrldown}{right}{shiftdown}{left}{ctrlup}{shiftup}
+	w::                    sendinput, {F3 3}{ctrldown}{shiftdown}{Right}{shiftup}{ctrlup}
 	,::
-	b::                    Sendinput, {ctrldown}{shiftdown}{left}{ctrlup}{shiftup}
+	b::                    Sendinput, {F3 3}{ctrldown}{shiftdown}{left}{shiftup}{ctrlup}
 	s::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} 
 	; d::											
-	d::                    sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace 2} ;select line
+	d::                    sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}{Delete} ;select line
 	x::                    sendinput % "^{x}" tt(Clipboard,1000)
 	c::                    sendinput % "^{c}" tt(Clipboard,1000)
-
+ v::                    	clip.cutswap()
 #If (A_PriorHotKey = "p"									&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 1000) ;; 	 	_p Vim_
 	q::										
 		send, Vquest.ahk
@@ -372,7 +385,7 @@ return
 	^9::                    SendInput,{right}^{left}+^{right}+{9}
 	^0::                    SendInput,{right}^{left}+^{right}+{9}+{'}
 	Tab::                   SendInput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
-	p::                     SendInput,{F9}
+	p::                   VScodeTabsMenu() ;  SendInput,{F9} ;quick open editors view
 	^]::                    SendInput,{right}^{left}+^{right}+{[}
 	^[::                    SendInput,{right}^{left}+^{right}{[}
 	; ]::                     SendInput,+!#{]} ;go to bracket right

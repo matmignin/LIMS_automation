@@ -2,7 +2,8 @@ return
 #IfWinActive,ahk_exe Code.exe  ;;___VSCODE___    
 	; Mbutton::sendinput, +{F9}  
 	<^h::[    
-	<^l::]    
+	<^l::]   
+	F17::Enter 
 	Numlock::ReloadScript()
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
@@ -35,7 +36,7 @@ return
 ;;		---F Keys---
  ; go to file
 	F2::FindMatchingWindows()
-	F15::ReloadScript()
+	F15::F15
 	; F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
 	; F13 & s::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
 ;send, {click}^{v} ;{F19}
@@ -73,9 +74,44 @@ return
 	; F13::F13
 	
 ;;		---TAB---
-	
-#IfWinActive
+VScodeTabsMenu(){
+		try Menu,VScodeTabs, deleteAll
+		Menu, VScodeTabs,add, V&quest, SelectVScodeTab
+		Menu, VScodeTabs,add, VAR&BAR, SelectVScodeTab
+		Menu, VScodeTabs,add, &VIM, SelectVScodeTab
+		Menu, VScodeTabs,add, &Excel, SelectVScodeTab
+		Menu, VScodeTabs,add, &LMS, SelectVScodeTab
+		Menu, VScodeTabs,add, &temp, SelectVScodeTab
+		Menu, VScodeTabs,add, &Test, SelectVScodeTab
+		Menu, VScodeTabs,add, &VScode, SelectVScodeTab
+		Menu, VScodeTabs,add, &OpenApp, SelectVScodeTab
+		Menu, VScodeTabs,add, &Menu, SelectVScodeTab
+		Menu, VScodeTabs,add, &Functions, SelectVScodeTab
+		Menu, VScodeTabs,add, &clip, SelectVScodeTab
+		Menu, VScodeTabs,add, &HotStrings, SelectVScodeTab
+		Menu, VScodeTabs,add, &KEYS, SelectVScodeTab
+		Menu, VScodeTabs,add, P&ad, SelectVScodeTab
+		menu, VsCodeTabs,add
+		Menu, VScodeTabs,add, &Previous, SelectVScodeTab
+		Menu, VScodeTabs,add, E&xit, SelectVScodeTab
+		Menu, VscodeTabs,Show
+		return
 
+SelectVScodeTab: 
+	ThisMenuItem:= StrReplace(A_ThisMenuItem, "&","")
+		send, {F9}
+		sleep 50
+	If (A_ThisMenuItem == Exit)
+		Menu,VScodeTabs, deleteAll
+	else If (A_ThisMenuItem == &Previous)
+		sendinput, {F9}{down}
+	else 
+		send % ThisMenuItem ".ahk"
+	sleep 200
+	send, {enter}
+	Menu,VScodeTabs, deleteAll
+		return
+}
 
 
 class Vim {

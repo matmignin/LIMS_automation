@@ -604,6 +604,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	}
   ;sdf 
 }
+
 F21::clip("OCR")
 
 

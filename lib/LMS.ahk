@@ -115,7 +115,7 @@
 
 Class LMS {    			;;_____________________Generl LMS_________________________
 
-	SearchBar(Code:="",PostCmd:="",Overwrite:="Overwrite"){
+	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 			Global
 			if !winactive("ahk_exe WFICA32.EXE")
 				winactivate, ahk_exe WFICA32.EXE
@@ -143,10 +143,10 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 					If (Code=Product){
 						clk(x%Tab%Search,yProductsSearch)
 						Send, {ctrldown}{a}{ctrlup}
-						If Overwrite=Add
+						If Overwrite=true
 							Send, ^{x}	
 						Send, %Product%{ctrldown}{a}{ctrlup}
-						If Overwrite=Add
+						If Overwrite=true
 							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
