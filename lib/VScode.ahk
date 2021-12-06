@@ -189,8 +189,8 @@ ReloadScript(){
 	sleep 100
 	WinSet, Transparent, off, ahk_exe Code.exe
 	; try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-	if Debugging
-		ControlSend, , ^+{r}, ahk_exe Code.exe
+if A_DebuggerName
+		ControlSend, , {Numlock}, ahk_exe Code.exe
 	else
 		reload
 	}

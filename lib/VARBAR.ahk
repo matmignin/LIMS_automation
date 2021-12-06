@@ -1,4 +1,4 @@
-
+#include <BatchesDDL>
 
 Class VarBar{	
 	Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -23,21 +23,13 @@ Class VarBar{
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
-		OnMessage(0x203, "VariableBar_Relocate")
+		; OnMessage(0x203, "VariableBar_Relocate")
+		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
+		OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
 		WinSet, Transparent, %Varbar_T%, AHK_id %GUIID%
 		return
 	}
 
-		AddEdit(Variable,Dimensions:="",Font:=""){
-			global
-				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
-				Gui,VarBar:Add,edit,		v%Variable% +wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable% 
-		}
-		AddText(Variable,Dimensions:="",Font:=""){
-			global
-				GUI,VarBar:Font,			 s%Font%  ;cBlack Bold, %Font%
-				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  
-		}
 	AddBoxes(){
 			global
 			this.AddEdit("Product",	"left h29 x10 y1 w65",			"16 Bold")
@@ -54,11 +46,12 @@ Class VarBar{
 				this.AddEdit("Coated",	"left h29 x+1 y1 " c_L,			"9, Arial Narrow")
 			This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
-			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")
+			this.AddBatchesDDL()
+; 
 						; edit7
 			Gui, VarBar:add, Checkbox, x10 y+5 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel-Link
-			Gui, Varbar:add, DDL, x+3 Y65 vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode|Debugging
-			GuiControl, ChooseString, ComboBox1, %Mode%
+		;	Gui, Varbar:add, DDL, x+3 Y65 vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode|Debugging
+			; GuiControl, ChooseString, ComboBox1, %Mode%
 
 			if ShowSampleID
 				this.AddEdit("SampleID","x+1 w85",					"9, Arial Narrow")
@@ -75,9 +68,12 @@ Class VarBar{
 			sleep 200
 		return
 
+			DDLVarbar:
+			Gui, VarBar:submit,NoHide
+			this.updateWith(DDL)
+			return 
 
 			ExcelConnectCheck:
-
 			ProductVarBar:
 			BatchVarBar:
 			LotVarBar:
@@ -100,6 +96,46 @@ Class VarBar{
 			return
 		}
 
+UpdateWith(Input){
+			Global
+		; Clipboard:=DDL
+		; RegExMatch(Input, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+				RegexMatch(Input, "i)[abdefghijkl]\d{3}", VarProduct)
+        RegexMatch(Input, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
+        RegexMatch(Input, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
+        RegExMatch(Input, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
+		Product:=VarProduct
+		Batch:=VarBatch
+		lot:=Varlot
+		Coated:=VarCoated
+		; String:=Trim(Product " " Batch " " Lot " " Coated)
+		GuiControl,Varbar:Text, Product, %VarProduct%
+		GuiControl,Varbar:Text, Batch, %VarBatch%
+		GuiControl,Varbar:Text, lot, %Varlot%
+		GuiControl,Varbar:Text, Coated, %VarCoated%
+		; GuiControl, MoveDraw, DDL
+		try XL.Sheets(VarProduct).activate
+		return
+		}
+
+AddBatchesDDL(){
+   global
+		CurrentCodes =  
+		loop, read, Data\CurrentCodes.txt
+			CurrentCodes .= A_LoopReadLine "|"
+		Gui, Varbar:Add, DDL, x1 y+1 w200 vDDL gDDLVarbar hwndHDDL +0x0210, %Product%||%CurrentCodes%
+}
+
+		AddEdit(Variable,Dimensions:="",Font:=""){
+			global
+				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
+				Gui,VarBar:Add,edit,		v%Variable% +wrap -multi	g%Variable%VarBar %Dimensions%,		%    %Variable% 
+		}
+		AddText(Variable,Dimensions:="",Font:=""){
+			global
+				GUI,VarBar:Font,			 s%Font%  ;cBlack Bold, %Font%
+				Gui,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		%    %Variable%  
+		}
 
 Menu(){
   global
@@ -456,3 +492,7 @@ HistoryMenuItem(){
 			;IniWrite, %Mode%, Settings.ini, Options, Mode
 			return
 } 
+
+
+
+

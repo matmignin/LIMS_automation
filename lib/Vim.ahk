@@ -173,7 +173,7 @@ return
 	0::                       SendInput,{right}^{left}+^{right}+{9}+{'}
 	^n::                      SendInput,{shiftdown}{ctrldown}{n}{ctrlup}{shiftup} ;highlight next
 	^u::                      SendInput,{shiftdown}{ctrldown}{u}{ctrlup}{shiftup} ;hilight previous
-	; '::  										sendinput,{right}^{left}+^{right}+{'}
+	^r::  										sendinput,{shiftdown}{altdown}{ctrldown}{F5}{ctrlup}{altup}{shiftup}
 	^'::  										sendinput,{right}{ctrldown}{left}{shiftdown}{right}{'}{ctrlup}{shiftup}
 	^m::                      SendInput,{shiftdown}{Home 2}{shiftup}
 	; ^/::                    SendInput,{shiftdown}{end}{shiftup} 

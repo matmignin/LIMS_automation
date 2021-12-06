@@ -5,39 +5,30 @@ SetBatchLines, -1
 ; Gui, Add, ... If the default font is used, leave them empty. (see also OD_MeasureItem())
 GuiFontName := "Arial"
 GuiFontOpts := ""
+Product:="K772"
 ; ==================================================================================================================================
 ; Message handlers for owner drawing
 OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
+	; CurrentCode:=[]
+
+   ; CodeList:=[]
+   CurrentCodesDDL2 =  
+		loop, read, C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
+			; CodeList.Insert(A_LoopReadLine)
+			CurrentCodesDDL2 .= A_LoopReadLine "|"
 ; ==================================================================================================================================
-DDLContent =
+CurrentCodesDDL =
 (Join|
-K741 107-0431 0278H1
-H624 400657
-B324 105-1172 0656H1
-J929 910-0128 0623I1
-J837 109-0445 0670I1
-H259 109-0359 0555I1 Ct#109-0744
-B086 108-0752 Ct#109-0635
-B086 108-0752 Bulk Ct#109-0635
-K741 107-0431 0278H1
-H624 400657
-B324 105-1172 0656H1
-J929 910-0128 0623I1
-J837 109-0445 0670I1
-J837 109-0445 0670I1
-J837 109-0445 7777A7
-J837 109-0445
-H259 109-0359 0555I1 Ct#109-0744
-B086 108-0752 Ct#109-0635
-B086 108-0752 Bulk Ct#109-0635
+%CurrentCodesDDL2%
 )
+
 Gui, Margin, 10, 10
 Gui, Font, %GuiFontOpts%, %GuiFontName%
 ; Important: You have to add the CBS_OWNERDRAWFIXED (0x0010) as well as the CBS_HASSTRINGS (0x0200) style
-Gui, Add, DDL, w600 vDDL hwndHDDL +0x0210, %DDLContent%
+Gui, Add, DDL, w600 vDDL hwndHDDL +0x0210, %Product%|%CurrentCodesDDL%
 Gui, Add, Button, x+10 yp vBtn, Button
-;Gui, Add, DDL, xm w600, %DDLContent%
+Gui, Add, DDL, xm w600, %DDLContent%
 GuiControlGet, Btn, Pos
 GuiControlGet, DDL, Pos
 Y := DDLY + ((BtnH - DDLH) // 2)
@@ -45,9 +36,12 @@ GuiControl, Move, DDL, y%Y%
 Gui, Show, , Test
 GuiControl, MoveDraw, DDL ; needed to ensure that the control will shown properly after the first Gui, Show, ...
 Return
+
+
+
 ; ==================================================================================================================================
-GuiClose:
-ExitApp
+; GuiClose:
+; ExitApp
 ; ==================================================================================================================================
 ; Sent to the parent window of an owner-drawn DDL when a visual aspect of the combo box has changed.
 ; WM_DRAWITEM      -> msdn.microsoft.com/en-us/library/bb775923(v=vs.85).aspx

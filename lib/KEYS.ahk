@@ -514,7 +514,7 @@ GetAllBatches(Delimiter:=" "){
 		; Sendinput, %AllBatches%
 
 		PreventPopup:=
-		return AllBatches
+		return %AllBatches%
     ; msgbox, %AllBatches%,
 }
 GetAllProducts(Delimiter:=" "){

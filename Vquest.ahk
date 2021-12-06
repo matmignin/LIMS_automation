@@ -5,6 +5,8 @@ VQuest_Start:
     ;#ErrorStdOut
     ;Process, Priority, , High
     #NoEnv
+    if A_Debuggername
+      try Run, Vim.Ahk, lib\
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
     Iniread, Mode, Settings.ini, Options, Mode
     Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
@@ -71,8 +73,7 @@ VQuest_Start:
     HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
-    if Debugging
-      try Run, Vim.Ahk, lib\
+
     try Run, cl3.Ahk, lib\CL3
     If !HideVarBar
       varbar.Show()

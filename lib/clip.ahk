@@ -126,8 +126,8 @@ Parse(Value:=""){
         RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
-        RegExMatch(A_loopfield, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
-        RegExMatch(A_loopfield, "i)(s|\$)\d{8}-\d{3}\b", VarSampleID)
+        RegExMatch(A_loopField, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
+        RegExMatch(A_loopField, "i)(s|\$)\d{8}-\d{3}\b", VarSampleID)
           if VarProduct {
             Match:= VarProduct
             if varBatch
@@ -188,7 +188,7 @@ Cl3Parse(){
         RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
-        RegExMatch(A_loopfield, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
+        RegExMatch(A_loopField, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
           Match:= VarProduct
             if varBatch
               Match.= " " VarBatch
