@@ -18,7 +18,7 @@ clipindex = 0
 Return
 
 ; Scroll up and down through clipboard history
-^+WheelUp::
+^+Wheelup::
 if clipindex > 1
 {
   clipindex -= 1
@@ -28,7 +28,7 @@ clipboard := thisclip
 tooltip %clipindex% - %clipboard%
 SetTimer, ReSetToolTip, 1000
 Return
-^+WheelDown::
+^+Wheeldown::
 if clipindex < %maxindex%
 {
   clipindex += 1

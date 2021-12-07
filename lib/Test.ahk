@@ -8,7 +8,7 @@ return
 
 
 
-	MouseGesture(LeftAction:="",RightAction:=""){
+	MouseGesture(Leftaction:="",Rightaction:=""){
 		global
 		MouseGetPos, xi,yi
 		sleep =
@@ -17,12 +17,12 @@ return
 			MouseGetPos, Xf,Yf
 		}
 		if (xi>Xf){
-			send % leftAction
+			send % leftaction
 			tt("Left")
 			return
 		}
 		if (xi<Xf){
-			send % RightAction
+			send % Rightaction
 			tt("Right")
 			return
 		}
@@ -35,8 +35,8 @@ return
 
 
 ; 	F20 & Space::  ;; Testing Backcycle
-; 	If !ActiveWindowID
-; 		WinGet, ActiveWindowID, ID, A
+; 	If !activewindowID
+; 		winGet, activewindowID, ID, A
 ; 	cyclebackward:=1
 ; 	PreviousClipCycleCounter:=0 ; 13/10/2017 test
 ; 	ClipCycleCounter:=1
@@ -44,19 +44,19 @@ return
 ; 	While GetKeyState("F20","D") and cyclebackward
 ; 	{
 ; 		If (ClipCycleCounter <> 0)
-; 		{	
+; 		{
 ; 			; Var:=Product[%ClipCycleCounter%]
 ; 			Var:=Products[ClipCycleCounter]
 ; 			TT(Var,1000,,,,250,"C")
 ; 			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
 ; 			; Gui, History:Add, Text,, %Var%
-; 			; Gui, History:Show, NoActivate, var 
+; 			; Gui, History:Show, Noactivate, var
 ; 			; ttext:=% DispToolTipText(Var)
 ; 		}
 ; 		else
 ; 			ttext:="[cancelled]"
 ; 		If (oldttext <> ttext)
-; 		{	
+; 		{
 ; 			ToolTip, % ttext,A_CaretX, A_CaretY,
 ; 			oldttext:=ttext
 ; 		}
@@ -71,14 +71,14 @@ return
 ; 	}
 ; Return
 
-; F20 & Space Up::
+; F20 & Space up::
 ; 	PreviousClipCycleCounter:=ClipCycleCounter
 ; 	If (ClipCycleFirst = 0)
 ; 		ClipCycleCounter++
 ; 	ClipCycleFirst:=0
-; Return   
+; Return
 ; ClipBoardHandler2:
-; 	oldttext:="", ttext:="", ActiveWindowID:=""
+; 	oldttext:="", ttext:="", activewindowID:=""
 ; 	If (Var <> Clipboard)
 ; 	{
 ; 		StrReplace(ClipText,"`n", "`n", Count)
@@ -87,12 +87,12 @@ return
 ; 	;  StartTime:=A_TickCount
 ; 	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
 ; 	; Return
-; 	;  WinActivate, ahk_id %ActiveWindowID%
+; 	;  winactivate, ahk_id %activewindowID%
 ; 	; Sleep, 20
 ; 	send % BlockRepeat(25) "^v"
 ; 	; Send, ^v
 ; 	;  PasteTime := A_TickCount
-; 	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+; 	oldttext:="", ttext:="", activewindowID:="",ClipboardOwnerProcessName:=""
 ; 	; sleep 300
 ; Return
 
@@ -104,18 +104,18 @@ FloVar(){
 	Global
 ; try Gui, FloVar:Destroy
 CustomColor := "C7603F"  ; Can be any RGB color (it will be made transparent below).
-Gui FloVar: +LastFound +AlwaysOnTop -Caption +ToolWindow  ; +ToolWindow avoids a taskbar button and an alt-tab menu item.
+Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
 Gui, FloVar:Color, %CustomColor%
 Gui, FloVar:Font, s32  ; Set a large font size (32-point).
 Gui, FloVar:Add, Text, vMyText cFFFFFF, XXXXX YYYYY  ; XX & YY serve to auto-size the window.
 ; Make all pixels of this color transparent and make the text itself translucent (150):
-WinSet, TransColor, %CustomColor% 150
-SetTimer, UpdateOSD, 250
-Gosub, UpdateOSD  ; Make the first update immediate rather than waiting for the timer.
-Gui, FloVar:Show, x%Flovar_x% y%Flovar_y% NoActivate  ; NoActivate avoids deactivating the currently active window.
+winSet, TransColor, %CustomColor% 150
+SetTimer, updateOSD, 250
+Gosub, updateOSD  ; Make the first update immediate rather than waiting for the timer.
+Gui, FloVar:Show, x%Flovar_x% y%Flovar_y% Noactivate  ; Noactivate avoids deactivating the currently active window.
 return
 }
-UpdateOSD:
+updateOSD:
 ; MouseGetPos, MouseX, MouseY
 		; ControlGetText, Batch, Edit2, VarBar
 		; ControlGetText, Lot, Edit3, VarBar
@@ -164,7 +164,7 @@ return
 ; 	If IsFunc(FormatFunc)
 ; 		TextOut:=%FormatFunc%(TextOut)
 ; Return TextOut
-; } 
+; }
 
 
 
@@ -189,7 +189,7 @@ return
 
 ;; 	parcing a data file and setting to an array---------------------------------------------------------------
 ;------------------------------------------------------TEST 2 ------------------------------------------------------------
-Test_2(){ 
+Test_2(){
 	global
 	Gui, Add, Text, x10 y12, Load file.
 	Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
@@ -197,7 +197,7 @@ Test_2(){
 	Products:=[]
 return
 GuiClose2:
-; Gui,Destroy 
+; Gui,Destroy
 return
 loadfile:
 	FileSelectFile, eFile, 3, , Open the file, All FIles (*.*) ;* ; *.html; *.csv)
@@ -247,7 +247,7 @@ Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Data\CurrentCodes.txt"){
 ; 			break
 ; }
 ; MouseGetPos, ContactNamePosX, ContactNamePosy
-; Send {Ctrl Up}{LButton Up}
+; Send {ctrl up}{LButton up}
 ;	}
 
 
@@ -256,7 +256,7 @@ Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Data\CurrentCodes.txt"){
 
 ~Numlock:: ;Clipchain_v()
 MouseGetPos, xx
-TimeButtonDown = %A_TickCount%
+TimeButtondown = %A_TickCount%
 ; Wait for it to be released
 Loop
 {
@@ -264,7 +264,7 @@ Loop
    GetKeyState, LButtonState, Numlock, P
   ;  if NumlockState = U  ; Button has been released.
   ;  {
-      ; If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
+      ; If winactive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
       ; {
       ;    Send, ^c
       ;    return
@@ -273,7 +273,7 @@ Loop
       ; break
   ;  }
    elapsed = %A_TickCount%
-   elapsed -= %TimeButtonDown%
+   elapsed -= %TimeButtondown%
    if elapsed > 200  ; Button was held down too long, so assume it's not a double-click.
    {
       MouseGetPos x0, y0            ; save start mouse position
@@ -299,7 +299,7 @@ Loop
    }
 }
 ; Otherwise, button was released quickly enough.  Wait to see if it's a double-click:
-TimeButtonUp = %A_TickCount%
+TimeButtonup = %A_TickCount%
 Loop
 {
    Sleep 10
@@ -307,13 +307,13 @@ Loop
    if NumlockState = D  ; Button has been pressed down again.
       break
    elapsed = %A_TickCount%
-   elapsed -= %TimeButtonUp%
+   elapsed -= %TimeButtonup%
    if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a double-click.
       return
 }
 
 ;Button pressed down again, it's at least a double-click
-TimeButtonUp2 = %A_TickCount%
+TimeButtonup2 = %A_TickCount%
 Loop
 {
    Sleep 10
@@ -322,7 +322,7 @@ Loop
       break
 }
 ;Button released a 2nd time
-TimeButtonUp3 = %A_TickCount%
+TimeButtonup3 = %A_TickCount%
 Loop
 ; GetKeyState, OutputVar, WhichKey [, Mode (P|T)]
 {
@@ -331,7 +331,7 @@ Loop
    if numlockState3 = D  ; Button has been pressed down a 3rd time.
       break
    elapsed = %A_TickCount%
-   elapsed -= %TimeButtonUp%
+   elapsed -= %TimeButtonup%
    if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
    {  ;Double-click
       Send, ^c
@@ -349,7 +349,7 @@ HasValue2(item, list, del:=","){ ;detect duplicate in array
 		haystack.= list del
 	else
 		for k,v in list
-			haystack.= v del	
+			haystack.= v del
 	Return !!InStr(del haystack del, del item del)
 }
 
@@ -363,8 +363,8 @@ Global
 
 }
 
-/* 
-; WinGetTitle, the_WinTitle, A
+/*
+; winGetTitle, the_winTitle, A
 ; 	caret_x:=A_CaretX
 ; 	caret_y:=A_Carety
 ; 	clipboard:=
@@ -379,10 +379,10 @@ Global
 ; 	winactivate, %The_wintitle%
 ; 	; click, %caret_X%, %caret_y%
 ; 	Send, {click, %caret_x%, %caret_y%}^{v}
- 
+
 
 ClipHandler:
-oldttext:="", ttext:="", ActiveWindowID:=""
+oldttext:="", ttext:="", activewindowID:=""
 If (ClipText <> Clipboard)
 	{
 	 StrReplace(ClipText,"`n", "`n", Count)
@@ -409,10 +409,10 @@ If (A_EventInfo <> 1)
 	Return
 
 ;ProcesshWnd:=DllCall("GetClipboardOwner", Ptr) ; may not work for all Executables
-WinGet, ClipboardOwnerProcessName, ProcessName, % "ahk_id " DllCall("GetClipboardOwner", Ptr)
+winGet, ClipboardOwnerProcessName, ProcessName, % "ahk_id " DllCall("GetClipboardOwner", Ptr)
 
 If (ClipboardOwnerProcessName = "")
-	WinGet, ClipboardOwnerProcessName, ProcessName, A
+	winGet, ClipboardOwnerProcessName, ProcessName, A
 
 StringLower, ClipboardOwnerProcessName, ClipboardOwnerProcessName ; just in case process has mixed case "KeePass.exe" - Exclude is set to lowercase after IniRead (lib\settings.ahk)
 
@@ -427,7 +427,7 @@ else
 If CopyDelay
 	Sleep % CopyDelay
 
-WinGet, IconExe, ProcessPath , A
+winGet, IconExe, ProcessPath , A
 If ((History.MaxIndex() = 0) or (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
 	History.Insert(1,{"text":"Text","icon": IconExe,"lines": 1})
 
@@ -436,7 +436,7 @@ History_Save:=1
 ; Skipping Excel.exe +
 ; Skipping CF_METAFILEPICT avoids "This picture is too large and will be truncated" error MsgBox in Excel it seems
 ; this allows the various formats to be stored (temporarily) so we can paste the formatted text which may have been changed by AutoReplace - this avoids the need to turn AR on/off to get something to paste
-If !WinActive("ahk_exe excel.exe")
+If !winactive("ahk_exe excel.exe")
 	{
 	 If (hk_BypassAutoReplace <> "")
 		{
@@ -464,7 +464,7 @@ Return
 }
 
 ClipCheckHistory: ; check for duplicate entries
- newhistory:=[] 
+ newhistory:=[]
 
 for k, v in History
 	{
@@ -502,8 +502,8 @@ Return
 
 ; 		Msgbox % Batches[0]
 
-;; 	 grep all the product codes out of a file and add them to an array without duplicates 
-/* 	
+;; 	 grep all the product codes out of a file and add them to an array without duplicates
+/*
 products:=[]
 	fileread, ProductList, Settings.ini ;read the Settings.ini file
 pos=0
@@ -513,7 +513,7 @@ while pos := RegexMatch(productlist, "i)[abdefghijkl]\d{3}", var, pos+1) { ;fine
 								Products.insert(var) ; add to products array
 }
 msgbox % listarray(products)
-return 
+return
 */
 
 ; ; 	; }
@@ -525,12 +525,12 @@ return
 ; 	CurrentCodesDDL:=CurrentCode[1]
 ; 	loop % CurrentCode.maxindex(){
 ; 		if A_Index:=1
-; 			continue 
+; 			continue
 ; 		CurrenwtCodesDDL.="|" CurrentCode[A_index]
 ; 		}
 ; 	Return CurrentCode
-; }	
-/* 			
+; }
+/*
 	Class Notes{
 		Show(){  ;array - remove duplicates (case insensitive)
 			global
@@ -553,8 +553,8 @@ return
 			; LoadedNotes8:=MyArray[8]
 			; LoadedNotes6:=MyArray[6]
 			; LoadedNotes7:=MyArray[7]
-			gui Notes:+LastFound +AlwaysOnTop -Caption -ToolWindow +owner
-			gui, Notes:add, button, Hidden default gNotesButtonOK, OK 
+			gui Notes:+LastFound +AlwaysOnTop -Caption -Toolwindow +owner
+			gui, Notes:add, button, Hidden default gNotesButtonOK, OK
 			gui, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
 			; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
 			; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
@@ -562,7 +562,7 @@ return
 				n:=A_index + 1
 				Myedit=myedit%n%
 				Note:=myArray[n]
-				gui, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]	
+				gui, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]
 			}
 			; OnMessage(0x84, "WM_NCHITTEST")
 			; OnMessage(0x83, "WM_NCCALCSIZE")
@@ -571,9 +571,9 @@ return
 			Notes_x:=Varbar_x+136
 			Notes_y:=Varbar_Y+30
 			gui, Notes:show, w145 x%Notes_x% y%Notes_y% ,Notes
-			WinSet, Transparent, 195
+			winSet, Transparent, 195
 			return
-			
+
 		}
 		Add(){
 			global
@@ -584,8 +584,8 @@ return
 			loadedNotes:="loadednotes4"
 				gui, Notes:add, edit, w140 -Choose -VScroll +resize %Myedit%, %LoadedNotes%
 			return
-			
-			
+
+
 		}
 		close(){
 			global
@@ -602,7 +602,7 @@ return
 			; Fileappend, %Myedit5%`n, lib/Notes.txt
 			gui, Notes:destroy
 		return
-		} 
+		}
 			Save(){
 				global
 			gui, Notes:submit, nohide
@@ -647,7 +647,7 @@ return
 			notes.Save()
 			notes.Close()
 			return
-			
+
 			NotesGuiClose:
 			NotesGuiEscape:
 			notes.Save()

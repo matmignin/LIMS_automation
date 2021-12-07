@@ -3,46 +3,46 @@
 Class Excel{
 Connect(reload:=0){
 	Global
-		IF !Winexist("Mats LMS Workbook.xlsb")
+		IF !winexist("Mats LMS Workbook.xlsb")
 		Return
-	Gui VarBar:+LastFound
+	; Gui VarBar:+LastFound
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if WinExist("Mats LMS Workbook.xlsb")
+	if winExist("Mats LMS Workbook.xlsb") && (ExcelConnect)
 		ControlSend,ahk_parent,{esc}, Mats LMS Workbook.xlsb
 	else {
-		TT("no notebook open",500) 
+		TT("no notebook open",500)
 				; VarBar.load()
 				varbar.show()
 				return
 		}
 	Try {
-		XL := ComObjActive("Excel.Application")
+		XL := ComObjactive("Excel.Application")
 		XL.Visible := True
 		ComObjConnect(XL,"Excel.")
-		sht := XL.ActiveSheet.Name
-			Gui VarBar:+LastFound
+		sht := XL.activeSheet.Name
+			; Gui VarBar:+LastFound
 	}
-	Catch 
+	Catch
 		TT("Didnt connect to workbook", 5000,,,1)
 	This.InfoLocations()
-	Gui VarBar:+LastFound
+	; Gui VarBar:+LastFound
 	if (Reload = 1)
 		VarBar.show()
 	return
 }
 
-FindAndReplace(A_Find,A_Replace,A_Range,OffsetX:=0,OffsetY:=0){ 
+FindAndReplace(A_Find,A_Replace,A_Range,OffsetX:=0,OffsetY:=0){
 	global
-  XlWb:=ComObjActive("Excel.Application")
-  CellToChange:=XlWb.ActiveSheet.Range(A_Range).Find(A_Find).offset(OffsetX,OffsetY)
+  XlWb:=ComObjactive("Excel.Application")
+  CellToChange:=XlWb.activeSheet.Range(A_Range).Find(A_Find).offset(OffsetX,OffsetY)
 	sleep 200
       CellToChange.value:=A_Replace
 }
 
 
 
-SheetActivate(XL){
+Sheetactivate(XL){
   global
   excel.Infolocations()
   excel.RegexCell()
@@ -53,8 +53,8 @@ SheetActivate(XL){
 GetAllSheets(){ ; Get each sheet name and turn it into an array
 global
 ProductSheets:=[]
-XL := ComObjActive("Excel.Application")
-												For sheet in xl.ActiveWorkbook.Worksheets
+XL := ComObjactive("Excel.Application")
+												For sheet in xl.activeWorkbook.Worksheets
 												; {
 													cSheet:=sheet.name
 													; if RegexMatch(cSheet, "i)[abdefghijkl]\d{3}\b")
@@ -71,13 +71,13 @@ XL := ComObjActive("Excel.Application")
 												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Micro Pending", " | ")
 												  ; AllWorkSheets:= StrReplace(AllWorkSheets, A_space A_space, A_space)
 												 Return AllWorkSheets
-												} 
+												}
 
 SheetChange(sht,Cell) {
 	Global
-	if (Cell.ActiveCell.Address = "$E$1" || Cell.ActiveCell.Address = "$B$3") {
+	if (Cell.activeCell.Address = "$E$1" || Cell.activeCell.Address = "$B$3") {
 			excel.Infolocaions()
-	POP(Cell.ActiveCell.value,Shipto)
+	POP(Cell.activeCell.value,Shipto)
 	}
 	else
 		return
@@ -85,12 +85,12 @@ SheetChange(sht,Cell) {
 		; return
 	; xcel.RegexCell()
 	; POP(Cell.address)
-	; ToolTip % "Active Cell changed to " cell.address[5,1]
-	; POP(cell.ActiveSheet.Range("E1").Address)		; XL := Excel_Get()
-		; row_1 := XL.ActiveCell.Row
-		; col_1 := XL.ActiveCell.Column
-		; add_1 := XL.ActiveCell.Address[0,0]
-		
+	; ToolTip % "active Cell changed to " cell.address[5,1]
+	; POP(cell.activeSheet.Range("E1").Address)		; XL := Excel_Get()
+		; row_1 := XL.activeCell.Row
+		; col_1 := XL.activeCell.Column
+		; add_1 := XL.activeCell.Address[0,0]
+
 		; cell_address := XL.Cells(1, col_1).Address[0,0]
 		; stringtrimright, col_1, cell_address, 1
 
@@ -98,9 +98,9 @@ SheetChange(sht,Cell) {
 		; XL.Range(cross_hairs).Select
 	}
 
-		
+
 ; CopySheetName(){
-; 	SheetName:= xl.ActiveWorkbook.Worksheets.name
+; 	SheetName:= xl.activeWorkbook.Worksheets.name
 ; }
 	RegexCell(vCell,n:=""){
 		Global
@@ -112,18 +112,18 @@ SheetChange(sht,Cell) {
 	}
 InfoLocations(){
 	global
-		SheetName:=XL.ActiveSheet.Name
+		SheetName:=XL.activeSheet.Name
 		; if !RegexMatch(SheetName,"i)[abdefghijkl]\d{3}\b")
 			; return
 	Batches:=[]
 	GuiControl, -redraw, varbar
 		Try Product:=XL.Range("B1").Value
-		catch 
+		catch
 			Return
 		This.RegexCell(XL.Range("E1").Value)
 		MoreBatches:=XL.range("H1").Value
 		; Products:=[]
-		loop, parse, MoreBatches, `r`n 
+		loop, parse, MoreBatches, `r`n
 		{
 			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
 					if sBatch
@@ -170,7 +170,7 @@ InfoLocations(){
 	}
 
 SearchWorkbook(SearchWord:=""){
-	SendInput, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
+	Sendinput, ^{f}!{t}!{h}{right}{enter}!{s}{right}!{t}!{n}%searchWord%
 	return
 	}
 
@@ -183,21 +183,21 @@ SaveToDataBase(){
  msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
 
  LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-	Return 
+	Return
 	}
 
-ActiveCell(){
+activeCell(){
 	Global
-	ActiveCell := Xl.ActiveCell.value
-	ActiveCell := Trim((ActiveCell, "`r`n"))
-	return ActiveCell
+	activeCell := Xl.activeCell.value
+	activeCell := Trim((activeCell, "`r`n"))
+	return activeCell
 	}
 
 NextSheet(){
 	global
 	Gui VarBar:+LastFound
 	;GuiControl, -redraw, varbar
-	NextSheet:=xl.ActiveWorkbook.Activesheet.index +1
+	NextSheet:=xl.activeWorkbook.activesheet.index +1
 	NextSheetName:=xl.activeworkbook.Worksheets(NextSheet).name
 	XL.Sheets(NextSheetname).activate
 	if (nextsheetname != "Sheet1" || nextsheetname != "Main" || nextsheetname != "Template" || nextsheetname != "Finished" || nextsheetname != "Micro Pending" || nextsheetname != "Sheet2" || nextsheetname != "Vitamin A" || nextsheetname != "Sheet1" || nextsheetname != "Item Code" || nextsheetname != "Scrap Sheet") {
@@ -205,8 +205,8 @@ NextSheet(){
 		;excel.connect()
 	Excel.MatchColor()
 	}
-	; TT(Product "`t" Batch "`n" Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R") 
-	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t" Customer) 
+	; TT(Product "`t" Batch "`n" Name "`t" Customer, 2000,Varbar_x,Varbar_y+20,1,250,"R")
+	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t" Customer)
 	GuiControl, +redraw, varbar
 	}
 
@@ -214,7 +214,7 @@ PrevSheet(){
 	global
 	Gui VarBar:+LastFound
 	;GuiControl, -redraw, varbar
-	PrevSheet:=xl.ActiveWorkbook.Activesheet.index -1
+	PrevSheet:=xl.activeWorkbook.activesheet.index -1
 	PrevSheetName:=xl.activeworkbook.Worksheets(PrevSheet).name
 	Xl.Sheets(PrevSheet).activate
 	if (prevSheetName != "Sheet1" || prevSheetName != "Main" || prevSheetName != "Template" || prevSheetName != "Finished" || prevSheetName != "Micro Pending" || prevSheetName != "Sheet2" || Prevsheetname != "Vitamin A" || prevSheetName != "Sheet1" || prevSheetName != "Item Code" || prevSheetName != "Scrap Sheet") {
@@ -222,38 +222,38 @@ PrevSheet(){
 		;excel.connect()
 	Excel.MatchColor()
 }
-	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer) 
+	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer)
 	; Excel.MatchColor()
 	GuiControl, +redraw, varbar
 	}
 
 MatchColor(){
 	Global
-	TabColor:=XL.ActiveWorkbook.Activesheet.Tab.Color
+	TabColor:=XL.activeWorkbook.activesheet.Tab.Color
 	if (A_mode=="TempCode")
-		Gui, VarBar:color,272822, FFFFFF     
+		Gui, VarBar:color,272822, FFFFFF
 	else if  (TabColor = 16777215) ;white
-		Gui, VarBar:color,, F2F2F2 ; 
+		Gui, VarBar:color,, F2F2F2 ;
 	else if	(TabColor = 16764057) || (TabColor = 13395456) ;Blue
-		Gui, VarBar:color,, BDD7EE ; 
+		Gui, VarBar:color,, BDD7EE ;
 	else if 	(TabColor = 13434828) || (TabColor = 32768) || 	(TabColor = 65280) ;light green
-		Gui, VarBar:color,, 339966 
+		Gui, VarBar:color,, 339966
 	else if 	(TabColor = 10092543) ;yellow
-		Gui, VarBar:color,, ffff00 
+		Gui, VarBar:color,, ffff00
 	else if 	(TabColor = 39423) || (TabColor = 26367)	;orange
-		Gui, VarBar:color,, EE8036 
+		Gui, VarBar:color,, EE8036
 	else if 	(TabColor = 12632256) || (TabColor = 8421504) 	;greay
-		Gui, VarBar:color,, 808080 
+		Gui, VarBar:color,, 808080
 	else if 	(TabColor = 10498160) 	;purple
-		Gui, VarBar:color,, 7030A0 
+		Gui, VarBar:color,, 7030A0
 	else if 	(TabColor = 16777215) 	;light purple
-		Gui, VarBar:color,, 9966FF 
+		Gui, VarBar:color,, 9966FF
 	else if 	(TabColor = 0) 	;black
-		Gui, VarBar:color,, 323130 
+		Gui, VarBar:color,, 323130
 	else If (Mode=="Debugging")
 		Gui, VarBar:color,, 808000 ;pink
 	else
-		Gui, VarBar:color,DC734F, 97BA7F 
+		Gui, VarBar:color,DC734F, 97BA7F
 	}
 Get_Current_row(){
 	Global
@@ -268,7 +268,7 @@ Get_Current_row(){
 	}
 Search(){
 	BlockInput, on
-	SendInput, ^f!t!h{right}{enter}!s{right}!t!n
+	Sendinput, ^f!t!h{right}{enter}!s{right}!t!n
 	BlockInput, off
 	sleep 200
 	return

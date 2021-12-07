@@ -1,12 +1,16 @@
 
 return
+ExitMenu:
+Menu,Menu, deleteAll
+return
+
 class Menu{
-    
+
     Delete(){
     global
     try Menu,Menu, deleteAll
     }
-    
+
     add(Item:="",group:="MenuHandle"){
     global
     Menu,menu,add,%item%,%group%
@@ -19,15 +23,17 @@ class Menu{
       Menu, Menu, add, All &Batches,    <!Space
       Menu, Menu, add, All &WorkSheets, F19 & up
       ; Menu, Menu, add, %Product%, F20 & left
-      Menu, Menu, add, Products_Tab, <#space 
-      Menu, Menu, add, Batches_Tab, <!space 
-      if WinActive("ahk_exe Code.exe")
+      Menu, Menu, add, Products_Tab, <#space
+      Menu, Menu, add, Batches_Tab, <!space
+      if winactive("ahk_exe Code.exe")
         Menu, Menu, add, &LMS Title, InputToVsCode
-        Menu, Menu, add, Window &Title, InputToVsCode
-        Menu, Menu, add, Window &Process, InputToVsCode
+        Menu, Menu, add, window &Title, InputToVsCode
+        Menu, Menu, add, window &Process, InputToVsCode
         Menu, Menu, add, &Click Position, InputToVsCode
         Menu, Menu, add, &Mouse Position, InputToVsCode
-        Menu, Menu, add, Window Location, InputToVsCode
+        Menu, Menu, add, window Location, InputToVsCode
+        Menu, Menu, add,
+        Menu, Menu, add, E&xit, ExitMenu
       Menu, Menu, Show
       ; KeyWait, Rbutton, U
         ; try Menu,Menu, deleteAll
@@ -51,12 +57,12 @@ class Menu{
       temp:=Products[a_index]
         Menu, Menu, Add, %temp%, SelectProducts
     }
-    GuiControl,Varbar:Text, Product, %Product%
-    GuiControl,Varbar:Text, Batch, %Batch%
-    GuiControl,Varbar:Text, lot, %lot%
-    GuiControl,Varbar:Text, Coated, %Coated%
+    ; GuiControl,Varbar:Text, Product, %Product%
+    ; GuiControl,Varbar:Text, Batch, %Batch%
+    ; GuiControl,Varbar:Text, lot, %lot%
+    ; GuiControl,Varbar:Text, Coated, %Coated%
     if product
-      selectedItem:= product 
+      selectedItem:= product
     if Batch
       selectedItem.= " " Batch
     if lot
@@ -87,48 +93,54 @@ class Menu{
   ;  Pop(A_ThisMenuItem,,3000)
     return
     }
-    
-    
+
+
     VsCode(){
     global
 		try Menu,Menu, deleteAll
-    if WinActive("ahk_exe Code.exe")
+    if winactive("ahk_exe Code.exe")
       Menu, Menu, add, &LMS Title, InputToVsCode
-    Menu, Menu, add, Window Title, InputToVsCode
-    Menu, Menu, add, Window Process, InputToVsCode
+    Menu, Menu, add, window Title, InputToVsCode
+    Menu, Menu, add, window Process, InputToVsCode
     Menu, Menu, add, Click Position, InputToVsCode
     Menu, Menu, add, Mouse Position, InputToVsCode
-    Menu, Menu, add, Window Location, InputToVsCode
+    Menu, Menu, add, window Location, InputToVsCode
+    Menu, Menu, add,
+    Menu, Menu, add, E&xit, ExitMenu
     try Menu, Menu, Show
     return
-    
+
     InputToVSCode:
-    if A_thismenuItem contains &LMS Title  
+    if A_thismenuItem contains &LMS Title
     {
       winactivate, ahk_exe WFICA32.EXE
       windowInfo()
       winactivate, ahk_exe Code.exe
-      send % Wintitle
+      send % wintitle
       return
     }
-    else 
-    pop("find window and click Mbutton")
+    else if (A_thismenuitem Contains E&xit) || (A_priorkey contains esc)
+      Menu,Menu, deleteAll
+    else
+    {
+    tt("find window and click space",3000)
     KeyWait, Space, d
-    WindowInfo()
+    windowInfo()
     winactivate, ahk_exe Code.exe
     sleep 200
-    if A_thismenuItem contains Window &Title
-      send % Wintitle
-    else if A_thismenuItem contains Window &Process
+    if A_thismenuItem contains window &Title
+      send % wintitle
+    else if A_thismenuItem contains window &Process
       send % Process
     else if A_thismenuItem contains &Click Position
       send % "{click " MousePosition "}"
     else if A_thismenuItem contains &Mouse Position
       send % MousePosition
-    else if A_thismenuItem contains Window Location
-      send % WinLocation
+    else if A_thismenuItem contains window Location
+      send % winLocation
     ; sendinput, %A_thismenuItem%
     try Menu,Menu, deleteAll
+    }
     return
     }
 
@@ -166,11 +178,11 @@ LMS(){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
     }
-      Menu, Menu, add, Paste All &Products,   F19 & Down
+      Menu, Menu, add, Paste All &Products,   F19 & down
       Menu, Menu, add, Paste All &Batches,    F19 & Left
       Menu, Menu, add, Paste All &WorkSheets, F19 & up
     Try Menu,menu,show
-  } 
+  }
   if winactive("Edit specification - \\Remote"){
     Menu, Menu, add, &Analytical, AutoFill
     Menu, Menu, add, &Physical, AutoFill
@@ -202,7 +214,7 @@ LMS(){
   Try Menu,menu,show
   return
   }
-  if Winactive("Login - \\Remote"){
+  if winactive("Login - \\Remote"){
     Menu,Menu, add, &Login, LMS_Env
     Menu,Menu, add, &Production Server, LMS_Env
     Menu,Menu, add, &Test Server, LMS_Env
@@ -211,13 +223,13 @@ LMS(){
   else
     return
   }
-  
-  
+
+
 Variable(){
     global
     ; CoordMode, mouse, Screen
     ; MouseGetPos, mx, my
-    try 
+    try
     this.delete()
     ; Menu, Menu, add, &Variables, Variable
       if Product
@@ -301,17 +313,17 @@ Variable(){
     return
   Passwords:
     if (A_ThisMenuItem = "Samples")
-    SendInput, care{enter}
+    Sendinput, care{enter}
    else if (A_ThisMenuItem = "Tests")
-    SendInput, lab{enter}
+    Sendinput, lab{enter}
    else if (A_ThisMenuItem = "Visual")
-    SendInput, open{enter}
+    Sendinput, open{enter}
    else if (A_ThisMenuItem = "&VQ Login")
-    SendInput, +Kilgore7744{enter}
+    Sendinput, +Kilgore7744{enter}
    else if (A_ThisMenuItem = "+Kilgore")
-    SendInput, Kilgore7744{enter}
+    Sendinput, Kilgore7744{enter}
    else if (A_ThisMenuItem = "&LMS Login")
-    SendInput,Mmignin{tab}Kilgore7744{enter}
+    Sendinput,Mmignin{tab}Kilgore7744{enter}
    else
     Menu,Menu, deleteAll
    return
@@ -341,23 +353,23 @@ Variable(){
 
   Apps(){
   global
-  try This.delete() 
+  try This.delete()
     menu, menu, add
-    Menu, Menu, Add, &LMS , !l 
-    Menu, Menu, Add, &VScode , !v 
+    Menu, Menu, Add, &LMS , !l
+    Menu, Menu, Add, &VScode , !v
     Menu, Menu, Add, &Outlook, !o
     Menu, Menu, Add, &Phone, !p
-    ; Menu, Menu, Add, &Workbook, !w 
-    Menu, Menu, Add, &Explorer, !e 
-    ; Menu, Menu, Add, &WorkSheets, Tests 
-    Menu, SubMenu, Add, &workBook, !w 
-    Menu, SubMenu, Add, &Test Log, F2 
-    Menu, SubMenu, Add, &Sample Log, +F2 
-    Menu, SubMenu, Add, &Rotations, ^F4 
-    Menu, SubMenu, Add, &Product Checklist, F3 
-    Menu, SubMenu, Add, &All Label Copy, F4 
+    ; Menu, Menu, Add, &Workbook, !w
+    Menu, Menu, Add, &Explorer, !e
+    ; Menu, Menu, Add, &WorkSheets, Tests
+    Menu, SubMenu, Add, &workBook, !w
+    Menu, SubMenu, Add, &Test Log, F2
+    Menu, SubMenu, Add, &Sample Log, +F2
+    Menu, SubMenu, Add, &Rotations, ^F4
+    Menu, SubMenu, Add, &Product Checklist, F3
+    Menu, SubMenu, Add, &All Label Copy, F4
   Menu, Menu, add, &WorkSeehts, :SubMenu
-    if Winexist("Login - \\Remote"){
+    if winexist("Login - \\Remote"){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
       }
@@ -367,15 +379,15 @@ Variable(){
 TaskBar(){
   global
   try This.delete()
-    ; Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets 
-    Menu, Menu, Add, Downloads , #^F1
+    ; Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets
+    Menu, Menu, Add, downloads , #^F1
     Menu, Menu, Add, Desktop , +#^F1
-    Menu, Menu, Add, &VQuest , #^v 
-    Menu, Menu, Add, &Settings.ini , +#^F8 
-    Menu, DataFiles, Add, CurrentCodes.txt, +#^F9 
-    Menu, DataFiles, Add, REQUESTGUID.ini, +#^F9 
-    Menu, DataFiles, Add, Methods.ini, +#^F9 
-    Menu, DataFiles, Add, Debug.txt, +#^F9 
+    Menu, Menu, Add, &VQuest , #^v
+    Menu, Menu, Add, &Settings.ini , +#^F8
+    Menu, DataFiles, Add, CurrentCodes.txt, +#^F9
+    Menu, DataFiles, Add, REQUESTGUID.ini, +#^F9
+    Menu, DataFiles, Add, Methods.ini, +#^F9
+    Menu, DataFiles, Add, Debug.txt, +#^F9
     Menu, Menu, add, Data Files, :DataFiles
     Menu, ExampleCode, Add, AHK Regex, +#^F7
     Menu, ExampleCode, Add, AHK Regex Advanced, +#^F7
@@ -396,19 +408,19 @@ TaskBar(){
     Menu, OneDrive, Add, &LMS Team, #^F7
     Menu, Menu, add, &OneDrive, :OneDrive
 
-    ; Menu, Menu, Add, &Workbook, !w 
+    ; Menu, Menu, Add, &Workbook, !w
     Menu, LabelCopyFolder, Add, &Label Copy Foldier, #^F2
     Menu, LabelCopyFolder, Add, &All Label Copy, #^F3
     Menu, LabelCopyFolder, Add, &Sample Log, #^F5
     Menu, LabelCopyFolder, Add, &QC SAMPLE (1), #^F11
     Menu, LabelCopyFolder, Add, &QC SAMPLE (2), #^F12
-    ; Menu, Menu, Add, &WorkSheets, Tests 
+    ; Menu, Menu, Add, &WorkSheets, Tests
     Menu, LabelCopyFolder, Add, &QC Appearance, #^F10
     Menu, LabelCopyFolder, Add, &Final Labels, #^F8
     Menu, LabelCopyFolder, Add, &FINAL C_O_A, #^F9
     Menu, LabelCopyFolder, Add, &Rotations, +#^F12
   Menu, Menu, add, &Label Copy, :LabelCopyFolder
-    if Winexist("Mats Workbook") && WinActive("NuGenesis LMS - \\Remote"){
+    if winexist("Mats Workbook") && winactive("NuGenesis LMS - \\Remote"){
       Menu,Menu,add,				&Spec Table,						Tests
 			Menu,Menu,add,				&Ingredient Table,			Tests
       }
@@ -420,7 +432,7 @@ TaskBar(){
 Remote_desktop(){
   global
   try This.delete()
-      if Winexist("Login - \\Remote"){
+      if winexist("Login - \\Remote"){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
       }
@@ -445,45 +457,45 @@ Remote_desktop(){
   return
   Remote_Desktop:
     If (A_thisMenuItem = "TESTING LMS"){
-      SendInput,{Click 182, 97}10.1.2.153 ;{enter}
-      ; winwaitactive, Windows Security,,2
+      Sendinput,{Click 182, 97}10.1.2.153 ;{enter}
+      ; winwaitactive, windows Security,,2
       ; if !errorlevel
-      ; SendInput, Kilgore7744 ;{enter}
+      ; Sendinput, Kilgore7744 ;{enter}
       return
       }
     if (A_thisMenuItem = "TEST_LMS")
-      SendInput,{Click 182, 97}10.1.2.152 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.152 ;{enter}
     if (A_thisMenuItem = "TEST_NuGen")
-      SendInput,{Click 182, 97}10.1.2.150 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.150 ;{enter}
     if (A_thisMenuItem = "TEST_SDMS")
-      SendInput,{Click 182, 97}10.1.2.149 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.149 ;{enter}
     if (A_thisMenuItem = "PRD_Citrix_One")
-      SendInput,{Click 182, 97}10.1.2.134 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.134 ;{enter}
     if (A_thisMenuItem = "PRD_Citrix_Two")
-      SendInput,{Click 182, 97}10.1.2.226 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.226 ;{enter}
     if (A_thisMenuItem = "PRD_Citrix_Three")
-      SendInput,{Click 182, 97}10.1.2.227 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.227 ;{enter}
     if (A_thisMenuItem = "LMS_PRD")
-      SendInput,{Click 182, 97}10.1.2.138 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.138 ;{enter}
     if (A_thisMenuItem = "NuGenesis")
-      SendInput,{Click 182, 97}10.1.2.164 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.164 ;{enter}
     if (A_thisMenuItem = "SDMS")
-      SendInput,{Click 182, 97}10.1.2.142 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.142 ;{enter}
     if (A_thisMenuItem = "PRD_EMPCitrix")
-      SendInput,{Click 182, 97}10.1.2.242 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.242 ;{enter}
     if (A_thisMenuItem = "Empower")
-      SendInput,{Click 182, 97}10.1.2.228 ;{enter}
+      Sendinput,{Click 182, 97}10.1.2.228 ;{enter}
     else
       Try Menu,Menu, deleteAll
     return
 
   }
 
-  
+
   Products(){
     global
       This.delete()
-    If !WinExist("Mats LMS Workbook.xlsb - Excel"){
+    If !winExist("Mats LMS Workbook.xlsb - Excel"){
       varbar.historymenuItem()
       return
     }
@@ -500,7 +512,7 @@ Remote_desktop(){
     ProductsList:
     if !A_ThisMenuItem
       return
-    try XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
+    try XL.activeworkbook.Worksheets(A_ThisMenuItem).activate
     excel.InfoLocations()
       ; Pop(Product,Batch " " lot)
     excel.MatchColor()
@@ -511,7 +523,7 @@ Remote_desktop(){
       global
       Batches:=[]
       This.Delete()
-      If !WinExist("Mats LMS Workbook.xlsb - Excel"){
+      If !winExist("Mats LMS Workbook.xlsb - Excel"){
         varbar.historymenuItem()
         return
       }
@@ -529,7 +541,7 @@ Remote_desktop(){
       Try Menu,menu,show
 
       return
-    
+
   BatchesList:
     if !A_ThisMenuItem
       return
@@ -552,7 +564,7 @@ Remote_desktop(){
           menu,menu,check, %temp%,
       }
       Try Menu,menu,show
-    
+
   SetStatusList:
     XL.Range("B7").Value := A_ThisMenuItem
     excel.MatchColor()
@@ -565,7 +577,7 @@ Remote_desktop(){
 return
 
 ; ProductsList:
-;   XL.activeworkbook.Worksheets(A_ThisMenuItem).Activate
+;   XL.activeworkbook.Worksheets(A_ThisMenuItem).activate
 ; return
 
 
@@ -590,7 +602,7 @@ return
 
 
 
-;;      ExtraActions:
+;;      Extraactions:
 
 
 
@@ -654,12 +666,12 @@ Tests:
     Menu,Menu, deleteAll
    return
 
-    
-    
+
+
 
    LMS_Env:
-   IfWinExist, Login - \\Remote, 
-      WinActivate, Login - \\Remote
+   IfwinExist, Login - \\Remote,
+      winactivate, Login - \\Remote
     sleep 200
     Send,mmignin{tab}Kilgore7744
     if A_thismenuItem contains &Login
@@ -682,10 +694,10 @@ Tests:
 
    SwitchEnv(ServerEnv){
     sleep 200
-    Send,{Tab}{Tab}{Down} ; WinwaitActive, Change Configuration - \\Remote ahk_class Transparent Windows Client
+    Send,{Tab}{Tab}{down} ; winwaitactive, Change Configuration - \\Remote ahk_class Transparent windows Client
     sleep 200
-    Send,{Home}{Right}{Right}{Right}{Right}{LShift Down}{End}{End}{LShift Up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
-    sleep 200 ; WinwaitActive, Login - \\Remote ahk_class Transparent Windows Client
+    Send,{Home}{Right}{Right}{Right}{Right}{LShift down}{End}{End}{LShift up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
+    sleep 200 ; winwaitactive, Login - \\Remote ahk_class Transparent windows Client
     Send,{Enter}
   }
 

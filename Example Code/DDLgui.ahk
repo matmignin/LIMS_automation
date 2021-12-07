@@ -58,7 +58,7 @@ ODDDL_DrawItem(wParam, lParam) {
    ; Background and text colors for selected and default states
    Static DefBkgClr := 0xFFFFFF ; white
    Static DefTxtClr := 0x000000 ; black
-   Static SelBkgClr := 0xFBF1E5 ; Win 10 selection color
+   Static SelBkgClr := 0xFBF1E5 ; win 10 selection color
    Static SelTxtClr := 0x000000 ; black
    ; OD actions
    Static ODA := {DrawEntire: 1, Select: 2, Focus: 4}
@@ -69,8 +69,8 @@ ODDDL_DrawItem(wParam, lParam) {
    ; lParam -> DRAWITEMSTRUCT offsets
    Static OffType := 0
         , OffItem := 8
-        , OffAction := OffItem + 4
-        , OffState := OffAction + 4
+        , Offaction := OffItem + 4
+        , OffState := Offaction + 4
         , OffHWND := OffState + A_PtrSize
         , OffHDC := OffHWND + A_PtrSize
         , OffRECT := OffHDC + A_PtrSize

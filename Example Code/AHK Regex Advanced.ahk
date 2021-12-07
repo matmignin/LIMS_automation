@@ -83,7 +83,7 @@
 
 ;NOTES: REGEX EQUIVALENTS FOR ? AMD * WILDCARDS IN WINDOWS
 
-;In Windows:
+;In windows:
 ;? usually means 1 character [RegEx equivalent: .]
 ;* usually means 0 or more characters [RegEx equivalent: .*]
 
@@ -597,7 +597,7 @@ MsgBox, % v
 vText := SubStr(vText, 1, RegExMatch(vText "`r", "`r|`n") - 1)
 
 ;get nth item (useful link)
-;NCHITTEST Full Throttled - basic Window manipulations - Scripts and Functions - AutoHotkey Community
+;NCHITTEST Full Throttled - basic window manipulations - Scripts and Functions - AutoHotkey Community
 ;https://autohotkey.com/board/topic/31032-nchittest-full-throttled-basic-window-manipulations/#entry197623
 
 vNum := 3

@@ -9,7 +9,7 @@ Version history:
 
 2.1)
 - subpattern can be encapsulated (thanks titan)
-- tab with text fields allow theme (thanks titan)  
+- tab with text fields allow theme (thanks titan)
 - a small fix for the layout of the result
 2)
 - script generates ini file right next to script to store data
@@ -40,12 +40,12 @@ Haystack := ReadIniKey("Haystack","Haystack",DefaultHaystack)
 StringReplace, Haystack, Haystack, %Separator%, `n, All
 
 Gui, 1:+Resize +MinSize +LastFound +Delimiter`n
-Gui1HWND := WinExist()
+Gui1HWND := winExist()
 Gui, 1:Add, Text, , Haystack
-Gui, 1:Add, Edit, w220 r8 vEdtHaystack gEvaluateRegEx , %Haystack%   
-Gui, 1:Add, Text, w220, Needle (RegEx)`nNote: Use \n instead of ``n, etc.`nUnlike in AHK quotes (") must not be escaped.  
+Gui, 1:Add, Edit, w220 r8 vEdtHaystack gEvaluateRegEx , %Haystack%
+Gui, 1:Add, Text, w220, Needle (RegEx)`nNote: Use \n instead of ``n, etc.`nUnlike in AHK quotes (") must not be escaped.
 Gui, 1:Add, ComboBox, w220 r10 vCbbRegEx gEvaluateRegEx , %RegExList%
-GuiControl, Choose, CbbRegEx, 1 
+GuiControl, Choose, CbbRegEx, 1
 Gui, 1:Add, Tab,  w220 r2.3 +Theme vTabRegExType gEvaluateRegEx , Match`nReplace
   Gui, 1:Tab, Match
     Gui, 1:Add, Text, Section +BackgroundTrans , OutputVar:
@@ -62,7 +62,7 @@ Gui, 1:Add, Tab,  w220 r2.3 +Theme vTabRegExType gEvaluateRegEx , Match`nReplace
     Gui, 1:Add, Text, x+25 ys +BackgroundTrans, StartingPos:
     Gui, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtRStartingPos gEvaluateRegEx , 1
 Gui, 1:Tab
-Gui, 1:Add, Text, xm, Result 
+Gui, 1:Add, Text, xm, Result
 Gui, 1:Add, Edit, w220 r8 vEdtResult ,
 Gui, 1:Add, Button, vBtnClose gGuiClose , Close
 Gui, 1:Add, Button, x+10 vBtnStoreRegEx gBtnStoreRegEx , Store Regex
@@ -71,13 +71,13 @@ Gui, 1:Show, Hide, %ScriptName% v%Version%
 RestoreGuiPosSize(Gui1HWND, 1)  ;restore old size
 Gui, 1:Show
 
-GoSub, EvaluateRegEx 
+GoSub, EvaluateRegEx
 Return
 
 ;user has changed any data in the gui
 ; => update the regex result
 EvaluateRegEx:
-  If UpdateComboBox
+  If updateComboBox
       Return
   Gui, 1:Submit, NoHide                                ;get all data
   If (!CbbRegEx OR !EdtHaystack){    ;if no haystack or needle
@@ -91,16 +91,16 @@ EvaluateRegEx:
       If EdtUnquotedOutputVar is not space           ;output var is wanted
         {
           IsOutputVar := True                        ;set option
-          
+
           Loop, %EdtNumSubpattern% {                 ;set internal vars to nothing
               Output%A_Index% =
               OutputPos%A_Index% =
               OutputLen%A_Index% =
             }
-          
+
 /* original regex to get the subpattern specified in CbbRegEx, not allowing encapsulation of subpattern
 "s)(?<!\\)\((?:\?(?:P?<(\w+)>|'(\w+)')).+?(?<!\\)\)"
-s)                                                 ;dotall 
+s)                                                 ;dotall
   (?<!\\)                                          ;no \ before
          \(                                        ;a "("
            (?:                                     ;no subpattern start
@@ -115,8 +115,8 @@ s)                                                 ;dotall
                                       .+?          ;any ungreedy text
                                          (?<!\\)   ;no \ before
                                                 \) ;a ")"
-*/ 
-                                              
+*/
+
 /* simplified regex to get the subpattern specified in CbbRegEx, allowing encapsulation of subpattern
 "(?<!\\)\((?:\?P?<(\w+)>|'(\w+)')"
 (?<!\\)                           ;no \ before
@@ -128,7 +128,7 @@ s)                                                 ;dotall
                         |         ;or
                          '(\w+)'  ;a subpattern word enclosed with "''"
                                 ) ;no subpattern end
-*/                                               
+*/
           pos = 1                                    ;get named subpattern
           sub = 0
         	Loop{
@@ -136,7 +136,7 @@ s)                                                 ;dotall
           		  {
             			sub++                              ;subpattern index
             			Name0 := Name1 = "" ? Name2 : Name1
-                  Output%Name0% =                    ;set subpattern var to nothing 
+                  Output%Name0% =                    ;set subpattern var to nothing
                   OutputPos%Name0% =
                   OutputLen%Name0% =
                   sub%sub% := Name0                  ;subpattern array
@@ -148,13 +148,13 @@ s)                                                 ;dotall
           If RegExMatch(CbbRegEx, "^[\w`]*P[\w`]*\)")  ;Positions and length are wanted
               IsPositionAndLength := True
         }
-          
+
       ;do the regex
       FoundPos := RegExMatch(EdtHaystack, CbbRegEx, Output, EdtMStartingPos)
 
       ;show results
       Result = ErrorLevel = %ErrorLevel%`nFoundPos = %FoundPos%`n
-      
+
       If IsOutputVar {                               ;show output var results
           Result .= EdtUnquotedOutputVar " = " Output "`n"
 
@@ -191,7 +191,7 @@ s)                                                 ;dotall
       Result = ErrorLevel = %ErrorLevel%`nCount = %Count%`nNewStr = %NewStr%`n
     }
   GuiControl, 1:, EdtResult, %Result%                ;update gui
-Return              
+Return
 
 BtnCopyToCB:
   Gui, 1:Submit, NoHide
@@ -204,7 +204,7 @@ BtnStoreRegEx:
 Return
 
 StoreRegEx(RegExList, CbbRegEx){
-    Global UpdateComboBox
+    Global updateComboBox
     RegExList = %CbbRegEx%`n%RegExList%     ;add current regex
     StringSplit, RegExList, RegExList, `n   ;create an array
     RegExList =                             ;empty list
@@ -216,13 +216,13 @@ StoreRegEx(RegExList, CbbRegEx){
                 AlreadyInList := True
                 Break
               }
-          } 
+          }
         If !AlreadyInList {                 ;if item is not in list, add him
             RegExList .= RegExList%ID% "`n"
             i++                             ;stop after 10 items
             If (i = 10)
                 Break
-          }        
+          }
       }
     StringTrimRight, RegExList, RegExList, 1   ;remove last `n
     GuiControl, 1:, CbbRegEx, `n%RegExList%    ;update combobox
@@ -234,7 +234,7 @@ GuiClose:
   Gui, 1:Submit, NoHide
   StoreListInIni("Haystack", EdtHaystack)
   StoreListInIni("RegEx", RegExList)
-  StoreGuiPosSize(Gui1HWND, 1)  
+  StoreGuiPosSize(Gui1HWND, 1)
   ExitApp
 Return
 
@@ -245,8 +245,8 @@ StoreListInIni(Name, List){
         If (InStr(List, A_LoopField) = 0){
             Separator = %A_LoopField%
             Break
-          } 
-      } 
+          }
+      }
     StringReplace, List, List, `n , %Separator%, All
     WriteIniKey(Name, "Separator", Separator)
     WriteIniKey(Name, Name, List)
@@ -260,7 +260,7 @@ ReadIniKey(Section,Key,Default=""){
     If (KeyValue = DefaultTestValue) {
         WriteIniKey(Section,Key,Default)
         KeyValue = %Default%
-      } 
+      }
     Return KeyValue
   }
 
@@ -276,14 +276,14 @@ RestoreGuiPosSize(GuiUniqueID, GuiID = 1){
     GuiY := ReadIniKey("Gui" GuiID,"GuiY","")
     GuiW := ReadIniKey("Gui" GuiID,"GuiW","")
     GuiH := ReadIniKey("Gui" GuiID,"GuiH","")
-    DetectHiddenWindows, On
-    WinMove, ahk_id %GuiUniqueID%, , %GuiX%, %GuiY%, %GuiW%, %GuiH%
-    DetectHiddenWindows, Off
+    DetectHiddenwindows, On
+    winMove, ahk_id %GuiUniqueID%, , %GuiX%, %GuiY%, %GuiW%, %GuiH%
+    DetectHiddenwindows, Off
   }
 
 ;store current gui position and size
 StoreGuiPosSize(GuiUniqueID, GuiID = 1){
-    WinGetPos, GuiX, GuiY, GuiW, GuiH, ahk_id %GuiUniqueID%
+    winGetPos, GuiX, GuiY, GuiW, GuiH, ahk_id %GuiUniqueID%
     If (GuiX > -100 AND GuiX < A_ScreenWidth - 20){
         WriteIniKey("Gui" GuiID, "GuiX", GuiX)
         WriteIniKey("Gui" GuiID, "GuiY", GuiY)

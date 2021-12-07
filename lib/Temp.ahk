@@ -1,4 +1,4 @@
-ExampleString:= 
+ExampleString:=
 (
 "K741 107-0431 0278H1
 H624 400657
@@ -22,15 +22,18 @@ B086 108-0752 Bulk Ct#109-0635"
 )
 
 
-
+#If A_debuggerName
+  Media_Prev::						F6 ;MakeTransparent()
+	Media_Play_Pause::			Numlock
+	Media_Next::						F7
 
 #If Mode=="TempCode"
   ;Mbutton::GetAllBatches()
 
-  Select_DropDown_Menu_on_VarBar:
+  Select_Dropdown_Menu_on_VarBar:
             Gui Varbar:Default
-  					GuiControl, ChooseString, ComboBox1, Debugging			
-						Excel.Connect(1) 
+  					GuiControl, ChooseString, ComboBox1, Debugging
+						Excel.Connect(1)
             gui, Varbar:Submit, nohide
             TT(A_mode)
             Varbar.SetColor()
@@ -46,13 +49,13 @@ B086 108-0752 Bulk Ct#109-0635"
 
 
 
-; #If Winactive("Edit specification - \\Remote") && TempCode
+; #If winactive("Edit specification - \\Remote") && TempCode
 ;   ; Mbutton:: gosub, NewVersionRAE
-; #If Winactive("Select methods tests - \\Remote") && TempCode
-; #If Winactive("Results Definition - \\Remote") && TempCode
+; #If winactive("Select methods tests - \\Remote") && TempCode
+; #If winactive("Results Definition - \\Remote") && TempCode
 ;     Mbutton::send, {enter}
 ;     numlock::gosub, AddRAE_ResultsDefinition
-;     rbutton::menu.lms()  
+;     rbutton::menu.lms()
 ;     ; Lbutton::
 ; #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
 ;   ; NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
@@ -65,48 +68,56 @@ return
 Test_2:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
 GetAllBatches()
 return
-Select_next_batch_in_array:
+; Select_next_batch_in_array:
+SelectPreviousBatch(){
+  global
   n+=1
   Haystack:=Products[n]
   whereAt:=listarray(Products)
   whereatsplit:=StrReplace(whereAt, n ": ","`t" )
   pop(whereatsplit)
-  RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-    if sProduct {
-      Product:=sProduct
-      GuiControl,Varbar:Text, Product, %sProduct%
-    }
-    Batch:=sBatch
-    lot:=slot
-    Coated:=sCoated
-    GuiControl,Varbar:Text, Batch, %sBatch%
-    GuiControl,Varbar:Text, lot, %slot%
-    GuiControl,Varbar:Text, Coated, %sCoated%
+  clip.regex(Haystack)
+  ; RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+  ;   if sProduct {
+  ;     Product:=sProduct
+  ;     GuiControl,Varbar:Text, Product, %sProduct%
+  ;   }
+  ;   Batch:=sBatch
+  ;   lot:=slot
+  ;   Coated:=sCoated
+  ;   GuiControl,Varbar:Text, Batch, %sBatch%
+  ;   GuiControl,Varbar:Text, lot, %slot%
+  ;   GuiControl,Varbar:Text, Coated, %sCoated%
     try XL.Sheets(sProduct).activate
+}
     return
 
 
 
 return
 Test_1:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
-  Select_Previous_Batch_In_Array: ;Move to previous Batch in Array
+return
+  ;Select_Previous_Batch_In_Array: ;Move to previous Batch in Array
+    SelectNextBatch(){
     n-=1
     Haystack:=Products[n]
     whereAt:=listarray(Products)
     whereatsplit:=StrReplace(whereAt, n ": ","`t" )
     pop(whereatsplit)
-    RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-      if sProduct {
-        Product:=sProduct
-        GuiControl,Varbar:Text, Product, %sProduct%
-      }
-      Batch:=sBatch
-      lot:=slot
-      Coated:=sCoated
-      GuiControl,Varbar:Text, Batch, %sBatch%
-      GuiControl,Varbar:Text, lot, %slot%
-      GuiControl,Varbar:Text, Coated, %sCoated%
+    Clip.Regex(Haystack)
+    ; RegExMatch(Haystack, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+      ; if sProduct {
+      ;   Product:=sProduct
+      ;   GuiControl,Varbar:Text, Product, %sProduct%
+      ; }
+      ; Batch:=sBatch
+      ; lot:=slot
+      ; Coated:=sCoated
+      ; GuiControl,Varbar:Text, Batch, %sBatch%
+      ; GuiControl,Varbar:Text, lot, %slot%
+      ; GuiControl,Varbar:Text, Coated, %sCoated%
       try XL.Sheets(sProduct).activate
+    }
   return
 
 RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\Duplicate Test - Copy.txt")
@@ -133,7 +144,7 @@ RemoveFileDuplicates(File,Sorting:="U CL R"){
 
 
 
-create_CurrentCodes_DropDown:
+create_CurrentCodes_Dropdown:
 menu.ProductSelection()
 return
 Test_4:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 4 ||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -151,7 +162,7 @@ Test_4:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 4 
     }
     Menu, DropdownMenu, Show,
     return
-    
+
     CurrentCodesMenu:
       sleep 200
     RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
@@ -208,7 +219,7 @@ Return
 F13 & t::REQUESTGUID()
 Tab & t::gosub, ADD_A_DROPDOWN_REQUESTGUID_ITEM
 
-REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile 
+REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile
 		global
 		Loop, Read, data\REQUESTGUID.ini
 		{
@@ -218,13 +229,15 @@ REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile
 		Selection:= % REQUESTGUID[1]
 		Menu, Menu, add, %Selection%, REQUESTGUID
 		}
+    menu, menu, add
+    menu, menu, add, E&xit, ExitMenu
 		Menu, Menu, Show,
 		return
 		REQUESTGUID:
 			sleep 200
 			InputVar:=A_ThisMenuItem
 			IniRead,vOutput, data\REQUESTGUID.ini, REQUESTGUID, %InputVar%
-			SendInput, %vOutput%{LWinUp}
+			Sendinput, %vOutput%{Lwinup}
       menu, Menu, DeleteAll
 			return
 }
@@ -236,13 +249,13 @@ VSCODEToDo:= "☐ " TODO "`n"
 FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
 Return
 ADD_A_DROPDOWN_REQUESTGUID_ITEM:
-InputBox, Variable, Variable Name = Variable 
-VARIABLEITEM:= "`n" Variable 
+InputBox, Variable, Variable Name = Variable
+VARIABLEITEM:= "`n" Variable
 FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\REQUESTGUID.ini
 Return
 
 
-  makeADropDown(inifile,Category) {
+  makeADropdown(inifile,Category) {
     try menu,DropdownMenu, Deleteall
     Loop, Read, %inifile% ;data\customers.ini
     {
@@ -252,12 +265,12 @@ Return
       ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
     Selection:= % ParseList[1]
       ; Group:= % MethodGroup[2] ;for a second split
-    Menu, Dropdownmenu, add, %Selection%, DropDownhandler
+    Menu, Dropdownmenu, add, %Selection%, Dropdownhandler
     }
     Menu, DropdownMenu, Show,
     return
 
-    DropDownhandler:
+    Dropdownhandler:
       InputVar:=A_ThisMenuItem
       IniRead,vOutput, %inifile%, %Category%, %InputVar%
       Pop(Inputvar,vOutput)
@@ -274,13 +287,13 @@ NoIdle(){
 		SetTimer, NoidleTimer, % (3*60*1000)
 		Menu, Tray, Check, NoIdle
 	}
-	else 
+	else
 	{
 		Menu, Tray, unCheck, NoIdle
 		Settimer, NoidleTimer,off
 	}
 	Varbar.Show()
-  
+
 NoIdleTimer:
   if (A_TimeIdle > (60*1000) && NoIdle) {
     MouseMove, 1,0,0,R

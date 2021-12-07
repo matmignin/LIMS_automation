@@ -19,7 +19,7 @@ Clip(input=0,Wait:="0.55"){
   clipwait,%Wait%
   sleep %input%
   if errorlevel
-  { 
+  {
     ; clipboard:=ClipboardSaved
     if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
       exit
@@ -39,16 +39,16 @@ clipChange(type){
     ; if !instr(Clipboard,"`r`n")
     clip.Parse()
     ; clip.Regex()
-    ; if WinActive("ahk_exe WFICA32.EXE"){
+    ; if winactive("ahk_exe WFICA32.EXE"){
       ; clip.Departmentregex()
       ; StringReplace, Clipboard, Clipboard,Value,111Skin Limited
       ; RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
       ; tt(Clipboard,1000)
-    if !PreventPopUp
+    if !PreventPopup
       ; Pop(Clipboard,,1000)
       ; exit
-    ; } 
-    ; if Clipboard && !WinActive("ahk_exe EXCEL.EXE") && !WinActive("ahk_exe Code.exe") && !WinActive("NuGenesis LMS - \\Remote")
+    ; }
+    ; if Clipboard && !winactive("ahk_exe EXCEL.EXE") && !winactive("ahk_exe Code.exe") && !winactive("NuGenesis LMS - \\Remote")
       ; exit
     if A_PriorKey = c
       tt(clipboard,200,100,-1500,,,"R")
@@ -67,9 +67,9 @@ Class Clip {
     Global EditBox
 		try Gui, EditBox:Destroy
 		result := Clipboard
-		Gui EditBox: +AlwaysOnTop +ToolWindow +resize +owner +HwndGUIID
+		Gui EditBox: +AlwaysOnTop +Toolwindow +resize +owner +HwndGUIID
 			GUI, EditBox:Font, s12 cBlack, Consolas
-			Gui, EditBox:Add, Edit, x1 y1 W400 H200 +VScroll + Resize vEditBox , % Result 
+			Gui, EditBox:Add, Edit, x1 y1 W400 H200 +VScroll + Resize vEditBox , % Result
 			gui, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
 			Gui, EditBox:Show,, GUI Clipboard
 			return
@@ -92,7 +92,7 @@ CutSwap(){
   clipboard:=
   clipboard:=Preclip
   clipwait, 0.25
-  send, ^v     
+  send, ^v
   clipboard:=PostClip
 }
 Append(Delimiter:="`n",key:="c"){
@@ -103,12 +103,12 @@ Append(Delimiter:="`n",key:="c"){
 		clipwait, 0.75
 		if errorlevel
       clipboard:=Preclip
-    else  
+    else
     {
       clipboard := Preclip Delimiter Clipboard
       tt(clipboard,1000,A_ScreenWidth-500,,2,150)
     }
-		return 
+		return
 }
 
 
@@ -119,9 +119,9 @@ Parse(Value:=""){
   PreventPopup:=1
     If !Value
       ParsedClipboard:=Clipboard
-    else 
+    else
       ParsedClipboard:=Value
-    loop, parse, ParsedClipboard, "`r`n" 
+    loop, parse, ParsedClipboard, "`r`n"
       {
         RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
@@ -133,11 +133,11 @@ Parse(Value:=""){
             if varBatch
               Match.= " " VarBatch
             if varLot
-              match.= " " VarLot    
+              match.= " " VarLot
             if varCoated
-              match.= " " VarCoated 
-            If ShowSampleId && VarSampleID 
-              match.= " | " VarSampleID 
+              match.= " " VarCoated
+            If ShowSampleId && VarSampleID
+              match.= " | " VarSampleID
           }
           ; Match:= VarProduct
           if Match && A_Index = 1
@@ -162,7 +162,7 @@ Parse(Value:=""){
         }
       sleep 100
         filedelete, data\CurrentCodes.txt
-        For Each, Element In Products 
+        For Each, Element In Products
           CurrentCodes .= Element "`n"
         FileAppend, %CurrentCodes%, data\CurrentCodes.txt
       }
@@ -183,7 +183,7 @@ Cl3Parse(){
     CurrentCodes:=
     return
   }
-    loop, parse, ParsedClipboard, "`r`n" 
+    loop, parse, ParsedClipboard, "`r`n"
       {
         RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
@@ -193,9 +193,9 @@ Cl3Parse(){
             if varBatch
               Match.= " " VarBatch
             if varLot
-              match.= " " VarLot    
+              match.= " " VarLot
             if varCoated
-              match.= " Ct#" VarCoated  
+              match.= " Ct#" VarCoated
 
           ; Match:= VarProduct
           if Match
@@ -217,7 +217,7 @@ Cl3Parse(){
       sleep 200
       AllCodes:=Listarray(Products)
       ; Pop(AllCodes,,2000)
-  
+
       ; GuiControl,Varbar:Text, Note1, %AllCodes%
     ; ; ControlsetText, Edit6,%AllProducts%,VarBar
     ;IniWrite, %AllCodes%, Data\Products.ini, Products, AllCodes
@@ -284,12 +284,12 @@ SingleRegex(){
         ; varbar.show()
       }
     }
-  
+
 Regex(Category:=""){
-    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, 
+    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department,
     if !Category
       Haystack:=Clipboard
-    else 
+    else
       Haystack:=Category
     sleep      20
       RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
@@ -298,13 +298,13 @@ Regex(Category:=""){
       RegExMatch(HayStack, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       ; RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       ; StringReplace, cSampleID, cSampleID, $, S
-      ; If cProduct && cBatch && clot 
+      ; If cProduct && cBatch && clot
         ; FileAppend, %cProduct% %cBatch% %clot% %Coated%`n, data\CurrentCodes.txt
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, Settings.ini, Products, Product
-        FileAppend, `n`t%cProduct% %cBatch% %clot% %cCoated% `n, Data\CurrentCodes.txt
+        FileAppend, `n %cProduct% %cBatch% %clot% %cCoated% `n, Data\CurrentCodes.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
@@ -360,12 +360,12 @@ Regex(Category:=""){
         Department:="Physical"
       If cCTPhysical
         Department:="Physical (Coated)"
-  return 
+  return
 
 
   }
 DepartmentRegex(){
-    global analytical,micro,retain,physical,CTphysical,CTretain, Department, 
+    global analytical,micro,retain,physical,CTphysical,CTretain, Department,
       Haystack:=Clipboard
       Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
       Regexmatch(HayStack, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
@@ -386,11 +386,11 @@ DepartmentRegex(){
         Department:="Physical"
       If cCTPhysical
         Department:="Physical (Coated)"
-  return 
+  return
 
 
   }
-IfNothingSelected(Action){
+IfNothingSelected(action){
   global
     ClipboardSaved:=ClipboardAll
     clipboard:=
@@ -399,13 +399,13 @@ IfNothingSelected(Action){
       clipwait,0.40
   if errorlevel ;if nothing selected
   {
-    if Action:="SelectLine"
+    if action:="SelectLine"
       Send, {home}+{end}^{c}
-    if Action:="SelectAll"
+    if action:="SelectAll"
       Send, ^{a}^{c}{ctrlup}
-    if Action:="Select"
+    if action:="Select"
       Send, {click 3}^{c}{ctrlup}
-    If Action:="cut"
+    If action:="cut"
       {
         ; clipboard:=
         Send, ^{x}
@@ -416,18 +416,18 @@ IfNothingSelected(Action){
         Send, ^{v}
         clipboard:=PostCut
       }
-    if Action:="menu"
+    if action:="menu"
       menu.Variable()
-    If Action:="Paste"
+    If action:="Paste"
     {
       clipboard:=ClipboardSaved
       Send, ^{v}{ctrlup}
     }
     else
-      send % Action
+      send % action
     return
   }
-  else 
+  else
   return
 }
 
@@ -449,7 +449,7 @@ Copy(){
         KeyWait, F19, T0.65
         if (A_PriorKey!="F19") ;allows for other key combos
           exit
-        if (A_PriorKey="F19") {  
+        if (A_PriorKey="F19") {
         If !ErrorLevel
         {
           This.Copy("cut") ; will trigger less 1 secReturnReturnErrorLevel ClipChainPasteDoubleClickClipChainPasteDoubleClick
@@ -540,14 +540,14 @@ ctrl(){
           Else
             return
       }
-            ; Send, 
+            ; Send,
       return
     }
 }
 ; Click(){
 ;     global
 ;   MouseGetPos, xx
-;   TimeButtonDown = %A_TickCount%
+;   TimeButtondown = %A_TickCount%
 ;   ; Wait for it to be released
 ;   Loop
 ;   {
@@ -555,7 +555,7 @@ ctrl(){
 ;     GetKeyState, LButtonState, LButton, P
 ;     if LButtonState = U  ; Button has been released.
 ;     {
-;         If WinActive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
+;         If winactive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
 ;         {
 ;           ;  clip()
 ;           Send, ^{c}
@@ -564,7 +564,7 @@ ctrl(){
 ;         break
 ;     }
 ;     elapsed = %A_TickCount%
-;     elapsed -= %TimeButtonDown%
+;     elapsed -= %TimeButtondown%
 ;     if elapsed > 200  ; Button was held down too long, so assume it's not a double-click.
 ;     {
 ;         MouseGetPos x0, y0            ; save start mouse position
@@ -590,7 +590,7 @@ ctrl(){
 ;     }
 ;   }
 ;   ; Otherwise, button was released quickly enough.  Wait to see if it's a double-click:
-;   TimeButtonUp = %A_TickCount%
+;   TimeButtonup = %A_TickCount%
 ;   Loop
 ;   {
 ;     Sleep 10
@@ -598,12 +598,12 @@ ctrl(){
 ;     if LButtonState = D  ; Button has been pressed down again.
 ;         break
 ;     elapsed = %A_TickCount%
-;     elapsed -= %TimeButtonUp%
+;     elapsed -= %TimeButtonup%
 ;     if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a double-click.
 ;         return
 ;   }
 ;   ;Button pressed down again, it's at least a double-click
-;   TimeButtonUp2 = %A_TickCount%
+;   TimeButtonup2 = %A_TickCount%
 ;   Loop
 ;   {
 ;     Sleep 10
@@ -612,7 +612,7 @@ ctrl(){
 ;         break
 ;   }
 ;   ;Button released a 2nd time
-;   TimeButtonUp3 = %A_TickCount%
+;   TimeButtonup3 = %A_TickCount%
 ;   Loop
 ;   {
 ;     Sleep 10
@@ -620,7 +620,7 @@ ctrl(){
 ;     if LButtonState3 = D  ; Button has been pressed down a 3rd time.
 ;         break
 ;     elapsed = %A_TickCount%
-;     elapsed -= %TimeButtonUp%
+;     elapsed -= %TimeButtonup%
 ;     if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
 ;     {  ;Double-click
 ;         Send, {ctrldown}{c}{ctrlup}
@@ -635,7 +635,7 @@ ctrl(){
 ;     Send, {ctrldown}{c}{ctrlup}
 ;     ;  clip()
 ;   return
-    
+
 ;     return
 ;   }
 
@@ -653,7 +653,7 @@ ctrl(){
 ;   clipboard:=
 ;     Clip()
 ;   clipwait,0.10
-;   if errorlevel 
+;   if errorlevel
 ;     {
 ;     clipboard:=ClipboardSaved
 ;      StrReplace(clipboard, "`n", "")
@@ -663,7 +663,7 @@ ctrl(){
 ;   else
 ;       ; tt(clipboard,,varbar_x,varbar_y,,50)
 ;       sleep 500
-;     return 
+;     return
 ;   }
 
 

@@ -1,5 +1,5 @@
 
-	ifNothingSelected(Action, Button){
+	ifNothingSelected(action, Button){
 	  ClipboardSaved:=ClipboardAll
     clipboard:=
     sleep 20
@@ -9,7 +9,7 @@
 		if !clipboard ;if nothing selected
 		{
 			clipboard:=ClipboardSaved
-			if Action=copy 
+			if action=copy
 		{
 			if winactive("ahk_exe Code.exe"){
 				sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}
@@ -30,7 +30,7 @@
 			}
 		}
 			; clicktext()
-		if Action=cut
+		if action=cut
 			send, {delete}
 		}
 	}
@@ -45,14 +45,14 @@
 	}
 
 
-ifPriorHotkey(The_PriorHotKey,FunctionOrAction){
-	if A_PriorHotkey contains The_PriorHotkey 
+ifPriorHotkey(The_PriorHotKey,FunctionOraction){
+	if A_PriorHotkey contains The_PriorHotkey
 	{
 		if IsFunc(FunctionName)
-			func(FunctionOrAction)
+			func(FunctionOraction)
 		else
-			sendinput % FunctionOrAction
-		return ;FunctionOrAction
+			sendinput % FunctionOraction
+		return ;FunctionOraction
 	}
 	else
 		return
@@ -78,9 +78,9 @@ isPixel(X,Y,SearchColor){
 }
 
 Debug(Variable,Delete:="Delete"){
-  if IsObject(Variable) 
+  if IsObject(Variable)
     DebugText:=listarray(Variable)
-  else 
+  else
     DebugText:=Variable
   if Delete=Delete
     filedelete, C:\Users\mmignin\Documents\VQuest\data\debug.txt
@@ -91,15 +91,15 @@ Debug(Variable,Delete:="Delete"){
 
 
 
-IfKeyPressed(keyPressed,Action:=""){
+IfKeyPressed(keyPressed,action:=""){
   pop("wait for press")
   Input, Inputkey, L1 M T1
     If (InputKey!=KeyPressed){
       sendinput, %Inputkey%
-      exit 
+      exit
     }
     else
-        send % Action
+        send % action
     Return KeyPressed
 }
 
@@ -111,7 +111,7 @@ ListArray(The_Array,Option:="n"){
 			ArrayList .=Element " " Option " "
 		return ArrayList
 	}
-	else {  
+	else {
   For Each, Element In The_Array {
         ArrayList .= "`n" A_index ": "
     ArrayList .= Element
@@ -135,7 +135,7 @@ return 0
 class Breaking {
 	Point(){
 		Global
-		If GetKeyState("Lbutton", "P") {	
+		If GetKeyState("Lbutton", "P") {
 		TT("Broke")
 			exit
 		}
@@ -154,15 +154,15 @@ class Breaking {
 	}
 
 
-  
-  
+
+
   ; WM_LBUTTONDOWN(wParam, lParam) ;move around varbar
 	; 		{
 	; 			X := lParam & 0xFFFF
 	; 			Y := lParam >> 16
 	; 			if A_GuiControl
-	; 				Ctrl := "`n(in control " . A_GuiControl . ")"
-	; 			; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%Ctrl%
+	; 				ctrl := "`n(in control " . A_GuiControl . ")"
+	; 			; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%ctrl%
 	; 			PostMessage, 0xA1, 2
 	; 			; sleep 200
 	; 	; keywait, Lbutton, U T0.20
@@ -177,67 +177,67 @@ class Breaking {
 	; 			; sleep 200
 	; 			; IniWrite, %Varbar_X%, Settings.ini, Locations, VarBar_X
 	; 			; IniWrite, %Varbar_Y%, Settings.ini, Locations, VarBar_Y
-					
+
 	; 			; return
 	; 		; }
 	; 		; else
 	; 	; MouseClick, Left, , , 1, 0, U
 	; 	return
-					
-; } 
+
+; }
 
 
-WindowInfo(){
+windowInfo(){
 	global
 	CoordMode, mouse, window
-	MouseGetPos, mX, mY, ,WinControl
-	WinGetPos,wX,wY,wW,wH, A
-	WinGetTitle, winTitle, A
-	WinGetClass, Winclass, A
+	MouseGetPos, mX, mY, ,winControl
+	winGetPos,wX,wY,wW,wH, A
+	winGetTitle, winTitle, A
+	winGetClass, winclass, A
 	ControlGetFocus, GUIFocus, VarBar
-	WinGet, WinProcess, ProcessName, A
+	winGet, winProcess, ProcessName, A
 	; MouseGetPos, MouseX, MouseY
 PixelGetColor, PixelColor, %MX%, %MY%
 	MousePosition:=mX "`, " mY
 	Sleep, 100
-	TT(MousePosition "`n Title: " winTitle " `n Process: " WinProcess " `n Control: "winControl " `n Class: " winclass "`nWindowPosition " wX ", " wY ", " wW ", " wH "`n" PixelColor "`n Focus Control: " GUIFocus,3000,,,2)
-	Process:= "ahk_exe " WinProcess
-	WinInfo:="WinMove, " Process ", , " wX ", " wY ", " wW ", " wH
-	WinLocation:= wX "," wY "," wW "," wH
+	TT(MousePosition "`n Title: " winTitle " `n Process: " winProcess " `n Control: "winControl " `n Class: " winclass "`nwindowPosition " wX ", " wY ", " wW ", " wH "`n" PixelColor "`n Focus Control: " GUIFocus,3000,,,2)
+	Process:= "ahk_exe " winProcess
+	winInfo:="winMove, " Process ", , " wX ", " wY ", " wW ", " wH
+	winLocation:= wX "," wY "," wW "," wH
 	; PixelColor:=PixelColor
-	iniwrite %MousePosition%, Settings.ini, SavedVariables, WindowMousePosition
+	iniwrite %MousePosition%, Settings.ini, SavedVariables, windowMousePosition
 	iniwrite %PixelColor%, Settings.ini, SavedVariables, PixelColor
 	; if Value Return
 	; keywait, F20, U T5
-	
+
 	sleep 500
 	; Tooltip,
 	; SetTimer, RemoveToolTip, -2000
 	}
 
-DoublePress(action,SecondAction:="", ToolTip:=""){
+DoublePress(action,Secondaction:="", ToolTip:=""){
 	If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
 		Send, % action "{shiftup}{altup}{ctrlup}{lwinup}"
 		tt(ToolTip)
 	}
 	Else
-		send % SecondAction "{shiftup}{altup}{ctrlup}{lwinup}"
+		send % Secondaction "{shiftup}{altup}{ctrlup}{lwinup}"
 	Return
 	}
 
 
-Block(Time:=300, Action:=""){
+Block(Time:=300, action:=""){
 	Global N
 	If N
 		exit
-	If Action
+	If action
 		send % action
 		sleep 100
 		; TT(TooltipMessage)
 	N:=1
 	SetTimer, Block, -%time%
 	return
-	
+
 	Block:
 		N:=
 		return
@@ -254,7 +254,7 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 	SetTimer, BlockTheInput, -%time%
 	sleep 50
 	return
-	
+
 	BlockTheInput:
 		N:=
 		return
@@ -266,13 +266,13 @@ MuteTeamsMicrophone(){
   Send, {shiftdown}{ctrldown}{m}{ctrlup}{shiftup}
   TT("Muted/Unmuted")
   }
-	
+
 Fade(FadeAmount:=90){
   global
-  WinSet, Transparent, %FadeAmount%, AHK_id %GUIID%
-  while MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !WinActive("VarBar ahk_exe AutoHotkey.exe")
+  winSet, Transparent, %FadeAmount%, AHK_id %GUIID%
+  while MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && !winactive("VarBar ahk_exe AutoHotkey.exe")
     sleep 600
-    WinSet, Transparent, 235, AHK_id %GUIID%
+    winSet, Transparent, 235, AHK_id %GUIID%
 }
 
 
@@ -280,17 +280,17 @@ Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
   global
 	sleep 20
 ; try {
-  ; gui, PopUp:destroy ;:
+  ; gui, Popup:destroy ;:
   ; settimer, destroyGui, off
 ; }
 PopupColor1:="CE6D4B"
 PopupColor2:="FFFFFF"
 PopupTrans:=250
-CoordMode, mouse, Window
-WinGetPos,PopUp_wX,PopUp_wY,PopUp_wW,PopUp_wH, A
+CoordMode, mouse, window
+winGetPos,Popup_wX,Popup_wY,Popup_wW,Popup_wH, A
 ; CoordMode, mouse, Screen
-MouseGetPos, PopUp_x,Popup_y,
-if (Location:="Window"){
+MouseGetPos, Popup_x,Popup_y,
+if (Location:="window"){
 	popup_y:=Popup_wx
 	popup_x:=Popup_Wy
 	}
@@ -306,23 +306,23 @@ else {
 	popup_y:=popup_y-300
 	popup_x:=Popup_x
 	}
-Gui, PopUp: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +ToolWindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
+Gui, Popup: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
 
-Gui, PopUp:color,%PopupColor1%, %PopupColor2%  
-Gui, PopUp:Font,s10 cBlack Bold, Consolas
-Gui, PopUp:Add, Text,left, %Line1%
-Gui, PopUp:Font,s8 cBlack Bold, Consolas
+Gui, Popup:color,%PopupColor1%, %PopupColor2%
+Gui, Popup:Font,s10 cBlack Bold, Consolas
+Gui, Popup:Add, Text,left, %Line1%
+Gui, Popup:Font,s8 cBlack Bold, Consolas
   if (Line2)
-    Gui, PopUp:Add, Text,Center, %Line2%
-Gui, PopUp:Show, NoActivate x%popup_x% y%Popup_y%
- WinSet, Transparent, %PopUpTrans%, AHK_Id %GUIID%
+    Gui, Popup:Add, Text,Center, %Line2%
+Gui, Popup:Show, Noactivate x%popup_x% y%Popup_y%
+ winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
 
 settimer, destroyGui, -%PopupTime%
 return
 }
 
 DestroyGui:
-  try gui, PopUp:destroy
+  try gui, Popup:destroy
 return
 
 
@@ -346,14 +346,14 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 		tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
 	else
 		tooltip, %msg%, %X%, %Y%,%N%
-	hwnd := WinExist("ahk_class tooltips_class32")
+	hwnd := winExist("ahk_class tooltips_class32")
 	if Transparent
-   	WinSet, Trans, %Transparent%, % "ahk_id" hwnd
-   	; WinSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
-	; WinSet, Trans, 200, %W%
-	; CoordMode, ToolTip, screen 
+   	winSet, Trans, %Transparent%, % "ahk_id" hwnd
+   	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
+	; winSet, Trans, 200, %W%
+	; CoordMode, ToolTip, screen
 	CoordMode, ToolTip, Relative
-	SetTimer, RemoveToolTip%N%, -%time% 
+	SetTimer, RemoveToolTip%N%, -%time%
 	return
 	RemoveToolTip:
 		ToolTip
@@ -372,7 +372,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	return
 	}
 
-	
+
 LogError(exception) {
 	global
     ErrorLine:=exception.Line
@@ -400,19 +400,19 @@ MakeTransparent(){
 Global Iteration, winToggle
 ; Toggle:=A
 	T:=(255/5)*Iteration
-	if WinToggle := !WinToggle
-		WinSet, Transparent, %T%, A
+	if winToggle := !winToggle
+		winSet, Transparent, %T%, A
 	else {
-			WinSet, TransColor, Off, A
-		WinSet, Transparent, Off, A
+			winSet, TransColor, Off, A
+		winSet, Transparent, Off, A
 	}
 Return
 }
 
-MouseIsOver(WinTitle){
+MouseIsOver(winTitle){
 	Global
-	MouseGetPos,,, Win
-	Return WinExist(WinTitle . " ahk_id " . Win)
+	MouseGetPos,,, win
+	Return winExist(winTitle . " ahk_id " . win)
 }
 
 Mouse_RbuttonUP(){
@@ -424,7 +424,7 @@ Mouse_RbuttonUP(){
 	; Send,{rbutton}
 	; sleep 200
 	; MouseClick, Right,,,1, 0, U
-	; SendInput,{esc}
+	; Sendinput,{esc}
 	suspend, Off
 	#inputlevel 0
 	return
@@ -439,10 +439,10 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	; my:=
 	; mw:=
 	MouseGetPos, mx, my, mw,
-	MouseReturn:="{click " Mx ", " My ",0}"	
+	MouseReturn:="{click " Mx ", " My ",0}"
 	; sleep 25
 	if window
-		if !winactive(Window)
+		if !winactive(window)
 			sleep 500 ; winactivate, %window%
 	mouseclick, %Button%, %x%,%y%,%n%,0
 	sleep 25
@@ -450,16 +450,16 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		winactivate, %mw%
 	If (ReturnMouse=0){
 		SetMouseDelay, 1
-		SetKeyDelay, 1, 0.25 
+		SetKeyDelay, 1, 0.25
 		setwindelay, 200
 		Return MouseReturn
 	}
 	else
 		mousemove,%mx%,%my%,0
 	SetMouseDelay, 1
-	SetKeyDelay, 1, 0.25 
+	SetKeyDelay, 1, 0.25
 	setwindelay, 200
-	
+
 	; sleep 50
 	;  return, {Click, %x%,%y%,}
 }
@@ -468,27 +468,27 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 SendPassword(){
 	if winactive("Remote Desktop")
-		SendInput, mmignin{tab}{K}ilgore7744{enter}
-	; SendInput, ?+{K}ilgore7744{enter}
-	if WinExist("ahk_exe ONENOTE.EXE Protected Section"){
+		Sendinput, mmignin{tab}{K}ilgore7744{enter}
+	; Sendinput, ?+{K}ilgore7744{enter}
+	if winExist("ahk_exe ONENOTE.EXE Protected Section"){
 		winactivate
-		SendInput, {K}ilgore7744{enter}
+		Sendinput, {K}ilgore7744{enter}
 	}
-	if WinExist("Login - \\Remote"){
+	if winExist("Login - \\Remote"){
 		winactivate
-		SendInput, mmignin{tab}{K}ilgore7744{enter}
+		Sendinput, mmignin{tab}{K}ilgore7744{enter}
 	}
-	Else If Winexist("Sign :"){
+	Else If winexist("Sign :"){
 		winactivate,
-		SendInput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
+		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
 	}
-	else if winexist("Windows Security"){
+	else if winexist("windows Security"){
 		winactivate,
-		SendInput, Kilgore7744{enter}
+		Sendinput, Kilgore7744{enter}
 	}
 	else if winexist("CredentialUIBroker.exe"){
 		winactivate,
-		SendInput, Kilgore7744{enter}
+		Sendinput, Kilgore7744{enter}
 	}
 	else if winexist("Map VQ drive.bat ahk_exe cmd.exe"){
 		winactivate,
@@ -496,17 +496,17 @@ SendPassword(){
 		return
 	}
 	else
-		SendInput, +{K}ilgore7744{enter}
+		Sendinput, +{K}ilgore7744{enter}
 	return
 }
 
 CreditCard(){
-	SendInput, 4130220009588038
+	Sendinput, 4130220009588038
 	TT("11/21 127",5000)
 	return
 }
 
-#IfWinActive
+#Ifwinactive
 
 
 
@@ -526,15 +526,15 @@ CL3(){
 }
 
 
-	
+
 
 Return
 
 KeyHistory(){
   KeyHistory
   }
-WindowSpy(){
-  Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
+windowSpy(){
+  Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
   }
 Exitsub(){
 	global
@@ -550,12 +550,12 @@ return
 
 CloseScript(Name)
 	{
-	DetectHiddenWindows On
+	DetectHiddenwindows On
 	SetTitleMatchMode RegEx
-	IfWinExist, i)%Name%.* ahk_class AutoHotkey
+	IfwinExist, i)%Name%.* ahk_class AutoHotkey
 		{
-		WinClose
-		WinWaitClose, i)%Name%.* ahk_class AutoHotkey, , 2
+		winClose
+		winWaitClose, i)%Name%.* ahk_class AutoHotkey, , 2
 		If ErrorLevel
 			return "Unable to close " . Name
 		else

@@ -1,11 +1,11 @@
 return
 
-#ifwinactive, 
+#ifwinactive,
 	F13 & Lbutton::
-		click Down left
+		click down left
 		keywait F13
-		click Up left
-		return 
+		click up left
+		return
 	Tab & lbutton::
 		send, {ctrldown}
 		click left
@@ -14,19 +14,19 @@ return
 	Tab & wheeldown::sendinput, ^{down}
 	Tab & wheelup::sendinput, ^{up}
 	Tab & wheelleft::^[
-	Tab & wheelright::^]	
+	Tab & wheelright::^]
 	<^1::                 return
-	<^2::                 return ;,{Ctrldown}{2}{CtrlUp}
-	<^3::                 return ;Send,{Ctrldown}{0}{CtrlUp}
+	<^2::                 return ;,{ctrldown}{2}{ctrlup}
+	<^3::                 return ;Send,{ctrldown}{0}{ctrlup}
 	F13 & 1::							sendinput,%product%
 	F13 & 2::							sendinput, %Batch%
 	F13 & 3::							sendinput, %Lot%
 	F13 & 4::							GetAllProducts()
 	F13 & 5::							GetAllBatches()
-	
+
 ; sendlevel
 ;;	___ClipCopy&Paste
-; F13 & Mbutton::	
+; F13 & Mbutton::
 +F20::
 	if (CutPresses > 0) ; SetTimer already started, so we log the keypress instead.
 		{
@@ -43,7 +43,7 @@ return
 			}
 			else if (CutPresses = 2) ; The key was pressed twice.
 			{
-					clip.Append("`n","{x}")  
+					clip.Append("`n","{x}")
 			}
 			else if (CutPresses > 2)
 			{
@@ -53,8 +53,8 @@ return
 		CutPresses := 0
 return
 
-		
-F19:: 
+
+F19::
 	if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
 	{
 			CopyPresses += 1
@@ -70,7 +70,7 @@ F19::
 		}
 		else if (CopyPresses = 2) ; The key was pressed twice.
 		{
-				clip.Append()  
+				clip.Append()
 		}
 		else if (CopyPresses > 2)
 		{
@@ -101,7 +101,7 @@ F20::
 		else if (PastePresses > 2)
 		{
 				Send, +{F18}
-				; send, #v 
+				; send, #v
 		}
 		PastePresses := 0
 return
@@ -133,19 +133,19 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 <!F13::											GetAllBatches("`n")
 <#enter::										GetAllProducts("`n")
 rwin::return
-<#tab::										GetAllProducts(A_tab)	
+<#tab::										GetAllProducts(A_tab)
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
 $Numlock::								4tap()
 Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
-Rbutton UP::     	   			2Tap()     
+Rbutton UP::     	   			2Tap()
 Rbutton & wheelleft::     Send % blockRepeat(50) "{Delete}"
 Rbutton & wheelright::    Send % blockRepeat(50) "{backspace}"
-Rbutton & wheelup::       
-Send % Blockrepeat(800) "^{c}" pop(Clipboard,,1000,"Window")
+Rbutton & wheelup::
+Send % Blockrepeat(800) "^{c}" pop(Clipboard,,1000,"window")
 sleep 20
-; pop(Clipboard,,1000,"Window")
+; pop(Clipboard,,1000,"window")
 return
 Rbutton & wheeldown::     Send, ^{v}
 Lbutton & Rbutton::       send, ^{x}
@@ -172,35 +172,35 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	esc & 2::						send, {shiftdown}{altdown}{=}{altup}{shiftup}
 	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
 	esc::								esc
-	F17::								send, {ctrl down}{click}{ctrl up}
-	Media_Prev::					F15 ;MakeTransparent()
+	F17::								Clipboard:=ExampleString
+	Media_Prev::						F15 ;MakeTransparent()
 	Media_Play_Pause::			F16
 	Media_Next::						F17
 	numpadsub::          		4Left()
 	numpadadd::          		4right()
 	numpadMult::         		4up()
 	numpaddot::          		4down()
-	pause::							Suspend, Toggle 
+	pause::							Suspend, Toggle
 	#h::return ;send, !{F2}
 	#p::return ;send, +!{h}
 	#k::return
-	LWin::									vkFF
-	;; _System Actions_
+	Lwin::									vkFF
+	;; _System actions_
 
 	!F7::							Send, {laltdown}{right}{laltup}
 	!F6::							Send, {laltdown}{left}{laltup}
 	!F9::							Send, {laltdown}{up}{laltup}
 	!F8::							Send, {laltdown}{down}{laltup}
-	~lshift & Rshift::alttab	
-	~rshift & lshift::shiftAltTab
-	<!z::							Send, {Ctrldown}{y}{CtrlUp} ;redu
+	~lshift & Rshift::alttab
+	~rshift & lshift::shiftaltTab
+	<!z::							Send, {ctrldown}{y}{ctrlup} ;redu
 
 	+Backspace::			Delete
 	^Media_Next::			MakeTransparent()
 
 	lshift & Appskey::			return
 	Lctrl & Appskey::				Return
-	<^`;::SendInput %CurrentDateTime%	
+	<^`;::Sendinput %CurrentDateTime%
 	/ & .::						Send, {?}
 	/::	 							Send, /
 
@@ -220,16 +220,16 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F20 & wheeldown::				send % Blockrepeat(500) "{numpadDot}"
 	F20 & wheelup::				send % Blockrepeat(500) "{numpadmult}"
 
-	
+
 	F20 & ]::            		CreditCard()
 	F20 & F7::           		Excel.NextSheet()
 	F20 & F6::           		Excel.PrevSheet()
 	F20 & esc::     				run, Taskmgr.exe
 	F20 & backspace::    		Send, {delete}
-	F20 & .::            		WindowInfo()
+	F20 & .::            		windowInfo()
 
-	F20 & =::            		Send,{CtrlDown}{=}{Ctrlup}
-	F20 & -::            		Send,{CtrlDown}{-}{Ctrlup}
+	F20 & =::            		Send,{ctrldown}{=}{ctrlup}
+	F20 & -::            		Send,{ctrldown}{-}{ctrlup}
 	F19 & enter::					varbar.focus("Edit1")
 	F20 & enter::					varbar.focus("Edit2")
 	F20 & F19::          		Send, +{F18}
@@ -241,17 +241,17 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 #if
 
 
-#IfWinActive, ahk_exe explorer.exe ;;	___explorer:
+#Ifwinactive, ahk_exe explorer.exe ;;	___explorer:
 	F19 & space::   send % BlockRepeat(400) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F6::   			sendinput % BlockRepeat(800) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F7::				Sendinput, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
 	^w::									4down()
 
- #ifwinactive, Connection Information 
+ #ifwinactive, Connection Information
 	mbutton::sendinput, doR314Nle{enter}
-#IfWinActive, ahk_exe WINWORD.EXE ;; 	___WORD
-	F13 & space::			SendInput, +{tab}{tab}
+#Ifwinactive, ahk_exe WINWORD.EXE ;; 	___WORD
+	F13 & space::			Sendinput, +{tab}{tab}
 	F20 & `;::        Send, {tab}
 	F20 & /::         Table_Entry("N/A")
 	F20 & n::         Table_Entry("No")
@@ -261,15 +261,15 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F20 & ,::         Table_Entry("FALSE")
 	F20 & t::         Table_Entry("TRUE")
 	F20 & .::         Table_Entry("TRUE")
-	F19 & wheeldown:: 
+	F19 & wheeldown::
 	F8::              Send, {enter}
-	F19 & Wheelleft:: 
+	F19 & Wheelleft::
 	F6::              Send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
 	F19 & Wheelright::
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 	F19::             Clip.Copy()
 	F20::             Clip.paste()
-		
+
 
 
 
@@ -282,7 +282,7 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	^+2::send, {Mbutton}
 	F15::send, {Mbutton}
 
-#IfWinActive, Mats LMS Workbook.xlsb ;; 	___Excel
+#Ifwinactive, Mats LMS Workbook.xlsb ;; 	___Excel
 	Numpadmult::send, {Home}
 	F9::    					Excel.Connect(1)
 	F19 & space::    	LMS.searchBar(Product)
@@ -299,18 +299,18 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F13 & u::sendinput, {ctrldown}{up}{ctrlup}
 	F13 & n::sendinput, {ctrldown}{down}{ctrlup}
 
-	numpaddot::						
+	numpaddot::
 								excel.Connect(1)
 								ExplorerSearch(Product)
 								return
 
-#ifwinactive, Excel ahk_exe WFICA32.EXE 
-	; F9::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
-	F6::						WinMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
+#ifwinactive, Excel ahk_exe WFICA32.EXE
+	; F9::						winMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
+	F6::						winMove, A, , A_ScreenWidth/3, 0, A_ScreenWidth/3, A_ScreenHeight/4
 	; F9::						Send, {lwindown}{down}{lwinup}
 	^wheelup::				Send, {click 3}%SampleID%
 	^wheeldown::			Send, %SampleID%
-#ifwinactive, ahk_exe EXCEL.EXE     
+#ifwinactive, ahk_exe EXCEL.EXE
 	F1::F1
 	F2::F2
 	F4::F4
@@ -318,78 +318,78 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	; F9::                 excel.search()
 	F9::						3tap()
 	F7::                 excel.Search()
-	+Enter::             SendInput, {altdown}{enter}{altup}
-	$Enter::             SendInput,{enter}
-	F8::                 Send,{shiftDown}{Ctrldown}{u}{CtrlUp}{ShiftUp}
-	Media_Prev::         Send,{LWindown}{tab}{lwinup}
+	+Enter::             Sendinput, {altdown}{enter}{altup}
+	$Enter::             Sendinput,{enter}
+	F8::                 Send,{shiftdownwn}{ctrldown}{u}{ctrlup}{Shiftup}
+	Media_Prev::         Send,{Lwindown}{tab}{lwinup}
 	F19 & F7::           ^F8 ;Excel.NextSheet()
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
 	; F19::									Send, ^v
 #ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
-	return::             SendInput, !{i}
-	rbutton & Lbutton::  SendInput, !{i}
-#ifwinactive, Formula Updates.xlsm - Excel
+	return::             Sendinput, !{i}
+	rbutton & Lbutton::  Sendinput, !{i}
+#ifwinactive, Formula updates.xlsm - Excel
 	F13::
 	; Mbutton::
-	SendInput, MM{tab}
+	Sendinput, MM{tab}
 	FormatTime, CurrentDateTime,, MM/d/yy
-	SendInput %CurrentDateTime%
+	Sendinput %CurrentDateTime%
 	return
 
-	#IfWinActive, ahk_exe OUTLOOK.EXE ;; 	___OUTLOOK
+	#Ifwinactive, ahk_exe OUTLOOK.EXE ;; 	___OUTLOOK
 		F13 & 1::							sendinput,%product%%A_space%
 	F13 & 2::							sendinput, %Batch%%A_Space%
 	F13 & 3::							sendinput, %Lot%%A_space%
 	F19 & enter::        Send, {ctrldown}{enter}{ctrlup}
-	<+F20::       		   SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{ShiftDown}{Ctrldown}{left 2}{CtrlUp}{ShiftUp}"	
-	; <+F19::       		   SendInput % Trim(Product, OmitChars = " `n")	
-	;F20 & F19::          SendInput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
+	<+F20::       		   Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{Shiftdownwn}{ctrldown}{left 2}{ctrlup}{Shiftup}"
+	; <+F19::       		   Sendinput % Trim(Product, OmitChars = " `n")
+	;F20 & F19::          Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
 
 	numpadmult::
-	F20::                
+	F20::
 								Send, ^{c}
 								Clip.Copy()
 								return
 	F7::						LMS.SearchRequest(Batch,"{enter}")
-	F9::                 
+	F9::
 								winactivate, NuGenesis LMS - \\Remote
 								sleep 200
 								lms.searchbar(Product)
 								return
-	F6::						LMS.SearchRequest(Batch,"{enter}")    
+	F6::						LMS.SearchRequest(Batch,"{enter}")
 	^wheelup::				Block(500,"^{v}")
 	F13::						return ; clip.IfNothingSelected("menu")
 
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
-	Numlock::				Send, {Backspace}	
+	Numlock::				Send, {Backspace}
 	F19::						Send, ^{click}
-	
+
 
 
 #ifwinexist, Touchpoint | Microsoft Teams ;; 	___Teams
 Numlock::MuteTeamsMicrophone()
 F15::MuteTeamsMicrophone()
 
-#ifwinactive, OneNote for Windows 10 ;; 	___OneNote
-	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
-	^2::                 Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
-	^3::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
-	^4::                 Send,{Ctrldown}{1}{CtrlUp}
-	^5::                 Send,{Ctrldown}{3}{CtrlUp}
-	^`::                 Send,{altDown}{Ctrldown}{0}{CtrlUp}{altup}
+#ifwinactive, OneNote for windows 10 ;; 	___OneNote
+	^1::                 Send,{altdown}{ctrldown}{1}{ctrlup}{altup}
+	^2::                 Send,{altdown}{ctrldown}{2}{ctrlup}{altup}
+	^3::                 Send,{altdown}{ctrldown}{0}{ctrlup}{altup}
+	^4::                 Send,{ctrldown}{1}{ctrlup}
+	^5::                 Send,{ctrldown}{3}{ctrlup}
+	^`::                 Send,{altdown}{ctrldown}{0}{ctrlup}{altup}
 
-#IfWinActive, ahk_exe ONENOTE.EXE
-	F9::                 Send,{AltDown}{w}{i}{Altup}
-	F6::                 SendInput,{wheelleft 20}
-	F7::                 SendInput,{Wheelright 10}
-	^1::                 Send,{altDown}{Ctrldown}{1}{CtrlUp}{altup}
-	^2::         	        Send,{altDown}{Ctrldown}{2}{CtrlUp}{altup}
-	^3::                 Send,{altDown}{Ctrldown}{3}{CtrlUp}{altup}
-	^4::                 Send,{Ctrldown}{1}{CtrlUp}
-#IfWinActive,
+#Ifwinactive, ahk_exe ONENOTE.EXE
+	F9::                 Send,{altdown}{w}{i}{altup}
+	F6::                 Sendinput,{wheelleft 20}
+	F7::                 Sendinput,{Wheelright 10}
+	^1::                 Send,{altdown}{ctrldown}{1}{ctrlup}{altup}
+	^2::         	        Send,{altdown}{ctrldown}{2}{ctrlup}{altup}
+	^3::                 Send,{altdown}{ctrldown}{3}{ctrlup}{altup}
+	^4::                 Send,{ctrldown}{1}{ctrlup}
+#Ifwinactive,
 
 
-; #IfWinActive, Remote Desktop Connection ;;	___Remote_DESKTOPs:
+; #Ifwinactive, Remote Desktop Connection ;;	___Remote_DESKTOPs:
 ; #ifwinactive, ahk_class #32770
 	; F19::              menu.Remote_Login()
 ; #ifwinactive, ahk_class TscShellContainerClass
@@ -397,13 +397,13 @@ F15::MuteTeamsMicrophone()
 
 
 
-;  #IfWinActive, Introduction to JasperReports
+;  #Ifwinactive, Introduction to JasperReports
 
 
 
- #IfWinActive, ahk_exe firefox.exe ;; 	___Firefox
+ #Ifwinactive, ahk_exe firefox.exe ;; 	___Firefox
  numpaddot::	      sendInput, ^w
-;  F6::				   	SendInput, !{left}
+;  F6::				   	Sendinput, !{left}
 	;mbutton::space
 	F6::sendinput, +{wheelleft 10}
 	F7::sendinput, +{wheelright 10}
@@ -423,22 +423,22 @@ F15::MuteTeamsMicrophone()
 ExplorerSearch(text){
 		;excel.connect(1)
 		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
-		SearchWindow:="search-ms:displayname"
-		IfWinNotExist, %SearchWindow% && ifwinNotexist, %AllLabelCopy%	
-			return									
+		Searchwindow:="search-ms:displayname"
+		IfwinNotExist, %Searchwindow% && ifwinNotexist, %AllLabelCopy%
+			return
 		;  Run, %AllLabelCopy%
-		; IfWinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
+		; IfwinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
 			; run, %AllLabelCopy%
-		IfWinExist, %SearchWindow% 
+		IfwinExist, %Searchwindow%
 			winactivate, %AllLabelCopy%
 		winwait, %AllLabelCopy%, ,2
 		if errorlevel
 			winactivate, ahk_exe explorer.exe
 		sleep 300
-		WinGetPos, wX, wY, wW, wH, A
+		winGetPos, wX, wY, wW, wH, A
 		clk(ww-175, 75)
 		sleep 400
-		; SetKeyDelay, 20, 1 
+		; SetKeyDelay, 20, 1
 		Send, %Text%
 		sleep 300
 		Send, {enter}
@@ -455,11 +455,11 @@ FindAndReplaceWord(find,Replace,AllOrOne:="a"){
 				sleep 200
 				if winactive("Microsoft Word")
 					Send, {enter}
-				sleep 300	
+				sleep 300
 			}
 					return
 		}
-		else 
+		else
 			Send, {enter}{esc}
 }
 
@@ -468,7 +468,7 @@ Table_Entry(Entry){
 			if Iteration < 0
 				Direction:="{Tab}"
 			If Iteration > 0
-				Direction:="{Down}+{tab}{Tab}"
+				Direction:="{down}+{tab}{Tab}"
 		send % Entry Direction "{ctrlup}{altup}{shiftup}"
 	}
 

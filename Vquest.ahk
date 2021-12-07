@@ -5,10 +5,9 @@ VQuest_Start:
     ;#ErrorStdOut
     ;Process, Priority, , High
     #NoEnv
-    if A_Debuggername
-      try Run, Vim.Ahk, lib\
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
     Iniread, Mode, Settings.ini, Options, Mode
+    Iniread, HideVarbar, Settings.ini, Options, HideVarbar
     Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
     #KeyHistory 1000
     #InstallKeybdHook
@@ -22,7 +21,8 @@ VQuest_Start:
     #InstallMouseHook
     ; #HotkeyModifierTimeout 1
     #maxthreadsperhotkey, 1
-    SetBatchLines, 10ms
+    SetBatchLines, -1
+    ; SetBatchLines, 10ms
     If (Iteration = -1){
       SetControlDelay, -1
       setkeydelay, -1
@@ -48,15 +48,16 @@ VQuest_Start:
     SetscrolllockState, off
     SetNumlockState Alwayson
     setcapslockstate alwaysoff
+    CrLf=`r`n
     SetscrolllockState, alwaysoff
-    CoordMode, mouse, Window
-    #WinActivateForce
+    CoordMode, mouse, window
+    SetWorkingDir, %A_ScriptDir%
+    #winactivateForce
     AutoTrim, On
+    ; else
     OnClipboardChange("clipChange")
     OnExit("Varbar.SaveVariables")
-    CrLf=`r`n
-    FileName:="lib/WinPos.txt"
-    SetWorkingDir, %A_ScriptDir%
+    FileName:="lib/winPos.txt"
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
@@ -64,12 +65,13 @@ VQuest_Start:
     ; Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
     Menu, tray, NoStandard
-    ; Menu, tray, Click, 
+    ; Menu, tray, Click,
     Menu, Tray, Add, KeyHistory, KeyHistory
-    Menu, Tray, Add, windowSpy, WindowSpy
-    ShowVarBar:=CreateMenu("showVarbar")
+    Menu, Tray, Add, windowSpy, windowSpy
+    ; ShowVarBar:=CreateMenu("showVarbar")
     HideShowSampleID:=CreateMenu("ShowSampleID")
-    DebuggingScript:=CreateMenu("DebuggingScript")
+    ; ExcelConnect:=CreateMenu("ExcelConnect")
+    ; DebuggingScript:=CreateMenu("DebuggingScript")
     HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
@@ -79,14 +81,19 @@ VQuest_Start:
       varbar.Show()
     try Menu, Tray, Icon, bin\Robot.ico
     Blank:=" `n `n  `t `t `n`t "
-    CurrentWindow:=A
-    IfWinExist, ahk_exe WFICA32.EXE
-    LMS.Orient()
+    Currentwindow:=A
+    IfwinExist, ahk_exe WFICA32.EXE
+    if winexist("ahk_exe WFICA32.EXE")
+      LMS.Orient()
+
     GuiControl, -redraw, varbar
     If ExcelConnect
       Excel.Connect(1)
     GuiControl, +redraw, varbar
-    settimer, ActiveCheck, %CheckTime%
+    if A_Debuggername
+      try Run, Vim.Ahk, lib\
+    else
+      settimer, activeCheck , %CheckTime%
   #include <Toggles>
   #Include <Temp>
   #include <VIM>
@@ -104,49 +111,46 @@ VQuest_Start:
   ;#include <Rotation>
   #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
   #include <Functions>
-  #IfWinActive,
+  #Ifwinactive,
 return
 
 ;__________________continuously runing sub_________________________________________________
-ActiveCheck:
-  if Debugging
-    return
-  If winactive("ahk_exe SketchUp.exe")
+activeCheck:
+  If winactive("ahk_exe Sketchup.exe")
     Suspend, On
   else
     Suspend, Off
-  
-  Varbar.HoverAction()
+    Varbar.Hoveraction()
   ; If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=90 ){
   ;   VarBar_H:=90
-  ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
   ; }
   ; If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
   ;   VarBar_H:=32
-  ;   WinMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+  ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
   ; }
 
-    If Winactive("Result Entry - \\Remote") || WinActive("Register new samples - \\Remote")
-      varbar.FloatAtopWindow()
-    else if WinActive("Error - \\Remote") {
+    If winactive("Result Entry - \\Remote") || winactive("Register new samples - \\Remote")
+      varbar.FloatAtopwindow()
+    else if winactive("Error - \\Remote") {
       ControlSend,, {enter}, Error - \\Remote
       sleep 200
-      if WinExist("Register new samples - \\Remote"){
+      if winExist("Register new samples - \\Remote"){
         winactivate,
 				Send, {click 180, 103,2}%Product%{enter}
-			}   
+			}
     }
-    else if WinActive("Information - \\Remote")
+    else if winactive("Information - \\Remote")
       send, {enter}
 
-    If (Iteration = -2  && A_WinDelay!=300)
+    If (Iteration = -2  && A_winDelay!=300)
       setwindelay, 300
-    else If (Iteration = -3  && A_WinDelay!=400)
+    else If (Iteration = -3  && A_winDelay!=400)
       setwindelay, 300
-    else 
+    else
       setwindelay, 200
 return
-   
+
 
 
 

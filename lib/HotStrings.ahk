@@ -2,15 +2,15 @@ return
 
 _General:
 :*:ol`;::
-SendInput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
+Sendinput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
 	return
-:*:mm`;::         
+:*:mm`;::
 			Send, Mat Mignin{tab 2}%DayString%
-			return	
+			return
 
 _VSCODE_Hotstrings:
 	:*r:cd`;::{ctrldown}
-	:*r:cu`;::{ctrlup} 
+	:*r:cu`;::{ctrlup}
 	:*r:ad`;::{altdown}
 	:*r:au`;::{altup}
 	:*r:sd`;::{shiftdown}
@@ -18,141 +18,141 @@ _VSCODE_Hotstrings:
 	:*r:wd`;::{lwindown}
 	:*r:wu`;::{lwinup}
 	:*R:wt`;::
-	SendInput,%wintitle%
+	Sendinput,%wintitle%
 	return
-	:*R:wm`;::                                   
-	SendInput,%wininfo%
+	:*R:wm`;::
+	Sendinput,%wininfo%
 	return
-	:*R:wp`;::                                   
-	SendInput,%process%
+	:*R:wp`;::
+	Sendinput,%process%
 	return
-	:*R:mp`;::                                   
-	SendInput,%mouseposition%
+	:*R:mp`;::
+	Sendinput,%mouseposition%
 	return
-	:*R:wc`;::                                  
-	SendInput,%Wincontrol%
+	:*R:wc`;::
+	Sendinput,%wincontrol%
 	return
 	:*R:wl`;::
-	SendInput,%WinLocation%
+	Sendinput,%winLocation%
 	return
-	:*R:tt`;::                                    
-	SendInput, tt(){left} 
-	return 
-	:*R:hs`;::                                   
-	InputBox, UserInput, New Hotstring,enter Hotstring,,,,,,,, 
-	SendInput, {end}{return}:`*R:%UserInput%``;::`n`t`t`t`t`t`t`t`t`t`t`tSendInput`, {enter}return{up}{end}{shiftup}{ctrldown}{v}{ctrlup}
-	return 
-	:*R:we`;::                                   
-	SendInput, WinExist(`"`"){left 2} 
-	return 
-	:*R:wa`;::                                    
-	SendInput, WinActive(`"`"){left 2} 
-	return 
-	:*R:tr`;::                                   
+	:*R:tt`;::
+	Sendinput, tt(){left}
+	return
+	:*R:hs`;::
+	InputBox, UserInput, New Hotstring,enter Hotstring,,,,,,,,
+	Sendinput, {end}{return}:`*R:%UserInput%``;::`n`t`t`t`t`t`t`t`t`t`t`tSendinput`, {enter}return{up}{end}{shiftup}{ctrldown}{v}{ctrlup}
+	return
+	:*R:we`;::
+	Sendinput, winExist(`"`"){left 2}
+	return
+	:*R:wa`;::
+	Sendinput, winactive(`"`"){left 2}
+	return
+	:*R:tr`;::
 	sendraw, tt("")
-	SendInput, {left 2} 
-	return 
-	:*R:c`;::                                                   
+	Sendinput, {left 2}
+	return
+	:*R:c`;::
 	sendraw,{ctrldown}{}{ctrlup}
-	SendInput,{left 9}
+	Sendinput,{left 9}
 	return
-	:*R:w`;::                                                  
+	:*R:w`;::
 	sendraw,{lwindown}{}{lwinup}
-	SendInput,{left 9}
+	Sendinput,{left 9}
 	return
-	:*r:a`;::                                                  
+	:*r:a`;::
 	sendraw,{altdown}{}{altup}
-	SendInput,{left 8}
+	Sendinput,{left 8}
 	return
-	:*r:s`;::                                                  
+	:*r:s`;::
 	sendraw,{shiftdown}{}{shiftup}
-	SendInput,{left 10}
+	Sendinput,{left 10}
 	return
-	:*r:csw`;::                                              
-	:*r:cws`;::                                              
-	:*r:scw`;::                                              
-	:*r:swc`;::                                              
-	:*r:wcs`;::                                              
-	:*r:wsc`;::                                              
+	:*r:csw`;::
+	:*r:cws`;::
+	:*r:scw`;::
+	:*r:swc`;::
+	:*r:wcs`;::
+	:*r:wsc`;::
 	sendraw,{shiftdown}{ctrldown}{lwindown}{}{lwinup}{ctrlup}{shiftup}
-	SendInput,{left 26}
+	Sendinput,{left 26}
 	return
-	:*r:asw`;::                                              
-	:*r:aws`;::                                              
-	:*r:saw`;::                                              
-	:*r:swa`;::                                              
-	:*r:was`;::                                              
-	:*r:wsa`;::                                              
+	:*r:asw`;::
+	:*r:aws`;::
+	:*r:saw`;::
+	:*r:swa`;::
+	:*r:was`;::
+	:*r:wsa`;::
 	sendraw,{shiftdown}{altdown}{lwindown}{}{lwinup}{altup}{shiftup}
-	SendInput,{left 25}
+	Sendinput,{left 25}
 	return
-	:*r:asc`;::                                              
-	:*r:acs`;::                                              
-	:*r:sac`;::                                              
-	:*r:sca`;::                                              
-	:*r:cas`;::                                              
-	:*r:csa`;::                                              
+	:*r:asc`;::
+	:*r:acs`;::
+	:*r:sac`;::
+	:*r:sca`;::
+	:*r:cas`;::
+	:*r:csa`;::
 	sendraw,{shiftdown}{altdown}{ctrldown}{}{ctrlup}{altup}{shiftup}
-	SendInput,{left 25}
+	Sendinput,{left 25}
 	return
-	:*r:sc`;::                                                
-	:*r:cs`;::                                                
+	:*r:sc`;::
+	:*r:cs`;::
 	sendraw,{shiftdown}{ctrldown}{}{ctrlup}{shiftup}
-	SendInput,{left 18}
+	Sendinput,{left 18}
 	return
-	:*r:sw`;::                                                
-	:*r:ws`;::                                                
+	:*r:sw`;::
+	:*r:ws`;::
 	sendraw,{shiftdown}{lwindown}{}{lwinup}{shiftup}
-	SendInput,{left 18}
+	Sendinput,{left 18}
 	return
-	:*r:sa`;::                                                
-	:*r:as`;::                                                
+	:*r:sa`;::
+	:*r:as`;::
 	sendraw,{shiftdown}{altdown}{}{altup}{shiftup}
-	SendInput,{left 17}
+	Sendinput,{left 17}
 	return
-	:*r:ca`;::                                                
-	:*r:ac`;::                                                
+	:*r:ca`;::
+	:*r:ac`;::
 	sendraw,{altdown}{ctrldown}{}{ctrlup}{altup}
-	SendInput,{left 16}
+	Sendinput,{left 16}
 	return
-	:*r:wc`;::                                                
-	:*r:cw`;::                                                
+	:*r:wc`;::
+	:*r:cw`;::
 	sendraw,{ctrldown}{lwindown}{}{lwinup}{ctrlup}
-	SendInput,{left 16}
-	return 
+	Sendinput,{left 16}
+	return
 
-	:*R:iniw`;::                                            
-	sendraw, iniwrite 
-	SendInput,{Space}`%`%{,}{Space}Settings.ini{,}{Space}SavedVariables{,}{Space}
+	:*R:iniw`;::
+	sendraw, iniwrite
+	Sendinput,{Space}`%`%{,}{Space}Settings.ini{,}{Space}SavedVariables{,}{Space}
 	return
-	:*R:inir`;::                                            
-	sendraw, iniread 
-	SendInput,{space}{,}Settings.ini{,}{space}SavedVariables{,}{space}
+	:*R:inir`;::
+	sendraw, iniread
+	Sendinput,{space}{,}Settings.ini{,}{space}SavedVariables{,}{space}
 	return
-	
-	:*R:#ifw`;::                                            
-	sendraw, #ifwinactive, 
+
+	:*R:#ifw`;::
+	sendraw, #ifwinactive,
 	return
-	:*R:err`;::                                              
+	:*R:err`;::
 	sendraw, if ErrorLevel,
 	return
 	:*R:rtn::Return
 	:*R:r`;::
-	SendInput, {end}return
-	return 
+	Sendinput, {end}return
+	return
 
 
-_WindowNames:
+_windowNames:
 	:*R:iel`;::If ErrorLevel,
 	:*R:el`;::ErrorLevel
-	:*R:ifwe`;::ifwinexists, 
-	:*R:si`;::SendInput, 
-	:*:iwe`;::ifwinexists, 
-	:*:vb`;::VarBar ahk_exe AutoHotkey.exe 
-	:*:varbar`;::VarBar ahk_exe AutoHotkey.exe 
-	:*:nu`;::NuGenesis LMS - \\Remote                                            
-	:*:main`;::NuGenesis LMS - \\Remote 
-	:*:lmswin`;::ahk_exe WFICA32.EXE   
+	:*R:ifwe`;::ifwinexists,
+	:*R:si`;::Sendinput,
+	:*:iwe`;::ifwinexists,
+	:*:vb`;::VarBar ahk_exe AutoHotkey.exe
+	:*:varbar`;::VarBar ahk_exe AutoHotkey.exe
+	:*:nu`;::NuGenesis LMS - \\Remote
+	:*:main`;::NuGenesis LMS - \\Remote
+	:*:lmswin`;::ahk_exe WFICA32.EXE
 	:*:vs`;::ahk_exe Code.exe
 	:*:code`;::ahk_exe Code.exe
 	:*:remote`;::ahk_exe mstsc.exe
@@ -169,70 +169,70 @@ _WindowNames:
 	:*:exe`;::
 	sendinput, ahk_exe %Process%
 	return
-	
+
 	:*:#ifwalms`;::
-		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		winGetTitle, winTitle, ahk_exe WFICA32.EXE
 		; winactivate, ahk_exe WFICA32.EXE
 		; windowInfo()
 		; winactivate, ahk_exe Code.exe
-		; send % Wintitle
+		; send % wintitle
 		sendraw, #if winactive("
 		sendinput, %winTitle%
 		sendraw, ")
 		return
 	:*:ifwalms`;::
-		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		winGetTitle, winTitle, ahk_exe WFICA32.EXE
 		; winactivate, ahk_exe WFICA32.EXE
 		; windowInfo()
 		; winactivate, ahk_exe Code.exe
-		; send % Wintitle
+		; send % wintitle
 		sendraw, if winactive("
 		sendinput, %winTitle%
 		sendraw, ")
 		return
 	:*:walms`;::
-		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		winGetTitle, winTitle, ahk_exe WFICA32.EXE
 		; winactivate, ahk_exe WFICA32.EXE
 		; windowInfo()
 		; winactivate, ahk_exe Code.exe
-		; send % Wintitle
+		; send % wintitle
 		sendraw, winactive("
 		sendinput, %winTitle%
 		sendraw, ")
 		return
 	:*:lms`;::
-		WinGetTitle, winTitle, ahk_exe WFICA32.EXE
+		winGetTitle, winTitle, ahk_exe WFICA32.EXE
 		; winactivate, ahk_exe WFICA32.EXE
 		; windowInfo()
 		; winactivate, ahk_exe Code.exe
-		; send % Wintitle
+		; send % wintitle
 		sendinput, %winTitle%
 		return
 	:*:clk`;::
 		if !MousePosition
-			iniread MousePosition, Settings.ini, SavedVariables, WindowMousePosition 
-		sendraw, clk( 
-		sendinput % Mouseposition 
+			iniread MousePosition, Settings.ini, SavedVariables, windowMousePosition
+		sendraw, clk(
+		sendinput % Mouseposition
 		sendraw, )
 		return
 	:*:click`;::
 		if !MousePosition
-			iniread MousePosition, Settings.ini, SavedVariables, WindowMousePosition 
-		sendraw, {click 
-		sendinput % Mouseposition 
+			iniread MousePosition, Settings.ini, SavedVariables, windowMousePosition
+		sendraw, {click
+		sendinput % Mouseposition
 		sendraw, }
 		return
 	:*:px`;::
 	:*:pixel`;::
 		if !PixelColor
-			iniread PixelColor, Settings.ini, SavedVariables, PixelColor 
-		sendinput % PixelColor 
+			iniread PixelColor, Settings.ini, SavedVariables, PixelColor
+		sendinput % PixelColor
 		return
 	:*:cur`;::
 	:*:cursor`;::
 		if !MousePosition
-			iniread MousePosition, Settings.ini, SavedVariables, WindowMousePosition 
-		sendinput % Mouseposition 
+			iniread MousePosition, Settings.ini, SavedVariables, windowMousePosition
+		sendinput % Mouseposition
 		return
 	:*:Control`;::
 	sendinput, %wincontrol%
@@ -249,9 +249,9 @@ _WindowNames:
 	sendinput, click, %mouseposition%
 	return
 
-	#ifwinactive,                                 
+	#ifwinactive,
 
-	
+
 
 
 
@@ -259,7 +259,7 @@ _WindowNames:
 _LMS_HOTSTRINGS:
 	:*R:mm`;::mmignin
 	:*:MM`;::MM{tab}%DateString%
-#IfWinActive,ahk_exe WFICA32.EXE
+#Ifwinactive,ahk_exe WFICA32.EXE
 	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
 	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
 	:*R:#3`;::`#3 capsule / 0.626`" x 0.229`"

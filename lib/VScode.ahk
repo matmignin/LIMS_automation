@@ -1,18 +1,18 @@
 return
-#IfWinActive,ahk_exe Code.exe  ;;___VSCODE___    
-	; Mbutton::sendinput, +{F9}  
-	<^h::[    
-	<^l::]   
-	F17::Enter 
+#Ifwinactive,ahk_exe Code.exe  ;;___VSCODE___
+	; Mbutton::sendinput, +{F9}
+	<^h::[
+	<^l::]
+	F17::Enter
 	Numlock::ReloadScript()
-	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"                 
+	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
-	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev  
+	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
 	; Lbutton & F13::
 	; 	send, ^c
 	; 	tt(Clipboard,1000,100,-400,,160)
-	; 	return  
+	; 	return
 	#h::send, !{F2}
 	#p::send, +!{h}
 	#k::send, ^+{h}
@@ -20,59 +20,59 @@ return
 	numpadadd::               sendinput, {shiftdown}{altdown}{ctrldown}{.}{ctrlup}{altup}{shiftup}
 	numpadmult::              send, ^{F9} ;switch workplace
 	numpaddot::               numpaddot
-	^numpaddot::              SendInput,{ctrldown}{w}{ctrlup}
-	; Numpadsub::               SendInput, ^{d} ;go to Deffinition
-	; Numpadadd::               SendInput, !^{d} ;go to reference
-;;	---modifiers---        
+	^numpaddot::              Sendinput,{ctrldown}{w}{ctrlup}
+	; Numpadsub::               Sendinput, ^{d} ;go to Deffinition
+	; Numpadadd::               Sendinput, !^{d} ;go to reference
+;;	---modifiers---
 	$lwin::return
-		LCtrl & Appskey::         return
+		Lctrl & Appskey::         return
 	RShift::										sendinput,+!{i}
-	Rshift & appsKey::   			Return             
-	Lshift & appsKey::   			Return             
+	Rshift & appsKey::   			Return
+	Lshift & appsKey::   			Return
 	; Lwin & Appskey::          return
 	Lalt & Appskey::          return
-	rshift & space::          SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-	<+space::                 SendInput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
+	rshift & space::          Sendinput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
+	<+space::                 Sendinput,{shiftdown}{altdown}{ctrldown}{e}{ctrlup}{altup}{shiftup}
 ;;		---F Keys---
  ; go to file
-	F2::FindMatchingWindows()
+	F2::FindMatchingwindows()
 	F15::F15
-	; F3::Run, WindowSpy.ahk,C:\Program Files\AutoHotkey\
-	; F13 & s::SendInput,{shiftdown}{altdown}{`;}{altup}{shiftup}
+	; F3::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
+	; F13 & s::Sendinput,{shiftdown}{altdown}{`;}{altup}{shiftup}
 ;send, {click}^{v} ;{F19}
 	; F13 & s::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
 	F13 & Lalt::sendinput, ^{click}
-	F13 & tab::								SendInput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
+	F13 & tab::								Sendinput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13 & `::sendinput, {ctrldown}{F8}{ctrlup}
 	F13::F13
 ;;		---F19 and F20---
-	F20 & /:: 			 					SendInput,{ctrldown}{f}{ctrlup}%wintitle%
-	<^f19::                   SendInput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
-	F20 & h::                 SendInput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-	F20 & k::                 SendInput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+	F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
+	<^f19::                   Sendinput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+	F20 & h::                 Sendinput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+	F20 & k::                 Sendinput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
 	F20 & backspace::         delete
-	F19 & -::                 SendInput,{ctrldown}{-}{ctrlup}
-	F19 & =::                 SendInput,{ctrldown}{=}{ctrlup}
-	F19 & y::                 SendInput,{ctrldown}{w}{ctrlup}
-	F19 & n::                 SendInput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
-	F19 & u::                 SendInput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
-	F19 & i::                 SendInput,{F9}
-	F19 & o::                 SendInput,+!{F9}
-	F19 & p::                 SendInput,^{F9}
-	F19 & Enter::							SendInput,{ctrldown}{enter}{ctrlup}
-	F19 & j::                 SendInput,+!{j}
-	F19 & k::                 SendInput,+!{k}
-	F19 & l::                 SendInput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
-	F19 & h::                 SendInput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
-	f19 & `::                 SendInput,~
-	f19 & r::                 SendInput,%process%
-	f19 & c::                 SendInput,%mouseposition%
-	f19 & t::                 SendInput,%wintitle%
-	f19 & w::                 SendInput,%wininfo%
-	f19 & /::                 SendInput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
+	F19 & -::                 Sendinput,{ctrldown}{-}{ctrlup}
+	F19 & =::                 Sendinput,{ctrldown}{=}{ctrlup}
+	F19 & y::                 Sendinput,{ctrldown}{w}{ctrlup}
+	F19 & n::                 Sendinput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
+	F19 & u::                 Sendinput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
+	F19 & i::                 Sendinput,{F9}
+	F19 & o::                 Sendinput,+!{F9}
+	F19 & p::                 Sendinput,^{F9}
+	F19 & Enter::							Sendinput,{ctrldown}{enter}{ctrlup}
+	F19 & j::                 Sendinput,+!{j}
+	F19 & k::                 Sendinput,+!{k}
+	F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+	F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+	f19 & `::                 Sendinput,~
+	f19 & r::                 Sendinput,%process%
+	f19 & c::                 Sendinput,%mouseposition%
+	f19 & t::                 Sendinput,%wintitle%
+	f19 & w::                 Sendinput,%wininfo%
+	f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
 	; F13 & lshift::						enter
 	; F13::F13
-	
+
 ;;		---TAB---
 VScodeTabsMenu(){
 		try Menu,VScodeTabs, deleteAll
@@ -97,20 +97,26 @@ VScodeTabsMenu(){
 		Menu, VscodeTabs,Show
 		return
 
-SelectVScodeTab: 
-	ThisMenuItem:= StrReplace(A_ThisMenuItem, "&","")
+SelectVScodeTab:
+	If (A_ThisMenuItem Contains E&xit) {
+		Menu,VScodeTabs, deleteAll
+		return
+		}
+	If (A_ThisMenuItem Contains &Previous) {
 		send, {F9}
 		sleep 50
-	If (A_ThisMenuItem == Exit)
-		Menu,VScodeTabs, deleteAll
-	else If (A_ThisMenuItem == &Previous)
-		sendinput, {F9}{down}
-	else 
+		send, {down}
+	}
+	else {
+		ThisMenuItem:= StrReplace(A_ThisMenuItem, "&","")
+		send, {F9}
+		sleep 50
 		send % ThisMenuItem ".ahk"
+	}
 	sleep 200
 	send, {enter}
 	Menu,VScodeTabs, deleteAll
-		return
+	return
 }
 
 
@@ -118,9 +124,9 @@ class Vim {
 
 	find(){
 		global
-		SendInput,{shiftdown}{altdown}{ctrldown}{f}{shiftup}{altup}{ctrlup}
+		Sendinput,{shiftdown}{altdown}{ctrldown}{f}{shiftup}{altup}{ctrlup}
 		input, letter, V,{enter}{return}{up}{down}{left}{right}
-		SendInput,{enter}
+		Sendinput,{enter}
 		return
 	}
 
@@ -128,19 +134,19 @@ class Vim {
 	ChangeSelection(){
 		Clipsave:=ClipboardAll
 		clipboard:=
-		SendInput,^c
+		Sendinput,^c
 		clipwait, 0.25
 		if errorlevel
-			SendInput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-		SendInput,{shiftdown}{ctrldown}{r}{shiftup}{ctrlup}
+			Sendinput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
+		Sendinput,{shiftdown}{ctrldown}{r}{shiftup}{ctrlup}
 		sleep 200
-		SendInput,^v
+		Sendinput,^v
 		sleep 300
 		Clipboard:=ClipSave
 		return
 	}
 	Yank(Precommand:="",Cut:=""){
-		global 
+		global
 		clipboard:=
 		if Precommand
 			Sendinput % PreCommand
@@ -150,14 +156,14 @@ class Vim {
 				; send, {home}+{end}^{c}
 		if Cut
 			Sendinput, {Backspace}
-		else 
+		else
 			send, {esc}{F3}
 		sleep 20
-		return 
+		return
 	}
-	
+
 	Paste(){
-		global 
+		global
 
 		KeyWait, p, U T1
 		if errorlevel {
@@ -171,23 +177,23 @@ class Vim {
 		return
 	}
 	}
-	FindMatchingWindows(){
+	FindMatchingwindows(){
 		global
-	  WinGetTitle, CurrentLMSWindow, ahk_exe WFICA32.EXE
-  ; Pop(SubStr(CurrentLMSWindow, 1, 20))
+	  winGetTitle, CurrentLMSwindow, ahk_exe WFICA32.EXE
+  ; Pop(SubStr(CurrentLMSwindow, 1, 20))
   	winactivate, ahk_exe Code.exe
     send, ^{f}
     sleep 200
-    sendinput % SubStr(CurrentLMSWindow, 1, 25)
+    sendinput % SubStr(CurrentLMSwindow, 1, 25)
 	}
 
 ReloadScript(){
 	global
 	varbar.SaveVariables()
 	Send, !s
-	WinSet, Transparent, 155, ahk_exe Code.exe
+	winSet, Transparent, 155, ahk_exe Code.exe
 	sleep 100
-	WinSet, Transparent, off, ahk_exe Code.exe
+	winSet, Transparent, off, ahk_exe Code.exe
 	; try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
 if A_DebuggerName
 		ControlSend, , {Numlock}, ahk_exe Code.exe

@@ -2,14 +2,14 @@
     global Customer, Name, ShipToIndex
     ParsedSample:=[]
     ; clipboard:=
-    ; send, ^c 
+    ; send, ^c
     ; clipwait, 2
       ; if errorlevel
         ; sleep 400
     Loop, parse, Clipboard, `t
     ParsedSample.insert(A_LoopField)
     TotalColumns:=Parsedsample.maxindex()//2
-    
+
     Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
     Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
     IniRead,ShipToIndex, data\customers.ini, Customers, %Customer%
@@ -23,7 +23,7 @@
 		Numlock::4tap() ;LMS.COA()
 		mbutton::3tap()
 		F7::		  3Right()
-		F6::			  3Left()	
+		F6::			  3Left()
 		F19 & Space::lms.searchBar("")
 		F20 & Space::Varbar.Focus(Product)
 		F20 & left::Send, %Product%
@@ -36,21 +36,21 @@
 		wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
 		wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
 
- #IfWinactive,Select Iterations - \\Remote
+ #Ifwinactive,Select Iterations - \\Remote
    F20::LMS.PasteProductRotation()
- #IfWinactive,Book
+ #Ifwinactive,Book
    F19::LMS.CopyProductRotation()
 
-	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry 
+	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry
 			#MaxThreadsPerHotkey 2
 				Numlock::WorkTab.ChangeTestResults("loop")
-			#MaxThreadsPerHotkey 1 
+			#MaxThreadsPerHotkey 1
 
 
 
 
 
-	#IfWinActive, Results Definition - \\Remote ;;__Results_Definition:
+	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
 	; wheelup::Mouse_click("Edit")
 		numlock::Send, % clk(712, 663) "{esc}"
 		space::sendinput,{ctrldown}{click}{ctrlup}
@@ -59,8 +59,8 @@
 
 
 	#ifwinactive, Register new samples - \\Remote ;;__Register_new_samples:
-		F7:: 
-			clk(181, 104,2,2) 
+		F7::
+			clk(181, 104,2,2)
 			sleep 300
 			Send, %Product%{enter}
 			return
@@ -69,11 +69,11 @@
 
 	#ifwinactive, Reason for Change - \\Remote
 	; F13 & v::
-		; 				send % "Verification" 
+		; 				send % "Verification"
 		; 				sleep 200
 		; 				 LMSclick.Okay()
 		; 				return
-	#ifwinactive, Select tests for request: 
+	#ifwinactive, Select tests for request:
 		space::send, ^{click}
 		rbutton::send, ^{click}
 		Numpaddot::send, {click 837, 656}{
@@ -83,7 +83,7 @@
 		; wheelright::3right()
 		; wheelleft::WorkTab.SelectTestSample()
 
-	#IfWinActive, ahk_exe WFICA32.EXE, ;;___LMS app
+	#Ifwinactive, ahk_exe WFICA32.EXE, ;;___LMS app
 
 			; F19 & left::			excel.Nextsheet()
 			; F19 & right::			excel.Prevsheet()
@@ -97,20 +97,20 @@
 			numpaddot::			4down()
 			numpadMult::		4up()
 			F9::						Excel.Connect(1) ;3up()
-			F8::						3Down()
+			F8::						3down()
 			F7::						3Right()
-			F6::						3Left()	
+			F6::						3Left()
 		^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
 			^wheelup::				LMS.SearchbarPaste() ;; Spread
-			Rbutton & F19::       	send % WindowInfo() 
+			Rbutton & F19::       	send % windowInfo()
 			Rbutton & wheelleft::        	Send, {Backspace}
 
 
-		#IfWinActive, Barcode Scanner - \\Remote
+		#Ifwinactive, Barcode Scanner - \\Remote
 			enter::enter
 			; F20::LMS.SearchbarPaste()
 			^v::LMS.SearchbarPaste()
-	#IfWinActive,
+	#Ifwinactive,
 
 
 Class LMS {    			;;_____________________Generl LMS_________________________
@@ -144,14 +144,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 						clk(x%Tab%Search,yProductsSearch)
 						Send, {ctrldown}{a}{ctrlup}
 						If Overwrite=true
-							Send, ^{x}	
+							Send, ^{x}
 						Send, %Product%{ctrldown}{a}{ctrlup}
 						If Overwrite=true
 							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
-						ControlsetText, Edit8,%Clipboard%,VarBar	
-						Send, {ctrlup}	
+						ControlsetText, Edit8,%Clipboard%,VarBar
+						Send, {ctrlup}
 					exit
 					}
 						If (Code=Batch) { ;click something edit comp
@@ -166,14 +166,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 					clk(x%Tab%Search,yProductsSearch)
 						Send, {ctrldown}{a}{ctrlup}
 						If Overwrite=Add
-							Send, ^{x}	
+							Send, ^{x}
 						Send, %Product%{ctrldown}{a}{ctrlup}
 						If Overwrite=Add
 							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
-						ControlsetText, Edit8,%Clipboard%,VarBar	
-						Send, {ctrlup}	
+						ControlsetText, Edit8,%Clipboard%,VarBar
+						Send, {ctrlup}
 					exit
 					; }
 					; If (Code=Batch) {
@@ -185,14 +185,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 						clk(x%Tab%Search,yWorkTabSearch,,2)
 						Send, {ctrldown}{a}{ctrlup}
 						If Overwrite=Add
-							Send, ^{x}	
+							Send, ^{x}
 						Send, %Code%{ctrldown}{a}{ctrlup}
 						If Overwrite=Add
 							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
-						ControlsetText, Edit8,%Clipboard%,VarBar	
-						Send, {ctrlup}	
+						ControlsetText, Edit8,%Clipboard%,VarBar
+						Send, {ctrlup}
 					; 	; clk(x%Tab%Search,yWorkTabSearch)
 					; Send,{ctrldown}{a}{ctrlup}%code%
 					; if PostCmd!=""
@@ -205,14 +205,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 						sleep 20
 						Send, {ctrldown}{a}{ctrlup}
 						If Overwrite=Add
-							Send, ^{x}	
+							Send, ^{x}
 						Send, %Code%{ctrldown}{a}{ctrlup}
 						If Overwrite=Add
 							send, {right}{space}^{v}^{a}^{c}
 						if PostCmd!=""
 							send % PostCmd
-						ControlsetText, Edit8,%Clipboard%,VarBar	
-						Send, {ctrlup}	
+						ControlsetText, Edit8,%Clipboard%,VarBar
+						Send, {ctrlup}
 					; 	clk(x%Tab%Search,yWorkTabSearch)
 					; Send,{ctrldown}{a}{ctrlup}%Code%
 					; if PostCmd!=""
@@ -221,7 +221,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 					exit
 				}
 			}
-			
+
 		}
 
 		SearchbarPaste(){
@@ -239,8 +239,8 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 			;send, {enter}
 			return clipboard
 		}
-	SearchRequest(Code){    
-			Global            
+	SearchRequest(Code){
+			Global
 			winactivate, NuGenesis LMS - \\Remote
 			this.detectTab()
 			sleep 200
@@ -256,9 +256,9 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 
 	ProductSpecToggle(){
 		global
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		; this.detectTab()
-			; if Tab2 
+			; if Tab2
 		; {
 			; this.SelectTab(3)
 			; sleep 100
@@ -267,8 +267,8 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		{
 			this.SelectTab(4)
 			tabtoggle:=1
-		} 
-		else 
+		}
+		else
 		{
 			this.SelectTab(3)
 			tabtoggle:=0
@@ -277,12 +277,12 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		; If lms.DetectTab() = "Product"
 		; else
 		}
-		
+
 	SampleRequestToggle(){
 		global
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		this.detectTab()
-			if !Tab2 
+			if !Tab2
 		{
 			this.SelectTab(2)
 			; clk(xtab2,ytabselect)
@@ -293,7 +293,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		else
 			clk(SamplesTab,yWorkTabs)
 		}
-		
+
 	SelectTab(Direction){
 		global TabSelect, yTabSelect
 		winactivate, NuGenesis LMS - \\Remote
@@ -307,7 +307,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		; TabSelect:=SamplesTab
 		winactivate, NuGenesis LMS - \\Remote
 		lms.detecttab()
-		if !Tab2 
+		if !Tab2
 		{
 			this.SelectTab(2)
 			; clk(xtab2,ytabselect)
@@ -322,7 +322,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 
 	MoveTab2(Direction){
 				global
-				WinActivate, ahk_exe WFICA32.EXE
+				winactivate, ahk_exe WFICA32.EXE
 				lms.DetectTab()
 				If (Direction="Right") {
 				If Tab2
@@ -341,13 +341,13 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 					clk(xTab9,47) ;"{down 9}{enter}"
 				else if Tab1
 					clk(xTab2,47) ;"{down 9}{enter}"
-				else 
-					SendInput % clk(TabSelect,47) "{up}{enter}"
+				else
+					Sendinput % clk(TabSelect,47) "{up}{enter}"
 				return
 				}
 			if (Direction="Left") {
 				If Tab2
-					SendInput % clk(TabSelect,47) "{Up}{enter}"
+					Sendinput % clk(TabSelect,47) "{up}{enter}"
 				else if Tab3
 					clk(xTab2,47) ; "{down 2}{enter}"
 				else if Tab4
@@ -374,14 +374,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 					if (Tab="Samples"){
 						Mouse_Save()
 						Send, {click 83, 708}{click, %RequestsTab%, %yMyWorkTabs%}%MouseReturn%
-					return	
+					return
 					}
 					else
 						clk(SamplesTab,yMyWorkTabs)
 					Return
 				}
 				else
-					clk(xTab2,47) ;'"{Down 2}{enter}"
+					clk(xTab2,47) ;'"{down 2}{enter}"
 				return
 			}
 			return
@@ -421,7 +421,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 				clk(xTestsFilter,yMyWorkFilter)
 			else
 				return
-				
+
 			Send, ^{a}%Code%^{a}
 			sleep 200
 			if PostCmd!=""
@@ -432,8 +432,8 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		}
 
 	DetectTab(){
-		global  
-		WinSet, Transparent, Off, ahk_exe WFICA32.EXE
+		global
+		winSet, Transparent, Off, ahk_exe WFICA32.EXE
 		tab:=
 		FoundSamples:=
 		FoundRequests:=
@@ -452,25 +452,25 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		ifwinnotactive, ahk_exe WFICA32.EXE
 			winactivate, ahk_exe WFICA32.EXE
 		LMS.Orient()
-		; CoordMode, pixel, Window
-		if WinActive("NuGenesis LMS - \\Remote") {
+		; CoordMode, pixel, window
+		if winactive("NuGenesis LMS - \\Remote") {
 				PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 					if !Tab1 {
 						PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
 						if FoundSamples {
-							Tab=Samples 
+							Tab=Samples
 							return Tab
-						}					
-						else 
+						}
+						else
 						{
 						PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 						If FoundRequests {
-							Tab=Requests 
+							Tab=Requests
 							return tab
 						}
 						PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 						If FoundDocuments {
-							Tab=Documents 
+							Tab=Documents
 							return tab
 						}
 						PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
@@ -497,10 +497,10 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 								tab=Specs
 							else
 								Tab=Products
-							return Tab	
+							return Tab
 							}
 						}
-						else 
+						else
 					return
 					exit
 					}
@@ -515,7 +515,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		global
 		FilterOn:=
 		FilterOff:=
-		if !WinActive("NuGenesis LMS - \\Remote")
+		if !winactive("NuGenesis LMS - \\Remote")
 			return
 		If (x="On") {
 				PixelSearch, FilterOn, FoundY, %xFilterIcon%, %yFilterIcon%, %xFilterIcon%+2, %YFilterIcon%+2, 0xf9e681, 10, Fast RGB
@@ -523,28 +523,28 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 						clk(xFilterIcon,yFilterIcon)
 			return
 		}
-		if (x="Clear"){	
-			If WinActive("Select samples for request")
+		if (x="Clear"){
+			If winactive("Select samples for request")
 				Clk(35, 275,"Right")
-			if winactive("NuGenesis LMS - \\Remote")	
+			if winactive("NuGenesis LMS - \\Remote")
 				Clk(xClearFilter,yClearFilter,"Right")
 			sleep 100
-			Send, {shiftDown}{Tab 2}{shiftup}{enter}
+			Send, {shiftdownwn}{Tab 2}{shiftup}{enter}
 			sleep 400
 			exit
 		}
-		if (x="Off"){	
+		if (x="Off"){
 				PixelSearch, FilterOn, FoundY, %xFilterIcon%, %yFilterIcon%, %xFilterIcon%+2, %YFilterIcon%+2, 0xf9e681, 10, Fast RGB
 					if FilterOn
-						clk(xFilterIcon,yFilterIcon)				
+						clk(xFilterIcon,yFilterIcon)
 			return
 		}
-		if (x="Status"){	
+		if (x="Status"){
 			PixelSearch, FilterOn, FoundY, %xFilterIcon%, %yFilterIcon%, %xFilterIcon%+2, %YFilterIcon%+2, 0xf9e681, 10, Fast RGB
 				if FilterOn
 					Return "On"
-				else 
-					Return "Off" 
+				else
+					Return "Off"
 		}
 		}
 
@@ -579,14 +579,14 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 	SaveCode(){
 		global
 		Batches:=[]
-			Send, {CtrlDown}{a}{Ctrlup}
+			Send, {ctrldown}{a}{ctrlup}
 			clip(1)
 			sleep 200
 			Send, {enter}
 			; FileAppend, %Batch% `n, Batch.txt
 			; FileAppend, %product% `n, data\Products.txt
 			; iniwrite, %Batch%, lib\codes.ini, %Batch%,
-			; iniwrite, %Product%, lib\codes.ini, %Product%, 
+			; iniwrite, %Product%, lib\codes.ini, %Product%,
 			return
 
 		}
@@ -606,11 +606,11 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		global
 		; ifwinnotactive, NuGenesis LMS - \\Remote
 			; Switch:=1
-		; IfWinExist, NuGenesis LMS - \\Remote
+		; IfwinExist, NuGenesis LMS - \\Remote
 			; winactivate
 		; if errorlevel
 			; return
-		CoordMode, mouse, Window
+		CoordMode, mouse, window
 		Tab:=
 		Tab1:=
 		Tab2:=
@@ -618,10 +618,10 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		Tab4:=
 		Tab5:=
 		Tab6:=
-		WinGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
-		WinGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
-		WinGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
-		; WinGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
+		winGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
+		winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
+		winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
+		; winGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
 		WbX:=WbX+400
 		Flovar_x:= wX +900
 		Flovar_y:= wH + wY -28
@@ -629,7 +629,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		varBar_nuY:=wY
 		TabSelect:=WW-10
 		yTabSelect:=45
-		yTabDropDown:=45
+		yTabDropdown:=45
 		SamplesTab:=(Ww/2)-80
 		RequestsTab:=(Ww/2)+20
 		DocumentsTab:=(Ww/3)+(Ww/3)-50
@@ -662,7 +662,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		yClearfilter:=270
 		xFilterIcon:=Ww-22
 			yFilterIcon:=131
-		
+
 		xProductsSearch:=xDivider+180
 		xSpecsSearch:=xDivider+183
 		yProductsSearch:=93
@@ -674,10 +674,10 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		xResultsSearch:=xDivider+185
 		xTestsSearch:=xDivider+125
 		xDocumentsSearch:=xDivider+25
-		
+
 		yProductsFilter:=181
 		ySpecsFilter:=181
-		
+
 		xFormulationFilter:=xDivider+75
 		xProductFilter:=xDivider+75
 		xBatchFilter:=xDivider+168
@@ -686,11 +686,11 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		yMyWorkTabFilter:=182
 		yMyWorkFilter:=182
 		yWorkTabFilter:=182
-		
+
 		xDocumentsFilter:=xDivider+68
 
 		xEdit_Composition:=76
-		yEdit_Composition:=443 
+		yEdit_Composition:=443
 		xAdd_methods:=74
 		yAdd_methods:=565
 		xEnter_Results:=57
@@ -698,7 +698,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		}
 
 
-	ScrollDown(){
+	Scrolldown(){
 	Global
 	if winactive("Result Editor - \\Remote") {
 		clk(503, 574,1)
@@ -718,7 +718,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 	else
 		return
 	}
-	}	
+	}
 
 
 
@@ -733,11 +733,11 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     ShiftTable_X:=-250
     ShiftTable_Y:=200
     try GUI, Ingredient_table:destroy
-    CoordMode, mouse, Window
+    CoordMode, mouse, window
     ; CoordMode, , Screen
-    ifwinnotactive, ahk_exe WFICA32.EXE 
-      WinActivate, ahk_exe WFICA32.EXE
-    WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+    ifwinnotactive, ahk_exe WFICA32.EXE
+      winactivate, ahk_exe WFICA32.EXE
+    winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
     Table_height=10
     ProductTable_X:= LMS_w+LMS_X+ShiftTable_X
     ProductTable_Y:= LMS_Y+ShiftTable_Y
@@ -746,14 +746,14 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     LabelClaim:=  	[]
     Position:=		  []
     LabelName:=		  []
-    DropDownCount:= []
+    DropdownCount:= []
     Sub_Table_height:=0
       while (Xl.Range("AK" . A_Index+7).Value != "") {
         Position[A_index]     :=  Xl.Range("AD" . A_Index+7).Text
         Name[A_index]         :=  Xl.Range("AI" . A_Index+7).text
         LabelClaim[A_index]   :=	Xl.Range("AJ" . A_Index+7).Text
         LabelName[A_index]    :=	Xl.Range("AK" . A_Index+7).Text
-        DropDownCount[A_index]:=	Xl.Range("AM" . A_Index+7).Text
+        DropdownCount[A_index]:=	Xl.Range("AM" . A_Index+7).Text
         Total_rows            :=	A_index +1
         Table_Height          :=	A_index
         if (Xl.Range("AD" . A_Index+7).text = "")
@@ -761,7 +761,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       }
     Table_Height:=Table_height-Sub_table_Height
     Gui,Ingredient_Table:Default
-    Gui,Ingredient_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop ;-SysMenu
+    Gui,Ingredient_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop ;-SysMenu
     GUI,Ingredient_Table:Font,s10 cBlack arial ;Consolas
     Gui,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W400 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
     loop,%Total_Rows% {
@@ -771,7 +771,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
         continue
       }
       else
-        LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index],DropDownCount[A_index])
+        LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index],DropdownCount[A_index])
     }
     Gui,Ingredient_Table:Add,Checkbox,vAutoEnter x20 checked,Auto-Enter Results?
     LV_ModifyCol(1,50)
@@ -793,30 +793,30 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
 
 
-    EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){  
+    EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
   ;; the final input window for adding ingredients
       Global
       Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
       Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
       Ingredient_position:=Trim(Ingredient_Position,"`r`n")
-      ifWinnotexist, Edit Ingredient - \\Remote
+      ifwinnotexist, Edit Ingredient - \\Remote
       {
-      WinActivate, Composition - \\Remote
+      winactivate, Composition - \\Remote
       Breaking.Point()
       sleep 200
-      click 57, 65 
+      click 57, 65
       sleep 150
       Breaking.Point()
       this.DropdownSelect(Dropdown_count)
       ; sleep 200
       }
-        Winactivate, Edit Ingredient - \\Remote
+        winactivate, Edit Ingredient - \\Remote
       Excel.Get_Current_row()
       sleep 150
       if winactive("Composition - \\Remote")
         return
       Send,{tab 6}^a%Ingredient_position%{tab}^a
-      SendInput,%Ingredient_Name%
+      Sendinput,%Ingredient_Name%
       sleep 100
       If Ingredient_Claim contains Heavy Metal,Allergens
       Send,{tab}
@@ -840,13 +840,13 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
       AbsSelection:=Abs(A_DropdownCount)
       if (A_DropdownCount > 0)
-      SendInput, {tab}{home}{right %A_DropdownCount%}
+      Sendinput, {tab}{home}{right %A_DropdownCount%}
       if (A_DropdownCount < 0)
-      SendInput, {tab}{end}{left %AbsSelection%}
+      Sendinput, {tab}{end}{left %AbsSelection%}
       if (A_DropdownCount = "-0")
-      SendInput, {tab}{end}
+      Sendinput, {tab}{end}
       if (a_DropdownCount = "")
-      this.DropDown_Ingredient()
+      this.Dropdown_Ingredient()
       Breaking.Point()
       return
       }
@@ -854,22 +854,22 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
     AddCOASpace(){
       Global
-      SetWinDelay, 450
+      SetwinDelay, 450
       ControlGetText, Iteration, Static1, VarBar
-      ; WinActivate, Composition - \\Remote
+      ; winactivate, Composition - \\Remote
       click
       Mouse_Save()
       click 74, 64
       sleep 200
       ifwinnotactive, Edit Ingredient - \\Remote
-      WinActivate, Edit Ingredient - \\Remote
+      winactivate, Edit Ingredient - \\Remote
       if (Iteration > 0)
-        SendInput, {Tab 7}{pgdn 2}{end}{enter}{click 283, 559}
+        Sendinput, {Tab 7}{pgdn 2}{end}{enter}{click 283, 559}
       if (Iteration < 0)
-        SendInput, {tab 7}{pgdn 2}{end}{backspace}{click 283, 559}
+        Sendinput, {tab 7}{pgdn 2}{end}{backspace}{click 283, 559}
         sleep 200
       ifwinnotactive, Composition - \\Remote
-      WinActivate, Composition - \\Remote
+      winactivate, Composition - \\Remote
       send %mouseReturn%
       MouseMove, 0, 36, 0, r
       sleep 200
@@ -879,7 +879,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
   Blends(n,Measurment){
     global ServingSize, Color, ShapeAndSize
-    SetWinDelay, 450
+    SetwinDelay, 450
     winactivate, Edit Formulation - \\Remote
     click 450, 462, 3
     Send, {click 385, 347}
@@ -911,17 +911,17 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
 
 
-    EditProduct(){ ;for naming Product code and customer, 
+    EditProduct(){ ;for naming Product code and customer,
       global Product, Name, Customer, ShapeAndSize, color
-      SetWinDelay, 450
+      SetwinDelay, 450
       ; Excel.Connect(1)
       click 120,80 ;click product box
-      SendInput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
+      Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
       sleep 200
-      SendInput,%Name%{tab 8}
+      Sendinput,%Name%{tab 8}
       sleep 400
       winwaitactive,NuGenesis LMS - \\Remote,,16
-      WinActivate, NuGenesis LMS - \\Remote
+      winactivate, NuGenesis LMS - \\Remote
       click, 67, 283
       sleep 200
       Breaking.Point()
@@ -929,7 +929,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       ; clk(287, 578) ;click save
       return
       setwindelay, 200
-    } 
+    }
 
     EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
       global Product, ShapeAndSize, color, ServingSize, ServingType
@@ -942,7 +942,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       ; if (ServingSize=1 ? "(" ServingSize ")" : "Two (" ServingSize ")" ) ;|| ServingSize=2 || ServingSize=3 || ServingSize=4)
          send, Each %ServingType% {space} contains {ctrl down}{left}{ctrl up}{left}
       send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
-      ; ShapeAndsize:=  
+      ; ShapeAndsize:=
       sleep 200
       If !Color
         color:="Pending"
@@ -952,46 +952,46 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       ; clk(287, 578) ;click save
       return
       ;setwindelay, 200
-    } 
+    }
 
-    HM_ReportOnly(){ 
-    SetWinDelay, 450 ;testing out
+    HM_ReportOnly(){
+    SetwinDelay, 450 ;testing out
     click 125,120 ;click 1st row
-    
+
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
-    SendInput,{click 150,73}{tab}{right 11} ;arsenic
+    Sendinput,{click 150,73}{tab}{right 11} ;arsenic
     Breaking.Point()
-    WinWaitClose, Edit Ingredient - \\Remote,,4
+    winWaitClose, Edit Ingredient - \\Remote,,4
     click 125,140 ;click 2nd row
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
-    SendInput,{click 150,73}{tab}{right 167} ;lead
+    Sendinput,{click 150,73}{tab}{right 167} ;lead
     Breaking.Point()
     click 390, 659	;click okay
-    WinWaitClose, Edit Ingredient - \\Remote,,4
+    winWaitClose, Edit Ingredient - \\Remote,,4
     click 125,180 ;click 3rd row
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
-    SendInput,{click 150,73}{tab}{right 23} ;cadmium
+    Sendinput,{click 150,73}{tab}{right 23} ;cadmium
     Breaking.Point()
     click 390, 659	;click okay
-    WinWaitClose, Edit Ingredient - \\Remote,,4
+    winWaitClose, Edit Ingredient - \\Remote,,4
     click 125,200 ;click 4th row
     clk(45, 65)
     winwaitactive, Edit Ingredient - \\Remote,,4
-    SendInput,{click 150,73}{tab}{right 189} ;mercury
+    Sendinput,{click 150,73}{tab}{right 189} ;mercury
     Breaking.Point()
 
     click 390, 659	;click okay
     return
     }
 
-    DropDown_Ingredient(){
+    Dropdown_Ingredient(){
     global
-      ; SetWinDelay, 350
+      ; SetwinDelay, 350
     ; if (GeneralCount=2){
-      ; SendInput,{tab}{Home}{right 2}{right 62}
+      ; Sendinput,{tab}{Home}{right 2}{right 62}
       ; return
     ; }
     ;Menu,IngredientMenu,Add,Creatine, IngredientMenuHandler
@@ -1055,69 +1055,69 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     ; GeneralCount=1
   ; tt(GeneralCount)
   if (A_ThisMenuItem ="Generic Ingredient &A")
-    SendInput,{tab}{Home}{right 8}{right 56}
+    Sendinput,{tab}{Home}{right 8}{right 56}
   else if (A_ThisMenuItem ="Generic Ingredient &B") || (GeneralCount=2)
-    SendInput,{tab}{Home}{right 8}{right 62}
+    Sendinput,{tab}{Home}{right 8}{right 62}
   else if (A_ThisMenuItem ="Generic Ingredient &C") || (GeneralCount=3)
-    SendInput,{tab}{Home}{right 8}{right 68}
+    Sendinput,{tab}{Home}{right 8}{right 68}
   else if (A_ThisMenuItem ="Generic Ingredient &D") || (GeneralCount=4)
-    SendInput,{tab}{home}{right 6}{right 74}
+    Sendinput,{tab}{home}{right 6}{right 74}
   else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount==5)
-    SendInput,{tab}{Home}{right 8}{right 80}
+    Sendinput,{tab}{Home}{right 8}{right 80}
   else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount==6)
-    SendInput,{tab}{Home}{right 8}{right 86}
+    Sendinput,{tab}{Home}{right 8}{right 86}
   else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount==7)
-    SendInput,{tab}{Home}{right 8}{right 92}
+    Sendinput,{tab}{Home}{right 8}{right 92}
   else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount==8)
-    SendInput,{tab}{Home}{right 8}{right 93}
+    Sendinput,{tab}{Home}{right 8}{right 93}
   else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount==9)
-    SendInput,{tab}{Home}{right 8}{right 95}
+    Sendinput,{tab}{Home}{right 8}{right 95}
   else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount==10)
-    SendInput,{tab}{Home}{right 8}{right 97}
+    Sendinput,{tab}{Home}{right 8}{right 97}
   else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount==11)
-    SendInput,{tab}{Home}{right 8}{right 99}
+    Sendinput,{tab}{Home}{right 8}{right 99}
   else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount==12)
-    SendInput,{tab}{Home}{right 8}{right 100}
+    Sendinput,{tab}{Home}{right 8}{right 100}
   else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount==13)
-    SendInput,{tab}{Home}{right 8}{right 101}
+    Sendinput,{tab}{Home}{right 8}{right 101}
   else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount==14)
-    SendInput,{tab}{Home}{right 8}{right 102}
+    Sendinput,{tab}{Home}{right 8}{right 102}
   else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount==15)
-    SendInput,{tab}{Home}{right 8}{right 103}
+    Sendinput,{tab}{Home}{right 8}{right 103}
   else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount==16)
-    SendInput,{tab}{Home}{right 8}{right 104}
+    Sendinput,{tab}{Home}{right 8}{right 104}
   else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount==17)
-    SendInput,{tab}{Home}{right 8}{right 105}
+    Sendinput,{tab}{Home}{right 8}{right 105}
   else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount==18)
-    SendInput,{tab}{Home}{right 8}{right 106}
+    Sendinput,{tab}{Home}{right 8}{right 106}
   else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount==19)
-    SendInput,{tab}{Home}{right 8}{right 107}
+    Sendinput,{tab}{Home}{right 8}{right 107}
   else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount==20)
-    SendInput,{tab}{Home}{right 8}{right 108}
+    Sendinput,{tab}{Home}{right 8}{right 108}
   else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount==21)
-    SendInput,{tab}{Home}{right 8}{right 109}
+    Sendinput,{tab}{Home}{right 8}{right 109}
   else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount==22)
-    SendInput,{tab}{Home}{right 8}{right 110}
+    Sendinput,{tab}{Home}{right 8}{right 110}
   else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount==23)
-    SendInput,{tab}{Home}{right 8}{right 111}
+    Sendinput,{tab}{Home}{right 8}{right 111}
   else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount==24)
-    SendInput,{tab}{Home}{right 8}{right 112}
+    Sendinput,{tab}{Home}{right 8}{right 112}
   else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount==25)
-    SendInput,{tab}{Home}{right 8}{right 113}
+    Sendinput,{tab}{Home}{right 8}{right 113}
   else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount==26)
-    SendInput,{tab}{Home}{right 8}{right 114}
+    Sendinput,{tab}{Home}{right 8}{right 114}
   else if (A_ThisMenuItem ="Ingredient Note 1")
-    SendInput,{tab}{Home}{right 8}{right 140}
+    Sendinput,{tab}{Home}{right 8}{right 140}
   else if (A_ThisMenuItem ="Ingredient Note 10")
-    SendInput,{tab}{Home}{right 8}{right 141}
+    Sendinput,{tab}{Home}{right 8}{right 141}
 	else if (A_ThisMenuItem ="Ingredient Note 2")
-    SendInput,{tab}{Home}{right 8}{right 143}
+    Sendinput,{tab}{Home}{right 8}{right 143}
   else if (A_ThisMenuItem ="Ingredient Note 3")
-    SendInput,{tab}{Home}{right 8}{right 144}
+    Sendinput,{tab}{Home}{right 8}{right 144}
   else if (A_ThisMenuItem ="Total Probiotic")
-    SendInput,{tab}{End}{Left 20}
+    Sendinput,{tab}{End}{Left 20}
   else if (A_ThisMenuItem ="Manual"){
-    SendInput,{tab}{Home}
+    Sendinput,{tab}{Home}
 		ManualInput=1
 	}
   else if (A_ThisMenuItem ="STOP")
@@ -1125,7 +1125,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
   else
     return
   ; tt(GeneralCount,,0,0,2)
-  ; GeneralCount++  
+  ; GeneralCount++
   ; tt(GeneralCount)
   return
 
@@ -1139,11 +1139,11 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     Loop % Rows_left {
       Excel.Get_Current_row()
       ProductTab.EditIngredient(LabelName,LabelClaim,Position,DropdownCount)
-      if Winactive("Duplicate ingredient ID - \\Remote") || Winactive("NuGenesis LMS - \\Remote") || WinActive("Edit Formulation - \\Remote") || winactive("Warning - \\Remote")
+      if winactive("Duplicate ingredient ID - \\Remote") || winactive("NuGenesis LMS - \\Remote") || winactive("Edit Formulation - \\Remote") || winactive("Warning - \\Remote")
       break
       sleep 300
     }
-  } 
+  }
   return
 
   Ingredient_TableGuiClose:
@@ -1174,18 +1174,18 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
 	return
 class SpecTab {   	;;  	 ________________SpecTab class__________________
-	
+
 	Table(){
 		Global
 		ShiftTable_X:=-350
 		ShiftTable_Y:=50
 		Try GUI, Spec_Table:destroy
-		CoordMode, mouse, Window
+		CoordMode, mouse, window
 	;  CoordMode, , Screen
-	ifwinnotactive, ahk_exe WFICA32.EXE 
-		WinActivate, ahk_exe WFICA32.EXE
-	WinGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
-	
+	ifwinnotactive, ahk_exe WFICA32.EXE
+		winactivate, ahk_exe WFICA32.EXE
+	winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+
 		; Iniread, SpecTable_X, Settings.ini, Locations, SpecTable_X
 		; Iniread, SpecTable_Y, Settings.ini, Locations, SpecTable_Y
 			CoordMode, mouse, window
@@ -1214,12 +1214,12 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			OnMessage(0x0201, "WM_Lbuttondown")
 			return
 			}
-			
+
 	CreateGUI(){
 		global
 		Gui, Spec_Table:Default
-		Gui Spec_Table:+LastFound +ToolWindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-		Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid AltSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
+		Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid altSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		GUI, Spec_Table:Font, s14 cBlack Bold, Consolas
 		loop, %Total_Rows%{
 			if Position[A_index] =""
@@ -1248,7 +1248,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 
 	Methods() {
 		global
-		WinActivate, Select methods tests - \\Remote
+		winactivate, Select methods tests - \\Remote
 		click, 229, 72,2
 		Send, ^a
 		Loop, Read, data\Methods.ini
@@ -1268,7 +1268,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			sleep 200
 			InputVar:=A_ThisMenuItem
 			IniRead,vOutput, data\Methods.ini, Methods, %InputVar%
-			SendInput, %vOutput%{enter}
+			Sendinput, %vOutput%{enter}
 			sleep 300
 			click 506, 341
 			SpecTab.Methods()
@@ -1278,10 +1278,10 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 
 
 	CopySpecTemplate(){
-		global 
+		global
 		Critical
 		sleep 100
-		if WinActive("NuGenesis LMS - \\Remote"){
+		if winactive("NuGenesis LMS - \\Remote"){
 			; click
 			; Send, ^c
 			; clipwait,1.5 ; Tooltip, %Clipboard%
@@ -1329,41 +1329,41 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			SpecTab.Edit_CoatedRetain()
 		sleep 500
 		;excel.NextSheet()
-		
+
 		;TT(Product)
 		return
 	}
-	
-	
+
+
 
 	CopySpecs(){
 		global
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		BlockInput, on
 		clipboard:=
 		click 57, 715 ; edit Test
 		; click 57, 750 ; edit results
 		winwaitactive, Test Definition Editor - \\Remote,,0.25
 		if errorlevel
-			WinActivate, Test Definition Editor - \\Remote
+			winactivate, Test Definition Editor - \\Remote
 		; sleep 400
 		click 418, 202
 		Send, ^a^c
 		Clipwait,1
 		Description:=Clipboard
 		sleep 200
-		StrReplace(Description, "eurofins",Note1) 
-		; StrReplace(Description, "(Send out)","") 
-		; MouseClick, left, 464, 532,2,0 
-		MouseClick, left, 464, 533,1,0 
+		StrReplace(Description, "eurofins",Note1)
+		; StrReplace(Description, "(Send out)","")
+		; MouseClick, left, 464, 532,2,0
+		MouseClick, left, 464, 533,1,0
 		sleep 150
-		MouseClick, left, 245, 489,1,0 
+		MouseClick, left, 245, 489,1,0
 		;  LMSclick.TestDefinitionEditor_Results()
-		WinActivate, Results Definition - \\Remote
-		WinWaitActive, Results Definition,,0.25
+		winactivate, Results Definition - \\Remote
+		winWaitactive, Results Definition,,0.25
 		if errorlevel
-			WinActivate, Results Definition
-		WinActivate, Results Definition - \\Remote
+			winactivate, Results Definition
+		winactivate, Results Definition - \\Remote
 		click 282, 141 ; click row
 		sleep 80
 		clipboard:=
@@ -1393,26 +1393,26 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 
 		PasteSpecs(){
 		Global
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 57, 715 ; edit Test
 		winwaitactive, Test Definition Editor - \\Remote,,0.25
 			if errorlevel
-				WinActivate, Test Definition Editor - \\Remote
+				winactivate, Test Definition Editor - \\Remote
 		sleep 400
 		click 418, 202
 		SpecTab.TestDefinitionEditor(Description) ; the pre window
 		sleep 200
-		MouseClick, left, 464, 533,1,0 
+		MouseClick, left, 464, 533,1,0
 		sleep 150
-		MouseClick, left, 245, 489,1,0 
-		WinActivate, Results Definition - \\Remote
-		WinWaitActive, Results Definition,,0.25
+		MouseClick, left, 245, 489,1,0
+		winactivate, Results Definition - \\Remote
+		winWaitactive, Results Definition,,0.25
 			if errorlevel
-				WinActivate, Results Definition
+				winactivate, Results Definition
 		click 84, 65
 		winwaitactive, Result Editor - \\Remote,,0.25
 			if errorlevel
-				WinActivate, Result Editor - \\Remote
+				winactivate, Result Editor - \\Remote
 		sleep 400
 		Breaking.Point()
 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
@@ -1422,35 +1422,35 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 	}
 
 		AddMethod(MethodID){
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 67, 562 ; Add Methods
 		winwaitactive, Select methods tests - \\Remote,,0.25
 		click 227, 69. 2 ; method search bar
-		SendInput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
+		Sendinput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
 		sleep 200
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 397, 591 ; click attrobutes
 		return
 	}
 
-	;; Run through all the menues to add 
-	AutoFill(){  
+	;; Run through all the menues to add
+	AutoFill(){
 		global
-		WinActivate, ahk_exe WFICA32.EXE
+		winactivate, ahk_exe WFICA32.EXE
 			sleep 200
 			;blockinput, on
-		If Winactive("NuGenesis LMS - \\Remote")
+		If winactive("NuGenesis LMS - \\Remote")
 			{
-				;SendInput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
+				;Sendinput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
 				sleep 200
 				Breaking.Point()
 				click, 57, 719 ;click Edit Test
 				Sleep 200
 				Breaking.Point()
-				WinActivate, Test Definition Editor - \\Remote
+				winactivate, Test Definition Editor - \\Remote
 				sleep 200
 			}
-		If Winactive("Test Definition Editor - \\Remote")
+		If winactive("Test Definition Editor - \\Remote")
 		{
 			sleep 200
 			Breaking.Point()
@@ -1461,13 +1461,13 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 				Breaking.Point()
 				 LMSclick.TestDefinitionEditor_Results()
 				sleep 200
-				WinActivate, Results Definition - \\Remote
+				winactivate, Results Definition - \\Remote
 
 		}
 		if winactive("Results Definition - \\Remote") ;Selection window
 		{
 
-				WinActivate, Results Definition - \\Remote
+				winactivate, Results Definition - \\Remote
 				If Method contains ICP-MS 231
 					Send,{click 217, 141}
 				Send,{click 80, 66} ;click edit
@@ -1480,7 +1480,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 				Breaking.Point()
 				sleep 400
 		}
-		If Winactive("Result Editor - \\Remote") ;the editing window
+		If winactive("Result Editor - \\Remote") ;the editing window
 			{
 			winactivate, Result Editor - \\Remote
 			Breaking.Point()
@@ -1548,7 +1548,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 					Table_Height = 20
 			}
 		; }
-		
+
 		}
 
 
@@ -1563,8 +1563,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		global
 		winactivate, Edit sample template - \\Remote
 		Breaking.Point()
-		SendInput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
-		WinWaitActive, NuGenesis LMS - \\Remote,,8
+		Sendinput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
+		winWaitactive, NuGenesis LMS - \\Remote,,8
 		Breaking.Point()
 		if !errorlevel
 			click, 73, 562
@@ -1574,8 +1574,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 	EditSpecification_Analytical(){
 		global
 		winactivate, Edit specification - \\Remote
-		SendInput,{click 376, 87}{home}
-		SendInput, %Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
+		Sendinput,{click 376, 87}{home}
+		Sendinput, %Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
 		Breaking.Point()
 		Send,{right 6}{Tab 2}{Space}{tab 2}{right}{tab}{right}
 		Breaking.Point()
@@ -1608,29 +1608,29 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		sleep 200
 			Send,{tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 		if (Max_limit = ""){
-			SendInput, NLT %Min_Limit% %The_Units%
+			Sendinput, NLT %Min_Limit% %The_Units%
 			exit
 			}
 		else if (Min_limit = "<"){
-			SendInput, %min_limit%%Max_Limit% %The_Units%
+			Sendinput, %min_limit%%Max_Limit% %The_Units%
 			exit
 			}
 		else if (Min_limit = ""){
-			SendInput, NMT %Max_Limit% %The_Units%
+			Sendinput, NMT %Max_Limit% %The_Units%
 			Exit
 			}
 		Else
 			{
 				If CreateRequirements=1
-					SendInput, %Min_Limit% - %Max_Limit% %The_Units%
+					Sendinput, %Min_Limit% - %Max_Limit% %The_Units%
 				else if CreateRequirements!=1
-					SendInput, %CreateRequirements%
-			; SendInput, %Requirement%
+					Sendinput, %CreateRequirements%
+			; Sendinput, %Requirement%
 			}
 		sleep 100
 		Breaking.Point()
 		click 350, 660 ; click okay
-		; WinWaitClose, Results Definition,, 6
+		; winWaitClose, Results Definition,, 6
 			; if errorlevel
 				return
 	}
@@ -1646,7 +1646,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			}
 		else
 		{
-			WinActivate, Test Definition Editor - \\Remote
+			winactivate, Test Definition Editor - \\Remote
 			DescriptionRaw:=The_Description
 			Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
 			Breaking.Point()
@@ -1665,8 +1665,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 	Edit_Physical(){
 		Global
 		winactivate, Edit specification - \\Remote
-		SendInput,{click 376, 87}{home}
-		Send,%Product%`,{space}{shift down}I{shift Up}n{shift down}{space}P{shift Up}rocess`,{space}{shift down}P{shift Up}hysical{tab 3}^a{backspace}
+		Sendinput,{click 376, 87}{home}
+		Send,%Product%`,{space}{shift down}I{shift up}n{shift down}{space}P{shift up}rocess`,{space}{shift down}P{shift up}hysical{tab 3}^a{backspace}
 		Breaking.Point()
 		Send,{tab}^a%Product%{tab 2}
 		Breaking.Point()
@@ -1695,16 +1695,16 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		winwaitactive, Edit sample template - \\Remote,,4
 		if !errorlevel
 			sleep 300
-		SendInput,{tab}{delete 4}%Product%{enter}
+		Sendinput,{tab}{delete 4}%Product%{enter}
 		return
 	}
 
 	Edit_CoatedRetain(){
 		global
 		winactivate, Edit specification - \\Remote
-		SendInput,{click 376, 87}{home}
+		Sendinput,{click 376, 87}{home}
 		Breaking.Point()
-		Send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+		Send,%Product%`,{space}{shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 		sleep 400
 		Send,{tab}{right}
 		sleep 200
@@ -1717,15 +1717,15 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		if !errorlevel
 			 LMSclick.EditSampleTemplate()
 			Breaking.Point()
-			SendInput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift Up}etain
+			Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain
 		return
 	}
 
 	Edit_CoatedPhysical(){
 		global
 		winactivate, Edit specification - \\Remote
-		SendInput,{click 376, 87}{home}
-		Send,%Product%`,{space}{shift down}C{shift Up}oated`,{space}{shift down}P{shift Up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+		Sendinput,{click 376, 87}{home}
+		Send,%Product%`,{space}{shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 		sleep 400
 		Send,{tab}{right}
 		Breaking.Point()
@@ -1739,15 +1739,15 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		if !errorlevel
 		 LMSclick.EditSampleTemplate()
 		Breaking.Point()
-			SendInput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift Up}hysical
+			Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
 		return
 	}
 
 	Edit_Retain(){
 		Global
 		winactivate, Edit specification - \\Remote
-		SendInput,{click 376, 87}{home}
-		Send,%Product%`,{space}{shift down}I{shift Up}n{space}{shift down}P{shift Up}rocess`,{space}{shift down}R{shift Up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
+		Sendinput,{click 376, 87}{home}
+		Send,%Product%`,{space}{shift down}I{shift up}n{space}{shift down}P{shift up}rocess`,{space}{shift down}R{shift up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 		Breaking.Point()
 		sleep 200
 		Send,{tab}{right}
@@ -1755,7 +1755,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Send,{tab}{right}
 		sleep 1500
 		Breaking.Point()
-		WinWaitactive, Edit specification - \\Remote,, 1
+		winWaitactive, Edit specification - \\Remote,, 1
 		if !errorlevel
 			click, 340, 622 ;click okay
 			Breaking.Point()
@@ -1766,13 +1766,13 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		 LMSclick.EditSampleTemplate()
 			sleep 300
 			Breaking.Point()
-		SendInput,{tab}{delete 4}%Product%{enter}
+		Sendinput,{tab}{delete 4}%Product%{enter}
 		return
 		}
 	Edit_Analytical(){
 		Global
 		Breaking.Point()
-		If WinActive("Edit sample template - \\Remote")
+		If winactive("Edit sample template - \\Remote")
 			SpecTab.EditSampleTemplate_A()
 		else If winexist("Edit specification - \\Remote")
 		{
@@ -1786,8 +1786,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 	Edit_Micro(){
 		Global
 		winactivate, Edit specification - \\Remote
-		SendInput,{click 376, 87}{home}
-		Send,%Product%`,{space}{shift down}F{shift Up}inished`,{space}{shift down}M{shift Up}icro{tab 4}^a%Product%{tab 2}
+		Sendinput,{click 376, 87}{home}
+		Send,%Product%`,{space}{shift down}F{shift up}inished`,{space}{shift down}M{shift up}icro{tab 4}^a%Product%{tab 2}
 		Sleep 200
 		Send,{Space}
 		sleep 200
@@ -1804,7 +1804,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			Breaking.Point()
 		 LMSclick.EditSampleTemplate()
 			sleep 300
-		SendInput,{tab}{delete 4}%Product%{enter}
+		Sendinput,{tab}{delete 4}%Product%{enter}
 		return
 	}
 
@@ -1821,28 +1821,28 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 		click 390, 659	;click okay
 		return
 	}
@@ -1852,31 +1852,31 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		; click 125,150 ;click 2nd row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		; click 125,190 ;click 3rd row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		; click 125,210 ;click 4th row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 		click 390, 659	;click okay
 		return
 	}
@@ -1886,32 +1886,32 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
 		click 390, 659	;click okay
 		Breaking.Point()
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}6.3{tab 5}NMT 6.3 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}6.3{tab 5}NMT 6.3 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}20.3{tab 5}NMT 20.3 mcg/day
+		Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}20.3{tab 5}NMT 20.3 mcg/day
 		click 390, 659	;click okay
 		return
 	}
@@ -1922,58 +1922,58 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Breaking.Point()
 		winactivate, Result Editor - \\Remote
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 12}{space}{tab 2}^{a}
-		;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
-		SendInput, 0{tab}^{a}
+		Sendinput,{tab 12}{space}{tab 2}^{a}
+		;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
+		Sendinput, 0{tab}^{a}
 		sleep 100
-		SendInput, 9.999{tab 5}^a<10 mcg/day
+		Sendinput, 9.999{tab 5}^a<10 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		winactivate, Result Definition - \\Remote
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 12}{space}{tab 2}^a
-		;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
-		SendInput, 0{tab}^a
+		Sendinput,{tab 12}{space}{tab 2}^a
+		;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
+		Sendinput, 0{tab}^a
 		sleep 100
-		SendInput, 0.499{tab 5}^a<0.5 mcg/day
+		Sendinput, 0.499{tab 5}^a<0.5 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		winactivate, Result Definition - \\Remote
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 12}{space}{tab 2}^a
-		;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
-		SendInput, 0{tab}^a
+		Sendinput,{tab 12}{space}{tab 2}^a
+		;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
+		Sendinput, 0{tab}^a
 		sleep 100
-		SendInput, 4.099{tab 5}^a<4.1 mcg/day
+		Sendinput, 4.099{tab 5}^a<4.1 mcg/day
 		click 390, 659	;click okay
-		WinWaitClose, Result Editor - \\Remote,,4
+		winWaitClose, Result Editor - \\Remote,,4
 		winactivate, Result Definition - \\Remote
 		click 125,130 ;click 1st row
 		click 80,70 ;Edit
 		Breaking.Point()
 		winwaitactive, Result Editor - \\Remote,,4
-		SendInput,{tab 12}{space}{tab 2}^a
-		;SendInput,{tab 5}mcg/day{tab 7}{tab 2}^a
-		SendInput, 0{tab}^a
+		Sendinput,{tab 12}{space}{tab 2}^a
+		;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
+		Sendinput, 0{tab}^a
 		sleep 100
-		SendInput, 0.299{tab 5}^a<0.3 mcg/day
+		Sendinput, 0.299{tab 5}^a<0.3 mcg/day
 		click 390, 659	;click okay
 		return
 	}
 	}
 
-	WM_LbuttonDown:
+	WM_Lbuttondown:
 	Spec_Table:
 		if (A_GuiEvent = "NORMAL" ){
 		; if (A_GuiEvent := "I" ){
-		
-			SendInput,{space}
+
+			Sendinput,{space}
 		SpecTab.GetRowText()
 		SpecTab.AutoFill()
 		}
@@ -1995,7 +1995,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 Class WorkTab { 		;;___________________WorkTab Class______________________
   registerNewSamples(){
     global
-    ; SetWinDelay, 450
+    ; SetwinDelay, 450
     mx:=
     my:=
     ; If Coated = "ERROR"
@@ -2010,22 +2010,22 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     sleep 200
     Breaking.Point()
     sleep 200
-    winwaitactive, Edit sample `(Field Configuration,, 6 
+    winwaitactive, Edit sample `(Field Configuration,, 6
       if ErrorLevel
         exit
-    SendInput, {tab 2}{right}{click 277, 139}{tab 6}
-    IfWinActive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
+    Sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+    Ifwinactive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
       Send,{tab}^{a}
-    SendInput, ^{a}%Batch%{tab}^{a}
-    IfWinActive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
+    Sendinput, ^{a}%Batch%{tab}^{a}
+    Ifwinactive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
     {
-      SendInput,{CtrlDown}{a}{Ctrlup}%Lot%
-      SendInput,{tab 3}
+      Sendinput,{ctrldown}{a}{ctrlup}%Lot%
+      Sendinput,{tab 3}
       sleep 100
     if Coated
-      SendInput, ^{a}%Coated%
+      Sendinput, ^{a}%Coated%
       sleep 100
-      SendInput, +{tab 2}
+      Sendinput, +{tab 2}
     }
     Breaking.Point()
     sleep 200
@@ -2037,13 +2037,13 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
       This.DropdownSelect(ShipTo)
     sleep 200
     Breaking.Point()
-    SendInput, {enter}
+    Sendinput, {enter}
     sleep 100
     blockinput, off
     winactivate, Register new samples - \\Remote
     sleep 300
     my:=my+30
-    MouseMove, mx, my  
+    MouseMove, mx, my
 
       ; return
   }
@@ -2052,7 +2052,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
   DropdownSelect(A_ShipTo){
     sleep 100
       ; SetKeyDelay, 0, 0
-      ; SetWinDelay, 500
+      ; SetwinDelay, 500
   AbsSelection:=Abs(A_ShipTo)-1
   if (a_shipto = "-1")
     Sendinput,{end}
@@ -2072,26 +2072,26 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
   DeleteRetain(){
     gLOBAL
-    ; SetWinDelay, 25
+    ; SetwinDelay, 25
       SetMouseDelay, -1
     SetDefaultMouseSpeed, 0
     CoordMode, mouse, Relative
     ; Breaking.Preamble()
-    Winactivate, NuGenesis LMS - \\Remote
-    MouseGetPos, mx, mY  
+    winactivate, NuGenesis LMS - \\Remote
+    MouseGetPos, mx, mY
   ; InputBox, n, number of retains to delte, , , , , mx, my,,,50
     n:=Iteration*10
     SetControlDelay -1
     loop %n%,
     {
     CoordMode, mouse, Screen
-    MouseGetPos, mx, mY  
+    MouseGetPos, mx, mY
     CoordMode, mouse, relative
       ; TT(n,800)
       ; Breaking.Point()
-      ; Winactivate, ahk_exe WFICA32.EXE
+      ; winactivate, ahk_exe WFICA32.EXE
         ; ControlClick, x61 y258, ahk_exe WFICA32.EXE
-    Winactivate, NuGenesis LMS - \\Remote
+    winactivate, NuGenesis LMS - \\Remote
       ; clk(61, 258,,,"ahk_exe WFICA32.EXE")
       send, {click 61, 258}
     CoordMode, mouse, Screen
@@ -2107,12 +2107,12 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
         sleep 100
         if winexist("Warning - \\Remote")
           ControlSend,, {enter}, Warning - \\Remote
-        ; Winactivate, NuGenesis LMS - \\Remote
+        ; winactivate, NuGenesis LMS - \\Remote
         ; MouseClick, left, 0, 26, 1, 0, , R
       }
         ; MouseClick, left, 0, 26, 1, 0, , R
         sleep 200
-        if WinExist("Delete Tests - \\Remote")
+        if winExist("Delete Tests - \\Remote")
           ControlSend,, {enter}, Delete Tests - \\Remote
         ; Send, {enter}
       sleep 100
@@ -2126,11 +2126,11 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
   NewRequest(){
   global
-  SetWinDelay, 550
+  SetwinDelay, 550
   department:= ; Clip()
   Clipboard:=
-  WinActivate, NuGenesis LMS - \\Remote
-  click 
+  winactivate, NuGenesis LMS - \\Remote
+  click
   Send, ^c
   clip()
   sleep 50
@@ -2140,7 +2140,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
   winwaitactive, Edit request - \\Remote,,3
     if !Errorlevel
   sleep 200
-  WinActivate, Edit request - \\Remote,
+  winactivate, Edit request - \\Remote,
   click 238, 622 ;pick test
   Breaking.Point()
   winwaitactive, Select tests for request,,3
@@ -2156,25 +2156,25 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
   sleep 100
   Breaking.Point()
   Send, %product%{enter}
-  Send,{tab}{CtrlDown}{a}{Ctrlup}
+  Send,{tab}{ctrldown}{a}{ctrlup}
   input, , V T3,{Lbutton}{enter}
   click 504, 338 ; click arrow
-  WinActivate, Select tests for request
+  winactivate, Select tests for request
   click, right, 264, 590 ; click to clear filter
   Send,{up}{enter}
   sleep 100
-  WinActivate, Select tests for request
+  winactivate, Select tests for request
   sleep 100
-  WinActivate, Select tests for request
+  winactivate, Select tests for request
   Breaking.Point()
   click 854, 657 ; click okay
   winwaitclose, Select tests for request,,3
     if !Errorlevel
-    WinWaitActive, Edit request
+    winWaitactive, Edit request
     Breaking.Point()
   While GetKeyState("Lbutton", "p")
   sleep 100
-  IfWinnotActive, Edit request
+  Ifwinnotactive, Edit request
     exit
   Sleep 100
     winactivate, Edit request
@@ -2187,7 +2187,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
   ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
     global
-    ; SetWinDelay, 550
+    ; SetwinDelay, 550
     if (Iteration = "ERROR")
     InputBox, Iteration, enter iteration, number please,, , , , , , , 1
     if errorlevel
@@ -2234,17 +2234,17 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     click
 		click 843, 202, 2
     if Checkbox_Toggle Contains Toggle
-      SendInput,{tab}{Space}{tab}{Space}
+      Sendinput,{tab}{Space}{tab}{Space}
     else
-      SendInput,{tab}{tab}
-    SendInput,{tab 10}^a
+      Sendinput,{tab}{tab}
+    Sendinput,{tab 10}^a
     sleep 100
     if Checkbox_Toggle Contains toggle
       return
     Send, %Iteration%
     sleep 100
     if Checkbox_Toggle Not Contains toggle
-      mousemove, xpos, ypos+26 
+      mousemove, xpos, ypos+26
     ; setwindelay, 200
     return
     }
@@ -2270,12 +2270,12 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
   Main_EditResults()
   {
-  SendInput,{click}{click 77, 751} ;edit results
+  Sendinput,{click}{click 77, 751} ;edit results
   winwaitactive, Results Definition - \\Remote,,3
   return
   }
     AddTestDescription(Text){
-      SendInput,{click 305, 294}{end}%TEXT%{click 330, 617}
+      Sendinput,{click 305, 294}{end}%TEXT%{click 330, 617}
       sleep 300
     }
 
@@ -2296,19 +2296,19 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
   send, {click 212, 188}  ; select Batches
   sleep 400
   Send, {click 136, 119}^a ;flick filter box
-  if WinActive("Select samples for test: Organoleptic Sensory Test  - \\Remote") || WinActive("Select samples for test: Average Capsule Weight  - \\Remote") || WinActive("Select samples for test: Average Tablet Weight  - \\Remote")
+  if winactive("Select samples for test: Organoleptic Sensory Test  - \\Remote") || winactive("Select samples for test: Average Capsule Weight  - \\Remote") || winactive("Select samples for test: Average Tablet Weight  - \\Remote")
     Department:="Physical"
-  if WinActive("Select samples for test: Microbiological  - \\Remote")
+  if winactive("Select samples for test: Microbiological  - \\Remote")
     Department:="Micro"
   send, %Department%{enter} ; send department
   sleep 200
-  Breaking.Point() 
+  Breaking.Point()
   sleep 200
-  send, {click 504, 324} 
-  Breaking.Point() 
+  send, {click 504, 324}
+  Breaking.Point()
   sleep 200
   send, {click, 849, 661}
-  Breaking.Point() 
+  Breaking.Point()
   Pop(Department)
     blockinput off
     setwindelay, 200
@@ -2325,19 +2325,19 @@ CopyProductRotation(){
   filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
   FileDelete, %FileName%
   FileAppend, %Clipboard%, %Filename%
-  LMSwb:=ComObjActive("Excel.Application")
-  Rotation:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,5)
+  LMSwb:=ComObjactive("Excel.Application")
+  Rotation:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,5)
   Rotation.Value:=Product ".txt"
   ; iniwrite %Clipboard%, Settings.ini, Rotations, %Product%
 }
- 
+
 PasteProductRotation(){
 	global
   filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
   FileRead, Clipboard, %Filename%
   ; iniread Clipboard,Settings.ini, Rotations, %Product%
-  LMSwb:=ComObjActive("Excel.Application")
-  RotationDone:=lmswb.ActiveSheet.Range("A:A").Find(Product).offset(0,6)
+  LMSwb:=ComObjactive("Excel.Application")
+  RotationDone:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,6)
   RotationDone.Value:="1"
   sleep 200
   send, ^v
@@ -2352,29 +2352,29 @@ class LMSclick {
 		sleep %Sleeptime%
 		if winactive("Results Definition")
 			clk(1336,592)
-		else If WinActive("Result Editor")
+		else If winactive("Result Editor")
 			clk(370,660)
 		else if Edit Ingredient
 			clk(265, 561)
 		else if winactive("Result Entry")
 			clk(1028, 860)
 		else if winexist("Delete Test - \\Remote") {
-			WinActivate, Delete Test - \\Remote
+			winactivate, Delete Test - \\Remote
 			clk(229, 136)
 		}
-		else if winActive("Results Definition - \\Remote")
+		else if winactive("Results Definition - \\Remote")
 			clk(951, 751)
-		; else if winActive("Barcode Scanner - \\Remote")
+		; else if winactive("Barcode Scanner - \\Remote")
 			; Send, {enter},
-		else if winActive("Microsoft Excel Security Notice - \\Remote")
+		else if winactive("Microsoft Excel Security Notice - \\Remote")
 			Send, !y
-		else if winActive("Reason For Change - \\Remote")
+		else if winactive("Reason For Change - \\Remote")
 			clk(229, 236)
 		else if winactive("New Document - \\Remote")
 			clk(415, 360)
-		else if winActive("Edit specification - \\Remote")
+		else if winactive("Edit specification - \\Remote")
 			clk(323, 621)
-		else if winActive("Reason for Change - \\Remote")
+		else if winactive("Reason for Change - \\Remote")
 			Return clk(170, 331)
 		else if winexist("Error - \\Remote") {
 			winactivate
@@ -2401,9 +2401,9 @@ class LMSclick {
 	Save(){
 		if winactive("Edit Product")
 			click 275, 578
-		else If Winactive("Composition")
+		else If winactive("Composition")
 			click 1236, 888
-		else If Winactive("Test Definition Editor ")
+		else If winactive("Test Definition Editor ")
 			Click 341, 618
 		Else
 			return
@@ -2436,13 +2436,13 @@ class LMSclick {
 	}
 	EditTest_1(){
 		ifwinnotactive, NuGenesis LMS - \\Remote
-			WinActivate, NuGenesis LMS - \\Remote
+			winactivate, NuGenesis LMS - \\Remote
 		Send,{click, 56, 784 }
 		return
 	}
 	EnterResults(){
-		WinActivate, NuGenesis LMS - \\Remote
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 74, 900
 		return
 	}
@@ -2457,9 +2457,9 @@ class LMSclick {
 			return
 	}
 	CopySpecTemplate(){
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 102, 289 ;copy into new spec
-		WinWaitActive, Edit specification - Remote, ,1
+		winWaitactive, Edit specification - Remote, ,1
 		if ErrorLevel
 			winactivate, Edit specification - Remote
 		; click 317, 83
@@ -2467,14 +2467,14 @@ class LMSclick {
 		return
 	}
 	NewSampleTemplate(){
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 103, 325
 		return
 	}
-	
-	
+
+
 	EditSampleTemplate(){
-		WinActivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS - \\Remote
 		click 70, 518
 		winwaitactive, Edit sample template - \\Remote,, 5
 		return
