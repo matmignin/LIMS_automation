@@ -8,7 +8,7 @@ Connect(reload:=0){
 	; Gui VarBar:+LastFound
 	Products:=[]
 	Path:="C:\Users\mmignin\OneDrive - Vitaquest International\"
-	if winExist("Mats LMS Workbook.xlsb") && (ExcelConnect)
+	if winExist("Mats LMS Workbook.xlsb") && ExcelConnect
 		ControlSend,ahk_parent,{esc}, Mats LMS Workbook.xlsb
 	else {
 		TT("no notebook open",500)

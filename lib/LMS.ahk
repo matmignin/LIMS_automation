@@ -35,6 +35,7 @@
 		<^v::      	       	lms.searchbarPaste()
 		wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
 		wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
+		F13::Menu.LMS()
 
  #Ifwinactive,Select Iterations - \\Remote
    F20::LMS.PasteProductRotation()

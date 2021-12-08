@@ -18,7 +18,7 @@
     ; SetMouseDelay, 1
     ; SetDefaultMouseSpeed, 1
     SetTitleMatchMode, 2
-		Process, Priority, , High
+		; Process, Priority, , High
 		try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 		;menu, tray, add, ReloadScript, <^r
 		Menu, Tray, Add, E&xit, ExitSub

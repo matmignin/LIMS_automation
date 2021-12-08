@@ -21,7 +21,7 @@ ClipChainInit:
 	CoordMode, Mouse Screen
 	MouseGetPos, Mx, MY,
 	IniRead, ClipChainX , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX,
-	IniRead, ClipChainY , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY, 
+	IniRead, ClipChainY , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY,
 	IniRead, ClipChainNoHistory , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainNoHistory , 0
 	IniRead, ClipChainTrans , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainTrans , 0
 	IniRead, ClipChainPause , %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainPause , 0
@@ -31,7 +31,7 @@ ClipChainInit:
 		ClipChainX:=My
 	If (ClipChainY := 0) or (ClipChainY = "ERROR")
 		ClipChainY:=My
-	
+
 	If !IsObject(ClipChainData)
 	{
 		IfExist, %A_ScriptDir%\ClipData\ClipChain\ClipChain.xml
@@ -83,10 +83,10 @@ ClipChainInit:
 	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
 	; Gui, ClipChain:font
-; Gui, ClipChain:font, % dpi("s12 bold")	
+; Gui, ClipChain:font, % dpi("s12 bold")
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
 	; Gui, ClipChain:font
- 
+
  	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
 	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
 	; Gui, ClipChain:font
@@ -114,12 +114,12 @@ Return
 	Backspace::			     gosub, ClipChainDel
 #If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
 	+Enter::
-	;mbutton::	
-	;F19::						
+	;mbutton::
+	;F19::
 
 	; ^Down::			       gosub, ClipchainMoveDown
 	; ^up::			         gosub, ClipchainMoveUp
-	^enter::							
+	^enter::
 				ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
 				clipboard:=ClipChainIns
 				sleep 200
@@ -132,11 +132,11 @@ Return
 	; 		else
 	; 			send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
 	; 		return
-			
+
 #IfWinActive, CL3ClipChain Insert text
 #IfWinActive, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item
-	+Enter::	
-	^enter::							
+	+Enter::
+	^enter::
 	; ^enter::							ControlClick, Button1, A, A, left, 1
 												ControlGetText, ClipChainIns, Edit1, cl3.ahk ahk_exe AutoHotkey.exe, Insert text into chain after  item,
 												clipboard:=ClipChainIns
@@ -162,25 +162,25 @@ Return
 	F20 & F19::				;Gui, ClipChain:Destroy
 	+F18:: 						gosub, ClipChainGuiClose
 	;F19::			 			clipchain_C() ;
-	; ClipChainInsert()       
+	; ClipChainInsert()
 								; clicktext(3)
-								
+
 								; clipChain_v()
 								return
-	
-	$Rshift::			    
+
+	$Rshift::
 								sendinput, +{tab}{tab}
 								ClipChainInsert()
 								return
-	>+Enter::			    
+	>+Enter::
 								send, +{tab}{tab}
 								sleep 50
 								clipChain_v()
 								return
-	numlock::					clipChain_v()
+	; numlock::					clipChain_v()
 	^v::clipchaininsert()
 	;Mbutton::  				clipchaininsert()
-	
+
 #if
 
 ; Lwin & Lbutton::
@@ -233,7 +233,7 @@ clipChain_c(){
 		ClipChainInsert()
 return
 }
-   
+
 #x::
 	clipboard:=
 	send, ^{c}
@@ -528,7 +528,7 @@ ClipChainCheckboxes:
 	;else If !ClipChainNoHistory
 	;	ScriptClipClipChain:=0
 	If ClipChainTrans
-	
+
 		WinSet, Transparent, 200, CL3ClipChain ahk_class AutoHotkeyGUI
 	else If !ClipChainTrans
 		WinSet, Transparent, 255, CL3ClipChain ahk_class AutoHotkeyGUI
@@ -610,11 +610,11 @@ ClipChainSaveWindowPosition:
 Return
 
 MoveIndicatorDown(){
-	Clipchainindex++ 
+	Clipchainindex++
 	gosub, ClipChainUpdateIndicator
 	}
 MoveIndicatorUp(){
-	Clipchainindex-- 
+	Clipchainindex--
 	gosub, ClipChainUpdateIndicator
 }
 

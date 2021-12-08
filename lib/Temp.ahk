@@ -21,6 +21,7 @@ B086 108-0752 Ct#109-0635
 B086 108-0752 Bulk Ct#109-0635"
 )
 
+  printScreen::ControlsetText, Combobox1,%Product%,VarBar
 
 #If A_debuggerName
   Media_Prev::						F6 ;MakeTransparent()

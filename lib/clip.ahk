@@ -51,10 +51,12 @@ clipChange(type){
     ; if Clipboard && !winactive("ahk_exe EXCEL.EXE") && !winactive("ahk_exe Code.exe") && !winactive("NuGenesis LMS - \\Remote")
       ; exit
     if A_PriorKey = c
-      tt(clipboard,200,100,-1500,,,"R")
+      ; tt(clipboard,200,100,-1500,,,"R")
+      Pop(Clipboard,500)
       ; Pop(clipboard,,400) ;100,-1500,,150,"R")
     else if A_PriorKey = x
-      tt(clipboard,200,100,-1500,,150,"R")
+      Pop(Clipboard,500)
+      ; tt(clipboard,200,100,-1500,,150,"R")
     if A_PriorKey = b
       return
 return
@@ -67,17 +69,20 @@ Class Clip {
     Global EditBox
 		try Gui, EditBox:Destroy
 		result := Clipboard
-		Gui EditBox: +AlwaysOnTop +Toolwindow +resize +owner +HwndGUIID
+		Gui EditBox: +AlwaysOnTop +Toolwindow +owner +HwndGUIID
 			GUI, EditBox:Font, s12 cBlack, Consolas
-			Gui, EditBox:Add, Edit, x1 y1 W400 H200 +VScroll + Resize vEditBox , % Result
+			Gui, EditBox:Add, Edit, +Resize vEditBox , % Result
 			gui, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
-			Gui, EditBox:Show,, GUI Clipboard
+			Gui, EditBox:Show,, Clipboard
+      winSet, Transparent, 100, EditBox
 			return
 			EditBoxGuiClose:
 			EditBoxGuiEscape:
 			EditBoxButtonOK:
 			Gui, EditBox:submit
 			clipboard:=EditBox
+      sleep 50
+      TT(Clipboard,500,,,,200)
 			return
 		}
 

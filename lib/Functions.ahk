@@ -278,6 +278,7 @@ Fade(FadeAmount:=90){
 
 Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
   global
+traytip, ,%Clipboard%
 	sleep 20
 ; try {
   ; gui, Popup:destroy ;:
@@ -316,13 +317,13 @@ Gui, Popup:Font,s8 cBlack Bold, Consolas
     Gui, Popup:Add, Text,Center, %Line2%
 Gui, Popup:Show, Noactivate x%popup_x% y%Popup_y%
  winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
-
 settimer, destroyGui, -%PopupTime%
 return
 }
 
 DestroyGui:
   try gui, Popup:destroy
+  try gui, Popup2:destroy
 return
 
 

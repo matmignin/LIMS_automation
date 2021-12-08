@@ -3,26 +3,26 @@ VQuest_Start:
     #SingleInstance,Force
     #Persistent
     ;#ErrorStdOut
-    ;Process, Priority, , High
+    Process, Priority, , High
     #NoEnv
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
     Iniread, Mode, Settings.ini, Options, Mode
-    Iniread, HideVarbar, Settings.ini, Options, HideVarbar
+    ; Iniread, HideVarbar, Settings.ini, Options, HideVarbar
     Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
-    #KeyHistory 1000
+    #KeyHistory 500
     #InstallKeybdHook
     #InstallMouseHook
-    CheckTime:=300
+    CheckTime:=600
     #ClipboardTimeout 1500
     ; #HotkeyInterval 50
     #MaxHotkeysPerInterval 500
     #MaxThreadsBuffer, On
     #InstallKeybdHook
     #InstallMouseHook
-    ; #HotkeyModifierTimeout 1
+    #HotkeyModifierTimeout 1
     #maxthreadsperhotkey, 1
-    SetBatchLines, -1
-    ; SetBatchLines, 10ms
+    ;SetBatchLines, -1
+     SetBatchLines, 10ms
     If (Iteration = -1){
       SetControlDelay, -1
       setkeydelay, -1
@@ -55,9 +55,8 @@ VQuest_Start:
     #winactivateForce
     AutoTrim, On
     ; else
-    OnClipboardChange("clipChange")
     OnExit("Varbar.SaveVariables")
-    FileName:="lib/winPos.txt"
+    ;FileName:="lib/winPos.txt"
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
@@ -72,28 +71,26 @@ VQuest_Start:
     HideShowSampleID:=CreateMenu("ShowSampleID")
     ; ExcelConnect:=CreateMenu("ExcelConnect")
     ; DebuggingScript:=CreateMenu("DebuggingScript")
-    HideVarbar:=CreateMenu("HideVarbar")
+    ; HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
+     varbar.Show()
+    GuiControl, -redraw, varbar
 
     try Run, cl3.Ahk, lib\CL3
-    If !HideVarBar
-      varbar.Show()
     try Menu, Tray, Icon, bin\Robot.ico
     Blank:=" `n `n  `t `t `n`t "
     Currentwindow:=A
     IfwinExist, ahk_exe WFICA32.EXE
     if winexist("ahk_exe WFICA32.EXE")
       LMS.Orient()
-
-    GuiControl, -redraw, varbar
-    If ExcelConnect
-      Excel.Connect(1)
+      Excel.Connect(0)
     GuiControl, +redraw, varbar
     if A_Debuggername
       try Run, Vim.Ahk, lib\
-    else
-      settimer, activeCheck , %CheckTime%
+    ; else
+      ; settimer, ActiveCheck , %CheckTime%
+    OnClipboardChange("clipChange")
   #include <Toggles>
   #Include <Temp>
   #include <VIM>

@@ -1,5 +1,5 @@
 #NoEnv
-SetBatchLines, -1
+;SetBatchLines, -1
 ; ==================================================================================================================================
 ; The following two variables must be set according to the most recent Gui, Font, ... command before the control is created by
 ; Gui, Add, ... If the default font is used, leave them empty. (see also OD_MeasureItem())

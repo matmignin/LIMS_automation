@@ -106,7 +106,7 @@ FloVar(){
 CustomColor := "C7603F"  ; Can be any RGB color (it will be made transparent below).
 Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
 Gui, FloVar:Color, %CustomColor%
-Gui, FloVar:Font, s32  ; Set a large font size (32-point).
+Gui, FloVar:Font, s30  ; Set a large font size (32-point).
 Gui, FloVar:Add, Text, vMyText cFFFFFF, XXXXX YYYYY  ; XX & YY serve to auto-size the window.
 ; Make all pixels of this color transparent and make the text itself translucent (150):
 winSet, TransColor, %CustomColor% 150
@@ -121,7 +121,7 @@ updateOSD:
 		; ControlGetText, Lot, Edit3, VarBar
 		; ControlGetText, Product, Edit1, VarBar
 		; ControlGetText, Coated, Edit4, VarBar
-GuiControl, FloVar:Text, MyText, %Product% %Batch%
+GuiControl, FloVar:Text, MyText, %Product% %Batch% %lot% %Coated%
 return
 	; loop 4 {
 	; 	temp:=Product A_Index

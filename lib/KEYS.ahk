@@ -135,7 +135,7 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 rwin::return
 <#tab::										GetAllProducts(A_tab)
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
-$Numlock::								4tap()
+Numlock::								  4tap()
 Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
@@ -184,15 +184,15 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	#h::return ;send, !{F2}
 	#p::return ;send, +!{h}
 	#k::return
-	Lwin::									vkFF
+	; Lwin::									vkFF
 	;; _System actions_
 
 	!F7::							Send, {laltdown}{right}{laltup}
 	!F6::							Send, {laltdown}{left}{laltup}
 	!F9::							Send, {laltdown}{up}{laltup}
 	!F8::							Send, {laltdown}{down}{laltup}
-	~lshift & Rshift::alttab
-	~rshift & lshift::shiftaltTab
+	; ~lshift & Rshift::alttab
+	; ~rshift & lshift::shiftaltTab
 	<!z::							Send, {ctrldown}{y}{ctrlup} ;redu
 
 	+Backspace::			Delete
@@ -366,7 +366,7 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 
 
 
-#ifwinexist, Touchpoint | Microsoft Teams ;; 	___Teams
+#ifwinactive, Touchpoint | Microsoft Teams ;; 	___Teams
 Numlock::MuteTeamsMicrophone()
 F15::MuteTeamsMicrophone()
 

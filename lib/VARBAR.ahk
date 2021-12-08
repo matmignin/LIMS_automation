@@ -25,7 +25,7 @@ Class VarBar{
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
-		OnMessage(0x203, "VariableBar_Relocate")
+		OnMessage(0x203,  "VariableBar_Relocate")
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
 		winSet, Transparent, %Varbar_T%, AHK_id %GUIID%
@@ -53,9 +53,9 @@ Class VarBar{
 			this.AddBatchesDDL()
 ;
 						; edit7
-			Gui, VarBar:add, Checkbox, x+3 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel-Link
-		;	Gui, Varbar:add, DDL, x+3 Y65 vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode|Debugging
-			; GuiControl, ChooseString, ComboBox1, %Mode%
+			Gui, VarBar:add, Checkbox, x+3 Y65 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel
+			Gui, Varbar:add, DDL, x+3 w180 vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode|Debugging
+			GuiControl, ChooseString, ComboBox2, %Mode%
 
 			if ShowSampleID
 				this.AddEdit("SampleID","x+1 w85",					"9, Arial Narrow")
@@ -202,8 +202,9 @@ Hoveraction(Size:=90){
 	loadSavedVariables(){
 		global
 		if !winExist("Mats LMS Workbook.xlsb") || !ExcelConnect { ;|| !RegexMatch(XL.activeSheet.Name, "i)[abdefghijkl]\d{3}"){
+			if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
+				Iniread, Product, Settings.ini, Products, Product
 			Iniread, Batch, Settings.ini, SavedVariables, Batch
-			Iniread, Product, Settings.ini, Products, Product
 			Iniread, Batch0, Settings.ini, SavedVariables, Batch0
 			Iniread, Batch1, Settings.ini, SavedVariables, Batch1
 			Iniread, Lot, Settings.ini, SavedVariables, Lot
@@ -225,13 +226,16 @@ Hoveraction(Size:=90){
 			Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
 			Iniread, Mode, Settings.ini, Options, Mode
 			Products:=[]
-        FileRead, CurrentCodes, Data\CurrentCodes.txt
-        Products := Trim(StrSplit(CurrentCodes,"`r`n"))
+        ; FileRead, LoadedCodes, Data\CurrentCodes.txt
+				Iniread, LoadedCodes, Data\Products.ini, CurrentCodes, %The_Hour%
+
+        Products := Trim(StrSplit(LoadedCodes,"`r`n"))
 		}
 
 
 	SaveVariables(){
 		global
+			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
 			iniwrite, %Product%, Settings.ini, Products, Product
 		if Batch
@@ -242,16 +246,17 @@ Hoveraction(Size:=90){
 			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
 		if SampleID
 			iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
-		if Iteration
-			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-		; if CurrentCodes
-			; IniWrite, `n%CurrentCodes%, Data\Products.ini, %The_Day%, %The_Hour%
+		; if Iteration
+		if CurrentCodes
+			IniWrite, %CurrentCodes%, Data\Products.ini, CurrentCodes, %The_Hour%
 		if Note1
 			IniWrite, %note1%, Settings.ini, Notes, note1
 		if Note2
 			IniWrite, %note2%, Settings.ini, Notes, note2
+		if Mode
 			IniWrite, %Mode%, Settings.ini, Options, Mode
 			IniWrite, %ExcelConnect%, Settings.ini, Options, ExcelConnect
+			IniWrite, %HideVarbar%, Settings.ini, Options, HideVarbar
 		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		; if Note3
 			; IniWrite	, %note3%, Settings.ini, Notes, note3
@@ -445,10 +450,10 @@ HistoryMenuItem(){
 		wheelright::excel.Nextsheet()
 
 	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-		F13 & k::
-		wheeldown::selectnextBatch()
-		F13 & j::
-		wheelup::SelectPreviousBatch()
+		; F13 & k::
+		; wheeldown::selectnextBatch()
+		; F13 & j::
+		; wheelup::SelectPreviousBatch()
 		Numlock::
 			MouseGetPos,,,,winControl
 				if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
@@ -464,8 +469,8 @@ HistoryMenuItem(){
 				else
 					VarBar.Menu()
 				return
-		; Wheelup::      send % Blockrepeat(600) Varbar.AddIteration()
-		; Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
+		Wheelup::      send % Blockrepeat(600) Varbar.AddIteration()
+		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
 		+wheelup::	Varbar.AddIteration(0)
 		+wheeldown::Varbar.SubIteration(0)
 		; up::				Varbar.AddIteration(0)
@@ -498,7 +503,7 @@ HistoryMenuItem(){
 					ctrl := "`n(in control " . A_GuiControl . ")"
 				PostMessage, 0xA1, 2
 				MouseGetPos,,,,winControl
-				; setTimer, SaveVarBarLocaton, -1000
+				setTimer, SaveVarBarLocaton, -1000
 
 		return
 		SaveVarBarLocaton:

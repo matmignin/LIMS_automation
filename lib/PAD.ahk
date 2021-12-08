@@ -149,8 +149,8 @@ clipCheckIfEmpty(){
 				Send, ^c
 		else if winactive("Snipper - Snipaste")
 				Send, {enter}
-		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
-			Send, {lwindown}{e}{lwinup}
+;		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
+			;Send, {lwindown}{e}{lwinup}
 		else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 				menu.Remote_Desktop()
 		else if winactive("ahk_exe Code.exe")
