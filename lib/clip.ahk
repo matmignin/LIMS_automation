@@ -134,22 +134,22 @@ Parse(Value:=""){
         RegExMatch(A_loopField, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
         RegExMatch(A_loopField, "i)(s|\$)\d{8}-\d{3}\b", VarSampleID)
           if VarProduct {
-            Match:= VarProduct
+            Match:=VarProduct
             if varBatch
               Match.= " " VarBatch
             if varLot
               match.= " " VarLot
             if varCoated
-              match.= " " VarCoated
-            If ShowSampleId && VarSampleID
-              match.= " | " VarSampleID
+              match.= " Ct#" VarCoated
+            ; If ShowSampleId && VarSampleID
+              ; match.= " | " VarSampleID
           }
           ; Match:= VarProduct
           if Match && A_Index = 1
               ; clip.regex()
               clip.Singleregex()
           else if Match && A_Index > 1
-            regProducts.insert(Match)
+            regProducts.insert(Trim(Match))
       }
     if (RegProducts.maxindex() > 1) {
         Products:=[], oTemp := {} ;remove duplicates
@@ -167,13 +167,16 @@ Parse(Value:=""){
         }
       sleep 100
         filedelete, data\CurrentCodes.txt
-        For Each, Element In Products
+        For Each, Element In Products {
           CurrentCodes .= Element "`n"
+          Gui Varbar:Default
+          GuiControl,,DDL, % "|" Element
+    }
         FileAppend, %CurrentCodes%, data\CurrentCodes.txt
       }
       ; Pop(CurrentCodes,,500,"Right")
       PreventPopup:=
-    IniWrite, `n%AllCodes%, Data\Products.ini, %The_Day%, %The_Hour%
+    ; IniWrite, `n%AllCodes%, Data\Products.ini, %The_Day%, %The_Hour%
     return
 }
 Cl3Parse(){
@@ -204,7 +207,7 @@ Cl3Parse(){
 
           ; Match:= VarProduct
           if Match
-            regProducts.insert(Match)
+            regProducts.insert(Trim(Match))
       }
     Products:=[], oTemp := {} ;remove duplicates
       for vKey, vValue in regProducts {
@@ -244,8 +247,15 @@ SingleRegex(){
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       ; If ShowSampleID
         ; RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
-      If cProduct {
-        ConnectedProduct:= cProduct " " cBatch " " clot " " cCoated
+        if cProduct {
+            ConnectedProduct:=cProduct
+            if cBatch
+              ConnectedProduct.= " " cBatch
+            if cLot
+              ConnectedProduct.= " " cLot
+            if cCoated
+              ConnectedProduct.= " Ct#" cCoated
+        ; ConnectedProduct:= cProduct " " cBatch " " clot " Ct#" cCoated
         sleep 50
         ; FileAppend, `n%ConnectedProduct%`n, data\CurrentCodes.txt
         ; FileAppend, %ConnectedProduct%`n, data\RecentProducts.txt
@@ -255,6 +265,9 @@ SingleRegex(){
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
         IniWrite, %cProduct%, Settings.ini, Products, Product
+        FileAppend, %Connectedproducts%, Data\CurrentCodes.txt
+        Gui Varbar:Default
+        GuiControl,,DDL, % "|" Connectedproducts
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%

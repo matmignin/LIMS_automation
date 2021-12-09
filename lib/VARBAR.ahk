@@ -253,8 +253,8 @@ Hoveraction(Size:=90){
 		if SampleID
 			iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
-		if CurrentCodes
-			IniWrite, %CurrentCodes%, Data\Products.ini, CurrentCodes, %The_Hour%
+		; if CurrentCodes
+			; IniWrite, %CurrentCodes%, Data\Products.ini, CurrentCodes, %The_Hour%
 		if Note1
 			IniWrite, %note1%, Settings.ini, Notes, note1
 		if Note2
@@ -263,6 +263,7 @@ Hoveraction(Size:=90){
 			IniWrite, %Mode%, Settings.ini, Options, Mode
 			IniWrite, %ExcelConnect%, Settings.ini, Options, ExcelConnect
 			IniWrite, %HideVarbar%, Settings.ini, Options, HideVarbar
+			FileAppend, %CurrentCodes%, data\CurrentCodes.txt
 		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		; if Note3
 			; IniWrite	, %note3%, Settings.ini, Notes, note3
