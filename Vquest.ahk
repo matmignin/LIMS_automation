@@ -108,6 +108,8 @@ VQuest_Start:
   ;#include <Rotation>
   #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
   #include <Functions>
+  #include <Xml>
+
   #Ifwinactive,
 return
 

@@ -21,7 +21,6 @@ B086 108-0752 Ct#109-0635
 B086 108-0752 Bulk Ct#109-0635"
 )
 
-  printScreen::ControlsetText, Combobox1,%Product%,VarBar
 
 #If A_debuggerName
   Media_Prev::						F6 ;MakeTransparent()
@@ -29,7 +28,77 @@ B086 108-0752 Bulk Ct#109-0635"
 	Media_Next::						F7
 
 #If Mode=="TempCode"
+  F20::
+
+try
+	; create an XMLDOMDocument object
+	; set its top-level node
+	x := new xml("<root/>")
+catch pe ; catch parsing error(if any)
+	MsgBox, 16, PARSE ERROR
+	, % "Exception thrown!!`n`nWhat: " pe.What "`nFile: " pe.File
+	. "`nLine: " pe.Line "`nMessage: " pe.Message "`nExtra: " pe.Extra
+; check if top-level node exists in this case, 'root'
+  ; x.loadXML("Data\Codes2.xml")
+if x.documentElement {
+	; add a 'comment' node
+	; x.addChild("//Product", "comment", "Products")
+	; x.addChild("//Product", "e", "Batch")
+  ; x.AddElement("Product", "//Products", "K277")
+	; x.addChild("//root", "e", "Product")
+  x.AddElement("Product", "//root", "K277")
+  x.AddElement("Product", "//root", "K888")
+	x.addChild("//Product", "e", "Batch")
+	x.addChild("//Batch", "e", "Lot")
+  ; x.AddElement("Batch", "//Product", "222-2222")
+  ; x.AddElement("Batch", "//Product", "333-3333")
+  ; x.AddElement("Lot", "//Batch", "0033A3")
+	; x.addChild("//root", "e", "Product")
+	; x.addChild("//Batch", "e", "Lot")
+	; x.addChild("//P", "e", "Batch")
+  ; x.AddElement("Lot", "//Batch", "2220A2")
+  ; x.AddElement("Batch", "//K277", "333-3333")
+  ; x.AddElement("Product", "//Parent", "Product")
+  ; x.addelement("Batch", "111", "//child", {attribute: "value " "111"}, "b")
+
+	; add an 'element' node to the 'root' node
+	; and set its 'nodeName' property to 'child'
+	; x.addElement("Batch", "Product")
+;
+	; add some child nodes
+	; for a, b in ["e", "s", "r", "Wednesday", "Thursday", "Friday", "Saturday"]
+		; x.addElement("Batch_" a, "//Products", {attribute: "value " a}, b)
+
+	; Traverse and show 'attribute' and 'text' value
+	; of the newly appended nodes
+	; Loop, 7 {
+		; n := x.getChild("//child", "element", A_Index)
+		; MsgBox, % "Attribute: " n.getAttribute("attribute")
+			; . "`nText: " n.text
+	; }
+
+	; view XML document
+	; transform document using internal stylesheet
+	x.transformXML()
+	x.viewXML()
+  x.save("Data\Codes.xml")
+}
+    ; e := xmlObj.addElement("Node", "//Parent", {name: "Element"}, "Text")
+    ; e := xmlObj.insertElement("Node", "//Sibling", {name: "Element"}, {att: "Value"})
+RETURN ;VALUE: An object. Returns the new element node
+
+  return
+
+  F19::
+  ; loop, read, Data\CurrentCodes.txt
+			; CurrentCodes .= "|yoyoyoyo||yeyeyey"
+  return
   ;Mbutton::GetAllBatches()
+
+  Update_Varbar_Dropdown:
+    Gui Varbar:Default
+    GuiControl,,DDL, % "K999||"
+    return
 
   Select_Dropdown_Menu_on_VarBar:
             Gui Varbar:Default
@@ -217,7 +286,7 @@ Return
 
 
 
-F13 & t::REQUESTGUID()
+` & r::REQUESTGUID()
 Tab & t::gosub, ADD_A_DROPDOWN_REQUESTGUID_ITEM
 
 REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile

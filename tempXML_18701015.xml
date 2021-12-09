@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<Product>
+		<Batch>
+			<lot>
+			</lot>
+			<Lot>0033A3</Lot>
+		</Batch>
+		<Batch>222-2222</Batch>
+		<Batch>333-3333</Batch>
+	</Product>
+	<Product>K277</Product>
+</root>

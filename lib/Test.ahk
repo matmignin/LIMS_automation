@@ -112,7 +112,7 @@ Gui, FloVar:Add, Text, vMyText cFFFFFF, XXXXX YYYYY  ; XX & YY serve to auto-siz
 winSet, TransColor, %CustomColor% 150
 SetTimer, updateOSD, 250
 Gosub, updateOSD  ; Make the first update immediate rather than waiting for the timer.
-Gui, FloVar:Show, x%Flovar_x% y%Flovar_y% Noactivate  ; Noactivate avoids deactivating the currently active window.
+Gui, FloVar:Show, x1 y1 Noactivate  ; Noactivate avoids deactivating the currently active window.
 return
 }
 updateOSD:

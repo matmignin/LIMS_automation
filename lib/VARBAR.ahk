@@ -3,14 +3,18 @@
 Class VarBar{
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
+			try Gui,VarBar:Destroy
 				TopScreen:=1 ;A_ScreenHeight-35
 				MidScreen:=A_ScreenWidth//2
 				VarBar_H=90
 				VarBar_T:=235
 				VarBar_W=450
-			try Gui,VarBar:Destroy
-				If HideVarBar
-					return
+				if !varbar_x
+					Varbar_x:=1
+				if !varbar_y
+					Varbar_y:=1
+				; If HideVarBar
+					; return
 			This.loadSavedVariables()
 				Gui Varbar:Default
 				Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
@@ -19,12 +23,15 @@ Class VarBar{
 
 				this.AddBoxes()
 			CoordMode, mouse, screen
-			Ifwinexist, NuGenesis LMS - \\Remote
-			LMS.Orient()
-			Gui, VarBar:Show,  x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
+			; Ifwinexist, NuGenesis LMS - \\Remote
+			; LMS.Orient()
+			try Gui, VarBar:Show,  x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
+			catch
+				Gui, VarBar:Show,  x1 y1 w%VarBar_w% h%varbar_H% Noactivate, VarBar
 		CoordMode, mouse, window
 		ControlsetText, Static1, %Iteration%,VarBar
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
+		OnMessage(0x0200, "WM_MOUSEMOVE")
 		OnMessage(0x203,  "VariableBar_Relocate")
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
@@ -134,7 +141,7 @@ AddBatchesDDL(){
 		CurrentCodes :=
 		loop, read, Data\CurrentCodes.txt
 			CurrentCodes .= A_LoopReadLine "|"
-		Gui, Varbar:Add, DDL, x1 y+1 w200 vDDL gDDLVarbar hwndHDDL +0x0210, %Product%|| |%CurrentCodes%
+		Gui, Varbar:Add, DDL, x1 y+1 w200 vDDL gDDLVarbar hwndHDDL +0x0210, %Product%||%CurrentCodes%
 		GuiControl, MoveDraw, DDL
 }
 
@@ -202,8 +209,8 @@ Hoveraction(Size:=90){
 	loadSavedVariables(){
 		global
 		if !winExist("Mats LMS Workbook.xlsb") || !ExcelConnect { ;|| !RegexMatch(XL.activeSheet.Name, "i)[abdefghijkl]\d{3}"){
-			if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
-				Iniread, Product, Settings.ini, Products, Product
+			Iniread, Product, Settings.ini, SavedVariables, Product
+				; if RegExMatch(Product, "i)[abdefghijkl]\d{3}", Product)
 			Iniread, Batch, Settings.ini, SavedVariables, Batch
 			Iniread, Batch0, Settings.ini, SavedVariables, Batch0
 			Iniread, Batch1, Settings.ini, SavedVariables, Batch1
@@ -226,9 +233,8 @@ Hoveraction(Size:=90){
 			Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
 			Iniread, Mode, Settings.ini, Options, Mode
 			Products:=[]
-        ; FileRead, LoadedCodes, Data\CurrentCodes.txt
-				Iniread, LoadedCodes, Data\Products.ini, CurrentCodes, %The_Hour%
-
+        FileRead, LoadedCodes, Data\CurrentCodes.txt
+				; Iniread, LoadedCodes, Data\Products.ini, CurrentCodes, %The_Hour%
         Products := Trim(StrSplit(LoadedCodes,"`r`n"))
 		}
 
@@ -237,9 +243,9 @@ Hoveraction(Size:=90){
 		global
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
-			iniwrite, %Product%, Settings.ini, Products, Product
+			iniwrite, %Product%, Settings.ini, SavedVariables, Product
 		if Batch
-			iniwrite, %Batch%, Settings.ini, Batches, Batch
+			iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
 		if Lot
 			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
 		if Coated
@@ -514,6 +520,33 @@ HistoryMenuItem(){
 			return
 }
 
+WM_MOUSEMOVE(){
+	global
+	gui, Varbar:default
+    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,90
+		settimer, ShrinkVarBar, 800
+		return
+
+		ShrinkVarbar:
+		ControlGetFocus, GUIFocus, VarBar
+			if (!GUIFocus && !MouseIsOver("VarBar ahk_exe AutoHotkey.exe")) {
+				Settimer, ShrinkVarBar, Off
+		    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,32
+			}
+			else
+				return
+			return
+
+	; }
+	; else If (Varbar_H=90){
+	; 	if (GUIFocus) || MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
+	; 		return
+	; 	else {
+	; 	VarBar_H:=32
+  ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
+	; 	}
+	; }
+}
 
 
 
