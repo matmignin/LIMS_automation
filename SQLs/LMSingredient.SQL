@@ -5,7 +5,7 @@ SELECT
     i.generic1 AS label_claim,
    	-- Ingredient Test Result info
     ir.specification_range,
-    ir.resultdate AS test_date,
+    To_Char(TO_DATE(SUBSTR(ir.resultdate,0,8),'YYYYMMDD'),'MM/DD/YY') AS test_date,
     ir.method,
     ir.generic01 AS notebook_ref,
    	ir.status,
