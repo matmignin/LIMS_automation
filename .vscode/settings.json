@@ -62,7 +62,7 @@
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
     },
     "code-runner.executorMapByFileExtension": {
-    
+
       ".vb": "cd $dir && vbc /nologo $fileName && $dir$fileNameWithoutExt",
       ".vbs": "cscript //Nologo",
       ".scala": "scala",
@@ -92,7 +92,7 @@
       ".sass": "sass --style expanded",
       ".cu": "cd $dir && nvcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
     },
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
     "workbench.sideBar.location": "left",
     "code-runner.defaultLanguage": "autohotkey",
     "code-runner.saveFileBeforeRun": true,

@@ -113,8 +113,11 @@ clipCheckIfEmpty(){
 					WorkTab.registerNewSamples()
 			else if winactive("Login - \\Remote")
 				menu.passwords()
-			else if winactive("Result Entry - \\Remote")
+			else if winactive("Result Entry - \\Remote") {
+				MouseGetPos, xpos, ypos
 				WorkTab.ChangeTestResults("toggle")
+				mousemove, %xpos%, %yPos%+26,0
+			}
 			else if winactive("Edit specification - \\Remote")
 				menu.LMS()
 			else if winactive("Composition - \\Remote")
@@ -544,7 +547,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					MouseGetPos,,,,winControl
 				; ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
 				if (winControl="Edit1")
-					VarBar.BatchesMenu(Product)
+					VarBar.ProductsMenu()
 					; menu.ProductSelection()
 				else if (winControl="Edit2")
 					VarBar.BatchesMenu(Product)

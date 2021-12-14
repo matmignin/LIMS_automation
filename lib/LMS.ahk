@@ -2201,14 +2201,16 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
       return
     }
     keep_running = y
-    MouseGetPos, xpos, ypos
-    loop 25,
+    loop 20,
     {
+    ; MouseGetPos, xpos, ypos
     blockinput on
     if keep_running = n ;another signal to stop
     return
+		; MouseGetPos, xpos, ypos
     click
 		click 843, 202, 2
+    ypos:=ypos+26
     if keep_running = n ;another signal to stop
     return
     Send,{tab}{Space}{tab}{Space}
@@ -2218,22 +2220,24 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     if keep_running = n ;another signal to stop
     return
     sleep 100
-    ypos:=ypos+26
     if keep_running = n ;another signal to stop
     return
-    mousemove, xpos, ypos,0
-    sleep 200
+    ; mousemove, xpos, ypos,0
+    ; sleep 200
     blockinput off
     }
     Breaking.Point()
     if keep_running = n ;another signal to stop
     return
+    ; MouseGetPos, xpos, ypos
     click
     return
     }
-    MouseGetPos, xpos, ypos
     click
 		click 843, 202, 2
+		sleep 250
+    mousemove, %xpos%, %ypos%+26,0
+    ; mousemove, xpos, ypos+26,0
     if Checkbox_Toggle Contains Toggle
       Sendinput,{tab}{Space}{tab}{Space}
     else
@@ -2242,10 +2246,10 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     sleep 100
     if Checkbox_Toggle Contains toggle
       return
+    ; mousemove, %xpos%, %ypos%+26,0
     Send, %Iteration%
-    sleep 100
-    if Checkbox_Toggle Not Contains toggle
-      mousemove, xpos, ypos+26
+    ; sleep 400
+    ; if Checkbox_Toggle Not Contains toggle
     ; setwindelay, 200
     return
     }

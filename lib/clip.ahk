@@ -279,7 +279,7 @@ Regex(Category:=""){
         IniWrite, %cProduct%, Settings.ini, Products, Product
         ; AppendCode:="`n" cProduct " " cBatch " " clot "  Ct#" cCoated
         ; TimmedAppendcode:=Trim(AppendCode)
-        ; FileAppend,%TrimmedAppendCode%, Data\CurrentCodes.txt
+        ; FileAppend,%TrimmedAppendCode%, Data\CurrentC.txt
       }
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
@@ -317,32 +317,6 @@ Regex(Category:=""){
       flovar(0,1)
 
       sleep 20
-      Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      Regexmatch(HayStack, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-      Regexmatch(HayStack, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-      Regexmatch(HayStack, "i)(\bI, Physical\b|\bPhysical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-      Regexmatch(HayStack, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
-      Regexmatch(HayStack, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
-      Sleep      20
-      If cAnalytical
-        Department:="Analytical"
-      If cMicro
-        Department:="Micro"
-      If cRetain
-        Department:="Retain"
-      If cCTRetain
-        Department:="Retain (Coated)"
-      If cPhysical
-        Department:="Physical"
-      If cCTPhysical
-        Department:="Physical (Coated)"
-  return
-
-
-  }
-DepartmentRegex(){
-    global analytical,micro,retain,physical,CTphysical,CTretain, Department,
-      Haystack:=Clipboard
       Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
       Regexmatch(HayStack, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
       Regexmatch(HayStack, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
@@ -458,23 +432,23 @@ Paste(){
       Send, ^{v}
       return
   }
-    KeyWait, F19, T0.30
+    KeyWait, F20, T0.30
     If ErrorLevel
     {
-        KeyWait, F19, T2
-        if (A_PriorKey!="F19")
+        KeyWait, F20, T2
+        if (A_PriorKey!="F20")
           exit
-        if (A_PriorKey="F19")
+        if (A_PriorKey="F20")
         If !ErrorLevel
         {
           ; Send, {F20}
           Return
         }
-          KeyWait, F19, T2
+          KeyWait, F20, T2
           Return
       }
     if Errorlevel = 0
-    KeyWait, F19, T0.60
+    KeyWait, F20, T0.60
       if !ErrorLevel
       {
         If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
@@ -486,40 +460,8 @@ Paste(){
       }
       return
     }
-ctrl(){
-  Global clippaste
-      if (ClipPaste = 1){
-        Send, {ctrldown}{v}{ctrlup}
-        return
-      }
-    KeyWait, F19, T0.30
-    If ErrorLevel
-    {
-        KeyWait, F19, T2
-        if (A_PriorKey!="F19")
-          exit
-        if (A_PriorKey="F19")
-        If !ErrorLevel
-        {
-          ; Send, {F20}
-          Return
-        }
-          KeyWait, F19, T4
-          Return
-      }
-    if Errorlevel = 0
-    KeyWait, F19, T0.60
-      if !ErrorLevel
-      {
-        If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<400) ;if double clic
-          send % BlockRepeat(300) "^{v}"
-            ; wheel_paste()
-          Else
-            return
-      }
-            ; Send,
-      return
-    }
+
+
 }
 ; Click(){
 ;     global

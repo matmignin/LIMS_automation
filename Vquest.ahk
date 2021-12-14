@@ -68,7 +68,7 @@ VQuest_Start:
     ; Menu, tray, Click,
     Menu, Tray, Add, KeyHistory, KeyHistory
     Menu, Tray, Add, windowSpy, windowSpy
-    ; ShowVarBar:=CreateMenu("showVarbar")
+     ShowVarBar:=CreateMenu("showVarbar")
     HideShowSampleID:=CreateMenu("ShowSampleID")
     ; ExcelConnect:=CreateMenu("ExcelConnect")
     ; DebuggingScript:=CreateMenu("DebuggingScript")
@@ -77,7 +77,6 @@ VQuest_Start:
     Menu, Tray, Default, E&xit
      varbar.Show()
     GuiControl, -redraw, varbar
-
     try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Blank:=" `n `n  `t `t `n`t "
@@ -120,7 +119,7 @@ activeCheck:
     Suspend, On
   else
     Suspend, Off
-    Varbar.Hoveraction()
+    ; Varbar.Hoveraction()
   ; If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=90 ){
   ;   VarBar_H:=90
   ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
@@ -143,12 +142,12 @@ activeCheck:
     else if winactive("Information - \\Remote")
       send, {enter}
 
-    If (Iteration = -2  && A_winDelay!=300)
-      setwindelay, 300
-    else If (Iteration = -3  && A_winDelay!=400)
-      setwindelay, 300
-    else
-      setwindelay, 200
+    ; If (Iteration = -2  && A_winDelay!=300)
+      ; setwindelay, 300
+    ; else If (Iteration = -3  && A_winDelay!=400)
+      ; setwindelay, 300
+    ; else
+      ; setwindelay, 200
 return
 
 

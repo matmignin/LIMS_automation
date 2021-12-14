@@ -4,6 +4,8 @@ Class VarBar{
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 			Global
 			try Gui,VarBar:Destroy
+			if !showVarbar
+				return
 				TopScreen:=1 ;A_ScreenHeight-35
 				MidScreen:=A_ScreenWidth//2
 				VarBar_H=32
@@ -165,6 +167,7 @@ Menu(){
 	MouseGetPos,,,,winControl
   try Menu, VarBarmenu, DeleteAll
 	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
+	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
     Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID
       if ShowSampleID=1
         menu, VarBarmenu, Check, 	Show&SampleID
@@ -176,6 +179,57 @@ Menu(){
 		}
   Try Menu,VarBarmenu,show
   }
+
+ProductsMenu(Next:=""){
+  global
+  regProducts:=[]
+  CurrentProducts:=
+  sleep 150
+    loop, read, Data\CurrentCodes.txt ;, "`r`n"
+      {
+					needle:= "i)[abdefghijkl]\d{3}"
+					RegexMatch(A_loopreadline, Needle, VarProduct)
+					if VarProduct
+					regProducts.Insert(Trim(VarProduct))
+      }
+    if (RegProducts.maxindex() > 1) {
+        Products:=[], oTemp := {} ;remove duplicates
+        for vKey, vValue in regProducts {
+        if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+            if !ObjHasKey(oTemp, vValue+0)
+              Products.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+            if !ObjHasKey(oTemp, "" vValue)
+              Products.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+      sleep 100
+      try Menu, Productdropdownmenu, DeleteAll
+					; Sort, Products, R
+        For Each, Element In Products {
+          CurrentProducts .= Element "`n"
+          Menu, ProductDropdownmenu, add, %Element%, ProductDropdownMenu
+      }
+    }
+		if !Next
+    	Try Menu, ProductDropdownMenu, Show,
+		else {
+			try Menu, Productdropdownmenu, DeleteAll
+			n:=Next+1
+			Clip.regex(Products[n])
+			if (Products.maxindex() = n)
+				N:=1
+		}
+    return
+    ProductDropDownMenu:
+     clip.regex(A_ThisMenuItem)
+			n:=A_ThisMenuItemPos
+     return
+
+}
 
 BatchesMenu(Formulation,Next:=""){
   global
@@ -189,33 +243,23 @@ BatchesMenu(Formulation,Next:=""){
         RegexMatch(A_loopreadline, Needle, Var)
 					; if !VarLot && HasValue(regBatches,VarBatch)
 					; 	continue
-					If VarBatch
-						Match:=VarBatch
+					If VarBatch {
+						regMatch:=VarBatch
 					If VarLot
-						Match.=" " Varlot
+						regMatch.=" " Varlot
+					else If !VarLot {
+						FileRead, CurrentCodesFile, Data\CurrentCodes.txt
+						FileNeedle:= "i)(" VarBatch ")\s(\d{4}\w\d\w?|Bulk|G\d{7}\w)"
+						RegExMatch(CurrentcodesFile, FileNeedle,FileVar)
+						if FileVar
+							regMatch:=FileVarLot
+					}
+
           if VarCoated
-            VarCoated.= " Ct#" VarCoated
-          regBatches.Insert(Trim(Match))
-
-          ; If (VarBatch && VarLot && HasValue(regBatches,VarBatch))
-							; regbatches.RemoveAt(HasValue(regBatches,VarBatch))
-						; if VarLot && !HasValue(regBatches,VarBatch)
-	            ; regBatches.Insert(Trim(VarBatch " " VarLot VarCoated))
-						; else if VarLot && !HasValue(regBatches,VarBatch)
-						; else
-							; continue
-							; msgbox % VarBar " " VarLot VarCoated
-
-							; continue
-						; else
-	            ; regBatches.Insert(Trim(VarBatch VarCoated))
-          ; if (VarBatch && VarLot){
-						; if HasValue(regBatches,VarBatch)
-							; regBatches.RemoveAt(HasValue(regBatches,VarBatch))
-					; }
-
+            regMatch.= " Ct#" VarCoated
+					}
+          regBatches.Insert(Trim(regMatch))
       }
-
     if (RegBatches.maxindex() > 1) {
         Batches:=[], oTemp := {} ;remove duplicates
         for vKey, vValue in regBatches {
