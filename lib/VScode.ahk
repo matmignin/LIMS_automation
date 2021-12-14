@@ -6,7 +6,6 @@ return
 	F17::Enter
 	Numlock::ReloadScript()
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
-	F13 & t::reloadscript()
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
 	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev

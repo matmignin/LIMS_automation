@@ -44,6 +44,7 @@ VQuest_Start:
     FormatTime, The_Day,, MMMM d
     FormatTime, The_Hour,, htt
     FormatTime, The_Time,, hh:mm
+    n=1
     SetNumLockState, on
     SetscrolllockState, off
     SetNumlockState Alwayson

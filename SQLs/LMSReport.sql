@@ -50,7 +50,7 @@ SELECT DISTINCT
     coa_results.approvedby AS coa_userid,
     e.employeefirstname||' '||e.employeename AS coa_name,
     e.employeetitle AS coa_title,
-    coa_results.approvaldate AS coa_date,
+      TO_CHAR(TO_DATE(SUBSTR(coa_results.approvaldate,1,8),'YYYYMMDD'),'DD-MON-YYYY') AS coa_date,
     -- Report date format
     (SELECT
         dv.description
@@ -121,7 +121,7 @@ LEFT JOIN
         tr4.numericalresulttext||' '||DECODE(tr4.numericalresulttext,NULL,NULL,tr4.unit) AS fill_weight,
         tr6.textresult AS customer_lot,
         trq.approvedby,
-        trq.approvaldate
+        trq.approvaldate As
     FROM testrequest trq
     JOIN requestsample rs ON rs.requestguid = trq.requestguid AND rs.deletion = 'N'
     JOIN physicalsample ps ON ps.sampleguid = rs.sampleguid

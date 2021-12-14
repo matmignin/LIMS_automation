@@ -6,7 +6,7 @@ Class VarBar{
 			try Gui,VarBar:Destroy
 				TopScreen:=1 ;A_ScreenHeight-35
 				MidScreen:=A_ScreenWidth//2
-				VarBar_H=90
+				VarBar_H=32
 				VarBar_T:=235
 				VarBar_W=450
 				if !varbar_x
@@ -83,7 +83,7 @@ Class VarBar{
 			Gui, VarBar:submit,NoHide
 			clip.Regex(DDL)
 			; RegExMatch(DDL, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-			this.updateWith(VarBarInput)
+			; this.updateWith(VarBarInput)
 			return
 
 			ExcelConnectCheck:
@@ -136,13 +136,17 @@ updateWith(Input){
 		return
 		}
 
+
+
+
 AddBatchesDDL(){
    global
-		CurrentCodes :=
-		loop, read, Data\CurrentCodes.txt
-			CurrentCodes .= A_LoopReadLine "|"
-		Gui, Varbar:Add, DDL, x1 y+1 w200 vDDL gDDLVarbar hwndHDDL +0x0210, %Product%||%CurrentCodes%
-		GuiControl, MoveDraw, DDL
+			FileRead, CurrentCodes, Data\CurrentCodes.txt
+	Gui, Varbar:Add, DDL, x1 y+1 w200 vDDL gDDLVarbar hwndHDDL +0x0210, % StrReplace(StrReplace(RemoveTextDuplicates(CurrentCodes), "`n", "|"), "`n`n","`n")
+		try GuiControl, Varbar:ChooseString, DDL, %CodeString%
+		Catch
+				GuiControl, Varbar:ChooseString, DDL, 1
+		; GuiControl, Varbar:MoveDraw, DDL
 }
 
 		AddEdit(Variable,Dimensions:="",Font:=""){
@@ -172,6 +176,84 @@ Menu(){
 		}
   Try Menu,VarBarmenu,show
   }
+
+BatchesMenu(Formulation,Next:=""){
+  global
+  regBatches:=[]
+  CurrentBatches:=
+  sleep 150
+    loop, read, Data\CurrentCodes.txt ;, "`r`n"
+      {
+        ;  needle:="i)(" Formulation ")\s((?<!Ct#)\d{3}-\d{4})\s(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)"
+         needle:= "i)(" Formulation ")\s(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)"
+        RegexMatch(A_loopreadline, Needle, Var)
+					; if !VarLot && HasValue(regBatches,VarBatch)
+					; 	continue
+					If VarBatch
+						Match:=VarBatch
+					If VarLot
+						Match.=" " Varlot
+          if VarCoated
+            VarCoated.= " Ct#" VarCoated
+          regBatches.Insert(Trim(Match))
+
+          ; If (VarBatch && VarLot && HasValue(regBatches,VarBatch))
+							; regbatches.RemoveAt(HasValue(regBatches,VarBatch))
+						; if VarLot && !HasValue(regBatches,VarBatch)
+	            ; regBatches.Insert(Trim(VarBatch " " VarLot VarCoated))
+						; else if VarLot && !HasValue(regBatches,VarBatch)
+						; else
+							; continue
+							; msgbox % VarBar " " VarLot VarCoated
+
+							; continue
+						; else
+	            ; regBatches.Insert(Trim(VarBatch VarCoated))
+          ; if (VarBatch && VarLot){
+						; if HasValue(regBatches,VarBatch)
+							; regBatches.RemoveAt(HasValue(regBatches,VarBatch))
+					; }
+
+      }
+
+    if (RegBatches.maxindex() > 1) {
+        Batches:=[], oTemp := {} ;remove duplicates
+        for vKey, vValue in regBatches {
+        if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+            if !ObjHasKey(oTemp, vValue+0)
+              Batches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+            if !ObjHasKey(oTemp, "" vValue)
+              Batches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+      sleep 100
+      try Menu, Batchdropdownmenu, Deleteall
+					; Sort, Batches, R
+        For Each, Element In Batches {
+          CurrentBatches .= Element "`n"
+          Menu, BatchDropdownmenu, add, %Element%, BatchDropdownMenu
+      }
+    }
+		if !Next
+    	Try Menu, BatchDropdownMenu, Show,
+		else {
+			try Menu, Batchdropdownmenu, Deleteall
+			n:=Next+1
+			Clip.regex(Batches[n])
+			if (batches.maxindex() = n)
+				N:=1
+		}
+    return
+    BatchDropDownMenu:
+     clip.regex(A_ThisMenuItem)
+			n:=A_ThisMenuItemPos
+     return
+
+}
 
 SetColor(){
 			global
@@ -217,6 +299,8 @@ Hoveraction(Size:=90){
 			Iniread, Lot, Settings.ini, SavedVariables, Lot
 			Iniread, ShowCoated, Settings.ini, Options, ShowSampleID
 			Iniread, Coated, Settings.ini, SavedVariables, Coated
+			iniread, CodeString, Settings.ini, SavedVariables, CodeString
+
 			}
 
 			IniRead, Varbar_X, Settings.ini, Locations, VarBar_X
@@ -241,20 +325,34 @@ Hoveraction(Size:=90){
 
 	SaveVariables(){
 		global
+		CodeString:=
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-		if RegExMatch(Product, "i)[abdefghijkl]\d{3}")
+		if RegExMatch(Product, "i)[abdefghijkl]\d{3}"){
 			iniwrite, %Product%, Settings.ini, SavedVariables, Product
-		if Batch
+			CodeString.=Product
+			}
+      ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
+		; if Batch
+      if RegExMatch(Batch, "i)(?<!Ct#)\d{3}-\d{4}\b"){
 			iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
-		if Lot
+			CodeString.=" " Batch
+			}
+		; if Lot
+      if RegExMatch(Lot, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)"){
 			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
-		if Coated
+			CodeString.=" " Lot
+			}
+		; if Coated
+      if RegExMatch(Coated, "i)(\d{3}-\d{4})"){
 			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+			CodeString.=" Ct#" Coated
+			}
 		if SampleID
 			iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
 		; if CurrentCodes
 			; IniWrite, %CurrentCodes%, Data\Products.ini, CurrentCodes, %The_Hour%
+		CodeString:=Trim(CodeString, "`n")
 		if Note1
 			IniWrite, %note1%, Settings.ini, Notes, note1
 		if Note2
@@ -262,8 +360,10 @@ Hoveraction(Size:=90){
 		if Mode
 			IniWrite, %Mode%, Settings.ini, Options, Mode
 			IniWrite, %ExcelConnect%, Settings.ini, Options, ExcelConnect
+			iniwrite, %CodeString%, Settings.ini, SavedVariables, CodeString
 			IniWrite, %HideVarbar%, Settings.ini, Options, HideVarbar
-			FileAppend, %CurrentCodes%, data\CurrentCodes.txt
+			FileAppend, `n%CurrentCodes%, data\CurrentCodes.txt
+			sleep 200
 		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		; if Note3
 			; IniWrite	, %note3%, Settings.ini, Notes, note3
@@ -524,9 +624,12 @@ HistoryMenuItem(){
 WM_MOUSEMOVE(){
 	global
 	gui, Varbar:default
+	ControlGetFocus, GUIFocus, VarBar
+	If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") || GUIFocus {
     winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,90
 		settimer, ShrinkVarBar, 800
 		return
+	}
 
 		ShrinkVarbar:
 		ControlGetFocus, GUIFocus, VarBar

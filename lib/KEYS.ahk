@@ -476,15 +476,17 @@ Table_Entry(Entry){
 
 
 
-GetAllBatches(Delimiter:=" "){
+GetAllBatches(Delimiter:=" ",File:=""){
   global
   regBatches:=[]
-  pos=0
-	PreventPopup:=1
-		; PreClipboard:=clipboardAll
-		;clipboard:=
-		; FileRead, clipboard, Data\CurrentCodes.txt
-  while pos := RegexMatch(Clipboard, "i)(?<!Ct#)\d{3}-\d{4}\b", aBatch, pos+1) ; {
+			if (File){
+		clipboard:=
+		FileRead, Haystack, %File%
+	}
+	else
+		Haystack:=Clipboard
+		sleep 50
+  while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
     ; if aBatch
       regBatches.insert(aBatch)
   ; }
@@ -517,14 +519,18 @@ GetAllBatches(Delimiter:=" "){
 		return %AllBatches%
     ; msgbox, %AllBatches%,
 }
-GetAllProducts(Delimiter:=" "){
+GetAllProducts(Delimiter:=" ",File:=""){
   global
   regProducts:=[]
   pos=0
-	PreventPopup:=1
-	clipboard:=
-	FileRead, clipboard, Data\CurrentCodes.txt
-  while pos := RegexMatch(Clipboard, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+	if (File){
+		clipboard:=
+		FileRead, Haystack, %File%
+	}
+	else
+		Haystack:=Clipboard
+		sleep 50
+  while pos := RegexMatch(Haystack, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
     ; if aBatch
       regProducts.insert(aProduct)
   ; }
@@ -550,7 +556,6 @@ GetAllProducts(Delimiter:=" "){
     clipboard:=AllProducts
     sleep 200
     send, ^v
-		PreventPopup:=
 
 		Return AllProducts
     ; Send, {blind}%AllProducts%

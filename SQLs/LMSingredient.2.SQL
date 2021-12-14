@@ -40,16 +40,16 @@ WHEN UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT Q%' THEN
         ELSE i.description
       END AS ingredient,
   i.generic1                                     AS label_claim,
-  CASE 
+  CASE
     WHEN tr.resulttype = 'LIST' AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL) THEN
       DECODE(t.requirement, NULL, trr.listvalue, t.requirement)
     WHEN tr.resulttype <> 'LIST' AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL) THEN
-      DECODE(tr.resulttype,NULL,NULL,tr.requirement) 
+      DECODE(tr.resulttype,NULL,NULL,tr.requirement)
     ELSE
       ''
   END AS specification_range,
   CASE
-    WHEN tr.resulttype = 'NUMERIC' AND tr.status           = 70 AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL) THEN 
+    WHEN tr.resulttype = 'NUMERIC' AND tr.status           = 70 AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL) THEN
       tr.prefix||TRIM(TO_CHAR(REGEXP_SUBSTR(REPLACE(tr.numericalresulttext,tr.prefix,''),'^\d+'),'999,999,999'))||
       CASE
         WHEN INSTR(tr.numericalresulttext,'.') > 0
@@ -74,11 +74,12 @@ WHEN UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT Q%' THEN
         WHEN i.generic3 IS NOT NULL THEN i.generic3
         ELSE 'Not Tested'
       END
-  END            AS result,
+  END
+  AS result,
   To_Char(TO_DATE(SUBSTR(tr.resultdate,0,8),'YYYYMMDD'),'MM/DD/YY')  AS test_date,
-  CASE 
+  CASE
     WHEN (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL) THEN
-      sm.description 
+      sm.description
     ELSE
       ''
     END AS method,
@@ -95,7 +96,7 @@ WHEN UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT Q%' THEN
 FROM
 (SELECT sampleguid, formulationid FROM (
 SELECT ps.sampleguid, ps.formulationid,
-CASE 
+CASE
   WHEN ps.configurationid = 'I, Analytical' THEN 1
   WHEN ps.configurationid = 'CT, Analytical' THEN 2
   WHEN ps.configurationid = 'I, Physical' THEN 3
@@ -108,10 +109,10 @@ ORDER BY sample_order
 )
 WHERE ROWNUM = 1
 ) psi
-JOIN formulation f ON f.formulationid = psi.formulationid AND f.deletion = 'N' 
+JOIN formulation f ON f.formulationid = psi.formulationid AND f.deletion = 'N'
 JOIN ingredient i ON i.formulationguid = f.formulationguid AND i.deletion = 'N'
 LEFT JOIN testresult tr ON tr.sampleguid = psi.sampleguid AND UPPER(tr.resultid) = UPPER(i.ingredientid) AND tr.deletion = 'N' AND tr.flagisfinalresult = 'Y'
-LEFT JOIN test t ON t.testguid  = tr.testguid AND t.deletion = 'N' 
+LEFT JOIN test t ON t.testguid  = tr.testguid AND t.deletion = 'N'
 LEFT JOIN smmethod sm ON sm.methodid   = t.methodid AND sm.versionno = t.methodversionno AND sm.deletion  = 'N'
 LEFT JOIN testresultrequirement trr ON trr.resultguid = tr.resultguid AND trr.valuationcode = 1
 WHERE NOT(UPPER(ingredientid) LIKE 'MULTI%' AND SUBSTR(ingredientid,-1,1) <> 1) AND NOT(UPPER(ingredientid) LIKE 'GENERIC INGREDIENT%' AND SUBSTR(ingredientid,-1,1) <> 1)

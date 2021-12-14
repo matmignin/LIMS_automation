@@ -544,9 +544,10 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					MouseGetPos,,,,winControl
 				; ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
 				if (winControl="Edit1")
-					menu.ProductSelection()
+					VarBar.BatchesMenu(Product)
+					; menu.ProductSelection()
 				else if (winControl="Edit2")
-					menu.ProductSelection()
+					VarBar.BatchesMenu(Product)
 				else if (winControl="Edit3") || (winControl="Edit4")
 					menu.ProductSelection()
 				else if (winControl="Edit6") || (winControl="Edit7")

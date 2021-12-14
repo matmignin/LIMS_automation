@@ -21,14 +21,27 @@ B086 108-0752 Ct#109-0635
 B086 108-0752 Bulk Ct#109-0635"
 )
 
+F13 & t::Varbar.BatchesMenu(Product,n)
+
+
+
+
+
+
+
 
 #If A_debuggerName
   Media_Prev::						F6 ;MakeTransparent()
 	Media_Play_Pause::			Numlock
 	Media_Next::						F7
 
+
 #If Mode=="TempCode"
-  F20::
+  ; F20::matching_Batch("J837")
+  ; F19::matching_Batch("B086")
+  ; F13 & t::
+#if
+
 
 try
 	; create an XMLDOMDocument object
@@ -89,7 +102,7 @@ RETURN ;VALUE: An object. Returns the new element node
 
   return
 
-  F19::
+  ; F19::
   ; loop, read, Data\CurrentCodes.txt
 			; CurrentCodes .= "|yoyoyoyo||yeyeyey"
   return
@@ -195,19 +208,69 @@ RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\Duplicate Test - Co
 return
 
 
+; RemoveFileDuplicates2(File,Sorting:="U CL R"){
+; 	global
+; 	FileRead, OutputVar, % File
+;   ; OutputVar:=Trim(OutputVar, " `t")
+;   ; OutputVar:=trim(StrReplace(OutputVar, "`t", ""))
+;   ; sleep 200
+; 	Sort, OutputVar, % Sorting
+
+; 	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
+; 	FileDelete, % File
+; 	sleep, 400
+; 	FileAppend, %OutputVar%, % File
+; }
 RemoveFileDuplicates(File,Sorting:="U CL R"){
 	global
-	FileRead, OutputVar, % File
-  OutputVar:=Trim(OutputVar, " `t")
-	Sort, OutputVar, % Sorting
+	FileRead, vText, % File
+  vOutput := ""
+  ; vtext:=strReplace(vText, "`n`n", "")
+; vText:=Trim(StrReplace(vText, "`t", ""))
+VarSetCapacity(vOutput, StrLen(vText)*2*2)
+oArray := {}
+StrReplace(vText, "`n",, vCount)
+oArray.SetCapacity(vCount+1)
+;Sort, vText, D, ;add this line to sort the list
+Loop Parse, vText, % "`r`n"
+{
+	if !oArray.HasKey("z" A_LoopField)
+		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
+}
+; MsgBox, % vOutput
 
-	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")
+oArray := ""
+  ; OutputVar:=Trim(OutputVar, " `t")
+  ; OutputVar:=trim(StrReplace(OutputVar, "`t", ""))
+  ; sleep 200
+	; Sort, OutputVar, % Sorting
+  ; vOutput:=trim(vOutput, "`n`n")
+	NewOutputVar := RegExReplace(vOutput, "m`a)(\s\r\n)","`n")
 	FileDelete, % File
-	sleep, 300
-	FileAppend, %OutputVar%, % File
+	sleep, 400
+	FileAppend, %NewOutputVar%, % File
 }
 
+RemoveTextDuplicates(vText){ ;maintaining order and case insensitive
 
+vOutput := ""
+
+; vText:=Trim(StrReplace(vText, "`t", ""))
+VarSetCapacity(vOutput, StrLen(vText)*2*2)
+oArray := {}
+StrReplace(vText, "`n",, vCount)
+oArray.SetCapacity(vCount+1)
+;Sort, vText, D, ;add this line to sort the list
+Loop Parse, vText, % "`n"
+{
+	if !oArray.HasKey("z" A_LoopField)
+		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
+}
+; MsgBox, % vOutput
+
+oArray := ""
+return vOutput
+}
 
 
 
