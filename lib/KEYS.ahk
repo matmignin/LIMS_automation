@@ -1,11 +1,7 @@
 return
 
 #ifwinactive,
-	F13 & Lbutton::
-		click down left
-		keywait F13
-		click up left
-		return
+
 	Tab & lbutton::
 		send, {ctrldown}
 		click left
@@ -149,7 +145,7 @@ sleep 20
 return
 Rbutton & wheeldown::     Send, ^{v}
 Lbutton & Rbutton::       send, ^{x}
-Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
+; Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
 
 rbutton & Appskey::				2Tap()
 rshift & Appskey::				return

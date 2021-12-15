@@ -82,10 +82,10 @@ i)(((\d)%$)|(\Q*\E))
   ; F19::matching_Batch("B086")
   ; F13 & t::
   F13 & t::
-  RegExMatch(Clipboard, "is)(?=% Daily Value)(?<Ingredients>(.*)(?<=Percent Daily Values)", UnquotedOutputVar = "", StartingPos = 1])
-RegExMatch(Clipboard, "is)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))", var)
+  RegExMatch(Clipboard, "is)(?=% Daily Value)(?<Ingredients>(.*)(?<=Percent Daily Values)")
+;RegExMatch(Clipboard, "is)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))", var)
 sleep 200
-msgbox % "customer " varCustomer "`n product " varProduct "`n pillsize " varPillsize "`n servingsize " varServingSize
+msgbox % "customer " varCustomer "`n product " varProduct "`n pillsize " varPillsize "`n servingsize " varServingSize "`n Ingredients: `n" varIngredients
 return
 #if
 

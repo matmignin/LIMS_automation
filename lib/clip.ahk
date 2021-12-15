@@ -1,6 +1,6 @@
 
 
-Clip(input=0,Wait:="0.55"){
+Clip(input=0,Wait:="0.45"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
   ; ClipboardSaved:=Clipboardall
   If Input contains OCR
@@ -54,11 +54,14 @@ clipChange(type){
     if A_PriorKey = c
       ; tt(clipboard,200,100,-1500,,,"R")
       ; Pop(Clipboard,500)
-      FloVar(Clipboard,1500,10)
+      FloVar(Clipboard,3000,13)
       ; Pop(clipboard,,400) ;100,-1500,,150,"R")
     else if A_PriorKey = x
       ; Pop(Clipboard,500)
-      FloVar(Clipboard,1500,10)
+      FloVar(Clipboard,3000,13)
+    else if A_PriorKey = Space
+      ; Pop(Clipboard,500)
+      FloVar(Clipboard,2500,13)
       ; tt(clipboard,200,100,-1500,,150,"R")
     if A_PriorKey = b
       return
@@ -227,35 +230,37 @@ SingleRegex(){
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
         Batch:=cBatch
-        IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
+        ; IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
       }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
+        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cLot {
         ; GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
+        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cCoated {
         GuiControl,Vajrbar:Text, Coated, %cCoated%
         Coated:=cCoated
-        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
+        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
-        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
+        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         ; varbar.show()
       }
       If cSampleID {
         GuiControl,Varbar:Text, SampleID, %cSampleID%
         ; varbar.show()
       }
+      Gui Varbar:Default
+      gui varbar:submit, nohide
     }
 
 Regex(Category:=""){
@@ -276,7 +281,7 @@ Regex(Category:=""){
       If cProduct {
         GuiControl,Varbar:Text, Product, %cProduct%
         Product:=cProduct
-        IniWrite, %cProduct%, Settings.ini, Products, Product
+        ; IniWrite, %cProduct%, Settings.ini, Products, Product
         ; AppendCode:="`n" cProduct " " cBatch " " clot "  Ct#" cCoated
         ; TimmedAppendcode:=Trim(AppendCode)
         ; FileAppend,%TrimmedAppendCode%, Data\CurrentC.txt
@@ -284,29 +289,29 @@ Regex(Category:=""){
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
         Batch:=cBatch
-        IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
+        ; IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
       }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
+        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
+        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
         ; varbar.show()
       }
       If !cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
         Coated:=cCoated
-        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
+        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
-        IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
+        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         GuiControl, Varbar:MoveDraw, Coated
         ; varbar.show()
       }
@@ -314,7 +319,10 @@ Regex(Category:=""){
         GuiControl,Varbar:text, SampleID, %cSampleID%
             ; IniWrite, %cSampleID%, Settings.ini, SavedVariables, SampleID
       }
-      flovar(0,1)
+      Gui Varbar:Default
+      gui varbar:submit, nohide
+      ; flovar(0,1)
+      FloVar(0,2000,16)
 
       sleep 20
       Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
@@ -419,7 +427,9 @@ Copy(){
       clipboard:=Preclip
       return
     }
-    TT(Clipboard)
+    FloVar(Clipboard,3000,13)
+    ; TT(Clipboard)
+
     ; clip.Regex()
 
       return

@@ -1,4 +1,62 @@
 #include <BatchesDDL>
+FloVar(VariableText:="", MousePopup:="", FontSize:=20){
+		Global
+		try Gui, FloVar:Destroy
+		CoordMode, Mouse, Screen
+		; MouseGetPos, Mx, My
+		CustomColor := "000000"  ; Can be any RGB color (it will be made transparent below).
+		Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
+		Gui, FloVar:Color, %CustomColor%
+		Gui, FloVar:Font, % "s" Fontsize  ; Set a large font size (32-point).
+		Gui, FloVar:Add, Text, +wrap R30 vMyText cFFCC00, XXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
+		; Make all pixels of this color transparent and make the text itself translucent (150):
+		winSet, TransColor, %CustomColor%  230
+		if VariableText{
+			FloVarText:=VariableText
+			; Gui, FloVar:Font, s5
+			}
+		else {
+			FlovarText:=
+			if Product
+				FlovarText.=Product
+			if Batch
+				FlovarText.=" " Batch
+			if lot
+				FlovarText.=" " lot
+			if Coated
+				FlovarText.=" Ct#" Coated
+		}
+		; SetTimer, updateOSD, -100
+		Gosub, FloatOSD  ; Make the first update immediate rather than waiting for the timer.
+		if (MousePopup){
+			; Gui, FloVar:Font, % "s" MousePopup
+			; my-=500
+			SetTimer, FloatOSD, 50
+			Gui, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
+			SetTimer, PopUpOSD, % "-" MousePopup
+		}
+		else
+			Gui, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
+	return
+		updateOSD:
+		MouseGetPos, Mx, My
+			return
+		PopupOSD:
+			try gui, FloVar:destroy
+			SetTimer, FloatOSD, Off
+			return
+		FloatOSD:
+			CoordMode, mouse, Screen
+			MouseGetPos, Mx, My
+			My+=100
+			Mx-=100
+			GuiControl, FloVar:Text, MyText, % FloVarText
+			winMove, FloVar ahk_class AutoHotkeyGUI, ,Mx, My
+			; sleep 50
+			return
+	}
+
+
 
 Class VarBar{
 	Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -55,7 +113,7 @@ Class VarBar{
 				 C_L:="w45"
 			else
 					C_L:=
-				this.AddEdit("Coated",	"left h29 x+1 y1 " c_L,			"9, Arial Narrow")
+				this.AddEdit("Coated",	"left h29 x+1 y1 wrap " c_L,			"9, Arial Narrow")
 			This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
 			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")

@@ -1,3 +1,22 @@
+#ifwinactive
+Lbutton & Space::
+		click up left
+		sendinput, ^c
+		sleep 100
+		keywait Lbutton
+		sleep 50
+		keywait Lbutton
+		; keywait rbutton, T5
+		click
+		sendinput ^v
+		return
+	F13 & Lbutton::
+		click down left
+		keywait F13
+		click up left
+		return
+
+
 
 _MouseIsOver:
 	#if mouseisover("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
@@ -45,12 +64,12 @@ _MouseIsOver:
 clipCheckIfEmpty(){
 	clipboard:=
 	sendinput, ^c
-	clipwait, 0.25
+	clipwait, 0.10
 	if errorlevel
 	{
 			send, {click 3}
 		sendinput, ^c
-		clipwait, 0.25
+		clipwait, 0.10
 	}
 }
 
