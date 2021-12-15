@@ -271,7 +271,11 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F20::             Clip.paste()
 
 
-
+#ifwinactive, AHK RegEx Tester v2.1
+	F13 & k::
+	up::sendinput, +{tab}
+	F13 & j::
+	down::sendinput, {tab}
 
 
 #ifwinactive, ahk_exe Snipaste.exe ;;	___Snipaste

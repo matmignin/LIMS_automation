@@ -6,6 +6,8 @@ SendMode, Input
 SetWorkingDir, %A_ScriptDir%
 AutoTrim, on
 Process, Priority, , High
+#InstallKeybdHook
+#InstallMouseHook
 StringCaseSense, On
 name:="CL3 "
 version:="v1.99.1"

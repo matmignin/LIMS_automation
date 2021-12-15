@@ -7,6 +7,15 @@
 ;CHARACTERS: | (OR)
 ;CHARACTERS: ()
 ;STRINGS: i) (CASE INSENSITIVE) (AHK-SPECIFIC, NONSTANDARD REGEX)
+;CONCEPTS: CHARACTERS/STRINGS/NEEDLES MUST APPEAR N TIMES
+;CONCEPTS: USE THE FOUND TEXT IN THE REPLACE TEXT
+;CHARACTERS: ? (0 OR 1)
+;CHARACTERS: * (0 OR MORE)
+;CHARACTERS: + (1 OR MORE)
+;CHARACTERS: . (ANY CHARACTER) (NOTE: IF DOTALL OFF, DOESN'T MATCH NEWLINES)
+;CHARACTERS: {}
+;STRINGS: \d (DIGIT)
+;STRINGS: $0 (TO USE FOUND TEXT IN THE REPLACE TEXT)
 
 MsgBox, % RegExMatch(vText, "abc") ;does string contain abc (case sensitive)
 MsgBox, % RegExMatch(vText, "ABC") ;does string contain ABC (case sensitive)
@@ -29,15 +38,6 @@ MsgBox, % RegExMatch(vText, "^(Sun|Mon|Tues|Wednes|Thurs|Fri|Satur)day$") ;the s
 MsgBox, % ("ABCDEFGHI" ~= "i)def") ;does string contain def (case insensitive)
 MsgBox, % RegExMatch("ABCDEFGHI", "i)def") ;does string contain def (case insensitive)
 
-;CONCEPTS: CHARACTERS/STRINGS/NEEDLES MUST APPEAR N TIMES
-;CONCEPTS: USE THE FOUND TEXT IN THE REPLACE TEXT
-;CHARACTERS: ? (0 OR 1)
-;CHARACTERS: * (0 OR MORE)
-;CHARACTERS: + (1 OR MORE)
-;CHARACTERS: . (ANY CHARACTER) (NOTE: IF DOTALL OFF, DOESN'T MATCH NEWLINES)
-;CHARACTERS: {}
-;STRINGS: \d (DIGIT)
-;STRINGS: $0 (TO USE FOUND TEXT IN THE REPLACE TEXT)
 
 MsgBox, % RegExMatch(vText, "colou?r") ;does string contain color/colour
 MsgBox, % RegExMatch(vText, "color|colour") ;does string contain color/colour (same as line above)

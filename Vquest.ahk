@@ -19,24 +19,24 @@ VQuest_Start:
     #MaxThreadsBuffer, On
     #InstallKeybdHook
     #InstallMouseHook
-    #HotkeyModifierTimeout 1
+    #HotkeyModifierTimeout 0
     #maxthreadsperhotkey, 1
     ;SetBatchLines, -1
-     SetBatchLines, 10ms
-    If (Iteration = -1){
-      SetControlDelay, -1
-      setkeydelay, -1
-      setMousedelay, -1
-      setwindelay, -1
-      SetDefaultMouseSpeed, 0
-    }
-    else {
-      SetControlDelay, 1
-      SetKeyDelay, 1, 0.25
-      SetMouseDelay, 1
-      setwindelay, 250
-      SetDefaultMouseSpeed, 1
-    }
+    ;  SetBatchLines, 10ms
+    ; If (Iteration = -1){
+    ;   SetControlDelay, -1
+    ;   setkeydelay, -1
+    ;   setMousedelay, -1
+    ;   setwindelay, -1
+    ;   SetDefaultMouseSpeed, 0
+    ; }
+    ; else {
+    ;   SetControlDelay, 1
+    ;   SetKeyDelay, 1, 0.25
+    ;   SetMouseDelay, 1
+    ;   setwindelay, 250
+    ;   SetDefaultMouseSpeed, 1
+    ; }
     SetTitleMatchMode, 2
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R

@@ -4,8 +4,9 @@
 
     #InstallKeybdHook
     #InstallMouseHook
-    #maxthreadsperhotkey, 1
+    #maxthreadsperhotkey, 2
     ; SetBatchLines, 20ms
+		SendMode, Input
     ; setwindelay, 150
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
@@ -395,7 +396,7 @@ return
 	^9::                    Sendinput,{right}^{left}+^{right}+{9}
 	^0::                    Sendinput,{right}^{left}+^{right}+{9}+{'}
 	Tab::                   Sendinput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
-	p::                   return ;VScodeTabsMenu() ;  Sendinput,{F9} ;quick open editors view
+	p::                   	Sendinput,{F9} ;quick open editors view
 	^]::                    Sendinput,{right}^{left}+^{right}+{[}
 	^[::                    Sendinput,{right}^{left}+^{right}{[}
 	; ]::                     Sendinput,+!#{]} ;go to bracket right

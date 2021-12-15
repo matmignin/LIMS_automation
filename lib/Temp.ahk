@@ -21,16 +21,57 @@ B086 108-0752 Ct#109-0635
 B086 108-0752 Bulk Ct#109-0635"
 )
 
-F13 & t::Varbar.BatchesMenu(Product,n)
 
 
 
 
+/*
+Find Formulation code
+"i)(?:(Final label copy # )(\w{2}\d))?(?<Product>([abdefghijkl]\d{3}))(\d{3})"
+formula plus serving size
+i)(?:(Final label copy # )(\w{2}\d))?(?<Product>([abdefghijkl]\d{3}))(\d{3}).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))
+
+customer, product, pill size, and serving size
+"i)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))"
+
+i)(((\d)%$)|(\Q*\E))
+
+
+	Vitamin A (as natural beta-carotene from Blakeslea trispora)	1,000 mcg	111%
+	Vitamin C (as ascorbic acid and from acerola fruit extract)	100 mg	111%
+	Vitamin D (as vegan cholecalciferol) (VegaDELight™)	22 mcg (880 IU)	110%
+	Vitamin E (as Sunvitol™ d-alpha-tocopherol from sunflower)	16.5 mg	110%
+	Thiamin (as thiamin HCl)	1.3 mg	108%
+	Riboflavin	1.4 mg	108%
+	Niacin (as niacinamide)	17.6 mg	110%
+	Vitamin B6 (as pyridoxal-5-phosphate)	1.9 mg	112%
+	Folate (as calcium L-5-methyltetrahydrofolate)	400 mcg DFE	100%
+	Vitamin B12 (as methylcobalamin)	2.6 mcg	108%
+	Biotin	33 mcg	110%
+	Pantothenic acid (as D-calcium pantothenate)	5.5 mg	110%
+	Calcium (from Aquamin™ mineralized red algae and as dicalcium phosphate)	50 mg	4%
+	Phosphorus (as dicalcium phosphate)	8 mg	<2%
+	Iodine (from kelp)	100 mcg	67%
+	Magnesium (from Aquamin™ MG seawater magnesium and from Aquamin™ mineralized red algae)	50 mg	12%
+	Zinc (as zinc bisglycinate chelate) (TRAACS™)	10 mg	91%
+	Selenium (as selenium glycinate complex) 	50 mcg	91%
+	Copper (as copper citrate)	0.5 mg	56%
+	Manganese (as manganese sulfate)	1.5 mg	65%
+	Chromium (as chromium polynicotinate)	30 mcg	86%
+	Molybdenum (as molybdenum amino acid chelate)	40 mcg	89%
+	Vitamin K2 (as menaquinone-7) (K2Vital®)	30 mcg	*
+	Organic blueberry powder (fruit)	10 mg	*
+	Organic carrot powder (root)	10 mg	*
+	Organic kale powder (leaf)	10 mg	*
+	Organic pomegranate powder (fruit)	10 mg	*
+	Organic raspberry powder (fruit)	10 mg	*
+	Organic spinach powder (leaf)	10 mg	*
 
 
 
 
-#If A_debuggerName
+ */
+ #If A_debuggerName
   Media_Prev::						F6 ;MakeTransparent()
 	Media_Play_Pause::			Numlock
 	Media_Next::						F7
@@ -40,6 +81,12 @@ F13 & t::Varbar.BatchesMenu(Product,n)
   ; F20::matching_Batch("J837")
   ; F19::matching_Batch("B086")
   ; F13 & t::
+  F13 & t::
+  RegExMatch(Clipboard, "is)(?=% Daily Value)(?<Ingredients>(.*)(?<=Percent Daily Values)", UnquotedOutputVar = "", StartingPos = 1])
+RegExMatch(Clipboard, "is)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))", var)
+sleep 200
+msgbox % "customer " varCustomer "`n product " varProduct "`n pillsize " varPillsize "`n servingsize " varServingSize
+return
 #if
 
 
