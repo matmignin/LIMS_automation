@@ -62,7 +62,7 @@ VQuest_Start:
       VarBar_x=1
     if !VarBar_y
       VarBar_y=1
-    ; Menu, Tray, Add, CL3, CL3
+    ;Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
     Menu, tray, NoStandard
     ; Menu, tray, Click,
@@ -77,7 +77,7 @@ VQuest_Start:
     Menu, Tray, Default, E&xit
      varbar.Show()
     GuiControl, -redraw, varbar
-    ; try Run, cl3.Ahk, lib\CL3
+    try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Blank:=" `n `n  `t `t `n`t "
     Currentwindow:=A
@@ -141,13 +141,6 @@ activeCheck:
     }
     else if winactive("Information - \\Remote")
       send, {enter}
-
-    ; If (Iteration = -2  && A_winDelay!=300)
-      ; setwindelay, 300
-    ; else If (Iteration = -3  && A_winDelay!=400)
-      ; setwindelay, 300
-    ; else
-      ; setwindelay, 200
 return
 
 

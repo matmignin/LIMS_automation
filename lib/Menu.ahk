@@ -379,7 +379,7 @@ Variable(){
 TaskBar(){
   global
   try This.delete()
-    ; Menu, Menu, Add, &SwitchWorkSheets , SwitchWorkSheets
+    ; Menu, Menu, Add, &Editing_Batches , Editing_Batches
     Menu, Menu, Add, downloads , #^F1
     Menu, Menu, Add, Desktop , +#^F1
     Menu, Menu, Add, &VQuest , #^v

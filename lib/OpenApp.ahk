@@ -47,7 +47,7 @@ return
   F20 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
-  !d::OpenApp.Display()
+  !d::DebugVars()
   ; F20 & p::
   ; #p::OpenApp.YourPhone()
   f20 & n::

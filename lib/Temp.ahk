@@ -22,35 +22,6 @@ B086 108-0752 Bulk Ct#109-0635"
 )
 
 
-#SingleInstance Force
-
-Gui Font, s9, Segoe UI
-Gui Color, White
-Gui Add, ComboBox, hWndhCbx1 vCbxValue gShowDropDown x91 y133 w300, Red|Green|Blue
-Gui Add, ComboBox, hWndhCbx2 x91 y224 w300
-Gui Add, Text, x91 y101 w250 h23 +0x200, ComboBox ShowDropDown
-Gui Add, Text, x91 y192 w250 h23 +0x200, Autocomplete Path
-Gui Show, w481 h381, ComboBox Example
-
-; Set the autocomplete path feature of the Edit inside a ComboBox
-If (hEdit := DllCall("GetWindow", "Ptr", hCbx2, "UInt", GW_CHILD := 5)) {
-    DllCall("Shlwapi.dll\SHAutoComplete", "Ptr", hEdit, "UInt", 0)
-}
-Return
-
-GuiEscape:
-GuiClose:
-    ExitApp
-
-ShowDropDown:
-    Gui Submit, NoHide
-    If (CbxValue != "") {
-        Control ShowDropDown,,, ahk_id %hCbx1%
-        ; SendMessage 0x14F, 1, 0,, ahk_id %hCbx% ; CB_SHOWDROPDOWN
-    } Else {
-        Control HideDropDown,,, ahk_id %hCbx1%
-    }
-Return
 
 
 
@@ -63,7 +34,7 @@ i)(?:(Final label copy # )(\w{2}\d))?(?<Product>([abdefghijkl]\d{3}))(\d{3}).*Se
 customer, product, pill size, and serving size
 "i)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))"
 
-i)(((\d)%$)|(\Q*\E))
+i)(((\d)%$)|(\Q*\E)) ;replacement string for ingredients
 
 
 	Vitamin A (as natural beta-carotene from Blakeslea trispora)	1,000 mcg	111%
@@ -96,8 +67,10 @@ i)(((\d)%$)|(\Q*\E))
 	Organic raspberry powder (fruit)	10 mg	*
 	Organic spinach powder (leaf)	10 mg	*
 
+https://regex101.com/r/LwbVmD/1 latest page of regex
 
-
+all but product nam regex
+^(?<Customer>[\w* ]*)(?:.?).*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?<PillType>(Capsule|Tablet)(?: size:)) (?<PillSize>[\w ]*).*(?:Serving Size: )(?<ServingSize>\d+) (?<ServingType>[\w ]+).+(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)(?=\sDaily Value)
 
  */
  #If A_debuggerName
@@ -109,7 +82,7 @@ i)(((\d)%$)|(\Q*\E))
 #If Mode=="TempCode"
   F20::
   CopyWordDoc:
-  F13 & t::ProductTab.AddCOASpace()
+  F13 & t::
   ; clipboard:=
   ; send, ^c
   ; clipwait, 4

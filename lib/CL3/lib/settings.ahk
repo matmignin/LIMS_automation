@@ -16,7 +16,8 @@ Settings()
 	 CyclePlugins[0]:="<none>"
 	 Stats_Create()
 	 IniRead, MaxHistory         , %ini%, settings, MaxHistory, 150
-	 IniRead, MenuWidth          , %ini%, settings, MenuWidth, 30
+	 IniRead, MenuWidth          , %ini%, settings, MenuWidth, 40
+	 IniRead, MoreHistory        , %ini%, settings, MoreHistory, 18
 	 IniRead, SearchWindowWidth  , %ini%, settings, SearchWindowWidth, 595
 	 IniRead, SearchWindowHeight , %ini%, settings, SearchWindowHeight, 300
 	 IniRead, ShowLines          , %ini%, settings, ShowLines, 0
@@ -50,21 +51,22 @@ Settings_Default()
 	{
 	 global
  	 Settings_Plugins:={ Plugins : "Title`,Lower`,Upper`,LowerReplaceSpace" }
-	 Settings_Hotkeys:={ hk_menu         :"F18"
+	 Settings_Hotkeys:={ hk_menu         :"^!v"
+		, hk_menu2         :""
 		, hk_plaintext     :"^+v"
 		, hk_slots         :"^#F12"
 		, hk_clipchain     :"^#F11"
 		, hk_clipchainpaste:"^v"
 		, hk_fifo          :"^#F10"
 		, hk_search        :"^#h"
-		, hk_cyclemodkey   :"Lctrl"
-		, hk_cyclebackward :"b"
-		, hk_cycleforward  :"n"
+		, hk_cyclemodkey   :"LWin"
+		, hk_cyclebackward :"v"
+		, hk_cycleforward  :"c"
 		, hk_cycleplugins  :"f"
-		, hk_cyclecancel   :"m" 
-		, hk_slot1         :"<^1"
-		, hk_slot2         :"<^2"
-		, hk_slot3         :"<^3"
+		, hk_cyclecancel   :"x" 
+		, hk_slot1         :">^1"
+		, hk_slot2         :">^2"
+		, hk_slot3         :">^3"
 		, hk_slot4         :">^4"
 		, hk_slot5         :">^5"
 		, hk_slot6         :">^6"
@@ -77,6 +79,7 @@ Settings_Default()
 		, hk_cmdr          :"#j" }
 	 Settings_Settings:={ MaxHistory :"150"
 		, MenuWidth         : 40
+		, MoreHistory       : 26
 		, SearchWindowWidth : 595
 		, SearchWindowHeight: 300
 		, ActivateApi       : 0
@@ -116,23 +119,26 @@ Settings_Hotkeys()
 	 local ini,index,keylist
 	 ini:=A_ScriptDir "\settings.ini"
 
-	 IniRead, hk_menu          , %ini%, Hotkeys, hk_menu          ,F18
+	 IniRead, hk_menu          , %ini%, Hotkeys, hk_menu          ,^!v
+	 IniRead, hk_menu2         , %ini%, Hotkeys, hk_menu2         ,ERROR
 	 IniRead, hk_plaintext     , %ini%, Hotkeys, hk_plaintext     ,^+v
 	 IniRead, hk_slots         , %ini%, Hotkeys, hk_slots         ,^#F12
 	 IniRead, hk_clipchain     , %ini%, Hotkeys, hk_clipchain     ,^#F11
 	 IniRead, hk_clipchainpaste, %ini%, Hotkeys, hk_clipchainpaste,^v
 	 IniRead, hk_fifo          , %ini%, Hotkeys, hk_fifo          ,^#F10
 	 IniRead, hk_search        , %ini%, Hotkeys, hk_search        ,^#h
-	 IniRead, hk_cyclemodkey   , %ini%, Hotkeys, hk_cyclemodkey   ,Lctrl
-	 IniRead, hk_cyclebackward , %ini%, Hotkeys, hk_cyclebackward ,b
-	 IniRead, hk_cycleforward  , %ini%, Hotkeys, hk_cycleforward  ,n
+	 IniRead, hk_cyclemodkey   , %ini%, Hotkeys, hk_cyclemodkey   ,LWin
+	 IniRead, hk_cyclebackward , %ini%, Hotkeys, hk_cyclebackward ,v
+	 IniRead, hk_cycleforward  , %ini%, Hotkeys, hk_cycleforward  ,c
 	 IniRead, hk_cycleplugins  , %ini%, Hotkeys, hk_cycleplugins  ,f
-	 IniRead, hk_cyclecancel   , %ini%, Hotkeys, hk_cyclecancel   ,m
+	 IniRead, hk_cyclecancel   , %ini%, Hotkeys, hk_cyclecancel   ,x
 	 IniRead, hk_notes         , %ini%, Hotkeys, hk_notes         ,#n
 	 IniRead, hk_cmdr          , %ini%, Hotkeys, hk_cmdr          ,#j
 	 IniRead, hk_BypassAutoReplace, %ini%, Hotkeys, hk_BypassAutoReplace
 	 If (hk_BypassAutoReplace = "ERROR")
 	 	hk_BypassAutoReplace:=""
+	 If (hk_menu2 = "ERROR")
+	 	hk_menu2:=""
 
 	 Loop, 10
 		{
@@ -142,6 +148,8 @@ Settings_Hotkeys()
 		}
 
 	 Hotkey, %hk_menu%             , hk_menu
+	 If hk_menu2
+	 	Hotkey, %hk_menu2%           , hk_menu2
 	 Hotkey, %hk_plaintext%        , hk_plaintext
 	 Hotkey, %hk_clipchain%        , hk_clipchain
 	 If (hk_BypassAutoReplace <> "")

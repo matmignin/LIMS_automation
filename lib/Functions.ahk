@@ -415,6 +415,10 @@ MouseIsOver(winTitle){
 	MouseGetPos,,, win
 	Return winExist(winTitle . " ahk_id " . win)
 }
+Mode(IsMode){
+	Global Mode
+	Return IsMode = Mode
+}
 
 Mouse_RbuttonUP(){
 	#inputlevel 1
@@ -520,7 +524,10 @@ VarBar_ResetSub:
 Run_Display:
   run, Display.url, C:\Users\mmignin\Desktop\
 DebugVars(){
-  Run, DebugVars.Ahk, lib\DebugVars
+	if winexist("Variables ahk_exe AutoHotkey.exe")
+		winactivate
+	else
+  	Run, DebugVars.Ahk, lib\DebugVars
 }
 CL3(){
   Run, cl3.Ahk, lib\CL3

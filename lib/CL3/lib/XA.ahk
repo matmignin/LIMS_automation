@@ -149,7 +149,7 @@ XA_ArrayToXML(theArray, tabCount=1, NodeName="") {
 	}
 
 XA_InvalidTag(Tag) {
-	 Char1	  := SubStr(Tag, 1, 1)y
+	 Char1	  := SubStr(Tag, 1, 1)
 	 Chars3	 := SubStr(Tag, 1, 3)
 	 StartChars := "~``!@#$%^&*()_-+={[}]|\:;""'<,>.?/1234567890 	`n`r"
 	 Chars := """'<>=/ 	`n`r"

@@ -1,16 +1,45 @@
+/*
+
+Script      : CL3 ( = CLCL CLone ) - AutoHotkey 1.1+ (Ansi and Unicode)
+Version     : 1.100
+Author      : hi5
+Purpose     : A lightweight clone of the CLCL clipboard caching utility which can be found at
+              http://www.nakka.com/soft/clcl/index_eng.html written in AutoHotkey 
+Source      : https://github.com/hi5/CL3
+
+Features:
+- Captures text only
+- Limited history (18 items+26 items in secondary menu)
+  (does remember more entries in XML history file though)
+- Delete entries from history
+- No duplicate entries in clipboard (automatically removed)
+- Templates: simply textfiles which are read at start up
+- Plugins: AutoHotkey functions (scripts) defined in seperate files
+  v1.2: Search and Slots for quick pasting
+  v1.3: Cycle through clipboard history, paste current clipboard as plain text
+  v1.4: AutoReplace define find/replace rules to modify clipboard before adding it the clipboard
+  v1.5: ClipChain cycle through a predefined clipboard history
+  v1.6: Compact (reduce size of History) and delete from search search results
+  v1.7: FIFO Paste back in the order in which the entries were added to the clipboard history
+  v1.8: Edit entries in History (via search). Cycle through plugins
+  v1.9: Folder structure for Templates\
+  v1.9.x: sort, api, settings etc see changelog.md
+
+See readme.md for more info and documentation on plugins and templates.
+
+*/
 
 ; General script settings
+#NoEnv
 #SingleInstance, Force
+#KeyHistory 0
 SetBatchlines, -1
 SendMode, Input
 SetWorkingDir, %A_ScriptDir%
-AutoTrim, on
-Process, Priority, , High
-#InstallKeybdHook
-#InstallMouseHook
+AutoTrim, off
 StringCaseSense, On
 name:="CL3 "
-version:="v1.99.1"
+version:="v1.100"
 CycleFormat:=0
 Templates:={}
 Global CyclePlugins,History,SettingsObj,Slots,ClipChainData ; CyclePlugins v1.72+, others v1.9.4 for API access
@@ -24,60 +53,59 @@ TemplateClip:=0
 ;CyclePluginClip:=0
 
 iconlist:="a,c,s,t,x,y,z"
-	loop, parse, iconlist, CSV
-		icon%A_LoopField%:="icon-" A_LoopField ".ico"
+loop, parse, iconlist, CSV
+	 icon%A_LoopField%:="icon-" A_LoopField ".ico"
 
-	Pause, Off
-	Suspend, Off
+Pause, Off
+Suspend, Off
 
-	Settings()
-	Settings_Hotkeys()
+Settings()
+Settings_Hotkeys()
 
 ; tray menu
-	Menu, Tray, Icon, res\cl3.ico, , 1
-	Menu, tray, Tip , %name% %version%
-	Menu, tray, NoStandard
-	Menu, tray, Add, %name% %version%     , DoubleTrayClick
-	Menu, tray, Icon, %name% %version%    , res\cl3.ico
-	Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
-	Menu, tray, Add, &Settings            , TrayMenuHandler
-	Menu, tray, Icon,&Settings            , dsuiext.dll, 36
-	Menu, tray, Add,
-	Menu, tray, Add, &AutoReplace active  , TrayMenuHandler
-	Menu, tray, Add, &FIFO active         , TrayMenuHandler
-	Menu, tray, Add,
-	Menu, tray, Add, &Usage statistics    , TrayMenuHandler
-	Menu, tray, Icon,&Usage statistics    , shell32.dll, 278
-	Menu, tray, Add,
-	Menu, tray, Add,
-	Menu, tray, Add, &Reload this script  , TrayMenuHandler
-	Menu, tray, Icon,&Reload this script  , shell32.dll, 239
-	Menu, tray, Add, &Edit this script    , TrayMenuHandler
-	Menu, tray, Icon,&Edit this script    , comres.dll, 7
-	Menu, tray, Add,
-	Menu, tray, Add, &Suspend Hotkeys     , TrayMenuHandler
-	Menu, tray, Icon,&Suspend Hotkeys     , %A_AhkPath%, 3
-	Menu, tray, Add, &Pause Script        , TrayMenuHandler
-	Menu, tray, Icon,&Pause Script        , %A_AhkPath%, 4
-	Menu, tray, Add,
-	Menu, tray, Add, &Pause clipboard history, TrayMenuHandler
-	Menu, tray, Add,
-	Menu, tray, Add, E&xit                 , SaveSettings
-	Menu, tray, Icon, %MenuPadding%E&xit   , shell32.dll, 132
-	Menu, tray, Default, E&xit
-	Menu, ClipMenu, Add, TempText, MenuHandler
-	Menu, SubMenu1, Add, TempText, MenuHandler
-	Menu, SubMenu2, Add, TempText, MenuHandler
-	Menu, SubMenu3, Add, TempText, MenuHandler
-	Menu, SubMenu4, Add, TempText, MenuHandler
+Menu, Tray, Icon, res\cl3.ico, , 1
+Menu, tray, Tip , %name% %version% 
+Menu, tray, NoStandard
+Menu, tray, Add, %name% %version%     , DoubleTrayClick
+Menu, tray, Icon, %name% %version%    , res\cl3.ico
+Menu, tray, Default, %name% %version% 
+Menu, tray, Click, 1 ; this will show the tray menu because we send {rbutton} at the DoubleTrayClick label
+Menu, tray, Add, 
+Menu, tray, Add, &AutoReplace Active  , TrayMenuHandler
+Menu, tray, Add, &FIFO Active         , TrayMenuHandler
+Menu, tray, Add, 
+Menu, tray, Add, &Usage statistics    , TrayMenuHandler
+Menu, tray, Icon,&Usage statistics    , shell32.dll, 278
+Menu, tray, Add, 
+Menu, tray, Add, &Settings            , TrayMenuHandler
+Menu, tray, Icon,&Settings            , dsuiext.dll, 36
+Menu, tray, Add, 
+Menu, tray, Add, &Reload this script  , TrayMenuHandler
+Menu, tray, Icon,&Reload this script  , shell32.dll, 239
+Menu, tray, Add, &Edit this script    , TrayMenuHandler
+Menu, tray, Icon,&Edit this script    , comres.dll, 7
+Menu, tray, Add, 
+Menu, tray, Add, &Suspend Hotkeys     , TrayMenuHandler
+Menu, tray, Icon,&Suspend Hotkeys     , %A_AhkPath%, 3
+Menu, tray, Add, &Pause Script        , TrayMenuHandler
+Menu, tray, Icon,&Pause Script        , %A_AhkPath%, 4
+Menu, tray, Add, 
+Menu, tray, Add, &Pause clipboard history, TrayMenuHandler
+Menu, tray, Add, 
+Menu, tray, Add, Exit                 , SaveSettings
+Menu, tray, Icon, %MenuPadding%Exit   , shell32.dll, 132
 
-
+Menu, ClipMenu, Add, TempText, MenuHandler
+Menu, SubMenu1, Add, TempText, MenuHandler
+Menu, SubMenu2, Add, TempText, MenuHandler
+Menu, SubMenu3, Add, TempText, MenuHandler
+Menu, SubMenu4, Add, TempText, MenuHandler
 
 ; load clipboard history and templates
 IfNotExist, %A_ScriptDir%\ClipData\History\History.xml
 	Error:=1
 
-if (XA_Load(A_ScriptDir "\ClipData\History\History.xml") = 1) ; the name of the variable containing the array is returned OR the value 1 in case of error
+if (XA_Load( A_ScriptDir "\ClipData\History\History.xml") = 1) ; the name of the variable containing the array is returned OR the value 1 in case of error
 	Error:=1
 
 If (Error = 1)
@@ -110,38 +138,38 @@ Loop, Files, templates\*.*, D
 	templatesfolderlist .= A_LoopFileName "|"
 templatesfolderlist:=Trim(templatesfolderlist,"|")
 Sort, templatesfolderlist, D|
-Stringupper, templatesfolderlist, templatesfolderlist
+StringUpper, templatesfolderlist, templatesfolderlist
 
+Template_Hotkeys()
 OnClipboardChange("FuncOnClipboardChange")
 
-If activateBackup
+If ActivateBackup
 	SetTimer, Backup, % BackupTimer*60000 ; minutes
 
 /*
-FILE_NOTIFY_CHANGE_FILE_NAME   = 1   (0x00000001) : Notify about renaming, creating,  deleting a file.
-FILE_NOTIFY_CHANGE_DIR_NAME    = 2   (0x00000002) : Notify about creating  deleting a directory.
+FILE_NOTIFY_CHANGE_FILE_NAME   = 1   (0x00000001) : Notify about renaming, creating, or deleting a file.
+FILE_NOTIFY_CHANGE_DIR_NAME    = 2   (0x00000002) : Notify about creating or deleting a directory.
 FILE_NOTIFY_CHANGE_SIZE        = 8   (0x00000008) : Notify about any file-size change.
 FILE_NOTIFY_CHANGE_LAST_WRITE  = 16  (0x00000010) : Notify about any change to the last write-time of files.
                                = 27
 */
-WatchFolder("templates\", "updateTemplate", true, 27) ; just a shortcut to reload the template menu to avoid manual reload
+WatchFolder("templates\", "UpdateTemplate", true, 27) ; just a shortcut to reload the template menu to avoid manual reload
 
-If activateApi
-	ObjRegisteractive(CL3API, "{01DA04FA-790F-40B6-9FB7-CE6C1D53DC38}")
+If ActivateApi
+	ObjRegisterActive(CL3API, "{01DA04FA-790F-40B6-9FB7-CE6C1D53DC38}")
 
 #Include %A_ScriptDir%\plugins\plugins.ahk
 
-updateTemplate(folder,Changes)                        ; WatchFolder() above
+UpdateTemplate(folder,Changes)                        ; WatchFolder() above
 	{
 	 Reload
 	 Sleep 1000
 	 ExitApp
 	}
-	return
 
 ~^x::
 ~^c::
-winGet, IconExe, ProcessPath , A
+WinGet, IconExe, ProcessPath , A
 Sleep 100
 ClipText:=Clipboard
 Return
@@ -158,38 +186,35 @@ OnClipboardChange("FuncOnClipboardChange", 1)
 Return
 
 ; show clipboard history menu
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ;!^v::
+hk_menu2:
+MousePos:=1
 hk_menu:
 Gosub, FifoInit
 BuildMenuFromFifo:
 Gosub, BuildMenuHistory
 Gosub, BuildMenuPluginTemplate
-winGetPos, MenuX, MenuY, , , A
+WinGetPos, MenuX, MenuY, , , A
 MenuX+=A_CaretX
 MenuX+=20
 MenuY+=A_CaretY
 MenuY+=10
-If (A_CaretX <> "")
-	Menu, ClipMenu, Show, %MenuX%, %MenuY%
-Else
- {
-;	TrayTip, TrayMenu, CL3Coords2, 2 ; debug
-	Menu, ClipMenu, Show
- }
+If !MousePos
+	{
+	 If (A_CaretX <> "")
+		Menu, ClipMenu, Show, %MenuX%, %MenuY%
+	 Else
+	 {
+	 ;	TrayTip, TrayMenu, CL3Coords2, 2 ; debug
+		Menu, ClipMenu, Show
+	 }
+	}
+else
+	{
+	 MouseGetPos, MenuX, MenuY
+	 Menu, ClipMenu, Show, %MenuX%, %MenuY%
+	}
+MousePos:=0
 Return
 
 ; 1x paste as plain text
@@ -203,14 +228,14 @@ Return
 
 $^v:: ; v1.91, $ for v1.95 (due to clipchain updates)
 hk_clipchainpaste_defaultpaste:
-If !winExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
+If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
 	{
 	 PasteIt("normal")
 	 Return
 	}
-If winExist("CL3ClipChain ahk_class AutoHotkeyGUI")
+If WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
 	{
-	 If (hk_clipchainpaste <> "^v")  or  ClipChainPause   ;exception so user can use ^v as clipchain hotkey if they wish
+	 If (hk_clipchainpaste <> "^v") or ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
 		PasteIt()
 	 else
 		Gosub, ClipChainPasteDoubleClick
@@ -219,12 +244,11 @@ else
 	Gosub, ClipChainPasteDoubleClick
 Return
 
-
-
-
+; Cycle through clipboard history
+;#v::
 hk_cyclebackward:
-If !activewindowID
-	winGet, activewindowID, ID, A
+If !ActiveWindowID
+	WinGet, ActiveWindowID, ID, A
 cyclebackward:=1
 PreviousClipCycleCounter:=0 ; 13/10/2017 test
 ClipCycleCounter:=1
@@ -233,7 +257,7 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 	{
 ;	 If !(PreviousClipCycleCounter = ClipCycleCounter) and (oldttext <> ttext)
 	 Indicator:=""
-	 If (  ClipCycleCounter = 1) and (ClipboardPrivate = 1)
+	 If (ClipCycleCounter = 1) and (ClipboardPrivate = 1)
 		Indicator:="*"
 	 If (ClipCycleCounter <> 0)
 		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
@@ -247,15 +271,14 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 	 Sleep 100
 	 KeyWait, %hk_cyclebackward% ; This prevents the keyboard's auto-repeat feature from interfering.
 	}
-ToolTip
+ToolTip	
 If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	{
-	ClipText:=History[ClipCycleCounter].text
-	;MenuItemPos:=ClipCycleCounter ; ClipboardHandler will handle deleting it from the chosen position in History
-		gosub, ClipboardHandler
-	stats.cyclepaste++
-  ClipCycleCounter:=1
-
+	 ClipText:=History[ClipCycleCounter].text
+	 ;MenuItemPos:=ClipCycleCounter ; ClipboardHandler will handle deleting it from the chosen position in History
+	 Gosub, ClipboardHandler
+	 stats.cyclepaste++
+	 ClipCycleCounter:=1
 	}
 Return
 
@@ -269,8 +292,8 @@ Return
 
 ;#c::
 hk_cycleforward:
-If !activewindowID
-	winGet, activewindowID, ID, A
+If !ActiveWindowID
+	WinGet, ActiveWindowID, ID, A
 cycleforward:=1
 ClipCycleBackCounter:=1
 If (ClipCycleCounter=1) or (ClipCycleCounter=0)
@@ -314,16 +337,16 @@ Return
 hk_cyclecancel:
 ToolTip
 ClipCycleCounter:=0
-oldttext:="", ttext:="", activewindowID:=""
+oldttext:="", ttext:="", ActiveWindowID:=""
 Return
 
 ; use #f to cycle through formats (defined in settings.ini / [plugins])
 ; #If ClipCycleCounter
 ;#f::
 hk_cycleplugins:
-If !activewindowID
-	winGet, activewindowID, ID, A
-cycleforward:=0, cyclebackward:=0
+If !ActiveWindowID
+	WinGet, ActiveWindowID, ID, A
+cycleforward:=0, cyclebackward:=0	
 CycleFormat:=0
 If (ClipCycleCounter = 0) or (ClipCycleCounter = "")
 	ClipCycleCounter:=1
@@ -361,7 +384,7 @@ if (CycleFormat > CyclePlugins.MaxIndex())
 	CycleFormat:=0
 CycleFormat++
 Sleep 100
-Return
+Return	
 
 BuildMenuHistory:
 Menu, ClipMenu, Delete
@@ -434,9 +457,13 @@ Menu, ClipMenu, Icon, &s. Special, res\%iconS%,,16
 
 If (templatefilelist <> "")
 	{
+	 MenuAccelerator:=0
 	 Loop, Parse, templatefilelist, |
 		{
-		 key:=% "&" Chr(96+A_Index) ". " ; %
+		 if (Mod(MenuAccelerator,26)=0)
+			 	MenuAccelerator:=0
+		 key:=% "&" Chr(96+(++MenuAccelerator)) ". " ; %
+;		 key:=% "&" Chr(96+A_Index) ". " ; %
 		 MenuText:=key SubStr(A_LoopField, InStr(A_LoopField,"_")+1)
 		 StringTrimRight,MenuText,MenuText,4
 		 Menu, Submenu2, Add, %MenuText%, TemplateMenuHandler
@@ -457,11 +484,14 @@ If (templatefilelist <> "")
 				 Sort, templatefolderFiles, D|
 				}
 			templatefolderFiles:=Trim(templatefolderFiles,"|")
+			MenuAccelerator:=0
 			Loop, parse, templatefolderFiles, |
 				{
 				 FileRead, a, templates\%templatefolder%\%A_LoopField%
 				 Templates[templatefolder,A_Index]:=a
-				 key:=% "&" Chr(96+A_Index) ". " ; %
+				 if (Mod(MenuAccelerator,26)=0)
+				 	MenuAccelerator:=0
+				 key:=% "&" Chr(96+(++MenuAccelerator)) ". " ; %
 				 MenuText:=key SubStr(A_LoopField, InStr(A_LoopField,"_")+1)
 				 Menu, %templatefolder%, Add, %MenuText%, TemplateMenuHandler
 				 Menu, %templatefolder%, Icon, %MenuText%, res\%iconT%,,16
@@ -480,18 +510,20 @@ If (templatefilelist <> "")
 			}
 		}
 	}
-; Else
-	; Menu, Submenu2, Add, "No templates", TemplateMenuHandler
-; Menu, ClipMenu, Add, &t. Templates, :Submenu2
-; Menu, ClipMenu, Icon, &t. Templates, res\%iconT%,,16
-; Loop 18
-	; Menu, Submenu3, Add, % "&" Chr(96+A_Index) ".", MenuHandler
+Else
+	Menu, Submenu2, Add, "No templates", TemplateMenuHandler
+Menu, ClipMenu, Add, &t. Templates, :Submenu2
+Menu, ClipMenu, Icon, &t. Templates, res\%iconT%,,16
+Loop 18
+	Menu, Submenu3, Add, % "&" Chr(96+A_Index) ".", MenuHandler
 }
 
 ; More history... (alt-z)
 
 If (History.MaxIndex() > 20)
 	{
+	 MenuAccelerator:=0
+	 MenuAcceleratorDone:=0
 	 for k, v in History
 		{
 		 text:=v.text
@@ -499,18 +531,28 @@ If (History.MaxIndex() > 20)
 		 lines:=v.lines
 		 If (A_Index < 19)
 			Continue
-		 If (A_Index < 45)
-			 key:=% "&" Chr(96-18+A_Index) ". " DispMenuText(SubStr(text,1,500),lines)
-		 Else
-			 key:=% "  " DispMenuText(SubStr(text,1,500),lines)
+
+		 If (MenuAccelerator < 27) and (MenuAcceleratorDone = 0)
+				key:=% "&" Chr(96+(++MenuAccelerator)) ". " DispMenuText(SubStr(text,1,500),lines)
+		 If (MenuAcceleratorDone = 1)
+			key:=% "  " DispMenuText(SubStr(text,1,500),lines)
 		 Menu, SubMenu4, Add, %key%, MenuHandler
 		 Try
 			Menu, SubMenu4, Icon, %key%, % icon
 		 Catch
 			Menu, SubMenu4, Icon, %key%, res\%iconA%, , 16
-		 If (A_Index > 43)
+
+
+		 if (Mod(MenuAccelerator,26)=0)
+			{
+			 MenuAccelerator:=0
+			 If (MoreHistory < 0)
+				MenuAcceleratorDone:=1
+			}
+
+		 If (A_Index > 17+Abs(MoreHistory))
 			Break
-		}
+		} 
 	}
 Else
 	{
@@ -518,11 +560,11 @@ Else
 	 Menu, SubMenu4, Icon, No entries ..., res\%iconA%, , 16
 	}
 
-; If !FIFOACTIVE
-; 	{
-; 	 Menu, ClipMenu, Add, &y. Yank entry, :Submenu3
-; 	 Menu, ClipMenu, Icon, &y. Yank entry, res\%iconY%,,16
-; 	}
+If !FIFOACTIVE
+	{
+	 Menu, ClipMenu, Add, &y. Yank entry, :Submenu3
+	 Menu, ClipMenu, Icon, &y. Yank entry, res\%iconY%,,16
+	}
 Menu, ClipMenu, Add, &z. More history, :Submenu4
 Menu, ClipMenu, Icon, &z. More history, res\%iconZ%,,16
 Menu, ClipMenu, Add
@@ -543,7 +585,7 @@ DispMenuText(TextIn,lines="1")
 	 StringReplace, TextOut, TextOut, &, &&, All
 	 If StrLen(TextOut) > 60
 		{
-		 TextOut:=SubStr(TextOut,1,MenuWidth) " " Chr(8230) " " SubStr(RTrim(TextOut,".`n"),-10) ; 8230 ...
+		 TextOut:=SubStr(TextOut,1,MenuWidth) " " Chr(8230) " " SubStr(RTrim(TextOut,".`n"),-10) ; 8230 ...	
 		}
 	 TextOut .= " " Chr(171)
 	 if ShowLines
@@ -564,17 +606,17 @@ DispToolTipText(TextIn,Format=0)
 
 PasteIt(source="")
 	{
-	 global StartTime,PasteTime,activewindowID,oldttext,ttext,ClipboardOwnerProcessName,ClipboardPrivate
+	 global StartTime,PasteTime,ActiveWindowID,oldttext,ttext,ClipboardOwnerProcessName,ClipboardPrivate
 	 StartTime:=A_TickCount
 	 If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
 		Return
 	 #Include *i %A_ScriptDir%\plugins\PastePrivateRules.ahk
-	 winactivate, ahk_id %activewindowID%
+	 WinActivate, ahk_id %ActiveWindowID%
 	 If PasteDelay
 		Sleep % PasteDelay
 	 Send ^v
 	 PasteTime := A_TickCount
-	 oldttext:="", ttext:="", activewindowID:="",ClipboardOwnerProcessName:=""
+	 oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
 
 	 If (source <> "normal")
 		ClipboardPrivate:=0
@@ -590,7 +632,7 @@ If (Trim(A_ThisMenuItem) = "E&xit (Close menu)")
 		Return
 	 FIFOACTIVE:=0
 	 Gosub, FifoInit
-	 Gosub, FifoactiveMenu
+	 Gosub, FifoActiveMenu
 	 Return
 	}
 
@@ -602,7 +644,7 @@ If (RegExMatch(Trim(A_ThisMenuItem),"^&[a-r]\.$"))
 	 If FIFOACTIVE
 		{
 		 Gosub, FifoInit
-		 Gosub, FifoactiveMenu
+		 Gosub, FifoActiveMenu
 		}
 	 Return
 	}
@@ -613,14 +655,14 @@ If (A_ThisMenu = "ClipMenu")
 else
 	MenuItemPos:=A_ThisMenuItemPos+18
 
-; debug
+; debug	
 ; MsgBox % "A_ThisMenu-" A_ThisMenu " : A_ThisMenuItem-" A_ThisMenuItemPos " : MenuItemPost-" MenuItemPos
 
 If FIFOACTIVE
 	{
 	 FIFOID:=MenuItemPos
-	 Gosub, FifoactiveMenu
-	 TrayTip, FIFO, FIFO Paste Mode activated, 2, 1
+	 Gosub, FifoActiveMenu
+	 TrayTip, FIFO, FIFO Paste Mode Activated, 2, 1
 	 Return
 	}
 
@@ -632,7 +674,7 @@ Return
 SpecialMenuHandler:
 SpecialFunc:=(SubStr(A_ThisMenuItem,4))
 StringReplace, SpecialFunc, SpecialFunc, %A_Space%,,All
-If (SpecialFunc = "AutoReplace")
+If (SpecialFunc = "AutoReplace")	
 	{
 	 Gosub, AutoReplace
 	 Return
@@ -643,7 +685,7 @@ Else
 	if (SpecialFunc = "Slots")
 		Gosub, hk_slots
 Else
-	if (SpecialFunc = "Search")
+	if (SpecialFunc = "Search")	
 		Gosub, hk_search
 Else
 	if (SpecialFunc = "ClipChain")
@@ -663,7 +705,7 @@ Return
 TemplateMenuHandler:
 If (A_ThisMenuItem = "&0. Open templates folder")
 	{
-	 IfwinExist, ahk_exe TOTALCMD.EXE
+	 IfWinExist, ahk_exe TOTALCMD.EXE
 		Run, c:\totalcmd\TOTALCMD.EXE /O /T %A_ScriptDir%\templates\
 	 else
 		Run, %A_ScriptDir%\templates\
@@ -678,7 +720,7 @@ TemplateClip:=0
 Return
 
 ClipBoardHandler:
-oldttext:="", ttext:="", activewindowID:=""
+oldttext:="", ttext:="", ActiveWindowID:=""
 If (ClipText <> Clipboard)
 	{
 	 StrReplace(ClipText,"`n", "`n", Count)
@@ -687,7 +729,7 @@ If (ClipText <> Clipboard)
 		 If History[MenuItemPos].HasKey("Icon")
 			IconExe:=History[MenuItemPos,"Icon"]
 		 else
-			winGet, IconExe, ProcessPath , A
+			WinGet, IconExe, ProcessPath , A
 		}
 	 else
 		IconExe:="res\" iconT
@@ -701,28 +743,31 @@ Gosub, CheckHistory
 MenuItemPos:=0
 Return
 
+; check clipboard
 FuncOnClipboardChange() {
  global
+Critical, On
 
 ; The built-in variable A_EventInfo contains:
 ; 0 if the clipboard is now empty;
 ; 1 if it contains something that can be expressed as text (this includes files copied from an Explorer window);
 ; 2 if it contains something entirely non-text such as a picture.
 
-If (A_EventInfo <> 1) || (A_PriorKey:="1")
+If (A_EventInfo <> 1)
 	Return
 
 ;ProcesshWnd:=DllCall("GetClipboardOwner", Ptr) ; may not work for all Executables
-winGet, ClipboardOwnerProcessName, ProcessName, % "ahk_id " DllCall("GetClipboardOwner", Ptr)
+WinGet, ClipboardOwnerProcessName, ProcessName, % "ahk_id " DllCall("GetClipboardOwner", Ptr)
 
 If (ClipboardOwnerProcessName = "")
-	winGet, ClipboardOwnerProcessName, ProcessName, A
+	WinGet, ClipboardOwnerProcessName, ProcessName, A
 
 StringLower, ClipboardOwnerProcessName, ClipboardOwnerProcessName ; just in case process has mixed case "KeePass.exe" - Exclude is set to lowercase after IniRead (lib\settings.ahk)
 
 if ClipboardOwnerProcessName in %Exclude%
 	{
 	 ClipboardOwnerProcessName:="",ClipboardPrivate:=1
+	 ClipText:=""
 	 Return
 	}
 else
@@ -731,14 +776,14 @@ else
 If CopyDelay
 	Sleep % CopyDelay
 
-winGet, IconExe, ProcessPath , A
+WinGet, IconExe, ProcessPath , A
 If ((History.MaxIndex() = 0) or (History.MaxIndex() = "")) ; just make sure we have the History Object and add "some" text
 	History.Insert(1,{"text":"Text","icon": IconExe,"lines": 1})
 
 History_Save:=1
 
 ; no longer used v1.95
-;If !winExist("CL3ClipChain ahk_class AutoHotkeyGUI")
+;If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
 ;	ScriptClipClipChain:=0
 
 ;CF_METAFILEPICT := 0x3 ; IsClipboardFormatAvailable
@@ -746,7 +791,7 @@ History_Save:=1
 ; Skipping Excel.exe +
 ; Skipping CF_METAFILEPICT avoids "This picture is too large and will be truncated" error MsgBox in Excel it seems
 ; this allows the various formats to be stored (temporarily) so we can paste the formatted text which may have been changed by AutoReplace - this avoids the need to turn AR on/off to get something to paste
-If !winactive("ahk_exe excel.exe")
+If !WinActive("ahk_exe excel.exe")
 	{
 	 If (hk_BypassAutoReplace <> "")
 		{
@@ -757,7 +802,7 @@ else ; Excel is active; check CF_METAFILEPICT, if not present we can safely stor
 	If (DllCall("IsClipboardFormatAvailable", "Uint", 3) = 0)
 		ClipboardByPass:=ClipboardAll
 
-if (Clipboard = "") ;or (ScriptClipClipChain = 1) ; avoid empty entries  changes made by script which you don't want to keep
+if (Clipboard = "") ; or (ScriptClipClipChain = 1) ; avoid empty entries or changes made by script which you don't want to keep
 	Return
 
 AutoReplace()
@@ -772,7 +817,9 @@ ClipText=%Clipboard%
 
 StrReplace(ClipText, "`n", "`n", Count)
 
-History.Insert(1,{"text":ClipText,"icon": IconExe,"lines": Count+1})
+crc:=crc32(ClipText)
+
+History.Insert(1,{"text":ClipText,"icon": IconExe,"lines": Count+1,"crc":crc})
 
 Gosub, CheckHistory
 
@@ -783,15 +830,33 @@ ClipText:=""
 Return
 }
 
-
 CheckHistory: ; check for duplicate entries
 
 newhistory:=[]
+HaveCRCList:="|"
+
+for k, v in History
+	{
+	 CurrentCRC:=v.crc
+	 if !CurrentCRC ; just to make sure it isn't empty
+		CurrentCRC:=crc32(v.text)
+	 if !InStr(HaveCRCList, "|" CurrentCRC "|")
+		newhistory.push({"text":v.text,"icon":v.icon,"lines":v.lines,"crc":CurrentCRC})
+	 HaveCRCList .= v.crc "|"
+	 if (k >= MaxHistory)
+		break
+	}
+
+/* ; old method prior to v1.100, deprecated:
+
+newhistory:=[]
+
 for k, v in History
 	{
 	 check:=v.text
 	 icon:=v.icon
 	 lines:=v.lines
+	 crc:=v.crc
 	 new:=true
 	 for p, q in newhistory
 		{
@@ -806,16 +871,16 @@ for k, v in History
 		break
 	}
 
+*/	
+
+crc:="",HaveCRCList:=""
 History:=newhistory
-
-check:="", new:="", icon:="", lines:=""
-
 newhistory:=[]
 
 Return
 
 ; If the tray icon is double click we do not actually want to do anything
-DoubleTrayClick:
+DoubleTrayClick: 
 Send {rbutton}
 Return
 
@@ -853,18 +918,18 @@ Else If (A_ThisMenuItem = "&Pause clipboard history")
 		Menu, Tray, Icon, res\cl3_clipboard_history_paused.ico
 	 ClipboardHistoryToggle:=!ClipboardHistoryToggle
 	}
-Else If (A_ThisMenuItem = "&AutoReplace active")
+Else If (A_ThisMenuItem = "&AutoReplace Active")
 	{
-	 If AutoReplace.Settings.active
-		AutoReplace.Settings.active:=0
+	 If AutoReplace.Settings.Active
+		AutoReplace.Settings.Active:=0
 	 else
-		AutoReplace.Settings.active:=1
+		AutoReplace.Settings.Active:=1
 	 XA_Save("AutoReplace", A_ScriptDir "\ClipData\AutoReplace\AutoReplace.xml")
 	 Gosub, AutoReplaceMenu
 	}
-Else If (A_ThisMenuItem = "&FIFO active")
+Else If (A_ThisMenuItem = "&FIFO Active")
 	{
-	 Gosub, FifoactiveMenu
+	 Gosub, FifoActiveMenu
 	}
 Else If (A_ThisMenuItem = "&settings")
 	{
@@ -888,7 +953,7 @@ Else If (A_ThisMenuItem = "&Usage statistics")
 
 ; Settings menu
 
-Else If (Trim(A_ThisMenuItem) = "E&xit")
+Else If (Trim(A_ThisMenuItem) = "Exit")
 	ExitApp
 
 Return
@@ -906,11 +971,11 @@ XA_Save("History", A_ScriptDir "\ClipData\History\History.xml") ; put variable n
 XA_Save("stats", A_ScriptDir "\stats.xml")
 
 ;XA_Save("Slots", A_ScriptDir "\ClipData\Slots\Slots.xml")
-; XA_Save("ClipChainData", A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
+;XA_Save("ClipChainData", A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
 ;XA_Save("AutoReplace", A_ScriptDir "\ClipData\AutoReplace\AutoReplace.xml")
 
-If activateApi
-	ObjRegisteractive(CL3API, "")
+If ActivateApi
+	ObjRegisterActive(CL3API, "")
 
 Sleep 100
 
@@ -921,7 +986,7 @@ XMLSave(savelist,id="")
 	 global
 	 local keeplist,objectname,objectfile,ext
 
-	 If !activateBackup and (id <> "")
+	 If !ActivateBackup and (id <> "")
 		Return
 	 if id
 		ext:=".xml.bak"
@@ -981,5 +1046,50 @@ If History_Save
 	 History_Save:=0
 	}
 Return
+
+Template_Hotkeys()
+	{
+	 global templatesfolderlist
+	 Loop, parse, templatesfolderlist, |
+	 	{
+		 IniRead, TemplatesShortcut, %A_ScriptDir%\templates\%A_LoopField%\settings.ini, settings, shortcut
+		 If (TemplatesShortcut <> "ERROR")
+			{
+			 fn := func("ShowMenu").Bind(A_LoopField)
+			 Hotkey, % TemplatesShortcut, % fn
+			}
+	 	}
+	}
+
+ShowMenu(menuname){
+WinGetPos, MenuX, MenuY, , , A
+MenuX+=A_CaretX
+MenuX+=20
+MenuY+=A_CaretY
+MenuY+=10
+If (A_CaretX <> "")
+{
+	Try
+		Menu, %menuname%, Show, %MenuX%, %MenuY%
+	Catch
+		{
+		 Gosub, BuildMenuHistory
+		 Gosub, BuildMenuPluginTemplate
+		 Menu, %menuname%, Show, %MenuX%, %MenuY%
+		}
+}
+Else
+ {
+;	TrayTip, TrayMenu, CL3Coords2, 2 ; debug
+	Try
+		Menu, %menuname%, Show
+	Catch
+		{
+		 Gosub, BuildMenuHistory
+		 Gosub, BuildMenuPluginTemplate
+		 Menu, %menuname%, Show, %MenuX%, %MenuY%
+		}
+ }
+}
 
 #include %A_ScriptDir%\lib\cl3apiclass.ahk

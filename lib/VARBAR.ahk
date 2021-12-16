@@ -118,7 +118,7 @@ Class VarBar{
 			This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
 			this.AddBatchesDDL(0,"x1 yP+34 w250 r50 h21 vDDL gDDLVarbar hwndHDDL +0x0210") ;combobox1
 			Gui, VarBar:add, Checkbox, x+3 Y35 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel ;button1
-			ComboBoxSelection:=Note1 "`nEnteringRotations`nSwitchWorkSheets`nTempCode`n"
+			ComboBoxSelection:= Note1 "`nEntering_Rotations`nEditing_Batches`nTempCode`n"
 			This.AddModeComboBox("Mode", ComboBoxSelection,"altsubmit x1 Yp+21 w150") ;edit 5
 
 
@@ -133,33 +133,25 @@ Class VarBar{
 				this.AddEdit("SampleID"," x+1 w0",					"9, Arial Narrow")
 
 		Return
-
 		ModeDDL:
 		Gui, VarBar:submit,NoHide
 		; tt(mode)
 		sleep 200
 		This.Setcolor()
-		If Mode=1
-			send, {right}
-		else If Mode=2
-			Mode := "EnteringRotations"
-		else If Mode=3
-			Mode := "SwitchWorkSheets"
-		else If Mode=4
-			Mode := "TempCode"
-		else {
-			Note1:=Mode
-			settimer, ShrinkVarbar, -800
-
+		if Mode is Integer
+		{
+			If Mode=1
+				send, {right}
+			else If Mode=2
+				Mode := "Entering_Rotations"
+			else If Mode=3
+				Mode := "Editing_Batches"
+			else If Mode=4
+				Mode := "TempCode"
+			else
+				return
+				; IniWrite, %Mode%, Settings.ini, Options, Mode
 		}
-			IniWrite, %Mode%, Settings.ini, Options, Mode
-		return
-		; sleep 200
-
-
-
-
-		; TT(A_GuiControlevent " " A_GuiEvent " " A_Gui " " A_ThisMenuItem " " A_EventInfo " " Note1 " " Mode)
 		return
 
 			DDLVarbar:
@@ -167,14 +159,14 @@ Class VarBar{
 			; clip.Regex(DDL)
 			Gui, VarBar:submit,NoHide
 			; tt(DDL)
-      RegExMatch(DDL, "i)[abdefghijkl]\d{3}", cProduct)
+      RegExMatch(DDL, "i)\b[abdefghijkl]\d{3}", cProduct)
 			; cBatch := RegExReplace(DDL, "/b(\d{3})(\d{4})/b", "$1-$2")
-      RegExMatch(DDL, "i)(?<!(ct#\s|Ct#|ct))\d{3}(-)?\d{4}", cBatch)
-					if RegExMatch(cBatch, "i)(?<!ct)\b\d{3}\	d{4}\b")
-				cBatch := RegExReplace(cBatch, "\b(\d{3})(\d{4})\b", "$1-$2")
+      RegExMatch(DDL, "i)(?<!ct[ #])\b\d{3}-\d{4}\b", cBatch)
+					; if RegExMatch(cBatch, "i)\d{3}\d{4}")
+				; cBatch := RegExReplace(cBatch, "(\d{3})(\d{4})", "$1-$2")
       ; RegExMatch(DDL, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(DDL, "i)(\b\d{4}[a-z]\d[a-z]?|\bBulk\b|G\d{7}\w?\b)", clot)
-      RegExMatch(DDL, "i)(coated: |ct#\s|Ct#|ct(\s)?|coated\s)(?P<Coated>\d{3}-\d{4})", c)
+      RegExMatch(DDL, "i)(coated: |ct#\s|Ct#|ct.?|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       If cProduct {
 				gui, Varbar:font, cBlack s16  Norm w700, Consolas
 				GuiControl, Font, Product
@@ -200,7 +192,9 @@ Class VarBar{
         GuiControl,Varbar:Text, Coated, %cCoated%
         Coated:=cCoated
       }
-
+      AppendCode:="`n" cProduct " " cBatch " " clot " " cCoated
+        TrimmedAppendcode:=Trim(AppendCode)
+        FileAppend,%TrimmedAppendCode%, Data\CurrentCodes.txt
 
       If !cProduct {
 				Gui, Varbar:font, cFFFFFF  Italic w300, Arial Narrow
@@ -847,15 +841,7 @@ WM_MOUSEMOVE(){
 		ControlGetFocus, GUIFocus, VarBar
 			if (!GUIFocus && !MouseIsOver("VarBar ahk_exe AutoHotkey.exe")) {
 				Settimer, ShrinkVarBar, Off
-					gui, Varbar:Default
-					if mode is not integer
-					{
-						GuiControl,,Mode, % Note1 ;
-						GuiControl, VarBar:MoveDraw, Mode
-						Mode:=1
-					}
 		    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H%
-
 			}
 			else
 				return

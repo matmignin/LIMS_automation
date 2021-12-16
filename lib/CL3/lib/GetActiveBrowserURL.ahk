@@ -124,7 +124,7 @@ Acc_Query(Acc) {
 }
 Acc_Children(Acc) {
 	If ComObjType(Acc,"Name") != "IAccessible"
-		return
+		ErrorLevel := "Invalid IAccessible Object"
 	Else {
 		Acc_Init(), cChildren:=Acc.accChildCount, Children:=[]
 		If DllCall("oleacc\AccessibleChildren", "Ptr",ComObjValue(Acc), "Int",0, "Int",cChildren, "Ptr",VarSetCapacity(varChildren,cChildren*(8+2*A_PtrSize),0)*0+&varChildren, "Int*",cChildren)=0 {
@@ -132,6 +132,6 @@ Acc_Children(Acc) {
 				i:=(A_Index-1)*(A_PtrSize*2+8)+8, child:=NumGet(varChildren,i), Children.Insert(NumGet(varChildren,i-8)=9?Acc_Query(child):child), NumGet(varChildren,i-8)=9?ObjRelease(child):
 			Return Children.MaxIndex()?Children:
 		} Else
-			return
+			ErrorLevel := "AccessibleChildren DllCall Failed"
 	}
 }

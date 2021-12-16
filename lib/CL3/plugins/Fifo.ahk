@@ -63,10 +63,10 @@ If (FIFOID = FIFOIDCOUNTER)
 Return
 
 ; stop FIFO
-; ^+#F10::
-; Gosub, FifoInit
-; Gosub, FifoActiveMenu
-; Return
+^+#F10::
+Gosub, FifoInit
+Gosub, FifoActiveMenu
+Return
 #If
 
 FifoActiveMenu:
