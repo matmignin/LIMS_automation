@@ -6,7 +6,7 @@
     #InstallMouseHook
     #maxthreadsperhotkey, 2
     ; SetBatchLines, 20ms
-		SendMode, Input
+		; SendMode, Input
     ; setwindelay, 150
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
@@ -222,7 +222,7 @@ return
 	a::											Sendinput, {ctrldown}{a}{ctrlup}{delete}
   s:: 										Sendinput,{home 2}{shiftdown}{end}{shiftup}{Backspace 2}
 	space::                 sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup}{delete}
-#If (A_PriorKey = "s" 							&& Getkeystate("F13","p")) ;&& A_TimeSincePriorHotkey < 900) ;; 	 	_s Vim_
+#If (A_PriorKey = "s" 							&& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 700) ;; 	 	_s Vim_
 	a::                    Sendinput, {shiftdown}{altdown}{a}{altup}{shiftup}
 	/::                    Sendinput, {F3 3}+{End}
 	m::                    Sendinput, {F3 3}+{Home}
@@ -405,13 +405,9 @@ return
 	]::                     Sendinput, +{f3}
 	; '::  										Sendinput,!{'} go back to previous ediet
 	; '::  										sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup}
-
+	lbutton::send, {click} ;click up left
 	y::                    	sendinput, ^{c}
-	; c::                  		send, ^{c} ;  send,^{c}
-	; ^c::                  	send, ^{x} ;  send,^{c}
-
-	; v::                  Send, ^{v}
-	; t::											sendinput,{ctrldown}{enter}{ctrlup}
+	c::                  		send, ^{c} ;  send,^{c}
 	g::                     Sendinput,^g ;Git
 
 	o::                     Sendinput,{end}{enter}

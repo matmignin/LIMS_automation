@@ -96,7 +96,7 @@ return
 ; 	; sleep 300
 ; Return
 
-` & t::FloVar(0,1,8)
+` & t::FloVar(0,1,10)
 ` & Space::FloVar()
 	; Product:=[]
 	; Batch:=[]

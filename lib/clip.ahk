@@ -123,7 +123,6 @@ Append(Delimiter:="`n",key:="c"){
 }
 
 
-
 Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[],
@@ -134,7 +133,7 @@ Parse(Value:=""){
       ParsedClipboard:=Value
     loop, parse, ParsedClipboard, "`r`n"
       {
-        RegexMatch(A_loopField, "i)[abdefghijkl]\d{3}", VarProduct)
+        RegexMatch(A_loopField, "i)[abdefghijk]\d{3}\b", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
         RegExMatch(A_loopField, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
@@ -198,7 +197,7 @@ SingleRegex(){
     ConnectedProduct:=
       Haystack:=Clipboard
     sleep      20
-      RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
+      RegExMatch(HayStack, "i)[abdefghijk]\d{3}\b", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
@@ -223,7 +222,7 @@ SingleRegex(){
         UpdateDDLlist:
           Gui Varbar:Default
           gui varbar:submit, nohide
-          GuiControl,,DDL, % "|" ConnectedProduct "|" StrReplace(CurrentCodes, "`r`n", "|")
+          GuiControl,,DDL, % "`n" ConnectedProduct "`n" CurrentCodes ;StrReplace(CurrentCodes, "`r`n", "|")
           GuiControl, ChooseString, Combobox1, %ConnectedProduct%
           GuiControl, MoveDraw, ComboBox1
       }

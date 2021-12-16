@@ -77,7 +77,7 @@ VQuest_Start:
     Menu, Tray, Default, E&xit
      varbar.Show()
     GuiControl, -redraw, varbar
-    try Run, cl3.Ahk, lib\CL3
+    ; try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Blank:=" `n `n  `t `t `n`t "
     Currentwindow:=A

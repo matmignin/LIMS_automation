@@ -226,9 +226,9 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 
 	F20 & =::            		Send,{ctrldown}{=}{ctrlup}
 	F20 & -::            		Send,{ctrldown}{-}{ctrlup}
-	F19 & enter::					varbar.focus("Edit1")
-	F20 & enter::					varbar.focus("Edit2")
-	F20 & F19::          		Send, +{F18}
+	F19 & enter::					Varbar.focus("Edit5")
+	F20 & enter::					Varbar.focus("Edit2")
+	F20 & F19::          	Varbar.focus("Edit1")
 
 
 
