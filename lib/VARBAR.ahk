@@ -10,7 +10,7 @@ FloVar(VariableText:="", MousePopup:="", FontSize:=20){
 		Gui, FloVar:Font, % "s" Fontsize  ; Set a large font size (32-point).
 		Gui, FloVar:Add, Text, +wrap R30 vMyText cFFCC00, XXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
 		; Make all pixels of this color transparent and make the text itself translucent (150):
-		winSet, TransColor, %CustomColor%  230
+		winSet, TransColor, %CustomColor%  250
 		if VariableText{
 			FloVarText:=VariableText
 			; Gui, FloVar:Font, s5
@@ -67,8 +67,9 @@ Class VarBar{
 				TopScreen:=1 ;A_ScreenHeight-35
 				MidScreen:=A_ScreenWidth//2
 				VarBar_H=32
+				VarBar_H_max=82
 				VarBar_T:=235
-				VarBar_W=450
+				VarBar_W=315
 				if !varbar_x
 					Varbar_x:=1
 				if !varbar_y
@@ -102,27 +103,29 @@ Class VarBar{
 	AddBoxes(){
 			global
 			CurrentCodes =
-			this.AddEdit("Product",	"left h29 x10 y1 w65",			"16 Bold")
+			this.AddEdit("Product",	"left h29 x1 y1 w65",			"16 Bold")
 			this.AddEdit("Batch",		"left h29 x+1 y1 w85", 			"12,Consolas")
 			If !Lot
-				 L_L:="w60"
+				 L_L:="w80"
 			else
 					L_L:=
 			this.AddEdit("Lot",			"left h29 x+1 y1 " L_L , 			"9, Consolas")
 			If !Coated
-				 C_L:="w45"
+				 C_L:="w55"
 			else
 					C_L:=
 				this.AddEdit("Coated",	"left h29 x+1 y1 wrap " c_L,			"9, Arial Narrow")
 			This.AddText("Iteration","x+5 center y-3 w23",		"20 Bold 107C41, Consolas")	; Text1
-			This.addedit("Note1","x+3 H29 y1 w150 left" ,"9 cBlack,arial Narrow") ; edit6
-			This.addedit("Note2","X3 H29 y+2 w440 left","9 cBlack,arial Narrow")
-			this.AddBatchesDDL()
-;
+			this.AddBatchesDDL(0,"x1 yP+34 w250 r50 h21 vDDL gDDLVarbar hwndHDDL +0x0210") ;combobox1
+			Gui, VarBar:add, Checkbox, x+3 Y35 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel ;button1
+			ComboBoxSelection:=Note1 "`nEnteringRotations`nSwitchWorkSheets`nTempCode`n"
+			This.AddModeComboBox("Mode", ComboBoxSelection,"altsubmit x1 Yp+21 w150") ;edit 5
+
+
+			; This.addedit("Note1"," X+1 H23 w150 left" ,"9 cBlack,arial Narrow") ; edit6
+			; This.addedit("Note2"," X+2 H23  w290 left","9 cBlack,arial Narrow")
+;				Gui, Varbar:add,
 						; edit7
-			Gui, VarBar:add, Checkbox, x+3 Y65 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel
-			Gui, Varbar:add, DDL, x+3 w180 vMode gModeDDL, |EnteringRotations|SwitchWorkSheets|TempCode|Debugging
-			GuiControl, ChooseString, ComboBox2, %Mode%
 
 			if ShowSampleID
 				this.AddEdit("SampleID","x+1 w85",					"9, Arial Narrow")
@@ -133,17 +136,101 @@ Class VarBar{
 
 		ModeDDL:
 		Gui, VarBar:submit,NoHide
+		; tt(mode)
 		sleep 200
 		This.Setcolor()
-		IniWrite, %Mode%, Settings.ini, Options, Mode
-			sleep 200
+		If Mode=1
+			send, {right}
+		else If Mode=2
+			Mode := "EnteringRotations"
+		else If Mode=3
+			Mode := "SwitchWorkSheets"
+		else If Mode=4
+			Mode := "TempCode"
+		else {
+			Note1:=Mode
+			settimer, ShrinkVarbar, -800
+
+		}
+			IniWrite, %Mode%, Settings.ini, Options, Mode
+		return
+		; sleep 200
+
+
+
+
+		; TT(A_GuiControlevent " " A_GuiEvent " " A_Gui " " A_ThisMenuItem " " A_EventInfo " " Note1 " " Mode)
 		return
 
 			DDLVarbar:
+			; sleep 100
+			; clip.Regex(DDL)
 			Gui, VarBar:submit,NoHide
-			clip.Regex(DDL)
-			; RegExMatch(DDL, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-			; this.updateWith(VarBarInput)
+			; tt(DDL)
+      RegExMatch(DDL, "i)[abdefghijkl]\d{3}", cProduct)
+			; cBatch := RegExReplace(DDL, "/b(\d{3})(\d{4})/b", "$1-$2")
+      RegExMatch(DDL, "i)(?<!(ct#\s|Ct#|ct))\d{3}(-)?\d{4}", cBatch)
+					if RegExMatch(cBatch, "i)(?<!ct)\b\d{3}\	d{4}\b")
+				cBatch := RegExReplace(cBatch, "\b(\d{3})(\d{4})\b", "$1-$2")
+      ; RegExMatch(DDL, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
+      RegExMatch(DDL, "i)(\b\d{4}[a-z]\d[a-z]?|\bBulk\b|G\d{7}\w?\b)", clot)
+      RegExMatch(DDL, "i)(coated: |ct#\s|Ct#|ct(\s)?|coated\s)(?P<Coated>\d{3}-\d{4})", c)
+      If cProduct {
+				gui, Varbar:font, cBlack s16  Norm w700, Consolas
+				GuiControl, Font, Product
+				StringUpper,cProduct,cProduct
+        GuiControl,Varbar:Text, Product, %cProduct%
+        ; Product:=cProduct
+      }
+      If cBatch {
+				gui, Varbar:font, cBlack s12 Norm w400 ,Consolas
+				GuiControl, Font, Batch
+        GuiControl,Varbar:Text, Batch, %cBatch%
+        Batch:=cBatch
+      }
+      If cLot {
+				gui, Varbar:font, cBlack s9 Norm w500 , Consolas
+				GuiControl, Font, lot
+        GuiControl,Varbar:Text, lot , %clot%
+        lot:= cLot
+      }
+      If cCoated {
+				gui, Varbar:font, cBlack s9 Norm w500, Arial Narrow
+				GuiControl, Font, Coated
+        GuiControl,Varbar:Text, Coated, %cCoated%
+        Coated:=cCoated
+      }
+
+
+      If !cProduct {
+				Gui, Varbar:font, cFFFFFF  Italic w300, Arial Narrow
+				GuiControl, Font, Product
+				; Gui, VarBar:Color, CCCCCC
+				; GuiControl,Varbar:Text, Product, %cProduct%
+        Product:=cProduct
+      }
+      If !cBatch {
+				Gui, Varbar:font, cFFFFFF s10 italic w300, Arial Narrow
+				GuiControl, Font, Batch
+				; Gui, VarBar:Color, CCCCCC
+				; GuiControl,Varbar:Text, Batch, %cBatch%
+        Batch:=cBatch
+      }
+      If !cLot {
+				Gui, Varbar:font, cFFFFFF  s9 italic w300, Arial Narrow
+				GuiControl, Font, lot
+				; Gui, VarBar:Color, CCCCCC
+				; GuiControl,Varbar:Text, lot, %clot%
+        lot:=cLot
+      }
+      If !cCoated {
+				Gui, Varbar:font, cFFFFFF s9 italic w300, Arial Narrow
+				GuiControl, Font, Coated
+				; Gui, VarBar:Color, CCCCCC
+				; GuiControl,Varbar:Text, Coated, %cCoated%
+        Coated:=cCoated
+      }
+
 			return
 
 			ExcelConnectCheck:
@@ -160,7 +247,7 @@ Class VarBar{
 			Note3VarBar:
 			CoatedVarBar:
 			Gui, VarBar:submit,NoHide
-			sleep 100
+			sleep 50
 			; if ExcelConnect
 				; excel.Connect(1)
 			this.SaveVariables()
@@ -168,11 +255,15 @@ Class VarBar{
 
 			VarBarGuiClose:
 			VarBarGuiEscape:
-				sleep 100
+				sleep 50
 				this.SaveVariables()
 			return
 		}
-
+AddModeComboBox(Variable:="Mode",Selections:="",Options:=""){
+	global
+	Gui, Varbar:add, ComboBox, %Options% v%Variable% g%Variable%DDL, % Selections
+	GuiControl, ChooseString, ComboBox2, % %Variable%
+	}
 updateWith(Input){
 			Global
 		; Clipboard:=DDL
@@ -199,13 +290,25 @@ updateWith(Input){
 
 
 
-AddBatchesDDL(){
+AddBatchesDDL(Variable:="",Options:=""){
    global
-			FileRead, CurrentCodes, Data\CurrentCodes.txt
-	Gui, Varbar:Add, DDL, x1 y+1 w200 vDDL gDDLVarbar hwndHDDL +0x0210, % StrReplace(StrReplace(RemoveTextDuplicates(CurrentCodes), "`n", "|"), "`n`n","`n")
-		try GuiControl, Varbar:ChooseString, DDL, %CodeString%
+	 ConnectedProduct:=
+	 if !Variable
+			FileRead, Variable, Data\CurrentCodes.txt
+				GUI,VarBar:Font,			 s9, ArialNarrow ;cBlack Bold, %Font%
+				gui, Varbar:+Delimiter`n
+	Gui, Varbar:Add, ComboBox, %Options%, % RemoveTextDuplicates(Variable) ;Variable ;StrReplace(StrReplace(RemoveTextDuplicates(Variable), "`n", "|"), "`n`n","`n")
+		        if Product
+            ConnectedProduct:=Product
+            if Batch
+              ConnectedProduct.= " " Batch
+            if Lot
+              ConnectedProduct.= " " Lot
+            if Coated
+              ConnectedProduct.= " Ct#" Coated
+		try GuiControl, Varbar:ChooseString, DDL, %Variable%
 		Catch
-				GuiControl, Varbar:ChooseString, DDL, 1
+				GuiControl, Varbar:ChooseString, DDL, % ConnectedProduct
 		; GuiControl, Varbar:MoveDraw, DDL
 }
 
@@ -424,7 +527,7 @@ Hoveraction(Size:=90){
         Products := Trim(StrSplit(LoadedCodes,"`r`n"))
 		}
 
-
+;;___________________________SAVING VARIABLES_________________________
 	SaveVariables(){
 		global
 		CodeString:=
@@ -654,15 +757,22 @@ HistoryMenuItem(){
 		; ^left::Lms.SelectTab("Left")
 		; ^right::LMs.SelectTab("right")
 
-	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && winExist("Mats LMS Workbook.xlsb - Excel")
-		wheelleft::Excel.PrevSheet()
-		wheelright::excel.Nextsheet()
+	; #If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && winExist("Mats LMS Workbook.xlsb - Excel")
+		; wheelleft::Excel.PrevSheet()
+		; wheelright::excel.Nextsheet()
 
 	#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
 		; F13 & k::
 		; wheeldown::selectnextBatch()
 		; F13 & j::
 		; wheelup::SelectPreviousBatch()
+		Mbutton::
+		InputBox, Iteration, ITERATIONR,,,100,50 , , , , , 1
+		sleep 50
+			GuiControl, Varbar:Text, iteration, %iteration%
+		; gui, varbar:default
+		; gui, Varbar:Submit, Nohide
+		return
 		Numlock::
 			MouseGetPos,,,,winControl
 				if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
@@ -678,8 +788,8 @@ HistoryMenuItem(){
 				else
 					VarBar.Menu()
 				return
-		Wheelup::      send % Blockrepeat(600) Varbar.AddIteration()
-		Wheeldown::    send % Blockrepeat(600) Varbar.SubIteration()
+		Wheelup::      sendInput % Blockrepeat(600) Varbar.AddIteration(10)
+		Wheeldown::    sendInput % Blockrepeat(600) Varbar.SubIteration(10)
 		+wheelup::	Varbar.AddIteration(0)
 		+wheeldown::Varbar.SubIteration(0)
 		; up::				Varbar.AddIteration(0)
@@ -728,8 +838,8 @@ WM_MOUSEMOVE(){
 	gui, Varbar:default
 	ControlGetFocus, GUIFocus, VarBar
 	If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") || GUIFocus {
-    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,90
-		settimer, ShrinkVarBar, 800
+    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
+		settimer, ShrinkVarBar, 200
 		return
 	}
 
@@ -737,21 +847,19 @@ WM_MOUSEMOVE(){
 		ControlGetFocus, GUIFocus, VarBar
 			if (!GUIFocus && !MouseIsOver("VarBar ahk_exe AutoHotkey.exe")) {
 				Settimer, ShrinkVarBar, Off
-		    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,32
+					gui, Varbar:Default
+					if mode is not integer
+					{
+						GuiControl,,Mode, % Note1 ;
+						GuiControl, VarBar:MoveDraw, Mode
+						Mode:=1
+					}
+		    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H%
+
 			}
 			else
 				return
 			return
-
-	; }
-	; else If (Varbar_H=90){
-	; 	if (GUIFocus) || MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-	; 		return
-	; 	else {
-	; 	VarBar_H:=32
-  ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-	; 	}
-	; }
 }
 
 

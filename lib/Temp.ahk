@@ -22,6 +22,35 @@ B086 108-0752 Bulk Ct#109-0635"
 )
 
 
+#SingleInstance Force
+
+Gui Font, s9, Segoe UI
+Gui Color, White
+Gui Add, ComboBox, hWndhCbx1 vCbxValue gShowDropDown x91 y133 w300, Red|Green|Blue
+Gui Add, ComboBox, hWndhCbx2 x91 y224 w300
+Gui Add, Text, x91 y101 w250 h23 +0x200, ComboBox ShowDropDown
+Gui Add, Text, x91 y192 w250 h23 +0x200, Autocomplete Path
+Gui Show, w481 h381, ComboBox Example
+
+; Set the autocomplete path feature of the Edit inside a ComboBox
+If (hEdit := DllCall("GetWindow", "Ptr", hCbx2, "UInt", GW_CHILD := 5)) {
+    DllCall("Shlwapi.dll\SHAutoComplete", "Ptr", hEdit, "UInt", 0)
+}
+Return
+
+GuiEscape:
+GuiClose:
+    ExitApp
+
+ShowDropDown:
+    Gui Submit, NoHide
+    If (CbxValue != "") {
+        Control ShowDropDown,,, ahk_id %hCbx1%
+        ; SendMessage 0x14F, 1, 0,, ahk_id %hCbx% ; CB_SHOWDROPDOWN
+    } Else {
+        Control HideDropDown,,, ahk_id %hCbx1%
+    }
+Return
 
 
 
@@ -78,74 +107,32 @@ i)(((\d)%$)|(\Q*\E))
 
 
 #If Mode=="TempCode"
-  ; F20::matching_Batch("J837")
+  F20::
+  CopyWordDoc:
+  F13 & t::ProductTab.AddCOASpace()
+  ; clipboard:=
+  ; send, ^c
+  ; clipwait, 4
+  ; sleep 400
+  doc_path := "C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\label K883MA (NEW).docx" ; enter path to the Word Doc
+oDoc := ComObjGet(doc_path) ; access Word Doc
+; clipboard:=
+oDoc.range.copy() ; copy Doc contents
+; clipwait, 3
+sleep 300
+oDoc.close()
+WordText:=Clipboard
+; return
   ; F19::matching_Batch("B086")
   ; F13 & t::
-  F13 & t::
-  RegExMatch(Clipboard, "is)(?=% Daily Value)(?<Ingredients>(.*)(?<=Percent Daily Values)")
-;RegExMatch(Clipboard, "is)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))", var)
-sleep 200
-msgbox % "customer " varCustomer "`n product " varProduct "`n pillsize " varPillsize "`n servingsize " varServingSize "`n Ingredients: `n" varIngredients
+  ; RegExMatch(WordText, "is)(?=% Daily Value)(?<Ingredients>(.*)(?<=Percent Daily Values)")
+RegExMatch(WordText, "is)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))", var)
+; sleep 200
+msgbox % " customer: `t" varCustomer "`n product: `t " varProduct "`n pillsize: `t" varPillsize "`n servingsize: `t" varServingSize "`n`n" WordText
+; MsgBox, %WordText%
 return
 #if
 
-
-try
-	; create an XMLDOMDocument object
-	; set its top-level node
-	x := new xml("<root/>")
-catch pe ; catch parsing error(if any)
-	MsgBox, 16, PARSE ERROR
-	, % "Exception thrown!!`n`nWhat: " pe.What "`nFile: " pe.File
-	. "`nLine: " pe.Line "`nMessage: " pe.Message "`nExtra: " pe.Extra
-; check if top-level node exists in this case, 'root'
-  ; x.loadXML("Data\Codes2.xml")
-if x.documentElement {
-	; add a 'comment' node
-	; x.addChild("//Product", "comment", "Products")
-	; x.addChild("//Product", "e", "Batch")
-  ; x.AddElement("Product", "//Products", "K277")
-	; x.addChild("//root", "e", "Product")
-  x.AddElement("Product", "//root", "K277")
-  x.AddElement("Product", "//root", "K888")
-	x.addChild("//Product", "e", "Batch")
-	x.addChild("//Batch", "e", "Lot")
-  ; x.AddElement("Batch", "//Product", "222-2222")
-  ; x.AddElement("Batch", "//Product", "333-3333")
-  ; x.AddElement("Lot", "//Batch", "0033A3")
-	; x.addChild("//root", "e", "Product")
-	; x.addChild("//Batch", "e", "Lot")
-	; x.addChild("//P", "e", "Batch")
-  ; x.AddElement("Lot", "//Batch", "2220A2")
-  ; x.AddElement("Batch", "//K277", "333-3333")
-  ; x.AddElement("Product", "//Parent", "Product")
-  ; x.addelement("Batch", "111", "//child", {attribute: "value " "111"}, "b")
-
-	; add an 'element' node to the 'root' node
-	; and set its 'nodeName' property to 'child'
-	; x.addElement("Batch", "Product")
-;
-	; add some child nodes
-	; for a, b in ["e", "s", "r", "Wednesday", "Thursday", "Friday", "Saturday"]
-		; x.addElement("Batch_" a, "//Products", {attribute: "value " a}, b)
-
-	; Traverse and show 'attribute' and 'text' value
-	; of the newly appended nodes
-	; Loop, 7 {
-		; n := x.getChild("//child", "element", A_Index)
-		; MsgBox, % "Attribute: " n.getAttribute("attribute")
-			; . "`nText: " n.text
-	; }
-
-	; view XML document
-	; transform document using internal stylesheet
-	x.transformXML()
-	x.viewXML()
-  x.save("Data\Codes.xml")
-}
-    ; e := xmlObj.addElement("Node", "//Parent", {name: "Element"}, "Text")
-    ; e := xmlObj.insertElement("Node", "//Sibling", {name: "Element"}, {att: "Value"})
-RETURN ;VALUE: An object. Returns the new element node
 
   return
 

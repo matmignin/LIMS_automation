@@ -855,7 +855,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
     AddCOASpace(){
       Global
-      SetwinDelay, 450
+      ; SetwinDelay, 450
       ControlGetText, Iteration, Static1, VarBar
       ; winactivate, Composition - \\Remote
       click
