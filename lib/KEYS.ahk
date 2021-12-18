@@ -1,7 +1,11 @@
 return
 
-#ifwinactive,
 
+#ifwinactive,
+F22::return
+F24::return
+Scrolllock::Scrolllock
+Ins::flovar()
 	Tab & lbutton::
 		send, {ctrldown}
 		click left
@@ -104,10 +108,41 @@ return
 +^c::clip.Append()
 !^c:: clip.Append(A_Space)
 !^x:: send % clip.Append() "{backspace}"
+;; moved over from Vim ____________________________________________________
+	F19 & m::              numpad1
+	F19 & ,::              numpad2
+	F19 & .::              numpad3
+	F19 & j::              numpad4
+	F19 & k::              numpad5
+	F19 & l::              numpad6
+	F19 & u::              numpad7
+	F19 & /::              sendinput, {tab}
+	F19 & i::              numpad8
+	F19 & o::              numpad9
+	F19 & `;::             Sendinput,{numpad0}
+	F19 & y::              sendinput, +{Tab}
+	F19 & p::              numpad0
+	F19 & =::              -
+	F19 & -::              -
+	F19 & [::              left
+	F19 & ]::              right
+	F19 & h::              sendinput, {,}
+	F19 & n::              sendinput, {.}
+	F19 & 8::              sendinput, {*}
+	F19 & 0::              sendinput, {-}
+	F19 & '::              numpad0
+	F19 & Backspace::      backspace
+	; F19 & ENTER::          Sendinput,{enter}
+	F19 & RShift::         Sendinput,{Tab}
 
+	# & F7::right
+	# & F6::left
+	# & F9::up
+	# & F8::down
+	# & wheelup::pgup
+	# & wheeldown::pgdn
 
-
-
+;; moved over from Vim ____________________________________________________
 ;; 	___Send Codes___
 
 
@@ -131,7 +166,7 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 rwin::return
 <#tab::										GetAllProducts(A_tab)
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
-Numlock::								  4tap()
+; Numlock::								  4tap()
 Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
@@ -361,13 +396,13 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 	F13::						return ; clip.IfNothingSelected("menu")
 
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
-	Numlock::				Send, {Backspace}
+	; Numlock::				Send, {Backspace}
 	F19::						Send, ^{click}
 
 
 
 #ifwinactive, Touchpoint | Microsoft Teams ;; 	___Teams
-Numlock::MuteTeamsMicrophone()
+; Numlock::MuteTeamsMicrophone()
 F15::MuteTeamsMicrophone()
 
 #ifwinactive, OneNote for windows 10 ;; 	___OneNote
