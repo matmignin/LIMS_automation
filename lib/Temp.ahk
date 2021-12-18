@@ -19,7 +19,7 @@ return
 
 TEST_2: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
   tProduct:="K796"
-  tRegexSearchPattern:="^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))(?:.*)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})(?:.*)(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))(?<Name>[\w ]*(?!Dietary Supplement))(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*)"
+  tRegexSearchPattern:="i)^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))(?:.*)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})(?:.*)(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))(?<Name>[\w ]*(?!Dietary Supplement))(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*)"
   tRegexReplacePattern:="i)(((\d)%$)|(\Q*\E))"
   ;WordText:=
   sleep 300

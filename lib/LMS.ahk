@@ -1291,57 +1291,57 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 	CopySpecTemplate(){
 		global
 		Critical
-		sleep 100
+		clipboard:=
+		; sleep 100
 		if winactive("NuGenesis LMS - \\Remote"){
 			MouseGetPos, premx, premy
-			; click
-			; Send, ^c
-			; clipwait,1.5 ; Tooltip, %Clipboard%
-			clip("Department")
-			sleep 200
-			TT(department)
+			click
+			Send, {ctrldown}{c}{ctrlup}
+			clipwait,1 ; Tooltip, %Clipboard%
+				if !ErrorLevel
 			Breaking.Point()
 		}
 		If !errorlevel
 			click 102, 289
-		sleep 400
+		; sleep 400
+		clip.Department()
 		Breaking.Point()
 		sleep 200
-		If (Department = "Analytical")
-			SpecTab.Edit_Analytical()
-		else If (Department = "Physical (Coated)")
+		; If (clip.Department() = "Analytical")
+			; SpecTab.Edit_Analytical()
+		If (Department = "ctPhysical")
 			SpecTab.Edit_CoatedPhysical()
 		else If (Department = "Physical")
 			SpecTab.Edit_Physical()
-		else If (Department = "CTPhysical")
-			SpecTab.Edit_CoatedPhysical()
 		else if (Department = "Micro")
 			SpecTab.Edit_Micro()
-		else If (Department = "Retain (Coated)")
+		else If (Department = "ctRetain")
 			SpecTab.Edit_CoatedRetain()
 		else If (Department = "Retain")
 			SpecTab.Edit_Retain()
-		else If (Department = "CTRetain")
-			SpecTab.Edit_CoatedRetain()
-		else If Department Contains Analytical
-			SpecTab.Edit_Analytical()
-		else If Department contains Physical (Coated)
-			SpecTab.Edit_CoatedPhysical()
-		else If Department contains Physical
-			SpecTab.Edit_Physical()
-		else If Department contains CTPhysical
-			SpecTab.Edit_CoatedPhysical()
-		else if Department contains Micro
-			SpecTab.Edit_Micro()
-		else If Department Contains Retain (Coated)
-			SpecTab.Edit_CoatedRetain()
-		else If Department Contains Retain
-			SpecTab.Edit_Retain()
-		else If Department Contains CTRetain
-			SpecTab.Edit_CoatedRetain()
-		sleep 500
+		; else If Department Contains Analytical
+			; SpecTab.Edit_Analytical()
+		; else If Department contains Physical (Coated)
+			; SpecTab.Edit_CoatedPhysical()
+		; else If Department contains Physical
+			; SpecTab.Edit_Physical()
+		; else If Department contains CTPhysical
+			; SpecTab.Edit_CoatedPhysical()
+		; else if Department contains Micro
+			; SpecTab.Edit_Micro()
+		; else If Department Contains Retain (Coated)
+			; SpecTab.Edit_CoatedRetain()
+		; else If Department Contains Retain
+			; SpecTab.Edit_Retain()
+		; else If Department Contains CTRetain
+			; SpecTab.Edit_CoatedRetain()
+		; else
+			; msgbox, %Department%
+		; sleep 500
+		; Breaking.Point()
+			; WinActivate, NuGenesis LMS - \\Remote
 		;excel.NextSheet()
-		MouseMove, %premx%, %premy%, 0
+		Breaking.Point()
 		;TT(Product)
 		return
 	}
@@ -1364,7 +1364,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Clipwait,1
 		Description:=Clipboard
 		sleep 200
-		StrReplace(Description, "eurofins",Note1)
+		StrReplace(Description, "eurofins",intertek)
 		; StrReplace(Description, "(Send out)","")
 		; MouseClick, left, 464, 532,2,0
 		MouseClick, left, 464, 533,1,0
@@ -1372,7 +1372,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		MouseClick, left, 245, 489,1,0
 		;  LMSclick.TestDefinitionEditor_Results()
 		winactivate, Results Definition - \\Remote
-		winWaitactive, Results Definition,,0.25
+		winWaitactive, Results Definition,,0.35
 		if errorlevel
 			winactivate, Results Definition
 		winactivate, Results Definition - \\Remote
@@ -1407,15 +1407,15 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Global
 		winactivate, NuGenesis LMS - \\Remote
 		click 57, 715 ; edit Test
-		winwaitactive, Test Definition Editor - \\Remote,,0.25
-			if errorlevel
+		winwaitactive, Test Definition Editor - \\Remote,,0.35
+			; if errorlevel
 				winactivate, Test Definition Editor - \\Remote
 		sleep 400
 		click 418, 202
 		SpecTab.TestDefinitionEditor(Description) ; the pre window
 		sleep 200
 		MouseClick, left, 464, 533,1,0
-		sleep 150
+		sleep 250
 		MouseClick, left, 245, 489,1,0
 		winactivate, Results Definition - \\Remote
 		winWaitactive, Results Definition,,0.25
@@ -1468,11 +1468,12 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			Breaking.Point()
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
 			sleep 200
-			MouseClick, left, 464, 532,2,0
+			MouseClick, left, 464, 532,2,0 ;click scrollbar
 				; click 236, 246
-				Breaking.Point()
-				 LMSclick.TestDefinitionEditor_Results()
+					click 239, 246
+				;  LMSclick.TestDefinitionEditor_Results()
 				sleep 200
+				Breaking.Point()
 				winactivate, Results Definition - \\Remote
 
 		}
@@ -1651,26 +1652,24 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Global
 		if The_description is space
 			{
-			MouseClick, left, 464, 532,2,0
-			Breaking.Point()
-			 LMSclick.TestDefinitionEditor_Results()
-			return
+			MouseClick, left, 464, 532,2,0 ;click scrollbar
+				click 239, 246 ;click results link
+			;  LMSclick.TestDefinitionEditor_Results()
 			}
 		else
 		{
+			Breaking.Point()
 			winactivate, Test Definition Editor - \\Remote
 			DescriptionRaw:=The_Description
 			Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
-			Breaking.Point()
 			Click, 187, 200 ;Orient_SpecTab.TestDefinitionEditor
 			if Name contains Vitamin C
 				Send,{Home}{Delete 12}%Trimmed_Description%
 			else
 				Send,^a%Trimmed_Description%
-				Breaking.Point()
 			sleep 300
+				Breaking.Point()
 		}
-		return
 		;Send,{shift down}{Tab 15}{Shift up}{enter}
 	}
 
@@ -1707,7 +1706,14 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		winwaitactive, Edit sample template - \\Remote,,4
 		if !errorlevel
 			sleep 300
+			Breaking.Point()
 		Sendinput,{tab}{delete 4}%Product%{enter}
+				sleep 400
+			Breaking.Point()
+		winwaitactive, NuGenesis LMS - \\Remote,,5
+			If !ErrorLevel
+				MouseMove, %premx%, %premy%, 0
+				click
 		return
 	}
 
@@ -1730,6 +1736,15 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			 LMSclick.EditSampleTemplate()
 			Breaking.Point()
 			Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain
+		sleep 400
+			Breaking.Point()
+		send, {enter}
+		sleep 400
+		winwaitactive, NuGenesis LMS - \\Remote,,5
+			If !ErrorLevel
+				MouseMove, %premx%, %premy%, 0
+				; click
+		Breaking.Point()
 		return
 	}
 
@@ -1752,6 +1767,11 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		 LMSclick.EditSampleTemplate()
 		Breaking.Point()
 			Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
+					sleep 400
+		winwaitactive, NuGenesis LMS - \\Remote,,5
+			If !ErrorLevel
+				MouseMove, %premx%, %premy%, 0
+				; click
 		return
 	}
 
@@ -1779,6 +1799,11 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			sleep 300
 			Breaking.Point()
 		Sendinput,{tab}{delete 4}%Product%{enter}
+		sleep 400
+		winwaitactive, NuGenesis LMS - \\Remote,,5
+			If !ErrorLevel
+				MouseMove, %premx%, %premy%, 0
+				; click
 		return
 		}
 	Edit_Analytical(){
@@ -1816,7 +1841,13 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			Breaking.Point()
 		 LMSclick.EditSampleTemplate()
 			sleep 300
+			Breaking.Point()
 		Sendinput,{tab}{delete 4}%Product%{enter}
+		sleep 400
+		winwaitactive, NuGenesis LMS - \\Remote,,5
+			If !ErrorLevel
+				MouseMove, %premx%, %premy%, 0
+				; click
 		return
 	}
 

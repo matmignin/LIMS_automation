@@ -77,8 +77,8 @@ VQuest_Start:
     Blank:=" `n `n  `t `t `n`t "
     Currentwindow:=A
     IfwinExist, ahk_exe WFICA32.EXE
-    if winexist("ahk_exe WFICA32.EXE")
       LMS.Orient()
+    if winexist("Mats LMS Workbook.xlsb - Excel") && ExcelConnect
       Excel.Connect(0)
     GuiControl, +redraw, varbar
     if A_Debuggername

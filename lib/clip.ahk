@@ -329,29 +329,44 @@ Regex(Category:=""){
       FloVar(0,2000,16)
 
       sleep 20
-      Regexmatch(HayStack, "i)(Analytical \(In Process\)|\bI, Analytical\b|\bIn Process, Analytical\b)", cAnalytical)
-      Regexmatch(HayStack, "i)((?!\bFinished, )Micro\b|(?!\bF, )Micro\b|\bMicro(?= \(Finished\))|\bMicro(?= Lab\b))",cMicro)
-      Regexmatch(HayStack, "i)(\bI, Retain\b|\bIn Process, Retain\b|\bRetain \(In)", cRetain)
-      Regexmatch(HayStack, "i)(\bI, Physical\b|\bPhysical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
-      Regexmatch(HayStack, "i)(\bCT, Physical\b|Coated, Physical\b|\bCoated, Physical\b|Physical \(Coated\)", cCTPhysical)
-      Regexmatch(HayStack, "i)(\bCT, Retain\|Coated, Retain\b|Retain \(Coated\))", cCTRetain)
-      Sleep      20
-      If cAnalytical
-        Department:="Analytical"
-      If cMicro
-        Department:="Micro"
-      If cRetain
-        Department:="Retain"
-      If cCTRetain
-        Department:="Retain (Coated)"
-      If cPhysical
-        Department:="Physical"
-      If cCTPhysical
-        Department:="Physical (Coated)"
-  return
+
 
 
   }
+Department(DepartmentInput:=""){
+  global Department
+      Department:=
+     if !DepartmentInput
+      DepartmentHaystack:=Clipboard
+    else
+      DepartmentHaystack:=DepartmentInput
+      sleep 100
+      ; Regexmatch(DepartmentHaystack, "i)(Analytical \(In Process\)|I, Analytical|In Process, Analytical)", Analytical)
+      ; Regexmatch(DepartmentHaystack, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
+      Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
+      Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
+      Regexmatch(DepartmentHaystack, "CT,\sPhysical", ctPhysical)
+      Regexmatch(DepartmentHaystack, "CT,\sRetain", ctRetain)
+      Sleep      20
+      If Micro
+        Department:="Micro"
+      else If Retain
+        Department:="Retain"
+      else If ctRetain
+        Department:="ctRetain"
+      else If Physical
+        Department:="Physical"
+      else If ctPhysical
+        Department:="ctPhysical"
+      ; else If Analytical
+        ; Department:="Analytical"
+      else
+        msgbox % "`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical
+      ; sleep 300
+      ; tt(Department)
+  return %Department%
+}
 
 IfNothingSelected(action){
   global

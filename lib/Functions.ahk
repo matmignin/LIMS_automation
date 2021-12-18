@@ -279,7 +279,7 @@ Fade(FadeAmount:=90){
 
 Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
   global
-traytip, ,%Clipboard%
+; traytip, ,%Clipboard%
 	sleep 20
 ; try {
   ; gui, Popup:destroy ;:

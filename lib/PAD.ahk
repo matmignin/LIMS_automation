@@ -148,6 +148,8 @@ clipCheckIfEmpty(){
 				menu.LMS()
 			else if winactive("Composition - \\Remote")
 				ProductTab.Table()
+			else If winactive("Select methods tests - \\Remote")
+				SpecTab.Table()
 			else if winactive("Results Definition - \\Remote")
 				sendinput, {Blind}{ctrldown}{click}{ctrlup}
 			else if winactive("Edit Formulation - \\Remote")
