@@ -19,6 +19,13 @@ Lbutton & Space::
 
 
 _MouseIsOver:
+	#if mouseisover("ahk_exe Code.exe")
+		mbutton::controlsend,,{shiftdown}{F9}{shiftup},ahk_exe Code.exe
+		^f::
+		winactivate, ahk_exe Code.exe
+		controlsend,,^{f},ahk_exe Code.exe
+		return
+		;Space::Send, {lwin down}d{lwin up}
 	#if mouseisover("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
 		mbutton::
 		F15::menu.TaskBar()
@@ -39,13 +46,13 @@ _MouseIsOver:
 
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		;^Wheeldown::Blockrepeat(500) clip()
-		Numlock::
-			If !winactive("ahk_exe OUTLOOK.EXE")
-			click
-			3tap()
-			winactivate, NuGenesis LMS - \\Remote
-			LMS.Searchbar(clipboard,"{enter}")
-			return
+		; Numlock::
+		; 	If !winactive("ahk_exe OUTLOOK.EXE")
+		; 	click
+		; 	3tap()
+		; 	winactivate, NuGenesis LMS - \\Remote
+		; 	LMS.Searchbar(clipboard,"{enter}")
+		; 	return
 		F15::
 		Mbutton::
 			If !winactive("ahk_exe OUTLOOK.EXE")
@@ -55,7 +62,7 @@ _MouseIsOver:
 	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 		F7::LMS.SearchBar(Batch,"{enter}")
 		F6::LMS.SearchBar(Product,"{enter}")
-		Numlock::4tap()
+		; Numlock::4tap()
 		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
 		; Wheeldown::LMS.Scrolldown()
@@ -101,7 +108,7 @@ clipCheckIfEmpty(){
 					clk(67, 754) ;edit results
 				else if (Tab="Samples"){
 					; blockinput, on
-					setwindelay, 400
+					; setwindelay, 400
 					send, {click 124, 294} ;assign Requests
 					sleep 500
 					if !winactive("Edit request - \\Remote")
@@ -112,7 +119,7 @@ clipCheckIfEmpty(){
 						sleep 500
 					winactivate, Select tests for request: R
 						send, {click, 31, 102}
-					setwindelay, 100
+					; setwindelay, 100
 					; blockinput, off
 				return
 				}
@@ -183,7 +190,9 @@ clipCheckIfEmpty(){
 
 	3Right(){
 		global
-		If winactive("NuGenesis LMS - \\Remote")
+		if mouseisover("Mats LMS Workbook.xlsb - Excel")
+			excel.nextsheet()
+		else If winactive("NuGenesis LMS - \\Remote")
 			LMS.SearchBar(Batch,"{enter}")
 		else If winactive("Result Entry - \\Remote")
 			WorkTab.ChangeTestResults()
@@ -214,8 +223,10 @@ clipCheckIfEmpty(){
 
 	3left(){
 			global
-		If winactive("NuGenesis LMS - \\Remote")
-				LMS.SearchBar(Product,"{enter}")
+		if mouseisover("Mats LMS Workbook.xlsb - Excel")
+			excel.prevsheet()
+		else if winactive("NuGenesis LMS - \\Remote")
+				LMS.SearchBar(Product,"{enter}",0)
 		else If winactive("Select methods tests - \\Remote")
 			Send, {esc}
 		else If winactive("Composition - \\Remote")
@@ -289,66 +300,71 @@ clipCheckIfEmpty(){
 ;;	_____4Fingers
 	4tap(){
 		global
-		If winactive("NuGenesis LMS - \\Remote") {
-			LMS.Detecttab()
-			if (Tab="Requests") {
-					if Mode("Entering_Rotations") {
-						MouseGetPos, mx, mY
-						send, {click 2}
-						sleep 300
-							if !winactive("Edit test (Field Configuration:")
-								winactivate
-							WorkTab.AddTestDescription("(on sample log)")
+		if winactive("ahk_exe WFICA32.EXE"){
+			If winactive("NuGenesis LMS - \\Remote") {
+				LMS.Detecttab()
+				if (Tab="Requests") {
+						if Mode("Entering_Rotations") {
+							MouseGetPos, mx, mY
+							send, {click 2}
 							sleep 300
-							if winactive("NuGenesis LMS - \\Remote")
-								mousemove, %mx%, %My% ,0
-							return
+								if !winactive("Edit test (Field Configuration:")
+									winactivate
+								WorkTab.AddTestDescription("(on sample log)")
+								sleep 300
+								if winactive("NuGenesis LMS - \\Remote")
+									mousemove, %mx%, %My% ,0
+								return
+						}
+						else
+							clk(68, 630) ;enter results
+						return
 					}
-					else
-						clk(68, 630) ;enter results
+					else If (tab:="Samples")
+						menu.Setstatus()
+				else if (Tab:="Products") {
+						clk(86, 443) ;edit composition
+					Return
+					}
+				else if (Tab="Specs") {
+						if Mode("Entering_Rotations")
+							menu.Products()
+						else
+							clk(67, 754) ;edit results
 					return
-				}
-				else If (tab:="Samples")
-					menu.Setstatus()
-			else if (Tab:="Products") {
-					clk(86, 443) ;edit composition
-				Return
-				}
-			else if (Tab="Specs") {
-					if Mode("Entering_Rotations")
-						menu.Products()
-					else
-						clk(67, 754) ;edit results
-				return
-				; click
-				; Return
-					; menu.lms()
-				}
-			else
-				Menu.LMS()
-		}
-
-		else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
-			ProductTab.AddCOASpace()
-		else if winactive("Mats LMS Workbook.xlsb - Excel")
-			menu.SetStatus()
-
-
-		else if winactive("Edit test (Field Configuration: ")
-			send % "{click 384, 222}{tab 2}{end 2}(on sample log){Click 334, 618}"
-			; AddSampleLog(count)
-			; LMS.AddSampleLog(1)
-		else 	if winactive("ahk_exe OUTLOOK.EXE") {
+					; click
+					; Return
+						; menu.lms()
+					}
+				else
+					Menu.LMS()
+			}
+			else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
+				ProductTab.AddCOASpace()
+			else if winactive("Edit test (Field Configuration: ")
+				send % "{click 384, 222}{tab 2}{end 2}(on sample log){Click 334, 618}"
+				; AddSampleLog(count)
+				; LMS.AddSampleLog(1)
+			else if winactive("PDF Preview - \\Remote")
+				Send, {altdown}{F4}{altup}
+			}
+		if winactive("Mats LMS Workbook.xlsb - Excel")
+				menu.SetStatus()
+		if winactive("ahk_exe OUTLOOK.EXE") {
 			clipCheckIfEmpty()
 			clip()
-			return
 		}
-		else if winactive("PDF Preview - \\Remote")
-			Send, {altdown}{F4}{altup}
+		else
+			return
 	}
 
 	4up(){
 		global
+			if Mode("Entering_Rotations") {
+					excel.connect()
+					winactivate, Mats LMS Workbook.xlsb - Excel
+				return
+			}
 		If winactive("NuGenesis LMS - \\Remote") {
 			LMS.Detecttab()
 			if (Tab="Requests") || (Tab:="Samples")
@@ -382,7 +398,7 @@ clipCheckIfEmpty(){
 		global
 			If winactive("ahk_exe Code.exe")
 				Sendinput, ^{d} ;go to Definition
-			if Mode("Editing_Batches") {
+			if Mode("Entering_Rotations") {
 					excel.nextsheet()
 				return
 			}
@@ -422,7 +438,7 @@ clipCheckIfEmpty(){
 		global
 			If winactive("ahk_exe Code.exe")
 				Sendinput, !^{d} ;go to reference
-			if Mode("Editing_Batches") {
+			if Mode("Entering_Rotations") {
 					excel.Prevsheet()
 				return
 			}

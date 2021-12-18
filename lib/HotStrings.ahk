@@ -153,6 +153,7 @@ _windowNames:
 	:*:nu`;::NuGenesis LMS - \\Remote
 	:*:main`;::NuGenesis LMS - \\Remote
 	:*:lmswin`;::ahk_exe WFICA32.EXE
+	:*:lms`;::ahk_exe WFICA32.EXE
 	:*:vs`;::ahk_exe Code.exe
 	:*:code`;::ahk_exe Code.exe
 	:*:remote`;::ahk_exe mstsc.exe
@@ -171,14 +172,8 @@ _windowNames:
 	return
 
 	:*:#ifwalms`;::
-		winGetTitle, winTitle, ahk_exe WFICA32.EXE
-		; winactivate, ahk_exe WFICA32.EXE
-		; windowInfo()
-		; winactivate, ahk_exe Code.exe
-		; send % wintitle
-		sendraw, #if winactive("
-		sendinput, %winTitle%
-		sendraw, ")
+		sendraw, #if MouseIsOver("")
+		sendinput, {left 2}
 		return
 	:*:ifwalms`;::
 		winGetTitle, winTitle, ahk_exe WFICA32.EXE
@@ -200,14 +195,14 @@ _windowNames:
 		sendinput, %winTitle%
 		sendraw, ")
 		return
-	:*:lms`;::
-		winGetTitle, winTitle, ahk_exe WFICA32.EXE
-		; winactivate, ahk_exe WFICA32.EXE
-		; windowInfo()
-		; winactivate, ahk_exe Code.exe
-		; send % wintitle
-		sendinput, %winTitle%
-		return
+	; :*:lms`;::
+	; 	winGetTitle, winTitle, ahk_exe WFICA32.EXE
+	; 	; winactivate, ahk_exe WFICA32.EXE
+	; 	; windowInfo()
+	; 	; winactivate, ahk_exe Code.exe
+	; 	; send % wintitle
+	; 	sendinput, %winTitle%
+	; 	return
 	:*:clk`;::
 		if !MousePosition
 			iniread MousePosition, Settings.ini, SavedVariables, windowMousePosition

@@ -4,17 +4,13 @@ return
 #ifwinactive,
 F22::return
 F24::return
-Scrolllock::Scrolllock
+; Scrolllock::Scrolllock
 Ins::flovar()
 	Tab & lbutton::
 		send, {ctrldown}
 		click left
 		send, {ctrlup}
 		return
-	Tab & wheeldown::sendinput, ^{down}
-	Tab & wheelup::sendinput, ^{up}
-	Tab & wheelleft::^[
-	Tab & wheelright::^]
 	<^1::                 return
 	<^2::                 return ;,{ctrldown}{2}{ctrlup}
 	<^3::                 return ;Send,{ctrldown}{0}{ctrlup}
@@ -167,18 +163,26 @@ rwin::return
 <#tab::										GetAllProducts(A_tab)
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
 ; Numlock::								  4tap()
+;;	___Lbuton:
+Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
+Lbutton & F20::          	clip("OCR") ;Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
+F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
+F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
 Rbutton UP::     	   			2Tap()
+Rbutton & F6::
 Rbutton & wheelleft::     Send % blockRepeat(50) "{Delete}"
+Rbutton & F7::
 Rbutton & wheelright::    Send % blockRepeat(50) "{backspace}"
-Rbutton & wheelup::
-Send % Blockrepeat(800) "^{c}" pop(Clipboard,,1000,"window")
-sleep 20
-; pop(Clipboard,,1000,"window")
-return
 Rbutton & wheeldown::     Send, ^{v}
+Rbutton & wheelup::			  sendinput, ^c
+	Tab & wheeldown::sendinput, ^{down}
+	Tab & wheelup::sendinput, ^{up}
+	Tab & wheelleft::^[
+	Tab & wheelright::^]
 Lbutton & Rbutton::       send, ^{x}
 ; Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
 
@@ -186,15 +190,9 @@ rbutton & Appskey::				2Tap()
 rshift & Appskey::				return
 F19 & \:: 								Sendpassword()
 ^+7::
-;;	___Lbuton:
-Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
-Lbutton & F20::          	clip("OCR") ;Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 
 F20 & /::        	 				clip("OCR")
 
-F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
 
 
 

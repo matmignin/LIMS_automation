@@ -1,5 +1,7 @@
 ﻿
 VQuest_Start:
+
+  RegexProduct:="i)(?<=\w{3})?[abdefghijkl]\d{3}"
     #SingleInstance,Force
     #Persistent
     ;#ErrorStdOut
@@ -19,24 +21,8 @@ VQuest_Start:
     #MaxThreadsBuffer, On
     #InstallKeybdHook
     #InstallMouseHook
-    #HotkeyModifierTimeout 0
+    #HotkeyModifierTimeout
     #maxthreadsperhotkey, 1
-    ;SetBatchLines, -1
-    ;  SetBatchLines, 10ms
-    ; If (Iteration = -1){
-    ;   SetControlDelay, -1
-    ;   setkeydelay, -1
-    ;   setMousedelay, -1
-    ;   setwindelay, -1
-    ;   SetDefaultMouseSpeed, 0
-    ; }
-    ; else {
-    ;   SetControlDelay, 1
-    ;   SetKeyDelay, 1, 0.25
-    ;   SetMouseDelay, 1
-    ;   setwindelay, 250
-    ;   SetDefaultMouseSpeed, 1
-    ; }
     SetTitleMatchMode, 2
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
@@ -44,7 +30,6 @@ VQuest_Start:
     FormatTime, The_Day,, MMMM d
     FormatTime, The_Hour,, htt
     FormatTime, The_Time,, hh:mm
-    n=1
     SetNumLockState, on
     SetscrolllockState, off
     SetNumlockState Alwayson
@@ -67,17 +52,27 @@ VQuest_Start:
     Menu, tray, NoStandard
     ; Menu, tray, Click,
     Menu, Tray, Add, KeyHistory, KeyHistory
+    Menu, Tray, Add, listlines, listlines
     Menu, Tray, Add, windowSpy, windowSpy
+    Menu, Tray, Add, Edit_Batches, Edit_Batches
+    Menu, Tray, Add, Entering_Rotations, Entering_Rotations
+    Menu, Tray, Add, TempCode, TempCode
+    if Mode=Edit_Batches
+      Menu, Tray, Check, Edit_Batches
+    else if Mode=Entering_Rotations
+      Menu, Tray, Check, Entering_Rotations
+    else if Mode=TempCode
+      Menu, Tray, Check, TempCode
      ShowVarBar:=CreateMenu("showVarbar")
     HideShowSampleID:=CreateMenu("ShowSampleID")
-    ; ExcelConnect:=CreateMenu("ExcelConnect")
+    ;ExcelConnect:=CreateMenu("")
     ; DebuggingScript:=CreateMenu("DebuggingScript")
     ; HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
      varbar.Show()
     GuiControl, -redraw, varbar
-    try Run, cl3.Ahk, lib\CL3
+    ; try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Blank:=" `n `n  `t `t `n`t "
     Currentwindow:=A
@@ -89,8 +84,8 @@ VQuest_Start:
     if A_Debuggername
       try Run, Vim.Ahk, lib\
     ; else
-      ; settimer, ActiveCheck , %CheckTime%
-    OnClipboardChange("clipChange")
+    ; settimer, ActiveCheck , %CheckTime%
+  OnClipboardChange("clipChange")
   #include <Toggles>
   #Include <Temp>
   #include <VIM>
@@ -115,35 +110,37 @@ return
 
 ;__________________continuously runing sub_________________________________________________
 activeCheck:
-  If winactive("ahk_exe Sketchup.exe")
-    Suspend, On
-  else
-    Suspend, Off
-    ; Varbar.Hoveraction()
-  ; If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=90 ){
-  ;   VarBar_H:=90
-  ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-  ; }
-  ; If !(MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H!=32 ){
-  ;   VarBar_H:=32
-  ;   winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-  ; }
-
-    If winactive("Result Entry - \\Remote") || winactive("Register new samples - \\Remote")
-      varbar.FloatAtopwindow()
-    else if winactive("Error - \\Remote") {
-      ControlSend,, {enter}, Error - \\Remote
-      sleep 200
-      if winExist("Register new samples - \\Remote"){
-        winactivate,
-				Send, {click 180, 103,2}%Product%{enter}
-			}
-    }
-    else if winactive("Information - \\Remote")
-      send, {enter}
+  If winactive("Result Entry - \\Remote") || winactive("Register new samples - \\Remote")
+    varbar.FloatAtopwindow()
+  if winactive("Error - \\Remote") {
+    ControlSend,, {enter}, Error - \\Remote
+    sleep 200
+    if winExist("Register new samples - \\Remote"){
+      winactivate,
+			Send, {click 180, 103,2}%Product%{enter}
+		}
+  }
+  if winactive("Information - \\Remote")
+    send, {enter}
 return
 
 
-
+Entering_Rotations:
+  Mode:="Entering_Rotations"
+  Menu, Tray, Check, Entering_Rotations
+  Menu, Tray, unCheck, Edit_Batches
+  varbar.saveVariables()
+  return
+Edit_Batches:
+  Mode:="Edit_Batches"
+  Menu, Tray, unCheck, Entering_Rotations
+  Menu, Tray, Check, Edit_Batches
+  varbar.saveVariables()
+  return
+TempCode:
+  Mode:="TempCode"
+  Menu, Tray, Check, TempCode
+  varbar.saveVariables()
+  return
 
 

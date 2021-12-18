@@ -14,6 +14,7 @@ OpenApps:
   ; !v::OpenApp.vsCode()
   <#v::OpenApp.vsCode()
   ^F1::Varbar.reset()
+  !v::run, C:\Users\mmignin\Documents\VQuest\Example Code\CodeQuickTester.ahk
   #^v::Run, C:\Users\mmignin\Documents\VQuest\
   #^+s::Run, C:\Users\mmignin\OneDrive - Vitaquest International\Screenshots
   #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
@@ -42,12 +43,13 @@ sleep 100
 send, %A_ThisMenuItem%
 return
 
-  ; #e::Send,{Lwindown}{e}{lwinup}
+  #e::return ; Send,{Lwindown}{e}{lwinup}
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
-  !d::DebugVars()
+  !d::OpenApp.Touchpadsettings()
+
   ; F20 & p::
   ; #p::OpenApp.YourPhone()
   f20 & n::
@@ -108,6 +110,10 @@ Outlook(){
  return
  }
 	Firefox(){
+  if winactive("ahk_exe firefox.exe") {
+  send, {ctrldown}{t}{ctrlup}
+  return
+ }
  ifwinnotexist, ahk_exe firefox.exe
   run, firefox.exe, "C:\Program Files\Mozilla Firefox\"
  else
@@ -154,6 +160,16 @@ Outlook(){
  }
  Display(){
   run, ms-settings:display
+ return
+ }
+ Touchpadsettings(){
+  run, ms-settings:devices-touchpad
+  sleep 400
+  send, {tab 4}
+  sleep 100
+  send, {space}
+  sleep 400
+  send, !{f4}
  return
  }
 

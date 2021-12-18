@@ -5,7 +5,7 @@ Purpose           : Load & Save 10 quick paste texts
 Version           : 1.4
 
 10 Slots
-Hotkeys: RCTRL-[1-0] 
+Hotkeys: RCTRL-[1-0]
 
 History:
 - 1.4 Attempt to prevent XMLRoot error - https://github.com/hi5/CL3/issues/15
@@ -115,16 +115,16 @@ Return
 		return
 
 #if
-^1::
-^2::
-^3::
-^4::
-^5::
-^6::
-^7::
-^8::
-^9::
-^0::
+<^1::
+<^2::
+<^3::
+<^4::
+<^5::
+<^6::
+<^7::
+<^8::
+<^9::
+<^0::
 hk_slotpaste:
 OnClipboardChange("FuncOnClipboardChange", 0)
 Clipboard:=Slots[SubStr(A_thisHotkey,0)]
@@ -200,7 +200,7 @@ If (XA_Load(A_ScriptDir "\ClipData\Slots\" A_ThisMenuItem) = 1) ; the name of th
 	 Loop, 10
 		Slots[Index-1]:="Slot" A_Index-1 "a"
 	}
-Index:=0	
+Index:=0
 Loop, 10
 	{
 	 GuiControl,Slots:, Slot%Index%, % Slots[Index]

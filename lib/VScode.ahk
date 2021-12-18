@@ -1,10 +1,11 @@
 return
 #Ifwinactive,ahk_exe Code.exe  ;;___VSCODE___
 	; Mbutton::sendinput, +{F9}
+	numlock::#\
+	^r::!r
 	<^h::[
 	<^l::]
 	F17::Enter
-	Numlock::ReloadScript()
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
@@ -26,7 +27,7 @@ return
 ;;	---modifiers---
 	$lwin::return
 		Lctrl & Appskey::         return
-	RShift::										sendinput,+!{i}
+;	RShift::										sendinput,+!{i}
 	Rshift & appsKey::   			Return
 	Lshift & appsKey::   			Return
 	; Lwin & Appskey::          return
@@ -41,9 +42,11 @@ return
 	; F13 & s::Sendinput,{shiftdown}{altdown}{`;}{altup}{shiftup}
 ;send, {click}^{v} ;{F19}
 	; F13 & s::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
-	F13 & Lalt::sendinput, ^{click}
-	F13 & tab::								Sendinput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
+	F13 & Lalt::FindMatchingwindows()
+	; F13 & tab::								Sendinput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
 	F13 & `::sendinput, {ctrldown}{F8}{ctrlup}
+	F13 & s up::sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
+F13 & 5::send, `%
 	F13::F13
 ;;		---F19 and F20---
 	F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%

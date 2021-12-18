@@ -109,10 +109,10 @@ Return
 
 
 
-#If Mouse_IsOver("CL3ClipChain")
+#If MouseIsOver("CL3ClipChain")
 	Rbutton::			        gosub, clipchainmenu
 	Backspace::			     gosub, ClipChainDel
-#If Mouse_IsOver("cl3.ahk ahk_exe AutoHotkey.exe")
+#If MouseIsOver("cl3.ahk ahk_exe AutoHotkey.exe")
 	+Enter::
 	;mbutton::
 	;F19::
@@ -678,7 +678,7 @@ ClipChainActive()
 		Return false
 }
 
-Mouse_IsOver(WinTitle){
+MouseIsOver(WinTitle){
 	Global
 	MouseGetPos,,, Win
 	Return WinExist(WinTitle . " ahk_id " . Win)

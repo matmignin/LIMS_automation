@@ -8,6 +8,7 @@ Menu, Tray, Default, Edit
 return
 \::Keyhistory
 F12::Edit
+Capslock::exit
 ^r::
 send, ^s
 sleep 200
@@ -15,6 +16,8 @@ reload
 return
 
 
+
+F13::numlock
 
 
 APpskey::ToolTip Press < or > to cycle through windows.

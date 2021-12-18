@@ -1,7 +1,7 @@
 
 
 Clip(input=0,Wait:="0.45"){
-  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department
+  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
   ; ClipboardSaved:=Clipboardall
   If Input contains OCR
   {
@@ -54,14 +54,14 @@ clipChange(type){
     if A_PriorKey = c
       ; tt(clipboard,200,100,-1500,,,"R")
       ; Pop(Clipboard,500)
-      FloVar(Clipboard,3000,13)
+      FloVar(Clipboard,3000,14)
       ; Pop(clipboard,,400) ;100,-1500,,150,"R")
     else if A_PriorKey = x
       ; Pop(Clipboard,500)
-      FloVar(Clipboard,3000,13)
+      FloVar(Clipboard,3000,14)
     else if A_PriorKey = Space
       ; Pop(Clipboard,500)
-      FloVar(Clipboard,2500,13)
+      FloVar(Clipboard,2500,14)
       ; tt(clipboard,200,100,-1500,,150,"R")
     if A_PriorKey = b
       return
@@ -71,24 +71,29 @@ return
 
 
 Class Clip {
-		EditBox(){
+
+		EditBox(Input:=""){
     Global EditBox
 		try Gui, EditBox:Destroy
-		result := Clipboard
+    if !Input
+  		Result := Clipboard
+    else
+      result := Text
 		Gui EditBox: +AlwaysOnTop +Toolwindow +owner +HwndGUIID
 			GUI, EditBox:Font, s12 cBlack, Consolas
 			Gui, EditBox:Add, Edit, +Resize vEditBox , % Result
 			gui, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
-			Gui, EditBox:Show,, Clipboard
+			Gui, EditBox:Show,, Result
       winSet, Transparent, 100, EditBox
 			return
 			EditBoxGuiClose:
 			EditBoxGuiEscape:
 			EditBoxButtonOK:
 			Gui, EditBox:submit
-			clipboard:=EditBox
+      if !Text
+  			clipboard:=EditBox
       sleep 50
-      TT(Clipboard,500,,,,200)
+    TT(Result,500,,,,200)
 			return
 		}
 
@@ -133,7 +138,7 @@ Parse(Value:=""){
       ParsedClipboard:=Value
     loop, parse, ParsedClipboard, "`r`n"
       {
-        RegexMatch(A_loopField, "i)[abdefghijk]\d{3}\b", VarProduct)
+        RegexMatch(A_loopField, RegexProduct,VarProduct) ;[abdefghijk]\d{3}\b", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
         RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
         RegExMatch(A_loopField, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
@@ -192,12 +197,12 @@ Parse(Value:=""){
 
 
 SingleRegex(){
-    global Batch, Product, lot, coated, sampleid, Products, CurrentCodes, ConnectedProducts
+    global Batch, Product, lot, coated, sampleid, Products, CurrentCodes, ConnectedProducts, regexproduct
     ConnectedProducts:=[]
     ConnectedProduct:=
       Haystack:=Clipboard
     sleep      20
-      RegExMatch(HayStack, "i)[abdefghijk]\d{3}\b", cProduct)
+      RegExMatch(HayStack, regexProduct,cProduct) ; "i)[abdefghijk]\d{3}\b", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
@@ -263,13 +268,13 @@ SingleRegex(){
     }
 
 Regex(Category:=""){
-    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, CurrentCodes
+    global Batch, Batch0, Product, Product0, Product1, Product2, Product3, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain, products, Department, CurrentCodes, RegexProduct
     if !Category
       Haystack:=Clipboard
     else
       Haystack:=Category
     sleep      20
-      RegExMatch(HayStack, "i)[abdefghijkl]\d{3}", cProduct)
+      RegExMatch(HayStack, RegexProduct,cProduct)  ;"i)[abdefghijkl]\d{3}", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
       RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
       RegExMatch(HayStack, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)

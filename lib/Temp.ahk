@@ -1,109 +1,77 @@
-ExampleString:=
-(
-"K741 107-0431 0278H1
-H624 400657
-B324 105-1172 0656H1
-J929 910-0128 0623I1
-J837 109-0445 0670I1
-H259 109-0359 0555I1 Ct#109-0744
-B086 108-0752 Ct#109-0635
-B086 108-0752 Bulk Ct#109-0635
-K741 107-0431 0278H1
-H624 400657
-B324 105-1172 0656H1
-J929 910-0128 0623I1
-J837 109-0445 0670I1
-J837 109-0445 0670I1
-J837 109-0445 7777A7
-J837 109-0445
-H259 109-0359 0555I1 Ct#109-0744
-B086 108-0752 Ct#109-0635
-B086 108-0752 Bulk Ct#109-0635"
-)
 
 
 
 
+;^(?<Customer>[\w ]*)\s(?!(\s|# ?)?(\d{6}))?.*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?<PillType>(Capsule|Tablet)(?: size:)) (?<PillSize>[\w ]*).*(?:Serving Size: )(?<ServingSize>\d+) (?<ServingType>[\w ]+).+(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)(?=\sDaily Value)
 
-/*
-Find Formulation code
-"i)(?:(Final label copy # )(\w{2}\d))?(?<Product>([abdefghijkl]\d{3}))(\d{3})"
-formula plus serving size
-i)(?:(Final label copy # )(\w{2}\d))?(?<Product>([abdefghijkl]\d{3}))(\d{3}).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))
-
-customer, product, pill size, and serving size
-"i)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))"
-
-i)(((\d)%$)|(\Q*\E)) ;replacement string for ingredients
-
-
-	Vitamin A (as natural beta-carotene from Blakeslea trispora)	1,000 mcg	111%
-	Vitamin C (as ascorbic acid and from acerola fruit extract)	100 mg	111%
-	Vitamin D (as vegan cholecalciferol) (VegaDELight™)	22 mcg (880 IU)	110%
-	Vitamin E (as Sunvitol™ d-alpha-tocopherol from sunflower)	16.5 mg	110%
-	Thiamin (as thiamin HCl)	1.3 mg	108%
-	Riboflavin	1.4 mg	108%
-	Niacin (as niacinamide)	17.6 mg	110%
-	Vitamin B6 (as pyridoxal-5-phosphate)	1.9 mg	112%
-	Folate (as calcium L-5-methyltetrahydrofolate)	400 mcg DFE	100%
-	Vitamin B12 (as methylcobalamin)	2.6 mcg	108%
-	Biotin	33 mcg	110%
-	Pantothenic acid (as D-calcium pantothenate)	5.5 mg	110%
-	Calcium (from Aquamin™ mineralized red algae and as dicalcium phosphate)	50 mg	4%
-	Phosphorus (as dicalcium phosphate)	8 mg	<2%
-	Iodine (from kelp)	100 mcg	67%
-	Magnesium (from Aquamin™ MG seawater magnesium and from Aquamin™ mineralized red algae)	50 mg	12%
-	Zinc (as zinc bisglycinate chelate) (TRAACS™)	10 mg	91%
-	Selenium (as selenium glycinate complex) 	50 mcg	91%
-	Copper (as copper citrate)	0.5 mg	56%
-	Manganese (as manganese sulfate)	1.5 mg	65%
-	Chromium (as chromium polynicotinate)	30 mcg	86%
-	Molybdenum (as molybdenum amino acid chelate)	40 mcg	89%
-	Vitamin K2 (as menaquinone-7) (K2Vital®)	30 mcg	*
-	Organic blueberry powder (fruit)	10 mg	*
-	Organic carrot powder (root)	10 mg	*
-	Organic kale powder (leaf)	10 mg	*
-	Organic pomegranate powder (fruit)	10 mg	*
-	Organic raspberry powder (fruit)	10 mg	*
-	Organic spinach powder (leaf)	10 mg	*
-
-https://regex101.com/r/LwbVmD/1 latest page of regex
-
-all but product nam regex
-^(?<Customer>[\w* ]*)(?:.?).*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?<PillType>(Capsule|Tablet)(?: size:)) (?<PillSize>[\w ]*).*(?:Serving Size: )(?<ServingSize>\d+) (?<ServingType>[\w ]+).+(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)(?=\sDaily Value)
-
- */
  #If A_debuggerName
   Media_Prev::						F6 ;MakeTransparent()
 	Media_Play_Pause::			Numlock
 	Media_Next::						F7
+#if
+#if
 
-
-#If Mode=="TempCode"
-  F20::
-  CopyWordDoc:
-  F13 & t::
-  ; clipboard:=
-  ; send, ^c
-  ; clipwait, 4
-  ; sleep 400
-  doc_path := "C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy\label K883MA (NEW).docx" ; enter path to the Word Doc
-oDoc := ComObjGet(doc_path) ; access Word Doc
-; clipboard:=
-oDoc.range.copy() ; copy Doc contents
-; clipwait, 3
-sleep 300
-oDoc.close()
-WordText:=Clipboard
-; return
-  ; F19::matching_Batch("B086")
-  ; F13 & t::
-  ; RegExMatch(WordText, "is)(?=% Daily Value)(?<Ingredients>(.*)(?<=Percent Daily Values)")
-RegExMatch(WordText, "is)(?<Customer>([\w\s][^#\d{6}])*).*(?:Final Label Copy.*)(?<Product>([abdefghijkl]\d{3}))(\d{3}).*(?:(Capsule size|Tablet size)+:) (?<PillSize>((#)?(\w+.)+[^\n])).*Serving.Size:.(?<ServingSize>([\d\s\w]*\n))", var)
-; sleep 200
-msgbox % " customer: `t" varCustomer "`n product: `t " varProduct "`n pillsize: `t" varPillsize "`n servingsize: `t" varServingSize "`n`n" WordText
-; MsgBox, %WordText%
+; #If Mode("TempCode")
+TEST_1: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+CopyNewestFile("K880")
 return
+
+
+TEST_2: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+  tProduct:="K796"
+  tRegexSearchPattern:="^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))(?:.*)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})(?:.*)(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))(?<Name>[\w ]*(?!Dietary Supplement))(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*)"
+  tRegexReplacePattern:="i)(((\d)%$)|(\Q*\E))"
+  ;WordText:=
+  sleep 300
+  clip.EditBox(CopyWordDoc(tProduct,tRegexSearchPattern,tRegexReplacePattern))
+  ; send, ^v
+  return
+
+
+; CopySourcePattern:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
+
+CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label Copy Final\K000 - K999"){
+  Loop, Files, %copySourcePattern%\label %ProductToSearch%*.docx
+  {
+      copy_it := false
+      if not FileExist(CopyDest "\" A_LoopFileName)        ; Always copy if target file doesn't yet exist.
+          copy_it := true
+      else
+      {
+          FileGetTime, time, %CopyDest%\%A_LoopFileName%
+          EnvSub, time, %A_LoopFileTimeModified%, seconds  ; Subtract the source file's time from the destination's.
+          if (time < 0)                                    ; Source file is newer than destination file.
+              copy_it := true
+      }
+      if copy_it
+      {
+          Latest_File:=A_LoopFilePath                      ; file path
+          if ErrorLevel
+            return
+      }
+  }
+      traytip, %Latest_File%
+  Return % Latest_File
+}
+
+
+
+CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
+  doc_path := CopyNewestFile(ProductToFind)                   ; search for newst file that matches Product
+    sleep 200
+  oDoc := ComObjGet(doc_path)                                   ; access Word Doc
+  clipboard:=                                                   ; empty clipboard
+  oDoc.range.copy()                                             ; copy Doc contents
+  clipwait, 1                                                   ; wait for clipboard
+    sleep 300
+  oDoc.close()                                                  ; close Word Doc
+  WordText:=Clipboard                                           ; put text into clipboard
+  RegExMatch(WordText,RegexSearchPattern,Reged)
+  sleep 200               ; Search with Regex
+  return % regexreplace(RegedIngredients, RegexReplacePattern)
+}
+
+
 #if
 
 
@@ -155,8 +123,7 @@ return
 return
 #if
 
-Test_2:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
-GetAllBatches()
+
 return
 ; Select_next_batch_in_array:
 SelectPreviousBatch(){
@@ -185,7 +152,7 @@ SelectPreviousBatch(){
 
 
 return
-Test_1:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+
 return
   ;Select_Previous_Batch_In_Array: ;Move to previous Batch in Array
     SelectNextBatch(){

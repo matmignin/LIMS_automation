@@ -216,12 +216,13 @@ PixelGetColor, PixelColor, %MX%, %MY%
 	}
 
 DoublePress(action,Secondaction:="", ToolTip:=""){
-	If (A_ThisHotkey=A_PriorHotkey && A_TimeSincePriorHotkey<300){
-		Send, % action "{shiftup}{altup}{ctrlup}{lwinup}"
+	If (A_Thishotkey=A_Priorhotkey && A_TimeSincePriorHotkey<300){
+		Send, % action ;"{shiftup}{altup}{ctrlup}{lwinup}"
 		tt(ToolTip)
+		return
 	}
 	Else
-		send % Secondaction "{shiftup}{altup}{ctrlup}{lwinup}"
+		send, % Secondaction ; "{shiftup}{altup}{ctrlup}{lwinup}"
 	Return
 	}
 
@@ -540,6 +541,9 @@ Return
 
 KeyHistory(){
   KeyHistory
+}
+Listlines(){
+  Listlines
   }
 windowSpy(){
   Run, windowSpy.ahk,C:\Program Files\AutoHotkey\

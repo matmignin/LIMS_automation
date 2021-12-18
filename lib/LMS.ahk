@@ -20,7 +20,7 @@
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		Numlock::4tap() ;LMS.COA()
+		; Numlock::4tap() ;LMS.COA()
 		mbutton::3tap()
 		F7::		  3Right()
 		F6::			  3Left()
@@ -44,16 +44,16 @@
 
 	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry
 			#MaxThreadsPerHotkey 2
-				Numlock::WorkTab.ChangeTestResults("loop")
+				\::WorkTab.ChangeTestResults("loop")
 			#MaxThreadsPerHotkey 1
-
+			; Numlock:: old use for test result loop
 
 
 
 
 	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
 	; wheelup::Mouse_click("Edit")
-		numlock::Send, % clk(712, 663) "{esc}"
+		; numlock::Send, % clk(712, 663) "{esc}"
 		space::sendinput,{ctrldown}{click}{ctrlup}
 		mbutton::Spectab.Table()
 
@@ -840,14 +840,20 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       Breaking.Point()
 
       AbsSelection:=Abs(A_DropdownCount)
+      Breaking.Point()
       if (A_DropdownCount > 0)
-      Sendinput, {tab}{home}{right %A_DropdownCount%}
+    	  Sendinput, {tab}{home}{right %A_DropdownCount%}
+      Breaking.Point()
       if (A_DropdownCount < 0)
-      Sendinput, {tab}{end}{left %AbsSelection%}
+      	Sendinput, {tab}{end}{left %AbsSelection%}
+	    Breaking.Point()
       if (A_DropdownCount = "-0")
-      Sendinput, {tab}{end}
-      if (a_DropdownCount = "")
-      this.Dropdown_Ingredient()
+      	Sendinput, {tab}{end}
+      if (a_DropdownCount = ""){
+      	this.Dropdown_Ingredient(Iteration)
+		    Breaking.Point()
+				varbar.AddIteration(0)
+			}
       Breaking.Point()
       return
       }
@@ -988,55 +994,57 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     return
     }
 
-    Dropdown_Ingredient(){
+    Dropdown_Ingredient(IterationCount:=""){
     global
       ; SetwinDelay, 350
     ; if (GeneralCount=2){
       ; Sendinput,{tab}{Home}{right 2}{right 62}
       ; return
     ; }
+		if !(IterationCount) {
     ;Menu,IngredientMenu,Add,Creatine, IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &A,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &B,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &C,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &D,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &E,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &F,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &G,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &H,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &I,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &J,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &K,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &L,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &M,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &N,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &O,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &P,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &Q,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &R,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &S,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &T,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &U,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &V,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &W,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &X,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &Y,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Generic Ingredient &Z,IngredientMenuHandler
-    ; Menu,IngredientMenu,Add,Glucosamine,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Ingredient Note 1,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Ingredient Note 2,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Ingredient Note 3,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Ingredient Note 10,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Methylsulfonylmethane (MSM),IngredientMenuHandler
-    ; Menu,IngredientMenu,Add,Molybdenum,IngredientMenuHandler
-    ;Menu,IngredientMenu,Add,PABA,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Protein,IngredientMenuHandler
-    ; Menu,IngredientMenu,Add,Quercetin Dihydrate,IngredientMenuHandler
-    ; Menu,IngredientMenu,Add,Taurine,IngredientMenuHandler
-    Menu,IngredientMenu,Add,Total Probiotic,IngredientMenuHandler
-		Menu,IngredientMenu,Add,Manual,IngredientMenuHandler
-		Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
-    Menu,IngredientMenu,Show,
+	    Menu,IngredientMenu,Add,Generic Ingredient &A,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &B,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &C,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &D,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &E,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &F,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &G,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &H,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &I,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &J,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &K,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &L,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &M,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &N,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &O,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &P,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &Q,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &R,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &S,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &T,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &U,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &V,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &W,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &X,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &Y,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Generic Ingredient &Z,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Ingredient Note 1,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Ingredient Note 2,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Ingredient Note 3,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Ingredient Note 10,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Methylsulfonylmethane (MSM),IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Protein,IngredientMenuHandler
+	    Menu,IngredientMenu,Add,Total Probiotic,IngredientMenuHandler
+			Menu,IngredientMenu,Add,Manual,IngredientMenuHandler
+			Menu,IngredientMenu,Add,STOP,IngredientMenuHandler
+	    Menu,IngredientMenu,Show,
+			return
+		}
+			else {
+				GeneralCount:=IterationCount
+				gosub, IngredientMenuHandler
+			}
     return
     }
 
@@ -1049,63 +1057,65 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
 
   IngredientMenuHandler:
+	Breaking.Point()
   ; tt(GeneralCount)
   Click 150, 73
+	Breaking.Point()
   ; if !GeneralCount
   ; clk(150, 73)
     ; GeneralCount=1
   ; tt(GeneralCount)
-  if (A_ThisMenuItem ="Generic Ingredient &A")
+  if (A_ThisMenuItem ="Generic Ingredient &A"      || GeneralCount=1)
     Sendinput,{tab}{Home}{right 8}{right 56}
-  else if (A_ThisMenuItem ="Generic Ingredient &B") || (GeneralCount=2)
+  else if (A_ThisMenuItem ="Generic Ingredient &B" || GeneralCount=2)
     Sendinput,{tab}{Home}{right 8}{right 62}
-  else if (A_ThisMenuItem ="Generic Ingredient &C") || (GeneralCount=3)
+  else if (A_ThisMenuItem ="Generic Ingredient &C" || GeneralCount=3)
     Sendinput,{tab}{Home}{right 8}{right 68}
-  else if (A_ThisMenuItem ="Generic Ingredient &D") || (GeneralCount=4)
-    Sendinput,{tab}{home}{right 6}{right 74}
-  else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount==5)
+  else if (A_ThisMenuItem ="Generic Ingredient &D" || GeneralCount=4)
+    Sendinput,{tab}{home}{right 8}{right 74}
+  else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount=5)
     Sendinput,{tab}{Home}{right 8}{right 80}
-  else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount==6)
+  else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount=6)
     Sendinput,{tab}{Home}{right 8}{right 86}
-  else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount==7)
+  else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount=7)
     Sendinput,{tab}{Home}{right 8}{right 92}
-  else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount==8)
+  else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount=8)
     Sendinput,{tab}{Home}{right 8}{right 93}
-  else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount==9)
+  else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount=9)
     Sendinput,{tab}{Home}{right 8}{right 95}
-  else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount==10)
+  else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount=10)
     Sendinput,{tab}{Home}{right 8}{right 97}
-  else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount==11)
+  else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount=11)
     Sendinput,{tab}{Home}{right 8}{right 99}
-  else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount==12)
+  else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount=12)
     Sendinput,{tab}{Home}{right 8}{right 100}
-  else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount==13)
+  else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount=13)
     Sendinput,{tab}{Home}{right 8}{right 101}
-  else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount==14)
+  else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount=14)
     Sendinput,{tab}{Home}{right 8}{right 102}
-  else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount==15)
+  else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount=15)
     Sendinput,{tab}{Home}{right 8}{right 103}
-  else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount==16)
+  else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount=16)
     Sendinput,{tab}{Home}{right 8}{right 104}
-  else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount==17)
+  else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount=17)
     Sendinput,{tab}{Home}{right 8}{right 105}
-  else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount==18)
+  else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount=18)
     Sendinput,{tab}{Home}{right 8}{right 106}
-  else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount==19)
+  else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount=19)
     Sendinput,{tab}{Home}{right 8}{right 107}
-  else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount==20)
+  else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount=20)
     Sendinput,{tab}{Home}{right 8}{right 108}
-  else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount==21)
+  else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount=21)
     Sendinput,{tab}{Home}{right 8}{right 109}
-  else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount==22)
+  else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount=22)
     Sendinput,{tab}{Home}{right 8}{right 110}
-  else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount==23)
+  else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount=23)
     Sendinput,{tab}{Home}{right 8}{right 111}
-  else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount==24)
+  else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount=24)
     Sendinput,{tab}{Home}{right 8}{right 112}
-  else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount==25)
+  else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount=25)
     Sendinput,{tab}{Home}{right 8}{right 113}
-  else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount==26)
+  else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount=26)
     Sendinput,{tab}{Home}{right 8}{right 114}
   else if (A_ThisMenuItem ="Ingredient Note 1")
     Sendinput,{tab}{Home}{right 8}{right 140}
@@ -1115,7 +1125,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     Sendinput,{tab}{Home}{right 8}{right 143}
   else if (A_ThisMenuItem ="Ingredient Note 3")
     Sendinput,{tab}{Home}{right 8}{right 144}
-  else if (A_ThisMenuItem ="Total Probiotic")
+  else if (A_ThisMenuItem ="Total Probiotic" || GeneralCount=-1)
     Sendinput,{tab}{End}{Left 20}
   else if (A_ThisMenuItem ="Manual"){
     Sendinput,{tab}{Home}
@@ -1283,6 +1293,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Critical
 		sleep 100
 		if winactive("NuGenesis LMS - \\Remote"){
+			MouseGetPos, premx, premy
 			; click
 			; Send, ^c
 			; clipwait,1.5 ; Tooltip, %Clipboard%
@@ -1330,7 +1341,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			SpecTab.Edit_CoatedRetain()
 		sleep 500
 		;excel.NextSheet()
-
+		MouseMove, %premx%, %premy%, 0
 		;TT(Product)
 		return
 	}
@@ -2186,7 +2197,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     return
   }
 
-  ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
+    ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
     global
     ; SetwinDelay, 550
     if (Iteration = "ERROR")
@@ -2201,16 +2212,14 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
       return
     }
     keep_running = y
-    loop 20,
+    MouseGetPos, xpos, ypos
+    loop 25,
     {
-    ; MouseGetPos, xpos, ypos
     blockinput on
     if keep_running = n ;another signal to stop
     return
-		; MouseGetPos, xpos, ypos
     click
 		click 843, 202, 2
-    ypos:=ypos+26
     if keep_running = n ;another signal to stop
     return
     Send,{tab}{Space}{tab}{Space}
@@ -2220,24 +2229,22 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     if keep_running = n ;another signal to stop
     return
     sleep 100
+    ypos:=ypos+26
     if keep_running = n ;another signal to stop
     return
-    ; mousemove, xpos, ypos,0
-    ; sleep 200
+    mousemove, xpos, ypos,0
+    sleep 100
     blockinput off
     }
     Breaking.Point()
     if keep_running = n ;another signal to stop
     return
-    ; MouseGetPos, xpos, ypos
     click
     return
     }
+    MouseGetPos, xpos, ypos
     click
 		click 843, 202, 2
-		sleep 250
-    mousemove, %xpos%, %ypos%+26,0
-    ; mousemove, xpos, ypos+26,0
     if Checkbox_Toggle Contains Toggle
       Sendinput,{tab}{Space}{tab}{Space}
     else
@@ -2246,10 +2253,11 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
     sleep 100
     if Checkbox_Toggle Contains toggle
       return
-    ; mousemove, %xpos%, %ypos%+26,0
     Send, %Iteration%
-    ; sleep 400
-    ; if Checkbox_Toggle Not Contains toggle
+    sleep 100
+    if Checkbox_Toggle Not Contains toggle
+      mousemove, xpos, ypos+26,0
+
     ; setwindelay, 200
     return
     }

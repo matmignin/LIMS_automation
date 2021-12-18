@@ -233,7 +233,7 @@ Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Data\CurrentCodes.txt"){
 
 /*
 
-~Numlock:: ;Clipchain_v()
+Numlock:: ;Clipchain_v()
 MouseGetPos, xx
 TimeButtondown = %A_TickCount%
 ; Wait for it to be released

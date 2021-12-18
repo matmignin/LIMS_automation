@@ -449,6 +449,8 @@ Remote_desktop(){
     Menu, SubMenu, Add, SDMS, Remote_desktop
     Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
     Menu, SubMenu, Add,empower, Remote_desktop
+    Menu, SubMenu, Add,LACEs, Remote_desktop
+
     Menu, Menu, add, Other Servers, :SubMenu
     Menu, Menu, Add, &LMS Login, Passwords
     Menu, Menu, Add, &VQ Login, Passwords
@@ -485,6 +487,8 @@ Remote_desktop(){
       Sendinput,{Click 182, 97}10.1.2.242 ;{enter}
     if (A_thisMenuItem = "Empower")
       Sendinput,{Click 182, 97}10.1.2.228 ;{enter}
+    if (A_thisMenuItem = "LACEs")
+      Sendinput,{Click 182, 97}LACE-#{shiftdown}{left}{shiftup} ;{enter}
     else
       Try Menu,Menu, deleteAll
     return
