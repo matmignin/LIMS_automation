@@ -4,11 +4,11 @@ FloVar(VariableText:="", MousePopup:="", FontSize:=20){
 		try Gui, FloVar:Destroy
 		CoordMode, Mouse, Screen
 		; MouseGetPos, Mx, My
-		CustomColor := "000000"  ; Can be any RGB color (it will be made transparent below).
+		CustomColor := "FFFFFF"  ; Can be any RGB color (it will be made transparent below).
 		Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
 		Gui, FloVar:Color, %CustomColor%
 		Gui, FloVar:Font, % "s" Fontsize , Arial ; Set a large font size (32-point).
-		Gui, FloVar:Add, Text, +wrap R30 vMyText cFFFFFF, XXXXXXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
+		Gui, FloVar:Add, Text, +wrap R30 vMyText c000000, XXXXXXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
 		; Make all pixels of this color transparent and make the text itself translucent (150):
 		winSet, TransColor, %CustomColor%  230
 		if VariableText{

@@ -20,7 +20,7 @@
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		; Numlock::4tap() ;LMS.COA()
+		Numlock::4tap() ;LMS.COA()
 		mbutton::3tap()
 		F7::		  3Right()
 		F6::			  3Left()
@@ -33,8 +33,8 @@
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::      	       	lms.searchbarPaste()
-		wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
-		wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
+		; wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
+		; wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
 		F13::Menu.LMS()
 
  #Ifwinactive,Select Iterations - \\Remote
@@ -44,7 +44,7 @@
 
 	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry
 			#MaxThreadsPerHotkey 2
-				\::WorkTab.ChangeTestResults("loop")
+				Numlock::WorkTab.ChangeTestResults("loop")
 			#MaxThreadsPerHotkey 1
 			; Numlock:: old use for test result loop
 
@@ -1066,65 +1066,65 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     ; GeneralCount=1
   ; tt(GeneralCount)
   if (A_ThisMenuItem ="Generic Ingredient &A"      || GeneralCount=1)
-    Sendinput,{tab}{Home}{right 8}{right 56}
+    Sendinput,{tab}{Home}{right 9}{right 56}
   else if (A_ThisMenuItem ="Generic Ingredient &B" || GeneralCount=2)
-    Sendinput,{tab}{Home}{right 8}{right 62}
+    Sendinput,{tab}{Home}{right 9}{right 62}
   else if (A_ThisMenuItem ="Generic Ingredient &C" || GeneralCount=3)
-    Sendinput,{tab}{Home}{right 8}{right 68}
+    Sendinput,{tab}{Home}{right 9}{right 68}
   else if (A_ThisMenuItem ="Generic Ingredient &D" || GeneralCount=4)
-    Sendinput,{tab}{home}{right 8}{right 74}
+    Sendinput,{tab}{home}{right 9}{right 74}
   else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount=5)
-    Sendinput,{tab}{Home}{right 8}{right 80}
+    Sendinput,{tab}{Home}{right 9}{right 80}
   else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount=6)
-    Sendinput,{tab}{Home}{right 8}{right 86}
+    Sendinput,{tab}{Home}{right 9}{right 86}
   else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount=7)
-    Sendinput,{tab}{Home}{right 8}{right 92}
+    Sendinput,{tab}{Home}{right 9}{right 92}
   else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount=8)
-    Sendinput,{tab}{Home}{right 8}{right 93}
+    Sendinput,{tab}{Home}{right 9}{right 93}
   else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount=9)
-    Sendinput,{tab}{Home}{right 8}{right 95}
+    Sendinput,{tab}{Home}{right 9}{right 95}
   else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount=10)
-    Sendinput,{tab}{Home}{right 8}{right 97}
+    Sendinput,{tab}{Home}{right 9}{right 97}
   else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount=11)
-    Sendinput,{tab}{Home}{right 8}{right 99}
+    Sendinput,{tab}{Home}{right 9}{right 99}
   else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount=12)
-    Sendinput,{tab}{Home}{right 8}{right 100}
+    Sendinput,{tab}{Home}{right 9}{right 100}
   else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount=13)
-    Sendinput,{tab}{Home}{right 8}{right 101}
+    Sendinput,{tab}{Home}{right 9}{right 101}
   else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount=14)
-    Sendinput,{tab}{Home}{right 8}{right 102}
+    Sendinput,{tab}{Home}{right 9}{right 102}
   else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount=15)
-    Sendinput,{tab}{Home}{right 8}{right 103}
+    Sendinput,{tab}{Home}{right 9}{right 103}
   else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount=16)
-    Sendinput,{tab}{Home}{right 8}{right 104}
+    Sendinput,{tab}{Home}{right 9}{right 104}
   else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount=17)
-    Sendinput,{tab}{Home}{right 8}{right 105}
+    Sendinput,{tab}{Home}{right 9}{right 105}
   else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount=18)
-    Sendinput,{tab}{Home}{right 8}{right 106}
+    Sendinput,{tab}{Home}{right 9}{right 106}
   else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount=19)
-    Sendinput,{tab}{Home}{right 8}{right 107}
+    Sendinput,{tab}{Home}{right 9}{right 107}
   else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount=20)
-    Sendinput,{tab}{Home}{right 8}{right 108}
+    Sendinput,{tab}{Home}{right 9}{right 108}
   else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount=21)
-    Sendinput,{tab}{Home}{right 8}{right 109}
+    Sendinput,{tab}{Home}{right 9}{right 109}
   else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount=22)
-    Sendinput,{tab}{Home}{right 8}{right 110}
+    Sendinput,{tab}{Home}{right 9}{right 110}
   else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount=23)
-    Sendinput,{tab}{Home}{right 8}{right 111}
+    Sendinput,{tab}{Home}{right 9}{right 111}
   else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount=24)
-    Sendinput,{tab}{Home}{right 8}{right 112}
+    Sendinput,{tab}{Home}{right 9}{right 112}
   else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount=25)
-    Sendinput,{tab}{Home}{right 8}{right 113}
+    Sendinput,{tab}{Home}{right 9}{right 113}
   else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount=26)
-    Sendinput,{tab}{Home}{right 8}{right 114}
+    Sendinput,{tab}{Home}{right 9}{right 114}
   else if (A_ThisMenuItem ="Ingredient Note 1")
-    Sendinput,{tab}{Home}{right 8}{right 140}
+    Sendinput,{tab}{Home}{right 9}{right 140}
   else if (A_ThisMenuItem ="Ingredient Note 10")
-    Sendinput,{tab}{Home}{right 8}{right 141}
+    Sendinput,{tab}{Home}{right 9}{right 141}
 	else if (A_ThisMenuItem ="Ingredient Note 2")
-    Sendinput,{tab}{Home}{right 8}{right 143}
+    Sendinput,{tab}{Home}{right 9}{right 143}
   else if (A_ThisMenuItem ="Ingredient Note 3")
-    Sendinput,{tab}{Home}{right 8}{right 144}
+    Sendinput,{tab}{Home}{right 9}{right 144}
   else if (A_ThisMenuItem ="Total Probiotic" || GeneralCount=-1)
     Sendinput,{tab}{End}{Left 20}
   else if (A_ThisMenuItem ="Manual"){

@@ -162,7 +162,7 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 rwin::return
 <#tab::										GetAllProducts(A_tab)
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
-; Numlock::								  4tap()
+Numlock::								  4tap()
 ;;	___Lbuton:
 Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
 Lbutton & F20::          	clip("OCR") ;Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"

@@ -81,10 +81,10 @@ VQuest_Start:
     if winexist("Mats LMS Workbook.xlsb - Excel") && ExcelConnect
       Excel.Connect(0)
     GuiControl, +redraw, varbar
-    if A_Debuggername
-      try Run, Vim.Ahk, lib\
+    ; if A_Debuggername
+      ; try Run, Vim.Ahk, lib\
     ; else
-    ; settimer, ActiveCheck , %CheckTime%
+      ; settimer, ActiveCheck , %CheckTime%
   OnClipboardChange("clipChange")
   #include <Toggles>
   #Include <Temp>

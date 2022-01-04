@@ -105,7 +105,7 @@ SheetChange(sht,Cell) {
 	RegexCell(vCell,n:=""){
 		Global
       RegExMatch(vCell, "i)(?<!Ct#)\d{3}-\d{4}\b", Batch%n%)
-      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", lot%n%)
+      RegExMatch(vCell, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)", lot%n%)
       ; RegExMatch(vCell, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?\d{3}-\d{4}\b", ctCoated)
       RegExMatch(vCell, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<oated>\d{3}-\d{4})", c)
       ; RegExMatch(ctCoated, "\d{3}-\d{4}", Coated%n%)
@@ -125,7 +125,7 @@ InfoLocations(){
 		; Products:=[]
 		loop, parse, MoreBatches, `r`n
 		{
-			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)?.?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
 					if sBatch
 						Products.Insert(Product " " sBatch " " sLot " " sCoated)
 		}

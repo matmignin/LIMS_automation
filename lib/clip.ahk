@@ -140,7 +140,7 @@ Parse(Value:=""){
       {
         RegexMatch(A_loopField, RegexProduct,VarProduct) ;[abdefghijk]\d{3}\b", VarProduct)
         RegexMatch(A_loopField, "i)(?<!Ct#)\d{3}-\d{4}\b", VarBatch)
-        RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b", VarLot)
+        RegexMatch(A_loopField, "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?", VarLot)
         RegExMatch(A_loopField, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", Var)
         RegExMatch(A_loopField, "i)(s|\$)\d{8}-\d{3}\b", VarSampleID)
           if VarProduct {
@@ -204,7 +204,7 @@ SingleRegex(){
     sleep      20
       RegExMatch(HayStack, regexProduct,cProduct) ; "i)[abdefghijk]\d{3}\b", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
-      RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
+      RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)", clot)
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       RegExMatch(HayStack, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       ; RegExMatch(HayStack, "i)(coated: |ct#/\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
@@ -276,7 +276,7 @@ Regex(Category:=""){
     sleep      20
       RegExMatch(HayStack, RegexProduct,cProduct)  ;"i)[abdefghijkl]\d{3}", cProduct)
       RegExMatch(HayStack, "i)(?<!Ct#)\d{3}-\d{4}\b", cBatch)
-      RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)", clot)
+      RegExMatch(HayStack, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)", clot)
       RegExMatch(HayStack, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})", c)
       ; RegExMatch(HayStack, "i)(s|\$)\d{8}-\d{3}\b", cSampleID)
       ; StringReplace, cSampleID, cSampleID, $, S

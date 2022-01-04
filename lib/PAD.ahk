@@ -62,7 +62,7 @@ _MouseIsOver:
 	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 		F7::LMS.SearchBar(Batch,"{enter}")
 		F6::LMS.SearchBar(Product,"{enter}")
-		; Numlock::4tap()
+		Numlock::4tap()
 		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
 		; Wheeldown::LMS.Scrolldown()
