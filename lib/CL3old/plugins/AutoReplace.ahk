@@ -34,29 +34,29 @@ If !IsObject(AutoReplace)
 If !AutoReplace.Settings.HasKey("Active")
 	AutoReplace["Settings","Active"]:=0           ; default setting change from active to inactive v1.95
 If !AutoReplace.Settings.HasKey("Bypass")
-	AutoReplace["Settings","Bypass"]:="excel.exe" ; default fixed setting 
+	AutoReplace["Settings","Bypass"]:="excel.exe" ; default fixed setting
 
 Gosub, AutoReplaceMenu
 
 ;Return
 
 AutoReplaceGuiInit:
-Gui, AutoReplace:Destroy
-Gui, AutoReplace:Add, ListBox,w200 h170 gAutoReplaceList AltSubmit vRules,
-Gui, AutoReplace:Add, Text, xp+220 yp+5 w30, Name:
-Gui, AutoReplace:Add, Edit, xp+50  yp-3 w250 vName
-Gui, AutoReplace:Add, Checkbox, xp yp+30 w80 vType, RegEx?
-Gui, AutoReplace:Add, Text,xp-50 yp+30 w50, Find:
-Gui, AutoReplace:Add, Edit, xp+50  yp-3 w250 vFind
-Gui, AutoReplace:Add, Text,xp-50 yp+30 w50, Replace:
-Gui, AutoReplace:Add, Edit, xp+50  yp-3 w250 vReplace
-Gui, AutoReplace:Add, Button, xp yp+40 gAutoReplaceAdd w60, New Rule
-Gui, AutoReplace:Add, Button, xp+65 yp gAutoReplaceDelete w55, *Delete*
-Gui, AutoReplace:Add, Button, xp+65 yp gAutoReplaceCancel w55, Cancel
-Gui, AutoReplace:Add, Button, xp+65 yp gAutoReplaceSave w55, Save
-Gui, AutoReplace:Add, GroupBox, x10 yp+50 w520 h50, General setting(s)
-Gui, AutoReplace:Add, Text, xp+10 yp+25, Bypass (a CSV list of Exe)
-Gui, AutoReplace:Add, Edit, xp+130 yp-3 w365 vBypass,
+GUI, AutoReplace:Destroy
+GUI, AutoReplace:Add, ListBox,w200 h170 gAutoReplaceList AltSubmit vRules,
+GUI, AutoReplace:Add, Text, xp+220 yp+5 w30, Name:
+GUI, AutoReplace:Add, Edit, xp+50  yp-3 w250 vName
+GUI, AutoReplace:Add, Checkbox, xp yp+30 w80 vType, RegEx?
+GUI, AutoReplace:Add, Text,xp-50 yp+30 w50, Find:
+GUI, AutoReplace:Add, Edit, xp+50  yp-3 w250 vFind
+GUI, AutoReplace:Add, Text,xp-50 yp+30 w50, Replace:
+GUI, AutoReplace:Add, Edit, xp+50  yp-3 w250 vReplace
+GUI, AutoReplace:Add, Button, xp yp+40 gAutoReplaceAdd w60, New Rule
+GUI, AutoReplace:Add, Button, xp+65 yp gAutoReplaceDelete w55, *Delete*
+GUI, AutoReplace:Add, Button, xp+65 yp gAutoReplaceCancel w55, Cancel
+GUI, AutoReplace:Add, Button, xp+65 yp gAutoReplaceSave w55, Save
+GUI, AutoReplace:Add, GroupBox, x10 yp+50 w520 h50, General setting(s)
+GUI, AutoReplace:Add, Text, xp+10 yp+25, Bypass (a CSV list of Exe)
+GUI, AutoReplace:Add, Edit, xp+130 yp-3 w365 vBypass,
 
 ;If !IsObject(AutoReplace)
 ;	Gosub, AutoReplaceInit
@@ -64,7 +64,7 @@ Gosub, AutoReplaceUpdateListbox
 Return
 
 AutoReplaceDelete:
-Gui, AutoReplace:Submit, NoHide
+GUI, AutoReplace:Submit, NoHide
 MsgBox, 52, Delete, Delete %Name%?
 IfMsgBox, No
 	Return
@@ -87,7 +87,7 @@ Return
 
 AutoReplace:
 Gosub, AutoReplaceInit
-Gui, AutoReplace:Show, AutoSize Center
+GUI, AutoReplace:Show, AutoSize Center
 SendMessage, 390, 0, 0, ListBox1, A  ; LB_SETCURSEL = 390
 Return
 
@@ -113,12 +113,12 @@ ControlFocus, Edit1, A
 Return
 
 AutoReplaceList:
-Gui, AutoReplace:Submit, NoHide
+GUI, AutoReplace:Submit, NoHide
 AutoReplaceUpdate(Rules)
 Return
 
 AutoReplaceSave:
-Gui, AutoReplace:Submit, Hide
+GUI, AutoReplace:Submit, Hide
 AutoReplace.Settings.Bypass:=Bypass
 If (Rules = "")
 	Rules:=1
@@ -135,7 +135,7 @@ XMLSave("AutoReplace")
 Return
 
 AutoReplaceCancel:
-Gui, AutoReplace:Hide
+GUI, AutoReplace:Hide
 Return
 
 AutoReplace()
@@ -202,15 +202,15 @@ Return
 
 ; OSDTIP_Pop(MainText, SubText, TimeOut, Options, FontName, Transparency)
 ; OSDTIP_Pop("Notification", "Message", -3000) ; #Persistent required
-OSDTIP_Pop(P*) {                            ; OSDTIP_Pop v0.55 by SKAN on D361/D36E @ tiny.cc/osdtip 
+OSDTIP_Pop(P*) {                            ; OSDTIP_Pop v0.55 by SKAN on D361/D36E @ tiny.cc/osdtip
 Local
-Static FN:="", ID:=0, PM:="", PS:="" 
+Static FN:="", ID:=0, PM:="", PS:=""
 
   If !IsObject(FN)
-    FN := Func(A_ThisFunc).Bind(A_ThisFunc) 
+    FN := Func(A_ThisFunc).Bind(A_ThisFunc)
 
   If (P.Count()=0 || P[1]==A_ThisFunc) {
-    OnMessage(0x202, FN, 0),  OnMessage(0x010, FN, 0)                   ; WM_LBUTTONUP, WM_CLOSE 
+    OnMessage(0x202, FN, 0),  OnMessage(0x010, FN, 0)                   ; WM_LBUTTONUP, WM_CLOSE
     SetTimer, %FN%, OFF
     DllCall("AnimateWindow", "Ptr",ID, "Int",200, "Int",0x50004)        ; AW_VER_POSITIVE | AW_SLIDE
     Progress, 10:OFF                                                    ; | AW_HIDE
@@ -219,30 +219,30 @@ Static FN:="", ID:=0, PM:="", PS:=""
 
   MT:=P[1], ST:=P[2], TMR:=P[3], OP:=P[4], FONT:=P[5] ? P[5] : "Segoe UI"
   Title := (TMR=0 ? "0x0" : A_ScriptHwnd) . ":" . A_ThisFunc
-  
+
   If (ID) {
     Progress, 10:, % (ST=PS ? "" : PS:=ST), % (MT=PM ? "" : PM:=MT), %Title%
     OnMessage(0x202, FN, TMR=0 ? 0 : -1)                                ; v0.55
-    SetTimer, %FN%, % Round(TMR)<0 ? TMR : "OFF" 
+    SetTimer, %FN%, % Round(TMR)<0 ? TMR : "OFF"
     Return ID
-  }                                                                                                        
+  }
 
   If ( InStr(OP,"U2",1) && FileExist(WAV:=A_WinDir . "\Media\Windows Notify.wav") )
-    DllCall("winmm\PlaySoundW", "WStr",WAV, "Ptr",0, "Int",0x220013)    ; SND_FILENAME | SND_ASYNC   
-                                                                        ; | SND_NODEFAULT   
-  DetectHiddenWindows, % ("On", DHW:=A_DetectHiddenWindows)             ; | SND_NOSTOP | SND_SYSTEM  
-  SetWinDelay, % (-1, SWD:=A_WinDelay)                            
+    DllCall("winmm\PlaySoundW", "WStr",WAV, "Ptr",0, "Int",0x220013)    ; SND_FILENAME | SND_ASYNC
+                                                                        ; | SND_NODEFAULT
+  DetectHiddenWindows, % ("On", DHW:=A_DetectHiddenWindows)             ; | SND_NOSTOP | SND_SYSTEM
+  SetWinDelay, % (-1, SWD:=A_WinDelay)
   DllCall("uxtheme\SetThemeAppProperties", "Int",0)
   Progress, 10:C00 ZH1 FM9 FS10 CWF0F0F0 CT101010 %OP% B1 M HIDE,% PS:=ST, % PM:=MT, %Title%, %FONT%
   DllCall("uxtheme\SetThemeAppProperties", "Int",7)                     ; STAP_ALLOW_NONCLIENT
                                                                         ; | STAP_ALLOW_CONTROLS
   WinWait, %Title% ahk_class AutoHotkey2                                ; | STAP_ALLOW_WEBCONTENT
-  WinGetPos, X, Y, W, H                                                 
+  WinGetPos, X, Y, W, H
   SysGet, M, MonitorWorkArea
   WinMove,% "ahk_id" . WinExist(),,% MRight-W,% MBottom-(H:=InStr(OP,"U1",1) ? H : Max(H,100)), W, H
   If ( TRN:=Round(P[6]) & 255 )
-    WinSet, Transparent, %TRN% 
-  ControlGetPos,,,,H, msctls_progress321       
+    WinSet, Transparent, %TRN%
+  ControlGetPos,,,,H, msctls_progress321
   If (H>2) {
     ColorMQ:=Round(P[7]),  ColorBG:=P[8]!="" ? Round(P[8]) : 0xF0F0F0,  SpeedMQ:=Round(P[9])
     Control, ExStyle, -0x20000,        msctls_progress321               ; v0.55 WS_EX_STATICEDGE
@@ -250,7 +250,7 @@ Static FN:="", ID:=0, PM:="", PS:=""
     SendMessage, 0x040A, 1, %SpeedMQ%, msctls_progress321               ; PBM_SETMARQUEE
     SendMessage, 0x0409, 1, %ColorMQ%, msctls_progress321               ; PBM_SETBARCOLOR
     SendMessage, 0x2001, 1, %ColorBG%, msctls_progress321               ; PBM_SETBACKCOLOR
-  }  
+  }
   DllCall("AnimateWindow", "Ptr",WinExist(), "Int",200, "Int",0x40008)  ; AW_VER_NEGATIVE | AW_SLIDE
   SetWinDelay, %SWD%
   DetectHiddenWindows, %DHW%

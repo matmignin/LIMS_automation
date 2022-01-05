@@ -282,8 +282,8 @@ Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
 ; traytip, ,%Clipboard%
 	sleep 20
 ; try {
-  ; gui, Popup:destroy ;:
-  ; settimer, destroyGui, off
+  ; GUI, Popup:destroy ;:
+  ; settimer, destroyGUI, off
 ; }
 PopupColor1:="CE6D4B"
 PopupColor2:="FFFFFF"
@@ -308,23 +308,23 @@ else {
 	popup_y:=popup_y-300
 	popup_x:=Popup_x
 	}
-Gui, Popup: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
+GUI, Popup: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
 
-Gui, Popup:color,%PopupColor1%, %PopupColor2%
-Gui, Popup:Font,s10 cBlack Bold, Consolas
-Gui, Popup:Add, Text,left, %Line1%
-Gui, Popup:Font,s8 cBlack Bold, Consolas
+GUI, Popup:color,%PopupColor1%, %PopupColor2%
+GUI, Popup:Font,s10 cBlack Bold, Consolas
+GUI, Popup:Add, Text,left, %Line1%
+GUI, Popup:Font,s8 cBlack Bold, Consolas
   if (Line2)
-    Gui, Popup:Add, Text,Center, %Line2%
-Gui, Popup:Show, Noactivate x%popup_x% y%Popup_y%
+    GUI, Popup:Add, Text,Center, %Line2%
+GUI, Popup:Show, Noactivate x%popup_x% y%Popup_y%
  winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
-settimer, destroyGui, -%PopupTime%
+settimer, destroyGUI, -%PopupTime%
 return
 }
 
 DestroyGui:
-  try gui, Popup:destroy
-  try gui, Popup2:destroy
+  try GUI, Popup:destroy
+  try GUI, Popup2:destroy
 return
 
 

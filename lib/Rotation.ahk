@@ -41,9 +41,9 @@ return
     Table_Height = 30
   }
 
-  Gui, Rotation_Table:Default
+  GUI, Rotation_Table:Default
   Gui Rotation_Table: +Toolwindow +Owner +AlwaysOnTop +resize -SysMenu +MinimizeBox
-  Gui, Rotation_Table:Add, ListView, x0 y0 w400 r%Table_height% Grid gRotation_Table, %Product%|`tTests|Cycles
+  GUI, Rotation_Table:Add, ListView, x0 y0 w400 r%Table_height% Grid gRotation_Table, %Product%|`tTests|Cycles
   GUI, Rotation_Table:Font, s14 cBlack Bold, Consolas
   loop, %Total_Rows%{
    LV_add(,""RotationCycles[A_index],TestIngredients[A_index],Methods[A_index])
@@ -52,7 +52,7 @@ return
   ;LV_Delete(Table_Height)
   sleep 200
   CoordMode, mouse, screen
-  Gui, Rotation_Table:Show, x%RotationTable_X% y%RotationTable_Y%, %Product%
+  GUI, Rotation_Table:Show, x%RotationTable_X% y%RotationTable_Y%, %Product%
   CoordMode, mouse, window
  return
 
@@ -62,7 +62,7 @@ return
    LV_GetText(TestIngredients, 		A_EventInfo,2)
    LV_GetText(RotationCycles, 		A_EventInfo,3)
    ;tooltip % A_eventInfo "`n" Method "`n" TestIngredients "`n"
-   Gui, Rotation_Table:submit,NoHide
+   GUI, Rotation_Table:submit,NoHide
    sleep 200
    return
   }

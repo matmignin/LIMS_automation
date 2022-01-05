@@ -3,7 +3,7 @@
 Plugin            : Search history
 Version           : 1.5
 
-Searchable listbox 
+Searchable listbox
 Combined with Endless scrolling in a listbox http://www.autohotkey.com/forum/topic31618.html
 
 History:
@@ -24,7 +24,7 @@ History:
 hk_search:
 If WinExist("CL3Search ahk_class AutoHotkeyGUI")
 	{
-	 Gui, Search:Destroy
+	 GUI, Search:Destroy
 	 Return
 	}
 
@@ -39,24 +39,24 @@ for k, v in History
 	 StartList .= "[" SubStr("00" A_Index,-2) "] " Add "|"
 	}
 
-Gui, Search:Destroy
-Gui, Search:font, % dpi("s8")
-Gui, Search:Add, Text, % dpi("x5 y8 w45 h15"), &Filter:
-Gui, Search:Add, Edit, % dpi("gGetText vGetText x50 y5 w300 h20 +Left"),
-Gui, Search:Add, Text, % dpi("x355 y8"), [ctrl+del] = yank (Remove) entry. [F4] = edit entry.
-Gui, Search:Add, ListBox, % dpi("multi x5 y30 w" SearchWindowWidth-10 " h" SearchWindowHeight-30  " vChoice Choose") ChooseID, %StartList%
-Gui, Search:Add, Button, % dpi("default hidden gSearchChoice"), OK ; so we can easily press enter
-Gui, Search:Show, % dpi("h" SearchWindowHeight " w" SearchWindowWidth), %GUITitle%
+GUI, Search:Destroy
+GUI, Search:font, % dpi("s8")
+GUI, Search:Add, Text, % dpi("x5 y8 w45 h15"), &Filter:
+GUI, Search:Add, Edit, % dpi("gGetText vGetText x50 y5 w300 h20 +Left"),
+GUI, Search:Add, Text, % dpi("x355 y8"), [ctrl+del] = yank (Remove) entry. [F4] = edit entry.
+GUI, Search:Add, ListBox, % dpi("multi x5 y30 w" SearchWindowWidth-10 " h" SearchWindowHeight-30  " vChoice Choose") ChooseID, %StartList%
+GUI, Search:Add, Button, % dpi("default hidden gSearchChoice"), OK ; so we can easily press enter
+GUI, Search:Show, % dpi("h" SearchWindowHeight " w" SearchWindowWidth), %GUITitle%
 Return
 
 GetText:
-Gui, Search:Submit, NoHide
+GUI, Search:Submit, NoHide
 re:="iUms)" GetText
 if InStr(GetText,A_Space) ; prepare regular expression to ensure search is done independent on the position of the words
 	re:="iUms)(?=.*" RegExReplace(GetText,"iUms)(.*)\s","$1)(?=.*") ")"
 Loop, Parse, StartList, |
 	{
-	 if RegExMatch(A_LoopField,re) 
+	 if RegExMatch(A_LoopField,re)
 		UpdatedStartList .= A_LoopField "|"
 	}
 GuiControl, Search:, ListBox1, |%UpdatedStartList%
@@ -66,7 +66,7 @@ Return
 
 SearchChoice:
 Gosub, SearchGetID
-Gui, Search:Submit, Destroy
+GUI, Search:Submit, Destroy
 Sleep 100
 ;MenuItemPos:=id ; ClipboardHandler will handle deleting it from the chosen position in History
 Gosub, ClipboardHandler
@@ -76,7 +76,7 @@ Return
 
 SearchGetID:
 id:=""
-Gui, Search:Submit, NoHide
+GUI, Search:Submit, NoHide
 if (Choice = "")
 	{
 	 ControlGet, Choice, list, , ListBox1, A
@@ -89,7 +89,7 @@ Choice:=""
 Return
 
 SearchEditOK:
-Gui, SearchEdit:Submit, Destroy
+GUI, SearchEdit:Submit, Destroy
 History[id,"text"]:=ClipText
 OnClipboardChange("FuncOnClipboardChange", 0)
 If (id = 1)
@@ -107,7 +107,7 @@ Gosub, hk_search
 Return
 
 SearchEditCancel:
-Gui, SearchEdit:Destroy
+GUI, SearchEdit:Destroy
 ChooseID:=""
 ;Gosub, ^#h
 Gosub, hk_search
@@ -116,7 +116,7 @@ Return
 #IfWinActive, CL3Search
 
 F5:: ; merge items
-Gui, Search:Submit
+GUI, Search:Submit
 ClipText:="",Removeids:=""
 Loop, parse, choice, |
 	{
@@ -130,7 +130,7 @@ Loop, parse, choice, |
 	}
 Loop, parse, Removeids, CSV
 	History.Remove(A_LoopField)
-StrReplace(CliptText,"`n","`n",Count)	
+StrReplace(CliptText,"`n","`n",Count)
 History.Insert(1,{"text":ClipText,"icon": "res\" iconA, "lines": Count+1 })
 Gosub, CheckHistory
 ClipText:="",Removeids:=""
@@ -140,24 +140,24 @@ F4::
 Gosub, SearchGetID
 ; not public
 #include *i %A_ScriptDir%\plugins\MyQEDLG-Search.ahk
-Gui, Search:Destroy
+GUI, Search:Destroy
 
-Gui, SearchEdit:Destroy
-Gui, SearchEdit:font, % dpi("s8")
-Gui, SearchEdit:Add, Text, % dpi("x5 y8 w100 h15"), Edit this entry:
-Gui, SearchEdit:Add, Edit, % dpi("vClipText x5 y25 w" SearchWindowWidth-10 " h" SearchWindowHeight-80), %ClipText%
-Gui, SearchEdit:Add, Button, % dpi("gSearchEditOK w100"), OK
-Gui, SearchEdit:Add, Button, % dpi("xp+110 yp gSearchEditCancel w100"), Cancel
-Gui, SearchEdit:Add, StatusBar,,...
-Gui, SearchEdit:Default
+GUI, SearchEdit:Destroy
+GUI, SearchEdit:font, % dpi("s8")
+GUI, SearchEdit:Add, Text, % dpi("x5 y8 w100 h15"), Edit this entry:
+GUI, SearchEdit:Add, Edit, % dpi("vClipText x5 y25 w" SearchWindowWidth-10 " h" SearchWindowHeight-80), %ClipText%
+GUI, SearchEdit:Add, Button, % dpi("gSearchEditOK w100"), OK
+GUI, SearchEdit:Add, Button, % dpi("xp+110 yp gSearchEditCancel w100"), Cancel
+GUI, SearchEdit:Add, StatusBar,,...
+GUI, SearchEdit:Default
 SB_SetParts(100,100,100)
-Gui, SearchEdit:Show, % dpi("w" SearchWindowWidth " h" SearchWindowHeight), CL3 Edit Entry ID: [ %ID% ]
+GUI, SearchEdit:Show, % dpi("w" SearchWindowWidth " h" SearchWindowHeight), CL3 Edit Entry ID: [ %ID% ]
 SetTimer, UpdateEditSB1, 100
 Return
 
 ^Del::
 Gosub, SearchGetID
-Gui, Search:Submit, Destroy	
+GUI, Search:Submit, Destroy
 History.Remove(id)
 id:="",ClipText:="",ChooseID:=""
 ;Gosub, ^#h
@@ -204,7 +204,7 @@ Return
 SearchGuiClose:
 SearchGuiEscape:
 SetTimer, UpdateEditSB1, Off
-Gui, Search:Destroy
+GUI, Search:Destroy
 ChooseID:=""
 Return
 
@@ -221,7 +221,7 @@ ControlGet, LineCount  , LineCount  ,,%ActiveControl%, CL3 Edit Entry
 Size:=StrLen(GetText)
 if (CurrentLine = oldCurrentLine) and (CurrentCol = oldCurrentCol) and (LineCount = oldLineCount)
 	return
-Gui, SearchEdit:Default
+GUI, SearchEdit:Default
 SB_SetText("Ln " Currentline ", Col " CurrentCol, 1) ; line/col
 SB_SetText(LineCount " line(s)" , 2)     ; lines
 SB_SetText(Size " byte(s)", 3)                    ; size

@@ -1,12 +1,20 @@
 return
 #Ifwinactive,ahk_exe Code.exe  ;;___VSCODE___
 	; Mbutton::sendinput, +{F9}
+	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
+	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
+	F13 & Lalt::FindMatchingwindows()
+	F13 & `::sendinput, {ctrldown}{F8}{ctrlup}
+	F13 & s up::sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
+	F13 & 5::send,`%
+	F13::F13
+
 	numlock::#\
 	^r::!r
-	<^h::[
-	<^l::]
+	; <^h::[
+	; <^l::]
+	<^r::ReloadScript()
 	F17::Enter
-	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
 	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
@@ -22,8 +30,6 @@ return
 	numpadmult::              send, ^{F9} ;switch workplace
 	numpaddot::               numpaddot
 	^numpaddot::              Sendinput,{ctrldown}{w}{ctrlup}
-	; Numpadsub::               Sendinput, ^{d} ;go to Deffinition
-	; Numpadadd::               Sendinput, !^{d} ;go to reference
 ;;	---modifiers---
 	$lwin::return
 		Lctrl & Appskey::         return
@@ -39,15 +45,6 @@ return
 	F2::FindMatchingwindows()
 	F15::F15
 	; F3::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
-	; F13 & s::Sendinput,{shiftdown}{altdown}{`;}{altup}{shiftup}
-;send, {click}^{v} ;{F19}
-	; F13 & s::						 sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup} ;selectWord
-	F13 & Lalt::FindMatchingwindows()
-	; F13 & tab::								Sendinput,{shiftdown}{altdown}{lwindown}{1}{lwinup}{altup}{shiftup}
-	F13 & `::sendinput, {ctrldown}{F8}{ctrlup}
-	F13 & s up::sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
-F13 & 5::send, `%
-	F13::F13
 ;;		---F19 and F20---
 	F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
 	<^f19::                   Sendinput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
@@ -68,7 +65,7 @@ F13 & 5::send, `%
 	F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
 	F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
 	f19 & `::                 Sendinput,~
-	f19 & r::                 Sendinput,%process%
+	f19 & r::                Sendinput,%process%
 	f19 & c::                 Sendinput,%mouseposition%
 	f19 & t::                 Sendinput,%wintitle%
 	f19 & w::                 Sendinput,%wininfo%
@@ -123,63 +120,6 @@ SelectVScodeTab:
 }
 
 
-class Vim {
-
-	find(){
-		global
-		Sendinput,{shiftdown}{altdown}{ctrldown}{f}{shiftup}{altup}{ctrlup}
-		input, letter, V,{enter}{return}{up}{down}{left}{right}
-		Sendinput,{enter}
-		return
-	}
-
-
-	ChangeSelection(){
-		Clipsave:=ClipboardAll
-		clipboard:=
-		Sendinput,^c
-		clipwait, 0.25
-		if errorlevel
-			Sendinput,{shiftdown}{altdown}{ctrldown}{s}{ctrlup}{altup}{shiftup}
-		Sendinput,{shiftdown}{ctrldown}{r}{shiftup}{ctrlup}
-		sleep 200
-		Sendinput,^v
-		sleep 300
-		Clipboard:=ClipSave
-		return
-	}
-	Yank(Precommand:="",Cut:=""){
-		global
-		clipboard:=
-		if Precommand
-			Sendinput % PreCommand
-		Send, ^{c}
-		clipwait, 0.25
-			; if errorlevel
-				; send, {home}+{end}^{c}
-		if Cut
-			Sendinput, {Backspace}
-		else
-			send, {esc}{F3}
-		sleep 20
-		return
-	}
-
-	Paste(){
-		global
-
-		KeyWait, p, U T1
-		if errorlevel {
-			Clipboard := StrReplace(Clipboard, A_tab, "")
-			Clipboard := StrReplace(Clipboard, A_space A_space, A_Space)
-			Clipboard:=RegExReplace(Clipboard, "\R+\R", "`r`n")     ; remove empty lines
-			Send,^v
-		}
-		else
-			Send,{end}{enter}^{v}
-		return
-	}
-	}
 	FindMatchingwindows(){
 		global
 	  winGetTitle, CurrentLMSwindow, ahk_exe WFICA32.EXE

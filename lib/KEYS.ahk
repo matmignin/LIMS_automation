@@ -164,10 +164,12 @@ rwin::return
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
 Numlock::								  4tap()
 ;;	___Lbuton:
-Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
-Lbutton & F20::          	clip("OCR") ;Send % BlockRepeat() "{shiftdown}{ctrldown}{4}{ctrlup}{shiftup}"
-F19 & lbutton::       		send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup}
-F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup}
+Lbutton & F19::backspace
+; Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
+Lbutton & F20::delete
+F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
+F19 & Rbutton::       		clip("OCR")
+F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipaste copy
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 Mbutton::									3Tap()
 Rbutton & Mbutton::				menu.PasteStuff()
@@ -271,7 +273,7 @@ F20 & /::        	 				clip("OCR")
 
 
 #Ifwinactive, ahk_exe explorer.exe ;;	___explorer:
-	F19 & space::   send % BlockRepeat(400) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
+
 	F6::   			sendinput % BlockRepeat(800) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F7::				Sendinput, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
@@ -318,8 +320,9 @@ F20 & /::        	 				clip("OCR")
 #Ifwinactive, Mats LMS Workbook.xlsb ;; 	___Excel
 	Numpadmult::send, {Home}
 	F9::    					Excel.Connect(1)
-	F19 & space::    	LMS.searchBar(Product)
+	F13 & 1::    	LMS.searchBar(Product)
 	F19 & backspace::    delete
+
 	; F19::
 	F15::sendinput, {pgup}
 	F16::sendinput, {pgdn}

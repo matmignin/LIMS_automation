@@ -1,8 +1,8 @@
 #NoEnv
 ;SetBatchLines, -1
 ; ==================================================================================================================================
-; The following two variables must be set according to the most recent Gui, Font, ... command before the control is created by
-; Gui, Add, ... If the default font is used, leave them empty. (see also OD_MeasureItem())
+; The following two variables must be set according to the most recent GUI, Font, ... command before the control is created by
+; GUI, Add, ... If the default font is used, leave them empty. (see also OD_MeasureItem())
 GuiFontName := "Arial"
 GuiFontOpts := ""
 Product:="K772"
@@ -23,18 +23,18 @@ CurrentCodesDDL =
 %CurrentCodesDDL2%
 )
 
-Gui, Margin, 10, 10
-Gui, Font, %GuiFontOpts%, %GuiFontName%
+GUI, Margin, 10, 10
+GUI, Font, %GuiFontOpts%, %GuiFontName%
 ; Important: You have to add the CBS_OWNERDRAWFIXED (0x0010) as well as the CBS_HASSTRINGS (0x0200) style
-Gui, Add, DDL, w600 vDDL hwndHDDL +0x0210, %Product%|%CurrentCodesDDL%
-Gui, Add, Button, x+10 yp vBtn, Button
-Gui, Add, DDL, xm w600, %DDLContent%
+GUI, Add, DDL, w600 vDDL hwndHDDL +0x0210, %Product%|%CurrentCodesDDL%
+GUI, Add, Button, x+10 yp vBtn, Button
+GUI, Add, DDL, xm w600, %DDLContent%
 GuiControlGet, Btn, Pos
 GuiControlGet, DDL, Pos
 Y := DDLY + ((BtnH - DDLH) // 2)
 GuiControl, Move, DDL, y%Y%
-Gui, Show, , Test
-GuiControl, MoveDraw, DDL ; needed to ensure that the control will shown properly after the first Gui, Show, ...
+GUI, Show, , Test
+GuiControl, MoveDraw, DDL ; needed to ensure that the control will shown properly after the first GUI, Show, ...
 Return
 
 
@@ -101,8 +101,8 @@ ODDDL_DrawItem(wParam, lParam) {
 ; ==================================================================================================================================
 ; Sent once to the parent window of an OWNERDRAWFIXED DDL when the control is being created. When the owner receives this message,
 ; the system has not yet determined the height and width of the font used in the control. That is why you have to set the global
-; variables GuiFontName and GuiFontOpts to the name and the options of the most recent Gui, Font, ... command before you add the
-; control via Gui, Add, ...
+; variables GuiFontName and GuiFontOpts to the name and the options of the most recent GUI, Font, ... command before you add the
+; control via GUI, Add, ...
 ; WM_MEASUREITEM      -> http://msdn.microsoft.com/en-us/library/bb775925(v=vs.85).aspx
 ; MEASUREITEMSTRUCT   -> http://msdn.microsoft.com/en-us/library/bb775804(v=vs.85).aspx
 ; ==================================================================================================================================
@@ -110,10 +110,10 @@ ODDDL_MeasureItem(wParam, lParam, Msg, Hwnd) {
    ; lParam -> MEASUREITEMSTRUCT offsets
    Static OffHeight := 16
    Global GuiFontName, GuiFontOpts
-   Gui, MeasureItemGUI:Font, %GuiFontOpts%, %GuiFontName%
-   Gui, MeasureItemGUI:Add, ListBox, hwndHLB, 1|2|3
+   GUI, MeasureItemGUI:Font, %GuiFontOpts%, %GuiFontName%
+   GUI, MeasureItemGUI:Add, ListBox, hwndHLB, 1|2|3
    ItemHeight := DllCall("SendMessage", "Ptr", HLB, "UInt", 0x01A1, "Ptr", 0, "Ptr", 0, "Int") + 2
-   Gui, MeasureItemGUI:Destroy
+   GUI, MeasureItemGUI:Destroy
    NumPut(ItemHeight, lParam + 0, OffHeight, "Int")
    Return True
 }

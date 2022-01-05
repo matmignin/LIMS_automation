@@ -1,6 +1,6 @@
 
-Gui, Settings:Destroy
-Gui, Settings:New
+GUI, Settings:Destroy
+GUI, Settings:New
 
 Gui Settings:Add,  GroupBox, x5 y20 w170 h320, General hotkeys
 
@@ -106,7 +106,7 @@ If AutoReplaceTrayTip
 
 ;Gui Settings:Add,  GroupBox, xp-8 yp+30 w100 h168                , Info
 ;Gui Settings:Font, s6
-;Gui Settings:Add,  Text    , xp+8 yp+24, CL3 
+;Gui Settings:Add,  Text    , xp+8 yp+24, CL3
 
 Gui Show, w545 h440, CL3 Settings - %version%
 Return
@@ -132,7 +132,7 @@ GuiControl, , EditCyclePlugins, %EditCyclePlugins%
 Return
 
 SettingsSave:
-Gui, Settings:Submit, Destroy
+GUI, Settings:Submit, Destroy
 ; IniWrite, Value, Filename, Section, Key
 
 CyclePlugins:=Trim(StrReplace(EditCyclePlugins,"`n",","),", ")

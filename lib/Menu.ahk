@@ -385,7 +385,7 @@ TaskBar(){
     Menu, Menu, Add, &VQuest , #^v
     Menu, Menu, Add, &Settings.ini , +#^F8
     Menu, DataFiles, Add, CurrentCodes.txt, +#^F9
-    Menu, DataFiles, Add, REQUESTGUID.ini, +#^F9
+    Menu, DataFiles, Add, SavedTextMenu.ini, +#^F9
     Menu, DataFiles, Add, Methods.ini, +#^F9
     Menu, DataFiles, Add, Debug.txt, +#^F9
     Menu, Menu, add, Data Files, :DataFiles

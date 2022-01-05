@@ -20,11 +20,11 @@
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		Numlock::4tap() ;LMS.COA()
-		mbutton::3tap()
+		Numlock:: 4tap() ;LMS.COA()
+		mbutton:: 3tap()
 		F7::		  3Right()
-		F6::			  3Left()
-		F19 & Space::lms.searchBar("")
+		F6::			3Left()
+		F13 up::lms.searchBar("")
 		F20 & Space::Varbar.Focus(Product)
 		F20 & left::Send, %Product%
 		F20 & down::Send, %Batch%
@@ -761,10 +761,10 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
           Sub_Table_Height:=Sub_Table_Height+1
       }
     Table_Height:=Table_height-Sub_table_Height
-    Gui,Ingredient_Table:Default
-    Gui,Ingredient_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop ;-SysMenu
+    GUI,Ingredient_Table:Default
+    GUI,Ingredient_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop ;-SysMenu
     GUI,Ingredient_Table:Font,s10 cBlack arial ;Consolas
-    Gui,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W400 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
+    GUI,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W400 Grid NoSortHdr -hdr checked gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
     loop,%Total_Rows% {
       if Position[A_index] =""
       {
@@ -774,7 +774,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       else
         LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index],DropdownCount[A_index])
     }
-    Gui,Ingredient_Table:Add,Checkbox,vAutoEnter x20 checked,Auto-Enter Results?
+    GUI,Ingredient_Table:Add,Checkbox,vAutoEnter x20 checked,Auto-Enter Results?
     LV_ModifyCol(1,50)
     LV_ModifyCol(2,180)
     LV_ModifyCol(3,100)
@@ -784,8 +784,8 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     CoordMode,mouse,screen
     ScreenEdge_X:=A_ScreenWidth-550
     ScreenEdge_Y:=A_Screenheight-450
-    try Gui,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product% Ingredient Table
-    catch Gui,Ingredient_Table:Show,x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Ingredient Table
+    try GUI,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product% Ingredient Table
+    catch GUI,Ingredient_Table:Show,x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Ingredient Table
     CoordMode,mouse,window
     return
   }
@@ -1143,7 +1143,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
   Ingredient_table:
     if (A_GuiEvent="DoubleClick"){
-    Gui,Ingredient_Table:submit,NoHide
+    GUI,Ingredient_Table:submit,NoHide
     Send, {space}
     Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
     Current_Row:=A_EventInfo
@@ -1219,8 +1219,8 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 			CoordMode, mouse, screen
 			ScreenEdge_X:=A_ScreenWidth-350
 			ScreenEdge_Y:=A_Screenheight-150
-			try Gui, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
-			catch Gui, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
+			try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
+			catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
 			CoordMode, mouse, window
 			OnMessage(0x0201, "WM_Lbuttondown")
 			return
@@ -1228,9 +1228,9 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 
 	CreateGUI(){
 		global
-		Gui, Spec_Table:Default
+		GUI, Spec_Table:Default
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-		Gui, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid altSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		GUI, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid altSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		GUI, Spec_Table:Font, s14 cBlack Bold, Consolas
 		loop, %Total_Rows%{
 			if Position[A_index] =""
@@ -1530,7 +1530,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		LV_GetText(Percision, 		A_EventInfo,6)
 		LV_GetText(Description, 	A_EventInfo,7)
 		LV_GetText(Method, 			A_EventInfo,8)
-		Gui, Spec_Table:submit,NoHide
+		GUI, Spec_Table:submit,NoHide
 	}
 	GetExcelData(){
 		Global

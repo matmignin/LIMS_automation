@@ -61,7 +61,7 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
     sleep 200
   oDoc := ComObjGet(doc_path)                                   ; access Word Doc
   clipboard:=                                                   ; empty clipboard
-  oDoc.range.copy()                                             ; copy Doc contents
+  oDoc.range.copy()                                       -
   clipwait, 1                                                   ; wait for clipboard
     sleep 300
   oDoc.close()                                                  ; close Word Doc
@@ -92,7 +92,7 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
             Gui Varbar:Default
   					GuiControl, ChooseString, ComboBox1, Debugging
 						Excel.Connect(1)
-            gui, Varbar:Submit, nohide
+            GUI, Varbar:Submit, nohide
             TT(A_mode)
             Varbar.SetColor()
 						return    ;excel.FindAndReplace("Stage","Specs","B:B",0,1)
@@ -293,10 +293,10 @@ Test_4:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 4 
 
 
   add_a_ToDo_item:
-    Gui, Add, Checkbox, vMyCheckBoxVar gMyCheckBoxSub, Add item to do
-    Gui, Add, Edit, Disabled vToDoItemVar
-    Gui, Add, Button, gSaveSub, Save
-    Gui, Show
+    GUI, Add, Checkbox, vMyCheckBoxVar gMyCheckBoxSub, Add item to do
+    GUI, Add, Edit, Disabled vToDoItemVar
+    GUI, Add, Button, gSaveSub, Save
+    GUI, Show
 return
 
 
@@ -306,14 +306,14 @@ return
 
 
 MyCheckBoxSub:
-  Gui, Submit, NoHide                      ; Save all states to variables so that we can check whether the checkbox has just been checked or unchecked
+  GUI, Submit, NoHide                      ; Save all states to variables so that we can check whether the checkbox has just been checked or unchecked
   If MyCheckBoxVar                         ; If the checkbox has been checked...
     GuiControl, Enable, ToDoItemVar        ; ...enable the edit box
   Else GuiControl, Disable, ToDoItemVar    ; ...otherwise, disable the edit box
 return
 
 SaveSub:
-  Gui, Submit, NoHide                      ; Save all states to variables so that we can write what is in the edit box to the INI file
+  GUI, Submit, NoHide                      ; Save all states to variables so that we can write what is in the edit box to the INI file
   ; Add IniWrite line here and use %ToDoItemVar% as the "value" to write
 return
 ;
@@ -323,27 +323,31 @@ Return
 
 
 
-` & r::REQUESTGUID()
-Tab & t::gosub, ADD_A_DROPDOWN_REQUESTGUID_ITEM
 
-REQUESTGUID() { ;; create a dropdown from RequestGUID ini datafile
+
+
+SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 		global
-		Loop, Read, data\REQUESTGUID.ini
-		{
-		If A_Index = 1
-			Continue
-		REQUESTGUID := StrSplit(A_LoopReadLine, "=")
-		Selection:= % REQUESTGUID[1]
-		Menu, Menu, add, %Selection%, REQUESTGUID
-		}
-    menu, menu, add
-    menu, menu, add, E&xit, ExitMenu
-		Menu, Menu, Show,
+    if Getkeystate("LControl","p")
+      gosub, ADD_A_DROPDOWN_SavedTextMenu_ITEM
+    else {
+  		Loop, Read, data\SavedTextMenu.ini
+  		{
+  		If A_Index = 1
+  			Continue
+  		SavedTextMenu := StrSplit(A_LoopReadLine, "=")
+  		Selection:= % SavedTextMenu[1]
+  		Menu, Menu, add, %Selection%, SavedTextMenu
+  		}
+      menu, menu, add
+      menu, menu, add, E&xit, ExitMenu
+  		Menu, Menu, Show,
+      }
 		return
-		REQUESTGUID:
+		SavedTextMenu:
 			sleep 200
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, data\REQUESTGUID.ini, REQUESTGUID, %InputVar%
+			IniRead,vOutput, data\SavedTextMenu.ini, SavedTextMenu, %InputVar%
 			Sendinput, %vOutput%{Lwinup}
       menu, Menu, DeleteAll
 			return
@@ -355,10 +359,10 @@ InputBox, TODO, Write a Todo
 VSCODEToDo:= "☐ " TODO "`n"
 FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
 Return
-ADD_A_DROPDOWN_REQUESTGUID_ITEM:
+ADD_A_DROPDOWN_SavedTextMenu_ITEM:
 InputBox, Variable, Variable Name = Variable
 VARIABLEITEM:= "`n" Variable
-FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\REQUESTGUID.ini
+FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\SavedTextMenu.ini
 Return
 
 

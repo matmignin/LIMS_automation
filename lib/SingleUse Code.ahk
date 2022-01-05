@@ -45,14 +45,14 @@ return
 
 
 MyCheckBoxSub:
-  Gui, Submit, NoHide                      ; Save all states to variables so that we can check whether the checkbox has just been checked or unchecked
+  GUI, Submit, NoHide                      ; Save all states to variables so that we can check whether the checkbox has just been checked or unchecked
   If MyCheckBoxVar                         ; If the checkbox has been checked...
     GuiControl, Enable, ToDoItemVar        ; ...enable the edit box
   Else GuiControl, Disable, ToDoItemVar    ; ...otherwise, disable the edit box
 return
 
 SaveSub:
-  Gui, Submit, NoHide                      ; Save all states to variables so that we can write what is in the edit box to the INI file
+  GUI, Submit, NoHide                      ; Save all states to variables so that we can write what is in the edit box to the INI file
   ; Add IniWrite line here and use %ToDoItemVar% as the "value" to write
 return
 ;

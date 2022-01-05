@@ -81,6 +81,7 @@ VQuest_Start:
     if winexist("Mats LMS Workbook.xlsb - Excel") && ExcelConnect
       Excel.Connect(0)
     GuiControl, +redraw, varbar
+
     ; if A_Debuggername
       ; try Run, Vim.Ahk, lib\
     ; else
@@ -112,7 +113,7 @@ return
 activeCheck:
   If winactive("Result Entry - \\Remote") || winactive("Register new samples - \\Remote")
     varbar.FloatAtopwindow()
-  if winactive("Error - \\Remote") {
+  else if winactive("Error - \\Remote") {
     ControlSend,, {enter}, Error - \\Remote
     sleep 200
     if winExist("Register new samples - \\Remote"){
@@ -120,8 +121,10 @@ activeCheck:
 			Send, {click 180, 103,2}%Product%{enter}
 		}
   }
-  if winactive("Information - \\Remote")
+  else if winactive("Information - \\Remote")
     send, {enter}
+  else
+    return
 return
 
 

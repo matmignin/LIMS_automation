@@ -39,37 +39,37 @@ Separator := ReadIniKey("Haystack","Separator",DefaultSeparator)
 Haystack := ReadIniKey("Haystack","Haystack",DefaultHaystack)
 StringReplace, Haystack, Haystack, %Separator%, `n, All
 
-Gui, 1:+Resize +MinSize +LastFound +Delimiter`n
+GUI, 1:+Resize +MinSize +LastFound +Delimiter`n
 Gui1HWND := winExist()
-Gui, 1:Add, Text, , Haystack
-Gui, 1:Add, Edit, w220 r8 vEdtHaystack gEvaluateRegEx , %Haystack%
-Gui, 1:Add, Text, w220, Needle (RegEx)`nNote: Use \n instead of ``n, etc.`nUnlike in AHK quotes (") must not be escaped.
-Gui, 1:Add, ComboBox, w220 r10 vCbbRegEx gEvaluateRegEx , %RegExList%
+GUI, 1:Add, Text, , Haystack
+GUI, 1:Add, Edit, w220 r8 vEdtHaystack gEvaluateRegEx , %Haystack%
+GUI, 1:Add, Text, w220, Needle (RegEx)`nNote: Use \n instead of ``n, etc.`nUnlike in AHK quotes (") must not be escaped.
+GUI, 1:Add, ComboBox, w220 r10 vCbbRegEx gEvaluateRegEx , %RegExList%
 GuiControl, Choose, CbbRegEx, 1
-Gui, 1:Add, Tab,  w220 r2.3 +Theme vTabRegExType gEvaluateRegEx , Match`nReplace
-  Gui, 1:Tab, Match
-    Gui, 1:Add, Text, Section +BackgroundTrans , OutputVar:
-    Gui, 1:Add, Edit, x+2 ys-4 r1 w144 vEdtUnquotedOutputVar gEvaluateRegEx , Out
-    Gui, 1:Add, Text, xs Section +BackgroundTrans, StartingPos:
-    Gui, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtMStartingPos gEvaluateRegEx , 1
-    Gui, 1:Add, Text, x+15 ys +BackgroundTrans, # Subpattern:
-    Gui, 1:Add, Edit, x+2 ys-4 r1 w28 Right Number vEdtNumSubpattern gEvaluateRegEx , 5
-  Gui, 1:Tab, Replace
-    Gui, 1:Add, Text, Section +BackgroundTrans, Replacement:
-    Gui, 1:Add, Edit, x+2 ys-4 r1 w129 vEdtReplacement gEvaluateRegEx , $3
-    Gui, 1:Add, Text, xs Section +BackgroundTrans, Limit:
-    Gui, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtLimit gEvaluateRegEx , -1
-    Gui, 1:Add, Text, x+25 ys +BackgroundTrans, StartingPos:
-    Gui, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtRStartingPos gEvaluateRegEx , 1
-Gui, 1:Tab
-Gui, 1:Add, Text, xm, Result
-Gui, 1:Add, Edit, w220 r8 vEdtResult ,
-Gui, 1:Add, Button, vBtnClose gGuiClose , Close
-Gui, 1:Add, Button, x+10 vBtnStoreRegEx gBtnStoreRegEx , Store Regex
-Gui, 1:Add, Button, x+10 vBtnCopyToCB gBtnCopyToCB , Copy Regex
-Gui, 1:Show, Hide, %ScriptName% v%Version%
+GUI, 1:Add, Tab,  w220 r2.3 +Theme vTabRegExType gEvaluateRegEx , Match`nReplace
+  GUI, 1:Tab, Match
+    GUI, 1:Add, Text, Section +BackgroundTrans , OutputVar:
+    GUI, 1:Add, Edit, x+2 ys-4 r1 w144 vEdtUnquotedOutputVar gEvaluateRegEx , Out
+    GUI, 1:Add, Text, xs Section +BackgroundTrans, StartingPos:
+    GUI, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtMStartingPos gEvaluateRegEx , 1
+    GUI, 1:Add, Text, x+15 ys +BackgroundTrans, # Subpattern:
+    GUI, 1:Add, Edit, x+2 ys-4 r1 w28 Right Number vEdtNumSubpattern gEvaluateRegEx , 5
+  GUI, 1:Tab, Replace
+    GUI, 1:Add, Text, Section +BackgroundTrans, Replacement:
+    GUI, 1:Add, Edit, x+2 ys-4 r1 w129 vEdtReplacement gEvaluateRegEx , $3
+    GUI, 1:Add, Text, xs Section +BackgroundTrans, Limit:
+    GUI, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtLimit gEvaluateRegEx , -1
+    GUI, 1:Add, Text, x+25 ys +BackgroundTrans, StartingPos:
+    GUI, 1:Add, Edit, x+2 ys-4 r1 w28 Right vEdtRStartingPos gEvaluateRegEx , 1
+GUI, 1:Tab
+GUI, 1:Add, Text, xm, Result
+GUI, 1:Add, Edit, w220 r8 vEdtResult ,
+GUI, 1:Add, Button, vBtnClose gGuiClose , Close
+GUI, 1:Add, Button, x+10 vBtnStoreRegEx gBtnStoreRegEx , Store Regex
+GUI, 1:Add, Button, x+10 vBtnCopyToCB gBtnCopyToCB , Copy Regex
+GUI, 1:Show, Hide, %ScriptName% v%Version%
 RestoreGuiPosSize(Gui1HWND, 1)  ;restore old size
-Gui, 1:Show
+GUI, 1:Show
 
 GoSub, EvaluateRegEx
 Return
@@ -79,7 +79,7 @@ Return
 EvaluateRegEx:
   If updateComboBox
       Return
-  Gui, 1:Submit, NoHide                                ;get all data
+  GUI, 1:Submit, NoHide                                ;get all data
   If (!CbbRegEx OR !EdtHaystack){    ;if no haystack or needle
       GuiControl, 1:, EdtResult,                            ;no result and
       Return                                                ;ne evaluation
@@ -194,12 +194,12 @@ s)                                                 ;dotall
 Return
 
 BtnCopyToCB:
-  Gui, 1:Submit, NoHide
+  GUI, 1:Submit, NoHide
   Clipboard = %CbbRegEx%
 Return
 
 BtnStoreRegEx:
-  Gui, 1:Submit, NoHide
+  GUI, 1:Submit, NoHide
   RegExList := StoreRegEx(RegExList, CbbRegEx)
 Return
 
@@ -231,7 +231,7 @@ StoreRegEx(RegExList, CbbRegEx){
   }
 
 GuiClose:
-  Gui, 1:Submit, NoHide
+  GUI, 1:Submit, NoHide
   StoreListInIni("Haystack", EdtHaystack)
   StoreListInIni("RegEx", RegExList)
   StoreGuiPosSize(Gui1HWND, 1)

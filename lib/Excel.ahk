@@ -231,29 +231,29 @@ MatchColor(){
 	Global
 	TabColor:=XL.activeWorkbook.activesheet.Tab.Color
 	if (A_mode=="TempCode")
-		Gui, VarBar:color,272822, FFFFFF
+		GUI, VarBar:color,272822, FFFFFF
 	else if  (TabColor = 16777215) ;white
-		Gui, VarBar:color,, F2F2F2 ;
+		GUI, VarBar:color,, F2F2F2 ;
 	else if	(TabColor = 16764057) || (TabColor = 13395456) ;Blue
-		Gui, VarBar:color,, BDD7EE ;
+		GUI, VarBar:color,, BDD7EE ;
 	else if 	(TabColor = 13434828) || (TabColor = 32768) || 	(TabColor = 65280) ;light green
-		Gui, VarBar:color,, 339966
+		GUI, VarBar:color,, 339966
 	else if 	(TabColor = 10092543) ;yellow
-		Gui, VarBar:color,, ffff00
+		GUI, VarBar:color,, ffff00
 	else if 	(TabColor = 39423) || (TabColor = 26367)	;orange
-		Gui, VarBar:color,, EE8036
+		GUI, VarBar:color,, EE8036
 	else if 	(TabColor = 12632256) || (TabColor = 8421504) 	;greay
-		Gui, VarBar:color,, 808080
+		GUI, VarBar:color,, 808080
 	else if 	(TabColor = 10498160) 	;purple
-		Gui, VarBar:color,, 7030A0
+		GUI, VarBar:color,, 7030A0
 	else if 	(TabColor = 16777215) 	;light purple
-		Gui, VarBar:color,, 9966FF
+		GUI, VarBar:color,, 9966FF
 	else if 	(TabColor = 0) 	;black
-		Gui, VarBar:color,, 323130
+		GUI, VarBar:color,, 323130
 	else If (Mode=="Debugging")
-		Gui, VarBar:color,, 808000 ;pink
+		GUI, VarBar:color,, 808000 ;pink
 	else
-		Gui, VarBar:color,DC734F, 97BA7F
+		GUI, VarBar:color,DC734F, 97BA7F
 	}
 Get_Current_row(){
 	Global

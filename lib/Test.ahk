@@ -48,9 +48,9 @@ return
 ; 			; Var:=Product[%ClipCycleCounter%]
 ; 			Var:=Products[ClipCycleCounter]
 ; 			TT(Var,1000,,,,250,"C")
-; 			; Gui, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
-; 			; Gui, History:Add, Text,, %Var%
-; 			; Gui, History:Show, Noactivate, var
+; 			; GUI, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
+; 			; GUI, History:Add, Text,, %Var%
+; 			; GUI, History:Show, Noactivate, var
 ; 			; ttext:=% DispToolTipText(Var)
 ; 		}
 ; 		else
@@ -63,7 +63,7 @@ return
 ; 		Sleep 50
 ; 		KeyWait, Space,
 ; 	}
-; 	Gui, History:Destroy
+; 	GUI, History:Destroy
 ; 	If (ClipCycleCounter > 0) ; If zero we've cancelled it
 ; 	{
 ; 		Gosub, ClipboardHandler
@@ -129,9 +129,9 @@ return
 
 return
 
-; Gui, Add, Text, x10 y12, Load file.
-; Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
-; Gui, Show, w300 h300,TEST
+; GUI, Add, Text, x10 y12, Load file.
+; GUI, Add, Button, x10 y30 w90 h20 gloadfile, Open File
+; GUI, Show, w300 h300,TEST
 
 ; #ifwinactive
 ; 	DispToolTipText(TextIn,Format=0)
@@ -170,13 +170,13 @@ return
 ;------------------------------------------------------TEST 2 ------------------------------------------------------------
 Test_2(){
 	global
-	Gui, Add, Text, x10 y12, Load file.
-	Gui, Add, Button, x10 y30 w90 h20 gloadfile, Open File
-	Gui, Show, w300 h300,TEST
+	GUI, Add, Text, x10 y12, Load file.
+	GUI, Add, Button, x10 y30 w90 h20 gloadfile, Open File
+	GUI, Show, w300 h300,TEST
 	Products:=[]
 return
 GuiClose2:
-; Gui,Destroy
+; GUI,Destroy
 return
 loadfile:
 	FileSelectFile, eFile, 3, , Open the file, All FIles (*.*) ;* ; *.html; *.csv)
@@ -533,23 +533,23 @@ return
 			; LoadedNotes6:=MyArray[6]
 			; LoadedNotes7:=MyArray[7]
 			gui Notes:+LastFound +AlwaysOnTop -Caption -Toolwindow +owner
-			gui, Notes:add, button, Hidden default gNotesButtonOK, OK
-			gui, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
-			; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
-			; gui, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
+			GUI, Notes:add, button, Hidden default gNotesButtonOK, OK
+			GUI, Notes:add, edit, y2 x2 w140 -Choose -VScroll +resize vMyEdit1, %LoadedNotes1%
+			; GUI, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit2, %LoadedNotes2%
+			; GUI, Notes:add, edit, w140 -Choose -VScroll +resize vMyedit3, %LoadedNotes3%
 			loop 2 {
 				n:=A_index + 1
 				Myedit=myedit%n%
 				Note:=myArray[n]
-				gui, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]
+				GUI, Notes:add, edit, w140 -Choose -VScroll +resize v%Myedit%, % myarray[n]
 			}
 			; OnMessage(0x84, "WM_NCHITTEST")
 			; OnMessage(0x83, "WM_NCCALCSIZE")
-			gui, Notes:color, 21a366
+			GUI, Notes:color, 21a366
 			; OnMessage(0x203, "Notes.Relocate")
 			Notes_x:=Varbar_x+136
 			Notes_y:=Varbar_Y+30
-			gui, Notes:show, w145 x%Notes_x% y%Notes_y% ,Notes
+			GUI, Notes:show, w145 x%Notes_x% y%Notes_y% ,Notes
 			winSet, Transparent, 195
 			return
 
@@ -561,14 +561,14 @@ return
 			; n:=4
 			Myedit:="vmyedit4"
 			loadedNotes:="loadednotes4"
-				gui, Notes:add, edit, w140 -Choose -VScroll +resize %Myedit%, %LoadedNotes%
+				GUI, Notes:add, edit, w140 -Choose -VScroll +resize %Myedit%, %LoadedNotes%
 			return
 
 
 		}
 		close(){
 			global
-				gui, Notes:submit, nohide
+				GUI, Notes:submit, nohide
 		Filedelete, lib/Notes.txt
 			sleep 200
 			; loop 4
@@ -579,12 +579,12 @@ return
 			Fileappend, %Myedit3%`n, lib/Notes.txt
 			; Fileappend, %Myedit4%`n, lib/Notes.txt
 			; Fileappend, %Myedit5%`n, lib/Notes.txt
-			gui, Notes:destroy
+			GUI, Notes:destroy
 		return
 		}
 			Save(){
 				global
-			gui, Notes:submit, nohide
+			GUI, Notes:submit, nohide
 			Filedelete, lib/Notes.txt
 			sleep 200
 			Fileappend, %MyEdit1%`n, lib/Notes.txt
@@ -597,7 +597,7 @@ return
 			; Fileappend, %Myedit8%`n, lib/Notes.txt
 			; Fileappend, %Myedit9%`n, lib/Notes.txt
 			; Fileappend, %Myedit10%`n, lib/Notes.txt
-			gui, Notes:destroy
+			GUI, Notes:destroy
 			return
 		}
 		Relocate(){
@@ -618,7 +618,7 @@ return
 		}
 		}
 		; ButtonAdd:
-			; gui, Notes:submit
+			; GUI, Notes:submit
 			; sleep 100
 			; Note:=RegExReplace(Note "`n", "m`a)(?=^\s*;).*\R") ; remove commented lines
 			; Note:=RegExReplace(Note, "\R+\R", "`r`n")     ; remove empty lines
@@ -631,8 +631,8 @@ return
 			NotesGuiEscape:
 			notes.Save()
 			notes.Close()
-			; gui, Notes:submit, nohide
-			; gui, Notes:destroy
+			; GUI, Notes:submit, nohide
+			; GUI, Notes:destroy
 			return \
 			*/
 

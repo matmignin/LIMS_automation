@@ -31,6 +31,11 @@ Clip(input=0,Wait:="0.45"){
 
 clipChange(type){
   global
+  ; if (type !=1)
+    ; Return
+  ; If clip.Count() = 10
+    ; clip.RemoveAt(max), choices := RegExReplace(choices, ".+\K\|.*")
+
   ifwinactive, Select tests for request: R
     return
   ; if A_PriorKey:="^1"If
@@ -52,9 +57,16 @@ clipChange(type){
     ; if Clipboard && !winactive("ahk_exe EXCEL.EXE") && !winactive("ahk_exe Code.exe") && !winactive("NuGenesis LMS - \\Remote")
       ; exit
     if A_PriorKey = c
+    {
       ; tt(clipboard,200,100,-1500,,,"R")
       ; Pop(Clipboard,500)
       FloVar(Clipboard,3000,14)
+      ;;TESTING------------
+      clip.InsertAt(1, Clipboard)
+      gui, Varbar:Default
+      GuiControl,, DDL, % choices := "|" SubStr(Clipboard, 1, 25) "||" Trim(StrReplace(choices, "||", "|"), "|")
+      ;;TESTING-------------------
+    }
       ; Pop(clipboard,,400) ;100,-1500,,150,"R")
     else if A_PriorKey = x
       ; Pop(Clipboard,500)
@@ -74,22 +86,22 @@ Class Clip {
 
 		EditBox(Input:=""){
     Global EditBox
-		try Gui, EditBox:Destroy
+		try GUI, EditBox:Destroy
     if !Input
   		Result := Clipboard
     else
       result := Text
 		Gui EditBox: +AlwaysOnTop +Toolwindow +owner +HwndGUIID
 			GUI, EditBox:Font, s12 cBlack, Consolas
-			Gui, EditBox:Add, Edit, +Resize vEditBox , % Result
-			gui, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
-			Gui, EditBox:Show,, Result
+			GUI, EditBox:Add, Edit, +Resize vEditBox , % Result
+			GUI, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
+			GUI, EditBox:Show,, Result
       winSet, Transparent, 100, EditBox
 			return
 			EditBoxGuiClose:
 			EditBoxGuiEscape:
 			EditBoxButtonOK:
-			Gui, EditBox:submit
+			GUI, EditBox:submit
       if !Text
   			clipboard:=EditBox
       sleep 50
@@ -234,34 +246,23 @@ SingleRegex(){
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
         Batch:=cBatch
-        ; IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
       }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
-        ; varbar.show()
       }
       If !cLot {
-        ; GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
-        ; varbar.show()
       }
       If !cCoated {
         GuiControl,Vajrbar:Text, Coated, %cCoated%
         Coated:=cCoated
-        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
-        ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
-        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
-        ; varbar.show()
       }
       If cSampleID {
         GuiControl,Varbar:Text, SampleID, %cSampleID%
-        ; varbar.show()
       }
       Gui Varbar:Default
       gui varbar:submit, nohide
@@ -293,39 +294,29 @@ Regex(Category:=""){
       If cBatch {
         GuiControl,Varbar:Text, Batch, %cBatch%
         Batch:=cBatch
-        ; IniWrite, %cBatch%, Settings.ini, SavedVariables, Batch
+
       }
       If cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
-        ; varbar.show()
       }
       If !cLot {
         GuiControl,Varbar:Text, lot, %clot%
         lot:=cLot
-        ; IniWrite, %cLot%, Settings.ini, SavedVariables, Lot
-        ; varbar.show()
       }
       If !cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
         Coated:=cCoated
-        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
-        ; varbar.show()
       }
       If cCoated {
         GuiControl,Varbar:Text, Coated, %cCoated%
-        ; IniWrite, %cCoated%, Settings.ini, SavedVariables, Coated
         GuiControl, Varbar:MoveDraw, Coated
-        ; varbar.show()
       }
-      If cSampleID {
-        GuiControl,Varbar:text, SampleID, %cSampleID%
-            ; IniWrite, %cSampleID%, Settings.ini, SavedVariables, SampleID
-      }
+      ; If cSampleID {
+      ;   GuiControl,Varbar:text, SampleID, %cSampleID%
+      ; }
       Gui Varbar:Default
       gui varbar:submit, nohide
-      ; flovar(0,1)
       FloVar(0,2000,16)
 
       sleep 20

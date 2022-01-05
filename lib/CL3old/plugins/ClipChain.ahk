@@ -64,12 +64,12 @@ ClipChainInit:
 	Menu, ClipChainMenu, Add
 	Menu, ClipChainMenu, Add, Clear ClipChain, ClipChainClear
 
-	Gui, ClipChain:Default
-	Gui, ClipChain:Font, % dpi("s8")
-	Gui, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate
-	Gui, ClipChain:Add, Listview, % dpi("x0 y0 w195 h250 r10 NoSortHdr -hdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
-	Gui, ClipChain:Add, Button, % dpi(" gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
-	Gui, ClipChain:Add, Button, % dpi("x+1 gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
+	GUI, ClipChain:Default
+	GUI, ClipChain:Font, % dpi("s8")
+	GUI, ClipChain:+Border +ToolWindow +AlwaysOnTop +E0x08000000 ; +E0x08000000 = WS_EX_NOACTIVATE ; ontop and don't activate
+	GUI, ClipChain:Add, Listview, % dpi("x0 y0 w195 h250 r10 NoSortHdr -hdr grid vLVCGIndex gClipChainClicked hwndHLV"), | |IDX
+	GUI, ClipChain:Add, Button, % dpi(" gClipChainMoveUp   vButton1"), % Chr(0x25B2) ; â–²
+	GUI, ClipChain:Add, Button, % dpi("x+1 gClipChainMoveDown vButton2"), % Chr(0x25BC) ; â–¼
 	LV_ModifyCol(1,dpi()*10)
 	LV_ModifyCol(2,dpi()*180)
 	LV_ModifyCol(3,*0)
@@ -77,25 +77,25 @@ ClipChainInit:
 	;LV_ModifyCol(3,30)  ; debug
 	Gosub, ClipChainListview
 
-	; Gui, ClipChain:font,% dpi("s8")
-	; Gui, ClipChain:Add, GroupBox, % dpi("x2 yp+355 w181 h50 vGbox1"), Chain(s)
-	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
-	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings"
-	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
-	; Gui, ClipChain:font
-; Gui, ClipChain:font, % dpi("s12 bold")
-	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
-	; Gui, ClipChain:font
+	; GUI, ClipChain:font,% dpi("s8")
+	; GUI, ClipChain:Add, GroupBox, % dpi("x2 yp+355 w181 h50 vGbox1"), Chain(s)
+	; GUI, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainInsert   vButton3"), Ins
+	; GUI, ClipChain:font,% dpi("s11") ; " Wingdings"
+	; GUI, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainEdit     vButton4"), % Chr(0x270E) ; âœŽ ; % Chr(33) ; Edit (pencil)
+	; GUI, ClipChain:font
+; GUI, ClipChain:font, % dpi("s12 bold")
+	; GUI, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainDel      vButton5"), % Chr(0x1f5d1) ; trashcan ; X ; Del (X)
+	; GUI, ClipChain:font
 
- 	; Gui, ClipChain:font,% dpi("s11") ; " Wingdings "
-	; Gui, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
-	; Gui, ClipChain:font
-	; Gui, ClipChain:font,% dpi("s8")
-	; Gui, ClipChain:Add, IpBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
-	; Gui, ClipChain:Add, Checkbox, % dpi("xp+10 yp+18 w75 h24 vClipChainNoHistory gClipChainCheckboxes"), No History
-	; Gui, ClipChain:Add, Checkbox, % dpi("xp+80 yp    w85 h24 vClipChainTrans     gClipChainCheckboxes"), Transparent
-	; Gui, ClipChain:Add, Checkbox, % dpi("xp-80 yp+30 w75 h24 vClipChainPause     gClipChainCheckboxes"), Pause
-	; Gui, ClipChain:Add, Button  , % dpi("xp+80 yp    w85 h24 vClipChainGuiClose  gClipChainGuiClose"  ), Close ClipChain
+ 	; GUI, ClipChain:font,% dpi("s11") ; " Wingdings "
+	; GUI, ClipChain:Add, Button, % dpi("xp+28 yp    w26 h26   gClipChainMenu     vButton6"), % Chr(0x1F4C2) ; open folder ðŸ“‚; % Chr(49)
+	; GUI, ClipChain:font
+	; GUI, ClipChain:font,% dpi("s8")
+	; GUI, ClipChain:Add, IpBox, % dpi("x2 yp+40 w181 h80 vGbox2"), Options
+	; GUI, ClipChain:Add, Checkbox, % dpi("xp+10 yp+18 w75 h24 vClipChainNoHistory gClipChainCheckboxes"), No History
+	; GUI, ClipChain:Add, Checkbox, % dpi("xp+80 yp    w85 h24 vClipChainTrans     gClipChainCheckboxes"), Transparent
+	; GUI, ClipChain:Add, Checkbox, % dpi("xp-80 yp+30 w75 h24 vClipChainPause     gClipChainCheckboxes"), Pause
+	; GUI, ClipChain:Add, Button  , % dpi("xp+80 yp    w85 h24 vClipChainGuiClose  gClipChainGuiClose"  ), Close ClipChain
 
 	; GuiControl, ClipChain:, ClipChainNoHistory  , %ClipChainNoHistory%
 	GuiControl, ClipChain:, ClipChainTrans      , %ClipChainTrans%
@@ -159,7 +159,7 @@ Return
 								clipchaininsert()
 								send, ^x
 								return
-	F20 & F19::				;Gui, ClipChain:Destroy
+	F20 & F19::				;GUI, ClipChain:Destroy
 	+F18:: 						gosub, ClipChainGuiClose
 	;F19::			 			clipchain_C() ;
 	; ClipChainInsert()
@@ -287,8 +287,8 @@ ClipChainInsert(){ ; if nothing is higlighted, it will tripple click the word th
 
 	ClipChainIns:=Clipboard
 	ClipChainDataIndex:=""
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, NoHide
+	GUI, ClipChain:Default
+	GUI, ClipChain:Submit, NoHide
 	LVCGIndex := LV_GetNext()
 	If (LVCGIndex = 0)
 		LVCGIndex = 1
@@ -336,8 +336,8 @@ Return
 
 ;$^v::
 ClipChainPasteDoubleClick:
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, NoHide
+	GUI, ClipChain:Default
+	GUI, ClipChain:Submit, NoHide
 	If ClipChainPause
 		Return
 	If (ClipChainIndex > ClipChainData.MaxIndex())
@@ -364,12 +364,12 @@ return
 hk_clipchain:
 
 	If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
-		; Gui, ClipChain:Show, % dpi("w185 NA x") ClipChainX " y" ClipChainY, CL3ClipChain
-		Gui, ClipChain:Show, % dpi("w185 NA x") A_ScreenWidth-190 " y" 0, CL3ClipChain
+		; GUI, ClipChain:Show, % dpi("w185 NA x") ClipChainX " y" ClipChainY, CL3ClipChain
+		GUI, ClipChain:Show, % dpi("w185 NA x") A_ScreenWidth-190 " y" 0, CL3ClipChain
 	else
 	{
 		Gosub, ClipChainSaveWindowPosition
-		Gui, ClipChain:Hide
+		GUI, ClipChain:Hide
 	}
 	Gosub, ClipChainCheckboxes
 Return
@@ -380,12 +380,12 @@ Return
 
 ClipChainSaveFile:
 	SaveAsName:=""
-	Gui, ClipChain:Submit, Hide
+	GUI, ClipChain:Submit, Hide
 	InputBox, SaveAsName, Name for XML, Save Clipchain as
 		If (SaveAsName = "")
 	{
 		MsgBox, Enter filename!`nSlots not saved.
-		Gui, ClipChain:Show
+		GUI, ClipChain:Show
 		Return
 	}
 	StringReplace, SaveAsName, SaveAsName, .xml,,All
@@ -393,7 +393,7 @@ ClipChainSaveFile:
 Return
 
 ClipChainClear:
-	Gui, ClipChain:Default
+	GUI, ClipChain:Default
 	LV_Delete()
 	ClipChainDataNew:=[]
 Return
@@ -437,8 +437,8 @@ ClipChainInsert:
 
 	ClipChainIns:=Clipboard
 	ClipChainDataIndex:=""
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, NoHide
+	GUI, ClipChain:Default
+	GUI, ClipChain:Submit, NoHide
 	LVCGIndex := LV_GetNext()
 	If (LVCGIndex = 0)
 		LVCGIndex = 1
@@ -487,12 +487,12 @@ ClipChainInsertGui:
 	; not public
 	#include *i %A_ScriptDir%\plugins\MyQEDLG-ClipChain.ahk
 
-	Gui, ClipChainInsertGui:Destroy
-	Gui, ClipChainInsertGui:Add, Text, x5 y5, Insert text into chain after %ClipChainDataIndex% item:
-	Gui, ClipChainInsertGui:Add, Edit, xp yp+20 w500 h300 vClipChainIns, %ClipChainIns%
-	Gui, ClipChainInsertGui:Add, Button, gClipChainInsertGuiOK w100, OK
-	Gui, ClipChainInsertGui:Add, Button, xp+120 gClipChainInsertGuiCancel w100, Cancel
-	Gui, ClipChainInsertGui:Show, , %ClipChainGuiTitle%
+	GUI, ClipChainInsertGui:Destroy
+	GUI, ClipChainInsertGui:Add, Text, x5 y5, Insert text into chain after %ClipChainDataIndex% item:
+	GUI, ClipChainInsertGui:Add, Edit, xp yp+20 w500 h300 vClipChainIns, %ClipChainIns%
+	GUI, ClipChainInsertGui:Add, Button, gClipChainInsertGuiOK w100, OK
+	GUI, ClipChainInsertGui:Add, Button, xp+120 gClipChainInsertGuiCancel w100, Cancel
+	GUI, ClipChainInsertGui:Show, , %ClipChainGuiTitle%
 	While (ClipChainInsertActive = 0)
 	{
 		Sleep 20
@@ -502,8 +502,8 @@ Return
 ClipChainDel:
 	XMLSave("ClipChainData","-" A_Now)
 	ClipChainDataIndex:=""
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, NoHide
+	GUI, ClipChain:Default
+	GUI, ClipChain:Submit, NoHide
 	LVCGIndex := LV_GetNext()
 	If (LVCGIndex = 0)
 		LVCGIndex = 1
@@ -519,8 +519,8 @@ ClipChainDel:
 Return
 
 ClipChainCheckboxes:
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, NoHide
+	GUI, ClipChain:Default
+	GUI, ClipChain:Submit, NoHide
 
 	; no longer used v1.95
 	;If ClipChainNoHistory
@@ -541,7 +541,7 @@ ClipChainTrans:
 		WinSet, Transparent, 250, CL3ClipChain ahk_class AutoHotkeyGUI
 return
 ClipChainClicked:
-	Gui, ClipChain:Default
+	GUI, ClipChain:Default
 	ClipChainIndex:=A_EventInfo
 	Gosub, ClipChainUpdateIndicator
 Return
@@ -556,7 +556,7 @@ ClipChainLoad:
 	#Include *i %A_ScriptDir%\plugins\ClipChainPRIVATERULES.ahk
 	ClipChainData:=StrSplit(ClipChainData,Chr(7))
 ClipChainListview:
-	Gui, ClipChain:Default
+	GUI, ClipChain:Default
 	LV_Delete()
 	for k,v in ClipChainData
 		LV_Add("", "", ClipChainHelper(v), A_Index)
@@ -572,7 +572,7 @@ return in
 }
 
 ClipChainUpdateIndicator:
-	Gui, ClipChain:Default
+	GUI, ClipChain:Default
 	Loop, % ClipChainData.MaxIndex()
 		LV_Modify(A_Index,"Col1"," ")
 
@@ -593,8 +593,8 @@ ClipChainGuiClose:
 	ScriptClipClipChain:=0
 	Gosub, ClipChainSaveWindowPosition
 	Gosub, ClipChainSet
-	Gui, ClipChain:Default
-	Gui, ClipChain:Submit, Hide
+	GUI, ClipChain:Default
+	GUI, ClipChain:Submit, Hide
 	XA_Save("ClipChainData",A_ScriptDir "\ClipData\ClipChain\ClipChain.xml")
 Return
 
@@ -632,12 +632,12 @@ ClipChainInsertGuiGuiExit:
 ClipChainInsertGuiGuiClose:
 ClipChainInsertGuiOK:
 
-	Gui, ClipChainInsertGui:Submit, Destroy
+	GUI, ClipChainInsertGui:Submit, Destroy
 	ClipChainInsertActive:=1
 Return
 
 ClipChainInsertGuiCancel:
-	Gui, ClipChainInsertGui:Destroy
+	GUI, ClipChainInsertGui:Destroy
 	ClipChainInsertActive:=1
 Return
 
@@ -664,7 +664,7 @@ MenuHandlerClipChainLoadFile:
 		FileDelete, %A_ScriptDir%\ClipData\ClipChain\%A_ThisMenuItem%
 		ClipChainData:=[]
 	}
-	Gui, ClipChain:Default
+	GUI, ClipChain:Default
 	LV_Delete()
 	Gosub, ClipChainListview
 Return

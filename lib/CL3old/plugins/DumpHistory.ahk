@@ -8,7 +8,7 @@ CL3 version       : 1.32
 
 DumpHistory:
 DumpHistoryOutput:=""
-Gui, Search:Submit, Destroy
+GUI, Search:Submit, Destroy
 for k, v in history
 	{
 	 If CBProgram
@@ -21,12 +21,12 @@ for k, v in history
 Return
 
 DumpHistory()	{
-	Gui, Search:Destroy
-	Gui, Search:+AlwaysOnTop
-	Gui, Search:Add, Checkbox, vCBText checked, Export Text
-	Gui, Search:Add, Checkbox, vCBProgram, Export Source (program)
-	Gui, Search:Add, Edit, vDumpFileName w200, history%A_Now%.txt
-	Gui, Search:Add, Button, gDumpHistory default, Export
-	Gui, Search:Show,Center, Export CL3 Clipboard History
+	GUI, Search:Destroy
+	GUI, Search:+AlwaysOnTop
+	GUI, Search:Add, Checkbox, vCBText checked, Export Text
+	GUI, Search:Add, Checkbox, vCBProgram, Export Source (program)
+	GUI, Search:Add, Edit, vDumpFileName w200, history%A_Now%.txt
+	GUI, Search:Add, Button, gDumpHistory default, Export
+	GUI, Search:Show,Center, Export CL3 Clipboard History
 	}
-	
+

@@ -41,32 +41,32 @@ x:=10
 y:=10
 Index:=0
 
-Gui, Slots:font,% dpi("s8")
+GUI, Slots:font,% dpi("s8")
 Loop, 10
 	{
 	 Index++
 	 If (Index = 10)
 		Index:=0
-	 Gui, Slots:Add, Text, % dpi("x" x " y" y),Slot #%Index% [RCtrl + %Index%]
-	 Gui, Slots:Add, Edit, % dpi("w290 h60 vSlot" Index), % Slots[Index]
+	 GUI, Slots:Add, Text, % dpi("x" x " y" y),Slot #%Index% [RCtrl + %Index%]
+	 GUI, Slots:Add, Edit, % dpi("w290 h60 vSlot" Index), % Slots[Index]
 	 y+=80
 	 if (A_Index = 5)
 		y:=10
 	 if (A_Index = 5)
 		x:=310
 	}
-Gui, Slots:Add, Button, % dpi("x10 gSlotsSave"), &Save Slots (slots.xml)
-Gui, Slots:Add, Button, % dpi("xp130 gSlotsSaveAs"), Save &As (name.xml)
-Gui, Slots:Add, Button, % dpi("xp130 gLoadSlots"), &Load (name.xml)
-Gui, Slots:Add, Button, % dpi("xp253 gSlotsClose"), &Close window
+GUI, Slots:Add, Button, % dpi("x10 gSlotsSave"), &Save Slots (slots.xml)
+GUI, Slots:Add, Button, % dpi("xp130 gSlotsSaveAs"), Save &As (name.xml)
+GUI, Slots:Add, Button, % dpi("xp130 gLoadSlots"), &Load (name.xml)
+GUI, Slots:Add, Button, % dpi("xp253 gSlotsClose"), &Close window
 Return
 
 ;^#F12::
 hk_slots:
 If !WinExist("CL3Slots ahk_class AutoHotkeyGUI")
-	Gui, Slots:Show, ,CL3Slots
+	GUI, Slots:Show, ,CL3Slots
 else
-	Gui, Slots:Hide
+	GUI, Slots:Hide
 send, {ctrlup}{lwinup}
 Return
 
@@ -139,11 +139,11 @@ Return
 ~Esc::
 SlotsGuiClose:
 SlotsClose:
-Gui, Slots:Cancel
+GUI, Slots:Cancel
 Return
 
 SlotsSave:
-Gui, Slots:Submit, Hide
+GUI, Slots:Submit, Hide
 XMLSave("Slots","-" A_Now)
 Index:=0
 Loop, 10
@@ -156,12 +156,12 @@ Return
 
 SlotsSaveAs:
 SaveAsName:=""
-Gui, Slots:Submit, Hide
+GUI, Slots:Submit, Hide
 InputBox, SaveAsName, Name for XML, Save slots as
 If (SaveAsName = "")
 	{
 	 MsgBox, Enter filename!`nSlots not saved.
-	 Gui, Slots:Show
+	 GUI, Slots:Show
 	 Return
 	}
 XMLSave("Slots","-" A_Now)

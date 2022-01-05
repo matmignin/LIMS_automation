@@ -40,7 +40,7 @@
 ; MyListHandle := New LV_Rows() <-- Creates a new handle.
 ; MyListHandle.Add() <-- Calls function for that Handle.
 ;
-; Like AutoHotkey built-in functions, these functions operate on the default gui,
+; Like AutoHotkey built-in functions, these functions operate on the default GUI,
 ; and active ListView control.
 ;
 ; Initializing is required for History functions or in case your ListView has icons.
@@ -49,13 +49,13 @@
 ;
 ; In order to keep row's icons you need to initialize the class passing the
 ; ListView's Hwnd. For example:
-; Gui, Add, ListView, hwndhLV, Columns
+; GUI, Add, ListView, hwndhLV, Columns
 ; MyListHandle := New LV_Rows(hLV)
 ;
 ; You may keep an individual history of each ListView using different handles.
 ;
 ;=======================================================================================
- 
+
 Class LV_Rows
 {
 ;=======================================================================================
@@ -79,13 +79,13 @@ If (Hwnd)
 this.LVHwnd := Hwnd
 this.Slot := [], this.ActiveSlot := 1
 }
- 
+
 __Call(Func)
 {
 If (Func <> "Copy")
 this.HasChanged := True
 }
- 
+
 __Delete()
 {
 this.Remove("", Chr(255))
@@ -260,25 +260,25 @@ Static LVM_GETTOPINDEX := 0x1027
 Static LVM_GETCOUNTPERPAGE := 0x1028
 Static LVM_GETSUBITEMRECT := 0x1038
 Static LV_currColHeight := 0
- 
+
 SysGet, SM_CXVSCROLL, 2
- 
+
 If InStr(DragButton, "d", True)
 DragButton := "RButton"
 Else
 DragButton := "LButton"
- 
+
 CoordMode, Mouse, Window
 MouseGetPos,,, LV_Win, LV_LView, 2
 WinGetPos, Win_X, Win_Y, Win_W, Win_H, ahk_id %LV_Win%
 ControlGetPos, LV_lx, LV_ly, LV_lw, LV_lh, , ahk_id %LV_LView%
 VarSetCapacity(LV_XYstruct, 4 * A_PtrSize, 0)
- 
+
 While, GetKeyState(DragButton, "P")
 {
 MouseGetPos, LV_mx, LV_my,, CurrCtrl, 2
 LV_mx -= LV_lx, LV_my -= LV_ly
- 
+
 If (AutoScroll)
 {
 If (LV_my < 0)
@@ -292,14 +292,14 @@ SendMessage, LVM_SCROLL, 0, LV_currColHeight, , ahk_id %LV_LView%
 Sleep, %ScrollDelay%
 }
 }
- 
+
 If (CurrCtrl <> LV_LView)
 {
 LV_currRow := ""
-Gui, MarkLine:Cancel
+GUI, MarkLine:Cancel
 continue
 }
- 
+
 SendMessage, LVM_GETITEMCOUNT, 0, 0, , ahk_id %LV_LView%
 LV_TotalNumOfRows := ErrorLevel
 SendMessage, LVM_GETCOUNTPERPAGE, 0, 0, , ahk_id %LV_LView%
@@ -307,7 +307,7 @@ LV_NumOfRows := ErrorLevel
 SendMessage, LVM_GETTOPINDEX, 0, 0, , ahk_id %LV_LView%
 LV_topIndex := ErrorLevel
 , Line_W := (LV_TotalNumOfRows > LV_NumOfRows) ? LV_lw - SM_CXVSCROLL : LV_lw
- 
+
 Loop, % LV_NumOfRows + 1
 {
 LV_which := LV_topIndex + A_Index - 1
@@ -325,22 +325,22 @@ LV_currRow := LV_which + 1
 , Line_X := Win_X + LV_lx
 If (LV_currRow > (LV_TotalNumOfRows+1))
 {
-Gui, MarkLine:Cancel
+GUI, MarkLine:Cancel
 LV_currRow := ""
 }
 Break
 }
 }
- 
+
 If LV_currRow
 {
-Gui, MarkLine:Color, %Color%
-Gui, MarkLine:+LastFound +AlwaysOnTop +Toolwindow -Caption +HwndLineMark
-Gui, MarkLine:Show, W%Line_W% H%LineThick% Y%Line_Y% X%Line_X% NoActivate
+GUI, MarkLine:Color, %Color%
+GUI, MarkLine:+LastFound +AlwaysOnTop +Toolwindow -Caption +HwndLineMark
+GUI, MarkLine:Show, W%Line_W% H%LineThick% Y%Line_Y% X%Line_X% NoActivate
 }
 }
-Gui, MarkLine:Cancel
- 
+GUI, MarkLine:Cancel
+
 If LV_currRow
 {
 DragRows := new LV_Rows(this.LVHwnd)
@@ -424,7 +424,7 @@ Load(Number)
 {
 If !IsObject(this.Slot[Number])
 return False
- 
+
 LV_Delete()
 For each, Row in this.Slot[Number]
 LV_Add(Row*)
@@ -464,7 +464,7 @@ Static LVIF_IMAGE := 0x00000002
 Static LVM_GETITEMA := 0x1005
 Static LVM_GETITEMW := 0x104B
 Static LVM_GETITEM := A_IsUnicode ? LVM_GETITEMW : LVM_GETITEMA
- 
+
 VarSetCapacity(LVITEM, 6 * 4 + (A_PtrSize * 2), 0)
 NumPut(LVIF_IMAGE, LVITEM, 0, "UInt") ; mask
 NumPut(Row-1, LVITEM, 4, "Int") ; iItem

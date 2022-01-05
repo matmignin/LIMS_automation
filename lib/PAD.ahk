@@ -167,8 +167,8 @@ clipCheckIfEmpty(){
 			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 				Sendpassword()
 		}
-		else if winactive("ahk_exe Jaspersoft Studio.exe") || winactive("Parameter: REQUESTGUID")
-			REQUESTGUID()
+		else if winactive("ahk_exe Jaspersoft Studio.exe") || winactive("Parameter: SavedTextMenu")
+			SavedTextMenu()
 		else 	if winactive("ahk_exe OUTLOOK.EXE") {
 			clipCheckIfEmpty()
 			clip()
