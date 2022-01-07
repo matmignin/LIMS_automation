@@ -50,7 +50,7 @@ Ins::flovar()
 return
 
 
-F19::
+F19::  ;;copy, append, append Tab
 	if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
 	{
 			CopyPresses += 1
@@ -62,21 +62,24 @@ F19::
 	PressCopy:
 		if (CopyPresses = 1) ; The key was pressed once.
 		{
-				Clip.Copy()
+				send, ^c
+				sleep 75
 		}
 		else if (CopyPresses = 2) ; The key was pressed twice.
 		{
-				clip.Append()
+					clip.Append()
+					Sleep 300
 		}
 		else if (CopyPresses > 2)
 		{
-				clip.Append("`t")
+				Clip.EditBox()
 				; Pop(Clipboard)
 		}
+		FloVar(Clipboard,700,11)
 	CopyPresses := 0
 return
-; F13 & Rbutton::
-F20::
+
+F20:: ;;paste, editbox, clipchain
 	if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
 	{
 			PastePresses += 1
@@ -92,7 +95,7 @@ F20::
 		}
 		else if (PastePresses = 2) ; The key was pressed twice.
 		{
-		Clip.EditBox()
+			Send, {F18}
 		}
 		else if (PastePresses > 2)
 		{
@@ -145,11 +148,6 @@ return
 ; >+F20::             	varbar.focus("Batch")
 >+F19::            		varbar.focus("Product")
 <+F19::								Sendinput, {_}
-F20 & left::					sendInput % product
-F20 & down::					sendInput % Batch
-F20 & right::					sendInput % Lot
-F20 & up::						sendInput % Coated
-F13 & `::										menu.ProductSelection()
 F19 & left::								GetAllProducts()
 F19 & down::								GetAllBatches()
 F19 & up::									Sendinput % excel.GetAllSheets()
@@ -164,9 +162,8 @@ rwin::return
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
 Numlock::								  4tap()
 ;;	___Lbuton:
-Lbutton & F19::backspace
-; Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
-Lbutton & F20::delete
+Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
+Lbutton & F20::						send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup}
 F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
 F19 & Rbutton::       		clip("OCR")
 F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipaste copy
@@ -192,7 +189,7 @@ rbutton & Appskey::				2Tap()
 rshift & Appskey::				return
 F19 & \:: 								Sendpassword()
 ^+7::
-
+Lbutton & / up::clip("OCR")
 F20 & /::        	 				clip("OCR")
 
 
@@ -205,7 +202,7 @@ F20 & /::        	 				clip("OCR")
 	esc::								esc
 	F17::								Clipboard:=ExampleString
 	Media_Prev::						F15 ;MakeTransparent()
-	Media_Play_Pause::			F16
+	; Media_Play_Pause::			F16
 	Media_Next::						F17
 	numpadsub::          		4Left()
 	numpadadd::          		4right()
@@ -242,6 +239,7 @@ F20 & /::        	 				clip("OCR")
 	` & 4::							Test(4)
 	` & 5::							Test(5)
 	` & 6::							Test(6)
+	F13 & `::
 	` & esc::						Varbar.reset()
 	`::	 								sendraw, ``
 
@@ -261,9 +259,9 @@ F20 & /::        	 				clip("OCR")
 
 	F20 & =::            		Send,{ctrldown}{=}{ctrlup}
 	F20 & -::            		Send,{ctrldown}{-}{ctrlup}
-	F19 & enter::					Varbar.focus("Edit5")
+	F19 & enter::					Varbar.focus("Edit1")
 	F20 & enter::					Varbar.focus("Edit2")
-	F20 & F19::          	Varbar.focus("Edit1")
+	; F20 & F19::          	Varbar.focus("Edit1")
 
 
 
@@ -298,8 +296,6 @@ F20 & /::        	 				clip("OCR")
 	F6::              Send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
 	F19 & Wheelright::
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
-	F19::             Clip.Copy()
-	F20::             Clip.paste()
 
 
 #ifwinactive, AHK RegEx Tester v2.1
@@ -307,6 +303,16 @@ F20 & /::        	 				clip("OCR")
 	up::sendinput, +{tab}
 	F13 & j::
 	down::sendinput, {tab}
+#ifwinexist, CodeQuickTester*
+Media_Play_Pause::
+if !winactive("CodeQuickTester*")
+	WinActivate,
+	if Toggle
+	send, !k
+	else
+	send, !r
+	Toggle:=!Toggle
+	return
 
 
 #ifwinactive, ahk_exe Snipaste.exe ;;	___Snipaste
@@ -322,10 +328,9 @@ F20 & /::        	 				clip("OCR")
 	F9::    					Excel.Connect(1)
 	F13 & 1::    	LMS.searchBar(Product)
 	F19 & backspace::    delete
-
+	F19 & space::    Backspace
 	; F19::
 	F15::sendinput, {pgup}
-	F16::sendinput, {pgdn}
 	; F19 & down::         ^down
 	; F19 & up::           ^up
 	; F19 & left::         ^left
@@ -382,10 +387,7 @@ F20 & /::        	 				clip("OCR")
 	;F20 & F19::          Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
 
 	numpadmult::
-	F20::
-								Send, ^{c}
-								Clip.Copy()
-								return
+
 	F7::						LMS.SearchRequest(Batch,"{enter}")
 	F9::
 								winactivate, NuGenesis LMS - \\Remote
@@ -438,19 +440,20 @@ F15::MuteTeamsMicrophone()
 
 
  #Ifwinactive, ahk_exe firefox.exe ;; 	___Firefox
- numpaddot::	      sendInput, ^w
 ;  F6::				   	Sendinput, !{left}
 	;mbutton::space
-	F6::sendinput, +{wheelleft 10}
-	F7::sendinput, +{wheelright 10}
-	F8::sendinput, +{wheeldown 10}
-	F9::sendinput, +{wheelup 10}
+	F6::sendinput, {altdown}{left}{altup}
+	F7::sendinput, {altdown}{right}{altup}
+	F8::sendinput, {shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+	F9::sendinput, {ctrldown}{tab}{ctrlup}
 ;  F7::				   	Send, !{right}
  F13::				  	Send, {ctrldown}{/}{ctrlup}
 ;  +F13::				 	Send, {esc}
- numpadadd::send, {lwindown}{right}{lwinup}
- numpadsub::send, {lwindown}{left}{lwinup}
- numpadmult::send, {lwindown}{up}{lwinup}
+ numpadadd::sendinput, {lwindown}{right}{lwinup}
+ numpaddot::sendinput, {ctrldown}{w}{ctrlup}
+ numpadsub::sendinput, {lwindown}{left}{lwinup}
+ numpadmult::sendinput, {lwindown}{up}{lwinup}
+
 
 
 #ifwinactive, Map VQ drive.bat ahk_exe cmd.exe

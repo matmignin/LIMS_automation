@@ -3,12 +3,13 @@ Lbutton & Space::
 		click up left
 		sendinput, ^c
 		sleep 100
-		keywait Lbutton
+		keywait Lbutton, L
+		keywait Lbutton, D
 		sleep 50
-		keywait Lbutton
-		; keywait rbutton, T5
-		click
-		sendinput ^v
+		; keywait Lbutton, L
+		keywait, Space, U
+		send ^v
+		sleep 200
 		return
 	F13 & Lbutton::
 		click down left
@@ -18,15 +19,20 @@ Lbutton & Space::
 
 
 
+
 _MouseIsOver:
 	#if mouseisover("ahk_exe Code.exe")
 		mbutton::controlsend,,{shiftdown}{F9}{shiftup},ahk_exe Code.exe
 		^f::
-		winactivate, ahk_exe Code.exe
-		controlsend,,^{f},ahk_exe Code.exe
+		If !winactive("ahk_exe Code.exe"){
+			click
+			; winactivate, ahk_exe Code.exe
+			sleep 100
+		}
+		sendinput, {ctrldown}{f}{ctrlup}
 		return
 		;Space::Send, {lwin down}d{lwin up}
-	#if mouseisover("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd")
+	#if mouseisover("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd") || MouseIsOver("ToolbarWindow323")
 		mbutton::
 		F15::menu.TaskBar()
 		;Space::Send, {lwin down}d{lwin up}
@@ -590,8 +596,8 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					VarBar.BatchesMenu(Product)
 				else if (winControl="Edit3") || (winControl="Edit4")
 					menu.ProductSelection()
-				else if (winControl="Edit6") || (winControl="Edit7")
-					menu.ProductSelection()
+				; else if (winControl="Edit6") || (winControl="Edit7")
+					; menu.ProductSelection()
 				else
 					VarBar.Menu()
 				return
@@ -600,16 +606,16 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	{
 		If MouseIsOver("NuGenesis LMS - \\Remote")
 			menu.LMS()
-		else
-			Send, {F18}
+		else	
+			click Right
 		return
 	}
 	; else if (A_PriorHotKey != A_ThisHotKey and A_TimeSincePriorHotkey < 550)
 		; return
 	; else if (A_PriorHotKey = A_ThisHotKey AND A_TimeSincePriorHotkey > 450)
 		; return
-	else if (A_TimeSincePriorHotkey > 550)
-		click Right
+	; else if (A_TimeSincePriorHotkey > 550)
+	; 	click Right
 	Return
 }
 

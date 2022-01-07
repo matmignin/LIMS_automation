@@ -51,33 +51,21 @@ Sheetactivate(XL){
 }
 
 GetAllSheets(){ ; Get each sheet name and turn it into an array
-global
-ProductSheets:=[]
-XL := ComObjactive("Excel.Application")
-												For sheet in xl.activeWorkbook.Worksheets
-												; {
-													cSheet:=sheet.name
-													; if RegexMatch(cSheet, "i)[abdefghijkl]\d{3}\b")
-														; ProductSheets.insert(cSheet)
-												; }
-												; Productsheets.remove(1)
-												; Productsheets.remove(1)
-														; A__DDLXLProducts .= "|" Products[A_index]
-												 AllWorkSheets:=listarray(ProductSheets,"")
-												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Main", " | ")
-												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Vitamin A", " | ")
-												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Finished", " | ")
-												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Template", "")
-												  ; AllWorkSheets:= StrReplace(AllWorkSheets, "Micro Pending", " | ")
-												  ; AllWorkSheets:= StrReplace(AllWorkSheets, A_space A_space, A_space)
-												 Return AllWorkSheets
-												}
+	global
+	ProductSheets:=[]
+	XL := ComObjactive("Excel.Application")
+	For sheet in xl.activeWorkbook.Worksheets
+		cSheet:=sheet.name
+	 AllWorkSheets:=listarray(ProductSheets,"")
+	 Return AllWorkSheets
+}
 
 SheetChange(sht,Cell) {
 	Global
-	if (Cell.activeCell.Address = "$E$1" || Cell.activeCell.Address = "$B$3") {
+	if (Cell.activeCell.Address = "$E$1") || (Cell.activeCell.Address = "$B$3") {
 			excel.Infolocaions()
-	POP(Cell.activeCell.value,Shipto)
+	; msgbox % Cell.activeCell.value
+	Flovar(Cell.activeCell.value,1000)
 	}
 	else
 		return
@@ -125,7 +113,7 @@ InfoLocations(){
 		; Products:=[]
 		loop, parse, MoreBatches, `r`n
 		{
-			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)?.?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]? )?.?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
 					if sBatch
 						Products.Insert(Product " " sBatch " " sLot " " sCoated)
 		}

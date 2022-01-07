@@ -401,7 +401,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Coated, Edit4, VarBar
-		ControlGetText, SampleId, Edit5, VarBar
+		; ControlGetText, SampleId, Edit5, VarBar
 			LMS.DetectTab()
 		; TT(Code " " Product "`n" Tab)
 			if (Tab="Products" || Tab="Specs")

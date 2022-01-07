@@ -92,7 +92,7 @@
       ".sass": "sass --style expanded",
       ".cu": "cd $dir && nvcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
     },
-    "window.zoomLevel": 1,
+    "window.zoomLevel": -1,
     "workbench.sideBar.location": "left",
     "code-runner.defaultLanguage": "autohotkey",
     "code-runner.saveFileBeforeRun": true,

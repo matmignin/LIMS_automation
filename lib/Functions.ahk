@@ -480,6 +480,14 @@ SendPassword(){
 		winactivate
 		Sendinput, {K}ilgore7744{enter}
 	}
+	if winActive("Vitaquest Virtual Office ahk_exe firefox.exe"){
+		click 661, 245
+		send, {tab}
+		sleep 50
+		send, mmignin{tab}+{`+}Kilgore7744
+		sleep 50
+		; send, {Enter}
+	}
 	if winExist("Login - \\Remote"){
 		winactivate
 		Sendinput, mmignin{tab}{K}ilgore7744{enter}

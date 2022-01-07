@@ -1,13 +1,63 @@
 return
 #Ifwinactive,ahk_exe Code.exe  ;;___VSCODE___
-	; Mbutton::sendinput, +{F9}
+	Mbutton::sendinput, +{F9}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	F13 & Lalt::FindMatchingwindows()
-	F13 & `::sendinput, {ctrldown}{F8}{ctrlup}
-	F13 & s up::sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
+	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
+	F13 & z::F3
 	F13 & 5::send,`%
+	F13 & 4::        Sendinput,^!{4}
 	F13::F13
+
+	tab & `::				sendinput, ^!{0} ;unfold all
+	tab & `;::       Sendinput,!^{/} ;unfold all
+	tab & h::			   Sendinput,{ctrldown}{altdown}{[}{altup}{ctrlup}
+	tab & l::        Sendinput,{ctrldown}{altdown}{]}{altup}{ctrlup}
+
+	tab & j::
+									if Getkeystate("LControl","p")
+										send, {shiftdown}{down}{shiftup}
+									else
+										sendinput, {shiftdown}{altdown}{ctrldown}{'}{ctrlup}{altup}{shiftup}
+									return
+	tab & k::
+									if Getkeystate("LControl","p")
+										send, {shiftdown}{up}{shiftup}
+									else
+						        sendinput, {shiftdown}{altdown}{k}{altup}{shiftup}
+									return
+	tab & g::        sendinput, {shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}
+	tab & n::        sendinput, {shiftdown}{lwindown}{h}{lwinup}{shiftup}
+	tab & u::        sendinput, {shiftdown}{lwindown}{k}{lwinup}{shiftup}
+	tab & ,::        sendinput, +!^{left}
+	tab & .::        sendinput, +!^{.}
+	tab & a::        Sendinput,{shiftdown}{altdown}{lwindown}{a}{lwinup}{altup}{shiftup} ;align vertically
+	tab & w::        Sendinput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;fold region-current
+	tab & F13::      Sendinput,{shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup} ;unfold All
+	tab & s::        Sendinput,{shiftdown}{altdown}{lwindown}{s}{lwinup}{altup}{shiftup} ;toggle column
+	tab & m::        Sendinput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;fold comments
+	tab & z::        Sendinput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup} ;align cursors
+	tab & x::        Sendinput,{shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup} ;align vertically
+	tab & c::        Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup} ;Align
+	tab & p::        Sendinput,{shiftdown}{altdown}{ctrldown}{p}{ctrlup}{altup}{shiftup} ;Focus Pannel
+	tab & 1::        Sendinput,^!{1} ;fold level 1
+	tab & space::		 Sendinput,{shiftdown}{altdown}{lwindown}{8}{lwinup}{altup}{shiftup} ;toggle fold
+	tab & 2::        Sendinput,^!{2} ;fold level 2
+	tab & 3::        Sendinput,^!{3} ;fold all except selected
+	tab & 4::        Sendinput,^!{4}
+	tab & f::        Sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
+	tab & q::        Sendinput,{ctrldown}{]}{ctrlup}
+	tab & appskey::return ;Send, {tab}
+	3::3
+	$tab::send, {tab}
+	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
+	q & tab::                 Sendinput,{ctrldown}{[}{ctrlup}
+	q & u::										Sendinput, {q}{u}
+	q::q
+	`::`
+
+
 
 	numlock::#\
 	^r::!r
@@ -44,7 +94,7 @@ return
  ; go to file
 	F2::FindMatchingwindows()
 	F15::F15
-	; F3::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
+	; F3:Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
 ;;		---F19 and F20---
 	F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
 	<^f19::                   Sendinput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}

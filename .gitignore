@@ -45,3 +45,7 @@ bin/OCRoutput.txt
 Data/*
 **/bin/OCR.png
 Example Code/CodeQuickTester.ahk - Shortcut.lnk
+Settings.ini
+.vscode/settings.json
+Data/CurrentCodes.txt
+Example Code/RegexTester.ini

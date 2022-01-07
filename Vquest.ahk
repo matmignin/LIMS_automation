@@ -1,7 +1,12 @@
 ﻿
 VQuest_Start:
 
-  RegexProduct:="i)(?<=\w{3})?[abdefghijkl]\d{3}"
+
+RegexProduct:="i)(?<=\w{3})?[abdefghijkl]\d{3}"
+RegexBatch:=  "i)(?<!Ct#)\d{3}-\d{4}\b"
+RegexLot:=    "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?"
+RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+; RegexAll:="i)(?P<Product>(?<=\w{3})?[abdefghijkl]\d{3}))(?:.*) (?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))(?:.*)(?P<Lot>(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?))(?:.*)(?<=(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}))"
     #SingleInstance,Force
     #Persistent
     ;#ErrorStdOut
@@ -32,9 +37,9 @@ VQuest_Start:
     FormatTime, The_Time,, hh:mm
     SetNumLockState, on
     SetscrolllockState, off
+    CrLf=`r`n
     SetNumlockState Alwayson
     setcapslockstate alwaysoff
-    CrLf=`r`n
     SetscrolllockState, alwaysoff
     CoordMode, mouse, window
     SetWorkingDir, %A_ScriptDir%
@@ -47,7 +52,7 @@ VQuest_Start:
       VarBar_x=1
     if !VarBar_y
       VarBar_y=1
-    ;Menu, Tray, Add, CL3, CL3
+    Menu, Tray, Add, CL3, CL3
     Menu, Tray, Add, DebugVars, DebugVars
     Menu, tray, NoStandard
     ; Menu, tray, Click,
@@ -70,17 +75,16 @@ VQuest_Start:
     ; HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
-     varbar.Show()
-    GuiControl, -redraw, varbar
-    ; try Run, cl3.Ahk, lib\CL3
+    varbar.Show()
+    ;GuiControl, -redraw, varbar
+    try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
-    Blank:=" `n `n  `t `t `n`t "
     Currentwindow:=A
     IfwinExist, ahk_exe WFICA32.EXE
       LMS.Orient()
     if winexist("Mats LMS Workbook.xlsb - Excel") && ExcelConnect
       Excel.Connect(0)
-    GuiControl, +redraw, varbar
+    ;GuiControl, +redraw, varbar
 
     ; if A_Debuggername
       ; try Run, Vim.Ahk, lib\

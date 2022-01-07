@@ -307,8 +307,12 @@ Variable(){
     This.delete()
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
-      Menu, Menu, Add, VQ Login, Passwords
-      Menu, Menu, Add, Kilgore, Passwords
+      menu, menu, add
+      ; Menu, Menu, Add, VQ Login, Passwords
+      ; Menu, Menu, Add, Kilgore, Passwords
+        Menu, Menu, Add, &Aditi,Passwords
+        Menu, Menu, Add, &Bharat,Passwords
+        Menu, Menu, Add, &Mmignin,Passwords
     Try Menu,menu,show
     return
   Passwords:
@@ -320,10 +324,12 @@ Variable(){
     Sendinput, open{enter}
    else if (A_ThisMenuItem = "&VQ Login")
     Sendinput, +Kilgore7744{enter}
-   else if (A_ThisMenuItem = "+Kilgore")
-    Sendinput, Kilgore7744{enter}
-   else if (A_ThisMenuItem = "&LMS Login")
-    Sendinput,Mmignin{tab}Kilgore7744{enter}
+   else if (A_ThisMenuItem = "&Aditi")
+    Sendinput, asharma{tab}lab1234{enter}
+   else if (A_ThisMenuItem = "&Bharat")
+    Sendinput, bgohel{tab}lab123{enter}
+   else if (A_ThisMenuItem = "&mmignin")
+    Sendinput,mmignin{tab}Kilgore7744{enter}
    else
     Menu,Menu, deleteAll
    return
