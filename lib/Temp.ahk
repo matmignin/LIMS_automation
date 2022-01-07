@@ -328,16 +328,20 @@ Return
 
 SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 		global
-    if Getkeystate("LControl","p")
-      gosub, ADD_A_DROPDOWN_SavedTextMenu_ITEM
-    else {
-  		Loop, Read, data\SavedTextMenu.ini
+    if Getkeystate("LControl","p"){
+      gosub, MenuItemsDDL
+      return
+    }
+    else
+    {
+      try menu, Menu, DeleteAll
+  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
   		{
   		If A_Index = 1
   			Continue
-  		SavedTextMenu := StrSplit(A_LoopReadLine, "=")
-  		Selection:= % SavedTextMenu[1]
-  		Menu, Menu, add, %Selection%, SavedTextMenu
+  		SavedMenuItems := StrSplit(A_LoopReadLine, "=")
+  		Selection:= % SavedMenuItems[1]
+  		Menu, Menu, add, %Selection%, SavedMenuItems
   		}
       menu, menu, add
       menu, menu, add, E&xit, ExitMenu
@@ -347,22 +351,22 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 		SavedTextMenu:
 			sleep 200
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, data\SavedTextMenu.ini, SavedTextMenu, %InputVar%
-			Sendinput, %vOutput%{Lwinup}
+			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini, SavedMenuItems, %InputVar%
+			Sendinput, %vOutput%
       menu, Menu, DeleteAll
 			return
 }
 
+MenuItemsDDL:
+InputBox, Variable, Variable Name = Variable
+VARIABLEITEM:= "`n" Variable
+FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
+Return
 
 ADD_A_TODO_LIST_ITEM_IN_VSCODE:
 InputBox, TODO, Write a Todo
 VSCODEToDo:= "☐ " TODO "`n"
 FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
-Return
-ADD_A_DROPDOWN_SavedTextMenu_ITEM:
-InputBox, Variable, Variable Name = Variable
-VARIABLEITEM:= "`n" Variable
-FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\SavedTextMenu.ini
 Return
 
 

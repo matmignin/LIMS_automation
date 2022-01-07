@@ -63,7 +63,7 @@ return
 	F13 & right::									  sendinput, {altdown}{lwindown}{right}{altup}{lwinup}
 	F13 & ':: 											sendinput,{right}{ctrldown}{left}{shiftdown}{right}{'}{ctrlup}{shiftup}
 	F13 & `;::        							Sendinput,!^{/} ;Vim_Comment()
-
+	F13 & t::                     Sendinput,+!{F9}
 	F19 & F20::delete
 	F19 & space::Backspace
 
@@ -90,8 +90,8 @@ return
 		 else
 		 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
 		 return
-	t::                     Sendinput,+!{F9}
-	^`;::                   Sendinput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
+
+	; ^`;::                   Sendinput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
 	Tab::           return ;        Sendinput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 	h::left
 	l::right
@@ -175,7 +175,7 @@ Class Vim {
 		if Getkeystate("LControl","p")
 			Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}{tab} ;Git message helper
 		else
-			sendinput, {ctrldown}{g}{ctrlup}{tab} ;focus pannel
+			sendinput, {ctrldown}{g}{ctrlup}4 ;focus pannel
 		return
 		}
 	NewLine(){

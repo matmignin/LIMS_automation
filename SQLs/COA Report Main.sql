@@ -153,3 +153,4 @@ LEFT JOIN employee e ON e.empid = coa_results.approvedby
 LEFT JOIN domainvalue dv ON dv.domainid = 'SM VQ Ship To'
                         AND UPPER(dv.value) = UPPER(ps.generic02) AND dv.deletion = 'N'
 WHERE $X{IN, trq.requestguid, REQUESTGUID}
+
