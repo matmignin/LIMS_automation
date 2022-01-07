@@ -5,7 +5,7 @@ SELECT
     i.generic1 AS label_claim,
    	-- Ingredient Test Result info
     ir.specification_range,
-    To_Char(TO_DATE(SUBSTR(ir.resultdate,0,8),'YYYYMMDD'),'MM/DD/YY') AS test_date,
+    ir.resultdate AS test_date,
     ir.method,
     ir.generic01 AS notebook_ref,
    	ir.status,
@@ -190,4 +190,8 @@ FROM
         AND tr.flagisfinalresult = 'Y' ) ir
     ON UPPER(i.ingredientid) = UPPER(ir.resultid)
 WHERE i.deletion = 'N'
+AND NOT(UPPER(i.ingredientid) LIKE 'MULTI%'
+	AND SUBSTR(i.ingredientid,-1,1) <> 1)
+	AND NOT(UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT%'
+	AND SUBSTR(i.ingredientid,-1,1) <> 1)
 ORDER BY i.position
