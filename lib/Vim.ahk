@@ -27,8 +27,15 @@
 return
 
 
-
 #ifwinactive,
+	Tab & wheeldown::sendinput, ^{down}
+	Tab & wheelup::sendinput, ^{up}
+	Tab & wheelleft::^[
+	Tab & wheelright::^]
+	tab & F13::delete
+
+
+;;F13
 	F13 & r::reloadscript()
 	F13 & q::SavedTextMenu()
 	F13 & c::gosub, F19
@@ -63,33 +70,70 @@ return
 	F13 & right::									  sendinput, {altdown}{lwindown}{right}{altup}{lwinup}
 	F13 & ':: 											sendinput,{right}{ctrldown}{left}{shiftdown}{right}{'}{ctrlup}{shiftup}
 	F13 & `;::        							Sendinput,!^{/} ;Vim_Comment()
-	F13 & t::                     Sendinput,+!{F9}
+	F13 & '::                    		Sendinput,+!{F9}
 	F19 & F20::delete
 	F19 & space::Backspace
+	f13 & F19::sendinput, {ctrldown}{lwindown}{[}{lwinup}{ctrlup}
+	f13 & F20::sendinput, {ctrldown}{lwindown}{]}{lwinup}{ctrlup}
+	f13 & \::sendinput, {ctrldown}{lwindown}{\}{lwinup}{ctrlup}
 
-#If Getkeystate("F13","p") && (A_PriorhotKey = "'") && (A_TimeSincePriorHotkey < 1100) ;; 	 	_' Vim_
-	[::                    sendinput, {{} ;enter curly bracket below
-	}::                    sendinput, {{} ;enter curly bracket below
-	9::                    sendinput, {(} ;enter parentasis below
-	]::                    sendinput, {{} ;enter curly bracket below
-	)::										 sendinput, {(} ;Enter parenthasis below
-	0::										 sendinput, {(} ;Enter parenthasis below
-	'::                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} ;select brackets
-	#if
+
 ; #If (& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800 && A_PriorhotKey = "o") ;; 	 	_o Vim_
 ; 	]::                    sendinput, {}} ;enter curly bracket below
 ; 	0::										 sendinput, {)} ;Enter parenthasis below
 
 
-#If Getkeystate("F13","p") 	;;=|||-   [ JUST F13 ]   -|||=
-	j & k::esc
-	 d & s::
-	 s & d::
+
+#If Getkeystate("F13","p") ;;F13
+	s & d::
+											if winactive("ahk_exe Code.exe")
+											 	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+											 else
+											 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
+											KeyWait, d, U
+											 return
+	s & [::
+	                    sendinput, {{} ;enter curly bracket below
+											keywait, s, u
+											return
+	s & }::
+	                    sendinput, {{} ;enter curly bracket below
+											keywait, s, u
+											return
+	s & 9::
+	                    sendinput, {(} ;enter parentasis below
+											keywait, s, u
+											return
+	s & ]::
+	                    sendinput, {{} ;enter curly bracket below
+											keywait, s, u
+											return
+	s & )::
+											 sendinput, {(} ;Enter parenthasis below
+											 keywait, s, u
+											 return
+	s & 0::
+											 sendinput, {(} ;Enter parenthasis below
+											 keywait, s, u
+											 return
+	s & '::
+	                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} ;select brackets
+											keywait, s, u
+											return
+
+
+
+
+	/ & m::
+	m & /::
 		if winactive("ahk_exe Code.exe")
 		 	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
 		 else
 		 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
+		keywait m, u
+		keywait /, u
 		 return
+
 
 	; ^`;::                   Sendinput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
 	Tab::           return ;        Sendinput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion

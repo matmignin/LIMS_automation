@@ -1,5 +1,9 @@
-
-
+/*
+RegexProduct:= "i)(?<=\w{3})?[abdefghijkl]\d{3}"
+RegexBatch:=   "i)(?<!Ct#)\d{3}-\d{4}\b"
+RegexLot:=     "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?"
+RegexCoated:=  "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+*/
 Clip(input=0,Wait:="0.45"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
   If Input contains OCR
@@ -11,9 +15,11 @@ Clip(input=0,Wait:="0.45"){
   sleep %input%
   if errorlevel
   {
-    if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
-      exit
-    Send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
+    tt("clip error level")
+    sleep 100
+    ; if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
+      ; exit
+    ; Send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
   }
   clip.Regex()
   return
@@ -60,11 +66,12 @@ EditBox(Input:=""){
 		Result := Clipboard
   else
     result := Text
-	Gui EditBox: +AlwaysOnTop +Toolwindow +owner +HwndGUIID
+	Gui EditBox: +AlwaysOnTop +Toolwindow +Resize +owner +HwndGUIID
 		GUI, EditBox:Font, s12 cBlack, Consolas
-		GUI, EditBox:Add, Edit, +Resize vEditBox , % Result
-		GUI, EditBox:add, button, X1 y1 h2 w2 Hidden default gEditBoxButtonOK, OK
-		GUI, EditBox:Show,, Result
+    gui, editbox:Margin,1,1
+		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
+		GUI, EditBox:add, button, X0 y0 h0 w0 Hidden default gEditBoxButtonOK, OK
+		GUI, EditBox:Show,Autosize, Clipboard
     winSet, Transparent, 100, EditBox
 		return
 		EditBoxGuiClose:
@@ -74,9 +81,29 @@ EditBox(Input:=""){
     if !Text
 			clipboard:=EditBox
     sleep 50
-  TT(Result,500,,,,200)
+  TT(Editbox,500,,,,200)
 		return
+
+    EditBoxGuiSize:
+  if (ErrorLevel = 1)  ; The window has been minimized. No action needed.
+      return
+    NewWidth := A_GuiWidth
+    NewHeight := A_GuiHeight
+    GuiControl, Move, EditBox, W%NewWidth% H%NewHeight%
+    return
+
 	}
+
+
+
+
+
+
+
+
+
+
+
 
 
 CutSwap(){
@@ -103,6 +130,7 @@ Append(Delimiter:="`n"){
       clipboard:=Preclip
     else
     {
+      tt(Preclip "`n `t __________________ `n" clipboard)
       clipboard := Preclip Delimiter Clipboard
       sleep 50
       ; tt(clipboard,1000,A_ScreenWidth-500,,2,150)

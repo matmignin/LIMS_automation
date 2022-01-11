@@ -19,67 +19,109 @@ Ins::flovar()
 	F13 & 3::							sendinput, %Lot%
 	F13 & 4::							GetAllProducts()
 	F13 & 5::							GetAllBatches()
+	3::3
 
+	$tab::send, {tab}
+	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
+	q & tab::                 Sendinput,{ctrldown}{[}{ctrlup}
+	q & u::										Sendinput, {q}{u}
+	q::q
+	`::`
 ; sendlevel
 ;;	___ClipCopy&Paste
 ; F13 & Mbutton::
 +F20::
-	if (CutPresses > 0) ; SetTimer already started, so we log the keypress instead.
+	if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
 		{
 				CutPresses += 1
 				return
 		}
 		CutPresses := 1
-		SetTimer, PressCut, -450 ; Wait for more presses within a 400 millisecond window.
+		SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
 		return
 		PressCut:
-			if (CutPresses = 1) ; The key was pressed once.
-			{
-					send, ^x
+			if (CutPresses = 1){ 				; The key was pressed once.
+					send, ^x								;cut
 			}
-			else if (CutPresses = 2) ; The key was pressed twice.
-			{
-					clip.Append("`n","{x}")
+			else if (CutPresses = 2){		; The key was pressed 2x
+				clip.Append("`n","{x}")
 			}
-			else if (CutPresses > 2)
-			{
-					clip.Append(A_Space,"{x}")
-					; Pop(Clipboard)
+			else if (CutPresses > 2){		; The Key was pressed 3x
+				clip.Append(A_Space,"{x}")
 			}
 		CutPresses := 0
 return
 
 
 F19::  ;;copy, append, append Tab
-	if (CopyPresses > 0) ; SetTimer already started, so we log the keypress instead.
-	{
-			CopyPresses += 1
-			return
+	if winactive("Clipboard ahk_exe autohotkey.exe"){ ;if clipboard window open
+		GUI, EditBox:submit
+		clipboard:=EditBox
+		sleep 10
+		tt(clipboard)
+		return
 	}
-	CopyPresses := 1
-	SetTimer, PressCopy, -450 ; Wait for more presses within a 400 millisecond window.
-	return
+	if getkeystate("F20", "p"){ 											;F20 & F19
+    ClipboardSaved:=ClipboardAll
+    clipboard:=
+    ; sleep 20
+    Send, ^c
+      clipwait,0.40
+	  if errorlevel 																;if nothing selected
+			{
+				clipboard:=ClipboardSaved
+				sleep 50
+				clip.editbox()
+			}
+		else {
+			sendinput, ^{c}
+			sleep 100
+			clip.editbox()
+			}
+			return
+		}
+	if (CopyPresses > 0){  												; If Timer already started, log the keypress instead.
+				CopyPresses += 1
+				return
+	}
+		CopyPresses := 1
+		SetTimer, PressCopy, -450 ; Wait for more presses within a 450 millisecond window.
+		return
 	PressCopy:
-		if (CopyPresses = 1) ; The key was pressed once.
-		{
-				send, ^c
-				sleep 75
-		}
-		else if (CopyPresses = 2) ; The key was pressed twice.
-		{
-					clip.Append()
-					Sleep 300
-		}
-		else if (CopyPresses > 2)
-		{
-				Clip.EditBox()
-				; Pop(Clipboard)
-		}
-		FloVar(Clipboard,700,11)
-	CopyPresses := 0
+			if (CopyPresses = 1){	  ; The key was pressed once.
+					send, ^c									;Copy
+					sleep 75
+					FloVar(Clipboard,900,11)
+			}
+			else if (CopyPresses = 2){ ; The key was pressed 2x
+					clip.Append()							;AppendClip
+					Sleep 250
+			}
+			else if (CopyPresses > 2) ; The key was priced 3x
+					Send, +{F18} 							;Clipchain
+		CopyPresses := 0
 return
 
 F20:: ;;paste, editbox, clipchain
+	if !getkeystate("F19", "p") && (A_PriorHotkey = "F19") && (A_TimeSincePriorHotkey < 2000) {
+		clip.editbox()
+		return
+	}
+		if getkeystate("F19", "p"){ 	; F19 & F20
+	  ClipboardSaved:=ClipboardAll
+	    clipboard:=
+	    Send, ^x
+	      clipwait,0.30
+		  if errorlevel 							; if nothing selected
+				{
+					clipboard:=ClipboardSaved
+					sendinput, {delete}
+					return
+				}
+			else
+				tt(Clipboard,900,,,,200)
+			return
+	}
 	if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
 	{
 			PastePresses += 1
@@ -99,8 +141,7 @@ F20:: ;;paste, editbox, clipchain
 		}
 		else if (PastePresses > 2)
 		{
-				Send, +{F18}
-				; send, #v
+			Clip.EditBox()
 		}
 		PastePresses := 0
 return
@@ -166,6 +207,7 @@ Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}
 Lbutton & F20::						send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup}
 F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
 F19 & Rbutton::       		clip("OCR")
+
 F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipaste copy
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 Mbutton::									3Tap()
@@ -178,14 +220,12 @@ Rbutton & F7::
 Rbutton & wheelright::    Send % blockRepeat(50) "{backspace}"
 Rbutton & wheeldown::     Send, ^{v}
 Rbutton & wheelup::			  sendinput, ^c
-	Tab & wheeldown::sendinput, ^{down}
-	Tab & wheelup::sendinput, ^{up}
-	Tab & wheelleft::^[
-	Tab & wheelright::^]
+
 Lbutton & Rbutton::       send, ^{x}
 ; Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
 
-rbutton & Appskey::				2Tap()
+~rbutton & Appskey::				2Tap()
+~Rbutton::return
 rshift & Appskey::				return
 F19 & \:: 								Sendpassword()
 ^+7::
@@ -276,7 +316,8 @@ F20 & /::        	 				clip("OCR")
 	F7::				Sendinput, ^{e}%product%{enter}
 	F9::ExplorerSearch(Product)
 	^w::									4down()
-
+#ifwinactive, ahk_exe Notion.exe
+	^h::sendinput, {shiftdown}{ctrldown}{h}{ctrlup}{shiftup}
  #ifwinactive, Connection Information
 	mbutton::sendinput, doR314Nle{enter}
 #Ifwinactive, ahk_exe WINWORD.EXE ;; 	___WORD
