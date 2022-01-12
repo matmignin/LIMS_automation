@@ -1,7 +1,5 @@
 SELECT DISTINCT
 	trq.requestguid,
-	p.productid,
-	f.formulationid,
 	p.tradename,
 	p.alternateid1 AS product_code,
 	DECODE(p.generic1,NULL,NULL,p.generic1||':') AS vendor_code_label,
@@ -17,7 +15,6 @@ SELECT DISTINCT
 	coa_primary.generic01 AS package_lot,
 	coa_primary.generic04 AS blister_lot,
 	coa_primary.generic02 AS ship_to,
-	coa_primary.generic06 AS coated_lot,
 	dv.description AS ship_to_parms,
 	coa_results.customer_lot,
 	-- Open request count
@@ -81,7 +78,7 @@ LEFT JOIN formulation f ON f.productid = trq.product
 	AND f.formulationid = trq.formulationid
 	AND f.deletion = 'N'
 LEFT JOIN
-	(SELECT trq1.requestguid, ps1.batchnumber, ps1.generic01, ps1.generic02, ps1.generic04, ps1.generic06, trq2.requestguid AS primary_requestguid, t.testgroup
+	(SELECT trq1.requestguid, ps1.batchnumber, ps1.generic01, ps1.generic02, ps1.generic04, trq2.requestguid AS primary_requestguid, t.testgroup
   FROM testrequest trq1
   JOIN testrequest trq2 ON trq2.batchnumber = trq1.batchnumber
 	AND trq2.product = trq1.product AND trq2.formulationid = trq1.formulationid

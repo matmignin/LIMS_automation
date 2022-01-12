@@ -292,15 +292,15 @@ CoordMode, mouse, window
 winGetPos,Popup_wX,Popup_wY,Popup_wW,Popup_wH, A
 ; CoordMode, mouse, Screen
 MouseGetPos, Popup_x,Popup_y,
-if (Location:="window"){
+if (Location = "window"){
 	popup_y:=Popup_wx
 	popup_x:=Popup_Wy
 	}
-if (Location:="Right"){
+if (Location = "Right"){
 	popup_y:=Popup_WW-100
 	popup_x:=Popup_Wy
 	}
-if (Location:="Screen"){
+if (Location = "Screen"){
 	popup_y:=1
 	popup_x:=1
 	}

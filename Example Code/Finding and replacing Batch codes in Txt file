@@ -1,0 +1,33 @@
+﻿#include C:\Windows\ShellNew\TemplateIncludeFile.ahk
+
+String := 
+(
+"J566 007-1146 006410 Ct#109-0114
+J914 111-4321
+H784 110-0555 0039L1
+H784 112-0376
+H784 112-4444 0077L1A
+K277 112-0241 0172L1A
+K527 301-0848 0113A2 Ct#112-0717
+K859 112-0147 0033A2
+K785 110-0352 0029K1"
+)
+
+
+BatchFind := "(?<!Ct#)(?<Batch>\d{3}-\d{4}\b)"
+ProductFind:= "(?<Product>[abdefghijkl]\d{3})"
+LotFind:= "(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)"
+BatchFind:= "111-4321"
+ProductFind:= "J914"
+
+
+
+ProductReplace:= "${Product}"
+BatchReplace := "${Batch}"
+LotReplace:="${Lot}"
+BatchReplace := "000-0000"
+
+
+MsgBox, % RegExReplace(String, "i)" . ProductFind . " " . BatchFind . " " . LotFind,ProductReplace " " BatchReplace " " LotReplace) 
+return 
+

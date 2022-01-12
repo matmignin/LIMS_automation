@@ -63,15 +63,14 @@ return
 	F13 & 0::Vim.CloseParentheses()
 	F13 & p::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
 	F13 & z::                      send, {F3} ;undo
-	F13 & g up::vim.Git()
+	F13 & g::vim.Git()
 	F13 & down::									  sendinput, {altdown}{lwindown}{down}{altup}{lwinup}
 	F13 & up::									    sendinput, {altdown}{lwindown}{up}{altup}{lwinup}
 	F13 & left::									  sendinput, {altdown}{lwindown}{left}{altup}{lwinup}
 	F13 & right::									  sendinput, {altdown}{lwindown}{right}{altup}{lwinup}
-	F13 & ':: 											sendinput,{right}{ctrldown}{left}{shiftdown}{right}{'}{ctrlup}{shiftup}
 	F13 & `;::        							Sendinput,!^{/} ;Vim_Comment()
 	F13 & '::                    		Sendinput,+!{F9}
-	F19 & F20::delete
+	; F19 & F20::send
 	F19 & space::Backspace
 	f13 & F19::sendinput, {ctrldown}{lwindown}{[}{lwinup}{ctrlup}
 	f13 & F20::sendinput, {ctrldown}{lwindown}{]}{lwinup}{ctrlup}
@@ -120,6 +119,7 @@ return
 	                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} ;select brackets
 											keywait, s, u
 											return
+
 
 
 
@@ -219,7 +219,8 @@ Class Vim {
 		if Getkeystate("LControl","p")
 			Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}{tab} ;Git message helper
 		else
-			sendinput, {ctrldown}{g}{ctrlup}4 ;focus pannel
+			sendinput, {ctrldown}{g}{ctrlup} ;focus pannel
+		keywait, f13, U
 		return
 		}
 	NewLine(){

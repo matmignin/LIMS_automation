@@ -329,7 +329,7 @@ Return
 SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 		global
     if Getkeystate("LControl","p"){
-      gosub, MenuItemsDDL
+      gosub, AddTextMenuItem
       return
     }
     else
@@ -341,7 +341,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
   			Continue
   		SavedMenuItems := StrSplit(A_LoopReadLine, "=")
   		Selection:= % SavedMenuItems[1]
-  		Menu, Menu, add, %Selection%, SavedMenuItems
+  		Menu, Menu, add, %Selection%, SavedTextMenu
   		}
       menu, menu, add
       menu, menu, add, E&xit, ExitMenu
@@ -355,13 +355,14 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 			Sendinput, %vOutput%
       menu, Menu, DeleteAll
 			return
+
+      AddTextMenuItem:
+      InputBox, Variable, Variable Name = Variable
+      VARIABLEITEM:= "`n" Variable
+      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
+      Return
 }
 
-MenuItemsDDL:
-InputBox, Variable, Variable Name = Variable
-VARIABLEITEM:= "`n" Variable
-FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
-Return
 
 ADD_A_TODO_LIST_ITEM_IN_VSCODE:
 InputBox, TODO, Write a Todo

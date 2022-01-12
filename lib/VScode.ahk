@@ -1,5 +1,6 @@
 return
 #Ifwinactive,ahk_exe Code.exe  ;;___VSCODE___
+	F13 & Tab::
 	Mbutton::sendinput, +{F9}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"

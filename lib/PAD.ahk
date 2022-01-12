@@ -606,7 +606,7 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 	{
 		If MouseIsOver("NuGenesis LMS - \\Remote")
 			menu.LMS()
-		else	
+		else
 			click Right
 		return
 	}

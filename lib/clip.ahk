@@ -411,27 +411,3 @@ ClickText(button:=""){
 }
 
 
-; Paste(){
-;   global Clippaste, varbar_x, Varbar_y
-;     if (ClipPaste = 1){
-;       Send, {ctrldown}{v}{ctrlup}
-;       return
-;   }
-;   ClipboardSaved:=ClipboardAll
-;   clipboard:=
-;     Clip()
-;   clipwait,0.10
-;   if errorlevel
-;     {
-;     clipboard:=ClipboardSaved
-;      StrReplace(clipboard, "`n", "")
-;       Send, {ctrldown}{v}{ctrlup}
-;       ;tt("paste",,100,100,,150)
-;     }
-;   else
-;       ; tt(clipboard,,varbar_x,varbar_y,,50)
-;       sleep 500
-;     return
-;   }
-
-

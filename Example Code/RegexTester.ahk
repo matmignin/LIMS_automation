@@ -98,37 +98,6 @@ EvaluateRegEx:
               OutputLen%A_Index% =
             }
 
-/* original regex to get the subpattern specified in CbbRegEx, not allowing encapsulation of subpattern
-"s)(?<!\\)\((?:\?(?:P?<(\w+)>|'(\w+)')).+?(?<!\\)\)"
-s)                                                 ;dotall
-  (?<!\\)                                          ;no \ before
-         \(                                        ;a "("
-           (?:                                     ;no subpattern start
-              \?                                   ;a "?"
-                (?:                                ;no subpattern start
-                   P?                              ;maybe a "P"
-                     <(\w+)>                       ;a subpattern word enclosed with "<>"
-                            |                      ;or
-                             '(\w+)'               ;a subpattern word enclosed with "''"
-                                    )              ;no subpattern end
-                                     )             ;no subpattern end
-                                      .+?          ;any ungreedy text
-                                         (?<!\\)   ;no \ before
-                                                \) ;a ")"
-*/
-
-/* simplified regex to get the subpattern specified in CbbRegEx, allowing encapsulation of subpattern
-"(?<!\\)\((?:\?P?<(\w+)>|'(\w+)')"
-(?<!\\)                           ;no \ before
-       \(                         ;a "("
-         (?:                      ;no subpattern start
-            \?                    ;a "?"
-               P?                 ;maybe a "P"
-                 <(\w+)>          ;a subpattern word enclosed with "<>"
-                        |         ;or
-                         '(\w+)'  ;a subpattern word enclosed with "''"
-                                ) ;no subpattern end
-*/
           pos = 1                                    ;get named subpattern
           sub = 0
         	Loop{

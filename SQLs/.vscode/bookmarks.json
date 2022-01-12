@@ -9,6 +9,26 @@
 					"label": "FOR IFC"
 				}
 			]
+		},
+		{
+			"path": "COA Ingredient Subreport.SQL",
+			"bookmarks": [
+				{
+					"line": 145,
+					"column": 31,
+					"label": "$P{PRODUCTID}"
+				},
+				{
+					"line": 146,
+					"column": 36,
+					"label": "$P{FORMULATIONID}"
+				},
+				{
+					"line": 181,
+					"column": 39,
+					"label": "$P{BATCHNUMBER}"
+				}
+			]
 		}
 	]
 }
