@@ -1,6 +1,22 @@
 ﻿#include C:\Windows\ShellNew\TemplateIncludeFile.ahk
+RegexProduct:= "i)(?<=\w{3})?[abdefghijkl]\d{3}"
+RegexBatch:=   "i)(?<!Ct#)\d{3}-\d{4}\b"
+RegexLot:=     "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?"
+RegexCoated:=  "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
 
-String := 
+FindProduct	:= "(?<Product>[abdefghijkl]\d{3})"
+FindBatch 	:= "(?<!Ct#)(?<Batch>\d{3}-\d{4}\b)"
+FindLot		:= "(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)"
+FindCoated:=  "(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+
+ProductReplace:= "${Product}"
+BatchReplace := "${Batch}"
+LotReplace:="${Lot}"
+CoatedReplace:="${Coated}"
+
+String := "H784 110-0555 0039L1"
+
+String2 := 
 (
 "J566 007-1146 006410 Ct#109-0114
 J914 111-4321
@@ -13,21 +29,68 @@ K859 112-0147 0033A2
 K785 110-0352 0029K1"
 )
 
+CurrentCodes:=
+(
+"H784 110-0555
+F833 459-4321 0023K1 Ct#109-0114
+A210 112-0251 006410 Ct#109-0114
+K758 111-0434 Bulk Ct#111-0754
+H784 112-0376 0077L1A
+K859 112-0147
+D751 459-4321
+H784 112-0376"
+)
 
-BatchFind := "(?<!Ct#)(?<Batch>\d{3}-\d{4}\b)"
-ProductFind:= "(?<Product>[abdefghijkl]\d{3})"
-LotFind:= "(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?)"
-BatchFind:= "111-4321"
-ProductFind:= "J914"
+Clip:
+ConnectedProduct:=
+
+Haystack:=String
+    sleep      20
+      RegExMatch(HayStack, regexProduct,cProduct)
+      RegExMatch(HayStack, regexBatch, cBatch)
+      RegExMatch(HayStack, regexLot, clot)
+      RegExMatch(HayStack, regexCoated, c)
+	;msgbox % cproduct " | " cbatch " | " clot " | " CCoated
+if cProduct && cBatch && cLot
+{
+	ConnectedProduct.=cProduct
+	FindProduct:=cproduct
+	FindBatch:=cbatch
+	FindLot:=clot
+	FindProduct:=ProductReplace:=cproduct
+	FindBatch:=BatchReplace:=cbatch
+	findlot:=LotReplace:=cLot
+	;msgbox % findproduct " " ProductReplace " " cProduct
+MsgBox, % RegExReplace(CurrentCodes, "i)" . FindProduct . " " . FindBatch . " ",ProductReplace " " BatchReplace " " LotReplace)  ; not the right idea
+
+
+}
+if cProduct && cBatch && !clot
+{
+	ConnectedProduct.=cProduct
+	FindProduct:=ProductReplace:=cproduct
+	FindBatch:=BatchReplace:=cbatch
+	msgbox % findproduct " " ProductReplace " " cProduct
+}
+If cBatch
+{
+ConnectedProduct.= " " cBatch
+FindBatch:=cbatch
+msgbox % cbatch "`n`n" ConnectedProduct 
+}
+if cLot
+{
+ConnectedProduct.= " " cLot
+FindLot:=clot
+}
+if cCoated
+{
+ConnectedProduct.= " Ct#" cCoated
+Findcoated:=cCoated
+}
+ConnectedProduct:= Trim(FindProduct " " FindBatch " " Findlot " " FindCoated)
 
 
 
-ProductReplace:= "${Product}"
-BatchReplace := "${Batch}"
-LotReplace:="${Lot}"
-BatchReplace := "000-0000"
-
-
-MsgBox, % RegExReplace(String, "i)" . ProductFind . " " . BatchFind . " " . LotFind,ProductReplace " " BatchReplace " " LotReplace) 
 return 
 

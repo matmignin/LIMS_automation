@@ -4,11 +4,6 @@ SELECT
 	i.ingredientid,
 	i.generic1 AS label_claim,
    	-- Ingredient Test Result info
-	ir.specification_range,
-	ir.resultdate AS test_date,
-	ir.method,
-	ir.generic01 AS notebook_ref,
-   	ir.status,
 	-- Ingredient name/description
 	CASE
 		WHEN UPPER(i.ingredientid) LIKE 'MULTI-PART INGREDIENT LIST%'
@@ -102,24 +97,36 @@ SELECT
 	END AS ingredient,
 	-- Result display value
 	CASE
-		WHEN ir.resulttype = 'NUMERIC'
-			AND ir.status = 70
-			AND (ir.resultvaluation <> 'SKIP LOT' OR ir.resultvaluation IS NULL)
+		WHEN tr.resulttype = 'LIST'
+			AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
 		THEN
-			ir.prefix||TRIM(TO_CHAR(REGEXP_SUBSTR(REPLACE(ir.numericalresulttext,ir.prefix,''),'^\d+'),'999,999,999'))
-			 || (CASE
-					WHEN INSTR(ir.numericalresulttext,'.') > 0
+			DECODE(t.requirement, NULL, trr.listvalue, t.requirement)
+		WHEN tr.resulttype <> 'LIST'
+		AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
+		THEN
+			DECODE(tr.resulttype,NULL,NULL,tr.requirement)
+		ELSE
+			''
+	END AS specification_range,
+CASE
+		WHEN tr.resulttype = 'NUMERIC'
+			AND tr.status = 70
+			AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
+		THEN
+			tr.prefix||TRIM(TO_CHAR(REGEXP_SUBSTR(REPLACE(tr.numericalresulttext,tr.prefix,''),'^\d+'),'999,999,999'))
+			|| CASE
+					WHEN INSTR(tr.numericalresulttext,'.') > 0
 					THEN
-						SUBSTR(ir.numericalresulttext,INSTR(ir.numericalresulttext,'.'))
-					END)
-			|| DECODE(ir.unit,NULL,NULL,' '||ir.unit)
-		WHEN ir.resulttype IN ('LIST','TEXT')
-			AND ir.status = 70
-			AND (ir.resultvaluation <> 'SKIP LOT' OR ir.resultvaluation IS NULL)
+						SUBSTR(tr.numericalresulttext,INSTR(tr.numericalresulttext,'.'))
+						END
+				|| DECODE(tr.unit,NULL,NULL,' '||tr.unit)
+		WHEN tr.resulttype IN ('LIST','TEXT')
+				AND tr.status = 70
+				AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
 		THEN
-			ir.textresult || DECODE(ir.unit,NULL,NULL,' ' || ir.unit)
-		WHEN ir.status = 10
-			AND (ir.resultvaluation <> 'SKIP LOT' OR ir.resultvaluation IS NULL)
+			tr.textresult || DECODE(tr.unit,NULL,NULL,' ' ||tr.unit)
+		 WHEN tr.status = 10
+			AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
 		THEN
 			 'pending'
 		ELSE
@@ -138,32 +145,8 @@ SELECT
 					i.generic3
 				ELSE 'Not Tested'
 			END
-	END AS result
-FROM
-	-- Ingredients for this product/formulation
-	ingredient i
-	JOIN formulation f ON i.formulationguid = f.formulationguid
-			AND f.productid =  $P{PRODUCTID}
-			AND f.formulationid  =  $P{FORMULATIONID}
-			AND f.deletion = 'N'
-	-- Join test results to the ingredients
-	LEFT JOIN
-		(SELECT t.testid, t.testgroup,
-				tr.resultid, tr.resultguid, tr.resulttype, tr.prefix, tr.numericalresulttext, tr.textresult, tr.unit,
-				tr.requirement, tr.resultvaluation, tr.status, tr.resultdate,tr.generic01,
-				trr.listvalue,
-				-- Specification Range
-				CASE
-					WHEN tr.resulttype = 'LIST'
-						AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
-					THEN
-						DECODE(t.requirement, NULL, trr.listvalue, t.requirement)
-					WHEN tr.resulttype <> 'LIST'
-						AND (tr.resultvaluation <> 'SKIP LOT' OR tr.resultvaluation IS NULL)
-					THEN
-					  DECODE(tr.resulttype,NULL,NULL,tr.requirement)
-					ELSE  ''
-				 END AS specification_range,
+	END AS result,
+	tr.resultdate  AS test_date,
 				-- Method
 				CASE
 					WHEN (tr.resultvaluation <> 'SKIP LOT'
@@ -171,27 +154,53 @@ FROM
 					THEN
 						sm.description
 					ELSE  ''
-				END AS method
-		FROM testresult tr
-		JOIN test t ON t.testguid = tr.testguid
-			AND t.deletion = 'N'
-			AND t.requestguid IN
-				-- All tests for the batch in one or more requests
-				(SELECT requestguid
-				 FROM testrequest
-				 WHERE  batchnumber =  $P{BATCHNUMBER}
-				 AND deletion = 'N')
-		LEFT JOIN smmethod sm ON sm.methodid = t.methodid
-				AND sm.versionno = t.methodversionno
-				AND sm.deletion = 'N'
-		LEFT JOIN testresultrequirement trr ON trr.resultguid = tr.resultguid
-				AND trr.valuationcode = 1
-		WHERE tr.deletion = 'N'
-		AND tr.flagisfinalresult = 'Y' ) ir
-	ON UPPER(i.ingredientid) = UPPER(ir.resultid)
-WHERE i.deletion = 'N'
-AND NOT(UPPER(i.ingredientid) LIKE 'MULTI%'
-	AND SUBSTR(i.ingredientid,-1,1) <> 1)
-	AND NOT(UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT%'
-	AND SUBSTR(i.ingredientid,-1,1) <> 1)
+				END AS method,
+	tr.generic01   AS notebook_ref,
+	tr.status,
+	(SELECT dv.description
+	FROM domainvalue dv
+	WHERE UPPER(dv.domainid) = 'REPORT PARAMETERS'
+	AND UPPER(dv.value)      = 'DATE FORMAT'
+	AND dv.deletion          = 'N'
+	) AS report_date_format,
+	tr.resulttype,
+	tr.resultguid
+FROM
+		(SELECT sampleguid, formulationid FROM (
+		SELECT ps.sampleguid, ps.formulationid,
+		CASE
+			WHEN ps.configurationid = 'I, Analytical' THEN 1
+			WHEN ps.configurationid = 'CT, Analytical' THEN 2
+			WHEN ps.configurationid = 'I, Physical' THEN 3
+			WHEN ps.configurationid = 'CT, Physical' THEN 4
+			ELSE 100
+		END sample_order
+		FROM physicalsample ps
+		WHERE ps.batchnumber = $P{INGBATCHNUMBER}
+			AND ps.deletion = 'N'
+		ORDER BY sample_order
+		)
+		WHERE ROWNUM = 1
+		) psi
+		JOIN formulation f ON f.formulationid = psi.formulationid
+				AND f.deletion = 'N'
+		JOIN ingredient i ON i.formulationguid = f.formulationguid
+				AND i.deletion = 'N'
+		LEFT JOIN testresult tr
+ON tr.sampleguid = psi.sampleguid
+	AND UPPER(tr.resultid) = UPPER(i.ingredientid)
+	AND tr.deletion = 'N'
+		AND tr.flagisfinalresult = 'Y'
+LEFT JOIN test t ON t.testguid  = tr.testguid
+	AND t.deletion = 'N'
+LEFT JOIN smmethod sm ON sm.methodid   = t.methodid
+	AND sm.versionno = t.methodversionno
+	AND sm.deletion  = 'N'
+LEFT JOIN testresultrequirement trr
+	ON trr.resultguid = tr.resultguid
+	AND trr.valuationcode = 1
+WHERE NOT(UPPER(ingredientid) LIKE 'MULTI%'
+	AND SUBSTR(ingredientid,-1,1) <> 1)
+	AND NOT(UPPER(ingredientid) LIKE 'GENERIC INGREDIENT%'
+	AND SUBSTR(ingredientid,-1,1) <> 1)
 ORDER BY i.position

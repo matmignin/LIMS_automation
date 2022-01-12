@@ -163,13 +163,12 @@ Parse(Value:=""){
           if varCoated
             match.= " Ct#" VarCoated
         }
-        if Match && A_Index = 1
-            ; clip.regex()
+        if Match && A_Index = 1 ; if first line
             clip.Singleregex()
         else if Match && A_Index > 1
           regProducts.insert(Trim(Match))
-      if (RegProducts.maxindex() > 1) {
-          Products:=[], oTemp := {} ;remove duplicates
+      if (RegProducts.maxindex() > 1) { ;remove duplicates from array
+          Products:=[], oTemp := {}
           for vKey, vValue in regProducts {
           if (ObjGetCapacity([vValue], 1) = "") ;is numeric
             {
@@ -192,7 +191,6 @@ Parse(Value:=""){
           FileAppend, %CurrentCodes%, data\CurrentCodes.txt
           sleep 100
           ; RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
-          ; StringReplace, CurrentCodes, CurrentCodes, "`n", "|"
           sleep 100
           Gui Varbar:Default
                     ; RegProducts.InsertAt(1, Trim(Match))
@@ -205,7 +203,6 @@ Parse(Value:=""){
           ; guicontrol, ChooseString, ComboBox1, %Product%
         }
         ; Pop(CurrentCodes,,500,"Right")
-      ; IniWrite, `n%AllCodes%, Data\Products.ini, %The_Day%, %The_Hour%
       return
     }
 }

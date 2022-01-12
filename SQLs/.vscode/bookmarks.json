@@ -29,6 +29,31 @@
 					"label": "$P{BATCHNUMBER}"
 				}
 			]
+		},
+		{
+			"path": "CoA Ingredient Subreport 1.2.13.sql",
+			"bookmarks": [
+				{
+					"line": 188,
+					"column": 19,
+					"label": ""
+				}
+			]
+		},
+		{
+			"path": "CoA Ingredient Subreport 01_11.sql",
+			"bookmarks": [
+				{
+					"line": 174,
+					"column": 13,
+					"label": ""
+				},
+				{
+					"line": 175,
+					"column": 10,
+					"label": "t"
+				}
+			]
 		}
 	]
 }

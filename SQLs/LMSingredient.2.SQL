@@ -69,7 +69,7 @@ WHEN UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT Q%' THEN
       CASE
         WHEN UPPER(i.ingredientid) LIKE 'INGREDIENT NOTE%' OR UPPER(i.ingredientid) LIKE 'MULTI-PART INGREDIENT LIST%' AND i.generic3 IS NULL THEN ''
         WHEN UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT%' AND i.generic3 IS NULL THEN 'Not Tested'
-        -- Allergens display as pending
+          -- Allergens display as pending
         WHEN UPPER(i.ingredientid) LIKE '%ALLERGEN' AND i.generic3 IS NULL THEN 'pending'
         WHEN i.generic3 IS NOT NULL THEN i.generic3
         ELSE 'Not Tested'
