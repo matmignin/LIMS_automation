@@ -14,7 +14,7 @@ Gui, Font, s9
 Gui, +Delimiter`n
 Gui, Add, combobox, simple w200 r10 AltSubmit vclipNum
 Gui, Add, Button, xm ym Hidden Default gDROPDOWN, OK
-OnClipboardChange("clipChanged"), 
+OnClipboardChange("clipChanged"),
 ;OnMessage(WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
 
 
@@ -47,7 +47,7 @@ RegexCoated:="i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})"
       RegExMatch(HayStack, regexProduct,cProduct)
       RegExMatch(HayStack, RegexBatch, cBatch)
       RegExMatch(HayStack, RegexLot, clot)
-      RegExMatch(HayStack, RegexCoated, c)
+      RegExMatch(HayStack, RegexCoated, r)
         if cProduct {
             ConnectedProduct:=cProduct
             if cBatch
@@ -58,10 +58,10 @@ RegexCoated:="i)(coated: |ct#\s|Ct#|ct\s|coated\s)(?P<Coated>\d{3}-\d{4})"
               ConnectedProduct.= a_space "Ct#" cCoated
 }
          ConnectedProduct:= cProduct a_space cBatch a_space clot a_space cCoated
- if Trim(ConnectedProduct)       
+ if Trim(ConnectedProduct)
  clip.InsertAt(1, ConnectedProduct) ;insert at spot 1 of array
  GuiControl,, clipNum, % choices := "`n" ConnectedProduct "`n" Trim(StrReplace(choices, "`n`n", "`n"), "`n") ;appennds the "Choices" dorpdown
-} 
+}
 
 DROPDOWN(wParam := "", lParam := "") {  ; User clicked on the GUI
  Gui, Submit, nohide

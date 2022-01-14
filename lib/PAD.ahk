@@ -11,11 +11,11 @@ Lbutton & Space::
 		send ^v
 		sleep 200
 		return
-	F13 & Lbutton::
-		click down left
-		keywait F13
-		click up left
-		return
+	; F13 & Lbutton::
+	; 	click down left
+	; 	keywait F13
+	; 	click up left
+	; 	return
 
 
 
@@ -76,13 +76,13 @@ _MouseIsOver:
 
 clipCheckIfEmpty(){
 	clipboard:=
-	sendinput, ^c
-	clipwait, 0.10
+	send, ^c
+	clipwait, 0.20
 	if errorlevel
 	{
-			send, {click 3}
-		sendinput, ^c
-		clipwait, 0.10
+		send, {click 3}
+		send, ^c
+		sleep 200
 	}
 }
 
@@ -150,14 +150,12 @@ clipCheckIfEmpty(){
 				WorkTab.ChangeTestResults("toggle")
 				mousemove, %xpos%, %yPos%+26,0
 			}
-			else if winactive("Edit specification - \\Remote")
+			else if winactive("Edit specification - \\Remote") || winactive("Results Definition - \\Remote")
 				menu.LMS()
 			else if winactive("Composition - \\Remote")
 				ProductTab.Table()
 			else If winactive("Select methods tests - \\Remote")
 				SpecTab.Table()
-			else if winactive("Results Definition - \\Remote")
-				sendinput, {Blind}{ctrldown}{click}{ctrlup}
 			else if winactive("Edit Formulation - \\Remote")
 				productTab.EditFormulation()
 			else if winactive("Select Product - \\Remote ahk_exe WFICA32.EXE")
@@ -173,11 +171,16 @@ clipCheckIfEmpty(){
 			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 				Sendpassword()
 		}
+		else if winactive("VarBar ahk_exe AutoHotkey.exe"){
+				click
+				sleep 100
+				Varbar.WM_LBUTTONDBLCLK()
+		}
 		else if winactive("ahk_exe Jaspersoft Studio.exe") || winactive("Parameter: SavedTextMenu")
 			SavedTextMenu()
 		else 	if winactive("ahk_exe OUTLOOK.EXE") {
 			clipCheckIfEmpty()
-			clip()
+			; clip()
 			return
 		}
 		else If winactive("Mats LMS Workbook.xlsb")
@@ -596,6 +599,8 @@ If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
 					VarBar.BatchesMenu(Product)
 				else if (winControl="Edit3") || (winControl="Edit4")
 					menu.ProductSelection()
+				else if (winControl="Edit5")
+					varbar.WM_LBUTTONDBLCLK()
 				; else if (winControl="Edit6") || (winControl="Edit7")
 					; menu.ProductSelection()
 				else

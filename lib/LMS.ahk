@@ -43,6 +43,8 @@
    F19::LMS.CopyProductRotation()
 
 	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry
+		Wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
+		Wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 			#MaxThreadsPerHotkey 2
 				Numlock::WorkTab.ChangeTestResults("loop")
 			#MaxThreadsPerHotkey 1
@@ -54,6 +56,7 @@
 	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
 	; wheelup::Mouse_click("Edit")
 		; numlock::Send, % clk(712, 663) "{esc}"
+		Numlock::menu.LMS()
 		space::sendinput,{ctrldown}{click}{ctrlup}
 		mbutton::Spectab.Table()
 
@@ -581,7 +584,9 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		global
 		Batches:=[]
 			Send, {ctrldown}{a}{ctrlup}
-			clip(1)
+			sleep 20
+			send, ^c
+			; clip(1)
 			sleep 200
 			Send, {enter}
 			; FileAppend, %Batch% `n, Batch.txt

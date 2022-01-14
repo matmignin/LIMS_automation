@@ -2,10 +2,7 @@
 VQuest_Start:
 
 
-RegexProduct:="i)(?<=\w{3})?[abdefghijkl]\d{3}"
-RegexBatch:=  "i)(?<!Ct#)\d{3}-\d{4}\b"
-RegexLot:=    "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?"
-RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+
 ; RegexAll:="i)(?P<Product>(?<=\w{3})?[abdefghijkl]\d{3}))(?:.*) (?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))(?:.*)(?P<Lot>(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?))(?:.*)(?<=(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}))"
     #SingleInstance,Force
     #Persistent
@@ -14,6 +11,9 @@ RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
     #NoEnv
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
     Iniread, Mode, Settings.ini, Options, Mode
+  
+    iniread, DebuggingScript, Settings.ini, Options, DebuggingScript
+
     ; Iniread, HideVarbar, Settings.ini, Options, HideVarbar
     Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
     #KeyHistory 500
@@ -69,14 +69,13 @@ RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
     else if Mode=TempCode
       Menu, Tray, Check, TempCode
      ShowVarBar:=CreateMenu("showVarbar")
-    HideShowSampleID:=CreateMenu("ShowSampleID")
-    ;ExcelConnect:=CreateMenu("")
-    ; DebuggingScript:=CreateMenu("DebuggingScript")
+     HideShowSampleID:=CreateMenu("ShowSampleID")
+    ; ExcelConnect:=CreateMenu("")
+    DebuggingScript:=CreateMenu("DebuggingScript")
     ; HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
-    varbar.Show()
-    ;GuiControl, -redraw, varbar
+    ; GuiControl, -redraw, varbar
     try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Currentwindow:=A
@@ -84,12 +83,17 @@ RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
       LMS.Orient()
     if winexist("Mats LMS Workbook.xlsb - Excel") && ExcelConnect
       Excel.Connect(0)
-    ;GuiControl, +redraw, varbar
-
+    ; GuiControl, +redraw, varbar
+    RegexProduct:="i)(?<=\w{3})?(?P<Product>[abdefghijkl]\d{3})"
+    RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
+    RegexLot:=    "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?)"
+    RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
     ; if A_Debuggername
+    varbar.Show()
+		;clip.regex(CodeString)
       ; try Run, Vim.Ahk, lib\
     ; else
-      ; settimer, ActiveCheck , %CheckTime%
+    ;  settimer, ActiveCheck , %CheckTime%
   OnClipboardChange("clipChange")
   #include <Toggles>
   #Include <Temp>

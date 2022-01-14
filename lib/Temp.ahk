@@ -195,56 +195,7 @@ return
 ; 	sleep, 400
 ; 	FileAppend, %OutputVar%, % File
 ; }
-RemoveFileDuplicates(File,Sorting:="U CL R"){
-	global
-	FileRead, vText, % File
-  vOutput := ""
-  ; vtext:=strReplace(vText, "`n`n", "")
-; vText:=Trim(StrReplace(vText, "`t", ""))
-VarSetCapacity(vOutput, StrLen(vText)*2*2)
-oArray := {}
-StrReplace(vText, "`n",, vCount)
-oArray.SetCapacity(vCount+1)
-;Sort, vText, D, ;add this line to sort the list
-Loop Parse, vText, % "`r`n"
-{
-	if !oArray.HasKey("z" A_LoopField)
-		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
-}
-; MsgBox, % vOutput
 
-oArray := ""
-  ; OutputVar:=Trim(OutputVar, " `t")
-  ; OutputVar:=trim(StrReplace(OutputVar, "`t", ""))
-  ; sleep 200
-	; Sort, OutputVar, % Sorting
-  ; vOutput:=trim(vOutput, "`n`n")
-	NewOutputVar := RegExReplace(vOutput, "m`a)(\s\r\n)","`n")
-	FileDelete, % File
-	sleep, 400
-	FileAppend, %NewOutputVar%, % File
-}
-
-RemoveTextDuplicates(vText){ ;maintaining order and case insensitive
-
-vOutput := ""
-
-; vText:=Trim(StrReplace(vText, "`t", ""))
-VarSetCapacity(vOutput, StrLen(vText)*2*2)
-oArray := {}
-StrReplace(vText, "`n",, vCount)
-oArray.SetCapacity(vCount+1)
-;Sort, vText, D, ;add this line to sort the list
-Loop Parse, vText, % "`n"
-{
-	if !oArray.HasKey("z" A_LoopField)
-		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
-}
-; MsgBox, % vOutput
-
-oArray := ""
-return vOutput
-}
 
 
 
@@ -263,30 +214,35 @@ Test_4:       ;;|||||||||||||||||||||||||||||||||||||||||||||||||||||||| TEST 4 
     ParseList := StrSplit(A_LoopReadLine, "`n")
     ; Sort, ParseList, U
       ; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
-    Selection:= % "&" A_index " " ParseList[1]
+      if A_index < 10
+        Selection:= % "&" A_index " " ParseList[1]
+       else
+        Selection:= % A_index " " ParseList[1]
+
       ; Group:= % MethodGroup[2] ;for a second split
-    Menu, Dropdownmenu, add, %Selection%, CurrentCodesMenu
+    Menu, Dropdownmenu, add, %Selection%, CurrentCodesMenutest
     }
     Menu, DropdownMenu, Show,
     return
 
-    CurrentCodesMenu:
+    CurrentCodesMenutest:
       sleep 200
-    RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-      if sProduct {
-        Product:=sProduct
-        GuiControl,Varbar:Text, Product, %sProduct%
-      }
-      Batch:=sBatch
-      lot:=slot
-      Coated:=sCoated
-      GuiControl,Varbar:Text, Batch, %sBatch%
-      GuiControl,Varbar:Text, lot, %slot%
-      GuiControl,Varbar:Text, Coated, %sCoated%
-      try XL.Sheets(sProduct).activate
+      Clipboard:=A_ThismenuItem
+    ; RegExMatch(A_ThisMenuItem, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
+    ;   if sProduct {
+    ;     Product:=sProduct
+    ;     GuiControl,Varbar:Text, Product, %sProduct%
+    ;   }
+    ;   Batch:=sBatch
+    ;   lot:=slot
+    ;   Coated:=sCoated
+    ;   GuiControl,Varbar:Text, Batch, %sBatch%
+    ;   GuiControl,Varbar:Text, lot, %slot%
+    ;   GuiControl,Varbar:Text, Coated, %sCoated%
+      try XL.Sheets(Product).activate
 
       ; IniRead,vOutput, %inifile%, %Category%, %InputVar%
-      Pop(A_ThisMenuItem,vOutput)
+      ; Pop(A_ThisMenuItem,vOutput)
       return
 
 
@@ -326,42 +282,7 @@ Return
 
 
 
-SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
-		global
-    if Getkeystate("LControl","p"){
-      gosub, AddTextMenuItem
-      return
-    }
-    else
-    {
-      try menu, Menu, DeleteAll
-  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
-  		{
-  		If A_Index = 1
-  			Continue
-  		SavedMenuItems := StrSplit(A_LoopReadLine, "=")
-  		Selection:= % SavedMenuItems[1]
-  		Menu, Menu, add, %Selection%, SavedTextMenu
-  		}
-      menu, menu, add
-      menu, menu, add, E&xit, ExitMenu
-  		Menu, Menu, Show,
-      }
-		return
-		SavedTextMenu:
-			sleep 200
-			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini, SavedMenuItems, %InputVar%
-			Sendinput, %vOutput%
-      menu, Menu, DeleteAll
-			return
 
-      AddTextMenuItem:
-      InputBox, Variable, Variable Name = Variable
-      VARIABLEITEM:= "`n" Variable
-      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
-      Return
-}
 
 
 ADD_A_TODO_LIST_ITEM_IN_VSCODE:

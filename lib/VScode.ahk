@@ -1,32 +1,49 @@
 return
 #Ifwinactive,ahk_exe Code.exe  ;;___VSCODE___
+	Lbutton & F13::return
 	F13 & Tab::
-	Mbutton::sendinput, +{F9}
+	; Mbutton::sendinput, +{F9}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	F13 & Lalt::FindMatchingwindows()
+	F13 & `::Sendinput,+{F9}
+	F13 & '::Sendinput,!+{F9}
+
 	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
 	F13 & z::F3
 	F13 & 5::send,`%
 	F13 & 4::        Sendinput,^!{4}
-	F13::F13
+	;$F13::send, {F13}
 
 	tab & `::				sendinput, ^!{0} ;unfold all
 	tab & `;::       Sendinput,!^{/} ;unfold all
-	tab & h::			   Sendinput,{ctrldown}{altdown}{[}{altup}{ctrlup}
-	tab & l::        Sendinput,{ctrldown}{altdown}{]}{altup}{ctrlup}
-
+	Tab & l::
+									if Getkeystate("F13","p")
+										Sendinput,{ctrldown}{altdown}{]}{altup}{ctrlup}
+									else
+										Sendinput,{ctrldown}{]}{ctrlup}
+									return
+	Tab & h::
+									if Getkeystate("F13","p")
+										Sendinput,{ctrldown}{altdown}{[}{altup}{ctrlup}
+								 	else
+										Sendinput,{ctrldown}{[}{ctrlup}
+									return
 	tab & j::
 									if Getkeystate("LControl","p")
 										send, {shiftdown}{down}{shiftup}
-									else
+									else if Getkeystate("F13","p")
 										sendinput, {shiftdown}{altdown}{ctrldown}{'}{ctrlup}{altup}{shiftup}
+									else
+										sendinput, {up}
 									return
 	tab & k::
 									if Getkeystate("LControl","p")
 										send, {shiftdown}{up}{shiftup}
-									else
+									else if Getkeystate("F13","p")
 						        sendinput, {shiftdown}{altdown}{k}{altup}{shiftup}
+									else
+										Sendinput, {down}
 									return
 	tab & g::        sendinput, {shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}
 	tab & n::        sendinput, {shiftdown}{lwindown}{h}{lwinup}{shiftup}
@@ -69,7 +86,6 @@ return
 	Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
 	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
-	; Lbutton & F13::
 	; 	send, ^c
 	; 	tt(Clipboard,1000,100,-400,,160)
 	; 	return
@@ -189,8 +205,8 @@ ReloadScript(){
 	sleep 100
 	winSet, Transparent, off, ahk_exe Code.exe
 	; try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-if A_DebuggerName
-		ControlSend, , {Numlock}, ahk_exe Code.exe
+if A_DebuggerName || DebuggingScript
+		ControlSend, , {F5}, ahk_exe Code.exe
 	else
 		reload
 	}

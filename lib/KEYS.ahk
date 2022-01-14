@@ -2,6 +2,26 @@ return
 
 
 #ifwinactive,
+Volume_Mute::
+Clipboard:=
+(
+	"K741 107-0431 0278H1
+K277 888-8888
+K277 888-8777
+K277 111-1111
+J929 910-0128 0623I1
+J837 109-0445 7777A7 ct#666-6666
+J837 109-0445 0670I1
+J837 109-0445
+J837 109-0333 0333I1
+H624 104-0657
+B324 105-1172 0656H1
+B086 108-0752 Ct#109-0635
+B086 108-0752 Bulk Ct#109-0635
+B086 108-0752 Bulk 109-0635
+B086 108-0752  109-0635"
+)
+return
 F22::return
 F24::return
 ; Scrolllock::Scrolllock
@@ -30,121 +50,7 @@ Ins::flovar()
 ; sendlevel
 ;;	___ClipCopy&Paste
 ; F13 & Mbutton::
-+F20::
-	if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
-		{
-				CutPresses += 1
-				return
-		}
-		CutPresses := 1
-		SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
-		return
-		PressCut:
-			if (CutPresses = 1){ 				; The key was pressed once.
-					send, ^x								;cut
-			}
-			else if (CutPresses = 2){		; The key was pressed 2x
-				clip.Append("`n","{x}")
-			}
-			else if (CutPresses > 2){		; The Key was pressed 3x
-				clip.Append(A_Space,"{x}")
-			}
-		CutPresses := 0
-return
 
-
-F19::  ;;copy, append, append Tab
-	if winactive("Clipboard ahk_exe autohotkey.exe"){ ;if clipboard window open
-		GUI, EditBox:submit
-		clipboard:=EditBox
-		sleep 10
-		tt(clipboard)
-		return
-	}
-	if getkeystate("F20", "p"){ 											;F20 & F19
-    ClipboardSaved:=ClipboardAll
-    clipboard:=
-    ; sleep 20
-    Send, ^c
-      clipwait,0.40
-	  if errorlevel 																;if nothing selected
-			{
-				clipboard:=ClipboardSaved
-				sleep 50
-				clip.editbox()
-			}
-		else {
-			sendinput, ^{c}
-			sleep 100
-			clip.editbox()
-			}
-			return
-		}
-	if (CopyPresses > 0){  												; If Timer already started, log the keypress instead.
-				CopyPresses += 1
-				return
-	}
-		CopyPresses := 1
-		SetTimer, PressCopy, -450 ; Wait for more presses within a 450 millisecond window.
-		return
-	PressCopy:
-			if (CopyPresses = 1){	  ; The key was pressed once.
-					send, ^c									;Copy
-					sleep 75
-					FloVar(Clipboard,900,11)
-			}
-			else if (CopyPresses = 2){ ; The key was pressed 2x
-					clip.Append()							;AppendClip
-					Sleep 250
-			}
-			else if (CopyPresses > 2) ; The key was priced 3x
-					Send, +{F18} 							;Clipchain
-		CopyPresses := 0
-return
-
-F20:: ;;paste, editbox, clipchain
-	if !getkeystate("F19", "p") && (A_PriorHotkey = "F19") && (A_TimeSincePriorHotkey < 2000) {
-		clip.editbox()
-		return
-	}
-		if getkeystate("F19", "p"){ 	; F19 & F20
-	  ClipboardSaved:=ClipboardAll
-	    clipboard:=
-	    Send, ^x
-	      clipwait,0.30
-		  if errorlevel 							; if nothing selected
-				{
-					clipboard:=ClipboardSaved
-					sendinput, {delete}
-					return
-				}
-			else
-				tt(Clipboard,900,,,,200)
-			return
-	}
-	if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
-	{
-			PastePresses += 1
-			return
-	}
-	PastePresses := 1
-	SetTimer, PressPaste, -450 ; Wait for more presses within a 400 millisecond window.
-	return
-	PressPaste:
-		if (PastePresses = 1) ; The key was pressed once.
-		{
-				send, ^{v}
-		}
-		else if (PastePresses = 2) ; The key was pressed twice.
-		{
-			Send, {F18}
-		}
-		else if (PastePresses > 2)
-		{
-			Clip.EditBox()
-		}
-		PastePresses := 0
-return
 +^c::clip.Append()
 !^c:: clip.Append(A_Space)
 !^x:: send % clip.Append() "{backspace}"
@@ -193,6 +99,10 @@ F19 & left::								GetAllProducts()
 F19 & down::								GetAllBatches()
 F19 & up::									Sendinput % excel.GetAllSheets()
 ; F13 & Space::								GetAllProducts()
+!w::Sendinput, {up}
+!s::Sendinput, {down}
+!a::Sendinput, {left}
+!d::Sendinput, {right}
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
 <#F13::											GetAllProducts("`n")
@@ -204,7 +114,9 @@ Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
 Numlock::								  4tap()
 ;;	___Lbuton:
 Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
-Lbutton & F20::						send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup}
+Lbutton & F20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;snip and pin
+
+
 F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
 F19 & Rbutton::       		clip("OCR")
 
@@ -279,7 +191,8 @@ F20 & /::        	 				clip("OCR")
 	` & 4::							Test(4)
 	` & 5::							Test(5)
 	` & 6::							Test(6)
-	F13 & `::
+	F13 & `::						menu.ProductSelection()
+	F13 & esc::
 	` & esc::						Varbar.reset()
 	`::	 								sendraw, ``
 
@@ -426,7 +339,7 @@ if !winactive("CodeQuickTester*")
 	<+F20::       		   Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{Shiftdownwn}{ctrldown}{left 2}{ctrlup}{Shiftup}"
 	; <+F19::       		   Sendinput % Trim(Product, OmitChars = " `n")
 	;F20 & F19::          Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
-
+	Numlock::sendinput, %Batch% is updated.
 	numpadmult::
 
 	F7::						LMS.SearchRequest(Batch,"{enter}")

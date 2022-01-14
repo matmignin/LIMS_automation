@@ -131,6 +131,58 @@ return 0
 
 
 
+RemoveFileDuplicates(File,Sorting:="U CL R"){
+	global
+	FileRead, vText, % File
+  vOutput := ""
+  ; vtext:=strReplace(vText, "`n`n", "")
+; vText:=Trim(StrReplace(vText, "`t", ""))
+VarSetCapacity(vOutput, StrLen(vText)*2*2)
+oArray := {}
+StrReplace(vText, "`n",, vCount)
+oArray.SetCapacity(vCount+1)
+;Sort, vText, D, ;add this line to sort the list
+Loop Parse, vText, % "`r`n"
+{
+	if !oArray.HasKey("z" A_LoopField)
+		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
+}
+; MsgBox, % vOutput
+
+oArray := ""
+  ; OutputVar:=Trim(OutputVar, " `t")
+  ; OutputVar:=trim(StrReplace(OutputVar, "`t", ""))
+  ; sleep 200
+	; Sort, OutputVar, % Sorting
+  ; vOutput:=trim(vOutput, "`n`n")
+	NewOutputVar := RegExReplace(vOutput, "m`a)(\s\r\n)","`n")
+	FileDelete, % File
+	sleep, 400
+	FileAppend, %NewOutputVar%, % File
+}
+
+RemoveTextDuplicates(vText){ ;maintaining order and case insensitive
+
+vOutput := ""
+
+; vText:=Trim(StrReplace(vText, "`t", ""))
+VarSetCapacity(vOutput, StrLen(vText)*2*2)
+oArray := {}
+StrReplace(vText, "`n",, vCount)
+oArray.SetCapacity(vCount+1)
+;Sort, vText, D, ;add this line to sort the list
+Loop Parse, vText, % "`n"
+{
+	if !oArray.HasKey("z" A_LoopField)
+		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
+}
+; MsgBox, % vOutput
+
+oArray := ""
+return vOutput
+}
+
+
 
 class Breaking {
 	Point(){
@@ -327,6 +379,73 @@ DestroyGui:
   try GUI, Popup2:destroy
 return
 
+
+FloVar(VariableText:="", MousePopup:="", FontSize:=18){
+		Global
+		try GUI, FloVar:Destroy
+		if MouseIsOver("ahk_exe NOTEPAD.EXE") || MouseIsOver("ahk_exe WFICA32.EXE")
+			Color:="000000"
+		else
+			color:="FFFFFF"
+		CoordMode, Mouse, Screen
+		; MouseGetPos, Mx, My
+		OutlineColor := "282A36"  ; Can be any RGB color (it will be made transparent below).
+		Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
+		GUI, FloVar:Color, %OutlineColor%
+		GUI, FloVar:Font, % "s" Fontsize , Arial ; Set a large font size (32-point).
+		sleep 50
+		GUI, FloVar:Add, Text, +wrap R30 vMyText c%Color%, XXXXXXXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
+		; Make all pixels of this color transparent and make the text itself translucent (150):
+			winSet, TransColor, %OutlineColor%  250
+		; else
+
+			; winSet, TransColor, %OutlineColor%  150
+		; winSet, TransColor, 453936  250
+		if VariableText{
+			FloVarText:=VariableText
+			; GUI, FloVar:Font, s5
+			}
+		else {
+			FlovarText:=
+			if Product
+				FlovarText.=Product
+			if Batch
+				FlovarText.=" " Batch
+			if lot
+				FlovarText.=" " lot
+			if Coated
+				FlovarText.=" Ct#" Coated
+		}
+		; SetTimer, updateOSD, -100
+		Gosub, FloatOSD  ; Make the first update immediate rather than waiting for the timer.
+		if (MousePopup){
+			; GUI, FloVar:Font, % "s" MousePopup
+			; my-=500
+			SetTimer, FloatOSD, 50
+			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
+			SetTimer, PopUpOSD, % "-" MousePopup
+		}
+		else
+			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
+				CoordMode, Mouse, window
+	return
+		updateOSD:
+		MouseGetPos, Mx, My
+			return
+		PopupOSD:
+			try GUI, FloVar:destroy
+			SetTimer, FloatOSD, Off
+			return
+		FloatOSD:
+			CoordMode, mouse, Screen
+			MouseGetPos, Mx, My
+			My+=100
+			Mx-=100
+			GuiControl, FloVar:Text, MyText, % FloVarText
+			winMove, FloVar ahk_class AutoHotkeyGUI, ,Mx, My
+			; sleep 50
+			return
+	}
 
 
 

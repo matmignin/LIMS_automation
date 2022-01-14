@@ -1,5 +1,14 @@
-;#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+/*
+RegexProduct:= "i)(?<=\w{3})?[abdefghijkl]\d{3}"
+RegexBatch:=   "i)(?<!Ct#)\d{3}-\d{4}\b"
+RegexLot:=     "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?"
+RegexCoated:=  "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+*/
 
+; RegexProduct:="i)(?<=\w{3})?[abdefghijkl]\d{3}"
+; RegexBatch:=  "i)(?<!Ct#)\d{3}-\d{4}\b"
+; RegexLot:=    "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?"
+; RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
 
 Clip(input=0,Wait:="0.45"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
@@ -14,6 +23,9 @@ Clip(input=0,Wait:="0.45"){
   {
     tt("clip error level")
     sleep 100
+    ; if (A_PriorKey != "F19") || (A_PriorhotKey != "Mbutton") || (A_PriorhotKey != "^Wheeldown")
+      ; exit
+    ; Send, {home}{shiftdown}{end}{shiftup}^{c}{ctrlup}
   }
   clip.Regex()
   return
@@ -35,7 +47,7 @@ clipChange(type){
       FloVar(Clipboard,3000,13)
     if A_PriorKey = b
       return
-}
+return
 
 }
 
@@ -90,6 +102,19 @@ EditBox(Input:=""){
 
 
 
+CutSwap(){
+  send, {lbutton up}
+  preclip:=clipboard
+  clipboard:=
+  send, ^x
+  Clipwait, 0.25
+  postclip:=clipboard
+  clipboard:=
+  clipboard:=Preclip
+  clipwait, 0.25
+  send, ^v
+  clipboard:=PostClip
+}
 Append(Delimiter:="`n"){
     global
 		PreClip:=Clipboard
@@ -109,36 +134,42 @@ Append(Delimiter:="`n"){
 		return
 }
 
-CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, rProduct, rLot, rBatch, rCoated, r
-      Parse:= Input ? Input : Clipboard
-        RegexMatch(Parse, RegexProduct,r)
-        RegexMatch(Parse, RegexLot, r)
-        RegexMatch(Parse, RegexBatch, r)
-        RegExMatch(Parse, RegexCoated, r)
-      if rCoated
-        Ct:=" ct#"
-     Return Trim(rProduct " " rBatch " " rLot Ct rCoated)
-}
 
 Parse(Value:=""){
   global
-  Gui Varbar:Default
   regProducts:=[], regBatches:=[],
+  Gui Varbar:Default
+  match:=
   sleep 150
-    ParsedClipboard:= Value ? Value : Clipboard
-  loop, parse, ParsedClipboard, "`r`n"
+    If !Value
+      ParsedClipboard:=Clipboard
+    else
+      ParsedClipboard:=Value
+    loop, parse, ParsedClipboard, "`r`n"
     {
-      ; clip.codesRegex(A_LoopField)
-      Totalclips.=clip.CodesRegex(A_LoopField) "`n"
-        if A_Index = 1 ; if first line
+      RegexMatch(A_loopField, RegexProduct,VarProduct) ;[abdefghijk]\d{3}\b", VarProduct)
+      RegexMatch(A_loopField, RegexLot, VarLot)
+      RegexMatch(A_loopField, RegexBatch, VarBatch)
+      RegExMatch(A_loopField, RegexCoated, Var)
+      ; RegExMatch(A_loopField, "i)(s|\$)\d{8}-\d{3}\b", VarSampleID)
+          if VarProduct
+            Match.=VarProduct
+          if varBatch
+            Match.= " " VarBatch
+          if varLot
+            match.= " " VarLot
+          if varCoated
+            match.= " Ct#" VarCoated
+          TrimmedMatch:=Trim(Match)
+          ; ControlsetText, Edit5,%TrimmedMatch%,VarBar
+          varbar.addtolist(TrimmedMatch)
+          ; Control, Add, %TrimmedMatch%, Combobox1
+        if Match && A_Index = 1 ; if first line
         {
-          this.SetVarbar()
             clip.Singleregex()
         }
-        ;else if Match && A_Index > 1
-        else if A_Index > 1
-          regProducts.insert(clip.CodesRegex(A_LoopField))
+        else if Match && A_Index > 1
+          regProducts.insert(Trim(Match))
       if (RegProducts.maxindex() > 1) { ;remove duplicates from array
           Products:=[], oTemp := {}
           for vKey, vValue in regProducts {
@@ -174,67 +205,8 @@ Parse(Value:=""){
           ; guicontrol, ChooseString, ComboBox1, %Product%
         }
         ; Pop(CurrentCodes,,500,"Right")
-      ; return
+      return
     }
-    return
-}
-SetVarbar(){
-  ConnectedProduct:=
-  global
-if rProduct {
-        GUI, Varbar:font, cBlack s16  Norm w700, Consolas
-        GuiControl,Varbar:Text, Product, %rProduct%
-        GuiControl, Font, Product
-        Product:=rProduct
-        ConnectedProduct.=rProduct
-      }
-      If rBatch {
-        GUI, Varbar:font, cBlack s12 Norm W700 ,Consolas
-        GuiControl,Varbar:Text, Batch, %rBatch%
-        GuiControl, Font, Batch
-        Batch:=rBatch
-        ConnectedProduct.= " " rBatch
-      }
-      If rLot {
-        GUI, Varbar:font, cBlack s10 Norm w600 , Consolas
-        GuiControl,Varbar:Text, lot, %rlot%
-        GuiControl, Font, Lot
-        lot:=rLot
-        ConnectedProduct.= " " rLot
-      }
-      If rCoated {
-        GUI, Varbar:font, cBlack s8.5 Norm w600, Arial Narrow
-        GuiControl,Varbar:Text, Coated, %rCoated%
-        GuiControl, Font, Coated
-        Coated:=rCoated
-        ConnectedProduct.= " ct#" rCoated
-      }
-      this.SetColor()
-      if !rProduct {
-        GUI, Varbar:font, c272822 s10  Right italic w300, Arial Narrow
-        GuiControl, Font, Product
-        ; GuiControl,Varbar:Text, Product, %rProduct%
-        Poduct:=rProduct
-      }
-      If !rBatch {
-        GUI, Varbar:font, c272822 s10 italic right w300, Arial Narrow
-        GuiControl, Font, Batch
-        ; GuiControl,Varbar:Text, Batch, %rBatch%
-        Batch:=rBatch
-      }
-      If !rLot {
-        GUI, Varbar:font, c272822  s10 italic  Right w300, Arial Narrow
-        GuiControl, Font, lot
-        ; GuiControl,Varbar:Text, lot, %rlot%
-        lot:=rLot
-      }
-      If !rCoated {
-        GuiControl, Font, Coated
-        GUI, Varbar:font, c272822  s10 Italic Right w300, Arial Narrow
-        ; GuiControl,Varbar:Text, Coated, %rCoated%
-        Coated:=rCoated
-      }
-      this.AddtoList(ConnectedProduct)
 }
 
 
@@ -245,65 +217,64 @@ SingleRegex(){
     ConnectedProduct:=
       Haystack:=Clipboard
     sleep      20
-      ; RegExMatch(HayStack, regexProduct,rProduct)
-      ; RegExMatch(HayStack, regexBatch, rBatch)
-      ; RegExMatch(HayStack, regexLot, rlot)
-      ; RegExMatch(HayStack, regexCoated, r)
+      RegExMatch(HayStack, regexProduct,cProduct)
+      RegExMatch(HayStack, regexBatch, cBatch)
+      RegExMatch(HayStack, regexLot, clot)
+      RegExMatch(HayStack, regexCoated, c)
       sleep 50
-      if rProduct {
+      if cProduct {
         GUI, Varbar:font, cBlack s16  Norm w700, Consolas
-        GuiControl,Varbar:Text, Product, %rProduct%
+        GuiControl,Varbar:Text, Product, %cProduct%
         GuiControl, Font, Product
-        Product:=rProduct
-        ConnectedProduct.=rProduct
+        Product:=cProduct
+        ConnectedProduct.=cProduct
       }
-      If rBatch {
+      If cBatch {
         GUI, Varbar:font, cBlack s12 Norm W700 ,Consolas
-        GuiControl,Varbar:Text, Batch, %rBatch%
+        GuiControl,Varbar:Text, Batch, %cBatch%
         GuiControl, Font, Batch
-        Batch:=rBatch
-        ConnectedProduct.= " " rBatch
+        Batch:=cBatch
+        ConnectedProduct.= " " cBatch
       }
-      If rLot {
+      If cLot {
         GUI, Varbar:font, cBlack s10 Norm w600 , Consolas
-        GuiControl,Varbar:Text, lot, %rlot%
+        GuiControl,Varbar:Text, lot, %clot%
         GuiControl, Font, Lot
-        lot:=rLot
-        ConnectedProduct.= " " rLot
+        lot:=cLot
+        ConnectedProduct.= " " cLot
       }
-      If rCoated {
+      If cCoated {
         GUI, Varbar:font, cBlack s8.5 Norm w600, Arial Narrow
-        GuiControl,Varbar:Text, Coated, %rCoated%
+        GuiControl,Varbar:Text, Coated, %cCoated%
         GuiControl, Font, Coated
-        Coated:=rCoated
-        ConnectedProduct.= " ct#" rCoated
+        Coated:=cCoated
+        ConnectedProduct.= " ct#" cCoated
       }
 
-      if !rProduct {
+      if !cProduct {
         GUI, Varbar:font, c272822 s10  Right italic w300, Arial Narrow
         GuiControl, Font, Product
-        ; GuiControl,Varbar:Text, Product, %rProduct%
-        Poduct:=rProduct
+        ; GuiControl,Varbar:Text, Product, %cProduct%
+        Poduct:=cProduct
       }
-      If !rBatch {
+      If !cBatch {
         GUI, Varbar:font, c272822 s10 italic right w300, Arial Narrow
         GuiControl, Font, Batch
-        ; GuiControl,Varbar:Text, Batch, %rBatch%
-        Batch:=rBatch
+        ; GuiControl,Varbar:Text, Batch, %cBatch%
+        Batch:=cBatch
       }
-      If !rLot {
+      If !cLot {
         GUI, Varbar:font, c272822  s10 italic  Right w300, Arial Narrow
         GuiControl, Font, lot
-        ; GuiControl,Varbar:Text, lot, %rlot%
-        lot:=rLot
+        ; GuiControl,Varbar:Text, lot, %clot%
+        lot:=cLot
       }
-      If !rCoated {
+      If !cCoated {
         GuiControl, Font, Coated
         GUI, Varbar:font, c272822  s10 Italic Right w300, Arial Narrow
-        ; GuiControl,Varbar:Text, Coated, %rCoated%
-        Coated:=rCoated
+        ; GuiControl,Varbar:Text, Coated, %cCoated%
+        Coated:=cCoated
       }
-      this.AddtoList(ConnectedProduct)
         ; GuiControl, ChooseString, Combobox1, %ConnectedProduct%
        UpdateDDLlist:
           Gui Varbar:Default
@@ -326,39 +297,39 @@ Regex(Category:=""){
       Haystack:=Category
     sleep      20
       Gui Varbar:Default
-      RegExMatch(HayStack, RegexProduct,r)  ;"i)[abdefghijkl]\d{3}", rProduct)
-      RegExMatch(HayStack, RegexBatch, r)
-      RegExMatch(HayStack, RegexLot, r)
+      RegExMatch(HayStack, RegexProduct,cProduct)  ;"i)[abdefghijkl]\d{3}", cProduct)
+      RegExMatch(HayStack, RegexBatch, cBatch)
+      RegExMatch(HayStack, RegexLot, clot)
       RegExMatch(HayStack, RegexCoated, r)
-      If rProduct && rBatch && rlot || rCoated
-        FileAppend, %rProduct% %rBatch% %rlot% %rCoated%, data\CurrentCodes.txt
-      If rProduct {
-        GuiControl,Varbar:Text, Product, %rProduct%
-        Product:=rProduct
-        ; IniWrite, %rProduct%, Settings.ini, Products, Product
-        ; AppendCode:="`n" rProduct " " rBatch " " rlot "  Ct#" rCoated
+      If cProduct && cBatch && clot || cCoated
+        FileAppend, %cProduct% %cBatch% %clot% %cCoated%, data\CurrentCodes.txt
+      If cProduct {
+        GuiControl,Varbar:Text, Product, %cProduct%
+        Product:=cProduct
+        ; IniWrite, %cProduct%, Settings.ini, Products, Product
+        ; AppendCode:="`n" cProduct " " cBatch " " clot "  Ct#" cCoated
         ; TimmedAppendcode:=Trim(AppendCode)
         ; FileAppend,%TrimmedAppendCode%, Data\CurrentC.txt
       }
-      If rBatch {
-        GuiControl,Varbar:Text, Batch, %rBatch%
-        Batch:=rBatch
+      If cBatch {
+        GuiControl,Varbar:Text, Batch, %cBatch%
+        Batch:=cBatch
 
       }
-      If rLot {
-        GuiControl,Varbar:Text, lot, %rlot%
-        lot:=rLot
+      If cLot {
+        GuiControl,Varbar:Text, lot, %clot%
+        lot:=cLot
       }
-      If rCoated {
-        GuiControl,Varbar:Text, Coated, %rCoated%
-        Coated:=rCoated
+      If cCoated {
+        GuiControl,Varbar:Text, Coated, %cCoated%
+        Coated:=cCoated
       }
-      If !rLot {
-        GuiControl,Varbar:Text, lot, %rlot%
+      If !cLot {
+        GuiControl,Varbar:Text, lot, %clot%
         lot:=
       }
-      If !rCoated {
-        GuiControl,Varbar:Text, Coated, %rCoated%
+      If !cCoated {
+        GuiControl,Varbar:Text, Coated, %cCoated%
         Coated:=
       }
       ; GuiControl, Varbar:MoveDraw, Coated

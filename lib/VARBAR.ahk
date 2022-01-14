@@ -9,27 +9,42 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	;; Variables
 		TopScreen:=1 ;A_ScreenHeight-35
 		MidScreen:=A_ScreenWidth//2
-		VarBar_H=32
-		VarBar_H_max=60
+		VarBar_H=58
+		VarBar_H_max=365
 		VarBar_T:=235
-		VarBar_W=315
+		VarBar_W=350
+		CurrentCodesFile=C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
+	fileread,CurrentCodes,%CurrentCodesFile%
 	Gui Varbar:Default
 	This.loadSavedVariables()
 	Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 	winSet, Transparent, 100, %GUIID%
 	This.SetColor()
-	this.AddEdit("Product",	  "left h30 x1 y1 w65",				"16 Bold")
-	this.AddEdit("Batch",		  "left h30 x+0 y1 w85", 			"12,Consolas")
-	this.AddEdit("Lot",			  "left h30 x+0 y1 w75", 			"9, Consolas")
-	this.AddEdit("Coated",	  "left h30 x+0 y1 wrap w65",	"8.5, Arial Narrow")
+	this.AddEdit("Product",	  "left h29 x1 y0 w65",				"16 Bold")
+	this.AddEdit("Batch",		  "left h29 x+0 y0 w90", 			"12,Consolas")
+	this.AddEdit("Lot",			  "left h29 x+0 y0 w75", 			"9, Consolas")
+	this.AddEdit("Coated",	  "left h29 x+0 y0 wrap w70",	"8.5, Arial Narrow")
 	; this.AddEdit("SampleID",  "x+1 w0",										"9, Arial Narrow")
 	This.AddText("Iteration", "x+1 center y-1 w23",			  "19 Bold 107C41, Consolas")	; Text1
 	GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
-		this.AddBatchesDDL(0,"x1 yP+34 w250 r20 h21 vDDL gDDLVarbar hwndHDDL +0x0210") ;combobox1
-	GUI, VarBar:add, Checkbox, x260 y35 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel
+
+
+;; -----------------new DDL test
+Gui, Varbar:+Delimiter`n
+GUI, VarBar:Font, cBlack s15, Consolas
+Gui, Varbar:Add, Combobox, vCodeStringEdit  simple Altsubmit gDDLVarbar  x1 yP+30 w350 r15 hwndHDDL , %CurrentCodes%
+Gui, Varbar:Add, Button, gDelx  Hidden y200 x10  v1, Delete
+Gui, Varbar:Add, Button, gAddx  Hidden Default x+2  v2, Add
+
+;;----------------------end of test
+
+; this.AddBatchesDDL(0,"x1 yP+34 w250 r15 h21 vCurrentCodesList Simple gDDLVarbar hwndHDDL +0x0210") ;combobox1
+
+
+	; GUI, VarBar:add, Checkbox, x260 y35 vExcelConnect gExcelConnectCheck Checked%ExcelConnect%, Excel
 	; this.AddBatchesDDL(0,"Simple x1 yP+34 w250 r20 h20 AltSubmit vDDL hwndHDDL +0x0210") ;combobox test
 
-	GUI, varbar:add, button, xm ym Hidden Default gDDLVarbar, OK
+	; GUI, varbar:add, button, xm ym Hidden Default gDDLVarbar, OK
 	this.AddBoxes()
 	CoordMode, mouse, screen
 	try GUI, VarBar:Show,  x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
@@ -38,73 +53,61 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	CoordMode, mouse, window
 	ControlsetText, Static1, %Iteration%,VarBar
 	OnMessage(0x0201, "WM_LBUTTONDOWN")
+	OnMessage(0x0203, "WM_LBUTTONDBLCLK")
 	; OnMessage(  WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
 	OnMessage(0x0200, "WM_MOUSEMOVE")
-	OnMessage(0x203,  "VariableBar_Relocate")
+	; OnMessage(0x203,  "VariableBar_Relocate")
 	OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 	OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
-
+	GuiControl, ChooseString, ComboBox1, %CodeString%
 	winSet, Transparent, %Varbar_T%, AHK_id %GUIID%
 	return
 			Return
 
-	DDLVarbar:
-		GUI, VarBar:submit,NoHide
-    RegExMatch(DDL, regexProduct,cProduct)
-    RegExMatch(DDL, regexBatch, cBatch)
-    RegExMatch(DDL, regexLot, clot)
-    RegExMatch(DDL, regexCoated, c)
-    If cProduct {
-			GUI, Varbar:font, cBlack s16  Norm w700, Consolas
-			GuiControl, Font, Product
-			StringUpper,cProduct,cProduct
-      GuiControl,Varbar:Text, Product, %cProduct%
-      ; Product:=cProduct
-    }
-    If cBatch {
-			GUI, Varbar:font, cBlack s12 Norm w400 ,Consolas
-			GuiControl, Font, Batch
-      GuiControl,Varbar:Text, Batch, %cBatch%
-      Batch:=cBatch
-    }
-    If cLot {
-			GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
-			GuiControl, Font, lot
-			StringUpper,cLot,cLot
-      GuiControl,Varbar:Text, lot , %clot%
-      lot:= cLot
-    }
-    If cCoated {
-			GUI, Varbar:font, cBlack s9 Norm w500, Arial Narrow
-			GuiControl, Font, Coated
-      GuiControl,Varbar:Text, Coated, %cCoated%
-      Coated:=" ct# " cCoated
-    }
-    AppendCode:="Product " " Batch " " lot " " cCoated"
-    TrimmedAppendcode:=Trim(AppendCode)
-    FileAppend,%TrimmedAppendCode%`n, Data\CurrentCodes.txt
-    If !cProduct {
-			GUI, Varbar:font, cFFFFFF  Italic w300, Arial Narrow
-			GuiControl, Font, Product
-      Product:=cProduct
-    }
-    If !cBatch {
-			GUI, Varbar:font, cFFFFFF s10 italic w300, Arial Narrow
-			GuiControl, Font, Batch
-      Batch:=cBatch
-    }
-    If !cLot {
-			GUI, Varbar:font, cFFFFFF  s9 italic w300, Arial Narrow
-			GuiControl, Font, lot
-      lot:=cLot
-    }
-    If !cCoated {
-			GUI, Varbar:font, cFFFFFF s9 italic w300, Arial Narrow
-			GuiControl, Font, Coated
-      Coated:=cCoated
-    }
-		    GuiControl,, DDL, % CurrentCodes := TrimmedAppendcode "`n`n" Trim(StrReplace(CurrentCodes, "`n`n", "`n"), "`n")
+addx:
+	Gui, Varbar:submit, nohide
+	If CodeString is integer
+	{
+		control, choose, %CodeStringEdit%
+		return
+	}
+	else
+		Control, Add, %CodeString%, Combobox1    ; add to the bottom of the list
+		ControlGet, Wholex, List,,Combobox1              ;- get the whole listbox1
+	 sort,Wholex, U R
+		control, choose, %CodeString%
+	if wholex<>
+	 {
+	 stringreplace,wholex,wholex,`n`n,`n,all
+	 filedelete,%CurrentCodesFile%
+	 fileappend,%wholex%,%CurrentCodesFile%
+	 RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+	 }
+	return
 
+
+delx:
+	; GUI, VarBar:submit,NoHide
+	GuiControlGet,   TheSelectedLine,, CodeStringEdit      ; get the focused item Number
+	Control, Delete, %TheSelectedLine%, Combobox1    ; delete the focused item
+	ControlGet, Wholex, List,,Combobox1              ;- get the whole listbox1
+		sort,Wholex, U R
+	if wholex<>
+	 {
+	 stringreplace,wholex,wholex,`n`n,`n,all
+	 filedelete,%CurrentCodesFile%
+	 fileappend,%wholex%,%CurrentCodesFile%
+	 }
+	return
+
+
+	DDLVarbar:
+		GUI, varbar:default
+		GUI, VarBar:submit,NoHide
+		Gui, Varbar:+Delimiter`n
+		ControlGetText, CodeString, Edit5, VarBar
+		clip.CodesRegex(CodeString)
+		clip.SetVarbar()
 		return
 
 		ExcelConnectCheck:
@@ -117,16 +120,63 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 		CoatedVarBar:
 			GUI, VarBar:submit,NoHide
 			sleep 50
-			; if ExcelConnect
-				; excel.Connect(1)
-			; this.SaveVariables()
+
+			;this.SaveVariables()
 			return
 		VarBarGuiClose:
+		VarBarButtonOK:
 		VarBarGuiEscape:
+		; GUI, VarBar:submit,NoHide
 			sleep 50
 			this.SaveVariables()
 		return
 	}
+
+	WM_LBUTTONDBLCLK(){
+		global
+	GUI, varbar:default
+	Gui, Varbar:+Delimiter`n
+	Gui, Varbar:submit, nohide
+	GuiControlGet,   TheSelectedLine,,CodeStringEdit
+	Control, Delete, %TheSelectedLine%, Combobox1    ; delete the focused item
+	ControlGet, Wholex, List,,Combobox1              ;- get the whole listbox1
+		sort,CurrentCodes, U R
+	if wholex<>
+	 {
+	 stringreplace,wholex,wholex,`n`n,`n,all
+	 filedelete,%CurrentCodesFile%
+	 fileappend,%wholex%,%CurrentCodesFile%
+	}
+return
+	}
+AddToList(Input:=""){
+	Global
+	GUI, varbar:default
+	Gui, Varbar:submit, nohide
+	Gui, Varbar:+Delimiter`n
+	; If CodeString is integer
+	; {
+		; ControlGetText, CodeString, Edit5, VarBar
+		; control, choose, %CodeString%
+		; return
+	; }
+	; else
+		Variable:=Input ? Input : Clipboard
+		if !Variable
+			Variable:=CodeString
+		ControlsetText, Edit5, %Variable%,VarBar
+		Control, Add, %Variable%, Combobox1    ; add to the bottom of the list
+		ControlGet, Wholex, List,,Combobox1              ;- get the whole listbox1
+	 sort,Wholex, U R
+		; control, choose, %CodeString%
+	if wholex<> 															;Update List
+	 {
+		 stringreplace,wholex,wholex,`n`n,`n,all
+		 filedelete,%CurrentCodesFile%
+		 fileappend,%wholex%,%CurrentCodesFile%
+		 RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+	 }
+}
 
 AddModeComboBox(Variable:="Mode",Options:=""){
 	global
@@ -134,30 +184,7 @@ AddModeComboBox(Variable:="Mode",Options:=""){
 	GUI, Varbar:add, ComboBox, %Options% v%Variable% g%Variable%DDL, % ModeSelections
 	GuiControl, ChooseString, ComboBox2, % %Variable%
 	}
-updateWith(Input){
-			Global
-			GUI, varbar:default
-			GUI, Varbar:Submit, Nohide
-	    Gui, Varbar:+Delimiter`n
-		; Clipboard:=DDL
-		; RegExMatch(Input, "i)(?<Product>([abdefghijkl]\d{3})?).?(?<Batch>(\d{3}-\d{4})?).?(?<Lot>(\d{4}\w\d\w?|Bulk|G\d{7}\w?)?).?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
-				RegexMatch(Input, regexProduct,cProduct)
-        RegexMatch(Input, regexBatch, cBatch)
-        RegexMatch(Input, regexLot, clot)
-        RegExMatch(Input, regexCoated, c)
-		Product:=cProduct
-		Batch:=cBatch
-		lot:=clot
-		Coated:=cCoated
-		String:=Trim(cProduct " " cBatch " " cLot " " cCoated)
-		ControlsetText, Edit1,%cProduct%,VarBar
-    ; RegProducts.InsertAt(1, Trim(Match))
-    ; gui, Varbar:Default
-    GuiControl,, DDL, % CurrentCodes := String "`n`n" Trim(StrReplace(CurrentCodes, "`n`n", "`n"), "`n")
-		GuiControl, MoveDraw, DDL
-		try XL.Sheets(VarProduct).activate
-		return
-		}
+
 
 
 
@@ -326,77 +353,62 @@ BatchesMenu(Formulation){
 
 	loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
 		global
-		if !winExist("Mats LMS Workbook.xlsb") || !ExcelConnect { ;|| !RegexMatch(XL.activeSheet.Name, "i)[abdefghijkl]\d{3}"){
-				Iniread, Product, Settings.ini, SavedVariables, Product
-				Iniread, Batch, Settings.ini, SavedVariables, Batch
-				Iniread, Lot, Settings.ini, SavedVariables, Lot
-				Iniread, ShowCoated, Settings.ini, Options, ShowSampleID
-				Iniread, Coated, Settings.ini, SavedVariables, Coated
-				iniread, CodeString, Settings.ini, SavedVariables, CodeString
-			}
+
 			IniRead, Varbar_X, Settings.ini, Locations, VarBar_X
 			IniRead, Varbar_Y, Settings.ini, Locations, VarBar_Y
 			Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-			; Iniread, ShowSampleID, Settings.ini, Options, ShowSampleID
-			; If ShowSampleID
-			; 	Iniread, SampleID, Settings.ini, SavedVariables, SampleID
-			; iniread, note1, Settings.ini, Notes, note1
-			; Iniread, note2, Settings.ini, Notes, note2
 			Iniread, HideVarBar, Settings.ini, Options, HideVarBar
 			Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
 			Iniread, ModeSelections, Settings.ini, Options, ModeSelections
 			Iniread, Mode, Settings.ini, Options, Mode
-			Products:=[]
-       FileRead, LoadedCodes, Data\CurrentCodes.txt
-       Products := Trim(StrSplit(LoadedCodes,"`r`n"))
-			 ListArray(Products)
+
+		 if !winExist("Mats LMS Workbook.xlsb"){ ;|| !(ExcelConnect){ ;|| !RegexMatch(XL.activeSheet.Name, "i)[abdefghijkl]\d{3}"){
+			   iniread, CodeString, Settings.ini, SavedVariables, CodeString
+				clip.parse(CodeString)
+			 }
 		}
 
 
 	SaveVariables(){ ;;___________________________SAVING VARIABLES_________________________
 		global
-		CodeString:=
+			GUI, varbar:default
+			GUI, Varbar:Submit, Nohide
+		sleep 200
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-		if RegExMatch(Product, "i)[abdefghijkl]\d{3}"){
-			iniwrite, %Product%, Settings.ini, SavedVariables, Product
-			CodeString.=Product
-			}
-		if Batch
-      if RegExMatch(Batch, "i)\d{3}-\d{4}"){
-			iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
-			CodeString.=" " Batch
-			}
-		if Lot
-      if RegExMatch(Lot, "i)(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b)"){
-			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
-			CodeString.=" " Lot
-			}
-		if Coated
-      if RegExMatch(Coated, "i)(\d{3}-\d{4})"){
-			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
-			CodeString.=" Ct#" Coated
-			}
-		CodeString:=Trim(CodeString)
-		; if SampleID
-		; 	iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
-		; if Note1
-		; 	IniWrite, %note1%, Settings.ini, Notes, note1
-		; if Note2
-		; 	IniWrite, %note2%, Settings.ini, Notes, note2
-		; if Mode
-		; 	IniWrite, %Mode%, Settings.ini, Options, Mode
-
 		iniwrite, %CodeString%, Settings.ini, SavedVariables, CodeString
 		IniWrite, %HideVarbar%, Settings.ini, Options, HideVarbar
 		IniWrite, %ModeSelections%, Settings.ini, Options, ModeSelections
-		FileAppend, `n%CodeString%`n%CurrentCodes%, data\CurrentCodes.txt
+		; FileAppend, %CodeString%, Data\CurrentCodes.txt
 		sleep 200
 		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		}
 
 
 
+HistoryMenuItem(){
+	global Product, Batch, Lot, Coated,
+		GUI, VarBar:submit,NoHide
+	sleep 200
+	RegExMatch(A_ThisMenuItem, RegexProduct, rProduct)
+	RegExMatch(A_ThisMenuItem, RegexBatch, rBatch)
+	RegExMatch(A_ThisMenuItem, RegexLot, rlot)
+	RegExMatch(A_ThisMenuItem, RegexCoated, r)
+	; RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
+	ControlsetText, Edit1,%rProduct%, VarBar
+	ControlsetText, Edit2,%rBatch%, VarBar
+	ControlsetText, Edit3,%rLot%, VarBar
+	ControlsetText, Edit4,%rCoated%, VarBar
+	if rProduct
+		Product:=rProduct
+	if rBatch
+		Batch:=rBatch
+	if rLot
+		Lot:=rLot
+	if rCoated
+		Coated:=rCoated
 
+	return
+	}
 
 
 
@@ -414,30 +426,14 @@ SetColor(){
 			GUI, VarBar:color,272822, FFFFFF
 		else If (Mode=="Debugging")
 			GUI, VarBar:color,272822, 808000 ;pink
-		else if winExist("Mats LMS Workbook.xlsb - Excel")
+		else if winactive("Mats LMS Workbook.xlsb - Excel")
 			excel.matchcolor()
 		else
-			GUI, VarBar:color,DC734F, 97BA7F
+			GUI, VarBar:color,DC734F, 97BA7F ; normal color
 		; GuiControl, +redraw, varbar
 		}
 
-Hoveraction(Size:=90){
-  global
-	If (MouseIsOver("VarBar ahk_exe AutoHotkey.exe") && Varbar_H=32 ){
-		; ControlGetFocus, GUIFocus, VarBar
-    VarBar_H:=90
-    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-	}
-	else If (Varbar_H=90){
-		ControlGetFocus, GUIFocus, VarBar
-		if (GUIFocus) || MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-			return
-		else {
-		VarBar_H:=32
-    winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%VarBar_H%
-		}
-	}
-}
+
 
 
 
@@ -541,10 +537,10 @@ Hoveraction(Size:=90){
 		; GuiControl, -redraw, varbar
 		sleep 10
 		Iteration+=1
-		ControlsetText, Static1,%Iteration%,VarBar
 		Pop(Iteration)
-		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
 		sleep %Speed%
+		ControlsetText, Static1,%Iteration%,VarBar
+		tt(Iteration,500,Varbar_x,Varbar_y,2,200)
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
@@ -554,10 +550,10 @@ Hoveraction(Size:=90){
 		; GuiControl, -redraw, varbar
 		sleep 10
 		Iteration-=1
-		ControlsetText, Static1,%Iteration%,VarBar
-		; tt(Iteration,300,Varbar_x,Varbar_y,2,200)
 		Pop(Iteration)
 		sleep %speed%
+		ControlsetText, Static1,%Iteration%,VarBar
+		tt(Iteration,500,Varbar_x,Varbar_y,2,200)
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
@@ -565,29 +561,7 @@ Hoveraction(Size:=90){
 
 
 
-HistoryMenuItem(){
-	global Product, Batch, Lot, Coated,
-	sleep 200
-	RegExMatch(A_ThisMenuItem, "i)[abdefghijkl]\d{3}\b", rProduct)
-	ControlsetText, Edit1,%rProduct%, VarBar
-	RegExMatch(A_ThisMenuItem, "i)(?<!Ct#)\b\d{3}-\d{4}\b", rBatch)
-	ControlsetText, Edit2,%rBatch%, VarBar
-	RegExMatch(A_ThisMenuItem, "i)(\b\d{4}\w\d\w?|\bBulk\b)", rlot)
-	ControlsetText, Edit3,%rLot%, VarBar
-	RegExMatch(A_ThisMenuItem, "i)(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}\b", rCoated)
-	RegExMatch(rCoated,   "\d{3}-\d{4}", rCoated)
-	ControlsetText, Edit4,%rCoated%, VarBar
-	if rProduct
-		Product:=rProduct
-	if rBatch
-		Batch:=rBatch
-	if rLot
-		Lot:=rLot
-	if rCoated
-		Coated:=rCoated
 
-	return
-	}
 	}
 
 
@@ -600,8 +574,19 @@ HistoryMenuItem(){
 								winactivate, %the_winTitle%
 								click, %caret_X%, %caret_y%
 								return
+
 		Mbutton::
-			click
+		winactivate, %the_winTitle%
+		click
+		Varbar.WM_LBUTTONDBLCLK()
+		return
+		Delete::
+			ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
+			if (winControl="Edit5")
+				varbar.WM_LBUTTONDBLCLK()
+			else
+				sendinput, ^a{delete}
+			return
 		enter::
 			ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
 			if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3") ||(winControl="Edit4"){
@@ -609,6 +594,11 @@ HistoryMenuItem(){
 						winactivate, NuGenesis LMS - \\Remote
 				LMS.Searchbar(clipboard,"{enter}")
 			}
+			else if (winControl="Edit5"){
+				sendinput, ^a
+				varbar.AddToList()
+			}
+
 			; if (winControl="Edit6") || (winControl="Edit7") || (winControl="Edit8") || (winControl="Edit9")
 				; varbar.SaveVariables()
 				;varbar.show()
@@ -635,10 +625,10 @@ HistoryMenuItem(){
 		; wheeldown::selectnextBatch()
 		; F13 & j::
 		; wheelup::SelectPreviousBatch()
-		Mbutton::
-		InputBox, Iteration, ITERATIONR,,,100,50 , , , , , 1
-		sleep 50
-			GuiControl, Varbar:Text, iteration, %iteration%
+		; Mbutton::
+		; InputBox, Iteration, ITERATIONR,,,100,50 , , , , , 1
+		; sleep 50
+			; GuiControl, Varbar:Text, iteration, %iteration%
 		; GUI, varbar:default
 		; GUI, Varbar:Submit, Nohide
 		return
@@ -657,8 +647,8 @@ HistoryMenuItem(){
 		; 		else
 		; 			VarBar.Menu()
 		; 		return
-		Wheelup::      sendInput % Blockrepeat(600) Varbar.AddIteration(10)
-		Wheeldown::    sendInput % Blockrepeat(600) Varbar.SubIteration(10)
+		; Wheelup::      sendInput % Blockrepeat(400) Varbar.AddIteration(10)
+		; Wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 		+wheelup::	Varbar.AddIteration(0)
 		+wheeldown::Varbar.SubIteration(0)
 		; up::				Varbar.AddIteration(0)
@@ -697,7 +687,7 @@ HistoryMenuItem(){
 
 		return
 		SaveVarBarLocaton:
-			sleep 400
+			sleep 200
 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 			IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
 			IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
@@ -737,70 +727,3 @@ WM_MOUSEMOVE(){
 
 
 #include <BatchesDDL>
-FloVar(VariableText:="", MousePopup:="", FontSize:=18){
-		Global
-		try GUI, FloVar:Destroy
-		if MouseIsOver("ahk_exe NOTEPAD.EXE") || MouseIsOver("ahk_exe WFICA32.EXE")
-			Color:="000000"
-		else
-			color:="FFFFFF"
-		CoordMode, Mouse, Screen
-		; MouseGetPos, Mx, My
-		OutlineColor := "282A36"  ; Can be any RGB color (it will be made transparent below).
-		Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
-		GUI, FloVar:Color, %OutlineColor%
-		GUI, FloVar:Font, % "s" Fontsize , Arial ; Set a large font size (32-point).
-		sleep 50
-		GUI, FloVar:Add, Text, +wrap R30 vMyText c%Color%, XXXXXXXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
-		; Make all pixels of this color transparent and make the text itself translucent (150):
-			winSet, TransColor, %OutlineColor%  250
-		; else
-
-			; winSet, TransColor, %OutlineColor%  150
-		; winSet, TransColor, 453936  250
-		if VariableText{
-			FloVarText:=VariableText
-			; GUI, FloVar:Font, s5
-			}
-		else {
-			FlovarText:=
-			if Product
-				FlovarText.=Product
-			if Batch
-				FlovarText.=" " Batch
-			if lot
-				FlovarText.=" " lot
-			if Coated
-				FlovarText.=" Ct#" Coated
-		}
-		; SetTimer, updateOSD, -100
-		Gosub, FloatOSD  ; Make the first update immediate rather than waiting for the timer.
-		if (MousePopup){
-			; GUI, FloVar:Font, % "s" MousePopup
-			; my-=500
-			SetTimer, FloatOSD, 50
-			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
-			SetTimer, PopUpOSD, % "-" MousePopup
-		}
-		else
-			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
-				CoordMode, Mouse, window
-	return
-		updateOSD:
-		MouseGetPos, Mx, My
-			return
-		PopupOSD:
-			try GUI, FloVar:destroy
-			SetTimer, FloatOSD, Off
-			return
-		FloatOSD:
-			CoordMode, mouse, Screen
-			MouseGetPos, Mx, My
-			My+=100
-			Mx-=100
-			GuiControl, FloVar:Text, MyText, % FloVarText
-			winMove, FloVar ahk_class AutoHotkeyGUI, ,Mx, My
-			; sleep 50
-			return
-	}
-

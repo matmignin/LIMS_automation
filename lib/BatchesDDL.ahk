@@ -5,7 +5,7 @@
 ; GUI, Add, ... If the default font is used, leave them empty. (see also OD_MeasureItem())
 GuiFontName := "Arial"
 GuiFontOpts := ""
-Product:="K772"
+;Product:="K772"
 ; ==================================================================================================================================
 ; Message handlers for owner drawing
 OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
@@ -26,7 +26,7 @@ CurrentCodesDDL =
 GUI, Margin, 10, 10
 GUI, Font, %GuiFontOpts%, %GuiFontName%
 ; Important: You have to add the CBS_OWNERDRAWFIXED (0x0010) as well as the CBS_HASSTRINGS (0x0200) style
-GUI, Add, DDL, w600 vDDL hwndHDDL +0x0210, %Product%|%CurrentCodesDDL%
+GUI, Add, DDL, w600 vDDL hwndHDDL +0x0210, %CodeString%||%CurrentCodesDDL%
 GUI, Add, Button, x+10 yp vBtn, Button
 GUI, Add, DDL, xm w600, %DDLContent%
 GuiControlGet, Btn, Pos

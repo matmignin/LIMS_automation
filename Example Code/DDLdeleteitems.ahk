@@ -1,3 +1,4 @@
+﻿#include C:\Windows\ShellNew\TemplateIncludeFile.ahk
 #include C:\Windows\ShellNew\TemplateIncludeFile.ahk
 MODIFIED=20140808
 

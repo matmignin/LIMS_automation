@@ -16,7 +16,7 @@ CoatedReplace:="${Coated}"
 
 String := "H784 110-0555 0039L1"
 
-String2 := 
+String2 :=
 (
 "J566 007-1146 006410 Ct#109-0114
 J914 111-4321
@@ -49,7 +49,7 @@ Haystack:=String
       RegExMatch(HayStack, regexProduct,cProduct)
       RegExMatch(HayStack, regexBatch, cBatch)
       RegExMatch(HayStack, regexLot, clot)
-      RegExMatch(HayStack, regexCoated, c)
+      RegExMatch(HayStack, regexCoated, r)
 	;msgbox % cproduct " | " cbatch " | " clot " | " CCoated
 if cProduct && cBatch && cLot
 {
@@ -76,7 +76,7 @@ If cBatch
 {
 ConnectedProduct.= " " cBatch
 FindBatch:=cbatch
-msgbox % cbatch "`n`n" ConnectedProduct 
+msgbox % cbatch "`n`n" ConnectedProduct
 }
 if cLot
 {
@@ -92,5 +92,5 @@ ConnectedProduct:= Trim(FindProduct " " FindBatch " " Findlot " " FindCoated)
 
 
 
-return 
+return
 

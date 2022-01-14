@@ -4,9 +4,18 @@ F1::
   if winexist("AutoHotkey Help")
     winactivate,
   else
-    Run, AutoHotkey.chm, C:\Users\mmignin\Documents
-  sleep 200
-  send, {altdown}{s}{altup}
+  {
+    if winactive("ahk_exe Code.exe") {
+      send, ^c
+     Run, AutoHotkey.chm, C:\Users\mmignin\Documents
+    sleep 200
+    send, {altdown}{s}{altup}
+    sleep 100
+    send, ^v{enter}
+    }
+    else
+      Run, AutoHotkey.chm, C:\Users\mmignin\Documents
+  }
   return
 OpenApps:
   ; <!f::OpenApp.Firefox()
@@ -48,7 +57,7 @@ return
   F20 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
   #d::OpenApp.Display()
-  !d::OpenApp.Touchpadsettings()
+  +#d::OpenApp.Touchpadsettings()
 
   ; F20 & p::
   ; #p::OpenApp.YourPhone()
