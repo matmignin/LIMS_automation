@@ -1,0 +1,81 @@
+
+    clipindex -= 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip, 1000
+  Return
+  ^+Wheeldown::
+  if clipindex < %maxindex%
+  {
+    clipindex += 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip
+    clipindex -= 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip, 1000
+  Return
+  ^+Wheeldown::
+  if clipindex < %maxindex%
+  {
+    clipindex += 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip
+    clipindex -= 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip, 1000
+  Return
+  ^+Wheeldown::
+  if clipindex < %maxindex%
+  {
+    clipindex += 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip
+    clipindex -= 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip, 1000
+  Return
+  ^+Wheeldown::
+  if clipindex < %maxindex%
+  {
+    clipindex += 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip
+    clipindex -= 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip, 1000
+  Return
+  ^+Wheeldown::
+  if clipindex < %maxindex%
+  {
+    clipindex += 1
+  }
+  thisclip := clipvar%clipindex%
+  clipboard := thisclip
+  tooltip %clipindex% - %clipboard%
+  SetTimer, ReSetToolTip

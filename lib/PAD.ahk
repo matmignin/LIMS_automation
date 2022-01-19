@@ -23,14 +23,7 @@ Lbutton & Space::
 _MouseIsOver:
 	#if mouseisover("ahk_exe Code.exe")
 		mbutton::controlsend,,{shiftdown}{F9}{shiftup},ahk_exe Code.exe
-		^f::
-		If !winactive("ahk_exe Code.exe"){
-			click
-			; winactivate, ahk_exe Code.exe
-			sleep 100
-		}
-		sendinput, {ctrldown}{f}{ctrlup}
-		return
+
 		;Space::Send, {lwin down}d{lwin up}
 	#if mouseisover("ahk_class Shell_TrayWnd") || MouseIsOver("ahk_class Shell_SecondaryTrayWnd") || MouseIsOver("ToolbarWindow323")
 		mbutton::
@@ -89,410 +82,421 @@ clipCheckIfEmpty(){
 #Ifwinactive
 ;;	_____3Fingers
 
-	3tap(){
-		Global
-		; setwindelay, 100
-		If winactive("ahk_exe WFICA32.EXE") {
-			if winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
-				LMS.DetectTab()
-				; if (Tab="Samples")
-					; Menu, Menu, add, New &Request, AutoFill
-				if (Tab="Tests"){
-					Menu,Menu, add, &Delete Retain, Autofill
-					Try Menu,menu,show
-				}
-				else if (Tab="Specs") {
-					if Mode("Entering_Rotations")
-						SpecTab.CopySpecTemplate()
-					else
-						menu.lms()
-					return
-				}
-				else if (Tab="Requests")
-					clk(61, 635) ;enter results
-				else if (Tab="Products")
-					clk(67, 754) ;edit results
-				else if (Tab="Samples"){
-					; blockinput, on
-					; setwindelay, 400
-					send, {click 124, 294} ;assign Requests
-					sleep 500
-					if !winactive("Edit request - \\Remote")
-						sleep 500
-					send, {click, 258, 613}
-					sleep 800
-					if !winactive("Select tests for request: R")
-						sleep 500
-					winactivate, Select tests for request: R
-						send, {click, 31, 102}
-					; setwindelay, 100
-					; blockinput, off
-				return
-				}
+3tap(){
+	Global
+	FlashScreen("3-Tap")
+	; setwindelay, 100
+	If winactive("ahk_exe WFICA32.EXE") {
+		if winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
+			LMS.DetectTab()
+			; if (Tab="Samples")
+				; Menu, Menu, add, New &Request, AutoFill
+			if (Tab="Tests"){
+				Menu,Menu, add, &Delete Retain, Autofill
+				Try Menu,menu,show
 			}
-			else if winexist("Delete Test - \\Remote") || winexist("Delete Tests - \\Remote") || winexist("Delete results - \\Remote") || winexist("Delete sample templates - \\Remote") || winExist("Delete specification - \\Remote") { ; Press Okay
+			else if (Tab="Specs") {
+				if Mode("Entering_Rotations")
+					SpecTab.CopySpecTemplate()
+				else
+					menu.lms()
+				return
+			}
+			else if (Tab="Requests")
+				clk(61, 635) ;enter results
+			else if (Tab="Products")
+				clk(67, 754) ;edit results
+			else if (Tab="Samples"){
+				; blockinput, on
+				; setwindelay, 400
+				send, {click 124, 294} ;assign Requests
+				sleep 500
+				if !winactive("Edit request - \\Remote")
+					sleep 500
+				send, {click, 258, 613}
+				sleep 800
+				if !winactive("Select tests for request: R")
+					sleep 500
+				winactivate, Select tests for request: R
+					send, {click, 31, 102}
+				; setwindelay, 100
+				; blockinput, off
+			return
+			}
+			}
+		else if winexist("Delete Test - \\Remote") || winexist("Delete Tests - \\Remote") || winexist("Delete results - \\Remote") || winexist("Delete sample templates - \\Remote") || winExist("Delete specification - \\Remote") { ; Press Okay
 				winactivate, Delete
 				send, y
 				clk(229, 136)
 				return
 			}
-			else if winactive("Result Editor - \\Remote") && (copyPasteToggle=1) {
+		else if winactive("Result Editor - \\Remote") && (copyPasteToggle=1) {
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 				winWaitactive, NuGenesis LMS - \\Remote, 10
 				copyPasteToggle=0
 			}
-			else if winactive("Register new samples - \\Remote")
+		else if winactive("Register new samples - \\Remote")
 					WorkTab.registerNewSamples()
-			else if winactive("Login - \\Remote")
+		else if winactive("Login - \\Remote")
 				menu.passwords()
-			else if winactive("Result Entry - \\Remote") {
+		else if winactive("Result Entry - \\Remote") {
 				MouseGetPos, xpos, ypos
 				WorkTab.ChangeTestResults("toggle")
 				mousemove, %xpos%, %yPos%+26,0
 			}
-			else if winactive("Edit specification - \\Remote") || winactive("Results Definition - \\Remote")
+		else if winactive("Edit specification - \\Remote") || winactive("Results Definition - \\Remote")
 				menu.LMS()
-			else if winactive("Composition - \\Remote")
+		else if winactive("Composition - \\Remote")
 				ProductTab.Table()
-			else If winactive("Select methods tests - \\Remote")
+		else If winactive("Select methods tests - \\Remote")
 				SpecTab.Table()
-			else if winactive("Edit Formulation - \\Remote")
+		else if winactive("Edit Formulation - \\Remote")
 				productTab.EditFormulation()
-			else if winactive("Select Product - \\Remote ahk_exe WFICA32.EXE")
+		else if winactive("Select Product - \\Remote ahk_exe WFICA32.EXE")
 				send % clk(107, 66) Product "{enter}{enter}"
-			else if winactive("Edit Product - \\Remote")
+		else if winactive("Edit Product - \\Remote")
 				ProductTab.EditProduct()
-			else If winactive("Select tests for request: R")
+		else If winactive("Select tests for request: R")
 				WorkTab.SelectTestSample()
-			else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule - \\Remote") { ; Press Okay
+		else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule - \\Remote") { ; Press Okay
 				winactivate,
 				clk(131, 144)
 			}
-			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
+		else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 				Sendpassword()
 		}
-		else if winactive("VarBar ahk_exe AutoHotkey.exe"){
-				click
-				sleep 100
-				Varbar.WM_LBUTTONDBLCLK()
-		}
-		else if winactive("ahk_exe Jaspersoft Studio.exe") || winactive("Parameter: SavedTextMenu")
-			SavedTextMenu()
-		else 	if winactive("ahk_exe OUTLOOK.EXE") {
-			clipCheckIfEmpty()
-			; clip()
-			return
-		}
-		else If winactive("Mats LMS Workbook.xlsb")
-			Sendinput, +{click}
-		else If winactive("Paster - Snipaste")
-				Send, ^c
-		else if winactive("Snipper - Snipaste")
-				Send, {enter}
+	else if winactive("VarBar ahk_exe AutoHotkey.exe"){
+			click
+			sleep 100
+			Varbar.WM_LBUTTONDBLCLK()
+	}
+	else if winactive("ahk_exe firefox.exe")
+		sendinput, ^{click}
+	else if winactive("ahk_exe Jaspersoft Studio.exe") || winactive("Parameter: SavedTextMenu")
+		SavedTextMenu()
+	else 	if winactive("ahk_exe OUTLOOK.EXE") {
+		clipCheckIfEmpty()
+		; clip()
+		return
+	}
+	else If winactive("Mats LMS Workbook.xlsb")
+		Sendinput, +{click}
+	else If winactive("Paster - Snipaste")
+			Send, ^c
+	else if winactive("Snipper - Snipaste")
+			Send, {enter}
 ;		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
-			;Send, {lwindown}{e}{lwinup}
-		else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
-				menu.Remote_Desktop()
-		else if winactive("ahk_exe Code.exe")
-				sendinput, +{F9}
-				return
-			}
-
-
-	3Right(){
-		global
-		if mouseisover("Mats LMS Workbook.xlsb - Excel")
-			excel.nextsheet()
-		else If winactive("NuGenesis LMS - \\Remote")
-			LMS.SearchBar(Batch,"{enter}")
-		else If winactive("Result Entry - \\Remote")
-			WorkTab.ChangeTestResults()
-		else If winactive("Select methods tests - \\Remote")
-			SpecTab.Methods()
-		else If winactive("Composition - \\Remote")
-			Send, {enter}
-		else If winactive("Test Definition Editor - \\Remote")
-			clk(330, 619) ;click save
-		else If winactive("Results Definition - \\Remote"){
-			Send, {enter}
-			sleep 200
-			winactivate, "Test Definition Editor - \\Remote"
-			clk(330, 619)
+		;Send, {lwindown}{e}{lwinup}
+	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
+			menu.Remote_Desktop()
+	else if winactive("ahk_exe Code.exe")
+			sendinput, +{F9}
+			return
 		}
-		else if winactive("Register new samples - \\Remote")
-			clk(502, 354)
-		else if winactive("Select samples for test:") ; selecting the physical or micro
-			send % Clk(504, 324) "{click, 849, 661}"  ; add test.
-		else if winactive("Select tests for request: R")
-			send % Clk(504, 338)  ; add test.
-		else if winactive("ahk_exe WFICA32.EXE")
-			Send, %Batch%
-		else
-			Send, %Batch%
+
+
+3Right(){
+	global
+	FlashScreen("3-Right")
+	if mouseisover("Mats LMS Workbook.xlsb - Excel")
+		excel.nextsheet()
+	else If winactive("NuGenesis LMS - \\Remote")
+		LMS.SearchBar(Batch,"{enter}")
+	else If winactive("Result Entry - \\Remote")
+		WorkTab.ChangeTestResults()
+	else If winactive("Select methods tests - \\Remote")
+		SpecTab.Methods()
+	else If winactive("Composition - \\Remote")
+		Send, {enter}
+	else If winactive("Test Definition Editor - \\Remote")
+		clk(330, 619) ;click save
+	else If winactive("Results Definition - \\Remote"){
+		Send, {enter}
+		sleep 200
+		winactivate, "Test Definition Editor - \\Remote"
+		clk(330, 619)
+	}
+	else if winactive("Register new samples - \\Remote")
+		clk(502, 354)
+	else if winactive("Select samples for test:") ; selecting the physical or micro
+		send % Clk(504, 324) "{click, 849, 661}"  ; add test.
+	else if winactive("Select tests for request: R")
+		send % Clk(504, 338)  ; add test.
+	else if winactive("ahk_exe WFICA32.EXE")
+		Send, %Batch%
+	else
+		Send, %Batch%
+return
+}
+
+3left(){
+		global
+		FlashScreen("3-Left")
+	if mouseisover("Mats LMS Workbook.xlsb - Excel")
+		excel.prevsheet()
+	else if winactive("NuGenesis LMS - \\Remote")
+			LMS.SearchBar(Product,"{enter}",0)
+	else If winactive("Select methods tests - \\Remote")
+		Send, {esc}
+	else If winactive("Composition - \\Remote")
+		Send, {esc}
+	else If winactive("Test Definition Editor - \\Remote")
+		Send, {esc}
+	else If winactive("Results Definition - \\Remote")
+		Send, {esc}
+	else if winactive("Edit test (Field Configuration:")
+		Send, {esc}
+	else if winactive("Register new samples - \\Remote")
+		Send, {esc}
+	else if winactive("Select samples for test:")
+		Send, {esc}
+	else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
+		WorkTab.ChangeTestResults("toggle")
+	else if winactive("Select tests for request: R")
+		send % Clk(40, 105)
+	else if winactive("ahk_exe WFICA32.EXE")
+		Send, %Product%
+	else if winactive("ahk_exe explorer.exe")
+		ExplorerSearch(Product)
+	else
+		send, %Product%
 	return
-	}
+}
 
-	3left(){
-			global
-		if mouseisover("Mats LMS Workbook.xlsb - Excel")
-			excel.prevsheet()
-		else if winactive("NuGenesis LMS - \\Remote")
-				LMS.SearchBar(Product,"{enter}",0)
-		else If winactive("Select methods tests - \\Remote")
-			Send, {esc}
-		else If winactive("Composition - \\Remote")
-			Send, {esc}
-		else If winactive("Test Definition Editor - \\Remote")
-			Send, {esc}
-		else If winactive("Results Definition - \\Remote")
-			Send, {esc}
-		else if winactive("Edit test (Field Configuration:")
-			Send, {esc}
-		else if winactive("Register new samples - \\Remote")
-			Send, {esc}
-		else if winactive("Select samples for test:")
-			Send, {esc}
-		else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
-			WorkTab.ChangeTestResults("toggle")
-		else if winactive("Select tests for request: R")
-			send % Clk(40, 105)
-		else if winactive("ahk_exe WFICA32.EXE")
-			Send, %Product%
-		else if winactive("ahk_exe explorer.exe")
-			ExplorerSearch(Product)
-		else
-			send, %Product%
+
+3down(){
+	global
+	FlashScreen("3-Down")
+	If winactive("NuGenesis LMS - \\Remote")
+		LMS.Filter(Clear)
+	else if winactive("Select samples for test:")
+		Clk(853, 657) ; click okay.
+	else if winactive("ahk_exe Snipaste.exe")
+		send, {esc}
+	else
+		return
+	return
+}
+
+
+3up(){
+	global
+	FlashScreen("3-Up")
+	if winexist("Mats LMS Workbook.xlsb"){
+		excel.Connect(1)
+		tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000)
+		excel.MatchColor()
 		return
 	}
-
-
-	3down(){
-		global
-		If winactive("NuGenesis LMS - \\Remote")
-			LMS.Filter(Clear)
-		else if winactive("Select samples for test:")
-			Clk(853, 657) ; click okay.
-		else if winactive("ahk_exe Snipaste.exe")
-			send, {esc}
-		else
-			return
+	else if winactive("Results Definition - \\Remote")
+		menu.LMS()
+	else if winactive("Result Entry - \\Remote")
 		return
-	}
-
-
-	3up(){
-		global
-		; if winactive("ahk_exe EXCEL.EXE"){
-		; 	excel.Connect(1)
-		; 	tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
-		; 	return
-		; }
-		if winactive("Result Entry - \\Remote")
-			return
-		else if winactive("Register new samples - \\Remote")
-			LMS.SearchBar(Product,"{enter}")
-		else If winactive("Select tests for request: R")
-			clk(638, 70)
-		else if winactive("Select samples for test:")
-			send % Clk(250, 70) "{up}" ; click okay.
-		else If winactive("Composition - \\Remote")
-			ProductTab.AddCOASpace()
-		else if winactive("Results Definition - \\Remote")
-			menu.LMS()
-		else If ConnectExcel {
-			Excel.Connect(1)
-			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000,0,0,3,250,"R")
-		}
+	else if winactive("Register new samples - \\Remote")
+		LMS.SearchBar(Product,"{enter}")
+	else If winactive("Select tests for request: R")
+		clk(638, 70)
+	else if winactive("Select samples for test:")
+		send % Clk(250, 70) "{up}" ; click okay.
+	else If winactive("Composition - \\Remote")
+		ProductTab.AddCOASpace()
+	else
 		return
-
-	}
+}
 
 
 ;;	_____4Fingers
-	4tap(){
-		global
-		if winactive("ahk_exe WFICA32.EXE"){
-			If winactive("NuGenesis LMS - \\Remote") {
-				LMS.Detecttab()
-				if (Tab="Requests") {
-						if Mode("Entering_Rotations") {
-							MouseGetPos, mx, mY
-							send, {click 2}
-							sleep 300
-								if !winactive("Edit test (Field Configuration:")
-									winactivate
-								WorkTab.AddTestDescription("(on sample log)")
-								sleep 300
-								if winactive("NuGenesis LMS - \\Remote")
-									mousemove, %mx%, %My% ,0
-								return
-						}
-						else
-							clk(68, 630) ;enter results
-						return
-					}
-					else If (tab:="Samples")
-						menu.Setstatus()
-				else if (Tab:="Products") {
-						clk(86, 443) ;edit composition
-					Return
-					}
-				else if (Tab="Specs") {
-						if Mode("Entering_Rotations")
-							menu.Products()
-						else
-							clk(67, 754) ;edit results
-					return
-					; click
-					; Return
-						; menu.lms()
-					}
-				else
-					Menu.LMS()
-			}
-			else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
-				ProductTab.AddCOASpace()
-			else if winactive("Edit test (Field Configuration: ")
-				send % "{click 384, 222}{tab 2}{end 2}(on sample log){Click 334, 618}"
-				; AddSampleLog(count)
-				; LMS.AddSampleLog(1)
-			else if winactive("PDF Preview - \\Remote")
-				Send, {altdown}{F4}{altup}
-			}
-		if winactive("Mats LMS Workbook.xlsb - Excel")
-				menu.SetStatus()
-		if winactive("ahk_exe OUTLOOK.EXE") {
-			clipCheckIfEmpty()
-			clip()
-		}
-		else
-			return
-	}
-
-	4up(){
-		global
-			if Mode("Entering_Rotations") {
-					excel.connect()
-					winactivate, Mats LMS Workbook.xlsb - Excel
-				return
-			}
+4tap(){
+	global
+	FlashScreen("4-Tap")
+	if winactive("ahk_exe WFICA32.EXE"){
 		If winactive("NuGenesis LMS - \\Remote") {
 			LMS.Detecttab()
-			if (Tab="Requests") || (Tab:="Samples")
-				; LMS.SampleRequestToggle()
-				LMS.ViewCoA()
-			else if (Tab:="Products")
-				{
-				Pop("Products")
-				; clk(86, 443) ;edit composition
+			if (Tab="Requests") {
+					if Mode("Entering_Rotations") {
+						MouseGetPos, mx, mY
+						send, {click 2}
+						sleep 300
+							if !winactive("Edit test (Field Configuration:")
+								winactivate
+							WorkTab.AddTestDescription("(on sample log)")
+							sleep 300
+							if winactive("NuGenesis LMS - \\Remote")
+								mousemove, %mx%, %My% ,0
+							return
+					}
+					else
+						clk(68, 630) ;enter results
+					return
+				}
+				else If (tab:="Samples")
+					menu.Setstatus()
+			else if (Tab:="Products") {
+					clk(86, 443) ;edit composition
 				Return
 				}
-			else if (Tab="Specs")
-				{
-				Pop("specs")
+			else if (Tab="Specs") {
+					if Mode("Entering_Rotations")
+						menu.Products()
+					else
+						clk(67, 754) ;edit results
+				return
 				; click
-				; clk(67, 754) ;edit results
-				Return
+				; Return
+					; menu.lms()
 				}
 			else
-				Pop("nothing")
+				Menu.LMS()
 		}
-			else if winactive("Results Definition - \\Remote")
-			menu.lms()
+		else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
+			ProductTab.AddCOASpace()
+		else if winactive("Edit test (Field Configuration: ")
+			send % "{click 384, 222}{tab 2}{end 2}(on sample log){Click 334, 618}"
+			; AddSampleLog(count)
+			; LMS.AddSampleLog(1)
 		else if winactive("PDF Preview - \\Remote")
 			Send, {altdown}{F4}{altup}
-		Else
-			Sendinput, #{up}
-			return
+		}
+	if winactive("Mats LMS Workbook.xlsb - Excel")
+			menu.SetStatus()
+	if winactive("ahk_exe OUTLOOK.EXE") {
+		clipCheckIfEmpty()
+		clip()
 	}
-	4Right(){
-		global
-			If winactive("ahk_exe Code.exe")
-				Sendinput, ^{d} ;go to Definition
-			if Mode("Entering_Rotations") {
-					excel.nextsheet()
-				return
-			}
-			else {
-				If winactive("ahk_exe OUTLOOK.EXE")
-					winMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
-				else If winactive("NuGenesis LMS - \\Remote") ;{
-						LMS.SearchBar(Batch,"{enter}","Add")
-					; LMS.Detecttab()
-					; if (Tab="Requests" || Tab:="Samples")
-					; 	LMS.SampleRequestToggle()
-					; 	; LMS.ViewCoA()
-					; else if (Tab:="Products")
-					; 	{
-					; 	Pop("Products")
-					; 	; clk(86, 443) ;edit composition
-					; 	Return
-					; 	}
-					; else if (Tab="Specs")
-					; 	{
-					; 	Pop(" specs")
-					; 	; click
-					; 	; clk(67, 754) ;edit results
-					; 	Return
-					; 	}
-			; else
-				; Pop("nothing")
+	else
+		return
+}
+
+4up(){
+	global
+		if winexist("Mats LMS Workbook.xlsb"){
+		excel.Connect(1)*
+		tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000)
+				excel.MatchColor()
+		return
+	}
+		; if Mode("Entering_Rotations") {
+		; 		excel.connect()
+		; 		winactivate, Mats LMS Workbook.xlsb - Excel
+		; 	return
 		; }
-			If winactive("ahk_exe WFICA32.EXE")
+	If winactive("NuGenesis LMS - \\Remote") {
+		LMS.Detecttab()
+		if (Tab="Requests") || (Tab:="Samples")
+			; LMS.SampleRequestToggle()
+			LMS.ViewCoA()
+		else if (Tab:="Products")
+			{
+			Pop("Products")
+			; clk(86, 443) ;edit composition
+			Return
+			}
+		else if (Tab="Specs")
+			{
+			Pop("specs")
+			; click
+			; clk(67, 754) ;edit results
+			Return
+			}
+		else
+			Pop("nothing")
+	}
+		else if winactive("Results Definition - \\Remote")
+		menu.lms()
+	else if winactive("PDF Preview - \\Remote")
+		Send, {altdown}{F4}{altup}
+	Else
+		Sendinput, #{up}
+		return
+}
+4Right(){
+	global
+		If winactive("ahk_exe Code.exe")
+			Sendinput, ^{d} ;go to Definition
+		if Mode("Entering_Rotations") {
 				excel.nextsheet()
+			return
+		}
+		else {
+			If winactive("ahk_exe OUTLOOK.EXE")
+				winMove, ahk_exe OUTLOOK.EXE, , 2197, 0, 363, 1554
+			else If winactive("NuGenesis LMS - \\Remote") ;{
+					LMS.SearchBar(Batch,"{enter}","Add")
+				; LMS.Detecttab()
+				; if (Tab="Requests" || Tab:="Samples")
+				; 	LMS.SampleRequestToggle()
+				; 	; LMS.ViewCoA()
+				; else if (Tab:="Products")
+				; 	{
+				; 	Pop("Products")
+				; 	; clk(86, 443) ;edit composition
+				; 	Return
+				; 	}
+				; else if (Tab="Specs")
+				; 	{
+				; 	Pop(" specs")
+				; 	; click
+				; 	; clk(67, 754) ;edit results
+				; 	Return
+				; 	}
+		; else
+			; Pop("nothing")
+	; }
+		If winactive("ahk_exe WFICA32.EXE")
+			excel.nextsheet()
+		else
+			Sendinput, #{right}
+		}
+		return
+	}
+4left(){
+	global
+		If winactive("ahk_exe Code.exe")
+			Sendinput, !^{d} ;go to reference
+		if Mode("Entering_Rotations") {
+				excel.Prevsheet()
+			return
+		}
+		else {
+			If winactive("ahk_exe OUTLOOK.EXE")
+				winMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
+			else If winactive("NuGenesis LMS - \\Remote")
+				LMS.SearchBar(Product,"{enter}","Add")
+					; lms.SampleRequestToggle()
+			else If winactive("ahk_exe WFICA32.EXE")
+				excel.Prevsheet()
 			else
-				Sendinput, #{right}
-			}
-			return
+			Sendinput, {lwindown}{left}{lwinup}
 		}
-	4left(){
-		global
-			If winactive("ahk_exe Code.exe")
-				Sendinput, !^{d} ;go to reference
-			if Mode("Entering_Rotations") {
-					excel.Prevsheet()
-				return
-			}
-			else {
-				If winactive("ahk_exe OUTLOOK.EXE")
-					winMove, ahk_exe OUTLOOK.EXE, ,965, -1098, 1629, 1080
-				else If winactive("NuGenesis LMS - \\Remote")
-					LMS.SearchBar(Product,"{enter}","Add")
-						; lms.SampleRequestToggle()
-				else If winactive("ahk_exe WFICA32.EXE")
-					excel.Prevsheet()
-				else
-				Sendinput, {lwindown}{left}{lwinup}
-			}
-				; lms.SampleRequestToggle()
-			return
-		}
+			; lms.SampleRequestToggle()
+		return
+	}
 
-	4down(){
-		global
-		SendLevel, 1
-			if winactive("Inbox - mmignin@vitaquest.com - Outlook")
-				return
-			else if winactive("ahk_exe Snipaste.exe")
-				send, {esc}
-			else if winactive("PDF Preview - \\Remote") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for windows 10")|| winactive("ahk_exe explorer.exe")
-				Send, {altdown}{F4}{altup}
-			else If winactive("ahk_exe WFICA32.EXE"){
-				if winactive("NuGenesis LMS - \\Remote")
-					LMS.FilterClear()
-				else If (winactive("Select methods tests - \\Remote") || winactive("Composition - \\Remote") || winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote") || winactive("Edit test (Field Configuration:") || winactive("Register new samples - \\Remote") || winactive("Select samples for test:") || winactive("Results Definition - \\Remote"))
-					Send, {esc}
-				}
-			else if winactive("ahk_exe firefox.exe") || winactive("ahk_exe Code.exe") || winactive("ahk_exe msedge.exe")
-				Send, ^{w}
-			else winactive("Adobe Acrobat Reader:")
-				send {esc}
-			sendlevel, 0
+4down(){
+	global
+	SendLevel, 1
+		if winactive("Inbox - mmignin@vitaquest.com - Outlook")
 			return
-		}
+		else if winactive("ahk_exe Snipaste.exe")
+			send, {esc}
+		else if winactive("PDF Preview - \\Remote") || winactive("ahk_exe OUTLOOK.EXE") || winactive("OneNote for windows 10")|| winactive("ahk_exe explorer.exe")
+			Send, {altdown}{F4}{altup}
+		else If winactive("ahk_exe WFICA32.EXE"){
+			if winactive("NuGenesis LMS - \\Remote")
+				LMS.FilterClear()
+			else If (winactive("Select methods tests - \\Remote") || winactive("Composition - \\Remote") || winactive("Test Definition Editor - \\Remote") || winactive("Results Definition - \\Remote") || winactive("Edit test (Field Configuration:") || winactive("Register new samples - \\Remote") || winactive("Select samples for test:") || winactive("Results Definition - \\Remote"))
+				Send, {esc}
+			}
+		else if winactive("ahk_exe firefox.exe") || winactive("ahk_exe Code.exe") || winactive("ahk_exe msedge.exe")
+			Send, ^{w}
+		else winactive("Adobe Acrobat Reader:")
+			send {esc}
+		sendlevel, 0
+		return
+	}
 
 
-/*   other close windows
+/*   other close windows FOURFINGERDOWN
 	else if winactive("Composition - \\Remote"){
 			clk(841, 895)
 			sleep 50
@@ -531,7 +535,7 @@ clipCheckIfEmpty(){
 		}
 
 
-		4down(){
+	4down(){
 		global
 		if winactive("Inbox - mmignin@vitaquest.com - Outlook") ; || winactive("ahk_exe OUTLOOK.EXE")
 			Return
@@ -589,23 +593,23 @@ clipCheckIfEmpty(){
 
 2tap(){
 	global
-If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
-					MouseGetPos,,,,winControl
-				; ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
-				if (winControl="Edit1")
-					VarBar.ProductsMenu()
-					; menu.ProductSelection()
-				else if (winControl="Edit2")
-					VarBar.BatchesMenu(Product)
-				else if (winControl="Edit3") || (winControl="Edit4")
-					menu.ProductSelection()
-				else if (winControl="Edit5")
-					varbar.WM_LBUTTONDBLCLK()
-				; else if (winControl="Edit6") || (winControl="Edit7")
-					; menu.ProductSelection()
-				else
-					VarBar.Menu()
-				return
+	If MouseIsOver("VarBar ahk_exe AutoHotkey.exe"){
+			MouseGetPos,,,,winControl
+		; ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
+		if (winControl="Edit1")
+			VarBar.ProductsMenu()
+			; menu.ProductSelection()
+		else if (winControl="Edit2")
+			VarBar.BatchesMenu(Product)
+		else if (winControl="Edit3") || (winControl="Edit4")
+			menu.ProductSelection()
+		else if (winControl="Edit5")
+			varbar.WM_LBUTTONDBLCLK()
+		; else if (winControl="Edit6") || (winControl="Edit7")
+			; menu.ProductSelection()
+		else
+			VarBar.Menu()
+		return
 	}
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
 	{

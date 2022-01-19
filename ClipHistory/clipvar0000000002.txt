@@ -1,0 +1,26 @@
+
+^F20::
+;;; -----Retrieves saved clipboard information since when this script last ran
+  Loop C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
+  {
+    clipindex += 1
+^F20::
+;;; -----Retrieves saved clipboard information since when this script last ran
+  Loop C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
+  {
+    clipindex += 1
+^F20::
+;;; -----Retrieves saved clipboard information since when this script last ran
+  Loop C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
+  {
+    clipindex += 1
+^F20::
+;;; -----Retrieves saved clipboard information since when this script last ran
+  Loop C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
+  {
+    clipindex += 1
+^F20::
+;;; -----Retrieves saved clipboard information since when this script last ran
+  Loop C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
+  {
+    clipindex += 1

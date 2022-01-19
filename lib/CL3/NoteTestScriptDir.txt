@@ -1,0 +1,48 @@
+
+-- 2022-01-15 01:56:50 -- ✄ ------------------------------
+
+WinExist
+
+-- OpenApp.ahk - LMS (Workspace) - Visual Studio Code
+
+-- 2022-01-15 01:56:57 -- ✄ ------------------------------
+
+WinExist
+
+-- OpenApp.ahk - LMS (Workspace) - Visual Studio Code
+
+-- 2022-01-15 02:00:05 -- ✄ ------------------------------
+
+C:\Users\mmignin\Documents\VQuest\lib\CL3
+
+-- C:\Users\mmignin\Documents\VQuest\lib\CL3\ClipData\Notes
+
+-- 2022-01-15 02:00:16 -- ✄ ------------------------------
+
+C:\Users\mmignin\Documents\VQuest\lib\CL3
+
+-- C:\Users\mmignin\Documents\VQuest\lib\CL3\ClipData\Notes
+
+-- 2022-01-15 02:00:22 -- ✄ ------------------------------
+
+C:\Users\mmignin\Documents\VQuest\lib\CL3
+
+-- C:\Users\mmignin\Documents\VQuest\lib\CL3\ClipData\Notes
+
+-- 2022-01-15 02:00:54 -- ✄ ------------------------------
+
+C:\Users\mmignin\Documents\VQuest\lib\CL3
+
+-- C:\Users\mmignin\Documents\VQuest\lib\CL3
+
+-- 2022-01-15 02:01:26 -- ✄ ------------------------------
+
+C:\Users\mmignin\Documents\VQuest\lib\CL3
+
+-- https://www.autohotkey.com
+
+-- 2022-01-15 02:01:33 -- ✄ ------------------------------
+
+w.autohotkey.com
+
+-- https://www.autohotkey.com

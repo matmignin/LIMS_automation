@@ -197,7 +197,7 @@ Parse(Value:=""){
           sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default
-                    ; Gui, Varbar:+Delimiter`n
+                    ; Gui, Varbar:+Delimiter`r`n
                     ; GuiControl,, DDL, % CurrentCodes := "`n" Trim(Match) "`n`n" Trim(StrReplace(CurrentCodes, "`n`n", "`n"), "`n")
           ; DDL:=
           ; GuiControl,,DDL,

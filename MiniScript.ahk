@@ -42,7 +42,7 @@ fileread,CurrentCodes,%CurrentCodesFile%
 ; fileread,bb,%f2%
 ;-- end test ---------
 
-Gui, Varbar:+Delimiter`n`r
+Gui, Varbar:+Delimiter`r`n
 Gui, Varbar:Add, Combobox, vVar1 simple Altsubmit w400 r10 y10 x5, %CurrentCodes%
 Gui, Varbar:Add, Button, gDelx  Hidden y200 x10  v1 ,Del
 Gui, Varbar:Add, Button, gAddx  Hidden Default x+2  v2, Add

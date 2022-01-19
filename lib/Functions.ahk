@@ -238,6 +238,20 @@ class Breaking {
 
 ; }
 
+FlashScreen(Text:=""){
+	global
+	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cwBlack
+	if !Text
+		Text:=A_ThisHotkey
+		tt(Text,200,A_caretx,A_caretY,4)
+		; ToolTip, %Text%, %A_CaretX%, %A_CaretY%, 9
+	; ToolTip, %text%, 9
+	Sleep,25
+	SplashImage,off
+	; ToolTip,,,,9
+	return
+}
+
 
 windowInfo(){
 	global

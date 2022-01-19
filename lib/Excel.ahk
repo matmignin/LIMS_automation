@@ -56,6 +56,7 @@ GetAllSheets(){ ; Get each sheet name and turn it into an array
 	XL := ComObjactive("Excel.Application")
 	For sheet in xl.activeWorkbook.Worksheets
 		cSheet:=sheet.name
+		; add something about getting sheets batches
 	 AllWorkSheets:=listarray(ProductSheets,"")
 	 Return AllWorkSheets
 }
@@ -110,7 +111,7 @@ InfoLocations(){
 			Return
 		This.RegexCell(XL.Range("E1").Value)
 		MoreBatches:=XL.range("H1").Value
-		; Products:=[]
+		Products:=[]
 		loop, parse, MoreBatches, `r`n
 		{
 			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]? )?.?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)

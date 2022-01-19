@@ -34,67 +34,67 @@ return
 return
 
 
-; 	F20 & Space::  ;; Testing Backcycle
-; 	If !activewindowID
-; 		winGet, activewindowID, ID, A
-; 	cyclebackward:=1
-; 	PreviousClipCycleCounter:=0 ; 13/10/2017 test
-; 	ClipCycleCounter:=1
-; 	ClipCycleFirst:=1
-; 	While GetKeyState("F20","D") and cyclebackward
-; 	{
-; 		If (ClipCycleCounter <> 0)
-; 		{
-; 			; Var:=Product[%ClipCycleCounter%]
-; 			Var:=Products[ClipCycleCounter]
-; 			TT(Var,1000,,,,250,"C")
-; 			; GUI, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
-; 			; GUI, History:Add, Text,, %Var%
-; 			; GUI, History:Show, Noactivate, var
-; 			; ttext:=% DispToolTipText(Var)
-; 		}
-; 		else
-; 			ttext:="[cancelled]"
-; 		If (oldttext <> ttext)
-; 		{
-; 			ToolTip, % ttext,A_CaretX, A_CaretY,
-; 			oldttext:=ttext
-; 		}
-; 		Sleep 50
-; 		KeyWait, Space,
-; 	}
-; 	GUI, History:Destroy
-; 	If (ClipCycleCounter > 0) ; If zero we've cancelled it
-; 	{
-; 		Gosub, ClipboardHandler
-; 		ClipCycleCounter:=1
-; 	}
-; Return
+	F20 & Space::  ;; Testing Backcycle
+	If !activewindowID
+		winGet, activewindowID, ID, A
+	cyclebackward:=1
+	PreviousClipCycleCounter:=0 ; 13/10/2017 test
+	ClipCycleCounter:=1
+	ClipCycleFirst:=1
+	While GetKeyState("F20","D") and cyclebackward
+	{
+		If (ClipCycleCounter <> 0)
+		{
+			; Var:=Product[%ClipCycleCounter%]
+			Var:=Products[ClipCycleCounter]
+			TT(Var,1000,,,,250,"C")
+			; GUI, History:+AlwaysOnTop +Disabled -SysMenu +Owner  ; +Owner avoids a taskbar button.
+			; GUI, History:Add, Text,, %Var%
+			; GUI, History:Show, Noactivate, var
+			; ttext:=% DispToolTipText(Var)
+		}
+		else
+			ttext:="[cancelled]"
+		If (oldttext <> ttext)
+		{
+			ToolTip, % ttext,A_CaretX, A_CaretY,
+			oldttext:=ttext
+		}
+		Sleep 50
+		KeyWait, Space,
+	}
+	GUI, History:Destroy
+	If (ClipCycleCounter > 0) ; If zero we've cancelled it
+	{
+		Gosub, ClipboardHandler2
+		ClipCycleCounter:=1
+	}
+Return
 
-; F20 & Space up::
-; 	PreviousClipCycleCounter:=ClipCycleCounter
-; 	If (ClipCycleFirst = 0)
-; 		ClipCycleCounter++
-; 	ClipCycleFirst:=0
-; Return
-; ClipBoardHandler2:
-; 	oldttext:="", ttext:="", activewindowID:=""
-; 	If (Var <> Clipboard)
-; 	{
-; 		StrReplace(ClipText,"`n", "`n", Count)
-; 	}
-; 	Clipboard:=Var
-; 	;  StartTime:=A_TickCount
-; 	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
-; 	; Return
-; 	;  winactivate, ahk_id %activewindowID%
-; 	; Sleep, 20
-; 	send % BlockRepeat(25) "^v"
-; 	; Send, ^v
-; 	;  PasteTime := A_TickCount
-; 	oldttext:="", ttext:="", activewindowID:="",ClipboardOwnerProcessName:=""
-; 	; sleep 300
-; Return
+F20 & Space up::
+	PreviousClipCycleCounter:=ClipCycleCounter
+	If (ClipCycleFirst = 0)
+		ClipCycleCounter++
+	ClipCycleFirst:=0
+Return
+ClipBoardHandler2:
+	oldttext:="", ttext:="", activewindowID:=""
+	If (Var <> Clipboard)
+	{
+		StrReplace(ClipText,"`n", "`n", Count)
+	}
+	Clipboard:=Var
+	;  StartTime:=A_TickCount
+	;  If ((StartTime - PasteTime) < 75) ; to prevent double paste after using #f/#v in combination
+	; Return
+	;  winactivate, ahk_id %activewindowID%
+	; Sleep, 20
+	send % BlockRepeat(25) "^v"
+	; Send, ^v
+	;  PasteTime := A_TickCount
+	oldttext:="", ttext:="", activewindowID:="",ClipboardOwnerProcessName:=""
+	; sleep 300
+Return
 
 ` & t::FloVar(0,1,10)
 ` & Space::FloVar()

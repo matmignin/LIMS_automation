@@ -4,20 +4,20 @@
 
 ;^(?<Customer>[\w ]*)\s(?!(\s|# ?)?(\d{6}))?.*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?<PillType>(Capsule|Tablet)(?: size:)) (?<PillSize>[\w ]*).*(?:Serving Size: )(?<ServingSize>\d+) (?<ServingType>[\w ]+).+(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)(?=\sDaily Value)
 
- #If A_debuggerName
-  Media_Prev::						F6 ;MakeTransparent()
-	Media_Play_Pause::			Numlock
-	Media_Next::						F7
-#if
+
 #if
 
 ; #If Mode("TempCode")
 TEST_1: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
-CopyNewestFile("K880")
+; CopyNewestFile("K880")
+; CopyNewestFile("K880")
+varbar.ProductsMenu(1)
 return
 
 
 TEST_2: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
+Varbar.BatchesMenu(Product)
+return
   tProduct:="K796"
   tRegexSearchPattern:="i)^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))(?:.*)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})(?:.*)(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))(?<Name>[\w ]*(?!Dietary Supplement))(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*)"
   tRegexReplacePattern:="i)(((\d)%$)|(\Q*\E))"

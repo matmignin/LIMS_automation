@@ -185,6 +185,7 @@ _windowNames:
 		sendinput, %winTitle%
 		sendraw, ")
 		return
+	:*:lmsw`;::
 	:*:walms`;::
 		winGetTitle, winTitle, ahk_exe WFICA32.EXE
 		; winactivate, ahk_exe WFICA32.EXE

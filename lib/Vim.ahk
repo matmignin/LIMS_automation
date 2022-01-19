@@ -3,7 +3,7 @@
 #SingleInstance,Force
 #InstallKeybdHook
 #InstallMouseHook
-#maxthreadsperhotkey, 2
+; #maxthreadsperhotkey, 2
 FormatTime, DayString,, MM/d/yy
 FormatTime, TimeString, R
 FormatTime, CurrentDateTime,, MM/dd/yy
@@ -17,152 +17,56 @@ Process, Priority, , High
 try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
+VimOpen:=1
+EnvGet, VimOpen, VimOpen
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\VScode.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApps.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\VScode.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
+;#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
 return
 
-
 #ifwinactive,
-+F20::
-	if (ShiftPaste> 0) 						; SetTimer already started, so we log the keypress instead.
-		{
-				ShiftPaste+= 1
-				return
-		}
-		ShiftPaste:= 1
-		SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
+	Media_Play_Pause::ControlSend, , {F5}, ahk_exe Code.exe ;
+	Volume_Up::ControlSend, , {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}, ahk_exe Code.exe ;
+	Volume_down::							clipboard:="K999 999-9999"
+ Volume_Mute::
+		Clipboard:=
+		(
+		"K741 107-0431 0278H1
+		K277 888-8888
+		K277 888-8777
+		K277 111-1111
+		J929 910-0128 0623I1
+		J837 109-0445 7777A7 ct#666-6666
+		J837 109-0445 0670I1
+		J837 109-0445
+		J837 109-0333 0333I1
+		H624 104-0657
+		B324 105-1172 0656H1
+		B086 108-0752 Ct#109-0635
+		B086 108-0752 Bulk Ct#109-0635
+		B086 108-0752 Bulk 109-0635
+		B086 108-0752  109-0635"
+		)
+		Return
+	Media_Prev::
+		var := clipboard
+		StrReplace(var, "`n","`n",LineCount)
+		; StringReplace, var, var, `n, `n, UseErrorLevel
+		msgbox, %LineCount%
 		return
-		ShiftPaste:
-			if (ShiftPaste= 1){ 				; The key was pressed once.
-					send, +{F18}								;clipchain
-			}
-			else if (ShiftPaste= 2){		; The key was pressed 2x
-				clip.Append("`n","{x}")
-			}
-			else if (ShiftPaste> 2){		; The Key was pressed 3x
-				clip.Append(A_Space,"{x}")
-			}
-		ShiftPaste:= 0
-	return
-+F19::
-	if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
-		{
-				CutPresses += 1
-				return
-		}
-		CutPresses := 1
-		SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
-		return
-		PressCut:
-			if (CutPresses = 1){ 				; The key was pressed once.
-					send, ^x								;cut
-			}
-			else if (CutPresses = 2){		; The key was pressed 2x
-				clip.Append("`n","{x}")
-			}
-			else if (CutPresses > 2){		; The Key was pressed 3x
-				clip.Append(A_Space,"{x}")
-			}
-		CutPresses := 0
-	return
-
-
-F19::  ;;copy, append, append Tab
-	if winactive("Clipboard ahk_exe autohotkey.exe"){ ;if clipboard window open
-		GUI, EditBox:submit
-		clipboard:=EditBox
-		sleep 10
-		tt(clipboard)
-		return
-	}
-	if getkeystate("F20", "p"){ 											;F20 & F19
-    ClipboardSaved:=ClipboardAll
-    clipboard:=
-    ; sleep 20
-    Send, ^c
-      clipwait,0.40
-	  if errorlevel 																;if nothing selected
-			{
-				clipboard:=ClipboardSaved
-				sleep 50
-				clip.editbox()
-			}
-		else {
-			sendinput, ^{c}
-			sleep 100
-			clip.editbox()
-			}
-			return
-		}
-	if (CopyPresses > 0){  												; If Timer already started, log the keypress instead.
-				CopyPresses += 1
-				return
-	}
-		CopyPresses := 1
-		SetTimer, PressCopy, -450 ; Wait for more presses within a 450 millisecond window.
-		return
-	PressCopy:
-			if (CopyPresses = 1){	  ; The key was pressed once.
-					send, ^c									;Copy
-					sleep 75
-					FloVar(Clipboard,900,11)
-			}
-			else if (CopyPresses = 2){ ; The key was pressed 2x
-						clip.Append()							;AppendClip
-					Sleep 250
-			}
-			else if (CopyPresses > 2) ; The key was priced 3x
-					clip.Append(A_Space) 							;Clipchain
-		CopyPresses := 0
-	return
-
-F20:: ;;paste, editbox, clipchain
-	if !getkeystate("F19", "p") && (A_PriorHotkey = "F19") && (A_TimeSincePriorHotkey < 2000) {
-		clip.editbox()
-		return
-	}
-		if getkeystate("F19", "p"){ 	; F19 & F20
-	  ClipboardSaved:=ClipboardAll
-	    clipboard:=
-	    Send, ^x
-	      clipwait,0.30
-		  if errorlevel 							; if nothing selected
-				{
-					clipboard:=ClipboardSaved
-					sendinput, {delete}
-					return
-				}
-			else
-				tt(Clipboard,900,,,,200)
-			return
-	}
-	if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
-	{
-			PastePresses += 1
-			return
-	}
-	PastePresses := 1
-	SetTimer, PressPaste, -450 ; Wait for more presses within a 400 millisecond window.
-	return
-	PressPaste:
-		if (PastePresses = 1) ; The key was pressed once.
-		{
-				send, ^{v}
-		}
-		else if (PastePresses = 2) ; The key was pressed twice.
-		{
-			Send, {F18}
-		}
-		else if (PastePresses > 2)
-		{
-			Clip.EditBox()
-		}
-		PastePresses := 0
-	return
+	; Volume_down::				Send,			;clipboard:="K111 222-2222 3333B3 ct#444-4444"
+	Media_Next::							Clipboard:="K555 666-6666"
+  ; Media_Prev::						F6 ;MakeTransparent()
+	; Media_Play_Pause::			Numlock
+	; Media_Next::						F7
+	; Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
+	; Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
+	; Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
 
 ;;  Tab
 
@@ -179,9 +83,9 @@ F20:: ;;paste, editbox, clipchain
 	F13 & tab up::SavedTextMenu()
 	F13 & Enter::Sendinput, {end}{enter}return{enter}
 	F13 & q::esc
-	F13 & LShift::Sendinput, {Enter}
-	F13 & c::gosub, F19
-	F13 & v::gosub, F20
+	F13 & LShift up::Sendinput, {Enter}
+	; F13 & c::gosub, F19
+	; F13 & v::gosub, F20
   F13 & j::Vim.down()
 	F13 & l::Vim.right()
 	F13 & k::Vim.up()
@@ -191,19 +95,9 @@ F20:: ;;paste, editbox, clipchain
 	F13 & n::Vim.SelectNext()
 	F13 & u::Vim.SelectPrevious()
 	F13 & i::Vim.DuplicateLine()
-	F13 & s::
-		if getkeystate("Lshift", "p")
-			sendinput, {down}
-		else
-			Vim.Selection()
-		return
+	F13 & s::Vim.Selection()
 	F13 & m::Vim.Home()
-	F13 & w::
-	if getkeystate("Lshift", "p")
-		sendinput, {Up}
-		else
-		sendinput, !{tab}
-		return
+	F13 & w::sendinput, !{tab}
 	F13 & .::Vim.WordRight()
 	F13 & b::sendinput, {ctrldown}{b}{ctrlup}
 	F13 & ,::Vim.WordLeft()
@@ -216,14 +110,13 @@ F20:: ;;paste, editbox, clipchain
 			Vim.SelectAll()
 		return
 	F13 & d::
-		if getkeystate("Lshift", "p")
-			sendinput, {right}
-		else if getkeystate("s", "p"){
+		if getkeystate("s", "p"){
 			if winactive("ahk_exe Code.exe")
 			 	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
 			else
 			 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
 			KeyWait, d, U
+			KeyWait, s, U
 		}
 		else
 			Vim.Backspace()
@@ -231,35 +124,33 @@ F20:: ;;paste, editbox, clipchain
 	F13 & 9::Vim.OpenParentheses()
 	F13 & 0::Vim.CloseParentheses()
 	F13 & p::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
-	F13 & z::                      send, {F3} ;undo
+	F13 & z::                      sendinput, {F3} ;undo
 	F13 & g::vim.Git()
 	F13 & down::									  sendinput, {altdown}{lwindown}{down}{altup}{lwinup}
 	F13 & up::									    sendinput, {altdown}{lwindown}{up}{altup}{lwinup}
 	F13 & left::									  sendinput, {altdown}{lwindown}{left}{altup}{lwinup}
 	F13 & right::									  sendinput, {altdown}{lwindown}{right}{altup}{lwinup}
 	F13 & `;::        							Sendinput,!^{/} ;Vim_Comment()
-	F13 & '::                    		Sendinput,+!{F9}
+	F13 & ' Up::                    		vim.Quote() ;sendinput, +{'};Sendinput,+!{F9}
 	; F19 & F20::send
 	F19 & space::										Backspace
 	f13 & F19::											sendinput, {ctrldown}{lwindown}{[}{lwinup}{ctrlup}
 	f13 & F20::											sendinput, {ctrldown}{lwindown}{]}{lwinup}{ctrlup}
 	f13 & \::												sendinput, {ctrldown}{lwindown}{\}{lwinup}{ctrlup}
-
-
-; #If (& Getkeystate("F13","p") && A_TimeSincePriorHotkey < 800 && A_PriorhotKey = "o") ;; 	 	_o Vim_
-; 	]::                    sendinput, {}} ;enter curly bracket below
-; 	0::										 sendinput, {)} ;Enter parenthasis below
-
+	>+space::
+	F13 & space::sendinput, {_}								 sendinput, {)} ;Enter parenthasis below
+	; F13 up::F13
 
 
 #If Getkeystate("F13","p") ;;F13
-	; s & d::
-											; if winactive("ahk_exe Code.exe")
-											;  	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
-											;  else
-											;  	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
-											; KeyWait, d, U
-											;  return
+	d & s::
+											if winactive("ahk_exe Code.exe")
+											 	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+											 else
+											 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
+											KeyWait, d, U
+											KeyWait, s, U
+											 return
 	s & [::
 	                    sendinput, {{} ;enter curly bracket below
 											keywait, s, u
@@ -288,11 +179,11 @@ F20:: ;;paste, editbox, clipchain
 	                    sendinput, {shiftdown}{altdown}{`;}{altup}{shiftup} ;select brackets
 											keywait, s, u
 											return
-
-
-
-
-
+	, & .::vim.selection()
+	. & ,::vim.selection()
+		; keywait `,, u
+		; keywait ., u
+		; return
 	/ & m::
 	m & /::
 		if winactive("ahk_exe Code.exe")
@@ -301,6 +192,29 @@ F20:: ;;paste, editbox, clipchain
 		 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
 		keywait m, u
 		keywait /, u
+		 return
+	a & s::
+	s & a::
+		sendinput, {home 2}{shiftdown}{end}{shiftup}^{c}
+		if winactive("ahk_exe Code.exe")
+			sendinput, {F3 3}
+		keywait s, u
+		keywait a, u
+		 return
+	x & s::
+	s & x::
+		sendinput, {home 2}{shiftdown}{end}{shiftup}^{x}
+		if winactive("ahk_exe Code.exe")
+			sendinput, {F3 3}
+		keywait s, u
+		keywait x, u
+		 return
+	s & c::
+		sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}^c
+		if winactive("ahk_exe Code.exe")
+			sendinput, {F3 5}
+		keywait s, u
+		keywait c, u
 		 return
 
 
@@ -325,11 +239,146 @@ F20:: ;;paste, editbox, clipchain
 	^r::										 sendinput, {F5}
 	Enter::                  Sendinput,{shiftdown}{enter}{shiftup}
 	; ^space::                 Sendinput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}
-	#if
+#if
 
 ~lbutton::Return
 
+#Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
+	Lbutton & F13::return
+	F13 & Tab::
+	numlock::ReloadScript()
+	; Mbutton::sendinput, +{F9}
+	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
+	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
+	F13 & Lalt::FindMatchingwindows()
+	F13 & `::Sendinput,+{F9}
+	; F13 & '::Sendinput,!+{F9}
 
+	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
+	F13 & z::F3
+	F13 & 5::send,`%
+	F13 & 4::        Sendinput,^!{4}
+	; $F13::send, {F13}
+	/ & space::								sendinput, {_}
+
+
+
+	tab & `::				sendinput, ^!{0} ;unfold all
+	tab & `;::       Sendinput,!^{/} ;unfold all
+	Tab & l::
+									if Getkeystate("F13","p")
+										Sendinput,{ctrldown}{altdown}{]}{altup}{ctrlup}
+									else
+										Sendinput,{ctrldown}{]}{ctrlup}
+									return
+	Tab & h::
+									if Getkeystate("F13","p")
+										Sendinput,{ctrldown}{altdown}{[}{altup}{ctrlup}
+								 	else
+										Sendinput,{ctrldown}{[}{ctrlup}
+									return
+	tab & j::
+									if Getkeystate("LControl","p")
+										send, {shiftdown}{down}{shiftup}
+									else if Getkeystate("F13","p")
+										sendinput, {shiftdown}{altdown}{ctrldown}{'}{ctrlup}{altup}{shiftup}
+									else
+										sendinput, {up}
+									return
+	tab & k::
+									if Getkeystate("LControl","p")
+										send, {shiftdown}{up}{shiftup}
+									else if Getkeystate("F13","p")
+						        sendinput, {shiftdown}{altdown}{k}{altup}{shiftup}
+									else
+										Sendinput, {down}
+									return
+	tab & g::        sendinput, {shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}
+	tab & n::        sendinput, {shiftdown}{lwindown}{h}{lwinup}{shiftup}
+	tab & u::        sendinput, {shiftdown}{lwindown}{k}{lwinup}{shiftup}
+	tab & ,::        sendinput, +!^{left}
+	tab & .::        sendinput, +!^{.}
+	tab & a::        Sendinput,{shiftdown}{altdown}{lwindown}{a}{lwinup}{altup}{shiftup} ;align vertically
+	tab & w::        Sendinput,{shiftdown}{altdown}{lwindown}{w}{lwinup}{altup}{shiftup} ;fold region-current
+	tab & F13::      Sendinput,{shiftdown}{altdown}{lwindown}{4}{lwinup}{altup}{shiftup} ;unfold All
+	tab & s::        Sendinput,{shiftdown}{altdown}{lwindown}{s}{lwinup}{altup}{shiftup} ;toggle column
+	tab & m::        Sendinput,{shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;fold comments
+	tab & z::        Sendinput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup} ;align cursors
+	tab & x::        Sendinput,{shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup} ;align vertically
+	tab & c::        Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup} ;Align
+	tab & p::        Sendinput,{shiftdown}{altdown}{ctrldown}{p}{ctrlup}{altup}{shiftup} ;Focus Pannel
+	tab & 1::        Sendinput,^!{1} ;fold level 1
+	tab & space::		 Sendinput,{shiftdown}{altdown}{lwindown}{8}{lwinup}{altup}{shiftup} ;toggle fold
+	tab & 2::        Sendinput,^!{2} ;fold level 2
+	tab & 3::        Sendinput,^!{3} ;fold all except selected
+	tab & 4::        Sendinput,^!{4}
+	tab & f::        Sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
+	tab & q::        Sendinput,{ctrldown}{]}{ctrlup}
+	tab & appskey::return ;Send, {tab}
+	3::3
+	$tab::send, {tab}
+	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
+	q & tab::                 Sendinput,{ctrldown}{[}{ctrlup}
+	q & u::										Sendinput, {q}{u}
+	q::q
+	`::`
+
+	numlock::#\
+	^r::!r
+	; <^h::[
+	; <^l::]
+	<^r::ReloadScript()
+
+
+	; 	send, ^c
+	; 	tt(Clipboard,1000,100,-400,,160)
+	; 	return
+	#h::send, !{F2}
+	#p::send, +!{h}
+	#k::send, ^+{h}
+	numpadsub::               sendinput, {shiftdown}{altdown}{ctrldown}{,}{ctrlup}{altup}{shiftup} ;open file
+	numpadadd::               sendinput, {shiftdown}{altdown}{ctrldown}{.}{ctrlup}{altup}{shiftup}
+	numpadmult::              send, ^{F9} ;switch workplace
+	numpaddot::               numpaddot
+	^numpaddot::              Sendinput,{ctrldown}{w}{ctrlup}
+	;;	---modifiers---
+		$lwin::return
+		; Lctrl & Appskey::         return
+		Rshift & appsKey::   			Return
+		Lshift & appsKey::   			Return
+		; Lwin & Appskey::          return
+		Lalt & Appskey::          return
+	;;		---F Keys---
+	 ; go to file
+		F2::FindMatchingwindows()
+		+F1::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
+		F15::F15
+		F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
+		<^f19::                   Sendinput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+		F20 & h::                 Sendinput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+		F20 & k::                 Sendinput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+		F20 & backspace::         delete
+		F19 & -::                 Sendinput,{ctrldown}{-}{ctrlup}
+		F19 & =::                 Sendinput,{ctrldown}{=}{ctrlup}
+		F19 & y::                 Sendinput,{ctrldown}{w}{ctrlup}
+		F19 & n::                 Sendinput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
+		F19 & u::                 Sendinput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
+		F19 & i::                 Sendinput,{F9}
+		F19 & o::                 Sendinput,+!{F9}
+		F19 & p::                 Sendinput,^{F9}
+		F19 & Enter::							Sendinput,{ctrldown}{enter}{ctrlup}
+		F19 & j::                 Sendinput,+!{j}
+		F19 & k::                 Sendinput,+!{k}
+		F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+		F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+		f19 & `::                 Sendinput,~
+		f19 & r::                Sendinput,%process%
+		f19 & c::                 Sendinput,%mouseposition%
+		f19 & t::                 Sendinput,%wintitle%
+		f19 & w::                 Sendinput,%wininfo%
+		f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
+	; F13 & lshift::						enter
+$F13::F13
 
 
 
@@ -355,8 +404,10 @@ Class Vim {
 		return
 		}
 	left(){
-		if Getkeystate("LControl","p")
+		if Getkeystate("LControl","p"){
 			Sendinput,{shiftdown}{left}{shiftup}
+			; keywait, LControl, U
+		}
 		else if Getkeystate("Lshift","p")
 			sendinput, {altdown}{lwindown}{left}{altup}{lwinup}
 		else
@@ -394,6 +445,28 @@ Class Vim {
 	 		Sendinput,{Home}{enter}{up}
 		else
 	 		Sendinput,{end}{enter}
+		return
+		}
+	Selection(){
+		global
+		if Getkeystate("LControl","p") && Getkeystate("F13","p"){
+			Sendinput,{end}{shiftdown}{home}{shiftup}
+			return
+		}
+		else If (A_TimeSincePriorHotkey > 1500) || !(A_PriorhotKey = "F13 & s") {
+			sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
+			return
+			}
+		else (A_PriorhotKey = "F13 & s" && A_TimeSincePriorHotkey < 1500)
+			sendinput, {shiftdown}{altdown}{w}{altup}{shiftup}
+		}
+	Quote(){
+		if Getkeystate("LControl","p")
+			sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}+{'}
+		else If Getkeystate("LControl","p")
+			sendinput, {end}+{'}{F3 2}
+		else
+			sendinput, +{'}
 		return
 		}
 	SelectNext(){
@@ -469,32 +542,21 @@ Class Vim {
 	OpenParentheses(){
 		if Getkeystate("LControl","p")
 			Sendinput,{right}^{left}+^{right}+{9}
+		else if Getkeystate("Lshift","p")
+			sendinput, {end}{(}{F3 3}
 		else
 			Sendinput,+{9}
 		return
 		}
 	CloseParentheses(){
 		if Getkeystate("LControl","p")
-			Sendinput,{right}^{left}+^{right}+{9}+{'}
+			Sendinput,{right}^{left}+^{right}{shiftdown}{9}{'}{shiftup}
+		else if Getkeystate("Lshift","p")
+			sendinput, {end}{)}{F3 3}
 		else
 			Sendinput,+{0}
 		return
 		}
-	Selection(){
-		global
-	if Getkeystate("LControl","p") && Getkeystate("F13","p"){
-		Sendinput,{end}{shiftdown}{home}{shiftup}
-		return
-	}
-	else If (A_TimeSincePriorHotkey > 1800) || !(A_PriorhotKey = "F13 & s") {
-		sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
-		return
-		}
-	else (A_PriorhotKey = "F13 & s" && A_TimeSincePriorHotkey < 800)
-		sendinput, {shiftdown}{altdown}{s}{altup}{shiftup}
-}
-
-
 GoToFile(){
 	send, {F9}
 	Input, Inputkey, L1, {F13 up}
@@ -584,7 +646,7 @@ GoToFile(){
 		return
 	}
 
-}
+	}
 
 SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 		global
@@ -621,4 +683,84 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
       VARIABLEITEM:= "`n" Variable
       FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
       Return
+	}
+
+
+
+
+
+VScodeTabsMenu(){
+		try Menu,VScodeTabs, deleteAll
+		Menu, VScodeTabs,add, V&quest, SelectVScodeTab
+		Menu, VScodeTabs,add, VAR&BAR, SelectVScodeTab
+		Menu, VScodeTabs,add, &VIM, SelectVScodeTab
+		Menu, VScodeTabs,add, &Excel, SelectVScodeTab
+		Menu, VScodeTabs,add, &LMS, SelectVScodeTab
+		Menu, VScodeTabs,add, &temp, SelectVScodeTab
+		Menu, VScodeTabs,add, &Test, SelectVScodeTab
+		Menu, VScodeTabs,add, &VScode, SelectVScodeTab
+		Menu, VScodeTabs,add, &OpenApp, SelectVScodeTab
+		Menu, VScodeTabs,add, &Menu, SelectVScodeTab
+		Menu, VScodeTabs,add, &Functions, SelectVScodeTab
+		Menu, VScodeTabs,add, &clip, SelectVScodeTab
+		Menu, VScodeTabs,add, &HotStrings, SelectVScodeTab
+		Menu, VScodeTabs,add, &KEYS, SelectVScodeTab
+		Menu, VScodeTabs,add, P&ad, SelectVScodeTab
+		menu, VsCodeTabs,add
+		Menu, VScodeTabs,add, &Previous, SelectVScodeTab
+		Menu, VScodeTabs,add, E&xit, SelectVScodeTab
+		Menu, VscodeTabs,Show
+		return
+
+SelectVScodeTab:
+	If (A_ThisMenuItem Contains E&xit) {
+		Menu,VScodeTabs, deleteAll
+		return
+		}
+	If (A_ThisMenuItem Contains &Previous) {
+		send, {F9}
+		sleep 50
+		send, {down}
+	}
+	else {
+		ThisMenuItem:= StrReplace(A_ThisMenuItem, "&","")
+		send, {F9}
+		sleep 50
+		send % ThisMenuItem ".ahk"
+	}
+	sleep 200
+	send, {enter}
+	Menu,VScodeTabs, deleteAll
+	return
+	}
+
+
+FindMatchingwindows(){
+		global
+	  winGetTitle, CurrentLMSwindow, ahk_exe WFICA32.EXE
+  ; Pop(SubStr(CurrentLMSwindow, 1, 20))
+  	winactivate, ahk_exe Code.exe
+    send, ^{f}
+    sleep 200
+    sendinput % SubStr(CurrentLMSwindow, 1, 25)
+	}
+
+ReloadScript(){
+	global
+	Send, !s
+	flashscreen("reload")
+	winSet, Transparent, 155, ahk_exe Code.exe
+	sleep 100
+	winSet, Transparent, off, ahk_exe Code.exe
+	; try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+	if A_DebuggerName || DebuggingScript
+	{
+			ControlSend, , {F5}, ahk_exe Code.exe
+			return
+			}
+	else
+	{
+		varbar.SaveVariables()
+		reload
+	}
 }

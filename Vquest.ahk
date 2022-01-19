@@ -1,8 +1,5 @@
 ﻿
 VQuest_Start:
-
-
-
 ; RegexAll:="i)(?P<Product>(?<=\w{3})?[abdefghijkl]\d{3}))(?:.*) (?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))(?:.*)(?P<Lot>(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?))(?:.*)(?<=(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}))"
     #SingleInstance,Force
     #Persistent
@@ -10,8 +7,8 @@ VQuest_Start:
     Process, Priority, , High
     #NoEnv
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-    Iniread, Mode, Settings.ini, Options, Mode
-  
+    ; Iniread, Mode, Settings.ini, Options, Mode
+
     iniread, DebuggingScript, Settings.ini, Options, DebuggingScript
 
     ; Iniread, HideVarbar, Settings.ini, Options, HideVarbar
@@ -22,12 +19,12 @@ VQuest_Start:
     CheckTime:=600
     #ClipboardTimeout 1500
     ; #HotkeyInterval 50
-    #MaxHotkeysPerInterval 500
-    #MaxThreadsBuffer, On
+    ; #MaxHotkeysPerInterval 500
+    ; #MaxThreadsBuffer, On
     #InstallKeybdHook
     #InstallMouseHook
     #HotkeyModifierTimeout
-    #maxthreadsperhotkey, 1
+    #maxthreadsperhotkey, 2
     SetTitleMatchMode, 2
     FormatTime, DayString,, MM/d/yy
     FormatTime, TimeString, R
@@ -38,6 +35,7 @@ VQuest_Start:
     SetNumLockState, on
     SetscrolllockState, off
     CrLf=`r`n
+    EnvGet, VimOpen, VimOpen
     SetNumlockState Alwayson
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysoff
@@ -62,6 +60,7 @@ VQuest_Start:
     Menu, Tray, Add, Edit_Batches, Edit_Batches
     Menu, Tray, Add, Entering_Rotations, Entering_Rotations
     Menu, Tray, Add, TempCode, TempCode
+    PasteTime:=A_TickCount
     if Mode=Edit_Batches
       Menu, Tray, Check, Edit_Batches
     else if Mode=Entering_Rotations
@@ -69,32 +68,42 @@ VQuest_Start:
     else if Mode=TempCode
       Menu, Tray, Check, TempCode
      ShowVarBar:=CreateMenu("showVarbar")
-     HideShowSampleID:=CreateMenu("ShowSampleID")
+    ;  HideShowSampleID:=CreateMenu("ShowSampleID")
     ; ExcelConnect:=CreateMenu("")
     DebuggingScript:=CreateMenu("DebuggingScript")
     ; HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
     ; GuiControl, -redraw, varbar
-    try Run, cl3.Ahk, lib\CL3
+    ;try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Currentwindow:=A
     IfwinExist, ahk_exe WFICA32.EXE
       LMS.Orient()
-    if winexist("Mats LMS Workbook.xlsb - Excel") && ExcelConnect
+    ifwinexist, Mats LMS Workbook.xlsb - Excel
       Excel.Connect(0)
+    if !VimOpen
+      run, lib\Vim.ahk
     ; GuiControl, +redraw, varbar
     RegexProduct:="i)(?<=\w{3})?(?P<Product>[abdefghijkl]\d{3})"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
-    RegexLot:=    "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?)"
+    RegexLot:=    "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
     RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
-    ; if A_Debuggername
+
+
     varbar.Show()
-		;clip.regex(CodeString)
-      ; try Run, Vim.Ahk, lib\
-    ; else
-    ;  settimer, ActiveCheck , %CheckTime%
+    ; if A_DebuggerName
+
+
+  ;CurrentList:=[]
+  ; Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
+    ; {
+      ; CurrentList.Insert(A_loopreadline)
+      ; maxindex := A_Index
+    ; }
+
   OnClipboardChange("clipChange")
+      #Include <SuppressErrorDialog>
   #include <Toggles>
   #Include <Temp>
   #include <VIM>
@@ -103,16 +112,14 @@ VQuest_Start:
   #include <KEYS>
   #include <PAD>
   #Include <LMS>
-  #include <VScode>
   #Include <clip>
   #Include <OpenApp>
   #include <Excel>
   #include <varBar>
   #include <menu>
-  ;#include <Rotation>
-  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
-  #include <Functions>
-  #include <Xml>
+  #include  C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
+  #include  <Functions>
+  #include  <Xml>
 
   #Ifwinactive,
 return
@@ -140,18 +147,24 @@ Entering_Rotations:
   Mode:="Entering_Rotations"
   Menu, Tray, Check, Entering_Rotations
   Menu, Tray, unCheck, Edit_Batches
-  varbar.saveVariables()
+  ; varbar.saveVariables()
   return
 Edit_Batches:
   Mode:="Edit_Batches"
   Menu, Tray, unCheck, Entering_Rotations
   Menu, Tray, Check, Edit_Batches
-  varbar.saveVariables()
+  ; varbar.saveVariables()
+  return
+DebuggingScript:
+  Mode:="DebuggingScript"
+  Menu, Tray, unCheck, DebuggingScript
+  Menu, Tray, Check, DebuggingScript
+  ; varbar.saveVariables()
   return
 TempCode:
   Mode:="TempCode"
   Menu, Tray, Check, TempCode
-  varbar.saveVariables()
+  ; varbar.saveVariables()
   return
 
 

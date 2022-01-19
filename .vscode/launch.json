@@ -7,6 +7,7 @@
       "request": "launch",
       "name": "AutoHotkey Debugger",
       "port":"9002-9010",
+      "useAutoJumpToError": true,
       "program": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk",
 			"args": [],
 			"useDebugDirective": true
@@ -16,6 +17,7 @@
       "request": "launch",
       "name": "MiniCode Debugger",
       "port":"9002-9010",
+      "useAutoJumpToError": true,
       "program": "C:\\Users\\mmignin\\Documents\\VQuest\\MiniScript.ahk",
 			"args": [],
 			"useDebugDirective": true

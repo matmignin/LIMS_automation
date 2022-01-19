@@ -20,13 +20,16 @@
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		Numlock:: 4tap() ;LMS.COA()
+		Numlock:: Menu.LMS() ;4tap() ;LMS.COA()
 		mbutton:: 3tap()
 		F7::		  3Right()
 		F6::			3Left()
-		F13 up::lms.searchBar("")
+		F13 up::
+		lms.searchBar("")
+		flashscreen(CodeString)
+		return
 		F20 & Space::Varbar.Focus(Product)
-		F20 & left::Send, %Product%
+		F20 & left::Send, %Product%(on sample log)
 		F20 & down::Send, %Batch%
 		F20 & right::Send, %lot%
 		Enter::LMS.SaveCode()
@@ -35,7 +38,9 @@
 		<^v::      	       	lms.searchbarPaste()
 		; wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
 		; wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
-		F13::Menu.LMS()
+
+		; f20 up::4tap()
+
 
  #Ifwinactive,Select Iterations - \\Remote
    F20::LMS.PasteProductRotation()
@@ -43,8 +48,8 @@
    F19::LMS.CopyProductRotation()
 
 	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry
-		Wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
-		Wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
+		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
+		wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 			#MaxThreadsPerHotkey 2
 				Numlock::WorkTab.ChangeTestResults("loop")
 			#MaxThreadsPerHotkey 1
@@ -63,7 +68,7 @@
 
 
 	#ifwinactive, Register new samples - \\Remote ;;__Register_new_samples:
-		F7::
+		F9::
 			clk(181, 104,2,2)
 			sleep 300
 			Send, %Product%{enter}
@@ -100,11 +105,16 @@
 			esc::						 LMSclick.esc()
 			numpaddot::			4down()
 			numpadMult::		4up()
-			F9::						Excel.Connect(1) ;3up()
+			F9::						3up()
+					; if winexist("Mats LMS Workbook.xlsb"){
+					; 	excel.Connect(1)*
+					; 	tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000)
+					; 	return
+					; }
 			F8::						3down()
 			F7::						3Right()
 			F6::						3Left()
-		^Wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
+		^wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
 			^wheelup::				LMS.SearchbarPaste() ;; Spread
 			Rbutton & F19::       	send % windowInfo()
 			Rbutton & wheelleft::        	Send, {Backspace}
@@ -123,12 +133,12 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 			Global
 			if !winactive("ahk_exe WFICA32.EXE")
 				winactivate, ahk_exe WFICA32.EXE
-			ControlGetText, Product, Edit1, VarBar
-			ControlGetText, Batch, Edit2, VarBar
-			ControlGetText, Lot, Edit3, VarBar
-			ControlGetText, Coated, Edit4, VarBar
-			if Showsampleid=1
-				ControlGetText, SampleId, Edit5, VarBar
+			; ControlGetText, Product, Edit1, VarBar
+			; ControlGetText, Batch, Edit2, VarBar
+			; ControlGetText, Lot, Edit3, VarBar
+			; ControlGetText, Coated, Edit4, VarBar
+			; if Showsampleid=1
+				; ControlGetText, SampleId, Edit5, VarBar
 			if (Lms.Filter()=On) {
 				Lms.FilterBar(Code,PostCmd)
 						Send, {ctrlup}
@@ -624,29 +634,29 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		Tab4:=
 		Tab5:=
 		Tab6:=
-		winGetPos,wx,wY,wW,wH, NuGenesis LMS - \\Remote
+		; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
 		winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
-		winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
+		; winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
 		; winGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
 		WbX:=WbX+400
-		Flovar_x:= wX +900
-		Flovar_y:= wH + wY -28
-		varBar_nuX:=wX+450
-		varBar_nuY:=wY
-		TabSelect:=WW-10
+		Flovar_x:= NuX +900
+		Flovar_y:= NuH + NuY -28
+		varBar_nuX:=NuX+450
+		varBar_nuY:=NuY
+		TabSelect:=NuW-10
 		yTabSelect:=45
 		yTabDropdown:=45
-		SamplesTab:=(Ww/2)-80
-		RequestsTab:=(Ww/2)+20
-		DocumentsTab:=(Ww/3)+(Ww/3)-50
-		TestsTab:=(Ww/3)+(Ww/3)-220
-		ResultsTab:=(Ww/3)+(Ww/3)-150
-		HScrollBarRightX:=Ww-40
-		HScrollBarLeftX:=(Ww/5)+35
-		HScrollBarRightY:=HScrollBarLeftY:=(Wh/2)+38
+		SamplesTab:=(NuW/2)-80
+		RequestsTab:=(NuW/2)+20
+		DocumentsTab:=(NuW/3)+(NuW/3)-50
+		TestsTab:=(NuW/3)+(NuW/3)-220
+		ResultsTab:=(NuW/3)+(NuW/3)-150
+		HScrollBarRightX:=NuW-40
+		HScrollBarLeftX:=(NuW/5)+35
+		HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
 		yWorkTabs:=74
 		yMyWorkTabs:=74
-		xDivider:=(Ww/5)
+		xDivider:=(NuW/5)
 		xTab1=150
 		xTab2=350
 		MyWorkTab=350
@@ -663,10 +673,10 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		yTabs:=36
 		xWorkTab:=334, 47 ;1st
 		yWorkTabSearch:=128
-		XCoA:=(Ww-131)
+		XCoA:=(NuW-131)
 		xClearfilter:=xDivider+16
 		yClearfilter:=270
-		xFilterIcon:=Ww-22
+		xFilterIcon:=NuW-22
 			yFilterIcon:=131
 
 		xProductsSearch:=xDivider+180
@@ -1295,7 +1305,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 
 	CopySpecTemplate(){
 		global
-		Critical
+		Critical, On
 		clipboard:=
 		; sleep 100
 		if winactive("NuGenesis LMS - \\Remote"){
@@ -1348,6 +1358,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		;excel.NextSheet()
 		Breaking.Point()
 		;TT(Product)
+		Critical, Off
 		return
 	}
 
@@ -1357,6 +1368,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		global
 		winactivate, NuGenesis LMS - \\Remote
 		BlockInput, on
+		critical, On
 		clipboard:=
 		click 57, 715 ; edit Test
 		; click 57, 750 ; edit results
@@ -1404,12 +1416,14 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		blockinput off
 		Send, {esc}
 		copypastetoggle=1
+		Critical, Off
 		exit
 		Return
 	}
 
 		PasteSpecs(){
 		Global
+		Critical, On
 		winactivate, NuGenesis LMS - \\Remote
 		click 57, 715 ; edit Test
 		winwaitactive, Test Definition Editor - \\Remote,,0.35
@@ -1434,6 +1448,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		Breaking.Point()
 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 		CopyPasteToggle=0
+		Critical, Off
 		exit
 		return
 	}

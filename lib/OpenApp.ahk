@@ -18,10 +18,10 @@ F1::
   }
   return
 OpenApps:
-  ; <!f::OpenApp.Firefox()
-  <#f::OpenApp.Firefox()
-  ; !v::OpenApp.vsCode()
-  <#v::OpenApp.vsCode()
+  ;<!f::OpenApp.Firefox()
+  ;<#f::OpenApp.Firefox()
+  ;<#v::OpenApp.vsCode()
+  ;!v::OpenApp.vsCode()
   ^F1::Varbar.reset()
   !v::run, C:\Users\mmignin\Documents\VQuest\Example Code\CodeQuickTester.ahk
   #^v::Run, C:\Users\mmignin\Documents\VQuest\
@@ -53,20 +53,21 @@ send, %A_ThisMenuItem%
 return
 
   #e::return ; Send,{Lwindown}{e}{lwinup}
+  <#f::OpenApp.Firefox()
+
+  <#v::OpenApp.vsCode()
   ; !+v::OpenApp.VPN()
   F20 & o::OpenApp.Outlook()
   #o::OpenApp.Outlook()
-  #d::OpenApp.Display()
-  +#d::OpenApp.Touchpadsettings()
-
+  #1::OpenApp.Display()
+  +#1::OpenApp.Touchpadsettings()
   ; F20 & p::
   ; #p::OpenApp.YourPhone()
   f20 & n::
-  #n::openApp.notepad()
-  +#n::openApp.Notion()
-  #w::OpenApp.Workbook()
-  F20 & l::
-  #l::OpenApp.LMS()
+  ; #n::openApp.Notion()
+  +#n::openApp.notepad()
+  ; #w::OpenApp.Workbook()
+  F20 & l::OpenApp.LMS()
 #ifwinnotactive
 
 return
@@ -124,7 +125,11 @@ Outlook(){
   return
  }
  ifwinnotexist, ahk_exe firefox.exe
+ {
   run, firefox.exe, "C:\Program Files\Mozilla Firefox\"
+  sleep 200
+  winactivate
+ }
  else
   winactivate, ahk_exe firefox.exe
  ; sleep 200
@@ -204,13 +209,9 @@ Outlook(){
  return
  }
  VScode(){
- If winactive("ahk_exe Code.exe"){
-  Send,{altdown}{tab}{altup}
-  return
- }
- ifwinnotexist,ahk_exe Code.exe
+ if !WinExist("ahk_exe Code.exe")
  {
-   run, Code.exe, C:\Program Files\Microsoft VS Code
+  ;run, Code.exe, "C:\Program Files\Microsoft VS Code"
   Send,{altdown}{ctrldown}{v}{ctrlup}{altup}
   winactivate, ahk_exe Code.exe
   winMove, ahk_exe Code.exe, ,2037, -1080, 1525, 1087,

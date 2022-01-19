@@ -50,6 +50,9 @@ class Menu{
     ProductSelection(){
     global
     try menu,DropdownMenu, Deleteall
+		GUI , varbar: default
+  ;  ControlGet , Wholex, List, , Combobox1	;- get the whole listbox1
+    ; stringreplace , wholex, wholex, `n `n, `n, all
     Loop, Read, data\CurrentCodes.Txt
     {
     ; If A_Index = 1 ;for if its an INI file
@@ -57,16 +60,21 @@ class Menu{
     ParseList := StrSplit(A_LoopReadLine, "`n")
       if A_index < 10
         Selection:= % "&" A_index " " ParseList[1]
+        ; Selection:= % ParseList[1]
        else
-        Selection:= % A_index " " ParseList[1]
+        Selection:= % "&" A_index-10 " " ParseList[1]
     Menu, Dropdownmenu, add, %Selection%, CurrentCodesMenu
     }
     Menu, DropdownMenu, Show,
     return
 
     CurrentCodesMenu:
-      sleep 200
-      Clipboard:=A_ThismenuItem
+      GuiControl, Varbar:ChooseString, ComboBox1, % RegExReplace(A_ThismenuItem, "i)(&\d\s)", "")
+  		GUI, VarBar:submit,NoHide
+      ; ControlsetText , Edit5, %A_ThismenuItem%, VarBar
+      	; control , choose, %A_ThismenuItem%
+      ; sleep 200
+      ; Clipboard:=A_ThismenuItem
       return
     }
 

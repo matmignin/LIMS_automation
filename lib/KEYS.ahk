@@ -2,46 +2,40 @@ return
 
 
 #ifwinactive,
-Volume_Mute::
-Clipboard:=
-(
-	"K741 107-0431 0278H1
-K277 888-8888
-K277 888-8777
-K277 111-1111
-J929 910-0128 0623I1
-J837 109-0445 7777A7 ct#666-6666
-J837 109-0445 0670I1
-J837 109-0445
-J837 109-0333 0333I1
-H624 104-0657
-B324 105-1172 0656H1
-B086 108-0752 Ct#109-0635
-B086 108-0752 Bulk Ct#109-0635
-B086 108-0752 Bulk 109-0635
-B086 108-0752  109-0635"
-)
-return
+
 F22::return
 F24::return
 ; Scrolllock::Scrolllock
 Ins::flovar()
+
 	Tab & lbutton::
 		send, {ctrldown}
 		click left
 		send, {ctrlup}
 		return
-	<^1::                 return
-	<^2::                 return ;,{ctrldown}{2}{ctrlup}
-	<^3::                 return ;Send,{ctrldown}{0}{ctrlup}
-	F13 & 1::							sendinput,%product%
-	F13 & 2::							sendinput, %Batch%
+	; <^1::                 return
+	; <^2::                 return ;,{ctrldown}{2}{ctrlup}
+	; <^3::                 return ;Send,{ctrldown}{0}{ctrlup}
+	; ~Lctrl & 1::gosub, Product_cyclebackward
+												; if Getkeystate("LControl","p")
+													; GetAllProducts()
+												; else
+													; sendinput,%product%
+												; return
+
+
+	F13 & 2::
+												if Getkeystate("LControl","p")
+													GetAllBatches()
+												else
+													sendinput, %Batch%
+												return
 	F13 & 3::							sendinput, %Lot%
 	F13 & 4::							GetAllProducts()
 	F13 & 5::							GetAllBatches()
 	3::3
 
-	$tab::send, {tab}
+	$tab::										send, {tab}
 	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
 	q & tab::                 Sendinput,{ctrldown}{[}{ctrlup}
 	q & u::										Sendinput, {q}{u}
@@ -51,58 +45,69 @@ Ins::flovar()
 ;;	___ClipCopy&Paste
 ; F13 & Mbutton::
 
-+^c::clip.Append()
-!^c:: clip.Append(A_Space)
-!^x:: send % clip.Append() "{backspace}"
++^c::											clip.Append()
+!^c:: 										clip.Append(A_Space)
+!^x:: 										send % clip.Append() "{backspace}"
 ;; moved over from Vim ____________________________________________________
-	F19 & m::              numpad1
-	F19 & ,::              numpad2
-	F19 & .::              numpad3
-	F19 & j::              numpad4
-	F19 & k::              numpad5
-	F19 & l::              numpad6
-	F19 & u::              numpad7
-	F19 & /::              sendinput, {tab}
-	F19 & i::              numpad8
-	F19 & o::              numpad9
-	F19 & `;::             Sendinput,{numpad0}
-	F19 & y::              sendinput, +{Tab}
-	F19 & p::              numpad0
-	F19 & =::              -
-	F19 & -::              -
-	F19 & [::              left
-	F19 & ]::              right
-	F19 & h::              sendinput, {,}
-	F19 & n::              sendinput, {.}
-	F19 & 8::              sendinput, {*}
-	F19 & 0::              sendinput, {-}
-	F19 & '::              numpad0
-	F19 & Backspace::      backspace
-	; F19 & ENTER::          Sendinput,{enter}
-	F19 & RShift::         Sendinput,{Tab}
-
-	# & F7::right
-	# & F6::left
-	# & F9::up
-	# & F8::down
-	# & wheelup::pgup
-	# & wheeldown::pgdn
+	F19 & m::              	numpad1
+	F19 & ,::              	numpad2
+	F19 & .::              	numpad3
+	F19 & j::              	numpad4
+	F19 & k::              	numpad5
+	F19 & l::              	numpad6
+	F19 & u::              	numpad7
+	F19 & /::              	sendinput, {tab}
+	F19 & i::              	numpad8
+	F19 & o::              	numpad9
+	F19 & `;::             	Sendinput,{numpad0}
+	F19 & y::              	sendinput, +{Tab}
+	F19 & p::              	numpad0
+	F19 & =::              	-
+	F19 & -::              	-
+	F19 & [::              	left
+	F19 & ]::              	right
+	F19 & h::              	sendinput, {,}
+	F19 & n::              	sendinput, {.}
+	F19 & 8::              	sendinput, {*}
+	F19 & 0::              	sendinput, {-}
+	F19 & '::              	numpad0
+	F19 & Backspace::      	backspace
+	; F19 & ENTER::        	  Sendinput,{enter}
+	F19 & RShift::         	Sendinput,{Tab}
++#s::											send, {lwindown}{s}{lwinup}
+	$lwin::									return
+	#F6::										#left
+	#a::										#left
+	#F7::										#right
+	#d::										#right
+	#F8::										#down
+	#s::										#down
+	#F9::										#up
+	#w::										#up
+	; Lwin & F7::right
+	; Lwin & F6::left
+	; Lwin & F9::up
+	; Lwin & F8::down
+	Lwin & wheelup::pgup
+	Lwin & wheeldown::pgdn
 
 ;; moved over from Vim ____________________________________________________
 ;; 	___Send Codes___
 
 
-; >+F20::             	varbar.focus("Batch")
->+F19::            		varbar.focus("Product")
-<+F19::								Sendinput, {_}
+; >+F20::             			varbar.focus("Batch")
+>+F19::            					varbar.focus("Product")
+<+F19::											Sendinput, {_}
 F19 & left::								GetAllProducts()
 F19 & down::								GetAllBatches()
 F19 & up::									Sendinput % excel.GetAllSheets()
 ; F13 & Space::								GetAllProducts()
-!w::Sendinput, {up}
-!s::Sendinput, {down}
-!a::Sendinput, {left}
-!d::Sendinput, {right}
+!w::												Sendinput, {up}
+!s::												Sendinput, {down}
+!a::												Sendinput, {left}
+!d::												Sendinput, {right}
+!q::												sendinput, {backspace}
+!e::												sendinput, {delete}
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
 <#F13::											GetAllProducts("`n")
@@ -137,11 +142,11 @@ Lbutton & Rbutton::       send, ^{x}
 ; Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
 
 ~rbutton & Appskey::				2Tap()
-~Rbutton::return
+~Rbutton::								return
 rshift & Appskey::				return
 F19 & \:: 								Sendpassword()
 ^+7::
-Lbutton & / up::clip("OCR")
+Lbutton & / up::				 	clip("OCR")
 F20 & /::        	 				clip("OCR")
 
 
@@ -153,20 +158,42 @@ F20 & /::        	 				clip("OCR")
 	esc & 3::						send, {shiftdown}{altdown}{0}{altup}{shiftup}
 	esc::								esc
 	F17::								Clipboard:=ExampleString
-	Media_Prev::						F15 ;MakeTransparent()
+	; Media_Prev::						F15 ;MakeTransparent()
 	; Media_Play_Pause::			F16
-	Media_Next::						F17
+	F15::
+	if A_DebuggerName || DebuggingScript
+	{
+			ControlSend, , {F11}, ahk_exe Code.exe
+			}
+		else
+			ControlSend, , ^{F15}, ahk_exe Code.exe
+			return
+	; Media_Next::						F17
 	numpadsub::          		4Left()
 	numpadadd::          		4right()
 	numpadMult::         		4up()
 	numpaddot::          		4down()
 	pause::							Suspend, Toggle
+	<^f::
+		if MouseIsOver("ahk_exe Code.exe"){
+			FlashScreen("Find")
+			If !winactive("ahk_exe Code.exe"){
+				winactivate, ahk_exe Code.exe
+				sleep 100
+			}
+			sendinput, {ctrldown}{f}{ctrlup}
+			return
+		}
+		else
+		sendinput, ^{f}
+		return
+
 	#h::return ;send, !{F2}
 	#p::return ;send, +!{h}
 	#k::return
 	; Lwin::									vkFF
 	;; _System actions_
-
+	+^Rbutton::clip("OCR")
 	!F7::							Send, {laltdown}{right}{laltup}
 	!F6::							Send, {laltdown}{left}{laltup}
 	!F9::							Send, {laltdown}{up}{laltup}
@@ -179,8 +206,13 @@ F20 & /::        	 				clip("OCR")
 	^Media_Next::			MakeTransparent()
 
 	lshift & Appskey::			return
-	Lctrl & Appskey::				Return
-	<^`;::Sendinput %CurrentDateTime%
+	;Lctrl & Appskey::				Return
+	<^`;::
+		if !winactive("ahk_exe Code.exe")
+			Sendinput %CurrentDateTime%
+		else
+					send, {ctrldown};}{ctrlup}
+		return
 	/ & .::						Send, {?}
 	/::	 							Send, /
 
@@ -227,7 +259,7 @@ F20 & /::        	 				clip("OCR")
 
 	F6::   			sendinput % BlockRepeat(800) "^{e}" product  "{enter}" ;              	Send, {altdown}{left}{altup}
 	F7::				Sendinput, ^{e}%product%{enter}
-	F9::ExplorerSearch(Product)
+	; F9::ExplorerSearch(Product)
 	^w::									4down()
 #ifwinactive, ahk_exe Notion.exe
 	^h::sendinput, {shiftdown}{ctrldown}{h}{ctrlup}{shiftup}
@@ -279,7 +311,7 @@ if !winactive("CodeQuickTester*")
 
 #Ifwinactive, Mats LMS Workbook.xlsb ;; 	___Excel
 	Numpadmult::send, {Home}
-	F9::    					Excel.Connect(1)
+	F9::    3up() ;					Excel.Connect(1)
 	F13 & 1::    	LMS.searchBar(Product)
 	F19 & backspace::    delete
 	F19 & space::    Backspace
@@ -291,8 +323,8 @@ if !winactive("CodeQuickTester*")
 	; F19 & right::        ^right
 	F7::                 Excel.NextSheet()
 	F6::                 Excel.PrevSheet()
-	F13 & u::sendinput, {ctrldown}{up}{ctrlup}
-	F13 & n::sendinput, {ctrldown}{down}{ctrlup}
+	F13 & u::sendinput, {shiftdown}{altdown}{ctrldown}{[}{ctrlup}{altup}{shiftup}
+	F13 & n::sendinput, {shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
 
 	numpaddot::
 								excel.Connect(1)
@@ -311,7 +343,7 @@ if !winactive("CodeQuickTester*")
 	F4::F4
 	; Numlock::Send, {shiftdown}{F9}{shiftup}
 	; F9::                 excel.search()
-	F9::						3tap()
+	F9::						3up()
 	F7::                 excel.Search()
 	+Enter::             Sendinput, {altdown}{enter}{altup}
 	$Enter::             Sendinput,{enter}
@@ -321,6 +353,7 @@ if !winactive("CodeQuickTester*")
 	F19 & F6::           ^F9 ;Excel.PrevSheet()
 	; F19::									Send, ^v
 #ifwinactive, Find and Replace ahk_exe EXCEL.EXE,
+	enter::
 	return::             Sendinput, !{i}
 	rbutton & Lbutton::  Sendinput, !{i}
 #ifwinactive, Formula updates.xlsm - Excel
@@ -355,6 +388,8 @@ if !winactive("CodeQuickTester*")
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
 	; Numlock::				Send, {Backspace}
 	F19::						Send, ^{click}
+
+
 
 
 
