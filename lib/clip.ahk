@@ -8,12 +8,74 @@
 
 
 
+LCtrl & 2::
+  Batch_cyclebackward:
+  GUI, varbar:default
+  Excel.InfoLocations()
+  ; CurrentList := StrSplit(CurrentCodes, "`n")
+  If !ActiveWindowID
+    WinGet, ActiveWindowID, ID, A
+  cyclebackward:=1
+  PreviousClipCycleCounter:=0 ; 13/10/2017 test
+  ClipCycleCounter:=1
+  ClipCycleFirst:=1
+  While GetKeyState("LCtrl","D") and cyclebackward
+    {
+    If (ClipCycleCounter <> 0)
+    {
+      Var:=Batches[ClipCycleCounter]
+      ttext:=% DispToolTipText(Var)
+    }
+    else
+      ttext:="[cancelled]"
+    If (oldttext <> ttext)
+      {
+      ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+      oldttext:=ttext
+      ; GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
+      }
+    Sleep 100
+    KeyWait, 2
+    }ToolTip
+  If (ClipCycleCounter > 0) ; If zero we've cancelled it
+    {
+      ; XL.Range("E1").Value:=Batches[ClipCycleCounter]
+    ; Clipboard:=Batches[ClipCycleCounter]
+    sleep 100
+    Gosub, BatchesHandler
+    ClipCycleCounter:=1
+    }
+  Return
 
+  LCtrl & 2 Up::
+  Batch_cyclebackward_up:
+  PreviousClipCycleCounter:=ClipCycleCounter
+  If (ClipCycleFirst = 0)
+    ClipCycleCounter++
+  ClipCycleFirst:=0
+  ; settimer, ShrinkVarBar, 200
+  Return
+
+  BatchesHandler:
+  oldttext:="", ttext:="", ActiveWindowID:=""
+  WinActivate, ahk_id %ActiveWindowID%
+    Gui Varbar:Default
+  sleep 30
+  GuiControl, Varbar:ChooseString, ComboBox1, % Batches[ClipCycleCounter]
+  XL.Range("E1").Value:=Batches[ClipCycleCounter]
+  sleep 200
+  Excel.InfoLocations()
+  oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+  Cliptext:=
+  CycleBackward:=
+return
 
 
 LCtrl & 1::
 Product_cyclebackward:
 GUI, varbar:default
+
+winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
 CurrentList := StrSplit(CurrentCodes, "`n")
 If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
@@ -26,7 +88,6 @@ While GetKeyState("LCtrl","D") and cyclebackward
 	 If (ClipCycleCounter <> 0)
 	 {
 		 Var:=CurrentList[ClipCycleCounter]
-		; ttext:=% Chr(96+ClipCycleCounter) " : " DispToolTipText(Var)
 		ttext:=% DispToolTipText(Var)
 	 }
 	 else
@@ -35,6 +96,7 @@ While GetKeyState("LCtrl","D") and cyclebackward
 		{
 		 ToolTip, % ttext, %A_CaretX%, %A_CaretY%
 		 oldttext:=ttext
+     GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
 		}
 	 Sleep 100
 	 KeyWait, 1
@@ -54,6 +116,7 @@ PreviousClipCycleCounter:=ClipCycleCounter
 If (ClipCycleFirst = 0)
 	ClipCycleCounter++
 ClipCycleFirst:=0
+settimer, ShrinkVarBar, 200
 Return
 
 ProductsHandler:
@@ -66,11 +129,10 @@ GuiControl, Varbar:ChooseString, ComboBox1, % CurrentList[ClipCycleCounter]
 ;ControlGetText, CodeString, Edit5, VarBar
 sleep 200
  clip.CodesRegex(CodeString)
-
-
 oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
 Cliptext:=
 CycleBackward:=
+
 Return
 
 
@@ -432,40 +494,31 @@ CodesRegex(input:=""){
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : ""
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : ""
       Ct:=rCoated ? " ct#" : ""
-      CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
-
       GuiControl,Varbar:Text, Product, %rProduct%
       GuiControl,Varbar:Text, Batch, %rBatch%
       GuiControl,Varbar:Text, lot, %rlot%
       GuiControl,Varbar:Text, Coated, %rCoated%
+
+      CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
       ; control, choose, %CodeString%
 			; ControlsetText, Edit5,%CodeString%, VarBar
-      return
-      try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
+      ; return
+        try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
         catch
         {
+          if (A_Index = 1)
       			ControlsetText, Edit5,%CodeString%, VarBar
           	; Gui, Varbar:submit, nohide
       			ControlGet, Wholex, List,,Combobox1, VarBar         ;- get the whole listbox1
           	Control, Add, %CodeString%, ComboBox1, VarBar    ; add to the bottom of the list
-        		sort,Wholex, U R
-      			control, choose, %CodeString%, ComboBox1, VarBar
-          		if wholex<>
-          		 {
-          		 stringreplace,wholex,wholex,`n`n,`n,all
-          		 fileappend,%CodeString%,C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
-          		;  filedelete,"C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt"
-          		;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
-          		 }
-            ; @Debug-Output =>  CodeString: {CodeString}
-            ; @Debug-Output =>  CurrentCodes: {CurrentCodes}
-            ; @Debug-Output =>  Wholex: {Wholex}
-
+        		sort,Wholex, U
+          ; if (A_Index = 1)
+      			; control, choose, %CodeString%, ComboBox1, VarBar
+          ; try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
         }
-			; ControlsetText, Edit1,%rProduct%,  VarBar
-			; ControlsetText, Edit2,%rBatch%, VarBar
-			; ControlsetText, Edit3,%rLot%, VarBar
-			; ControlsetText, Edit4,%rCoated%, VarBar
+        ; return
+
+; }
 
      Return Trim(CodeString)
 }
@@ -475,23 +528,25 @@ Parse(Value:=""){
   global
   Gui Varbar:Default
   regProducts:=[], regBatches:=[],
-  sleep 150
+  sleep 120
     ParsedClipboard:= Value ? Value : Clipboard ;if no Value, use Clipboard
-	; StringReplace, ParsedClipboard, ParsedClipboard, `n, `n, UseErrorLevel ;Get Total Lines
-		StrReplace(ParseClipboard, "`n",,TotalLines)
-    ; TotalLines:=errorLevel
+	StringReplace, ParsedClipboard, ParsedClipboard, `n, `n, UseErrorLevel ;Get Total Lines
+		; StrReplace(ParseClipboard, "`n",,TotalLines)
+    TotalLines:=errorLevel
     If (TotalLines<=1){
-      this.codesRegex(A_LoopField)
+      ; this.codesRegex(A_LoopField)
+      try GuiControl, Varbar:ChooseString, ComboBox1, % this.codesRegex(A_LoopField)
     }
     else {
     loop, parse, ParsedClipboard, "`n"
     {
-        if A_Index = 1              ; if first line
+    GuiControl, -Redraw, ComboBox1
+      ; if A_Index = 1              ; if first line
           this.codesRegex(A_LoopField)
-      else if A_Index > 1
-      {
-          ; regProducts.insert(clip.CodesRegex(A_LoopField))
-      ; if (RegProducts.maxindex() > 1) { ;remove duplicates from array
+      ; else if A_Index > 1
+          regProducts.insert(clip.CodesRegex(A_LoopField))
+    }
+      if (RegProducts.maxindex() > 1) { ;remove duplicates from array
           Products:=[], oTemp := {}
           for vKey, vValue in regProducts {
           if (ObjGetCapacity([vValue], 1) = "") ;is numeric
@@ -505,17 +560,21 @@ Parse(Value:=""){
                 Products.Push("" vValue), oTemp["" vValue] := ""
             }
           }
-        sleep 100
-          filedelete, data\CurrentCodes.txt
+          sleep 100
+          ; filedelete, data\CurrentCodes.txt
           For Each, Element In Products {
-            CurrentCodes .= Element "`n"
+            CurrentCodes .= Element "`r`n"
           }
           RemoveTextDuplicates(CurrentCodes)
-          sleep 100
-          FileAppend, %CurrentCodes%, data\CurrentCodes.txt
-          sleep 100
+            ; VarBar.AddToList(CurrentCodes)
+
+          ; FileAppend, %CurrentCodes%, data\CurrentCodes.txt
+          ; sleep 100
+          ; FileAppend, %CurrentCodes%, data\CurrentCodes.txt
+          ; Varbar.AddToList(CurrentCodes)
+          ; sleep 100
         ;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
-          sleep 100
+          ; sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default
                    ; Gui, Varbar:+Delimiter`r`n
@@ -524,20 +583,14 @@ Parse(Value:=""){
           ; GuiControl,,DDL,
           ; GuiControl, Varbar:MoveDraw, DDL
           ; guicontrol, ChooseString, ComboBox1, %Product%
-        }
+
         ; Pop(CurrentCodes,,500,"Right")
       ; return
-    }
-    }
-      ; @Debug-Output =>  Product: {rProduct} : {Product}
-      ; @Debug-Output =>  Batch: {rBatch} : {Batch}
-      ; @Debug-Output =>  Lot: {rLot} : {Lot}
-      ; @Debug-Output =>  Coated: {rCoated} : {Coated}
-      ; @Debug-Output =>  CodeString: {CodeString}
-      ; @Debug-Output:start =>  CurrentCodes
-      ; @Debug-Output => {CurrentCodes}
-      ; @Debug-Output:End
+    GuiControl, +Redraw, ComboBox1
     return
+  }
+try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
+}
 }
 
 Parse1(Value:=""){

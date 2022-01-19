@@ -1,9 +1,9 @@
 ﻿
 VQuest_Start:
-; RegexAll:="i)(?P<Product>(?<=\w{3})?[abdefghijkl]\d{3}))(?:.*) (?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))(?:.*)(?P<Lot>(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?))(?:.*)(?<=(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}))"
     #SingleInstance,Force
     #Persistent
-    ;#ErrorStdOut
+  ;  #ErrorStdOut
+; RegexAll:="i)(?P<Product>(?<=\w{3})?[abdefghijkl]\d{3}))(?:.*) (?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))(?:.*)(?P<Lot>(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?))(?:.*)(?<=(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}))"
     Process, Priority, , High
     #NoEnv
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
@@ -82,8 +82,8 @@ VQuest_Start:
       LMS.Orient()
     ifwinexist, Mats LMS Workbook.xlsb - Excel
       Excel.Connect(0)
-    if !VimOpen
-      run, lib\Vim.ahk
+    ; if !VimOpen
+      ; run, lib\Vim.ahk
     ; GuiControl, +redraw, varbar
     RegexProduct:="i)(?<=\w{3})?(?P<Product>[abdefghijkl]\d{3})"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"

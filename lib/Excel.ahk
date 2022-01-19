@@ -44,7 +44,7 @@ FindAndReplace(A_Find,A_Replace,A_Range,OffsetX:=0,OffsetY:=0){
 
 Sheetactivate(XL){
   global
-  excel.Infolocations()
+  excel.InfoLocations()
   excel.RegexCell()
   excel.matchColor()
   ;pop(Product " " Batch)
@@ -64,8 +64,7 @@ GetAllSheets(){ ; Get each sheet name and turn it into an array
 SheetChange(sht,Cell) {
 	Global
 	if (Cell.activeCell.Address = "$E$1") || (Cell.activeCell.Address = "$B$3") {
-			excel.Infolocaions()
-	; msgbox % Cell.activeCell.value
+			excel.InfoLocations()
 	Flovar(Cell.activeCell.value,1000)
 	}
 	else
@@ -111,12 +110,12 @@ InfoLocations(){
 			Return
 		This.RegexCell(XL.Range("E1").Value)
 		MoreBatches:=XL.range("H1").Value
-		Products:=[]
+		; Products:=[]
 		loop, parse, MoreBatches, `r`n
 		{
 			RegExMatch(A_loopField, "i)(?<Batch>\d{3}-\d{4}).?(?<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]? )?.?(Ct#)?(?<Coated>(\d{3}-\d{4})?)", s)
 					if sBatch
-						Products.Insert(Product " " sBatch " " sLot " " sCoated)
+						Batches.Insert(Product " " sBatch " " sLot " " sCoated)
 		}
 		;Clip.Parse(MoreBatches)
 		 while (Xl.Range("BE" . A_index+7).Value != "")
@@ -146,6 +145,8 @@ InfoLocations(){
 	GuiControl, Varbar:Text, lot, %lot%
 	GuiControl, Varbar:Text, Batch, %Batch%
 	GuiControl, Varbar:Text, Coated, %coated%
+	CodeString:=Trim(Product " " Batch " " Lot " " Coated)
+	ControlsetText, Edit5,%CodeString%, VarBar
 	; if Coated
 	GuiControl, Varbar:Text, SampleID,
 	GuiControl, Varbar:Text, name, %name%

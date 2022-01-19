@@ -36,20 +36,20 @@ return
  Volume_Mute::
 		Clipboard:=
 		(
-		"K741 107-0431 0278H1
-		K277 888-8888
-		K277 888-8777
-		K277 111-1111
-		J929 910-0128 0623I1
-		J837 109-0445 7777A7 ct#666-6666
-		J837 109-0445 0670I1
-		J837 109-0445
-		J837 109-0333 0333I1
-		H624 104-0657
-		B324 105-1172 0656H1
-		B086 108-0752 Ct#109-0635
-		B086 108-0752 Bulk Ct#109-0635
-		B086 108-0752 Bulk 109-0635
+		"K741 107-0431 0278H1`r`n
+		K277 888-8888`r`n
+		K277 888-8777`r`n
+		K277 111-1111`r`n
+		J929 910-0128 0623I1`r`n
+		J837 109-0445 7777A7 ct#666-6666`r`n
+		J837 109-0445 0670I1`r`n
+		J837 109-0445`r`n
+		J837 109-0333 0333I1`r`n
+		H624 104-0657`r`n
+		B324 105-1172 0656H1`r`n
+		B086 108-0752 Ct#109-0635`r`n
+		B086 108-0752 Bulk Ct#109-0635`r`n
+		B086 108-0752 Bulk 109-0635`r`n
 		B086 108-0752  109-0635"
 		)
 		Return
@@ -752,15 +752,18 @@ ReloadScript(){
 	winSet, Transparent, 155, ahk_exe Code.exe
 	sleep 100
 	winSet, Transparent, off, ahk_exe Code.exe
-	; try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+	try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
 	if A_DebuggerName || DebuggingScript
 	{
+			varbar.SaveVariables()
 			ControlSend, , {F5}, ahk_exe Code.exe
 			return
 			}
 	else
 	{
 		varbar.SaveVariables()
-		reload
+		try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+		; catch
+			; reload
 	}
 }
