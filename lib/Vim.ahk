@@ -80,7 +80,12 @@ return
 
 ;;F13
 	F13 & r::reloadscript()
-	F13 & tab up::SavedTextMenu()
+	F13 & tab up::
+	if winactive("ahk_exe WFICA32.EXE")
+		excel.GetAllSheets()
+		else
+	 SavedTextMenu()
+	 return
 	F13 & Enter::Sendinput, {end}{enter}return{enter}
 	F13 & q::esc
 	F13 & LShift up::Sendinput, {Enter}
@@ -219,6 +224,7 @@ return
 
 
 	; ^`;::                   Sendinput,{shiftdown}{ctrldown}{altdown}{`;}{ctrlup}{altup}{shiftup}
+	/::/
 	Tab::           return ;        Sendinput,{shiftdown}{ctrldown}{altdown}{f7}{altup}{ctrlup}{shiftup} ; next sugjesstion
 	h::left
 	l::right
@@ -283,7 +289,7 @@ return
 									else if Getkeystate("F13","p")
 										sendinput, {shiftdown}{altdown}{ctrldown}{'}{ctrlup}{altup}{shiftup}
 									else
-										sendinput, {up}
+										sendinput, {down}
 									return
 	tab & k::
 									if Getkeystate("LControl","p")
@@ -291,7 +297,7 @@ return
 									else if Getkeystate("F13","p")
 						        sendinput, {shiftdown}{altdown}{k}{altup}{shiftup}
 									else
-										Sendinput, {down}
+										Sendinput, {up}
 									return
 	tab & g::        sendinput, {shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}
 	tab & n::        sendinput, {shiftdown}{lwindown}{h}{lwinup}{shiftup}
@@ -306,22 +312,35 @@ return
 	tab & z::        Sendinput,{shiftdown}{altdown}{ctrldown}{z}{ctrlup}{altup}{shiftup} ;align cursors
 	tab & x::        Sendinput,{shiftdown}{altdown}{ctrldown}{x}{ctrlup}{altup}{shiftup} ;align vertically
 	tab & c::        Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup} ;Align
-	tab & p::        Sendinput,{shiftdown}{altdown}{ctrldown}{p}{ctrlup}{altup}{shiftup} ;Focus Pannel
+	;tab & p::        Sendinput,{shiftdown}{altdown}{ctrldown}{p}{ctrlup}{altup}{shiftup} ;Focus Pannel
 	tab & 1::        Sendinput,^!{1} ;fold level 1
 	tab & space::		 Sendinput,{shiftdown}{altdown}{lwindown}{8}{lwinup}{altup}{shiftup} ;toggle fold
 	tab & 2::        Sendinput,^!{2} ;fold level 2
 	tab & 3::        Sendinput,^!{3} ;fold all except selected
+	Tab & p::        ; workplace switch
 	tab & 4::        Sendinput,^!{4}
 	tab & f::        Sendinput,{shiftdown}{altdown}{ctrldown}{]}{ctrlup}{altup}{shiftup}
-	tab & q::        Sendinput,{ctrldown}{]}{ctrlup}
 	tab & appskey::return ;Send, {tab}
 	3::3
+	tab & q::
+		if winactive("ahk_exe Code.exe")
+		Sendinput,{ctrldown}{]}{ctrlup}
+		else
+			sendinput, {tab}
+		return
 	$tab::send, {tab}
 	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
-	q & tab::                 Sendinput,{ctrldown}{[}{ctrlup}
+	q & tab::
+		if winactive("ahk_exe Code.exe")
+			Sendinput,{ctrldown}{[}{ctrlup}
+		else
+			sendinput, {shiftdown}{tab}{shiftup}
+		return
+
 	q & u::										Sendinput, {q}{u}
 	q::q
 	`::`
+	/::/
 
 	numlock::#\
 	^r::!r
@@ -559,7 +578,7 @@ Class Vim {
 		}
 GoToFile(){
 	send, {F9}
-	Input, Inputkey, L1, {F13 up}
+	Input, Inputkey, L1 T3, {F13 up}
 			If ErrorLevel,
 				return
 	if (InputKey = "q")
@@ -596,15 +615,13 @@ GoToFile(){
 			send, KEYS.ahk
 	Else if (InputKey = "j")
 			send, Pad.ahk
-	Else if (InputKey = "p"){
-		send, {down}
-		sleep 200
-		send, {enter}
+	Else if (InputKey = "p") || (A_PriorKey = "p"){
+		send, {@}
 		return
 	}
 	else
 		return
-	sleep 250
+	sleep 150
 	send, {enter}
 	return
 	}

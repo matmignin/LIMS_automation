@@ -5,73 +5,89 @@
 
 
  FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
+	F13 & 1::            sendinput,%product%;gosub, Product_cyclebackward
+												; if Getkeystate("LCtrl","p")
+													; GetAllProducts()
+												; else
+
+												; return
 
 
+	F13 & 2::sendinput, %Batch%
+												; if Getkeystate("LCtrl","p")
+												; 	GetAllBatches()
+												; else
 
-LCtrl & 2::
-  Batch_cyclebackward:
-  GUI, varbar:default
-  Excel.InfoLocations()
-  ; CurrentList := StrSplit(CurrentCodes, "`n")
-  If !ActiveWindowID
-    WinGet, ActiveWindowID, ID, A
-  cyclebackward:=1
-  PreviousClipCycleCounter:=0 ; 13/10/2017 test
-  ClipCycleCounter:=1
-  ClipCycleFirst:=1
-  While GetKeyState("LCtrl","D") and cyclebackward
-    {
-    If (ClipCycleCounter <> 0)
-    {
-      Var:=Batches[ClipCycleCounter]
-      ttext:=% DispToolTipText(Var)
-    }
-    else
-      ttext:="[cancelled]"
-    If (oldttext <> ttext)
-      {
-      ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-      oldttext:=ttext
-      ; GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
-      }
-    Sleep 100
-    KeyWait, 2
-    }ToolTip
-  If (ClipCycleCounter > 0) ; If zero we've cancelled it
-    {
-      ; XL.Range("E1").Value:=Batches[ClipCycleCounter]
-    ; Clipboard:=Batches[ClipCycleCounter]
-    sleep 100
-    Gosub, BatchesHandler
-    ClipCycleCounter:=1
-    }
-  Return
-
-  LCtrl & 2 Up::
-  Batch_cyclebackward_up:
-  PreviousClipCycleCounter:=ClipCycleCounter
-  If (ClipCycleFirst = 0)
-    ClipCycleCounter++
-  ClipCycleFirst:=0
-  ; settimer, ShrinkVarBar, 200
-  Return
-
-  BatchesHandler:
-  oldttext:="", ttext:="", ActiveWindowID:=""
-  WinActivate, ahk_id %ActiveWindowID%
-    Gui Varbar:Default
-  sleep 30
-  GuiControl, Varbar:ChooseString, ComboBox1, % Batches[ClipCycleCounter]
-  XL.Range("E1").Value:=Batches[ClipCycleCounter]
-  sleep 200
-  Excel.InfoLocations()
-  oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
-  Cliptext:=
-  CycleBackward:=
-return
+												; return
+	F13 & 3::							sendinput, %Lot%
+	F13 & 4::							GetAllProducts()
+	F13 & 5::							GetAllBatches()
 
 
-LCtrl & 1::
+; LCtrl & 2::
+;   Batch_cyclebackward:
+;   GUI, varbar:default
+;   Excel.InfoLocations()
+;   ; CurrentList := StrSplit(CurrentCodes, "`n")
+;   If !ActiveWindowID
+;     WinGet, ActiveWindowID, ID, A
+;   cyclebackward:=1
+;   PreviousClipCycleCounter:=0 ; 13/10/2017 test
+;   ClipCycleCounter:=1
+;   ClipCycleFirst:=1
+;   While GetKeyState("LCtrl","D") and cyclebackward
+;     {
+;     If (ClipCycleCounter <> 0)
+;     {
+;       Var:=Batches[ClipCycleCounter]
+;       ttext:=% DispToolTipText(Var)
+;     }
+;     else
+;       ttext:="[cancelled]"
+;     If (oldttext <> ttext)
+;       {
+;       ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+;       oldttext:=ttext
+;       ; GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
+;       }
+;     Sleep 100
+;     KeyWait, 2
+;     }ToolTip
+;   If (ClipCycleCounter > 0) ; If zero we've cancelled it
+;     {
+;       ; XL.Range("E1").Value:=Batches[ClipCycleCounter]
+;     ; Clipboard:=Batches[ClipCycleCounter]
+;     sleep 100
+;     Gosub, BatchesHandler
+;     ClipCycleCounter:=1
+;     }
+;   Return
+
+;   LCtrl & 2 Up::
+;   Batch_cyclebackward_up:
+;   PreviousClipCycleCounter:=ClipCycleCounter
+;   If (ClipCycleFirst = 0)
+;     ClipCycleCounter++
+;   ClipCycleFirst:=0
+;   ; settimer, ShrinkVarBar, 200
+;   Return
+
+;   BatchesHandler:
+;   oldttext:="", ttext:="", ActiveWindowID:=""
+;   WinActivate, ahk_id %ActiveWindowID%
+;     Gui Varbar:Default
+;   sleep 30
+;   GuiControl, Varbar:ChooseString, ComboBox1, % Batches[ClipCycleCounter]
+;   XL.Range("E1").Value:=Batches[ClipCycleCounter]
+;   sleep 200
+;   Excel.InfoLocations()
+;   oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+;   Cliptext:=
+;   CycleBackward:=
+; return
+
+
+Tab & 1::
 Product_cyclebackward:
 GUI, varbar:default
 
@@ -83,7 +99,7 @@ cyclebackward:=1
 PreviousClipCycleCounter:=0 ; 13/10/2017 test
 ClipCycleCounter:=1
 ClipCycleFirst:=1
-While GetKeyState("LCtrl","D") and cyclebackward
+While GetKeyState("Tab","D") and cyclebackward
 	{
 	 If (ClipCycleCounter <> 0)
 	 {
@@ -110,7 +126,7 @@ If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	}
 Return
 
-LCtrl & 1 Up::
+Tab & 1 Up::
 Product_cyclebackward_up:
 PreviousClipCycleCounter:=ClipCycleCounter
 If (ClipCycleFirst = 0)
@@ -397,6 +413,8 @@ clipChange(type){
   global
   ifwinactive, Select tests for request: R
     return
+  ifwinexist, Mats LMS Workbook.xlsb - Excel
+      return
   sleep 50
     clip.Parse()
     sleep 25
@@ -508,6 +526,8 @@ CodesRegex(input:=""){
         {
           if (A_Index = 1)
       			ControlsetText, Edit5,%CodeString%, VarBar
+          if (A_Index > 20)
+            return
           	; Gui, Varbar:submit, nohide
       			ControlGet, Wholex, List,,Combobox1, VarBar         ;- get the whole listbox1
           	Control, Add, %CodeString%, ComboBox1, VarBar    ; add to the bottom of the list
@@ -545,6 +565,7 @@ Parse(Value:=""){
           this.codesRegex(A_LoopField)
       ; else if A_Index > 1
           regProducts.insert(clip.CodesRegex(A_LoopField))
+
     }
       if (RegProducts.maxindex() > 1) { ;remove duplicates from array
           Products:=[], oTemp := {}
@@ -589,7 +610,7 @@ Parse(Value:=""){
     GuiControl, +Redraw, ComboBox1
     return
   }
-try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
+    try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
 }
 }
 

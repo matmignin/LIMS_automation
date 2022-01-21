@@ -194,4 +194,4 @@ AND NOT(UPPER(i.ingredientid) LIKE 'MULTI%'
 	AND SUBSTR(i.ingredientid,-1,1) <> 1)
 	AND NOT(UPPER(i.ingredientid) LIKE 'GENERIC INGREDIENT%'
 	AND SUBSTR(i.ingredientid,-1,1) <> 1)
-ORDER BY i.position
+=ORDER BY i.position

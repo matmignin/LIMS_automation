@@ -155,6 +155,7 @@ oArray := ""
   ; sleep 200
 	; Sort, OutputVar, % Sorting
   ; vOutput:=trim(vOutput, "`n`n")
+  ; vOutput:=trim(vOutput, "`r`n`r`n")
 	NewOutputVar := RegExReplace(vOutput, "m`a)(\s\r\n)","`n")
 	FileDelete, % File
 	sleep, 400

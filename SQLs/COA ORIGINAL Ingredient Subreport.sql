@@ -4,7 +4,8 @@ SELECT
 	i.ingredientid,
 	-- Ingredient name/description
 	CASE
-			WHEN UPPER(i.ingredientid) LIKE 'MULTI-PART INGREDIENT LIST%' THEN
+			WHEN UPPER(i.ingredientid) LIKE 'MULTI-PART INGREDIENT LIST%'
+			THEN
 			(SELECT LISTAGG(i2.description) WITHIN GROUP (ORDER BY i2.ingredientid)
 			 FROM ingredient i2
 			 WHERE UPPER(i2.ingredientid) LIKE 'MULTI%' AND i2.formulationguid = i.formulationguid)

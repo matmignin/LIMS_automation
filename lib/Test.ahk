@@ -187,7 +187,7 @@ loadfile:
 	{
 		Counter := 0 ; COUNTER IS ZEROED SO THAT THE RESULT IS AN OFFSET OF CURRENT LINE (ERASE ANY OFFSETS OF PAST LINES)
 		CURRENT_LINE := A_LoopField
-		While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abdefghijkl]\d{3}\b",Product)
+		While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abCdefghijkl]\d{3}\b",Product)
 		{
 			Counter += OutputVar ; COUNTER IS INCREMENTED SO THAT IN A LINE WITH MULTIPLE RESULTS, THE MSGBOX OFFSETS THE CORRECT POSITION.
 			; MsgBox, %Counter% & %Product%

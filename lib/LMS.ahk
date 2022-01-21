@@ -936,19 +936,20 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
     EditProduct(){ ;for naming Product code and customer,
       global Product, Name, Customer, ShapeAndSize, color
       SetwinDelay, 450
-      ; Excel.Connect(1)
+      Excel.Connect(1)
       click 120,80 ;click product box
       Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
       sleep 200
       Sendinput,%Name%{tab 8}
       sleep 400
-      winwaitactive,NuGenesis LMS - \\Remote,,16
+      winwaitactive,NuGenesis LMS - \\Remote,,20
       winactivate, NuGenesis LMS - \\Remote
       click, 67, 283
       sleep 200
       Breaking.Point()
       This.EditFormulation()
       ; clk(287, 578) ;click save
+			Iteration:=1
       return
       setwindelay, 200
     }
@@ -962,8 +963,10 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
         sleep 200
       Breaking.Point()
       ; if (ServingSize=1 ? "(" ServingSize ")" : "Two (" ServingSize ")" ) ;|| ServingSize=2 || ServingSize=3 || ServingSize=4)
-         send, Each %ServingType% {space} contains {ctrl down}{left}{ctrl up}{left}
-      send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
+        ;  send, Each %ServingType% {space} contains {ctrl down}{left}{ctrl up}{left}
+				; if ShapeAndSize
+					send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
+
       ; ShapeAndsize:=
       sleep 200
       If !Color
@@ -973,6 +976,7 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
       sleep 200
       ; clk(287, 578) ;click save
       return
+			Producttab.Table()
       ;setwindelay, 200
     }
 

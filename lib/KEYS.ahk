@@ -16,23 +16,7 @@ Ins::flovar()
 	; <^1::                 return
 	; <^2::                 return ;,{ctrldown}{2}{ctrlup}
 	; <^3::                 return ;Send,{ctrldown}{0}{ctrlup}
-	; ~Lctrl & 1::gosub, Product_cyclebackward
-												; if Getkeystate("LControl","p")
-													; GetAllProducts()
-												; else
-													; sendinput,%product%
-												; return
 
-
-	F13 & 2::
-												if Getkeystate("LControl","p")
-													GetAllBatches()
-												else
-													sendinput, %Batch%
-												return
-	F13 & 3::							sendinput, %Lot%
-	F13 & 4::							GetAllProducts()
-	F13 & 5::							GetAllBatches()
 	3::3
 
 	$tab::										send, {tab}
@@ -378,20 +362,25 @@ if !winactive("CodeQuickTester*")
 	F7::						LMS.SearchRequest(Batch,"{enter}")
 	F9::
 								winactivate, NuGenesis LMS - \\Remote
-								sleep 200
+								sleep 200.
 								lms.searchbar(Product)
 								return
 	F6::						LMS.SearchRequest(Batch,"{enter}")
 	^wheelup::				Block(500,"^{v}")
 	F13::						return ; clip.IfNothingSelected("menu")
 
+#Ifwinactive, ahk_exe Notion.exe
+	<^k::sendinput, {shiftdown}{ctrldown}{up}{ctrlup}{shiftup}
+	<^h::sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
+	<^l::sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
+	<^j::sendinput, {shiftdown}{ctrldown}{down}{ctrlup}{shiftup}
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
 	; Numlock::				Send, {Backspace}
 	F19::						Send, ^{click}
 
 
 
-
+.
 
 #ifwinactive, Touchpoint | Microsoft Teams ;; 	___Teams
 ; Numlock::MuteTeamsMicrophone()
@@ -534,6 +523,9 @@ GetAllBatches(Delimiter:=" ",File:=""){
         }
     AllBatches:=Listarray(AllBatches,"")
     AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
+    AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
+
+		Control, Add, %AllBatchesDDL%, Combobox1, VarBar
     ; GuiControl,Varbar:Text, Note3, %AllBatches%
     ; ControlsetText, Edit8,%AllBatches%,VarBar
 		FileAppend, AllBatches,Data\Batches.txt
@@ -558,7 +550,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
 	else
 		Haystack:=Clipboard
 		sleep 50
-  while pos := RegexMatch(Haystack, "i)[abdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+  while pos := RegexMatch(Haystack, "i)[abcdefghijkl]\d{3}\b", aProduct, pos+1) ; {
     ; if aBatch
       regProducts.insert(aProduct)
   ; }

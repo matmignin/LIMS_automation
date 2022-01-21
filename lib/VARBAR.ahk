@@ -104,6 +104,7 @@ Gui, Varbar:+Delimiter`n
 
 DDLVarbar:  ;; ComboBox1 Hanfler
 		GUI, Varbar:default
+
 		rProduct:=
 		rBatch:=
 		rlot:=
@@ -186,10 +187,10 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		Iniread, ModeSelections, Settings.ini, Options, ModeSelections
 		Iniread, CodesDropDown, Settings.ini, Options, CodesDropDown
 		Iniread, Mode, Settings.ini, Options, Mode
-   iniread, CodeString, Settings.ini, SavedVariables, CodeString
 			; clip.CodesRegex(CodeString)
 
-	 if winExist("Mats LMS Workbook.xlsb"){ ;|| !(ExcelConnect){ ;|| !RegexMatch(XL.activeSheet.Name, "i)[abdefghijkl]\d{3}"){
+	 if !winExist("Mats LMS Workbook.xlsb"){ ;|| !(ExcelConnect){ ;|| !RegexMatch(XL.activeSheet.Name, "i)[abdefghijkl]\d{3}"){
+			iniread, CodeString, Settings.ini, SavedVariables, CodeString
 			; clip.parse(CodeString)
 		 }
 	}
@@ -257,9 +258,10 @@ AddToList(Input:=""){  ;; __Add to List
 	 {
 	 ControlGet, Wholex, List,,Combobox1,VarBar
 		Wholex:=RegExReplace(Wholex,RegexLookFor,Variable)
-	 sort,Wholex, U R
+		stringreplace,wholex,wholex,`n`n,`n,all
+		sort,Wholex, U R
 		filedelete,%CurrentCodesFile%
-		 fileappend,%Wholex%,%CurrentCodesFile%
+		fileappend,%Wholex%,%CurrentCodesFile%
 		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 	 }
 }
@@ -762,7 +764,7 @@ WM_MOUSEMOVE(){
 		; Return
 	ControlGetFocus, GUIFocus, VarBar
 
-	If MouseIsOver("VarBar ahk_exe AutoHotkey.exe") {
+	If MouseIsOver("VarBar") {
     winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
 		settimer, ShrinkVarBar, 200
 		return

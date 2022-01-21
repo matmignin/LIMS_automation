@@ -11,7 +11,8 @@
 TEST_1: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
 ; CopyNewestFile("K880")
 ; CopyNewestFile("K880")
-varbar.ProductsMenu(1)
+
+; varbar.ProductsMenu(1)
 return
 
 
@@ -30,7 +31,7 @@ return
 
 ; CopySourcePattern:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
 
-CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label Copy Final\K000 - K999"){
+CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label Copy Final\K000 - K999"){ ;; Copy Newst file that matches Current Product
   Loop, Files, %copySourcePattern%\label %ProductToSearch%*.docx
   {
       copy_it := false
@@ -56,7 +57,7 @@ CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label
 
 
 
-CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
+CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){ ;;Copy a word document for CoA
   doc_path := CopyNewestFile(ProductToFind)                   ; search for newst file that matches Product
     sleep 200
   oDoc := ComObjGet(doc_path)                                   ; access Word Doc

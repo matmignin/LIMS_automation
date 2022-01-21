@@ -167,8 +167,13 @@ _windowNames:
 	:*:wb`;::Mats LMS Workbook.xlsb - Excel
 	:*:lmswb`;::Mats LMS Workbook.xlsb - Excel
 	:*:note`;::ahk_exe ONENOTE.EXE
+	:*:note`;::ahk_exe Notion.exe
+	:*:winp`;::
 	:*:exe`;::
-	sendinput, ahk_exe %Process%
+	sendinput, ahk_exe %WinProcess%
+	return
+	:*:winn`;::
+	sendinput, %WinName%
 	return
 
 	:*:#ifwalms`;::
@@ -225,15 +230,18 @@ _windowNames:
 		sendinput % PixelColor
 		return
 	:*:cur`;::
+	:*:winc`;::
 	:*:cursor`;::
 		if !MousePosition
 			iniread MousePosition, Settings.ini, SavedVariables, windowMousePosition
 		sendinput % Mouseposition
 		return
 	:*:Control`;::
+	:*:wina`;::
 	sendinput, %wincontrol%
 	return
 	:*:Position`;::
+	:*:winl`;::
 	sendinput, %winPosition%
 	return
 	:*:mouse`;::
@@ -302,27 +310,27 @@ _LMS_HOTSTRINGS:
 	:*:1scoop::
 	ProductTab.Blends(1,"scoop")
 	:*:2scoop::
-	ProductTab.Blends(2,"scoops")
+	ProductTab.Blends(2,"scoop")
 	:*:3scoop::
-	ProductTab.Blends(3,"scoops")
+	ProductTab.Blends(3,"scoop")
 	:*:4scoop::
-	ProductTab.Blends(4,"scoops")
+	ProductTab.Blends(4,"scoop")
 	:*:5scoop::
-	ProductTab.Blends(5,"scoops")
+	ProductTab.Blends(5,"scoop")
 	:*:6scoop::
-	ProductTab.Blends(6,"scoops")
+	ProductTab.Blends(6,"scoop")
 	:*:1stick::
 	ProductTab.Blends(1,"stick packet")
 	:*:2stick::
-	ProductTab.Blends(2,"stick packets")
+	ProductTab.Blends(2,"stick packet")
 	:*:3stick::
-	ProductTab.Blends(3,"stick packets")
+	ProductTab.Blends(3,"stick packet")
 	:*:1Packet::
 	ProductTab.Blends(1,"packet")
 	:*:2packet::
-	ProductTab.Blends(2,"packets")
+	ProductTab.Blends(2,"packet")
 	:*:3packet::
-	ProductTab.Blends(3,"packets")
+	ProductTab.Blends(3,"packet")
 	return
 
 

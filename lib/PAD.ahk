@@ -357,7 +357,7 @@ return
 		else if winactive("PDF Preview - \\Remote")
 			Send, {altdown}{F4}{altup}
 		}
-	if winactive("Mats LMS Workbook.xlsb - Excel")
+	if MouseIsOver("Mats LMS Workbook.xlsb - Excel")
 			menu.SetStatus()
 	if winactive("ahk_exe OUTLOOK.EXE") {
 		clipCheckIfEmpty()

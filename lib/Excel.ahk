@@ -52,18 +52,36 @@ Sheetactivate(XL){
 
 GetAllSheets(){ ; Get each sheet name and turn it into an array
 	global
+	SheetColor:=`1
 	ProductSheets:=[]
 	XL := ComObjactive("Excel.Application")
+	try Menu, Productdropdownmenu, DeleteAll
 	For sheet in xl.activeWorkbook.Worksheets
-		cSheet:=sheet.name
-		; add something about getting sheets batches
-	 AllWorkSheets:=listarray(ProductSheets,"")
-	 Return AllWorkSheets
+	{
+		cSheet:=Trim(sheet.name)
+		SheetColor:=this.MatchColor(Sheet.Tab.color)
+		if (cSheet ~= RegexProduct) {
+			ProductSheets.Insert(cSheet)
+			Menu, ProductDropdownmenu, add, %cSheet%`t%SheetColor%, ProductSheetsHandler
+		}
+		SheetColor:=
+		}
+			Menu, Productdropdownmenu, Show
+	 Return
+
+	ProductSheetsHandler:
+	SheetSelected:=StrSplit(A_ThismenuItem,"`t")
+		XL.Sheets(Trim(SheetSelected[1])).activate
+		  excel.InfoLocations()
+			excel.RegexCell()
+			excel.matchColor()
+			return
+	; }
 }
 
 SheetChange(sht,Cell) {
 	Global
-	if (Cell.activeCell.Address = "$E$1") || (Cell.activeCell.Address = "$B$3") {
+	if (Cell.activeCell.Address = "$E$1") && (Cell.activeCell.Address = "$B$3") {
 			excel.InfoLocations()
 	Flovar(Cell.activeCell.value,1000)
 	}
@@ -148,13 +166,13 @@ InfoLocations(){
 	CodeString:=Trim(Product " " Batch " " Lot " " Coated)
 	ControlsetText, Edit5,%CodeString%, VarBar
 	; if Coated
-	GuiControl, Varbar:Text, SampleID,
-	GuiControl, Varbar:Text, name, %name%
-	GuiControl, varbar:text, Color, %Color%
-	GuiControl, Varbar:Text, customer, %Customer%
+	; GuiControl, Varbar:Text, SampleID,
+	; GuiControl, Varbar:Text, name, %name%
+	; GuiControl, varbar:text, Color, %Color%
+	; GuiControl, Varbar:Text, customer, %Customer%
 	; GuiControl, varbar:text, weight, %weight%
-	GuiControl, Varbar:Text, iteration, %iteration%
-	GuiControl, varbar:text, ShapeSize, %shapeSize%
+	; GuiControl, Varbar:Text, iteration, %iteration%
+	; GuiControl, varbar:text, ShapeSize, %shapeSize%
 	GuiControl, +redraw, varbar
 	; this.SaveToDataBase()
 	}
@@ -217,33 +235,78 @@ PrevSheet(){
 	GuiControl, +redraw, varbar
 	}
 
-MatchColor(){
-	Global
-	TabColor:=XL.activeWorkbook.activesheet.Tab.Color
-	if (A_mode=="TempCode")
-		GUI, VarBar:color,272822, FFFFFF
-	else if  (TabColor = 16777215) ;white
-		GUI, VarBar:color,, F2F2F2 ;
-	else if	(TabColor = 16764057) || (TabColor = 13395456) ;Blue
-		GUI, VarBar:color,, BDD7EE ;
-	else if 	(TabColor = 13434828) || (TabColor = 32768) || 	(TabColor = 65280) ;light green
-		GUI, VarBar:color,, 339966
-	else if 	(TabColor = 10092543) ;yellow
-		GUI, VarBar:color,, ffff00
-	else if 	(TabColor = 39423) || (TabColor = 26367)	;orange
-		GUI, VarBar:color,, EE8036
-	else if 	(TabColor = 12632256) || (TabColor = 8421504) 	;greay
-		GUI, VarBar:color,, 808080
-	else if 	(TabColor = 10498160) 	;purple
-		GUI, VarBar:color,, 7030A0
-	else if 	(TabColor = 16777215) 	;light purple
-		GUI, VarBar:color,, 9966FF
-	else if 	(TabColor = 0) 	;black
-		GUI, VarBar:color,, 323130
-	else If (Mode=="Debugging")
-		GUI, VarBar:color,, 808000 ;pink
+MatchColor(selectedTab:=""){
+	Global XL, A_Mode
+	if SelectedTab
+		TabColor:=selectedTab
 	else
-		GUI, VarBar:color,DC734F, 97BA7F
+		TabColor:=XL.activeWorkbook.activesheet.Tab.Color
+	if (A_mode=="TempCode"){
+		if !SelectedTab
+			GUI, VarBar:color,272822, FFFFFF
+	}
+	else if  (TabColor = 16777215) ;white
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, F2F2F2 ;
+		Sheetstatus:="white"
+		}
+	else if	(TabColor = 16764057) || (TabColor = 13395456) ;Blue
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, BDD7EE ;
+		Sheetstatus:="Blue"
+		}
+	else if (TabColor = 13434828) || (TabColor = 32768) || 	(TabColor = 65280) ;light green review
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, 339966
+		Sheetstatus:="Review"
+		}
+	else if (TabColor = 10092543) ;yellow notes
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, ffff00
+		Sheetstatus:="Notes"
+		}
+	else if (TabColor = 39423) || (TabColor = 26367)	;orange Specs done
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, EE8036
+		Sheetstatus:="Specs"
+		}
+	else if (TabColor = 12632256) || (TabColor = 8421504) 	;greay Samples entered
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, 808080
+		Sheetstatus:="Samples"
+		}
+	else if (TabColor = 10498160) 	;purple Rotation needed
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, 7030A0
+		Sheetstatus:="Rotation"
+		}
+	else if (TabColor = 16777215) 	;light purple rotation needed
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, 9966FF
+		Sheetstatus:="Rotation"
+		}
+	else if (TabColor = 0) 	;black complete
+	{
+		if !SelectedTab
+			GUI, VarBar:color,, 323130
+		Sheetstatus:="Complete"
+		}
+	else If (Mode=="Debugging")
+		if !SelectedTab
+			GUI, VarBar:color,, 808000 ;pink
+	else {
+		if !SelectedTab
+			GUI, VarBar:color,DC734F, 97BA7F
+	}
+	Return SheetStatus
 	}
 Get_Current_row(){
 	Global

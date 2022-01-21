@@ -3,7 +3,6 @@ VQuest_Start:
     #SingleInstance,Force
     #Persistent
   ;  #ErrorStdOut
-; RegexAll:="i)(?P<Product>(?<=\w{3})?[abdefghijkl]\d{3}))(?:.*) (?P<Batch>(?<!Ct#)\d{3}-\d{4}\b))(?:.*)(?P<Lot>(\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?))(?:.*)(?<=(coated: |ct#\s|Ct#|ct\s|coated\s)\d{3}-\d{4}))"
     Process, Priority, , High
     #NoEnv
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
@@ -75,23 +74,24 @@ VQuest_Start:
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
     ; GuiControl, -redraw, varbar
-    ;try Run, cl3.Ahk, lib\CL3
     try Menu, Tray, Icon, bin\Robot.ico
     Currentwindow:=A
-    IfwinExist, ahk_exe WFICA32.EXE
-      LMS.Orient()
+    varbar.Show()
     ifwinexist, Mats LMS Workbook.xlsb - Excel
       Excel.Connect(0)
     ; if !VimOpen
+    IfwinExist, ahk_exe WFICA32.EXE
+      LMS.Orient()
+    copypasteToggle:=0
       ; run, lib\Vim.ahk
+    ; try Run, cl3.Ahk, lib\CL3
     ; GuiControl, +redraw, varbar
-    RegexProduct:="i)(?<=\w{3})?(?P<Product>[abdefghijkl]\d{3})"
+    RegexProduct:="i)(?<=\w{3})?(?P<Product>[abcdefghijkl]\d{3}\b)"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
     RegexLot:=    "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
     RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
 
 
-    varbar.Show()
     ; if A_DebuggerName
 
 

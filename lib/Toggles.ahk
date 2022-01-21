@@ -1,4 +1,4 @@
-; copypasteToggle:=0
+
 ; TabToggle=0
 
 ; if (ShowSampleID = 1)
