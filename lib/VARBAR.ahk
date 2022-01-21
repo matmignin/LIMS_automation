@@ -1,4 +1,5 @@
 
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 Class VarBar{
 Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -128,15 +129,24 @@ DDLVarbar:  ;; ComboBox1 Hanfler
       Lot:=RegexMatch(CodeString, RegexLot, r) ? rLot : ""
       Coated:=RegExMatch(CodeString, RegexCoated, r) ? rCoated : ""
       Ct:=rCoated ? " ct#" : ""
+			if RegexMatch(rProduct, RegexProduct)
 			GuiControl,Varbar:Text, Product, %rProduct%
+			if RegexMatch(rBatch, RegexBatch)
       GuiControl,Varbar:Text, Batch, %rBatch%
+			if RegexMatch(rLot, RegexLot)
       GuiControl,Varbar:Text, lot, %rlot%
+			if RegexMatch(rCoated, RegexCoated)
       GuiControl,Varbar:Text, Coated, %rCoated%
+
     ; CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
+			return
 			return
 
 		VarbarHandler:
 			GUI, VarBar:submit,NoHide
+		If (!RegexMatch(Product, RegexProduct) && !RegexMatch(Batch, RegexBatch) && !RegexMatch(Lot, RegexLot) && !RegexMatch(Coated, RegexCoated))
+		; CodeString:=Trim(Product " " Batch " " Lot Ct Coated)
+		; IniWrite, %CodeString%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, CodeString
 		return
 
 		ExcelConnectCheck:
@@ -144,10 +154,24 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			IniWrite, %ExcelConnect%, Settings.ini, Options, ExcelConnect
 			return
 		ProductHandler:
-		BatchHandler:
-		LotHandler:
-		CoatedHandler:
 		GUI, VarBar:submit,NoHide
+		if RegexMatch(Product, RegexProduct)
+			IniWrite, %Product%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Product
+		return
+		BatchHandler:
+		GUI, VarBar:submit,NoHide
+		 if RegexMatch(Batch, RegexBatch)
+			IniWrite, %Batch%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Batch
+		return
+		LotHandler:
+		GUI, VarBar:submit,NoHide
+		 if RegexMatch(Lot, RegexLot)
+			IniWrite, %Lot%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Lot
+		return
+		CoatedHandler:
+		if RegexMatch(Coated, RegexCoated)
+			IniWrite, %Coated%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Coated
+		; GUI, VarBar:submit,NoHide
 		return
 		VarBarGuiClose:
 		VarBarButtonOK:
@@ -303,7 +327,7 @@ AddBatchesDDL(Variable:="",Options:=""){
 		AddEdit(Variable,Dimensions:="",Font:=""){
 			global
 				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
-				GUI,VarBar:Add,edit,		v%Variable% +wrap -multi	gVarBarHandler %Dimensions%,		%    %Variable%
+				GUI,VarBar:Add,edit,		v%Variable% +wrap -multi	g%Variable%Handler %Dimensions%,		%    %Variable%
 		}
 		AddText(Variable,Dimensions:="",Font:=""){
 			global
@@ -315,8 +339,8 @@ Menu(){
   global
 	MouseGetPos,,,,winControl
   try Menu, VarBarmenu, DeleteAll
-	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
-	    HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
+	    ; HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
+	    ; HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
     Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID
       if ShowSampleID=1
         menu, VarBarmenu, Check, 	Show&SampleID
@@ -793,4 +817,4 @@ return
 
 
 
-#include <BatchesDDL>
+#include C:\Users\mmignin\Documents\VQuest\lib\BatchesDDL.ahk

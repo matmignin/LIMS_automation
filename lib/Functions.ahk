@@ -1,3 +1,9 @@
+#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\VarBar.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
+
+
 
 	ifNothingSelected(action, Button){
 	  ClipboardSaved:=ClipboardAll
@@ -233,7 +239,7 @@ class Breaking {
 
 	; 			; return
 	; 		; }
-	; 		; else
+						; 		; else
 	; 	; MouseClick, Left, , , 1, 0, U
 	; 	return
 
@@ -247,7 +253,7 @@ FlashScreen(Text:=""){
 		tt(Text,200,A_caretx,A_caretY,4)
 		; ToolTip, %Text%, %A_CaretX%, %A_CaretY%, 9
 	; ToolTip, %text%, 9
-	Sleep,25
+	Sleep,15
 	SplashImage,off
 	; ToolTip,,,,9
 	return

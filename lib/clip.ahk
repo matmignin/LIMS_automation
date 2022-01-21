@@ -1,11 +1,100 @@
-;#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 #ifwinactive,
 
+GetAllBatches(Delimiter:=" ",File:=""){
+  global
+  regBatches:=[]
+			if (File){
+		clipboard:=
+		FileRead, Haystack, %File%
+	}
+	else
+		Haystack:=Clipboard
+		sleep 50
+  while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
+    ; if aBatch
+      regBatches.insert(aBatch)
+  ; }
+      AllBatches:=[], oTemp := {}
+      for vKey, vValue in regBatches
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllBatches:=Listarray(AllBatches,"")
+    AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
+    AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
+
+		Control, Add, %AllBatchesDDL%, Combobox1, VarBar
+    ; GuiControl,Varbar:Text, Note3, %AllBatches%
+    ; ControlsetText, Edit8,%AllBatches%,VarBar
+		FileAppend, AllBatches,Data\Batches.txt
+
+		clipboard:=AllBatches
+		sleep 200
+		send, ^v
+		; Sendinput, %AllBatches%
+
+		PreventPopup:=
+		return %AllBatches%
+    ; msgbox, %AllBatches%,
+}
+GetAllProducts(Delimiter:=" ",File:=""){
+  global
+  regProducts:=[]
+  pos=0
+	if (File){
+		clipboard:=
+		FileRead, Haystack, %File%
+	}
+	else
+		Haystack:=Clipboard
+		sleep 50
+  while pos := RegexMatch(Haystack, "i)[abcdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+    ; if aBatch
+      regProducts.insert(aProduct)
+  ; }
+      AllProducts:=[], oTemp := {}
+      for vKey, vValue in regProducts
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllProducts:=Listarray(AllProducts,"")
+    AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
+    GuiControl,Varbar:Text, Note2, %AllProducts%
+    ; ControlsetText, Edit7,%AllProducts%,VarBar
+    ; IniWrite, %AllProducts%, Settings.ini, Notes, note2
+    clipboard:=AllProducts
+    sleep 200
+    send, ^v
+
+		Return AllProducts
+    ; Send, {blind}%AllProducts%
+
+    ; msgbox, %AllProducts%,
+}
 
 
  FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
-	F13 & 1::            sendinput,%product%;gosub, Product_cyclebackward
+	F13 & 1::             sendinput,%product%;gosub, Product_cyclebackward
 												; if Getkeystate("LCtrl","p")
 													; GetAllProducts()
 												; else
@@ -13,7 +102,7 @@
 												; return
 
 
-	F13 & 2::sendinput, %Batch%
+	F13 & 2::             sendinput, %Batch%
 												; if Getkeystate("LCtrl","p")
 												; 	GetAllBatches()
 												; else
@@ -24,75 +113,284 @@
 	F13 & 5::							GetAllBatches()
 
 
-; LCtrl & 2::
-;   Batch_cyclebackward:
-;   GUI, varbar:default
-;   Excel.InfoLocations()
-;   ; CurrentList := StrSplit(CurrentCodes, "`n")
-;   If !ActiveWindowID
-;     WinGet, ActiveWindowID, ID, A
-;   cyclebackward:=1
-;   PreviousClipCycleCounter:=0 ; 13/10/2017 test
-;   ClipCycleCounter:=1
-;   ClipCycleFirst:=1
-;   While GetKeyState("LCtrl","D") and cyclebackward
-;     {
-;     If (ClipCycleCounter <> 0)
-;     {
-;       Var:=Batches[ClipCycleCounter]
-;       ttext:=% DispToolTipText(Var)
-;     }
-;     else
-;       ttext:="[cancelled]"
-;     If (oldttext <> ttext)
-;       {
-;       ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-;       oldttext:=ttext
-;       ; GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
-;       }
-;     Sleep 100
-;     KeyWait, 2
-;     }ToolTip
-;   If (ClipCycleCounter > 0) ; If zero we've cancelled it
-;     {
-;       ; XL.Range("E1").Value:=Batches[ClipCycleCounter]
-;     ; Clipboard:=Batches[ClipCycleCounter]
-;     sleep 100
-;     Gosub, BatchesHandler
-;     ClipCycleCounter:=1
-;     }
-;   Return
+Tab & 2::
+  Batch_cyclebackward:
+  GUI, varbar:default
+  Excel.InfoLocations()
+  ; CurrentList := StrSplit(CurrentCodes, "`n")
+  If !ActiveWindowID
+    WinGet, ActiveWindowID, ID, A
+  cyclebackward:=1
+  PreviousClipCycleCounter:=0 ; 13/10/2017 test
+  ClipCycleCounter:=1
+  ClipCycleFirst:=1
+  While GetKeyState("Tab","D") and cyclebackward
+    {
+    If (ClipCycleCounter <> 0)s
+    {
+      Var:=Batches[ClipCycleCounter]
+      ttext:=% DisplayToolTipText(Var)
+    }
+    else
+      ttext:="[cancelled]"
+    If (oldttext <> ttext)
+      {
+      ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+      oldttext:=ttext
+      ; GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
+      }
+    Sleep 100
+    KeyWait, 2
+    }ToolTip
+  If (ClipCycleCounter > 0) ; If zero we've cancelled it
+    {
+      ; XL.Range("E1").Value:=Batches[ClipCycleCounter]
+    ; Clipboard:=Batches[ClipCycleCounter]
+    sleep 100
+    Gosub, BatchesHandler
+    ClipCycleCounter:=1
+    }
+  Return
 
-;   LCtrl & 2 Up::
-;   Batch_cyclebackward_up:
-;   PreviousClipCycleCounter:=ClipCycleCounter
-;   If (ClipCycleFirst = 0)
-;     ClipCycleCounter++
-;   ClipCycleFirst:=0
-;   ; settimer, ShrinkVarBar, 200
-;   Return
+	Tab & 2 up::
+  Batch_cyclebackward_up:
+  PreviousClipCycleCounter:=ClipCycleCounter
+  If (ClipCycleFirst = 0)
+    ClipCycleCounter++
+  ClipCycleFirst:=0
+  ; settimer, ShrinkVarBar, 200
+  Return
 
-;   BatchesHandler:
-;   oldttext:="", ttext:="", ActiveWindowID:=""
-;   WinActivate, ahk_id %ActiveWindowID%
-;     Gui Varbar:Default
-;   sleep 30
-;   GuiControl, Varbar:ChooseString, ComboBox1, % Batches[ClipCycleCounter]
-;   XL.Range("E1").Value:=Batches[ClipCycleCounter]
-;   sleep 200
-;   Excel.InfoLocations()
-;   oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
-;   Cliptext:=
-;   CycleBackward:=
-; return
+  BatchesHandler:
+  oldttext:="", ttext:="", ActiveWindowID:=""
+  WinActivate, ahk_id %ActiveWindowID%
+    Gui Varbar:Default
+  sleep 30
+  GuiControl, Varbar:ChooseString, ComboBox1, % Batches[ClipCycleCounter]
+  XL.Range("E1").Value:=Batches[ClipCycleCounter]
+  sleep 200
+  Excel.InfoLocations()
+  oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+  Cliptext:=
+  CycleBackward:=
+return
 
+
+;;  Tab
+
+	Tab & 1::
+  ; Tab & wheeldown::
+	Product_cyclebackward:
+		GUI, varbar:default
+
+		winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
+		CurrentList := StrSplit(CurrentCodes, "`n")
+		If !ActiveWindowID
+			WinGet, ActiveWindowID, ID, A
+		cyclebackward:=1
+		PreviousClipCycleCounter:=0 ; 13/10/2017 test
+		ClipCycleCounter:=1
+		ClipCycleFirst:=1
+		While GetKeyState("Tab","D") and cyclebackward
+			{
+			If (ClipCycleCounter <> 0)
+			{
+				Var:=CurrentList[ClipCycleCounter]
+				ttext:=% DisplayToolTipText(Var)
+			}
+			else
+				ttext:="[cancelled]"
+			If (oldttext <> ttext)
+				{
+				ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+				oldttext:=ttext
+				GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
+				}
+			Sleep 100
+			KeyWait, 1
+			}ToolTip
+		If (ClipCycleCounter > 0) ; If zero we've cancelled it
+			{
+			Clipboard:=CurrentList[ClipCycleCounter]
+			sleep 100
+			Gosub, ProductsHandler
+			ClipCycleCounter:=1
+			}
+		Return
+
+	Tab & 1 Up::
+	Product_cyclebackward_up:
+	PreviousClipCycleCounter:=ClipCycleCounter
+	If (ClipCycleFirst = 0)
+		ClipCycleCounter++
+	ClipCycleFirst:=0
+	; settimer, ShrinkVarBar, 200
+	Return
+
+	ProductsHandler:
+	oldttext:="", ttext:="", ActiveWindowID:=""
+	WinActivate, ahk_id %ActiveWindowID%
+		Gui Varbar:Default
+	sleep 30
+	; send, ^{v}
+	GuiControl, Varbar:ChooseString, ComboBox1, % CurrentList[ClipCycleCounter]
+	;ControlGetText, CodeString, Edit5, VarBar
+	sleep 200
+	clip.CodesRegex(CodeString)
+	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+	Cliptext:=
+	CycleBackward:=
+	Return
+
+
+	DisplayToolTipText(TextIn,Format=0)
+		{
+		TextOut:=RegExReplace(TextIn,"^\s*")
+		TextOut:=SubStr(TextOut,1,750)
+		StringReplace,TextOut,TextOut,`;,``;,All
+		Return TextOut
+		}
+
+	+F20::
+		if (ShiftPaste> 0) 						; SetTimer already started, so we log the keypress instead.
+			{
+					ShiftPaste+= 1
+					return
+			}
+			ShiftPaste:= 1
+			SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
+			return
+			ShiftPaste:
+				if (ShiftPaste= 1){ 				; The key was pressed once.
+						send, +{F18}								;clipchain
+				}
+				else if (ShiftPaste= 2){		; The key was pressed 2x
+					clip.Append("`n","{x}")
+				}
+				else if (ShiftPaste> 2){		; The Key was pressed 3x
+					clip.Append(A_Space,"{x}")
+				}
+			ShiftPaste:= 0
+		return
+	+F19::
+		if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
+			{
+					CutPresses += 1
+					return
+			}
+			CutPresses := 1
+			SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
+			return
+			PressCut:
+				if (CutPresses = 1){ 				; The key was pressed once.
+						send, ^x								;cut
+				}
+				else if (CutPresses = 2){		; The key was pressed 2x
+					clip.Append("`n","{x}")
+				}
+				else if (CutPresses > 2){		; The Key was pressed 3x
+					clip.Append(A_Space,"{x}")
+				}
+			CutPresses := 0
+		return
+
+
+	F19::  ;;copy, append, append Tab
+		if winactive("Clipboard ahk_exe autohotkey.exe"){ ;if clipboard window open
+			GUI, EditBox:submit
+			clipboard:=EditBox
+			sleep 10
+			tt(clipboard)
+			return
+		}
+		if getkeystate("F20", "p"){ 											;F20 & F19
+			ClipboardSaved:=ClipboardAll
+			clipboard:=
+			; sleep 20
+			Send, ^c
+				clipwait,0.40
+			if errorlevel 																;if nothing selected
+				{
+					clipboard:=ClipboardSaved
+					sleep 50
+					clip.editbox()
+				}
+			else {
+				sendinput, ^{c}
+				sleep 100
+				clip.editbox()
+				}
+				return
+			}
+		if (CopyPresses > 0){  												; If Timer already started, log the keypress instead.
+					CopyPresses += 1
+					return
+		}
+			CopyPresses := 1
+			SetTimer, PressCopy, -350 ; Wait for more presses within a 450 millisecond window.
+			return
+		PressCopy:
+				if (CopyPresses = 1){	  ; The key was pressed once.
+						send, ^c									;Copy
+						sleep 55
+						FloVar(Clipboard,900,11)
+				}
+				else if (CopyPresses = 2){ ; The key was pressed 2x
+							clip.Append()							;AppendClip
+						Sleep 250
+				}
+				else if (CopyPresses > 2) ; The key was priced 3x
+						clip.Append(A_Space) 							;Clipchain
+			CopyPresses := 0
+		return
+
+	F20:: ;;paste, editbox, clipchain
+		if !getkeystate("F19", "p") && (A_PriorHotkey = "F19") && (A_TimeSincePriorHotkey < 2000) {
+			clip.editbox()
+			return
+		}
+			if getkeystate("F19", "p"){ 	; F19 & F20
+			ClipboardSaved:=ClipboardAll
+				clipboard:=
+				Send, ^x
+					clipwait,0.20
+				if errorlevel 							; if nothing selected
+					{
+						clipboard:=ClipboardSaved
+						sendinput, {delete}
+						return
+					}
+				else
+					tt(Clipboard,900,,,,200)
+				return
+		}
+		if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
+		{
+				PastePresses += 1
+				return
+		}
+		PastePresses := 1
+		SetTimer, PressPaste, -250 ; Wait for more presses within a 400 millisecond window.
+		return
+		PressPaste:
+			if (PastePresses = 1) ; The key was pressed once.
+			{
+					send, ^{v}
+			}
+			else if (PastePresses = 2) ; The key was pressed twice.
+			{
+				Send, {F18}
+			}
+			else if (PastePresses > 2)
+			{
+				Clip.EditBox()
+			}
+			PastePresses := 0
+		return
 
 
 Clip(input=0,Wait:="0.45"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
-  If Input contains OCR
-    OCR()
-    return
   clipboard:=
     Send, ^{c}
   clipwait,%Wait%

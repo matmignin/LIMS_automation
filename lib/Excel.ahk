@@ -1,4 +1,6 @@
-#include <varbar>
+#include C:\Users\mmignin\Documents\VQuest\lib\varbar.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+
 
 Class Excel{
 Connect(reload:=0){

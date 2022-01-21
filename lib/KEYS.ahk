@@ -1,6 +1,114 @@
 return
 
 
+;; _____________________________LMS KEYBINDINGS____________________________
+	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
+		Numlock:: Menu.LMS() ;4tap() ;LMS.COA()
+		mbutton:: 3tap()
+		F7::		  3Right()
+		F6::			3Left()
+		F13 up::
+		lms.searchBar("")
+		flashscreen(CodeString)
+		return
+		F20 & Space::Varbar.Focus(Product)
+		F20 & left::Send, %Product%(on sample log)
+		F20 & down::Send, %Batch%
+		F20 & right::Send, %lot%
+		Enter::LMS.SaveCode()
+		>+F20::LMS.SearchbarPaste()
+		+^v::LMS.SearchbarPaste()
+		<^v::      	       	lms.searchbarPaste()
+		; wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
+		; wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
+
+		; f20 up::4tap()
+
+
+ #Ifwinactive,Select Iterations - \\Remote
+   F20::LMS.PasteProductRotation()
+ #Ifwinactive,Book
+   F19::LMS.CopyProductRotation()
+
+	#Ifwinactive, Result Entry - \\Remote ;;___Result_Entry
+		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
+		wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
+			#MaxThreadsPerHotkey 2
+				Numlock::WorkTab.ChangeTestResults("loop")
+			#MaxThreadsPerHotkey 1
+			; Numlock:: old use for test result loop
+
+
+
+
+	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
+	; wheelup::Mouse_click("Edit")
+		; numlock::Send, % clk(712, 663) "{esc}"
+		Numlock::menu.LMS()
+		space::sendinput,{ctrldown}{click}{ctrlup}
+		mbutton::Spectab.Table()
+
+
+
+	#ifwinactive, Register new samples - \\Remote ;;__Register_new_samples:
+		F9::
+			clk(181, 104,2,2)
+			sleep 300
+			Send, %Product%{enter}
+			return
+
+
+
+	#ifwinactive, Reason for Change - \\Remote
+	; F13 & v::
+		; 				send % "Verification"
+		; 				sleep 200
+		; 				 LMSclick.Okay()
+		; 				return
+	#ifwinactive, Select tests for request:
+		space::send, ^{click}
+		rbutton::send, ^{click}
+		Numpaddot::send, {click 837, 656}{
+		; wheelright::3right()
+		; wheelleft::WorkTab.SelectTestSample()
+	#ifwinactive, Select samples for test:
+		; wheelright::3right()
+		; wheelleft::WorkTab.SelectTestSample()
+
+	#Ifwinactive, ahk_exe WFICA32.EXE, ;;___LMS app
+
+			; F19 & left::			excel.Nextsheet()
+			; F19 & right::			excel.Prevsheet()
+			; F19 & down::			Varbar.SubIteration(0)
+			; F19 & up::	 			Varbar.AddIteration(0)
+			Rbutton up::		2Tap()
+			F14::
+			^`::						Varbar.reset()
+			enter::					 LMSclick.okay()
+			esc::						 LMSclick.esc()
+			numpaddot::			4down()
+			numpadMult::		4up()
+			F9::						3up()
+					; if winexist("Mats LMS Workbook.xlsb"){
+					; 	excel.Connect(1)*
+					; 	tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000)
+					; 	return
+					; }
+			F8::						3down()
+			F7::						3Right()
+			F6::						3Left()
+		^wheeldown::			Blockrepeat(900) clip(0,2) GetSampleInfo() POP(Product,Batch " " Lot  " " Coated,3000) tt(Name " - " Customer ": " ShipToIndex,9000,1,1,3,200,"S") ;	Pinch
+			^wheelup::				LMS.SearchbarPaste() ;; Spread
+			Rbutton & F19::       	send % windowInfo()
+			Rbutton & wheelleft::        	Send, {Backspace}
+
+
+		#Ifwinactive, Barcode Scanner - \\Remote
+			enter::enter
+			; F20::LMS.SearchbarPaste()
+			^v::LMS.SearchbarPaste()
+	#Ifwinactive,
+
 #ifwinactive,
 
 F22::return
@@ -107,12 +215,12 @@ Lbutton & F20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;snip and p
 
 
 F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
-F19 & Rbutton::       		clip("OCR")
+F19 & Rbutton::       		OCR()
 
 F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipaste copy
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 Mbutton::									3Tap()
-Rbutton & Mbutton::				menu.PasteStuff()
+	; Rbutton & Mbutton::				menu.PasteStuff()
 Rbutton & Lbutton:: 			Send, {Enter}
 Rbutton UP::     	   			2Tap()
 Rbutton & F6::
@@ -130,8 +238,8 @@ Lbutton & Rbutton::       send, ^{x}
 rshift & Appskey::				return
 F19 & \:: 								Sendpassword()
 ^+7::
-Lbutton & / up::				 	clip("OCR")
-F20 & /::        	 				clip("OCR")
+Lbutton & / up::				 	OCR()
+F20 & /::        	 				OCR()
 
 
 
@@ -177,7 +285,7 @@ F20 & /::        	 				clip("OCR")
 	#k::return
 	; Lwin::									vkFF
 	;; _System actions_
-	+^Rbutton::clip("OCR")
+	+^Rbutton::OCR()
 	!F7::							Send, {laltdown}{right}{laltup}
 	!F6::							Send, {laltdown}{left}{laltup}
 	!F9::							Send, {laltdown}{up}{laltup}
@@ -493,95 +601,6 @@ Table_Entry(Entry){
 
 
 
-GetAllBatches(Delimiter:=" ",File:=""){
-  global
-  regBatches:=[]
-			if (File){
-		clipboard:=
-		FileRead, Haystack, %File%
-	}
-	else
-		Haystack:=Clipboard
-		sleep 50
-  while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
-    ; if aBatch
-      regBatches.insert(aBatch)
-  ; }
-      AllBatches:=[], oTemp := {}
-      for vKey, vValue in regBatches
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
-    AllBatches:=Listarray(AllBatches,"")
-    AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
-    AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
-
-		Control, Add, %AllBatchesDDL%, Combobox1, VarBar
-    ; GuiControl,Varbar:Text, Note3, %AllBatches%
-    ; ControlsetText, Edit8,%AllBatches%,VarBar
-		FileAppend, AllBatches,Data\Batches.txt
-
-		clipboard:=AllBatches
-		sleep 200
-		send, ^v
-		; Sendinput, %AllBatches%
-
-		PreventPopup:=
-		return %AllBatches%
-    ; msgbox, %AllBatches%,
-}
-GetAllProducts(Delimiter:=" ",File:=""){
-  global
-  regProducts:=[]
-  pos=0
-	if (File){
-		clipboard:=
-		FileRead, Haystack, %File%
-	}
-	else
-		Haystack:=Clipboard
-		sleep 50
-  while pos := RegexMatch(Haystack, "i)[abcdefghijkl]\d{3}\b", aProduct, pos+1) ; {
-    ; if aBatch
-      regProducts.insert(aProduct)
-  ; }
-      AllProducts:=[], oTemp := {}
-      for vKey, vValue in regProducts
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
-    AllProducts:=Listarray(AllProducts,"")
-    AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
-    GuiControl,Varbar:Text, Note2, %AllProducts%
-    ; ControlsetText, Edit7,%AllProducts%,VarBar
-    ; IniWrite, %AllProducts%, Settings.ini, Notes, note2
-    clipboard:=AllProducts
-    sleep 200
-    send, ^v
-
-		Return AllProducts
-    ; Send, {blind}%AllProducts%
-
-    ; msgbox, %AllProducts%,
-}
 
 
 

@@ -652,6 +652,6 @@ clipCheckIfEmpty(){
   ;sdf
 }
 
-F21::clip("OCR")
+F21::OCR()
 
 

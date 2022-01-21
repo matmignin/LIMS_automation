@@ -1,7 +1,7 @@
 
-return
-ExitMenu:
-Menu,Menu, deleteAll
+; return
+; ExitMenu:
+; Menu,Menu, deleteAll
 return
 
 class Menu{
@@ -33,7 +33,7 @@ class Menu{
         Menu, Menu, add, &Mouse Position, InputToVsCode
         Menu, Menu, add, window Location, InputToVsCode
         Menu, Menu, add,
-        Menu, Menu, add, E&xit, ExitMenu
+          Menu, Menu, add, E&xit, ExitMenu
       Menu, Menu, Show
       ; KeyWait, Rbutton, U
         ; try Menu,Menu, deleteAll
@@ -586,7 +586,9 @@ return
 
 
 
-
+ExitMenu:
+Menu,Menu, deleteAll
+return
 
 
 
@@ -654,8 +656,8 @@ Tests:
     ProductTab.Table()
    else if A_thismenuItem contains &Spec Table
     SpecTab.Table()
-   else if A_thismenuItem contains &Rotation Table
-    Rotation_GetTable()
+  ;  else if A_thismenuItem contains &Rotation Table
+    ; Rotation_GetTable()
    else
     Menu,Menu, deleteAll
    return
