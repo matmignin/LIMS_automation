@@ -42,6 +42,8 @@ name:="CL3 "
 version:="v1.100"
 CycleFormat:=0
 Templates:={}
+; EnvSet, ClipOpen,
+ClipOpen:=1
 Global CyclePlugins,History,SettingsObj,Slots,ClipChainData ; CyclePlugins v1.72+, others v1.9.4 for API access
 Error:=0
 CoordMode, Menu, Screen

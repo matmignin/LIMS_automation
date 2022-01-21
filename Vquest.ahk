@@ -77,6 +77,7 @@ VQuest_Start:
     try Menu, Tray, Icon, bin\Robot.ico
     Currentwindow:=A
     varbar.Show()
+
     ifwinexist, Mats LMS Workbook.xlsb - Excel
       Excel.Connect(0)
     ; if !VimOpen
@@ -84,7 +85,8 @@ VQuest_Start:
       LMS.Orient()
     copypasteToggle:=0
       ; run, lib\Vim.ahk
-    ; try Run, cl3.Ahk, lib\CL3
+  if !ClipOpen
+    try Run, cl3.Ahk, lib\CL3
     ; GuiControl, +redraw, varbar
     RegexProduct:="i)(?<=\w{3})?(?P<Product>[abcdefghijkl]\d{3}\b)"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -106,7 +108,8 @@ VQuest_Start:
       #Include <SuppressErrorDialog>
   #include <Toggles>
   #Include <Temp>
-  #include <VIM>
+  if !VimOpen
+    #include <VIM>
   #Include <Test>
   #include <HotStrings>
   #include <KEYS>

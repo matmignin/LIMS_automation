@@ -80,7 +80,7 @@ clipCheckIfEmpty(){
 }
 
 #Ifwinactive
-;;	_____3Fingers
+	;;	_____3Fingers
 
 3tap(){
 	Global
@@ -185,7 +185,7 @@ clipCheckIfEmpty(){
 			Send, ^c
 	else if winactive("Snipper - Snipaste")
 			Send, {enter}
-;		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
+	;		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
 		;Send, {lwindown}{e}{lwinup}
 	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 			menu.Remote_Desktop()
@@ -226,9 +226,8 @@ clipCheckIfEmpty(){
 		Send, %Batch%
 	else
 		Send, %Batch%
-return
-}
-
+	return
+	}
 3left(){
 		global
 		FlashScreen("3-Left")
@@ -262,8 +261,6 @@ return
 		send, %Product%
 	return
 }
-
-
 3down(){
 	global
 	FlashScreen("3-Down")
@@ -277,8 +274,6 @@ return
 		return
 	return
 }
-
-
 3up(){
 	global
 	FlashScreen("3-Up")
@@ -303,9 +298,7 @@ return
 	else
 		return
 }
-
-
-;;	_____4Fingers
+	;;	_____4Fingers
 4tap(){
 	global
 	FlashScreen("4-Tap")
@@ -366,7 +359,6 @@ return
 	else
 		return
 }
-
 4up(){
 	global
 		if winexist("Mats LMS Workbook.xlsb"){
@@ -471,7 +463,6 @@ return
 			; lms.SampleRequestToggle()
 		return
 	}
-
 4down(){
 	global
 	SendLevel, 1
@@ -496,7 +487,7 @@ return
 	}
 
 
-/*   other close windows FOURFINGERDOWN
+	/*   other close windows FOURFINGERDOWN
 	else if winactive("Composition - \\Remote"){
 			clk(841, 895)
 			sleep 50
@@ -589,7 +580,7 @@ return
 
 
 
-;;	______2Fingers
+	;;	______2Fingers
 
 2tap(){
 	global

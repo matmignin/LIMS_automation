@@ -18,12 +18,16 @@ try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
 VimOpen:=1
-EnvGet, VimOpen, VimOpen
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\VScode.ahk
+Envset, VimOpen, VimOpen
+; #include *i C:\Users\mmignin\Documents\VQuest\Vquest.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApps.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\VarBar.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Pad.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
-;#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
@@ -33,7 +37,7 @@ return
 	Media_Play_Pause::ControlSend, , {F5}, ahk_exe Code.exe ;
 	Volume_Up::ControlSend, , {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}, ahk_exe Code.exe ;
 	Volume_down::							clipboard:="K999 999-9999"
- Volume_Mute::
+	Volume_Mute::
 		Clipboard:=
 		(
 		"K741 107-0431 0278H1`r`n
@@ -69,29 +73,236 @@ return
 	; Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
 
 ;;  Tab
+	Tab & 1::
+	Product_cyclebackward:
+		GUI, varbar:default
+
+		winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
+		CurrentList := StrSplit(CurrentCodes, "`n")
+		If !ActiveWindowID
+			WinGet, ActiveWindowID, ID, A
+		cyclebackward:=1
+		PreviousClipCycleCounter:=0 ; 13/10/2017 test
+		ClipCycleCounter:=1
+		ClipCycleFirst:=1
+		While GetKeyState("Tab","D") and cyclebackward
+			{
+			If (ClipCycleCounter <> 0)
+			{
+				Var:=CurrentList[ClipCycleCounter]
+				ttext:=% DispToolTipText(Var)
+			}
+			else
+				ttext:="[cancelled]"
+			If (oldttext <> ttext)
+				{
+				ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+				oldttext:=ttext
+				GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
+				}
+			Sleep 100
+			KeyWait, 1
+			}ToolTip
+		If (ClipCycleCounter > 0) ; If zero we've cancelled it
+			{
+			Clipboard:=CurrentList[ClipCycleCounter]
+			sleep 100
+			Gosub, ProductsHandler
+			ClipCycleCounter:=1
+			}
+		Return
+
+	Tab & 1 Up::
+	Product_cyclebackward_up:
+	PreviousClipCycleCounter:=ClipCycleCounter
+	If (ClipCycleFirst = 0)
+		ClipCycleCounter++
+	ClipCycleFirst:=0
+	; settimer, ShrinkVarBar, 200
+	Return
+
+	ProductsHandler:
+	oldttext:="", ttext:="", ActiveWindowID:=""
+	WinActivate, ahk_id %ActiveWindowID%
+		Gui Varbar:Default
+	sleep 30
+	; send, ^{v}
+	GuiControl, Varbar:ChooseString, ComboBox1, % CurrentList[ClipCycleCounter]
+	;ControlGetText, CodeString, Edit5, VarBar
+	sleep 200
+	clip.CodesRegex(CodeString)
+	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+	Cliptext:=
+	CycleBackward:=
+	Return
 
 
-	Tab & wheeldown::sendinput, ^{down}
-	Tab & wheelup::sendinput, ^{up}
-	Tab & wheelleft::^[
-	Tab & wheelright::^]
-	tab & F13::delete
+	DispToolTipText(TextIn,Format=0)
+		{
+		TextOut:=RegExReplace(TextIn,"^\s*")
+		TextOut:=SubStr(TextOut,1,750)
+		StringReplace,TextOut,TextOut,`;,``;,All
+		Return TextOut
+		}
+
+	+F20::
+		if (ShiftPaste> 0) 						; SetTimer already started, so we log the keypress instead.
+			{
+					ShiftPaste+= 1
+					return
+			}
+			ShiftPaste:= 1
+			SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
+			return
+			ShiftPaste:
+				if (ShiftPaste= 1){ 				; The key was pressed once.
+						send, +{F18}								;clipchain
+				}
+				else if (ShiftPaste= 2){		; The key was pressed 2x
+					clip.Append("`n","{x}")
+				}
+				else if (ShiftPaste> 2){		; The Key was pressed 3x
+					clip.Append(A_Space,"{x}")
+				}
+			ShiftPaste:= 0
+		return
+	+F19::
+		if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
+			{
+					CutPresses += 1
+					return
+			}
+			CutPresses := 1
+			SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
+			return
+			PressCut:
+				if (CutPresses = 1){ 				; The key was pressed once.
+						send, ^x								;cut
+				}
+				else if (CutPresses = 2){		; The key was pressed 2x
+					clip.Append("`n","{x}")
+				}
+				else if (CutPresses > 2){		; The Key was pressed 3x
+					clip.Append(A_Space,"{x}")
+				}
+			CutPresses := 0
+		return
 
 
-;;F13
+	F19::  ;;copy, append, append Tab
+		if winactive("Clipboard ahk_exe autohotkey.exe"){ ;if clipboard window open
+			GUI, EditBox:submit
+			clipboard:=EditBox
+			sleep 10
+			tt(clipboard)
+			return
+		}
+		if getkeystate("F20", "p"){ 											;F20 & F19
+			ClipboardSaved:=ClipboardAll
+			clipboard:=
+			; sleep 20
+			Send, ^c
+				clipwait,0.40
+			if errorlevel 																;if nothing selected
+				{
+					clipboard:=ClipboardSaved
+					sleep 50
+					clip.editbox()
+				}
+			else {
+				sendinput, ^{c}
+				sleep 100
+				clip.editbox()
+				}
+				return
+			}
+		if (CopyPresses > 0){  												; If Timer already started, log the keypress instead.
+					CopyPresses += 1
+					return
+		}
+			CopyPresses := 1
+			SetTimer, PressCopy, -350 ; Wait for more presses within a 450 millisecond window.
+			return
+		PressCopy:
+				if (CopyPresses = 1){	  ; The key was pressed once.
+						send, ^c									;Copy
+						sleep 55
+						FloVar(Clipboard,900,11)
+				}
+				else if (CopyPresses = 2){ ; The key was pressed 2x
+							clip.Append()							;AppendClip
+						Sleep 250
+				}
+				else if (CopyPresses > 2) ; The key was priced 3x
+						clip.Append(A_Space) 							;Clipchain
+			CopyPresses := 0
+		return
+
+	F20:: ;;paste, editbox, clipchain
+		if !getkeystate("F19", "p") && (A_PriorHotkey = "F19") && (A_TimeSincePriorHotkey < 2000) {
+			clip.editbox()
+			return
+		}
+			if getkeystate("F19", "p"){ 	; F19 & F20
+			ClipboardSaved:=ClipboardAll
+				clipboard:=
+				Send, ^x
+					clipwait,0.20
+				if errorlevel 							; if nothing selected
+					{
+						clipboard:=ClipboardSaved
+						sendinput, {delete}
+						return
+					}
+				else
+					tt(Clipboard,900,,,,200)
+				return
+		}
+		if (PastePresses > 0) ; SetTimer already started, so we log the keypress instead.
+		{
+				PastePresses += 1
+				return
+		}
+		PastePresses := 1
+		SetTimer, PressPaste, -250 ; Wait for more presses within a 400 millisecond window.
+		return
+		PressPaste:
+			if (PastePresses = 1) ; The key was pressed once.
+			{
+					send, ^{v}
+			}
+			else if (PastePresses = 2) ; The key was pressed twice.
+			{
+				Send, {F18}
+			}
+			else if (PastePresses > 2)
+			{
+				Clip.EditBox()
+			}
+			PastePresses := 0
+		return
+
+		Tab & wheeldown::sendinput, ^{down}
+		Tab & wheelup::sendinput, ^{up}
+		Tab & wheelleft::^[
+		Tab & wheelright::^]
+		tab & F13::delete
+
+
+	;;F13
 	F13 & r::reloadscript()
 	F13 & tab up::
-	if winactive("ahk_exe WFICA32.EXE")
-		excel.GetAllSheets()
-		else
-	 SavedTextMenu()
-	 return
+		if winactive("ahk_exe WFICA32.EXE")
+			excel.GetAllSheets()
+			else
+	SavedTextMenu()
+		return
 	F13 & Enter::Sendinput, {end}{enter}return{enter}
 	F13 & q::esc
 	F13 & LShift up::Sendinput, {Enter}
 	; F13 & c::gosub, F19
 	; F13 & v::gosub, F20
-  F13 & j::Vim.down()
+	F13 & j::Vim.down()
 	F13 & l::Vim.right()
 	F13 & k::Vim.up()
 	F13 & h::Vim.left()
@@ -117,9 +328,9 @@ return
 	F13 & d::
 		if getkeystate("s", "p"){
 			if winactive("ahk_exe Code.exe")
-			 	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+				sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
 			else
-			 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
+				sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
 			KeyWait, d, U
 			KeyWait, s, U
 		}
@@ -245,9 +456,9 @@ return
 	^r::										 sendinput, {F5}
 	Enter::                  Sendinput,{shiftdown}{enter}{shiftup}
 	; ^space::                 Sendinput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}
-#if
+	#if
 
-~lbutton::Return
+	~lbutton::Return
 
 #Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
 	Lbutton & F13::return
@@ -352,6 +563,8 @@ return
 	; 	send, ^c
 	; 	tt(Clipboard,1000,100,-400,,160)
 	; 	return
+	!t::run, Cmd.exe
+	!s::send, #s
 	#h::send, !{F2}
 	#p::send, +!{h}
 	#k::send, ^+{h}
@@ -397,7 +610,7 @@ return
 		f19 & w::                 Sendinput,%wininfo%
 		f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
 	; F13 & lshift::						enter
-$F13::F13
+	$F13::F13
 
 
 
