@@ -3,7 +3,7 @@
   "configurations": [
 
     {
-      "type": "autohotkey",`4
+      "type": "autohotkey",
       "request": "launch",
       "name": "AutoHotkey Debugger",
       "port":"9002-9010",
