@@ -1,5 +1,5 @@
-
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+return
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 Class VarBar{
 Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -11,7 +11,7 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 		TopScreen:=1 ;A_ScreenHeight-35
 		MidScreen:=A_ScreenWidth//2
 		VarBar_H=58
-		VarBar_H_max=600
+		VarBar_H_max=58
 		VarBar_T:=235
 		VarBar_W=350
 		CurrentCodesFile=C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
@@ -29,7 +29,7 @@ Gui, Varbar:+Delimiter`n
 	GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
 	This.AddText("Iteration", "x+1 center y-1 w23",			  "19 Bold 107C41, Consolas")	; Text1
 	GUI, VarBar:Font, cBlack s14, Consolas
-	Gui, Varbar:Add, Combobox, vCodeStringEdit  Left +Multi simple Altsubmit gDDLVarbar  x1 yP+30 w350 r25 hwndHDDL , %CurrentCodes%
+	Gui, Varbar:Add, Combobox, vCodeStringEdit  Left +Multi  Altsubmit gDDLVarbar  x1 yP+30 w350 r25 hwndHDDL , %CurrentCodes%
 ;; -----------------new DDL test
 	Gui, Varbar:Add, Button, gDelx  Hidden y200 x10  v1, Delete
 	Gui, Varbar:Add, Button, gAddx  Hidden Default x+2  v2, Add
@@ -44,7 +44,7 @@ Gui, Varbar:+Delimiter`n
 			OnMessage(0x0201, "WM_LBUTTONDOWN")
 			OnMessage(0x0203, "WM_LBUTTONDBLCLK")
 			; OnMessage(  WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
-			OnMessage(0x0200, "WM_MOUSEMOVE")
+			;OnMessage(0x0200, "WM_MOUSEMOVE")
 			; OnMessage(0x203,  "VariableBar_Relocate")
 			OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 			OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
@@ -104,13 +104,19 @@ Gui, Varbar:+Delimiter`n
 
 
 DDLVarbar:  ;; ComboBox1 Hanfler
-		GUI, Varbar:default
+		GUI, Varbatr:default
+; sleep 1000
+			; Product:=RegexMatch(CodeString, RegexProduct,r) ? rProduct : ""
+      ; Batch:=RegexMatch(CodeString, RegexBatch, r) ? rBatch : ""
+      ; Lot:=RegexMatch(CodeString, RegexLot, r) ? rLot : ""
+      ; Coated:=RegExMatch(CodeString, RegexCoated, r) ? rCoated : ""
+      ; Ct:=rCoated ? " ct#" : ""
 
-		rProduct:=
-		rBatch:=
-		rlot:=
-		rCoated:=
-		ct:=
+		; rProduct:=
+		; rBatch:=
+		; rlot:=
+		; rCoated:=
+		; ct:=
 		if DeleteMatch
 			{
 				Gui, Varbar:submit,nohide
@@ -124,22 +130,27 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			}
 		ControlGetText, CodeString, Edit5, VarBar
 		sleep 100
-			Product:=RegexMatch(CodeString, RegexProduct,r) ? rProduct : ""
-      Batch:=RegexMatch(CodeString, RegexBatch, r) ? rBatch : ""
-      Lot:=RegexMatch(CodeString, RegexLot, r) ? rLot : ""
-      Coated:=RegExMatch(CodeString, RegexCoated, r) ? rCoated : ""
-      Ct:=rCoated ? " ct#" : ""
-			if RegexMatch(rProduct, RegexProduct)
-			GuiControl,Varbar:Text, Product, %rProduct%
-			if RegexMatch(rBatch, RegexBatch)
-      GuiControl,Varbar:Text, Batch, %rBatch%
-			if RegexMatch(rLot, RegexLot)
-      GuiControl,Varbar:Text, lot, %rlot%
-			if RegexMatch(rCoated, RegexCoated)
-      GuiControl,Varbar:Text, Coated, %rCoated%
+			if RegexMatch(CodeString, RegexProduct, r)
+				GuiControl,Varbar:Text, Product, %rProduct%
+			else
+				GuiControl,Varbar:Text, Product,
 
-    ; CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
-			return
+			if RegexMatch(CodeString, RegexBatch, r)
+				GuiControl,Varbar:Text, Batch, %rBatch%
+			else
+				GuiControl,Varbar:Text, Batch,
+
+			if RegexMatch(CodeString, RegexLot, r)
+				GuiControl,Varbar:Text, lot, %rlot%
+			else
+				GuiControl,Varbar:Text, lot,
+
+			if RegexMatch(CodeString, RegexCoated, r)
+				GuiControl,Varbar:Text, Coated, %rCoated%
+			else
+				GuiControl,Varbar:Text, Coated,
+
+			; CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
 			return
 
 		VarbarHandler:
@@ -243,7 +254,7 @@ SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 AddToList(Input:=""){  ;; __Add to List
 	Global
 	GUI, varbar:default
-	Gui, Varbar:submit, nohide
+	; Gui, Varbar:submit, nohide
 	Gui, Varbar:+Delimiter`r`n
 	;Wholex:=
 	ControlGetText, CodeString, Edit5, VarBar
@@ -256,27 +267,27 @@ AddToList(Input:=""){  ;; __Add to List
 
 		replacewith:=rProduct " " rBatch " " rLot " " Ct rCoated "`r`n"
 		ControlGet, Wholex, List,,Combobox1, VarBar
-		if (SplitVariables.MaxIndex() > 2){
-			Try
-			{
-				DeleteMatch:=1
-				Control, ChooseString, %LookForBatch%, Combobox1, VarBar
-				DeleteMatch:=
-			}
-			catch
+; 		if (SplitVariables.MaxIndex() > 2){
+; 			Try
+; 			{
+; 				DeleteMatch:=1
+				; Control, ChooseString, %LookForBatch%, Combobox1, VarBar
+; 				DeleteMatch:=
+; 			}
+; 			catch
 				Control, Add, %Variable%, Combobox1, VarBar  ; add to the bottom of the list
-		}
-		else
-		{
-			Try
-						{
-				DeleteMatch:=1
-				Control, ChooseString, %LookForBatch%, Combobox1, VarBar
-				DeleteMatch:=
-			}
-			catch
-				Control, Add, %Variable%, Combobox1, VarBar  ; add to the bottom of the list
-}
+; 		}
+; 		else
+; 		{
+; 			Try
+; 			{
+; 				DeleteMatch:=1
+; 				Control, ChooseString, %LookForBatch%, Combobox1, VarBar
+; 				DeleteMatch:=
+; 			}
+; 			catch
+; 				Control, Add, %Variable%, Combobox1, VarBar  ; add to the bottom of the list
+; }
 		Control, ChooseString, %Variable%, Combobox1, VarBar
 	if wholex<> 															;Update List
 	 {
@@ -713,7 +724,7 @@ SetColor(){
 		; GUI, varbar:default
 		; GUI, Varbar:Submit, Nohide
 		return
-		Numlock::gosub, Volume_Mute
+		; Numlock::gosub, Volume_Mute
 		; 	MouseGetPos,,,,winControl
 		; 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 		; 			click
@@ -734,23 +745,23 @@ SetColor(){
 		+wheeldown::Varbar.SubIteration(0)
 		; up::				Varbar.AddIteration(0)
 		; down::   		Varbar.SubIteration(0)
-		F15::						ReloadScript()
+		; F15::						ReloadScript()
 		F9::           Excel.connect()
 		F7::           Excel.NextSheet()
 		F6::           Excel.PrevSheet()
 		F8::				Varbar.launchTable()
 			return
-		; Rbutton::
-		; MouseGetPos,,,,winControl
-		; 		if (winControl="Edit1")
-		; 			menu.Products()
-		; 		else if (winControl="Edit2") || (winControl="Edit3")
-		; 			menu.Batches()
-		; 		else if (winControl="Static1")
-		; 			VarBar.Menu()
-		; 		else
-		; 			menu.SetStatus()
-		; 	return
+		Rbutton::
+		MouseGetPos,,,,winControl
+				if (winControl="Edit1")
+					menu.Products()
+				else if (winControl="Edit2") || (winControl="Edit3")
+					menu.Batches()
+				else if (winControl="Static1")
+					VarBar.Menu()
+				else
+					menu.SetStatus()
+			return
 		numpaddot:: 	 Openapp.Workbook()
 	#if
 
