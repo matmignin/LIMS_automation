@@ -1,4 +1,8 @@
+#Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
 #ifwinactive
+
+return
+
 Lbutton & Space::
 		click up left
 		sendinput, ^c
@@ -16,6 +20,7 @@ Lbutton & Space::
 	; 	keywait F13
 	; 	click up left
 	; 	return
+
 
 
 
@@ -136,7 +141,7 @@ clipCheckIfEmpty(){
 				copyPasteToggle=0
 			}
 		else if winactive("Register new samples - \\Remote")
-					WorkTab.registerNewSamples()
+				WorkTab.registerNewSamples()
 		else if winactive("Login - \\Remote")
 				menu.passwords()
 		else if winactive("Result Entry - \\Remote") {
@@ -220,8 +225,12 @@ clipCheckIfEmpty(){
 		clk(502, 354)
 	else if winactive("Select samples for test:") ; selecting the physical or micro
 		send % Clk(504, 324) "{click, 849, 661}"  ; add test.
-	else if winactive("Select tests for request: R")
-		send % Clk(504, 338)  ; add test.
+	else if winactive("Edit request (Field Configuration:")
+		send, {click 332, 617} ;click save
+	else if winactive("Select tests for request: R"){
+			send, {click 504, 338}{click 846, 659}  ; add test.
+			sleep 300
+	}
 	else if winactive("ahk_exe WFICA32.EXE")
 		Send, %Batch%
 	else
@@ -341,8 +350,17 @@ clipCheckIfEmpty(){
 			else
 				Menu.LMS()
 		}
+		else if winactive("Edit sample (Field Configuration")
+			worktab.CustomerMenu()
 		else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
 			ProductTab.AddCOASpace()
+		else if winactive("Register new samples - \\Remote"){
+			menu.Batches()
+			winactivate, Register new samples - \\Remote
+				sleep 200
+				WorkTab.registerNewSamples()
+				return
+		}
 		else if winactive("Edit test (Field Configuration: ")
 			send % "{click 384, 222}{tab 2}{end 2}(on sample log){Click 334, 618}"
 			; AddSampleLog(count)

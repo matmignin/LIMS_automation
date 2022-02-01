@@ -1,9 +1,11 @@
-#Persistent
-#NoEnv
 #SingleInstance,Force
+#Persistent
+Process, Priority, , High
+#NoEnv
 #InstallKeybdHook
 #InstallMouseHook
-; #maxthreadsperhotkey, 2
+PasteTime:=A_TickCount
+#maxthreadsperhotkey, 2
 FormatTime, DayString,, MM/d/yy
 FormatTime, TimeString, R
 FormatTime, CurrentDateTime,, MM/dd/yy
@@ -13,58 +15,63 @@ SetNumlockState Alwayson
 setcapslockstate alwaysoff
 #ClipboardTimeout 1500
 SetTitleMatchMode, 2
-Process, Priority, , High
 try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
-VimOpen:=1
-Envset, VimOpen, VimOpen
+try Run, cl3.Ahk, C:\Users\mmignin\Documents\VQuest\lib\CL3
+AutoTrim, On
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
+#Include *i C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Pad.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
+
 return
 
 #ifwinactive,
 	Media_Play_Pause::ControlSend, , {F5}, ahk_exe Code.exe ;
-	Volume_Up::ControlSend, , {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}, ahk_exe Code.exe ;
-	Volume_down::							clipboard:="K999 999-9999"
-	Volume_Mute::
-		Clipboard:=
-		(
-		"K741 107-0431 0278H1`r`n
-		K277 888-8888`r`n
-		K277 888-8777`r`n
-		K277 111-1111`r`n
-		J929 910-0128 0623I1`r`n
-		J837 109-0445 7777A7 ct#666-6666`r`n
-		J837 109-0445 0670I1`r`n
-		J837 109-0445`r`n
-		J837 109-0333 0333I1`r`n
-		H624 104-0657`r`n
-		B324 105-1172 0656H1`r`n
-		B086 108-0752 Ct#109-0635`r`n
-		B086 108-0752 Bulk Ct#109-0635`r`n
-		B086 108-0752 Bulk 109-0635`r`n
-		B086 108-0752  109-0635"
-		)
-		Return
-	Media_Prev::
-		var := clipboard
-		StrReplace(var, "`n","`n",LineCount)
-		; StringReplace, var, var, `n, `n, UseErrorLevel
-		msgbox, %LineCount%
-		return
-	; Volume_down::				Send,			;clipboard:="K111 222-2222 3333B3 ct#444-4444"
-	Media_Next::							Clipboard:="K555 666-6666"
-  ; Media_Prev::						F6 ;MakeTransparent()
-	; Media_Play_Pause::			Numlock
-	; Media_Next::						F7
-	; Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
-	; Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
-	; Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
+	; Volume_Up::ControlSend, , {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}, ahk_exe Code.exe ;
+	; Volume_down::							clipboard:="K999 999-9999"
+	; Volume_Mute::
+	; 	Clipboard:=
+	; 	(
+	; 	"K741 107-0431 0278H1`r`n
+	; 	K277 888-8888`r`n
+	; 	K277 888-8777`r`n
+	; 	K277 111-1111`r`n
+	; 	J929 910-0128 0623I1`r`n
+	; 	J837 109-0445 7777A7 ct#666-6666`r`n
+	; 	J837 109-0445 0670I1`r`n
+	; 	J837 109-0445`r`n
+	; 	J837 109-0333 0333I1`r`n
+	; 	H624 104-0657`r`n
+	; 	B324 105-1172 0656H1`r`n
+	; 	B086 108-0752 Ct#109-0635`r`n
+	; 	B086 108-0752 Bulk Ct#109-0635`r`n
+	; 	B086 108-0752 Bulk 109-0635`r`n
+	; 	B086 108-0752  109-0635"
+	; 	)
+	; 	Return
+	; Media_Prev::
+	; 	var := clipboard
+	; 	StrReplace(var, "`n","`n",LineCount)
+	; 	; StringReplace, var, var, `n, `n, UseErrorLevel
+	; 	msgbox, %LineCount%
+	; 	return
+	; ; Volume_down::				Send,			;clipboard:="K111 222-2222 3333B3 ct#444-4444"
+	; Media_Next::							Clipboard:="K555 666-6666"
+  ;Media_Prev::						F6 ;MakeTransparent()
+	; ; Media_Play_Pause::			Numlock
+	; ; Media_Next::						F7
+	 Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
+	;Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
+	Media_Prev::							sendinput, {altdown}{ctrldown}{lwin down}{[}{lwin up}{ctrlup}{altup} ;debug prev
 
 
 		Tab & wheelleft::^[
@@ -257,10 +264,19 @@ return
 	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
 	F13 & z::F3
 	F13 & 5::send,`%
-	F13 & 4::        Sendinput,^!{4}
+	F13 & 1::VScodeBookmarks()
+	F13 & 2::VScodeBookmarks()
+	F13 & 3::VScodeBookmarks()
+	F13 & 4::VScodeBookmarks()
+	; F13 & 5::VScodeBookmarks()
+	F13 & 6::VScodeBookmarks()
+	F13 & 7::VScodeBookmarks()
+	F13 & 8::VScodeBookmarks()
+	F13 & 9::VScodeBookmarks()
+
+
 	; $F13::send, {F13}
 	/ & space::								sendinput, {_}
-
 
 
 	tab & `::				sendinput, ^!{0} ;unfold all
@@ -670,13 +686,13 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
     else
     {
       try menu, Menu, DeleteAll
-  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\SavedTextMenu.ini
+  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
   		{
   		If A_Index = 1
   			Continue
-  		SavedMenuItems := StrSplit(A_LoopReadLine, "=")
-  		Selection:= % SavedMenuItems[1]
-  		Menu, Menu, add, &%Selection%, SavedTextMenu
+  		MenuItems := StrSplit(A_LoopReadLine, "=")
+  		Selection:= % MenuItems[1]
+  		Menu, Menu, add, %Selection%, SavedTextMenu
   		}
       menu, menu, add
       menu, menu, add, E&xit, ExitMenu
@@ -685,16 +701,26 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 		return
 		SavedTextMenu:
 			sleep 200
+			SimpleClip:=1
+			PreClip:=ClipboardAll
+			Clipboard:=
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini, SavedMenuItems, %InputVar%
-			Sendinput, %vOutput%
+			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini, MenuItems, %InputVar%
+			sleep 20
+			Clipboard:=vOutput
+			sleep 100
       menu, Menu, DeleteAll
+			send, ^v
+			sleep 200
+			clipboard:=PreClip
+			; Sendinput, %vOutput%
+			SimpleClip:=
 			return
 
       AddTextMenuItem:
       InputBox, Variable, Variable Name = Variable
       VARIABLEITEM:= "`n" Variable
-      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\MenuItems.ini
+      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
       Return
 	}
 
@@ -779,4 +805,14 @@ ReloadScript(){
 		; catch
 			; reload
 	}
+}
+
+VScodeBookmarks(){
+	StringTrimLeft, ThisNumber, A_ThisHotkey, 6
+	if Getkeystate("LControl","p"){
+		Sendinput,^+!{%ThisNumber%}
+	}
+	else
+		Sendinput,^{%ThisNumber%}}
+		return
 }

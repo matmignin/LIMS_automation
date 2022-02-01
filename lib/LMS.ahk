@@ -1,4 +1,9 @@
-  GetSampleInfo(){
+  Return
+
+
+
+
+	GetSampleInfo(){
     global Customer, Name, ShipToIndex
     ParsedSample:=[]
     ; clipboard:=
@@ -12,7 +17,7 @@
 
     Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
     Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-    IniRead,ShipToIndex, data\customers.ini, Customers, %Customer%
+    IniRead,ShipToIndex, Data\customers.ini, Customers, %Customer%
     ; if !ShipTo
       ; ShipTo:=ShipToIndex
     return ShiptoIndex
@@ -604,6 +609,7 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		yAdd_methods:=565
 		xEnter_Results:=57
 		yEnter_Results:=630
+		return
 		}
 
 
@@ -969,88 +975,88 @@ Class ProductTab {  ;;__________________ProductTab Class_____________________
 
 
   IngredientMenuHandler:
-	Breaking.Point()
-  ; tt(GeneralCount)
-  Click 150, 73
-	Breaking.Point()
-  ; if !GeneralCount
-  ; clk(150, 73)
-    ; GeneralCount=1
-  ; tt(GeneralCount)
-  if (A_ThisMenuItem ="Generic Ingredient &A"      || GeneralCount=1)
-    Sendinput,{tab}{Home}{right 9}{right 56}
-  else if (A_ThisMenuItem ="Generic Ingredient &B" || GeneralCount=2)
-    Sendinput,{tab}{Home}{right 9}{right 62}
-  else if (A_ThisMenuItem ="Generic Ingredient &C" || GeneralCount=3)
-    Sendinput,{tab}{Home}{right 9}{right 68}
-  else if (A_ThisMenuItem ="Generic Ingredient &D" || GeneralCount=4)
-    Sendinput,{tab}{home}{right 9}{right 74}
-  else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount=5)
-    Sendinput,{tab}{Home}{right 9}{right 80}
-  else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount=6)
-    Sendinput,{tab}{Home}{right 9}{right 86}
-  else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount=7)
-    Sendinput,{tab}{Home}{right 9}{right 92}
-  else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount=8)
-    Sendinput,{tab}{Home}{right 9}{right 93}
-  else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount=9)
-    Sendinput,{tab}{Home}{right 9}{right 95}
-  else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount=10)
-    Sendinput,{tab}{Home}{right 9}{right 97}
-  else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount=11)
-    Sendinput,{tab}{Home}{right 9}{right 99}
-  else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount=12)
-    Sendinput,{tab}{Home}{right 9}{right 100}
-  else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount=13)
-    Sendinput,{tab}{Home}{right 9}{right 101}
-  else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount=14)
-    Sendinput,{tab}{Home}{right 9}{right 102}
-  else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount=15)
-    Sendinput,{tab}{Home}{right 9}{right 103}
-  else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount=16)
-    Sendinput,{tab}{Home}{right 9}{right 104}
-  else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount=17)
-    Sendinput,{tab}{Home}{right 9}{right 105}
-  else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount=18)
-    Sendinput,{tab}{Home}{right 9}{right 106}
-  else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount=19)
-    Sendinput,{tab}{Home}{right 9}{right 107}
-  else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount=20)
-    Sendinput,{tab}{Home}{right 9}{right 108}
-  else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount=21)
-    Sendinput,{tab}{Home}{right 9}{right 109}
-  else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount=22)
-    Sendinput,{tab}{Home}{right 9}{right 110}
-  else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount=23)
-    Sendinput,{tab}{Home}{right 9}{right 111}
-  else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount=24)
-    Sendinput,{tab}{Home}{right 9}{right 112}
-  else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount=25)
-    Sendinput,{tab}{Home}{right 9}{right 113}
-  else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount=26)
-    Sendinput,{tab}{Home}{right 9}{right 114}
-  else if (A_ThisMenuItem ="Ingredient Note 1")
-    Sendinput,{tab}{Home}{right 9}{right 140}
-  else if (A_ThisMenuItem ="Ingredient Note 10")
-    Sendinput,{tab}{Home}{right 9}{right 141}
-	else if (A_ThisMenuItem ="Ingredient Note 2")
-    Sendinput,{tab}{Home}{right 9}{right 143}
-  else if (A_ThisMenuItem ="Ingredient Note 3")
-    Sendinput,{tab}{Home}{right 9}{right 144}
-  else if (A_ThisMenuItem ="Total Probiotic" || GeneralCount=-1)
-    Sendinput,{tab}{End}{Left 20}
-  else if (A_ThisMenuItem ="Manual"){
-    Sendinput,{tab}{Home}
-		ManualInput=1
-	}
-  else if (A_ThisMenuItem ="STOP")
-    Reload
-  else
-    return
-  ; tt(GeneralCount,,0,0,2)
-  ; GeneralCount++
-  ; tt(GeneralCount)
-  return
+		Breaking.Point()
+		; tt(GeneralCount)
+		Click 150, 73
+		Breaking.Point()
+		; if !GeneralCount
+		; clk(150, 73)
+			; GeneralCount=1
+		; tt(GeneralCount)
+		if (A_ThisMenuItem ="Generic Ingredient &A"      || GeneralCount=1)
+			Sendinput,{tab}{Home}{right 9}{right 56}
+		else if (A_ThisMenuItem ="Generic Ingredient &B" || GeneralCount=2)
+			Sendinput,{tab}{Home}{right 9}{right 62}
+		else if (A_ThisMenuItem ="Generic Ingredient &C" || GeneralCount=3)
+			Sendinput,{tab}{Home}{right 9}{right 68}
+		else if (A_ThisMenuItem ="Generic Ingredient &D" || GeneralCount=4)
+			Sendinput,{tab}{home}{right 9}{right 74}
+		else if (A_ThisMenuItem ="Generic Ingredient &E" || GeneralCount=5)
+			Sendinput,{tab}{Home}{right 9}{right 80}
+		else if (A_ThisMenuItem ="Generic Ingredient &F" || GeneralCount=6)
+			Sendinput,{tab}{Home}{right 9}{right 86}
+		else if (A_ThisMenuItem ="Generic Ingredient &G" || GeneralCount=7)
+			Sendinput,{tab}{Home}{right 9}{right 92}
+		else if (A_ThisMenuItem ="Generic Ingredient &H" || GeneralCount=8)
+			Sendinput,{tab}{Home}{right 9}{right 93}
+		else if (A_ThisMenuItem ="Generic Ingredient &I" || GeneralCount=9)
+			Sendinput,{tab}{Home}{right 9}{right 95}
+		else if (A_ThisMenuItem ="Generic Ingredient &J" || GeneralCount=10)
+			Sendinput,{tab}{Home}{right 9}{right 97}
+		else if (A_ThisMenuItem ="Generic Ingredient &K" || GeneralCount=11)
+			Sendinput,{tab}{Home}{right 9}{right 99}
+		else if (A_ThisMenuItem ="Generic Ingredient &L" || GeneralCount=12)
+			Sendinput,{tab}{Home}{right 9}{right 100}
+		else if (A_ThisMenuItem ="Generic Ingredient &M" || GeneralCount=13)
+			Sendinput,{tab}{Home}{right 9}{right 101}
+		else if (A_ThisMenuItem ="Generic Ingredient &N" || GeneralCount=14)
+			Sendinput,{tab}{Home}{right 9}{right 102}
+		else if (A_ThisMenuItem ="Generic Ingredient &O" || GeneralCount=15)
+			Sendinput,{tab}{Home}{right 9}{right 103}
+		else if (A_ThisMenuItem ="Generic Ingredient &P" || GeneralCount=16)
+			Sendinput,{tab}{Home}{right 9}{right 104}
+		else if (A_ThisMenuItem ="Generic Ingredient &Q" || GeneralCount=17)
+			Sendinput,{tab}{Home}{right 9}{right 105}
+		else if (A_ThisMenuItem ="Generic Ingredient &R" || GeneralCount=18)
+			Sendinput,{tab}{Home}{right 9}{right 106}
+		else if (A_ThisMenuItem ="Generic Ingredient &S" || GeneralCount=19)
+			Sendinput,{tab}{Home}{right 9}{right 107}
+		else if (A_ThisMenuItem ="Generic Ingredient &T" || GeneralCount=20)
+			Sendinput,{tab}{Home}{right 9}{right 108}
+		else if (A_ThisMenuItem ="Generic Ingredient &U" || GeneralCount=21)
+			Sendinput,{tab}{Home}{right 9}{right 109}
+		else if (A_ThisMenuItem ="Generic Ingredient &V" || GeneralCount=22)
+			Sendinput,{tab}{Home}{right 9}{right 110}
+		else if (A_ThisMenuItem ="Generic Ingredient &W" || GeneralCount=23)
+			Sendinput,{tab}{Home}{right 9}{right 111}
+		else if (A_ThisMenuItem ="Generic Ingredient &X" || GeneralCount=24)
+			Sendinput,{tab}{Home}{right 9}{right 112}
+		else if (A_ThisMenuItem ="Generic Ingredient &Y" || GeneralCount=25)
+			Sendinput,{tab}{Home}{right 9}{right 113}
+		else if (A_ThisMenuItem ="Generic Ingredient &Z" || GeneralCount=26)
+			Sendinput,{tab}{Home}{right 9}{right 114}
+		else if (A_ThisMenuItem ="Ingredient Note 1")
+			Sendinput,{tab}{Home}{right 9}{right 140}
+		else if (A_ThisMenuItem ="Ingredient Note 10")
+			Sendinput,{tab}{Home}{right 9}{right 141}
+		else if (A_ThisMenuItem ="Ingredient Note 2")
+			Sendinput,{tab}{Home}{right 9}{right 143}
+		else if (A_ThisMenuItem ="Ingredient Note 3")
+			Sendinput,{tab}{Home}{right 9}{right 144}
+		else if (A_ThisMenuItem ="Total Probiotic" || GeneralCount=-1)
+			Sendinput,{tab}{End}{Left 20}
+		else if (A_ThisMenuItem ="Manual"){
+			Sendinput,{tab}{Home}
+			ManualInput=1
+		}
+		else if (A_ThisMenuItem ="STOP")
+			Reload
+		else
+			return
+		; tt(GeneralCount,,0,0,2)
+		; GeneralCount++
+		; tt(GeneralCount)
+		return
 
 
   Ingredient_table:
@@ -1253,6 +1259,7 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		; Breaking.Point()
 			; WinActivate, NuGenesis LMS - \\Remote
 		;excel.NextSheet()
+		; excel.connect(0)
 		Breaking.Point()
 		;TT(Product)
 		Critical, Off
@@ -2008,6 +2015,36 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
       ; return
   }
 
+CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
+		global
+      try menu, Menu, DeleteAll
+			if winactive("Edit sample (Field Configuration: F, Micro) - \\Remote")
+				send {click 421, 504}
+			else ;if winactive("Edit sample (Field Configuration")
+				Send, {Click 425, 434}
+  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\Customers.ini
+  		{
+  		If A_Index = 1
+  			Continue
+  		MenuItems := StrSplit(A_LoopReadLine, "=")
+  		Selection:= % MenuItems[1]
+  		Menu, Menu, add, &%Selection%, CustomerMenu
+  		}
+      menu, menu, add
+      menu, menu, add, E&xit, ExitMenu
+  		Menu, Menu, Show,
+		return
+		CustomerMenu:
+			sleep 200
+			InputVar:=StrReplace(A_ThisMenuItem, "&", "")
+			; InputVar:=A_ThisMenuItem
+			IniRead,CustomerPosition, C:\Users\mmignin\Documents\VQuest\Data\Customers.ini, Customers, %InputVar%
+			sleep 20
+      menu, Menu, DeleteAll
+			sleep 200
+			this.DropdownSelect(CustomerPosition)
+			return
+	}
 
   DropdownSelect(A_ShipTo){
     sleep 100

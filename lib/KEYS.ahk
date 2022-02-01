@@ -1,16 +1,17 @@
 return
 
 
+
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
 		Numlock:: Menu.LMS() ;4tap() ;LMS.COA()
 		mbutton:: 3tap()
 		F7::		  3Right()
 		F6::			3Left()
-		F13 up::
-		lms.searchBar("")
-		flashscreen(CodeString)
-		return
+		; F13 up::sd
+			; lms.searchBar("")
+			; flashscreen(CodeString)
+			; return
 		F20 & Space::Varbar.Focus(Product)
 		F20 & left::Send, %Product%(on sample log)
 		F20 & down::Send, %Batch%
@@ -165,7 +166,7 @@ Ins::flovar()
 	F19 & '::              	numpad0
 	F19 & Backspace::      	backspace
 	; F19 & ENTER::        	  Sendinput,{enter}
-	F19 & RShift::         	Sendinput,{Tab}
+
 +#s::											send, {lwindown}{s}{lwinup}
 	$lwin::									return
 	#F6::										#left
@@ -202,9 +203,9 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 !e::												sendinput, {delete}
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
-<#F13::											GetAllProducts("`n")
-<!F13::											GetAllBatches("`n")
-<#enter::										GetAllProducts("`n")
+; <#F13::											GetAllProducts("`n")
+; <!F13::											GetAllBatches("`n")
+; <#enter::										GetAllProducts("`n")
 rwin::return
 <#tab::										GetAllProducts(A_tab)
 Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
@@ -336,8 +337,12 @@ F20 & /::        	 				OCR()
 
 	F20 & =::            		Send,{ctrldown}{=}{ctrlup}
 	F20 & -::            		Send,{ctrldown}{-}{ctrlup}
-	F19 & enter::					Varbar.focus("Edit1")
-	F20 & enter::					Varbar.focus("Edit2")
+	F19 & enter::					Varbar.focus("Edit5")
+	F19 & Rshift::				Varbar.focus("Edit1")
+	F20 & enter::
+	Varbar.focus("Edit5")
+	send, {esc}{home}^{right}
+	return
 	; F20 & F19::          	Varbar.focus("Edit1")
 
 
@@ -545,57 +550,7 @@ F15::MuteTeamsMicrophone()
 #ifwinactive, Map VQ drive.bat ahk_exe cmd.exe
 
 
-ExplorerSearch(text){
-		;excel.connect(1)
-		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
-		Searchwindow:="search-ms:displayname"
-		IfwinNotExist, %Searchwindow% && ifwinNotexist, %AllLabelCopy%
-			return
-		;  Run, %AllLabelCopy%
-		; IfwinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
-			; run, %AllLabelCopy%
-		IfwinExist, %Searchwindow%
-			winactivate, %AllLabelCopy%
-		winwait, %AllLabelCopy%, ,2
-		if errorlevel
-			winactivate, ahk_exe explorer.exe
-		sleep 300
-		winGetPos, wX, wY, wW, wH, A
-		clk(ww-175, 75)
-		sleep 400
-		; SetKeyDelay, 20, 1
-		Send, %Text%
-		sleep 300
-		Send, {enter}
-		; setkeydelay, 0 , 0
-		return
-		}
 
-
-
-FindAndReplaceWord(find,Replace,AllOrOne:="a"){
-		Send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
-		if (Allorone=="a"){
-			loop 3 {
-				sleep 200
-				if winactive("Microsoft Word")
-					Send, {enter}
-				sleep 300
-			}
-					return
-		}
-		else
-			Send, {enter}{esc}
-}
-
-Table_Entry(Entry){
-		Global Iteration
-			if Iteration < 0
-				Direction:="{Tab}"
-			If Iteration > 0
-				Direction:="{down}+{tab}{Tab}"
-		send % Entry Direction "{ctrlup}{altup}{shiftup}"
-	}
 
 
 
