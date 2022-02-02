@@ -244,24 +244,24 @@ clipCheckIfEmpty(){
 		excel.prevsheet()
 	else if winactive("NuGenesis LMS - \\Remote")
 			LMS.SearchBar(Product,"{enter}",0)
-	else If winactive("Select methods tests - \\Remote")
+	else If winactive("Select methods tests - \\Remote") && !Validating
 		Send, {esc}
-	else If winactive("Composition - \\Remote")
+	else If winactive("Composition - \\Remote") && !Validating
 		Send, {esc}
-	else If winactive("Test Definition Editor - \\Remote")
+	else If winactive("Test Definition Editor - \\Remote") && !Validating
 		Send, {esc}
-	else If winactive("Results Definition - \\Remote")
+	else If winactive("Results Definition - \\Remote") && !Validating
 		Send, {esc}
-	else if winactive("Edit test (Field Configuration:")
+	else if winactive("Edit test (Field Configuration:") && !Validating
 		Send, {esc}
-	else if winactive("Register new samples - \\Remote")
+	else if winactive("Register new samples - \\Remote") && !Validating
 		Send, {esc}
-	else if winactive("Select samples for test:")
+	else if winactive("Select samples for test:") && !Validating
 		Send, {esc}
-	else If winactive("Result Entry - \\Remote")  ;Enter Test Results window"
+	else If winactive("Result Entry - \\Remote")  && !Validating ;Enter Test Results window"
 		WorkTab.ChangeTestResults("toggle")
-	else if winactive("Select tests for request: R")
-		send % Clk(40, 105)
+	; else if winactive("Select tests for request: R")
+	; 	send % Clk(40, 105)
 	else if winactive("ahk_exe WFICA32.EXE")
 		Send, %Product%
 	else if winactive("ahk_exe explorer.exe")
@@ -273,9 +273,9 @@ clipCheckIfEmpty(){
 3down(){
 	global
 	FlashScreen("3-Down")
-	If winactive("NuGenesis LMS - \\Remote")
-		LMS.Filter(Clear)
-	else if winactive("Select samples for test:")
+	; If winactive("NuGenesis LMS - \\Remote")
+		; LMS.Filter(Clear)
+	if winactive("Select samples for test:")
 		Clk(853, 657) ; click okay.
 	else if winactive("ahk_exe Snipaste.exe")
 		send, {esc}

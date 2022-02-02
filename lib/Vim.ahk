@@ -88,10 +88,11 @@ return
 	SavedTextMenu()
 		return
 	F13 & Enter::Sendinput, {end}{enter}return{enter}
-	F13 & q::esc
 	F13 & LShift up::Sendinput, {Enter}
 	; F13 & c::gosub, F19
-	; F13 & v::gosub, F20
+	F13 & v::vim.visualmode()
+	F13 & c::vim.visualmodeCopy()
+
 	F13 & j::Vim.down()
 	F13 & l::Vim.right()
 	F13 & k::Vim.up()
@@ -103,7 +104,8 @@ return
 	F13 & i::Vim.DuplicateLine()
 	F13 & s::Vim.Selection()
 	F13 & m::Vim.Home()
-	F13 & w::sendinput, !{tab}
+	F13 & q::sendinput, !{tab}
+	F13 & w::
 	F13 & .::Vim.WordRight()
 	F13 & b::sendinput, {ctrldown}{b}{ctrlup}
 	F13 & ,::Vim.WordLeft()
@@ -115,6 +117,7 @@ return
 		else
 			Vim.SelectAll()
 		return
+	F13 & z::SendInput, {backspace}
 	F13 & d::
 		if getkeystate("s", "p"){
 			if winactive("ahk_exe Code.exe")
@@ -130,7 +133,7 @@ return
 	F13 & 9::Vim.OpenParentheses()
 	F13 & 0::Vim.CloseParentheses()
 	F13 & p::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
-	F13 & z::                      sendinput, {F3} ;undo
+                      sendinput, {F3} ;undo
 	F13 & g::vim.Git()
 	F13 & down::									  sendinput, {altdown}{lwindown}{down}{altup}{lwinup}
 	F13 & up::									    sendinput, {altdown}{lwindown}{up}{altup}{lwinup}
@@ -142,9 +145,14 @@ return
 	F19 & space::										Backspace
 	f13 & F19::											sendinput, {ctrldown}{lwindown}{[}{lwinup}{ctrlup}
 	f13 & F20::											sendinput, {ctrldown}{lwindown}{]}{lwinup}{ctrlup}
-	f13 & \::												sendinput, {ctrldown}{lwindown}{\}{lwinup}{ctrlup}
+	f13 & \::
+	sendinput, {ctrldown}{lwindown}{\}{lwinup}{ctrlup}
+	KeyWait, F13, U
+	sleep 200
+	send, {enter}
+	return
 	>+space::
-	F13 & space::sendinput, {_}								 sendinput, {)} ;Enter parenthasis below
+	; F13 & space::sendinput, {_}								 sendinput, {)} ;Enter parenthasis below
 	; F13 up::F13
 
 
@@ -262,7 +270,7 @@ return
 	; F13 & '::Sendinput,!+{F9}
 
 	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
-	F13 & z::F3
+	; F13 & [::F3
 	F13 & 5::send,`%
 	F13 & 1::VScodeBookmarks()
 	F13 & 2::VScodeBookmarks()
@@ -415,6 +423,34 @@ return
 
 
 Class Vim {
+
+	VisualMode(){
+		flashscreen(VisualMode)
+		sendinput, {Shift down}
+		Keywait, F13, U
+		sendinput, {shift UP}
+		flashscreen(VisualMode)
+		return  ;gosub, F20
+	}
+	VisualModeCopy(){
+		if Getkeystate
+		tt(clipboard,1000,x_carret,y_Carret,,200)
+		; Flovar(Clipboard)
+		return  ;gosub, F20
+	}
+
+	VisualModeCut(){
+		flashscreen(CopyMode, "white")
+		sendinput, {Shift down}
+		Keywait, F13, U
+		sendinput, {shift UP}
+		flashscreen("","white")
+		Send, ^c
+		sleep 30
+		tt(clipboard,1000,x_carret,y_Carret,,200)
+		; Flovar(Clipboard)
+		return  ;gosub, F20
+	}
 
 	down(){
 		if Getkeystate("LControl","p")

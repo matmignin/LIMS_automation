@@ -379,6 +379,13 @@ F20 & /::        	 				OCR()
 	F6::              Send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
 	F19 & Wheelright::
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
+#ifwinactive, Micro Validation Screenshots.docx - Word
+Mbutton::
+sendinput, 5.%iteration%{enter}^{v}{enter 2}
+varbar.AddIteration(0)
+return
+
+
 
 
 #ifwinactive, AHK RegEx Tester v2.1

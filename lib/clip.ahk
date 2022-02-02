@@ -1,7 +1,7 @@
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 #ifwinactive,
-
+Return
 GetAllBatches(Delimiter:=" ",File:=""){
   global
   regBatches:=[]
@@ -11,10 +11,13 @@ GetAllBatches(Delimiter:=" ",File:=""){
 	}
 	else
 		Haystack:=Clipboard
+		PreClip:=Clipboard
 		sleep 50
   while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
     ; if aBatch
       regBatches.insert(aBatch)
+      ; Control, Add, %aBatch%, Combobox1, VarBar
+      ; fileAppend, a,Data\Batches.txt
   ; }
       AllBatches:=[], oTemp := {}
       for vKey, vValue in regBatches
@@ -37,15 +40,20 @@ GetAllBatches(Delimiter:=" ",File:=""){
 		Control, Add, %AllBatchesDDL%, Combobox1, VarBar
     ; GuiControl,Varbar:Text, Note3, %AllBatches%
     ; ControlsetText, Edit8,%AllBatches%,VarBar
-		FileAppend, AllBatches,Data\Batches.txt
+		FileAppend, `n %AllBatches%, Data\Batches.txt
 
+    SimpleClip:=1
+    sleep 20
 		clipboard:=AllBatches
 		sleep 200
 		send, ^v
+    sleep 400
+    SimpleClip:=1
+    clipboard:=PreClip
 		; Sendinput, %AllBatches%
 
-		PreventPopup:=
-		return %AllBatches%
+		; PreventPopup:=
+		return AllBatches
     ; msgbox, %AllBatches%,
 }
 GetAllProducts(Delimiter:=" ",File:=""){
@@ -58,8 +66,10 @@ GetAllProducts(Delimiter:=" ",File:=""){
 	}
 	else
 		Haystack:=Clipboard
+    PreClip:=Clipboard
 		sleep 50
-  while pos := RegexMatch(Haystack, "i)[abcdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+  ; while pos := RegexMatch(Haystack, "i)[abcdefghijkl]\d{3}\b", aProduct, pos+1) ; {
+  while pos := RegexMatch(Haystack, RegexProduct, aProduct, pos+1) ; {
     ; if aBatch
       regProducts.insert(aProduct)
   ; }
@@ -82,10 +92,16 @@ GetAllProducts(Delimiter:=" ",File:=""){
     GuiControl,Varbar:Text, Note2, %AllProducts%
     ; ControlsetText, Edit7,%AllProducts%,VarBar
     ; IniWrite, %AllProducts%, Settings.ini, Notes, note2
+		FileAppend, `n %AllProducts%, Data\Products.txt
+
+    SimpleClip:=1
+    sleep 20
     clipboard:=AllProducts
     sleep 200
     send, ^v
-
+    sleep 400
+    SimpleClip:=1
+    clipboard:=Preclip
 		Return AllProducts
     ; Send, {blind}%AllProducts%
 
@@ -94,7 +110,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
 
 
  FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
-	F13 & 1::             sendinput,%product%;gosub, Product_cyclebackward
+	F13 & 1::             sendinput,%product% ;gosub, Product_cyclebackward
 												; if Getkeystate("LCtrl","p")
 													; GetAllProducts()
 												; else
@@ -109,11 +125,27 @@ GetAllProducts(Delimiter:=" ",File:=""){
 
 												; return
 	F13 & 3::							sendinput, %Lot%
-	F13 & 4::							GetAllProducts()
-	F13 & 5::							GetAllBatches()
+	F13 & 4::
+    if GetKeyState("Lctrl","D")
+      GetAllProducts("`n")
+    else if GetKeyState("Lalt","D")
+      GetAllProducts("`t")
+    else
+      GetAllProducts()
+    return
+	F13 & 5::
+    if GetKeyState("Lctrl","D")
+      GetAllBatches("`n")
+    else if GetKeyState("Lalt","D")
+      GetAllBatches("`t")
+    else
+      GetAllBatches()
+    Return
+  F13 & 6::             Sendinput % excel.GetAllSheets()
 
 
-Tab & 2::
+
+Tab & 2::menu.batches()
   Batch_cyclebackward:
   GUI, varbar:default
   Excel.InfoLocations()
@@ -502,10 +534,12 @@ clipChange(type){
   global
   ifwinactive, Select tests for request: R
     return
-  ifwinexist, Mats LMS Workbook.xlsb - Excel
-      return
+  ; ifwinexist, Mats LMS Workbook.xlsb - Excel
+      ; return
+  if SimpleClip
+    return
   sleep 50
-    clip.Parse()
+    clip.Parse1()
     sleep 25
 
     ; if winactive("ahk_exe WFICA32.EXE"){
@@ -516,10 +550,9 @@ clipChange(type){
       FloVar(Clipboard,3000,13)
     else if A_PriorKey = x
       FloVar(Clipboard,3000,13)
-    if A_PriorKey = b
+    else if A_PriorKey = b
       return
 }
-
 
 
 Class Clip {
@@ -596,10 +629,10 @@ CodesRegex(input:=""){
       ; Gui, VarBar:Submit, NoHide
       Parse:= Input ? Input : Clipboard
         ; RegexMatch(Parse, RegexProduct,r)
-      Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : ""
-      Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : ""
-      Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : ""
-      Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : ""
+      Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
+      Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
+      Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
+      Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Ct:=rCoated ? " ct#" : ""
       GuiControl,Varbar:Text, Product, %rProduct%
       GuiControl,Varbar:Text, Batch, %rBatch%
@@ -900,7 +933,6 @@ Regex(Category:=""){
       If rBatch {
         GuiControl,Varbar:Text, Batch, %rBatch%
         Batch:=rBatch
-
       }
       If rLot {
         GuiControl,Varbar:Text, lot, %rlot%
@@ -918,8 +950,8 @@ Regex(Category:=""){
         GuiControl,Varbar:Text, Coated, %rCoated%
         Coated:=
       }
-      ; GuiControl, Varbar:MoveDraw, Coated
-      ; gui varbar:submit, nohide
+      GuiControl, Varbar:MoveDraw, Coated
+      gui varbar:submit, nohide
       FloVar(0,2000,16)
       sleep 20
   }

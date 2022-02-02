@@ -2,15 +2,12 @@
 VQuest_Start:
     #SingleInstance,Force
     #Persistent
-  ;  #ErrorStdOut
+    ;#ErrorStdOut
     Process, Priority, , High
     #NoEnv
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-    ; Iniread, Mode, Settings.ini, Options, Mode
-
     iniread, DebuggingScript, Settings.ini, Options, DebuggingScript
-
-    ; Iniread, HideVarbar, Settings.ini, Options, HideVarbar
+    iniread, Validating, Settings.ini, Options, Validating
     Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
     #KeyHistory 500
     #InstallKeybdHook
@@ -21,7 +18,7 @@ VQuest_Start:
     ; #MaxHotkeysPerInterval 500
     ; #MaxThreadsBuffer, On
     #InstallKeybdHook
-    OnMessage(0x004A, "Receive_WM_COPYDATA")  ; 0x004A is WM_COPYDATA
+    ; OnMessage(0x004A, "Receive_WM_COPYDATA")  ; 0x004A is WM_COPYDATA
 
     #InstallMouseHook
     #HotkeyModifierTimeout
@@ -36,7 +33,6 @@ VQuest_Start:
     SetNumLockState, on
     SetscrolllockState, off
     CrLf=`r`n
-    EnvGet, VimOpen, VimOpen
     SetNumlockState Alwayson
     setcapslockstate alwaysoff
     SetscrolllockState, alwaysoff
@@ -44,9 +40,7 @@ VQuest_Start:
     SetWorkingDir, %A_ScriptDir%
     #winactivateForce
     AutoTrim, On
-    ; else
     OnExit("Varbar.SaveVariables")
-    ;FileName:="lib/winPos.txt"
     if !VarBar_x
       VarBar_x=1
     if !VarBar_y
@@ -62,22 +56,24 @@ VQuest_Start:
     Menu, Tray, Add, Entering_Rotations, Entering_Rotations
     Menu, Tray, Add, TempCode, TempCode
     PasteTime:=A_TickCount
-    if Mode=Edit_Batches
-      Menu, Tray, Check, Edit_Batches
-    else if Mode=Entering_Rotations
-      Menu, Tray, Check, Entering_Rotations
-    else if Mode=TempCode
-      Menu, Tray, Check, TempCode
+    ; if Mode=Edit_Batches
+      ; Menu, Tray, Check, Edit_Batches
+    ; else if Mode=Entering_Rotations
+      ; Menu, Tray, Check, Entering_Rotations
+    ; else if Mode=TempCode
+      ; Menu, Tray, Check, TempCode
+      Mode:="Entering_Rotations"
      ShowVarBar:=CreateMenu("showVarbar")
+     Validating:=CreateMenu("Validating")
     ;  HideShowSampleID:=CreateMenu("ShowSampleID")
     ; ExcelConnect:=CreateMenu("")
-    DebuggingScript:=CreateMenu("DebuggingScript")
+    ; DebuggingScript:=CreateMenu("DebuggingScript")
     ; HideVarbar:=CreateMenu("HideVarbar")
     Menu, Tray, Add, E&xit, ExitSub
     Menu, Tray, Default, E&xit
     ; GuiControl, -redraw, varbar
     try Menu, Tray, Icon, bin\Robot.ico
-    Currentwindow:=A
+    ; Currentwindow:=A
     varbar.Show()
 
     ifwinexist, Mats LMS Workbook.xlsb - Excel
@@ -90,7 +86,7 @@ VQuest_Start:
   ; if !ClipOpen
     ; try Run, cl3.Ahk, lib\CL3
     ; GuiControl, +redraw, varbar
-    RegexProduct:="i)(?<=\w{3})?(?P<Product>[abcdefghijkl]\d{3}\b)"
+    RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
     RegexLot:=    "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
     RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
@@ -107,28 +103,28 @@ VQuest_Start:
     ; }
 
   OnClipboardChange("clipChange")
-      #Include C:\Users\mmignin\Documents\VQuest\lib\SuppressErrorDialog.ahk
+  #Include C:\Users\mmignin\Documents\VQuest\lib\SuppressErrorDialog.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\Toggles.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\Temp.ahk
-  if !VimOpen
-    #include C:\Users\mmignin\Documents\VQuest\lib\VIM.ahk
+  ; if !VimOpen
+  #include C:\Users\mmignin\Documents\VQuest\lib\VIM.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
+  ; #include C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
+   #include C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\PAD.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-  #Include C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
+  ; #Include C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\varBar.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
-  #include  C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
-  #include  C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-  #include  C:\Users\mmignin\Documents\VQuest\lib\Xml.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Xml.ahk
 
+; send, {lwin up}{ctrl up}{alt up}
   #Ifwinactive,
 return
 Receive_WM_COPYDATA(wParam, lParam)
