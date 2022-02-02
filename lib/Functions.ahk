@@ -1,9 +1,60 @@
-#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\VarBar.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\VarBar.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
+
+ExplorerSearch(text){
+		;excel.connect(1)
+		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
+		Searchwindow:="search-ms:displayname"
+		IfwinNotExist, %Searchwindow% && ifwinNotexist, %AllLabelCopy%
+			return
+		;  Run, %AllLabelCopy%
+		; IfwinNotExist, ahk_exe explorer.exe && ifwinNotexist, %AllLabelCopy%										Run, %AllLabelCopy%
+			; run, %AllLabelCopy%
+		IfwinExist, %Searchwindow%
+			winactivate, %AllLabelCopy%
+		winwait, %AllLabelCopy%, ,2
+		if errorlevel
+			winactivate, ahk_exe explorer.exe
+		sleep 300
+		winGetPos, wX, wY, wW, wH, A
+		clk(ww-175, 75)
+		sleep 400
+		; SetKeyDelay, 20, 1
+		Send, %Text%
+		sleep 300
+		Send, {enter}
+		; setkeydelay, 0 , 0
+		return
+		}
 
 
+
+FindAndReplaceWord(find,Replace,AllOrOne:="a"){
+		Send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
+		if (Allorone=="a"){
+			loop 3 {
+				sleep 200
+				if winactive("Microsoft Word")
+					Send, {enter}
+				sleep 300
+			}
+					return
+		}
+		else
+			Send, {enter}{esc}
+}
+
+Table_Entry(Entry){
+		Global Iteration
+			if Iteration < 0
+				Direction:="{Tab}"
+			If Iteration > 0
+				Direction:="{down}+{tab}{Tab}"
+		send % Entry Direction "{ctrlup}{altup}{shiftup}"
+	}
 
 	ifNothingSelected(action, Button){
 	  ClipboardSaved:=ClipboardAll
@@ -245,15 +296,15 @@ class Breaking {
 
 ; }
 
-FlashScreen(Text:=""){
+FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
 	global
-	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cwBlack
+	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cw%Color%
 	if !Text
 		Text:=A_ThisHotkey
-		tt(Text,200,A_caretx,A_caretY,4)
+		tt(Text,ToolTipTime,A_caretx,A_caretY,4)
 		; ToolTip, %Text%, %A_CaretX%, %A_CaretY%, 9
 	; ToolTip, %text%, 9
-	Sleep,15
+	Sleep,10
 	SplashImage,off
 	; ToolTip,,,,9
 	return
@@ -441,7 +492,7 @@ FloVar(VariableText:="", MousePopup:="", FontSize:=18){
 		Gosub, FloatOSD  ; Make the first update immediate rather than waiting for the timer.
 		if (MousePopup){
 			; GUI, FloVar:Font, % "s" MousePopup
-			; my-=500
+			; my-=500\
 			SetTimer, FloatOSD, 50
 			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
 			SetTimer, PopUpOSD, % "-" MousePopup
