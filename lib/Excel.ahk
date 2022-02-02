@@ -1,6 +1,6 @@
-#include C:\Users\mmignin\Documents\VQuest\lib\varbar.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-
+; #include C:\Users\mmignin\Documents\VQuest\lib\varbar.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+return
 
 Class Excel{
 Connect(reload:=0){
@@ -186,15 +186,15 @@ SearchWorkbook(SearchWord:=""){
 
 SaveToDataBase(){
 	global
-;  iniread, full, Settings.ini, %Product%, ;ecc738
- Test_Specs:= strsplit(Full,"=")
- Test:=Test_Specs[1]
- Specs:= strsplit(Test_Specs[2],"|")
- msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
+	;  iniread, full, Settings.ini, %Product%, ;ecc738
+	Test_Specs:= strsplit(Full,"=")
+	Test:=Test_Specs[1]
+	Specs:= strsplit(Test_Specs[2],"|")
+	msgbox % "test: " Test "`n`nLabelClaim: " Specs[1] "`nMinLimit: " Specs[2] "`nMaxLimit: " Specs[3] "`nUnits: " Specs[4] "`nPercision: " Specs[5] "`nDescription: " Specs[6] "`nMethod: " Specs[7] "`n" "`nTests: " Tests "`nTest_Specs[2]: " Test_Specs[2]
 
- LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-	Return
-	}
+	LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+		Return
+		}
 
 activeCell(){
 	Global
@@ -231,11 +231,11 @@ PrevSheet(){
 		Xl.Sheets(PrevSheet).activate
 		;excel.connect()
 	Excel.MatchColor()
-}
-	; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer)
-	; Excel.MatchColor()
-	GuiControl, +redraw, varbar
 	}
+		; TT(Product "`t" Batch "`t" Lot "`t" Coated "`n" Name "`t`t " Customer)
+		; Excel.MatchColor()
+		GuiControl, +redraw, varbar
+		}
 
 MatchColor(selectedTab:=""){
 	Global XL, A_Mode

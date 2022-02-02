@@ -267,19 +267,19 @@ F20 & /::        	 				OCR()
 	numpadMult::         		4up()
 	numpaddot::          		4down()
 	pause::							Suspend, Toggle
-	<^f::
-		if MouseIsOver("ahk_exe Code.exe"){
-			FlashScreen("Find")
-			If !winactive("ahk_exe Code.exe"){
-				winactivate, ahk_exe Code.exe
-				sleep 100
-			}
-			sendinput, {ctrldown}{f}{ctrlup}
-			return
-		}
-		else
-		sendinput, ^{f}
-		return
+	; <^f::
+	; 	if MouseIsOver("ahk_exe Code.exe"){
+	; 		FlashScreen("Find")
+	; 		If !winactive("ahk_exe Code.exe"){
+	; 			winactivate, ahk_exe Code.exe
+	; 			sleep 100
+	; 		}
+	; 		sendinput, {ctrldown}{f}{ctrlup}
+	; 		return
+	; 	}
+	; 	else
+	; 	sendinput, ^{f}
+	; 	return
 
 	#h::return ;send, !{F2}
 	#p::return ;send, +!{h}

@@ -5,33 +5,45 @@
 ;^(?<Customer>[\w ]*)\s(?!(\s|# ?)?(\d{6}))?.*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?<PillType>(Capsule|Tablet)(?: size:)) (?<PillSize>[\w ]*).*(?:Serving Size: )(?<ServingSize>\d+) (?<ServingType>[\w ]+).+(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)(?=\sDaily Value)
 
 
-#if
-
+return
 ; #If Mode("TempCode")
 TEST_1: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
 ; CopyNewestFile("K880")
-; CopyNewestFile("K880")
+menu.batches()
+; CopyNewestFile("K784")
 
 ; varbar.ProductsMenu(1)
+; Varbar.BatchesMenu(Product)
 return
 
 
 TEST_2: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 2 ||||||||||||||||||||||||||||||||||||||||||||||||||||
-Varbar.BatchesMenu(Product)
-return
-  tProduct:="K796"
-  tRegexSearchPattern:="i)^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))(?:.*)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})(?:.*)(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))(?<Name>[\w ]*(?!Dietary Supplement))(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*)"
-  tRegexReplacePattern:="i)(((\d)%$)|(\Q*\E))"
+  tProduct:=Product
+  tRegexSearchPattern:="is)^(?<Customer>[\w ]*).*(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4}).*size: (?<PillSize>#[0{2})[ \w]*).*20\d\d\W*(?<Name>[a-z ]*)\W*(Dietary Supplement).*Serving Size.*(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)\s+Other" ;working
+    ; "is)^(?<Customer>[\w ]*).*(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4}).*20\d\d\W*(?<Name>[a-z ]*)\W*(Dietary Supplement).*Serving Size.*(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)\s+(?<Ingredients>[\w.].*)\s+Other" ;no pill size
+    ; "i)^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))(?:.*)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})(?:.*)(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))(?<Name>[\w ]*(?!Dietary Supplement))(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*)" ;old
+
+    ; i)^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))
+    ; i)(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})
+    ; i)size: (?<PillSize>#[0{2})[ \w]*)
+    ; i)20\d\d\W*(?<Name>[a-z ]*)\W*(Dietary Supplement)
+    ; i)Serving Size.*(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)
+    ; i)Daily Value\s+(?<Ingredients>[\w.].*)\s+Other
+
+    ; i)^(?<Customer>[\w ]*(?!(\s|# ?)?(\d{6})))[a-z\s]*(?<Product>(?<=\w{3})[abdefghijkl]\d{3})(?=\w{4})[a-z\s]*(?<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)(?:.{2}))[a-z\s]*20\d\d\W*(?<Name>[a-z ]*)\W*(Dietary Supplement)[a-z\s]*Serving Size.*(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)[a-z\s]*Daily Value\s+(?<Ingredients>[\w.].*)\s+Other ;older
+  tRegexReplacePattern:="i)(((\d)%$)|(\Q*\E))" ;replace all the percents
   ;WordText:=
   sleep 300
-  clip.EditBox(CopyWordDoc(tProduct,tRegexSearchPattern,tRegexReplacePattern))
+  CopyWordDoc(tProduct,tRegexSearchPattern,tRegexReplacePattern)
+  msgbox % r_Name "`n" R_Ingredients
   ; send, ^v
   return
 
 
 ; CopySourcePattern:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
 
-CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label Copy Final\K000 - K999"){ ;; Copy Newst file that matches Current Product
+CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label Copy Final\K000 - K999"){
+  Global ;; Copy Newst file that matches Current Product
   Loop, Files, %copySourcePattern%\label %ProductToSearch%*.docx
   {
       copy_it := false
@@ -57,7 +69,8 @@ CopyNewestFile(ProductToSearch:="entery", CopySourcePattern:="\\10.1.2.118\Label
 
 
 
-CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){ ;;Copy a word document for CoA
+CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
+  Global ;;Copy a word document for CoA
   doc_path := CopyNewestFile(ProductToFind)                   ; search for newst file that matches Product
     sleep 200
   oDoc := ComObjGet(doc_path)                                   ; access Word Doc
@@ -67,9 +80,10 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){ ;;Copy a wo
     sleep 300
   oDoc.close()                                                  ; close Word Doc
   WordText:=Clipboard                                           ; put text into clipboard
-  RegExMatch(WordText,RegexSearchPattern,Reged)
+  RegedDoc:=RegExMatch(WordText,RegexSearchPattern,R_)
+
   sleep 200               ; Search with Regex
-  return % regexreplace(RegedIngredients, RegexReplacePattern)
+  return ; % regexreplace(RegedIngredients, RegexReplacePattern)
 }
 
 

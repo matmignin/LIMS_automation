@@ -43,10 +43,10 @@ CreateMenu(VarName,MenuType:="Tray"){
   Iniread, VarNamecheck, Settings.ini, Options, %VarName%
   sleep 50
   Menu, %MenuType%, Add, %VarName%, % VarNameFunc
-  if VarNamecheck=1
+    Menu, %MenuType%, UnCheck, % VarName
+  if VarNamecheck || 
     Menu, %MenuType%, Check, % VarName
   else
-    Menu, %MenuType%, UnCheck, % VarName
   ; VarNameCheck:= VarNamecheck= 1 ? 1 : ""
 return VarNamecheck= 1 ? 1 : ""
 ; else

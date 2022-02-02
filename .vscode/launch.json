@@ -1,9 +1,6 @@
 {
   "version": "0.2.0",
   "configurations": [
-
-
-
     {
       "type": "autohotkey",
       "request": "launch",
@@ -11,16 +8,6 @@
       "port":"9002-9010",
       "useAutoJumpToError": true,
       "program": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk",
-			"args": [],
-			"useDebugDirective": true
-    },
-    {
-      "type": "autohotkey",
-      "request": "launch",
-      "name": "MiniCode Debugger",
-      "port":"9002-9010",
-      "useAutoJumpToError": true,
-      "program": "C:\\Users\\mmignin\\Documents\\VQuest\\MiniScript.ahk",
 			"args": [],
 			"useDebugDirective": true
     }

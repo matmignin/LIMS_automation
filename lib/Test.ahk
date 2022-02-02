@@ -187,7 +187,7 @@ loadfile:
 	{
 		Counter := 0 ; COUNTER IS ZEROED SO THAT THE RESULT IS AN OFFSET OF CURRENT LINE (ERASE ANY OFFSETS OF PAST LINES)
 		CURRENT_LINE := A_LoopField
-		While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abCdefghijkl]\d{3}\b",Product)
+		While, OutputVar := RegExMatch(CURRENT_LINE,"i)[abcdefghijkl]\d{3}\b",Product)
 		{
 			Counter += OutputVar ; COUNTER IS INCREMENTED SO THAT IN A LINE WITH MULTIPLE RESULTS, THE MSGBOX OFFSETS THE CORRECT POSITION.
 			; MsgBox, %Counter% & %Product%
@@ -233,94 +233,7 @@ Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Data\CurrentCodes.txt"){
 
 /*
 
-Numlock:: ;Clipchain_v()
-MouseGetPos, xx
-TimeButtondown = %A_TickCount%
-; Wait for it to be released
-Loop
-{
-   Sleep 10
-   GetKeyState, LButtonState, Numlock, P
-  ;  if NumlockState = U  ; Button has been released.
-  ;  {
-      ; If winactive("Crimson Editor") and (xx < 25) ; Single Click in the Selection Area of CE
-      ; {
-      ;    Send, ^c
-      ;    return
-      ;    return
-      ; }
-      ; break
-  ;  }
-   elapsed = %A_TickCount%
-   elapsed -= %TimeButtondown%
-   if elapsed > 200  ; Button was held down too long, so assume it's not a double-click.
-   {
-      MouseGetPos x0, y0            ; save start mouse position
-      Loop
-   {
-     Sleep 20                    ; yield time to others
-     GetKeyState, keystate, Numlock
-     IfEqual keystate, U, {
-       MouseGetPos x, y          ; position when button released
-       break
-     }
-   }
-   if (x-x0 > 5 or x-x0 < -5 or y-y0 > 5 or y-y0 < -5)
-   {                             ; mouse has moved
-      ; clip0 := ClipBoardAll      ; save old clipboard
-      ;ClipBoard =
-      ; Send ^c
-			                    ; selection -> clipboard
-      ClipWait 1, 1              ; restore clipboard if no data
-      IfEqual ClipBoard,, SetEnv ClipBoard, %clip0%
-   }
-      return
-   }
-}
-; Otherwise, button was released quickly enough.  Wait to see if it's a double-click:
-TimeButtonup = %A_TickCount%
-Loop
-{
-   Sleep 10
-   GetKeyState, NumlockState, Numlock, P
-   if NumlockState = D  ; Button has been pressed down again.
-      break
-   elapsed = %A_TickCount%
-   elapsed -= %TimeButtonup%
-   if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a double-click.
-      return
-}
 
-;Button pressed down again, it's at least a double-click
-TimeButtonup2 = %A_TickCount%
-Loop
-{
-   Sleep 10
-   GetKeyState, NumlockState2, Numlock, P
-   if NumlockState2 = U  ; Button has been released a 2nd time, let's see if it's a tripple-click.
-      break
-}
-;Button released a 2nd time
-TimeButtonup3 = %A_TickCount%
-Loop
-; GetKeyState, OutputVar, WhichKey [, Mode (P|T)]
-{
-   Sleep 10
-   GetKeyState, NumlockState3, Numlock, P
-   if numlockState3 = D  ; Button has been pressed down a 3rd time.
-      break
-   elapsed = %A_TickCount%
-   elapsed -= %TimeButtonup%
-   if elapsed > 350  ; No click has occurred within the allowed time, so assume it's not a tripple-click.
-   {  ;Double-click
-      Send, ^c
-      return
-   }
-}
-;Tripple-click:
-   Sleep, 100
-   Send, ^c
-return
 
 HasValue2(item, list, del:=","){ ;detect duplicate in array
 	haystack:=del

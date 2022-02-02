@@ -176,6 +176,16 @@ _windowNames:
 	sendinput, %WinName%
 	return
 
+	:*:vbs`;::
+	:*:vbsubmit`;::
+	:*:VarbarSubmit`;::
+		sendraw, GUI, VarBar:submit,NoHide
+		return
+	:*:vbd`;::
+	:*:vbdefault`;::
+	:*:VarbarDefault`;::
+		sendraw, GUI, varbar:default
+		return
 	:*:#ifwalms`;::
 		sendraw, #if MouseIsOver("")
 		sendinput, {left 2}
@@ -190,7 +200,11 @@ _windowNames:
 		sendinput, %winTitle%
 		sendraw, ")
 		return
+	:*:wlms`;::
 	:*:lmsw`;::
+	winGetTitle, winTitle, ahk_exe WFICA32.EXE
+	sendinput, %winTitle%
+	return
 	:*:walms`;::
 		winGetTitle, winTitle, ahk_exe WFICA32.EXE
 		; winactivate, ahk_exe WFICA32.EXE

@@ -3,6 +3,7 @@
 ; ExitMenu:
 ; Menu,Menu, deleteAll
 return
+#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
 
 class Menu{
 
@@ -506,10 +507,15 @@ Remote_desktop(){
     ProductsList:
     if !A_ThisMenuItem
       return
-    try XL.activeworkbook.Worksheets(A_ThisMenuItem).activate
-    excel.InfoLocations()
+    If winExist("Mats LMS Workbook.xlsb - Excel")
+      try XL.activeworkbook.Worksheets(A_ThisMenuItem).activate
+        ; excel.InfoLocations()
+    else
+    try GuiControl, Varbar:ChooseString, ComboBox1, %A_ThisMenuItem%
+    Catch
+      GuiControl,Varbar:Text, Product, %A_ThisMenuItem%
       ; Pop(Product,Batch " " lot)
-    excel.MatchColor()
+    ; excel.MatchColor()
     return
 
     }
@@ -525,10 +531,10 @@ Remote_desktop(){
       Batches:= StrSplit(ListOfBatches,"`n")
       Sleep 50
       loop % Batches.MaxIndex(){
-        temp:=Batches[A_index]
+        temp:=trim(Batches[A_index])
         if (Batches[A_index]){
         menu,menu,add, %temp%, BatchesList
-        if (Batches[a_index]=Batch) ;XL.Range("E1").Value)
+        if (temp=Batch) || (temp=LastMenuItemSelected) || (temp=Trim(Batch " " Lot))  ;XL.Range("E1").Value)
           menu,menu,check, %temp%,
         }
       }
@@ -539,12 +545,19 @@ Remote_desktop(){
   BatchesList:
     if !A_ThisMenuItem
       return
-    excel.RegexCell(A_ThisMenuItem)
-    XL.Range("E1").Value := A_ThisMenuItem
-    	GuiControl, Varbar:Text, lot, %lot%
+    LastMenuItemSelected:=Trim(A_ThisMenuItem)
+    If winExist("Mats LMS Workbook.xlsb - Excel"){
+      excel.RegexCell(A_ThisMenuItem)
+      XL.Range("E1").Value := A_ThisMenuItem
+      GuiControl, Varbar:Text, lot, %lot%
       GuiControl, Varbar:Text, Batch, %Batch%
       GuiControl, Varbar:Text, Coated, %coated%
-    excel.MatchColor()
+    }
+    else
+      try GuiControl, Varbar:ChooseString, ComboBox1, %A_ThisMenuItem%
+      Catch
+        GuiControl,Varbar:Text, Batch, %A_ThisMenuItem%
+    ; excel.MatchColor()
     return
     }
     SetStatus(){

@@ -251,7 +251,7 @@ return
 	y::                    	sendInput, {shiftdown}{ctrldown}{lwindown}{]}{lwinup}{shiftup}{c}{ctrlup}
 	; c::                  		sendInput, {shiftdown}{ctrldown}{lwindown}{]}{lwinup}{shiftup}{c}{ctrlup} ;send, ^{c} ;  send,^{c}
 
-	^r::										 sendinput, {F5}
+	; ^r::										 sendinput, {F5}
 	Enter::                  Sendinput,{shiftdown}{enter}{shiftup}
 	; ^space::                 Sendinput,{shiftdown}{altdown}{ctrldown}{5}{ctrlup}{altup}{shiftup}
 	#if
@@ -270,7 +270,7 @@ return
 	; F13 & '::Sendinput,!+{F9}
 
 	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
-	; F13 & [::F3
+
 	F13 & 5::send,`%
 	F13 & 1::VScodeBookmarks()
 	F13 & 2::VScodeBookmarks()
@@ -281,9 +281,6 @@ return
 	F13 & 7::VScodeBookmarks()
 	F13 & 8::VScodeBookmarks()
 	F13 & 9::VScodeBookmarks()
-
-
-	; $F13::send, {F13}
 	/ & space::								sendinput, {_}
 
 
@@ -364,7 +361,7 @@ return
 	^r::!r
 	; <^h::[
 	; <^l::]
-	<^r::ReloadScript()
+	; <^r::ReloadScript()
 
 
 	; 	send, ^c
@@ -433,7 +430,18 @@ Class Vim {
 		return  ;gosub, F20
 	}
 	VisualModeCopy(){
-		if Getkeystate
+		if Getkeystate("LControl","p")
+			cutorclip:="x"
+		else
+			CutOrClip:="c"
+		flashscreen(CopyMode, "white")
+		sendinput, {Shift down}
+		Keywait, F13, U
+		sendinput, {shift UP}
+		flashscreen("","white")
+			send, ^%CutOrClip%
+			Send, ^c
+		sleep 30
 		tt(clipboard,1000,x_carret,y_Carret,,200)
 		; Flovar(Clipboard)
 		return  ;gosub, F20
@@ -822,11 +830,11 @@ FindMatchingwindows(){
 
 ReloadScript(){
 	global
-	Send, !s
-	flashscreen("reload")
-	winSet, Transparent, 155, ahk_exe Code.exe
+	Sendinput, ^s
+	flashscreen("reload","white")
+	; winSet, Transparent, 155, ahk_exe Code.exe
 	sleep 100
-	winSet, Transparent, off, ahk_exe Code.exe
+	; winSet, Transparent, off, ahk_exe Code.exe
 	try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
 	if A_DebuggerName || DebuggingScript
 	{
