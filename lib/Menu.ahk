@@ -533,7 +533,7 @@ Remote_desktop(){
       loop % Batches.MaxIndex(){
         temp:=trim(Batches[A_index])
         if (Batches[A_index]){
-        menu,menu,add, %temp%, BatchesList
+        menu,menu,add, &%A_Index% : %temp%, BatchesList
         if (temp=Batch) || (temp=LastMenuItemSelected) || (temp=Trim(Batch " " Lot))  ;XL.Range("E1").Value)
           menu,menu,check, %temp%,
         }
