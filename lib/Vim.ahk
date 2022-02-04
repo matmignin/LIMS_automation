@@ -6,6 +6,7 @@ Process, Priority, , High
 #InstallMouseHook
 PasteTime:=A_TickCount
 #maxthreadsperhotkey, 2
+Process, Priority, , High
 FormatTime, DayString,, MM/d/yy
 FormatTime, TimeString, R
 FormatTime, CurrentDateTime,, MM/dd/yy
@@ -18,7 +19,7 @@ SetTitleMatchMode, 2
 try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
-try Run, cl3.Ahk, C:\Users\mmignin\Documents\VQuest\lib\CL3
+; try Run, cl3.Ahk, C:\Users\mmignin\Documents\VQuest\lib\CL3
 AutoTrim, On
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 #include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
@@ -38,11 +39,11 @@ return
 	Media_Play_Pause::ControlSend, , {F5}, ahk_exe Code.exe ;
 	; Volume_Up::ControlSend, , {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup}, ahk_exe Code.exe ;
 	; Volume_down::							clipboard:="K999 999-9999"
-	; Volume_Mute::
+
+
 	; 	Clipboard:=
 	; 	(
 	; 	"K741 107-0431 0278H1`r`n
-	; 	K277 888-8888`r`n
 	; 	K277 888-8777`r`n
 	; 	K277 111-1111`r`n
 	; 	J929 910-0128 0623I1`r`n
@@ -51,7 +52,6 @@ return
 	; 	J837 109-0445`r`n
 	; 	J837 109-0333 0333I1`r`n
 	; 	H624 104-0657`r`n
-	; 	B324 105-1172 0656H1`r`n
 	; 	B086 108-0752 Ct#109-0635`r`n
 	; 	B086 108-0752 Bulk Ct#109-0635`r`n
 	; 	B086 108-0752 Bulk 109-0635`r`n
@@ -88,7 +88,6 @@ return
 	SavedTextMenu()
 		return
 	F13 & Enter::Sendinput, {end}{enter}return{enter}
-	F13 & LShift up::Sendinput, {Enter}
 	; F13 & c::gosub, F19
 	F13 & v::vim.visualmode()
 	F13 & c::vim.visualmodeCopy()
@@ -98,14 +97,13 @@ return
 	F13 & k::Vim.up()
 	F13 & h::Vim.left()
 	F13 & f::Vim.Find()
-	F13 & o::Vim.NewLine()
 	F13 & n::Vim.SelectNext()
 	F13 & u::Vim.SelectPrevious()
-	F13 & i::Vim.DuplicateLine()
+
 	F13 & s::Vim.Selection()
 	F13 & m::Vim.Home()
-	F13 & q::sendinput, !{tab}
-	F13 & w::
+	F13 & q::SavedTextMenu()
+	; F13 & w::
 	F13 & .::Vim.WordRight()
 	F13 & b::sendinput, {ctrldown}{b}{ctrlup}
 	F13 & ,::Vim.WordLeft()
@@ -118,22 +116,23 @@ return
 			Vim.SelectAll()
 		return
 	F13 & z::SendInput, {backspace}
-	F13 & d::
-		if getkeystate("s", "p"){
-			if winactive("ahk_exe Code.exe")
-				sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
-			else
-				sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
-			KeyWait, d, U
-			KeyWait, s, U
-		}
-		else
+	F13 & d up::
+		; if getkeystate("s", "p"){
+		; 	KeyWait, s, U
+		; 	KeyWait, d, U
+		; 	if winactive("ahk_exe Code.exe")
+		; 		sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+		; 	else
+		; 		sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
+		; }
+		; else
 			Vim.Backspace()
 		return
+	F13 & o::vim.NewLine()
 	F13 & 9::Vim.OpenParentheses()
 	F13 & 0::Vim.CloseParentheses()
 	F13 & p::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
-                      sendinput, {F3} ;undo
+                      ; sendinput, {F3} ;undo
 	F13 & g::vim.Git()
 	F13 & down::									  sendinput, {altdown}{lwindown}{down}{altup}{lwinup}
 	F13 & up::									    sendinput, {altdown}{lwindown}{up}{altup}{lwinup}
@@ -143,14 +142,14 @@ return
 	F13 & ' Up::                    		vim.Quote() ;sendinput, +{'};Sendinput,+!{F9}
 	; F19 & F20::send
 	F19 & space::										Backspace
-	f13 & F19::											sendinput, {ctrldown}{lwindown}{[}{lwinup}{ctrlup}
+	f13 & F19::											sendinput, {ctrldown}{lwindown}{[}{lwnup}{ctup}
 	f13 & F20::											sendinput, {ctrldown}{lwindown}{]}{lwinup}{ctrlup}
 	f13 & \::
-	sendinput, {ctrldown}{lwindown}{\}{lwinup}{ctrlup}
-	KeyWait, F13, U
-	sleep 200
-	send, {enter}
-	return
+												sendinput, {ctrldown}{lwindown}{\}{lwinup}{ctrlup}
+												KeyWait, F13, U
+												sleep 200
+												send, {enter}
+												return
 	>+space::
 	; F13 & space::sendinput, {_}								 sendinput, {)} ;Enter parenthasis below
 	; F13 up::F13
@@ -158,12 +157,31 @@ return
 
 #If Getkeystate("F13","p") ;;F13
 	d & s::
-											if winactive("ahk_exe Code.exe")
-											 	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+											if winactive("ahk_exe Code.exe"){
+											 	; sendinput, {f2}
+												 sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+												 sleep 30
+											}
 											 else
 											 	sendinput, {home 2}{shiftdown}{end}{shiftup}{backspace}
 											KeyWait, d, U
 											KeyWait, s, U
+											 return
+	d & ,::
+											; if winactive("ahk_exe Code.exe")
+											;  	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+											;  else
+											 	sendinput, {shiftown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
+											KeyWait, d, U
+											KeyWait, `,, U
+											 return
+	d & .::
+											; if winactive("ahk_exe Code.exe")
+											;  	sendinput, {altdown}{ctrldown}{backspace}{ctrlup}{altup}
+											;  else
+											 	sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}{delete}
+											KeyWait, d, U
+											KeyWait, ., U
 											 return
 	s & [::
 	                    sendinput, {{} ;enter curly bracket below
@@ -258,6 +276,12 @@ return
 
 	~lbutton::Return
 
+
+   ;;;;;;;;;;;;;;;;;
+
+
+;~^a::Send, ^c ;Ctl+A = Select All, then C
+
 #Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
 	Lbutton & F13::return
 	F13 & Tab::
@@ -268,7 +292,7 @@ return
 	F13 & Lalt::FindMatchingwindows()
 	F13 & `::Sendinput,+{F9}
 	; F13 & '::Sendinput,!+{F9}
-
+	F13 & i::Vim.DuplicateLine()
 	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
 
 	F13 & 5::send,`%
@@ -344,7 +368,6 @@ return
 			sendinput, {tab}
 		return
 	$tab::send, {tab}
-	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
 	q & tab::
 		if winactive("ahk_exe Code.exe")
 			Sendinput,{ctrldown}{[}{ctrlup}
@@ -354,6 +377,7 @@ return
 
 	q & u::										Sendinput, {q}{u}
 	q::q
+	Lbutton & tab::						sendinput, {shiftdown}{ctrldown}{\}{ctrlup}{shiftup} ;switch column select
 	`::`
 	/::/
 
@@ -377,42 +401,42 @@ return
 	numpadmult::              send, ^{F9} ;switch workplace
 	numpaddot::               numpaddot
 	^numpaddot::              Sendinput,{ctrldown}{w}{ctrlup}
-	;;	---modifiers---
-		$lwin::return
-		; Lctrl & Appskey::         return
-		Rshift & appsKey::   			Return
-		Lshift & appsKey::   			Return
-		; Lwin & Appskey::          return
-		Lalt & Appskey::          return
-	;;		---F Keys---
-	 ; go to file
-		F2::FindMatchingwindows()
-		+F1::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
-		F15::F15
-		F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
-		<^f19::                   Sendinput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
-		F20 & h::                 Sendinput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
-		F20 & k::                 Sendinput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
-		F20 & backspace::         delete
-		F19 & -::                 Sendinput,{ctrldown}{-}{ctrlup}
-		F19 & =::                 Sendinput,{ctrldown}{=}{ctrlup}
-		F19 & y::                 Sendinput,{ctrldown}{w}{ctrlup}
-		F19 & n::                 Sendinput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
-		F19 & u::                 Sendinput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
-		F19 & i::                 Sendinput,{F9}
-		F19 & o::                 Sendinput,+!{F9}
-		F19 & p::                 Sendinput,^{F9}
-		F19 & Enter::							Sendinput,{ctrldown}{enter}{ctrlup}
-		F19 & j::                 Sendinput,+!{j}
-		F19 & k::                 Sendinput,+!{k}
-		F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
-		F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
-		f19 & `::                 Sendinput,~
-		f19 & r::                Sendinput,%process%
-		f19 & c::                 Sendinput,%mouseposition%
-		f19 & t::                 Sendinput,%wintitle%
-		f19 & w::                 Sendinput,%wininfo%
-		f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
+;;	---modifiers---
+	$lwin::return
+	; Lctrl & Appskey::         return
+	Rshift & appsKey::   			Return
+	Lshift & appsKey::   			Return
+	; Lwin & Appskey::          return
+	Lalt & Appskey::          return
+;;		---F Keys---
+	; go to file
+	F20 & .::FindMatchingwindows()
+	+F1::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
+	F15::F15
+	F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
+	<^f19::                   Sendinput,{shiftdown}{ctrldown}{tab}{ctrlup}{shiftup}
+	F20 & h::                 Sendinput,{shiftdown}{altdown}{lwindown}{left}{lwinup}{altup}{shiftup}
+	F20 & k::                 Sendinput,{shiftdown}{altdown}{lwindown}{up}{lwinup}{altup}{shiftup}
+	F20 & backspace::         delete
+	F19 & -::                 Sendinput,{ctrldown}{-}{ctrlup}
+	F19 & =::                 Sendinput,{ctrldown}{=}{ctrlup}
+	F19 & y::                 Sendinput,{ctrldown}{w}{ctrlup}
+	F19 & n::                 Sendinput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
+	F19 & u::                 Sendinput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
+	F19 & i::                 Sendinput,{F9}
+	F19 & o::                 Sendinput,+!{F9}
+	F19 & p::                 Sendinput,^{F9}
+	F19 & Enter::							Sendinput,{ctrldown}{enter}{ctrlup}
+	F19 & j::                 Sendinput,+!{j}
+	F19 & k::                 Sendinput,+!{k}
+	F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+	F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+	f19 & `::                 Sendinput,~
+	f19 & r::                Sendinput,%process%
+	f19 & c::                 Sendinput,%mouseposition%
+	f19 & t::                 Sendinput,%wintitle%
+	f19 & w::                 Sendinput,%wininfo%
+	f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
 	; F13 & lshift::						enter
 	$F13::F13
 
@@ -442,7 +466,7 @@ Class Vim {
 			send, ^%CutOrClip%
 			Send, ^c
 		sleep 30
-		tt(clipboard,1000,x_carret,y_Carret,,200)
+		tt(clipboard,1000,A_CaretX,A_CaretY,,200)
 		; Flovar(Clipboard)
 		return  ;gosub, F20
 	}
@@ -455,7 +479,7 @@ Class Vim {
 		flashscreen("","white")
 		Send, ^c
 		sleep 30
-		tt(clipboard,1000,x_carret,y_Carret,,200)
+		tt(clipboard,1000,A_CaretX,A_CaretY,,200)
 		; Flovar(Clipboard)
 		return  ;gosub, F20
 	}
@@ -524,16 +548,24 @@ Class Vim {
 		}
 	Selection(){
 		global
-		if Getkeystate("LControl","p") && Getkeystate("F13","p"){
+		while Getkeystate("F13","p"){
+		if Getkeystate("LControl","p"){ ;&& Getkeystate("F13","p"){
 			Sendinput,{end}{shiftdown}{home}{shiftup}
+			KeyWait, s, U
 			return
 		}
 		else If (A_TimeSincePriorHotkey > 1500) || !(A_PriorhotKey = "F13 & s") {
 			sendinput, {right}{ctrldown}{left}{shiftdown}{right}{ctrlup}{shiftup}
+			KeyWait, s, U
 			return
 			}
-		else (A_PriorhotKey = "F13 & s" && A_TimeSincePriorHotkey < 1500)
-			sendinput, {shiftdown}{altdown}{w}{altup}{shiftup}
+		else if (A_PriorhotKey = "F13 & s" && A_TimeSincePriorHotkey < 1500) { ;|| (!Getkeystate("s","p") && !Getkeystate("d","p"))
+			sendinput, {lwindown}{shiftdown}{altdown}{e}{lwinup}{altup}{shiftup}
+			KeyWait, s, U
+			return
+		}
+		return
+		}
 		}
 	Quote(){
 		if Getkeystate("LControl","p")
@@ -590,6 +622,8 @@ Class Vim {
 	if Getkeystate("LControl","p")
 		sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}{backspace}
 	else
+		if getkeystate("s", "p") || getkeystate("d", "p")
+			return
 		sendinput, {backspace}
 		return
 	}
@@ -634,9 +668,10 @@ Class Vim {
 		}
 GoToFile(){
 	send, {F9}
-	Input, Inputkey, L1 T3, {F13 up}
-			If ErrorLevel,
-				return
+	; Input, Inputkey, L1 T3, {F13 up}
+	; 		If ErrorLevel,
+	; 			return
+	while Getkeystate("F13","p"){
 	if (InputKey = "q")
 			send, Vquest.ahk
 	Else if (InputKey = "b")
@@ -673,14 +708,16 @@ GoToFile(){
 			send, Pad.ahk
 	Else if (InputKey = "p") || (A_PriorKey = "p"){
 		send, {@}
-		return
+		; return
 	}
-	else
-		return
+	; else
+		; return
 	sleep 150
 	send, {enter}
 	return
 	}
+	return
+}
 
 
 

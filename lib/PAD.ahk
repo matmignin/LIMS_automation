@@ -47,6 +47,7 @@ _MouseIsOver:
 			winactivate, ahk_exe Snipaste.exe
 			send, ^{wheelup}
 			return
+			^+2::sendinput, {altdown}{ctrldown}{2}{ctrlup}{altup}
 
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		;^Wheeldown::Blockrepeat(500) clip()
@@ -355,6 +356,7 @@ clipCheckIfEmpty(){
 		else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
 			ProductTab.AddCOASpace()
 		else if winactive("Register new samples - \\Remote"){
+				Send, {click}
 			menu.Batches()
 			winactivate, Register new samples - \\Remote
 				sleep 200

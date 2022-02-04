@@ -1,17 +1,16 @@
 return
 
 
-
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
 		Numlock:: Menu.LMS() ;4tap() ;LMS.COA()
 		mbutton:: 3tap()
 		F7::		  3Right()
 		F6::			3Left()
-		; F13 up::sd
-			; lms.searchBar("")
-			; flashscreen(CodeString)
-			; return
+		^F::
+			lms.searchBar("")
+			flashscreen(CodeString)
+			return
 		F20 & Space::Varbar.Focus(Product)
 		F20 & left::Send, %Product%(on sample log)
 		F20 & down::Send, %Batch%
@@ -165,7 +164,7 @@ Ins::flovar()
 	F19 & 0::              	sendinput, {-}
 	F19 & '::              	numpad0
 	F19 & Backspace::      	backspace
-	; F19 & ENTER::        	  Sendinput,{enter}
+	;F19 & ENTER::        	  Sendinput,+{F18}
 
 +#s::											send, {lwindown}{s}{lwinup}
 	$lwin::									return
@@ -189,18 +188,27 @@ Ins::flovar()
 
 
 ; >+F20::             			varbar.focus("Batch")
->+F19::            					varbar.focus("Product")
+; >+F19::            					varbar.focus("Product")
 <+F19::											Sendinput, {_}
+F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
+F19 & Rbutton::       		OCR()
+
+F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipaste copy
+; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
+Mbutton::									3Tap()
+F19 & \:: 								Sendpassword()
+	; Rbutton & Mbutton::				menu.PasteStuff()
 F19 & left::								GetAllProducts()
+F20 & /::        	 				OCR()
 F19 & down::								GetAllBatches()
 F19 & up::									Sendinput % excel.GetAllSheets()
 ; F13 & Space::								GetAllProducts()
-!w::												Sendinput, {up}
-!s::												Sendinput, {down}
-!a::												Sendinput, {left}
-!d::												Sendinput, {right}
-!q::												sendinput, {backspace}
-!e::												sendinput, {delete}
+; !w::												Sendinput, {up}
+; !s::												Sendinput, {down}
+; !a::												Sendinput, {left}
+; !d::												Sendinput, {right}
+; !q::												sendinput, {backspace}
+; !e::												sendinput, {delete}
 <#Space::										GetAllProducts()
 <!Space::										GetAllBatches()
 ; <#F13::											GetAllProducts("`n")
@@ -213,37 +221,69 @@ Numlock::								  4tap()
 ;;	___Lbuton:
 Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
 Lbutton & F20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;snip and pin
+Lbutton & Lshift::
+Lbutton & c::
+			SimpleClip:=1
+			Sendinput, {ctrldown}{c}{ctrlup}
+			tt(Clipboard, 1000,A_CaretX,A_CaretY,2,200)
+			return
+Lbutton & x up::
+			SimpleClip:=1
+			Sendinput, {ctrldown}{x}{ctrlup}
+			tt(Clipboard, 1000,A_CaretX,A_CaretY,2,200)
+			return
+
+Lbutton & v up::       	Send, {ctrldown}{v}{ctrlup}
+Lbutton & Rbutton::
+			SimpleClip:=1
+		Sendinput, {ctrldown}{x}{ctrlup}
+		sleep 20
+			tt(Clipboard, 1000,A_CaretX,A_CaretY,2,200)
+		; FloVar(Clipboard,10000, 10)
+		keywait, Lbutton, U
+		keywait, Rbutton, U
+		sleep 20
+		return
 
 
-F19 & lbutton::       		send, {shiftdown}{ctrldown}{2}{ctrlup}{shiftup} ;snipaste
-F19 & Rbutton::       		OCR()
+Lbutton & F13 up::
+simpleclip:=1
+sendinput, {ctrldown}{c}{ctrlup}
+sleep 20
+	tt(Clipboard, 2000,A_CaretX,A_CaretY,2,200)
+return
+F13 & Lbutton up::
+sleep 100
+sendinput, {ctrldown}{v}{ctrlup}
+tt("paste",1000,A_CaretX,A_CaretY)
+return
+Lbutton & / up::				 	OCR()
 
-F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipaste copy
-; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
-Mbutton::									3Tap()
-	; Rbutton & Mbutton::				menu.PasteStuff()
-Rbutton & Lbutton:: 			Send, {Enter}
+Rbutton & Lbutton up::
+	simpleclip:=1
+	Sendinput, {click}
+	; flashscreen()
+	sleep 100
+	sendinput, {ctrldown}{v}{ctrlup}
+	; flovar()
+	sleep 50
+	keywait, Rbutton, U
+	sleep 30
+	simpleclip:=
+	sendinput, {esc}
+	return
 Rbutton UP::     	   			2Tap()
-Rbutton & F6::
 Rbutton & wheelleft::     Send % blockRepeat(50) "{Delete}"
-Rbutton & F7::
 Rbutton & wheelright::    Send % blockRepeat(50) "{backspace}"
-Rbutton & wheeldown::     Send, ^{v}
 Rbutton & wheelup::			  sendinput, ^c
-
-Lbutton & Rbutton::       send, ^{x}
-; Lbutton & Space::       	Send, {home}{shiftdown}{end}{shiftup}{ctrldown}{c}{ctrlup}
 
 ~rbutton & Appskey::				2Tap()
 ~Rbutton::								return
 rshift & Appskey::				return
-F19 & \:: 								Sendpassword()
-^+7::
-Lbutton & / up::				 	OCR()
-F20 & /::        	 				OCR()
 
 
 
+; Lbutton & Rbutton::       send, ^{x}
 
 ;;	___Esc:
 	esc & 1::						send, {shiftdown}{altdown}{-}{altup}{shiftup}
@@ -267,19 +307,21 @@ F20 & /::        	 				OCR()
 	numpadMult::         		4up()
 	numpaddot::          		4down()
 	pause::							Suspend, Toggle
-	; <^f::
-	; 	if MouseIsOver("ahk_exe Code.exe"){
-	; 		FlashScreen("Find")
-	; 		If !winactive("ahk_exe Code.exe"){
-	; 			winactivate, ahk_exe Code.exe
-	; 			sleep 100
-	; 		}
-	; 		sendinput, {ctrldown}{f}{ctrlup}
-	; 		return
-	; 	}
-	; 	else
-	; 	sendinput, ^{f}
-	; 	return
+	~^f::
+		if MouseIsOver("ahk_exe Code.exe"){
+			FlashScreen("Find",,1000)
+			If !winactive("ahk_exe Code.exe"){
+				winactivate, ahk_exe Code.exe
+				sleep 20
+			}
+			send, {ctrldown}{f}{ctrlup}
+			; TT("find",1000,,,,,"R")
+			; sleep 200
+			return
+		}
+		else
+		send, {ctrldown}{f}{ctrlup}
+		return
 
 	#h::return ;send, !{F2}
 	#p::return ;send, +!{h}
@@ -337,7 +379,7 @@ F20 & /::        	 				OCR()
 
 	F20 & =::            		Send,{ctrldown}{=}{ctrlup}
 	F20 & -::            		Send,{ctrldown}{-}{ctrlup}
-	F19 & enter::					Varbar.focus("Edit5")
+	; F19 & enter::					Varbar.focus("Edit5")
 	F19 & Rshift::				Varbar.focus("Edit1")
 	F20 & enter::
 	Varbar.focus("Edit5")
@@ -373,11 +415,12 @@ F20 & /::        	 				OCR()
 	F20 & ,::         Table_Entry("FALSE")
 	F20 & t::         Table_Entry("TRUE")
 	F20 & .::         Table_Entry("TRUE")
+
 	F19 & wheeldown::
 	F8::              Send, {enter}
-	F19 & Wheelleft::
-	F6::              Send, +{tab}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
-	F19 & Wheelright::
+	F19::   ;copy cell to left and paste in current
+	F6::              Sendinput, {tab}{left}{down}{space}{up}+{tab 2}{ctrldown}{c}{ctrlup}{tab}{ctrldown}{v}{ctrlup}
+	F20:: ;copy selection and paste to next to next cell
 	F7::              Send, {ctrldown}{c}{ctrlup}{Tab}{end}{enter}{ctrldown}{v}{ctrlup}{enter}
 #ifwinactive, Micro Validation Screenshots.docx - Word
 Mbutton::
@@ -403,15 +446,44 @@ if !winactive("CodeQuickTester*")
 	send, !r
 	Toggle:=!Toggle
 	return
+#ifwinactive, Paster - Snipaste
+	Mbutton::
+	sendinput, {appsKey}
+	sleep 100
+	MouseMove, 200, 320, 1, R
+	MouseMove, 60, 0, 1, R
+	MouseMove, 0, 300, 1, R
+	sendinput, {m}
+	return
 
+
+	return
+#ifwinactive, Snipper - Snipaste
+	^+2::sendinput, {altdown}{Shiftdown}{2}{Shiftup}{altup}
+	^+3::sendinput, {altdown}{Shiftdown}{3}{Shiftup}{altup}
+	^+4::sendinput, {altdown}{Shiftdown}{4}{Shiftup}{altup}
+	Mbutton::
+		send, {enter}
+	if winexist("Micro Validation Screenshots")
+		winactivate
+		sleep 300
+		sendinput, {end}5.%iteration%{enter}^{v}{enter 2}
+		varbar.AddIteration(0)
+		sleep 400
+		send, !{tab}
+		return
 
 #ifwinactive, ahk_exe Snipaste.exe ;;	___Snipaste
-	wheeldown::send % Blockrepeat(100) "{-}"
-	wheelup::send % Blockrepeat(100) "{=}"
-	^wheeldown::send, ^{wheeldown}
-	^wheelup::send, ^{wheelup}
-	^+2::send, {Mbutton}
+	wheeldown::sendinput % Blockrepeat(100) "{-}"
+	wheelup::sendinput % Blockrepeat(100) "{=}"
+	^wheeldown::sendinput, ^{wheeldown}
+	^wheelup::sendinput, ^{wheelup}
+	; ^+2::send, {Mbutton}
 	F15::send, {Mbutton}
+	^+2::sendinput, {altdown}{Shiftdown}{2}{ShiftUp}{altup}
+	^+3::sendinput, {altdown}{Shiftdown}{3}{ShiftUp}{altup}
+	^+4::sendinput, {altdown}{Shiftdown}{4}{ShiftUp}{altup}
+
 
 #Ifwinactive, Mats LMS Workbook.xlsb ;; 	___Excel
 	Numpadmult::send, {Home}
@@ -494,6 +566,13 @@ if !winactive("CodeQuickTester*")
 	<^h::sendinput, {shiftdown}{ctrldown}{left}{ctrlup}{shiftup}
 	<^l::sendinput, {shiftdown}{ctrldown}{right}{ctrlup}{shiftup}
 	<^j::sendinput, {shiftdown}{ctrldown}{down}{ctrlup}{shiftup}
+	+^7::sendinput, {shiftdown}{ctrldown}{7}{ctrlup}{shiftup}
+	F13 & `;::send, {shiftdown}{ctrldown}{7}{ctrlup}{shiftup}
+		tab & q::tab
+	$tab::tab
+	q & tab::sendinput, {shiftdown}{tab}{shiftup}
+	q & u::										Sendinput, {q}{u}
+	q::q
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
 	; Numlock::				Send, {Backspace}
 	F19::						Send, ^{click}
@@ -546,7 +625,6 @@ F15::MuteTeamsMicrophone()
 	F9::sendinput, {ctrldown}{tab}{ctrlup}
 ;  F7::				   	Send, !{right}
  F13::				  	Send, {ctrldown}{/}{ctrlup}
-;  +F13::				 	Send, {esc}
  numpadadd::sendinput, {lwindown}{right}{lwinup}
  numpaddot::sendinput, {ctrldown}{w}{ctrlup}
  numpadsub::sendinput, {lwindown}{left}{lwinup}
