@@ -5,7 +5,7 @@ Purpose           : Load & Save 10 quick paste texts
 Version           : 1.4
 
 10 Slots
-Hotkeys: RCTRL-[1-0] 
+Hotkeys: RCTRL-[1-0]
 
 History:
 - 1.4 Attempt to prevent XMLRoot error - https://github.com/hi5/CL3/issues/15
@@ -60,24 +60,45 @@ Gui, Slots:Add, Button, % dpi("xp130 gLoadSlots"), &Load (name.xml)
 Gui, Slots:Add, Button, % dpi("xp253 gSlotsClose"), &Close window
 Return
 
+#IfWinactive,CL3Slots
+
+^1:: ;ControlSetText, Edit1, %Clipboard%, CL3Slots
+^2:: ;ControlSetText, Edit2, %Clipboard%, CL3Slots
+^3:: ;ControlSetText, Edit3, %Clipboard%, CL3Slots
+^4:: ;ControlSetText, Edit4, %Clipboard%, CL3Slots
+^5:: ;ControlSetText, Edit5, %Clipboard%, CL3Slots
+^6:: ;ControlSetText, Edit6, %Clipboard%, CL3Slots
+^7:: ;ControlSetText, Edit7, %Clipboard%, CL3Slots
+^8:: ;ControlSetText, Edit8, %Clipboard%, CL3Slots
+^9:: ;ControlSetText, Edit9, %Clipboard%, CL3Slots
+KeyPressed:=SubStr(A_thisHotkey,0)
+ControlSetText, Edit%KeyPressed%, %Clipboard%, CL3Slots
+return
++enter::sendinput, {enter}
+Enter::ControlClick,Button1,CL3Slots
+#IfWinactive,
+
+
 ;^#F12::
 hk_slots:
 If !WinExist("CL3Slots ahk_class AutoHotkeyGUI")
 	Gui, Slots:Show, ,CL3Slots
 else
 	Gui, Slots:Hide
+send, {ctrlup}{lwinup}
 Return
 
-;>^1::
-;>^2::
-;>^3::
-;>^4::
-;>^5::
-;>^6::
-;>^7::
-;>^8::
-;>^9::
-;>^0::
+
+^1::
+^2::
+^3::
+^4::
+^5::
+^6::
+^7::
+^8::
+^9::
+^0::
 hk_slotpaste:
 OnClipboardChange("FuncOnClipboardChange", 0)
 Clipboard:=Slots[SubStr(A_thisHotkey,0)]
@@ -86,6 +107,7 @@ Sleep 100
 Clipboard:=History[1].text
 OnClipboardChange("FuncOnClipboardChange", 1)
 stats.slots++
+send, {ctrlup}{lwinup}
 Return
 
 ~Esc::
@@ -152,12 +174,13 @@ If (XA_Load(A_ScriptDir "\ClipData\Slots\" A_ThisMenuItem) = 1) ; the name of th
 	 Loop, 10
 		Slots[Index-1]:="Slot" A_Index-1 "a"
 	}
-Index:=0	
+Index:=0
 Loop, 10
 	{
 	 GuiControl,Slots:, Slot%Index%, % Slots[Index]
 	 Index++
 	}
+send, {ctrlup}{lwinup}
 Return
 
 ; not public

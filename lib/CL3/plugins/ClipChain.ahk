@@ -15,7 +15,7 @@ History:
 - 1.1 Added minor fix for "non-empty" empty lines?
 
 */
-#include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+; #include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 ClipChainInit:
 	CoordMode, Mouse Screen
@@ -146,7 +146,7 @@ Return
 #IfWinActive, CL3ClipChain
 	$Rbutton::			        gosub, clipchainmenu
 	Backspace::			     gosub, ClipChainDel
-	~F20 up::return
+	; ~F20 up::return
 
 	#IfWinExist CL3ClipChain ahk_class AutoHotkeyGUI
 
@@ -154,7 +154,7 @@ Return
 	Rshift & up::			gosub, ClipchainMoveUp
 	Rshift & down::		gosub, ClipchainMoveDown
 	Delete::			 	   gosub, ClipChainDel
-	^c::			     	   send, ^c
+	; ^c::			     	   send, ^c
 	F11::
 								clipchaininsert()
 								send, ^x
@@ -168,17 +168,17 @@ Return
 								; clipChain_v()
 								return
 
-	$Rshift::
-								sendinput, +{tab}{tab}
-								ClipChainInsert()
-								return
-	>+Enter::
-								send, +{tab}{tab}
-								sleep 50
-								clipChain_v()
-								return
+	; $Rshift::
+	; 							sendinput, +{tab}{tab}
+	; 							ClipChainInsert()
+	; ; 							return
+	; >+Enter::
+	; 							send, +{tab}{tab}
+	; 							sleep 50
+	; 							clipChain_v()
+	; 							return
 	; numlock::					clipChain_v()
-	^v::clipchaininsert()
+	; ^v::clipchaininsert()
 	;Mbutton::  				clipchaininsert()
 
 #if
@@ -242,13 +242,13 @@ return
 return
 
 ; ::
-F20 & Space::
-	clipboard:=
-	send, ^{c}
-	clipwait, 0.5
-	clipboard:=Trim(Clipboard, "`n")
-	Gosub, ClipChainInsertGui
-	gosub, ClipChainLoad
+; F20 & Space::
+; 	clipboard:=
+; 	send, ^{c}
+; 	clipwait, 0.5
+; 	clipboard:=Trim(Clipboard, "`n")
+; 	Gosub, ClipChainInsertGui
+; 	gosub, ClipChainLoad
 return
 #IfWinActive
 
