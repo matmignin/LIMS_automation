@@ -166,25 +166,41 @@ If ActivateApi
 #Include %A_ScriptDir%\plugins\plugins.ahk
 
 return
+; Gui, -DPIScale
+; RowHeight   := 150 ; you can play with this value ( 150 pixels is the minumum to produce wrap in my environment )
+; Gui, Add, ListView, w700 r10, Data|Values
+; LV_ModifyCol(1,300)
+; LV_ModifyCol(2,"200 Integer")
+; Loop 100 {
+;    Random, rnd, 1, 999999
+;    rw := Format("{:03}",A_Index)
+;    LV_Add( "", "Row : " rw . "`nSubRow-" rw "-1`nSubRow-" rw "-2`nSubRow-" rw "-3", rnd )
+; }
+; LV_SetImageList( DllCall( "ImageList_Create", Int,1, Int, RowHeight, Int,0x10, Int,1, Int,1 ), 1 )
+; Gui, Show,, Multiline ListView
+; return
 
 Cl3List(){
 	global
 	try GUI, ClipList:destroy
 	GUI, ClipList:Default
-	Gui ClipList:+LastFound +Toolwindow  +Owner +AlwaysOnTop -SysMenu +MinimizeBox
+	Gui ClipList:+LastFound +Toolwindow  -DPIScale +Owner +AlwaysOnTop -SysMenu -Caption  +HwndGUIID ;+MinimizeBox
 	sleep 20
-ClipListColor1:="000000"
+ClipListColor1:="272822"
 ClipListColor2:="FFFFFF"
-; ClipListTrans:=250
-GUI, ClipList: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
+ClipListTrans:=250
+; RowHeight   := 30 ; you can play with this value ( 150 pixels is the minumum to produce wrap in my environment )
+; GUI, ClipList: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
 
 GUI, ClipList:color,%ClipListColor1%, %ClipListColor2%
 		GUI, ClipList:Font,s11 cBlack Normal, Arial Narrow
-    GUI, ClipList:Add, ListView, +Background262525 cWhite -hdr, Clip ;vTText1, %Line1%
-		GuiControl, -Redraw, ClipList
+			GUI, ClipList:Add, Listview, r6 w500 0x2000 -LV0x20 -E0x200 +Background262525 cWhite -hdr, Clip ;vTText1, %Line1%
+			; GUI, ClipList:Add, Listview, r7, Clip ;vTText1, %Line1%
 
+		; GuiControl, -Redraw, ClipList
+		; LV_ModifyCol()
 
-;  winSet, Transparent, %ClipListTrans%, AHK_Id %GUIID%
+ winSet, Transparent, %ClipListTrans%, AHK_Id %GUIID%
 ; settimer, destroyListGUI, -%PopupTime%
 return
 DestroyClipListGui:
@@ -216,7 +232,10 @@ Cl3Pop(Line1,Line2:="",Line3:="",PopupTime:=1000){
 			GUI, Popup:Font,s8 cGrey Normal, Arial Narrow
 			GUI, Popup:Add, Text,vTText3, %Line3%
 		; }
-	GUI, Popup:Show, Noactivate x%A_CaretX% y%A_CaretY%
+	try GUI, Popup:Show, Noactivate x%A_CaretX% y%A_CaretY%
+	catch
+			GUI, Popup:Show, Noactivate ; x%A_CaretX% y%A_CaretY%
+
 	winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
 	settimer, destroyGUI, -%PopupTime%
 	return
@@ -351,21 +370,26 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 		;  ToolTip, % ttext, %A_CaretX%, %A_CaretY%
 		 cl3list()
 		 oldttext:=ttext
-		GUI, ClipList:Show, Noactivate x%A_CaretX% y%A_CaretY%
-		; catch
-		; GUI, ClipList:Show, Noactivate 500, 500
 
-		; GuiControl, -Redraw, ClipList
 		if ttext0
-			LV_ADD("",ttext1)
+			LV_ADD("",ttext0)
 		if ttext1
 			LV_ADD("",ttext1)
 		LV_ADD("Select",ttext2)
 		LV_ADD("",ttext3)
 		LV_ADD("",ttext4)
 		LV_ADD("",ttext5)
+				; LV_ModifyCol(1, 595)
+			; Loop 50 {
+				; Random, rnd, 1, 999999
+				; rw := Format("{:03}",A_Index)
+				; LV_Add( "", "Row : " rw . "`nSubRow-" rw "-1`nSubRow-" rw "-2`nSubRow-" rw "-3", rnd )
+			; }
+			; LV_SetImageList( DllCall( "ImageList_Create", Int,1, Int, RowHeight, Int,0x10, Int,1, Int,1 ), 1 )
 		LV_ModifyCol()
 		; GuiControl, +Redraw, ClipList
+		MouseGetPos,mx,my
+		GUI, ClipList:Show, Noactivate  x%mX% y%mY%
 		; GuiControl, Popup:Text, Line1, % TText1
 		; GuiControl, Popup:Text, Line2, % TText2
 		; GuiControl, Popup:Text, Line3, % TText3

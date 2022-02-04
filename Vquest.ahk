@@ -55,6 +55,7 @@ VQuest_Start:
     Menu, Tray, Add, Edit_Batches, Edit_Batches
     Menu, Tray, Add, Entering_Rotations, Entering_Rotations
     Menu, Tray, Add, TempCode, TempCode
+    OnClipboardChange("clipChange")
     PasteTime:=A_TickCount
     ; if Mode=Edit_Batches
       ; Menu, Tray, Check, Edit_Batches
@@ -76,15 +77,14 @@ VQuest_Start:
     ; Currentwindow:=A
     varbar.Show()
 
-    ifwinexist, Mats LMS Workbook.xlsb - Excel
-      Excel.Connect(0)
+      ; clip.CodesRegex(CodeString)
     ; if !VimOpen
     IfwinExist, ahk_exe WFICA32.EXE
       LMS.Orient()
     copypasteToggle:=0
       ; run, lib\Vim.ahk
   ; if !ClipOpen
-    ; try Run, cl3.Ahk, lib\CL3
+  ;  try Run, cl3.Ahk, lib\CL3
     ; GuiControl, +redraw, varbar
     RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -102,7 +102,13 @@ VQuest_Start:
       ; maxindex := A_Index
     ; }
 
-  OnClipboardChange("clipChange")
+    if winexist("Mats LMS Workbook.xlsb - Excel")
+      Excel.Connect(0)
+    else
+      clipboard:=CodeString
+
+
+        #include <cl3api>
   #Include C:\Users\mmignin\Documents\VQuest\lib\SuppressErrorDialog.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\Toggles.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\Temp.ahk
@@ -124,9 +130,16 @@ VQuest_Start:
   #include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\Xml.ahk
 
-; send, {lwin up}{ctrl up}{alt up}
-  #Ifwinactive,
+; return
+; your functions
+; F13 & 7::
+; MsgBox % Array[1]
+
+; #include lib\cl3api.ahk
 return
+CL3Api_Close()
+
+
 Receive_WM_COPYDATA(wParam, lParam)
 {
     StringAddress := NumGet(lParam + 2*A_PtrSize)  ; Retrieves the CopyDataStruct's lpData member.
