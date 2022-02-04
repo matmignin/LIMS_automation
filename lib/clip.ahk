@@ -106,10 +106,10 @@ GetAllProducts(Delimiter:=" ",File:=""){
     ; Send, {blind}%AllProducts%
 
     ; msgbox, %AllProducts%,
+ ;FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
 }
 
 
- FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
 	F13 & 1::             sendinput,%product% ;gosub, Product_cyclebackward
 												; if Getkeystate("LCtrl","p")
 													; GetAllProducts()
@@ -145,7 +145,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
 
 
 
-Tab & 2::menu.batches()
+;Tab & 2::menu.batches()
   Batch_cyclebackward:
   GUI, varbar:default
   Excel.InfoLocations()
@@ -184,7 +184,7 @@ Tab & 2::menu.batches()
     }
   Return
 
-	Tab & 2 up::
+	;Tab & 2 up::
   Batch_cyclebackward_up:
   PreviousClipCycleCounter:=ClipCycleCounter
   If (ClipCycleFirst = 0)
@@ -210,7 +210,7 @@ return
 
 ;;  Tab
 
-	Tab & 1::
+	;Tab & 1::
   ; Tab & wheeldown::
 	Product_cyclebackward:
 		GUI, varbar:default
@@ -250,7 +250,7 @@ return
 			}
 		Return
 
-	Tab & 1 Up::
+	;Tab & 1 Up::
 	Product_cyclebackward_up:
 	PreviousClipCycleCounter:=ClipCycleCounter
 	If (ClipCycleFirst = 0)
@@ -304,15 +304,15 @@ return
 				}
 			ShiftPaste:= 0
 		return
-	+F19::
-		if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
-			{
-					CutPresses += 1
-					return
-			}
-			CutPresses := 1
-			SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
-			return
+	; ; +F19::
+	; ; 	if (CutPresses > 0) 						; SetTimer already started, so we log the keypress instead.
+	; ; 		{
+	; ; 				CutPresses += 1
+	; ; 				return
+	; ; 		}
+	; ; 		CutPresses := 1
+	; 		SetTimer, PressCut, -450 			; Wait for more presses within a 400 millisecond window.
+	; 		return
 			PressCut:
 				if (CutPresses = 1){ 				; The key was pressed once.
 						send, ^x								;cut
