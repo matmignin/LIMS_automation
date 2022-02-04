@@ -155,10 +155,10 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			else
 				GuiControl,Varbar:Text, Product, %Product%
 
-			if RegexMatch(CodeString, RegexBatch, r)
+			if RegexMatch(CodeString, a, r)
 				GuiControl,Varbar:Text, Batch, %rBatch%
 			else
-				GuiControl,Varbar:Text, Batch, %Batch%
+				GuiControl,Varbar:Text, Batch,
 
 			if RegexMatch(CodeString, RegexLot, r)
 				GuiControl,Varbar:Text, lot, %rlot%
@@ -299,16 +299,18 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		IniRead, Varbar_X, Settings.ini, Locations, VarBar_X
 		IniRead, Varbar_Y, Settings.ini, Locations, VarBar_Y
 		Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-		iniRead, Product, Settings.ini, SavedVariables, Product
-		iniRead, Batch, Settings.ini, SavedVariables, Batch
-		iniRead, Lot, Settings.ini, SavedVariables, Lot
-		iniRead, Coated, Settings.ini, SavedVariables, Coated
+		ControlGetText, CodeString, Edit5, VarBar
+		; iniRead, Product, Settings.ini, SavedVariables, Product
+		; iniRead, Batch, Settings.ini, SavedVariables, Batch
+		; iniRead, Lot, Settings.ini, SavedVariables, Lot
+		; iniRead, Coated, Settings.ini, SavedVariables, Coated
 		Iniread, HideVarBar, Settings.ini, Options, HideVarBar
 		Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
 		Iniread, ModeSelections, Settings.ini, Options, ModeSelections
 		Iniread, CodesDropDown, Settings.ini, Options, CodesDropDown
 		Iniread, Mode, Settings.ini, Options, Mode
-			; clip.CodesRegex(CodeString)
+
+
 
 
 	}
@@ -321,7 +323,7 @@ SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 					wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
 			IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
 			IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
-		; ControlGetText, CodeString, Edit5, VarBar
+		ControlGetText, CodeString, Edit5, VarBar
 	sleep 200
 	IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	iniwrite, %CodeString%, Settings.ini, SavedVariables, CodeString
@@ -336,7 +338,7 @@ SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 			; Gui, Varbar:submit, nohide
 
 	ControlGet, CodesDropDown, List,,Combobox1,VarBar
-	iniwrite, %CodesDropDown%, Settings.ini, SavedVariables, Wholex
+	; iniwrite, %CodesDropDown%, Settings.ini, SavedVariables, Wholex
 	FileAppend, %CodesDropDown%, Data\CodesDropDown.txt
 	; IniWrite, %HideVarbar%, Settings.ini, Options, HideVarbar
 	IniWrite, %ModeSelections%, Settings.ini, Options, ModeSelections
@@ -666,7 +668,7 @@ SetColor(){
 	Relocate(){
 		global
 				PostMessage, 0xA1, 2
-				if MouseIsOver("VarBar")
+				; if MouseIsOver("VarBar")
 					; keywait, Lbutton, U T1
 					; Send, ^a
 		return
@@ -709,12 +711,13 @@ SetColor(){
 		AddIteration(speed:=350){
 		global Iteration
 		; GuiControl, -redraw, varbar
-		sleep 10
+		sleep 5
 		Iteration+=1
-		Pop(Iteration)
 		sleep %Speed%
 		ControlsetText, Static1,%Iteration%,VarBar
-		tt(Iteration,500,Varbar_x,Varbar_y,2,200)
+		flovar(Iteration,200)
+		; Pop(Iteration)
+		; tt(Iteration,500,Varbar_x,Varbar_y,2,200)
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
@@ -722,12 +725,11 @@ SetColor(){
 		SubIteration(speed:=350){
 		global Iteration
 		; GuiControl, -redraw, varbar
-		sleep 10
+		sleep 5
 		Iteration-=1
-		Pop(Iteration)
 		sleep %speed%
 		ControlsetText, Static1,%Iteration%,VarBar
-		tt(Iteration,500,Varbar_x,Varbar_y,2,200)
+		Pop(Iteration)
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
