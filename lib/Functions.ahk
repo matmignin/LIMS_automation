@@ -243,7 +243,8 @@ ExplorerSearch(text){
 			winactivate, ahk_exe explorer.exe
 		sleep 300
 		winGetPos, wX, wY, wW, wH, A
-		click, % ww-175, 75)
+		ww-=175
+		send, {click %ww%, 75}
 		sleep 400
 		; SetKeyDelay, 20, 1
 		Send, %Text%
