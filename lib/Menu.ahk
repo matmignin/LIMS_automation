@@ -201,9 +201,6 @@ Remote_desktop(){
       Try Menu,Menu, deleteAll
     return
 
-  }
-
-
 }
 return
 
