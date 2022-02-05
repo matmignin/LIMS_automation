@@ -3,7 +3,7 @@
 ; ExitMenu:
 ; Menu,Menu, deleteAll
 return
-#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+;#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
 
 class Menu{
 
@@ -17,279 +17,21 @@ class Menu{
     Menu,menu,add,%item%,%group%
     }
 
-    PasteStuff(){
-    global
-		try Menu,Menu, deleteAll
-      Menu, Menu, add, All &Products,   <#Space
-      Menu, Menu, add, All &Batches,    <!Space
-      Menu, Menu, add, All &WorkSheets, F19 & up
-      ; Menu, Menu, add, %Product%, F20 & left
-      Menu, Menu, add, Products_Tab, <#space
-      Menu, Menu, add, Batches_Tab, <!space
-      if winactive("ahk_exe Code.exe")
-        Menu, Menu, add, &LMS Title, InputToVsCode
-        Menu, Menu, add, window &Title, InputToVsCode
-        Menu, Menu, add, window &Process, InputToVsCode
-        Menu, Menu, add, &Click Position, InputToVsCode
-        Menu, Menu, add, &Mouse Position, InputToVsCode
-        Menu, Menu, add, window Location, InputToVsCode
-        Menu, Menu, add,
-          Menu, Menu, add, E&xit, ExitMenu
-      Menu, Menu, Show
-      ; KeyWait, Rbutton, U
-        ; try Menu,Menu, deleteAll
-    }
-
-    ProductHistory(){
-    global
-		try Menu,Menu, deleteAll
-		Loop, Read, data\Products.txt
-			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
-		Menu, Menu, Show
-    return
-    }
-    ProductSelection(){
-    global
-    try menu,DropdownMenu, Deleteall
-		GUI , varbar: default
-  ;  ControlGet , Wholex, List, , Combobox1	;- get the whole listbox1
-    ; stringreplace , wholex, wholex, `n `n, `n, all
-    Loop, Read, data\CurrentCodes.Txt
-    {
-    ; If A_Index = 1 ;for if its an INI file
-      ; Continue
-    ParseList := StrSplit(A_LoopReadLine, "`n")
-      if A_index < 10
-        Selection:= % "&" A_index " " ParseList[1]
-        ; Selection:= % ParseList[1]
-       else
-        Selection:= % "&" A_index-10 " " ParseList[1]
-    Menu, Dropdownmenu, add, %Selection%, CurrentCodesMenu
-    }
-    Menu, DropdownMenu, Show,
-    return
-
-    CurrentCodesMenu:
-      GuiControl, Varbar:ChooseString, ComboBox1, % RegExReplace(A_ThismenuItem, "i)(&\d\s)", "")
-  		GUI, VarBar:submit,NoHide
-      ; ControlsetText , Edit5, %A_ThismenuItem%, VarBar
-      	; control , choose, %A_ThismenuItem%
-      ; sleep 200
-      ; Clipboard:=A_ThismenuItem
-      return
-    }
 
 
-    VsCode(){
-    global
-		try Menu,Menu, deleteAll
-    if winactive("ahk_exe Code.exe")
-      Menu, Menu, add, &LMS Title, InputToVsCode
-    Menu, Menu, add, window Title, InputToVsCode
-    Menu, Menu, add, window Process, InputToVsCode
-    Menu, Menu, add, Click Position, InputToVsCode
-    Menu, Menu, add, Mouse Position, InputToVsCode
-    Menu, Menu, add, window Location, InputToVsCode
-    Menu, Menu, add,
-    Menu, Menu, add, E&xit, ExitMenu
-    try Menu, Menu, Show
-    return
-
-    InputToVSCode:
-    if A_thismenuItem contains &LMS Title
-    {
-      winactivate, ahk_exe WFICA32.EXE
-      windowInfo()
-      winactivate, ahk_exe Code.exe
-      send % wintitle
-      return
-    }
-    else if (A_thismenuitem Contains E&xit) || (A_priorkey contains esc)
-      Menu,Menu, deleteAll
-    else
-    {
-    tt("find window and click space",3000)
-    KeyWait, Space, d
-    windowInfo()
-    winactivate, ahk_exe Code.exe
-    sleep 200
-    if A_thismenuItem contains window &Title
-      send % wintitle
-    else if A_thismenuItem contains window &Process
-      send % Process
-    else if A_thismenuItem contains &Click Position
-      send % "{click " MousePosition "}"
-    else if A_thismenuItem contains &Mouse Position
-      send % MousePosition
-    else if A_thismenuItem contains window Location
-      send % winLocation
-    ; sendinput, %A_thismenuItem%
-    try Menu,Menu, deleteAll
-    }
-    return
-    }
 
 
-  CopyPasteSpec(){
-    global copypasteToggle
-     click
-      try This.delete()
-        Menu,Menu, add, Copy &Template, autofill
-      If CopyPasteToggle=1
-        Menu,Menu, add, Paste &Specs, Autofill
-      If CopyPasteToggle=0
-        Menu,Menu, add, Copy &Specs, Autofill
-      return
-  }
-LMS(){
-  Global
-  try This.delete()
-  if winactive("NuGenesis LMS - \\Remote"){
-    ; LMS.Orient()
-    LMS.DetectTab()
-
-    ; msgbox, %Tab%
-    ; click
-    if (Tab="Samples")
-      Menu, Menu, add, New &Request, AutoFill
-    else if (Tab="Tests")
-      Menu,Menu, add, &Delete Retain, Autofill
-    else if (Tab="Specs"){
-      this.CopyPasteSpec()
-      Menu,Menu, add, &Delete Retain, Autofill
-    }
-
-    else {
-      Menu,Menu, add, &Production Server, LMS_Env
-      Menu,Menu, add, &Test Server, LMS_Env
-    }
-      Menu, Menu, add, Paste All &Products,   F19 & down
-      Menu, Menu, add, Paste All &Batches,    F19 & Left
-      Menu, Menu, add, Paste All &WorkSheets, F19 & up
-    Try Menu,menu,show
-  }
-  if winactive("Edit specification - \\Remote"){
-    Menu, Menu, add, &Analytical, AutoFill
-    Menu, Menu, add, &Physical, AutoFill
-    Menu, Menu, add, &Micro, AutoFill
-    Menu, Menu, add, &Retain, AutoFill
-    Menu, Menu, add, &Coated_Physical, AutoFill
-    Menu, Menu, add, &Coated_Retain, AutoFill
-  Try Menu,menu,show
-  }
-  if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
-    ; This.add("&Spec Table","Tests")
-    Menu,Menu, add
-    Menu, Menu, Add, &USP Heavy Metal,Autofill
-    Menu, Menu, Add, &Canada Heavy Metal,Autofill
-    Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
-    Menu, Menu, Add, &Report Only Heavy Metal,Autofill
-  Try Menu,menu,show
-  return
-  }
-  if winactive("Edit specification - \\Remote"){
-    Menu,Menu, add, Departments, Autofill
-    Menu, DepartmentsMenu, add, Analytical, AutoFill
-    Menu, DepartmentsMenu, add, Physical, AutoFill
-    Menu, DepartmentsMenu, add, Micro, AutoFill
-    Menu, DepartmentsMenu, add, Retain, AutoFill
-    Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
-    Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
-    Menu,Menu, add, departments, :DepartmentsMenu
-  Try Menu,menu,show
-  return
-  }
-  if winactive("Login - \\Remote"){
-    Menu,Menu, add, &Login, LMS_Env
-    Menu,Menu, add, &Production Server, LMS_Env
-    Menu,Menu, add, &Test Server, LMS_Env
-  Try Menu,menu,show
-  }
-  else
-    return
-  }
 
 
-Variable(){
-    global
-    ; CoordMode, mouse, Screen
-    ; MouseGetPos, mx, my
-    try
-    this.delete()
-    ; Menu, Menu, add, &Variables, Variable
-      if Product
-        Menu, menu, Add, &Product `t %Product%, Variable
-      if Batch
-        Menu, menu, Add, &Batch `t %Batch%, Variable
-      if Lot
-        Menu, menu, Add, &Lot `t %Lot%, Variable
-      if SampleID
-        Menu, menu, Add, &SampleID `t %SampleID%, Variable
-      if Name
-        Menu, menu, Add, &Name `t %name%, Variable
-      if Customer
-        Menu, menu, Add, Cus&tomer `t %Customer%, Variable
-      if Coated
-        Menu, menu, Add, &Coated `t %Coated%, Variable
-      if Color
-        Menu, menu, Add, C&olor `t %Color%, Variable
-      if ShapeSize
-        Menu, menu, Add, Sha&peSize `t %ShapeSize%, Variable
-      if Weight
-        Menu, menu, Add, &Weight `t %Weight%, Variable
-    ; Menu,Menu, add, &Variables, :Variables
-    Try Menu,menu,show
-    Return
-  Variable:
-    sleep 300
-    click
-    if A_thismenuItem contains &Product `t %Product%,
-      send % Product
-    else if A_thismenuItem contains &Batch `t %Batch%
-      send % Batch
-    else if A_thismenuItem contains &name `t %name%
-      send % Name
-    else if A_thismenuItem contains &SampleID `t %SampleID%
-      send % SampleID
-    else if A_thismenuItem contains &lot `t %Lot%
-      send % Lot
-    else if A_thismenuItem contains &Coated `t %Coated%
-      send % Coated
-    else if A_thismenuItem contains Cus&tomer `t %Customer%
-      send % Customer
-    else if A_thismenuItem contains C&olor `t %Color%
-      send % Color
-    else if A_thismenuItem contains Sha&peSize `t %ShapeSize%
-      send % shapesize
-    else if A_thismenuItem contains &Weight `t %Weight%
-      send % Weight
-    else if A_ThisMenuItem is digit
-      {
-        Iteration:=A_Thismenuitem
-        GuiControl, Varbar:Text, iteration, %A_thismenuitem%
-        Clip()
-        sleep 200
-        varbar.Search("Batch")
-      }
-    else
-      Menu,Menu, deleteAll
-    return
+
 
 
 
     }
-  Tables(){
-    try
-    This.delete()
-    Menu,Menu,add,&Spec Table,Tests
-    Menu,Menu,add,&Ingredient Table,Tests
-    ;menu,Menu,add,&Rotation Table,Tests
-    Try Menu,menu,show
-    ;Menu,menu,add
-    }
+
   passwords(){
     global
-    This.delete()
+    Menu,Menu, deleteAll
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
       menu, menu, add
@@ -319,32 +61,11 @@ Variable(){
     Menu,Menu, deleteAll
    return
     }
-  Reasons(){
-    global
-    This.delete()
-    menu,menu,add, Fixing Rotation, Reasons
-    menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
-    Try Menu,menu,show
-    Return
 
-    Reasons:
-		winactivate, Reason For Change - \\Remote
-		Send,{click 143, 118}%A_ThisMenuItem%
-   if A_thismenuitem contains Fixing Rotation
-    send, {click 240, 239}
-  ;  else if A_thismenuItem contains Removing B12 from Rotation AL %daystring%
-    ; ReasonText:="Removing B12 from rotation AL " Daystring
-  ;  else if A_thismenuItem contains Duplicate Entry
-    ; ReasonText:="Duplicate Entry"
-  ;  else
-		; Send,{click 143, 118}%A_ThisMenuItem%{click 240, 239}
-    Menu,Menu, deleteAll
-   return
-    }
 
   Apps(){
   global
-  try This.delete()
+  try Menu,Menu, deleteAll
     menu, menu, add
     Menu, Menu, Add, &LMS , !l
     Menu, Menu, Add, &VScode , !v
@@ -369,7 +90,7 @@ Variable(){
 
 TaskBar(){
   global
-  try This.delete()
+  try Menu,Menu, deleteAll
     ; Menu, Menu, Add, &Editing_Batches , Editing_Batches
     Menu, Menu, Add, downloads , #^F1
     Menu, Menu, Add, Desktop , +#^F1
@@ -411,10 +132,6 @@ TaskBar(){
     Menu, LabelCopyFolder, Add, &FINAL C_O_A, #^F9
     Menu, LabelCopyFolder, Add, &Rotations, +#^F12
   Menu, Menu, add, &Label Copy, :LabelCopyFolder
-    if winexist("Mats Workbook") && winactive("NuGenesis LMS - \\Remote"){
-      Menu,Menu,add,				&Spec Table,						Tests
-			Menu,Menu,add,				&Ingredient Table,			Tests
-      }
   Try Menu,menu,show
   }
 
@@ -422,7 +139,7 @@ TaskBar(){
 
 Remote_desktop(){
   global
-  try This.delete()
+  try Menu,Menu, deleteAll
       if winexist("Login - \\Remote"){
       Menu,Menu, add, &Production Server, LMS_Env
       Menu,Menu, add, &Test Server, LMS_Env
@@ -487,99 +204,6 @@ Remote_desktop(){
   }
 
 
-  Products(){
-    global
-      This.delete()
-    If !winExist("Mats LMS Workbook.xlsb - Excel"){
-      varbar.historymenuItem()
-      return
-    }
-    menu,menu,add, [%Product%], ProductsList
-    menu,menu,Disable,[%Product%]
-    menu,menu,add
-    loop % Products.maxindex(){
-      temp:=Products[A_index]
-      menu,menu,add, %temp%, ProductsList
-    if (Products[a_index]=Product)
-          menu,menu,Check, %temp%,
-    }
-    Try Menu,menu,show
-    ProductsList:
-    if !A_ThisMenuItem
-      return
-    If winExist("Mats LMS Workbook.xlsb - Excel")
-      try XL.activeworkbook.Worksheets(A_ThisMenuItem).activate
-        ; excel.InfoLocations()
-    else
-    try GuiControl, Varbar:ChooseString, ComboBox1, %A_ThisMenuItem%
-    Catch
-      GuiControl,Varbar:Text, Product, %A_ThisMenuItem%
-      ; Pop(Product,Batch " " lot)
-    ; excel.MatchColor()
-    return
-
-    }
-  Batches(){
-      global
-      Batches:=[]
-      This.Delete()
-      If !winExist("Mats LMS Workbook.xlsb - Excel"){
-        varbar.historymenuItem()
-        return
-      }
-      ListOfBatches:=XL.Range("H1").Value
-      Batches:= StrSplit(ListOfBatches,"`n")
-      Sleep 50
-      loop % Batches.MaxIndex(){
-        temp:=trim(Batches[A_index])
-        if (Batches[A_index]){
-        menu,menu,add, &%A_Index% : %temp%, BatchesList
-        if (temp=Batch) || (temp=LastMenuItemSelected) || (temp=Trim(Batch " " Lot))  ;XL.Range("E1").Value)
-          menu,menu,check, %temp%,
-        }
-      }
-      Try Menu,menu,show
-
-      return
-
-  BatchesList:
-    if !A_ThisMenuItem
-      return
-    LastMenuItemSelected:=Trim(A_ThisMenuItem)
-    If winExist("Mats LMS Workbook.xlsb - Excel"){
-      excel.RegexCell(A_ThisMenuItem)
-      XL.Range("E1").Value := A_ThisMenuItem
-      GuiControl, Varbar:Text, lot, %lot%
-      GuiControl, Varbar:Text, Batch, %Batch%
-      GuiControl, Varbar:Text, Coated, %coated%
-    }
-    else
-      try GuiControl, Varbar:ChooseString, ComboBox1, %A_ThisMenuItem%
-      Catch
-        GuiControl,Varbar:Text, Batch, %A_ThisMenuItem%
-    ; excel.MatchColor()
-    return
-    }
-    SetStatus(){
-      global
-      Status:=["CoA","Specs","Reviewed","Samples","Completed"]
-      This.Delete()
-      loop % Status.MaxIndex(){
-        temp:=Status[A_index]
-        menu,menu,add, %temp%, SetStatusList
-        if (Status[a_index]=XL.Range("B7").Value)
-          menu,menu,check, %temp%,
-      }
-      Try Menu,menu,show
-
-  SetStatusList:
-    XL.Range("B7").Value := A_ThisMenuItem
-    excel.MatchColor()
-    	; GuiControl, Varbar:Text, lot, %lot%
-      ; GuiControl, Varbar:Text, Batch, %Batch%
-      ; GuiControl, Varbar:Text, Coated, %coated%
-    return
-    }
 }
 return
 
@@ -613,102 +237,6 @@ return
 
 ;;      Extraactions:
 
-
-
-   Heavy_metals:
-    if (A_ThisMenuItem = "USP Heavy Metal")
-    SpecTab.HM_USP()
-   else if (A_ThisMenuItem = "Canada Heavy Metal")
-    SpecTab.HM_Canada()
-   else if (A_ThisMenuItem = "Prop65 Heavy Metal")
-    SpecTab.HM_Prop65()
-   else if (A_ThisMenuItem = "Report Only Heavy Metal")
-    SpecTab.HM_ReportOnly()
-   else
-    Menu,Menu, deleteAll
-   return
-
-
-
-   Autofill:
-    if A_thismenuitem contains &Analytical
-      SpecTab.Edit_Analytical()
-    else if A_thismenuitem contains &Coated_Retain
-      SpecTab.Edit_CoatedRetain()
-    else if A_thismenuitem contains &Coated_Physical
-      SpecTab.Edit_CoatedPhysical()
-    else if A_thismenuitem contains &Retain
-      SpecTab.Edit_Retain()
-    else if A_thismenuitem contains &Micro
-      SpecTab.Edit_Micro() ; copyMicro spec tests
-    else if A_thismenuitem contains &Physical
-      SpecTab.Edit_Physical()
-    else if A_thismenuitem contains Copy &Specs
-      SpecTab.CopySpecs()
-    else if A_thismenuitem contains Paste &Specs
-      SpecTab.PasteSpecs()
-    else if A_thismenuitem contains Copy &Template
-      SpecTab.CopySpecTemplate()
-    else if A_thismenuitem contains New &Request
-      WorkTab.NewRequest()
-    else if (A_ThisMenuItem = "&USP Heavy Metal")
-      SpecTab.HM_USP()
-    else if (A_ThisMenuItem = "&Canada Heavy Metal")
-      SpecTab.HM_Canada()
-    else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
-      SpecTab.HM_Prop65()
-    else if (A_ThisMenuItem = "&Report Only Heavy Metal")
-      SpecTab.HM_ReportOnly()
-    else if (A_ThisMenuItem = "&Delete Retain")
-      WorkTab.DeleteRetain()
-    Menu,Menu, deleteAll
-   return
-
-Tests:
-   if A_thismenuitem contains &Ingredient Table
-    ProductTab.Table()
-   else if A_thismenuItem contains &Spec Table
-    SpecTab.Table()
-  ;  else if A_thismenuItem contains &Rotation Table
-    ; Rotation_GetTable()
-   else
-    Menu,Menu, deleteAll
-   return
-
-
-
-
-   LMS_Env:
-   IfwinExist, Login - \\Remote,
-      winactivate, Login - \\Remote
-    sleep 200
-    Send,mmignin{tab}Kilgore7744
-    if A_thismenuItem contains &Login
-    Send,{enter}
-   else if A_thismenuItem contains &Production Server
-    SwitchEnv("Prd")
-   else if A_thismenuItem contains &Test Server
-    SwitchEnv("Test")
-   else
-    Menu,Menu, deleteall
-   return
-
-
-
-
-		; TT("Fixing Rotation",2000)
-
-
-
-
-   SwitchEnv(ServerEnv){
-    sleep 200
-    Send,{Tab}{Tab}{down} ; winwaitactive, Change Configuration - \\Remote ahk_class Transparent windows Client
-    sleep 200
-    Send,{Home}{Right}{Right}{Right}{Right}{LShift down}{End}{End}{LShift up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
-    sleep 200 ; winwaitactive, Login - \\Remote ahk_class Transparent windows Client
-    Send,{Enter}
-  }
 
 
 

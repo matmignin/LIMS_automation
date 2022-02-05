@@ -27,6 +27,92 @@
 
 Class LMS {    			;;_____________________Generl LMS_________________________
 
+Menu(){
+  Global
+  try Menu,Menu, deleteAll
+  if winactive("NuGenesis LMS - \\Remote"){
+    ; LMS.Orient()
+    LMS.DetectTab()
+
+    ; msgbox, %Tab%
+    ; click
+    if (Tab="Samples")
+      Menu, Menu, add, New &Request, AutoFill
+    else if (Tab="Tests")
+      Menu,Menu, add, &Delete Retain, Autofill
+    else if (Tab="Specs"){
+      this.CopyPasteSpec()
+      Menu,Menu, add, &Delete Retain, Autofill
+    }
+
+    else {
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
+    }
+      Menu, Menu, add, Paste All &Products,   F19 & down
+      Menu, Menu, add, Paste All &Batches,    F19 & Left
+      Menu, Menu, add, Paste All &WorkSheets, F19 & up
+    Try Menu,menu,show
+  }
+  if winactive("Edit specification - \\Remote"){
+    Menu, Menu, add, &Analytical, AutoFill
+    Menu, Menu, add, &Physical, AutoFill
+    Menu, Menu, add, &Micro, AutoFill
+    Menu, Menu, add, &Retain, AutoFill
+    Menu, Menu, add, &Coated_Physical, AutoFill
+    Menu, Menu, add, &Coated_Retain, AutoFill
+  Try Menu,menu,show
+  }
+  if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
+    ; This.add("&Spec Table","Tests")
+    Menu,Menu, add
+    Menu, Menu, Add, &USP Heavy Metal,Autofill
+    Menu, Menu, Add, &Canada Heavy Metal,Autofill
+    Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
+    Menu, Menu, Add, &Report Only Heavy Metal,Autofill
+  Try Menu,menu,show
+  return
+  }
+  if winactive("Edit specification - \\Remote"){
+    Menu,Menu, add, Departments, Autofill
+    Menu, DepartmentsMenu, add, Analytical, AutoFill
+    Menu, DepartmentsMenu, add, Physical, AutoFill
+    Menu, DepartmentsMenu, add, Micro, AutoFill
+    Menu, DepartmentsMenu, add, Retain, AutoFill
+    Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
+    Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
+    Menu,Menu, add, departments, :DepartmentsMenu
+  Try Menu,menu,show
+  return
+  }
+  if winactive("Login - \\Remote"){
+    Menu,Menu, add, &Login, LMS_Env
+    Menu,Menu, add, &Production Server, LMS_Env
+    Menu,Menu, add, &Test Server, LMS_Env
+  Try Menu,menu,show
+  }
+  else
+    return
+  }
+
+  Reasons(){ ;reasons for audit trails
+    global
+    Menu,Menu, deleteAll
+    menu,menu,add, Fixing Rotation, Reasons
+    menu,menu,add, Removing B12 from Rotation AL %daystring%, Reasons
+    menu,menu,add, Verification Testing, Reasons
+    Try Menu,menu,show
+    Return
+
+    Reasons:
+		winactivate, ahk_exe WFICA32.EXE
+		Send,{click 143, 118}%A_ThisMenuItem%
+   if A_thismenuitem contains Fixing Rotation
+    send, {click 240, 239}
+    Menu,Menu, deleteAll
+   return
+    }
+
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 			Global
 			if !winactive("ahk_exe WFICA32.EXE")
@@ -229,7 +315,6 @@ Class LMS {    			;;_____________________Generl LMS_________________________
 		sleep 400
 
 	}
-
 
 
 	MoveTab2(Direction){
@@ -1131,18 +1216,17 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		return
 	}
 
-
-		ShowGUI(){
-			global
-			CoordMode, mouse, screen
-			ScreenEdge_X:=A_ScreenWidth-350
-			ScreenEdge_Y:=A_Screenheight-150
-			try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
-			catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
-			CoordMode, mouse, window
-			OnMessage(0x0201, "WM_Lbuttondown")
-			return
-			}
+	ShowGUI(){
+		global
+		CoordMode, mouse, screen
+		ScreenEdge_X:=A_ScreenWidth-350
+		ScreenEdge_Y:=A_Screenheight-150
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
+		CoordMode, mouse, window
+		OnMessage(0x0201, "WM_Lbuttondown")
+		return
+		}
 
 	CreateGUI(){
 		global
@@ -1172,7 +1256,17 @@ class SpecTab {   	;;  	 ________________SpecTab class__________________
 		}
 	}
 
-
+  CopyPasteSpec(){
+    global copypasteToggle
+     click
+      try Menu,Menu, deleteAll
+        Menu,Menu, add, Copy &Template, autofill
+      If CopyPasteToggle=1
+        Menu,Menu, add, Paste &Specs, Autofill
+      If CopyPasteToggle=0
+        Menu,Menu, add, Copy &Specs, Autofill
+      return
+  }
 
 
 	Methods() {
@@ -2478,3 +2572,116 @@ class LMSclick {
 		return
 	}
 }
+
+
+
+
+
+
+
+
+
+   Heavy_metals:
+    if (A_ThisMenuItem = "USP Heavy Metal")
+    SpecTab.HM_USP()
+   else if (A_ThisMenuItem = "Canada Heavy Metal")
+    SpecTab.HM_Canada()
+   else if (A_ThisMenuItem = "Prop65 Heavy Metal")
+    SpecTab.HM_Prop65()
+   else if (A_ThisMenuItem = "Report Only Heavy Metal")
+    SpecTab.HM_ReportOnly()
+   else
+    Menu,Menu, deleteAll
+   return
+
+
+
+   Autofill:
+    if A_thismenuitem contains &Analytical
+      SpecTab.Edit_Analytical()
+    else if A_thismenuitem contains &Coated_Retain
+      SpecTab.Edit_CoatedRetain()
+    else if A_thismenuitem contains &Coated_Physical
+      SpecTab.Edit_CoatedPhysical()
+    else if A_thismenuitem contains &Retain
+      SpecTab.Edit_Retain()
+    else if A_thismenuitem contains &Micro
+      SpecTab.Edit_Micro() ; copyMicro spec tests
+    else if A_thismenuitem contains &Physical
+      SpecTab.Edit_Physical()
+    else if A_thismenuitem contains Copy &Specs
+      SpecTab.CopySpecs()
+    else if A_thismenuitem contains Paste &Specs
+      SpecTab.PasteSpecs()
+    else if A_thismenuitem contains Copy &Template
+      SpecTab.CopySpecTemplate()
+    else if A_thismenuitem contains New &Request
+      WorkTab.NewRequest()
+    else if (A_ThisMenuItem = "&USP Heavy Metal")
+      SpecTab.HM_USP()
+    else if (A_ThisMenuItem = "&Canada Heavy Metal")
+      SpecTab.HM_Canada()
+    else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
+      SpecTab.HM_Prop65()
+    else if (A_ThisMenuItem = "&Report Only Heavy Metal")
+      SpecTab.HM_ReportOnly()
+    else if (A_ThisMenuItem = "&Delete Retain")
+      WorkTab.DeleteRetain()
+    Menu,Menu, deleteAll
+   return
+
+Tests:
+   if A_thismenuitem contains &Ingredient Table
+    ProductTab.Table()
+   else if A_thismenuItem contains &Spec Table
+    SpecTab.Table()
+   else
+    Menu,Menu, deleteAll
+   return
+
+
+
+
+   LMS_Env:
+   IfwinExist, Login - \\Remote,
+      winactivate, Login - \\Remote
+    sleep 200
+    Send,mmignin{tab}Kilgore7744
+    if A_thismenuItem contains &Login
+    Send,{enter}
+   else if A_thismenuItem contains &Production Server
+    SwitchEnv("Prd")
+   else if A_thismenuItem contains &Test Server
+    SwitchEnv("Test")
+   else
+    Menu,Menu, deleteall
+   return
+
+
+
+
+		; TT("Fixing Rotation",2000)
+
+
+
+
+   SwitchEnv(ServerEnv){
+    sleep 200
+    Send,{Tab}{Tab}{down} ; winwaitactive, Change Configuration - \\Remote ahk_class Transparent windows Client
+    sleep 200
+    Send,{Home}{Right}{Right}{Right}{Right}{LShift down}{End}{End}{LShift up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
+    sleep 200 ; winwaitactive, Login - \\Remote ahk_class Transparent windows Client
+    Send,{Enter}
+  }
+
+
+
+  Tables(){
+    try
+    Menu,Menu, deleteAll
+    Menu,Menu,add,&Spec Table,Tests
+    Menu,Menu,add,&Ingredient Table,Tests
+    ;menu,Menu,add,&Rotation Table,Tests
+    Try Menu,menu,show
+    ;Menu,menu,add
+    }

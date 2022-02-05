@@ -3,7 +3,7 @@ return
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		Numlock:: Menu.LMS() ;4tap() ;LMS.COA()
+		Numlock:: lms.menu() ;4tap() ;LMS.COA()
 		mbutton:: 3tap()
 		F7::		  3Right()
 		F6::			3Left()
@@ -44,7 +44,7 @@ return
 	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
 	; wheelup::Mouse_click("Edit")
 		; numlock::Send, % clk(712, 663) "{esc}"
-		Numlock::menu.LMS()
+		Numlock::lms.menu()
 		space::sendinput,{ctrldown}{click}{ctrlup}
 		mbutton::Spectab.Table()
 
@@ -197,7 +197,6 @@ F20 & lbutton::       		send, {shiftdown}{ctrldown}{3}{ctrlup}{shiftup} ;snipast
 ; Lbutton & Mbutton:: 			send, {lbutton up}^x         	;cut selected word
 Mbutton::									3Tap()
 F19 & \:: 								Sendpassword()
-	; Rbutton & Mbutton::				menu.PasteStuff()
 F19 & left::								GetAllProducts()
 F20 & /::        	 				OCR()
 F19 & down::								GetAllBatches()
@@ -252,6 +251,7 @@ sendinput, {ctrldown}{c}{ctrlup}
 sleep 20
 	tt(Clipboard, 2000,A_CaretX,A_CaretY,2,200)
 return
+F13 & tab::				VsCode.menu() ;;vscode menu
 F13 & Lbutton up::
 sleep 100
 sendinput, {ctrldown}{v}{ctrlup}
@@ -400,7 +400,9 @@ rshift & Appskey::				return
 	F7::				Sendinput, ^{e}%product%{enter}
 	; F9::ExplorerSearch(Product)
 	^w::									4down()
-#ifwinactive, ahk_exe Notion.exe
+#ifwinactive, ahk_exe Notion.exe ;;	___Notion
+	F13 & b::sendinput, ^a{shiftdown}{ctrldown}{h}{ctrlup}{shiftup}
+	+^h::sendinput, {shiftdown}{ctrldown}{h}{ctrlup}{shiftup}
 	^h::sendinput, {shiftdown}{ctrldown}{h}{ctrlup}{shiftup}
  #ifwinactive, Connection Information
 	mbutton::sendinput, doR314Nle{enter}
@@ -446,7 +448,7 @@ if !winactive("CodeQuickTester*")
 	send, !r
 	Toggle:=!Toggle
 	return
-#ifwinactive, Paster - Snipaste
+#ifwinactive, Paster - Snipaste ;; ___Snipaste
 	Mbutton::
 	sendinput, {appsKey}
 	sleep 100

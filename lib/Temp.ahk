@@ -9,7 +9,7 @@ return
 ; #If Mode("TempCode")
 TEST_1: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
 ; CopyNewestFile("K880")
-menu.batches()
+Excel.Batches()
 ; CopyNewestFile("K784")
 
 ; varbar.ProductsMenu(1)
@@ -128,7 +128,7 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
 ; #If winactive("Results Definition - \\Remote") && TempCode
 ;     Mbutton::send, {enter}
 ;     numlock::gosub, AddRAE_ResultsDefinition
-;     rbutton::menu.lms()
+;     rbutton::lms.menu()
 ;     ; Lbutton::
 ; #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
 ;   ; NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method

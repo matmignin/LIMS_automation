@@ -141,11 +141,11 @@ GetAllProducts(Delimiter:=" ",File:=""){
     else
       GetAllBatches()
     Return
-  F13 & 6::             Sendinput % excel.GetAllSheets()
 
 
+  F13 & 6::Sendinput % excel.GetAllSheets()
 
-;Tab & 2::menu.batches()
+Tab & 2::Excel.Batches()
   Batch_cyclebackward:
   GUI, varbar:default
   Excel.InfoLocations()
@@ -184,7 +184,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
     }
   Return
 
-	;Tab & 2 up::
+	Tab & 2 up::
   Batch_cyclebackward_up:
   PreviousClipCycleCounter:=ClipCycleCounter
   If (ClipCycleFirst = 0)
@@ -275,8 +275,7 @@ return
 	Return
 
 
-	DisplayToolTipText(TextIn,Format=0)
-		{
+	DisplayToolTipText(TextIn,Format=0){
 		TextOut:=RegExReplace(TextIn,"^\s*")
 		TextOut:=SubStr(TextOut,1,750)
 		StringReplace,TextOut,TextOut,`;,``;,All
@@ -545,11 +544,11 @@ clipChange(type){
     ; if winactive("ahk_exe WFICA32.EXE"){
       ; clip.Department()
     if A_PriorKey = c
-      FloVar(Clipboard,3000,13)
+      FloVar(Clipboard,2000,13)
     else if A_PriorhotKey = F19
-      FloVar(Clipboard,3000,13)
+      FloVar(Clipboard,2000,13)
     else if A_PriorKey = x
-      FloVar(Clipboard,3000,13)
+      FloVar(Clipboard,2000,13)
     else if A_PriorKey = b
       return
 }
@@ -1016,8 +1015,6 @@ IfNothingSelected(action){
         Send, ^{v}
         clipboard:=PostCut
       }
-    if action:="menu"
-      menu.Variable()
     If action:="Paste"
     {
       clipboard:=ClipboardSaved
@@ -1031,10 +1028,10 @@ IfNothingSelected(action){
   return
 }
 
-ClickText(button:=""){
+ClickText(Button:="Lbutton", Count:="1"){
 	mousegetpos, mousex, mousey
 	SetDefaultMouseSpeed, 0
-	Click, %A_CaretX% %A_caretY%, %button%
+	mouseClick, %Button%, %A_CaretX%, %A_caretY%, %Count%
 	mousemove, %mousex%, %mousey%, 0
 	SetDefaultMouseSpeed, 1
 }

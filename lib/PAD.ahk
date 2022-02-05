@@ -105,7 +105,7 @@ clipCheckIfEmpty(){
 				if Mode("Entering_Rotations")
 					SpecTab.CopySpecTemplate()
 				else
-					menu.lms()
+					lms.menu()
 				return
 			}
 			else if (Tab="Requests")
@@ -151,7 +151,7 @@ clipCheckIfEmpty(){
 				mousemove, %xpos%, %yPos%+26,0
 			}
 		else if winactive("Edit specification - \\Remote") || winactive("Results Definition - \\Remote")
-				menu.LMS()
+				lms.menu()
 		else if winactive("Composition - \\Remote")
 				ProductTab.Table()
 		else If winactive("Select methods tests - \\Remote")
@@ -185,18 +185,19 @@ clipCheckIfEmpty(){
 		; clip()
 		return
 	}
-	else If winactive("Mats LMS Workbook.xlsb")
-		Sendinput, +{click}
-	else If winactive("Paster - Snipaste")
+	; else If winactive("Mats LMS Workbook.xlsb")
+	; 	Sendinput, +{click}
+	else If winactive("Paster - Snipaste"){
 			Send, ^c
+			Flashscreen("COPIED","grey",300)
+	}
+
 	else if winactive("Snipper - Snipaste")
 			Send, {enter}
 	;		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
 		;Send, {lwindown}{e}{lwinup}
 	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
 			menu.Remote_Desktop()
-	else if winactive("ahk_exe Code.exe")
-			sendinput, +{F9}
 			return
 		}
 
@@ -294,7 +295,7 @@ clipCheckIfEmpty(){
 		return
 	}
 	else if winactive("Results Definition - \\Remote")
-		menu.LMS()
+		lms.menu()
 	else if winactive("Result Entry - \\Remote")
 		return
 	else if winactive("Register new samples - \\Remote")
@@ -333,23 +334,23 @@ clipCheckIfEmpty(){
 					return
 				}
 				else If (tab:="Samples")
-					menu.Setstatus()
+					Excel.setstatus()
 			else if (Tab:="Products") {
 					clk(86, 443) ;edit composition
 				Return
 				}
 			else if (Tab="Specs") {
 					if Mode("Entering_Rotations")
-						menu.Products()
+						Excel.Products()
 					else
 						clk(67, 754) ;edit results
 				return
 				; click
 				; Return
-					; menu.lms()
+					; lms.menu()
 				}
 			else
-				Menu.LMS()
+				lms.menu()
 		}
 		else if winactive("Edit sample (Field Configuration")
 			worktab.CustomerMenu()
@@ -357,7 +358,7 @@ clipCheckIfEmpty(){
 			ProductTab.AddCOASpace()
 		else if winactive("Register new samples - \\Remote"){
 				Send, {click}
-			menu.Batches()
+			Excel.Batches()
 			winactivate, Register new samples - \\Remote
 				sleep 200
 				WorkTab.registerNewSamples()
@@ -371,7 +372,7 @@ clipCheckIfEmpty(){
 			Send, {altdown}{F4}{altup}
 		}
 	if MouseIsOver("Mats LMS Workbook.xlsb - Excel")
-			menu.SetStatus()
+			Excel.setstatus()
 	if winactive("ahk_exe OUTLOOK.EXE") {
 		clipCheckIfEmpty()
 		clip()
@@ -414,7 +415,7 @@ clipCheckIfEmpty(){
 			Pop("nothing")
 	}
 		else if winactive("Results Definition - \\Remote")
-		menu.lms()
+		lms.menu()
 	else if winactive("PDF Preview - \\Remote")
 		Send, {altdown}{F4}{altup}
 	Else
@@ -625,7 +626,7 @@ clipCheckIfEmpty(){
 	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
 	{
 		If MouseIsOver("NuGenesis LMS - \\Remote")
-			menu.LMS()
+			lms.menu()
 		else
 			click Right
 		return

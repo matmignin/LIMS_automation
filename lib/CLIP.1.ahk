@@ -398,8 +398,6 @@ IfNothingSelected(action){
         Send, ^{v}
         clipboard:=PostCut
       }
-    if action:="menu"
-      menu.Variable()
     If action:="Paste"
     {
       clipboard:=ClipboardSaved

@@ -80,14 +80,14 @@ return
 
 
 	;;F13
-	F13 & r::reloadscript()
+	F13 & r::vscode.reloadscript()
 	F13 & tab up::
 		if winactive("ahk_exe WFICA32.EXE")
 			excel.GetAllSheets()
 			else
 	SavedTextMenu()
 		return
-	F13 & Enter::Sendinput, {end}{enter}return{enter}
+	F13 & Enter::Sendinput, {ctrldown}{enter}{ctrlup}
 	; F13 & c::gosub, F19
 	F13 & v::vim.visualmode()
 	F13 & c::vim.visualmodeCopy()
@@ -151,7 +151,7 @@ return
 												send, {enter}
 												return
 	>+space::
-	; F13 & space::sendinput, {_}								 sendinput, {)} ;Enter parenthasis below
+	F13 & space::sendinput, {_}								 sendinput, {)} ;Enter parenthasis below
 	; F13 up::F13
 
 
@@ -285,26 +285,26 @@ return
 #Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
 	Lbutton & F13::return
 	F13 & Tab::
-	numlock::ReloadScript()
-	; Mbutton::sendinput, +{F9}
+	numlock::vscode.reloadscript()
+	Mbutton::sendinput, !{f}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
 	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
-	F13 & Lalt::FindMatchingwindows()
+	F13 & Lalt::vscode.FindMatchingwindows()
 	F13 & `::Sendinput,+{F9}
 	; F13 & '::Sendinput,!+{F9}
 	F13 & i::Vim.DuplicateLine()
 	F13 & e::sendinput, {ctrldown}{F8}{ctrlup} ;expand(Peek)Deffinition
 
 	F13 & 5::send,`%
-	F13 & 1::VScodeBookmarks()
-	F13 & 2::VScodeBookmarks()
-	F13 & 3::VScodeBookmarks()
-	F13 & 4::VScodeBookmarks()
-	; F13 & 5::VScodeBookmarks()
-	F13 & 6::VScodeBookmarks()
-	F13 & 7::VScodeBookmarks()
-	F13 & 8::VScodeBookmarks()
-	F13 & 9::VScodeBookmarks()
+	F13 & 1::vscode.bookmarks()
+	F13 & 2::vscode.bookmarks()
+	F13 & 3::vscode.bookmarks()
+	F13 & 4::vscode.bookmarks()
+	; F13 & 5::vscode.bookmarks()
+	F13 & 6::vscode.bookmarks()
+	F13 & 7::vscode.bookmarks()
+	F13 & 8::vscode.bookmarks()
+	F13 & 9::vscode.bookmarks()
 	/ & space::								sendinput, {_}
 
 
@@ -381,11 +381,11 @@ return
 	`::`
 	/::/
 
-	numlock::#\
+	; numlock::#\
 	^r::!r
 	; <^h::[
 	; <^l::]
-	; <^r::ReloadScript()
+	; <^r::vscode.reloadscript()
 
 
 	; 	send, ^c
@@ -410,7 +410,7 @@ return
 	Lalt & Appskey::          return
 ;;		---F Keys---
 	; go to file
-	F20 & .::FindMatchingwindows()
+	F20 & .::vscode.FindMatchingwindows()
 	+F1::Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
 	F15::F15
 	F20 & /:: 			 					Sendinput,{ctrldown}{f}{ctrlup}%wintitle%
@@ -420,23 +420,23 @@ return
 	F20 & backspace::         delete
 	F19 & -::                 Sendinput,{ctrldown}{-}{ctrlup}
 	F19 & =::                 Sendinput,{ctrldown}{=}{ctrlup}
-	F19 & y::                 Sendinput,{ctrldown}{w}{ctrlup}
-	F19 & n::                 Sendinput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
-	F19 & u::                 Sendinput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
-	F19 & i::                 Sendinput,{F9}
-	F19 & o::                 Sendinput,+!{F9}
-	F19 & p::                 Sendinput,^{F9}
+	; F19 & y::                 Sendinput,{ctrldown}{w}{ctrlup}
+	; F19 & n::                 Sendinput,{shiftdown}{lwindown}{j}{lwinup}{shiftup}
+	; F19 & u::                 Sendinput,{shiftdown}{lwindown}{k}{lwinup}{shiftup}
+	; F19 & i::                 Sendinput,{F9}
+	; F19 & o::                 Sendinput,+!{F9}
+	; F19 & p::                 Sendinput,^{F9}
 	F19 & Enter::							Sendinput,{ctrldown}{enter}{ctrlup}
-	F19 & j::                 Sendinput,+!{j}
-	F19 & k::                 Sendinput,+!{k}
-	F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
-	F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
-	f19 & `::                 Sendinput,~
+	; F19 & j::                 Sendinput,+!{j}
+	; F19 & k::                 Sendinput,+!{k}
+	; F19 & l::                 Sendinput,{shiftdown}{ctrldown}{pgdn}{ctrlup}{shiftup}
+	; F19 & h::                 Sendinput,{shiftdown}{ctrldown}{pgup}{ctrlup}{shiftup}
+	; f19 & `::                 Sendinput,~
 	f19 & r::                Sendinput,%process%
 	f19 & c::                 Sendinput,%mouseposition%
 	f19 & t::                 Sendinput,%wintitle%
 	f19 & w::                 Sendinput,%wininfo%
-	f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
+	; f19 & /::                 Sendinput,{shiftdown}{altdown}{lwindown}{m}{lwinup}{altup}{shiftup} ;navigate bookmarks
 	; F13 & lshift::						enter
 	$F13::F13
 
@@ -458,11 +458,11 @@ Class Vim {
 			cutorclip:="x"
 		else
 			CutOrClip:="c"
-		flashscreen(CopyMode, "white")
+		flashscreen(CopyMode, "Grey")
 		sendinput, {Shift down}
 		Keywait, F13, U
 		sendinput, {shift UP}
-		flashscreen("","white")
+		flashscreen("","Grey")
 			send, ^%CutOrClip%
 			Send, ^c
 		sleep 30
@@ -472,11 +472,11 @@ Class Vim {
 	}
 
 	VisualModeCut(){
-		flashscreen(CopyMode, "white")
+		flashscreen(CopyMode, "grey")
 		sendinput, {Shift down}
 		Keywait, F13, U
 		sendinput, {shift UP}
-		flashscreen("","white")
+		flashscreen("","grey")
 		Send, ^c
 		sleep 30
 		tt(clipboard,1000,A_CaretX,A_CaretY,,200)
@@ -855,45 +855,124 @@ SelectVScodeTab:
 	}
 
 
-FindMatchingwindows(){
+
+
+
+
+class VScode{
+
+	FindMatchingwindows(){
+			global
+			winGetTitle, CurrentLMSwindow, ahk_exe WFICA32.EXE
+		; Pop(SubStr(CurrentLMSwindow, 1, 20))
+			winactivate, ahk_exe Code.exe
+			send, ^{f}
+			sleep 200
+			sendinput % SubStr(CurrentLMSwindow, 1, 25)
+		}
+
+	reloadscript(){
 		global
-	  winGetTitle, CurrentLMSwindow, ahk_exe WFICA32.EXE
-  ; Pop(SubStr(CurrentLMSwindow, 1, 20))
-  	winactivate, ahk_exe Code.exe
-    send, ^{f}
-    sleep 200
-    sendinput % SubStr(CurrentLMSwindow, 1, 25)
-	}
-
-ReloadScript(){
-	global
-	Sendinput, ^s
-	flashscreen("reload","white")
-	; winSet, Transparent, 155, ahk_exe Code.exe
-	sleep 100
-	; winSet, Transparent, off, ahk_exe Code.exe
-	try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-	if A_DebuggerName || DebuggingScript
-	{
-			varbar.SaveVariables()
-			ControlSend, , {F5}, ahk_exe Code.exe
-			return
-			}
-	else
-	{
-		varbar.SaveVariables()
+		Sendinput, ^s
+		flashscreen("reload","grey")
+		; winSet, Transparent, 155, ahk_exe Code.exe
+		sleep 100
+		; winSet, Transparent, off, ahk_exe Code.exe
 		try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
-		; catch
-			; reload
+		if A_DebuggerName || DebuggingScript
+		{
+				varbar.SaveVariables()
+				ControlSend, , {F5}, ahk_exe Code.exe
+				return
+				}
+		else
+		{
+			varbar.SaveVariables()
+			try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+			; catch
+				; reload
+		}
 	}
-}
+	Bookmarks(){
+		StringTrimLeft, ThisNumber, A_ThisHotkey, 6
+		if Getkeystate("LControl","p"){
+			Sendinput,^+!{%ThisNumber%}
+		}
+		else
+			Sendinput,^{%ThisNumber%}
+			return
+	}
+			; global
+			; try Menu,Menu, deleteAll
+			;   Menu, Menu, add, All &Products,   <#Space
+			;   Menu, Menu, add, All &Batches,    <!Space
+			;   Menu, Menu, add, All &WorkSheets, F19 & up
+			;   ; Menu, Menu, add, %Product%, F20 & left
+			;   Menu, Menu, add, Products_Tab, <#space
+			;   Menu, Menu, add, Batches_Tab, <!space
+			;   if winactive("ahk_exe Code.exe")
+			;     Menu, Menu, add, &LMS Title, InputToVsCode
+			;     Menu, Menu, add, window &Title, InputToVsCode
+			;     Menu, Menu, add, window &Process, InputToVsCode
+			;     Menu, Menu, add, &Click Position, InputToVsCode
+			;     Menu, Menu, add, &Mouse Position, InputToVsCode
+			;     Menu, Menu, add, window Location, InputToVsCode
+			;     Menu, Menu, add,
+			;       Menu, Menu, add, E&xit, ExitMenu
+			;   Menu, Menu, Show
+			;   ; KeyWait, Rbutton, U
+			;     ; try Menu,Menu, deleteAll
+			; }
 
-VScodeBookmarks(){
-	StringTrimLeft, ThisNumber, A_ThisHotkey, 6
-	if Getkeystate("LControl","p"){
-		Sendinput,^+!{%ThisNumber%}
-	}
-	else
-		Sendinput,^{%ThisNumber%}}
-		return
+
+
+
+    Menu(){
+    global
+		try Menu,Menu, deleteAll
+    if winactive("ahk_exe Code.exe")
+      Menu, Menu, add, &LMS Title, InputToVsCode
+    Menu, Menu, add, window Title, InputToVsCode
+    Menu, Menu, add, window Process, InputToVsCode
+    Menu, Menu, add, Click Position, InputToVsCode
+    Menu, Menu, add, Mouse Position, InputToVsCode
+    Menu, Menu, add, window Location, InputToVsCode
+    Menu, Menu, add,
+    Menu, Menu, add, E&xit, ExitMenu
+    try Menu, Menu, Show
+    return
+
+    InputToVSCode:
+    if A_thismenuItem contains &LMS Title
+    {
+      winactivate, ahk_exe WFICA32.EXE
+      windowInfo()
+      winactivate, ahk_exe Code.exe
+      send % wintitle
+      return
+    }
+    else if (A_thismenuitem Contains E&xit) || (A_priorkey contains esc)
+      Menu,Menu, deleteAll
+    else
+    {
+    tt("find window and click space",3000)
+    KeyWait, Space, d
+    windowInfo()
+    winactivate, ahk_exe Code.exe
+    sleep 200
+    if A_thismenuItem contains window &Title
+      send % wintitle
+    else if A_thismenuItem contains window &Process
+      send % Process
+    else if A_thismenuItem contains &Click Position
+      send % "{click " MousePosition "}"
+    else if A_thismenuItem contains &Mouse Position
+      send % MousePosition
+    else if A_thismenuItem contains window Location
+      send % winLocation
+    ; sendinput, %A_thismenuItem%
+    try Menu,Menu, deleteAll
+    }
+    return
+    }
 }

@@ -4,6 +4,229 @@
 ; #include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
 
+
+
+
+
+Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
+  global
+; traytip, ,%Clipboard%
+	sleep 20
+; try {
+  ; GUI, Popup:destroy ;:
+  ; settimer, destroyGUI, off
+; }
+PopupColor1:="CE6D4B"
+PopupColor2:="FFFFFF"
+PopupTrans:=250
+CoordMode, mouse, window
+winGetPos,Popup_wX,Popup_wY,Popup_wW,Popup_wH, A
+; CoordMode, mouse, Screen
+MouseGetPos, Popup_x,Popup_y,
+if (Location = "window"){
+	popup_y:=Popup_wx
+	popup_x:=Popup_Wy
+	}
+if (Location = "Right"){
+	popup_y:=Popup_WW-100
+	popup_x:=Popup_Wy
+	}
+if (Location = "Screen"){
+	popup_y:=1
+	popup_x:=1
+	}
+else {
+	popup_y:=popup_y-300
+	popup_x:=Popup_x
+	}
+GUI, Popup: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
+
+GUI, Popup:color,%PopupColor1%, %PopupColor2%
+GUI, Popup:Font,s10 cBlack Bold, Consolas
+GUI, Popup:Add, Text,left, %Line1%
+GUI, Popup:Font,s8 cBlack Bold, Consolas
+  if (Line2)
+    GUI, Popup:Add, Text,Center, %Line2%
+GUI, Popup:Show, Noactivate x%popup_x% y%Popup_y%
+ winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
+settimer, destroyGUI, -%PopupTime%
+return
+}
+
+DestroyGui:
+  try GUI, Popup:destroy
+  try GUI, Popup2:destroy
+return
+
+
+FloVar(VariableText:="", MousePopup:="", FontSize:=17){
+		Global
+		try GUI, FloVar:Destroy
+		if MouseIsOver("ahk_exe NOTEPAD.EXE") || MouseIsOver("ahk_exe WFICA32.EXE")
+			Color:="000000"
+		else
+			color:="FFFFFF"
+		CoordMode, Mouse, Screen
+		MouseGetPos, Mx, My
+		OutlineColor := "282A36"  ; Can be any RGB color (it will be made transparent below).
+		Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
+		GUI, FloVar:Color, %OutlineColor%
+		GUI, FloVar:Font, % "s" Fontsize , Arial Narrow ; Set a large font size (32-point).
+		sleep 30
+		GUI, FloVar:Add, Text, +wrap R30 vMyText c%Color%, XXXXXXXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
+		; Make all pixels of this color transparent and make the text itself translucent (150):
+			winSet, TransColor, %OutlineColor%  230
+		; else
+
+			; winSet, TransColor, %OutlineColor%  150
+		; winSet, TransColor, 453936  250
+		if VariableText{
+			FloVarText:=VariableText
+			; GUI, FloVar:Font, s5
+			}
+		else {
+			FlovarText:=
+			if Product
+				FlovarText.=Product
+			if Batch
+				FlovarText.=" " Batch
+			if lot
+				FlovarText.=" " lot
+			if Coated
+				FlovarText.=" Ct#" Coated
+		}
+		; SetTimer, updateOSD, -100
+		Gosub, FloatOSD  ; Make the first update immediate rather than waiting for the timer.
+		if (MousePopup){
+			; GUI, FloVar:Font, % "s" MousePopup
+			; my-=500\
+			SetTimer, FloatOSD, 25
+			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
+			SetTimer, PopUpOSD, % "-" MousePopup
+		}
+		else
+			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
+				CoordMode, Mouse, window
+	return
+		updateOSD:
+		MouseGetPos, Mx, My
+			return
+		PopupOSD:
+			try GUI, FloVar:destroy
+			SetTimer, FloatOSD, Off
+			return
+		FloatOSD:
+			CoordMode, mouse, Screen
+			MouseGetPos, Mx, My
+			My-=450
+			Mx-=50
+			GuiControl, FloVar:Text, MyText, % FloVarText
+			try
+			winMove, FloVar ahk_class AutoHotkeyGUI, ,A_CaretX+50, A_CaretY+50
+			catch
+			winMove, FloVar ahk_class AutoHotkeyGUI, ,Mx, My
+			; sleep 50
+			return
+	}
+
+
+
+TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
+	global
+	sleep 20
+	if (Position:="S")
+		CoordMode, ToolTip, Screen
+	if (Position:="R")
+		CoordMode, ToolTip, Relative
+	; If X:="-1"
+		; X:=A_CaretX-50
+	; If Y:="-1"
+		; Y:=A_CaretY-50
+	; if !msg
+		; msg:=A_PriorHotkey "`n" A_Thishotkey
+
+	if (Position:="C")
+		tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
+	else
+		tooltip, %msg%, %X%, %Y%,%N%
+	hwnd := winExist("ahk_class tooltips_class32")
+	if Transparent
+   	winSet, Trans, %Transparent%, % "ahk_id" hwnd
+   	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
+	; winSet, Trans, 200, %W%
+	; CoordMode, ToolTip, screen
+	CoordMode, ToolTip, Relative
+	SetTimer, RemoveToolTip%N%, -%time%
+	return
+	RemoveToolTip:
+		ToolTip
+	return
+	RemoveToolTip1:
+		ToolTip,,,,1
+	return
+	RemoveToolTip2:
+		ToolTip,,,,2
+	return
+	RemoveToolTip3:
+		ToolTip,,,,3
+	return
+	RemoveToolTip4:
+		ToolTip,,,,4
+	return
+	}
+
+
+windowInfo(){
+	global
+	CoordMode, mouse, window
+	MouseGetPos, mX, mY, ,winControl
+	winGetPos,wX,wY,wW,wH, A
+	winGetTitle, winTitle, A
+	winGetClass, winclass, A
+	ControlGetFocus, GUIFocus, VarBar
+	winGet, winProcess, ProcessName, A
+	; MouseGetPos, MouseX, MouseY
+PixelGetColor, PixelColor, %MX%, %MY%
+	MousePosition:=mX "`, " mY
+	Sleep, 100
+	TT(MousePosition "`n Title: " winTitle " `n Process: " winProcess " `n Control: "winControl " `n Class: " winclass "`nwindowPosition " wX ", " wY ", " wW ", " wH "`n" PixelColor "`n Focus Control: " GUIFocus,3000,,,2)
+	Process:= "ahk_exe " winProcess
+	winInfo:="winMove, " Process ", , " wX ", " wY ", " wW ", " wH
+	winLocation:= wX "," wY "," wW "," wH
+	; PixelColor:=PixelColor
+	iniwrite %MousePosition%, Settings.ini, SavedVariables, windowMousePosition
+	iniwrite %PixelColor%, Settings.ini, SavedVariables, PixelColor
+	; if Value Return
+	; keywait, F20, U T5
+
+	sleep 500
+	; Tooltip,
+	; SetTimer, RemoveToolTip, -2000
+	}
+
+FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
+	global
+	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cw%Color%
+	if !Text
+		Text:=A_ThisHotkey
+		tt(Text,ToolTipTime,A_caretx,A_caretY,4)
+		; ToolTip, %Text%, %A_CaretX%, %A_CaretY%, 9
+	; ToolTip, %text%, 9
+	Sleep,10
+	SplashImage,off
+	; ToolTip,,,,9
+	return
+}
+
+
+
+
+
+
+
+
+
+
 ExplorerSearch(text){
 		;excel.connect(1)
 		AllLabelCopy:="C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy"
@@ -20,7 +243,7 @@ ExplorerSearch(text){
 			winactivate, ahk_exe explorer.exe
 		sleep 300
 		winGetPos, wX, wY, wW, wH, A
-		clk(ww-175, 75)
+		click, % ww-175, 75)
 		sleep 400
 		; SetKeyDelay, 20, 1
 		Send, %Text%
@@ -28,7 +251,7 @@ ExplorerSearch(text){
 		Send, {enter}
 		; setkeydelay, 0 , 0
 		return
-		}
+}
 
 
 
@@ -56,64 +279,18 @@ Table_Entry(Entry){
 		send % Entry Direction "{ctrlup}{altup}{shiftup}"
 	}
 
-	ifNothingSelected(action, Button){
-	  ClipboardSaved:=ClipboardAll
-    clipboard:=
-    sleep 20
-    Send % Button
-		tt(clipboard,750)
-      ; clipwait,0.10
-		if !clipboard ;if nothing selected
-		{
-			clipboard:=ClipboardSaved
-			if action=copy
-		{
-			if winactive("ahk_exe Code.exe"){
-				sendinput, {Home 2}{shiftdown}{End}{right}{shiftup}^{c}
-				tt(clipboard,750)
-				return
-				}
-			else {
-			mousegetpos, mousex, mousey
-			SetDefaultMouseSpeed, 0
-			Click, %A_CaretX% %A_caretY%
-			Click, %A_CaretX% %A_caretY%
-			mousemove, %mousex%, %mousey%, 0
-			SetDefaultMouseSpeed, 1
-			send, ^c
-			sleep 20
-			tt(clipboard,500)
-			return
-			}
-		}
-			; clicktext()
-		if action=cut
-			send, {delete}
-		}
-	}
+
 
 	ClickText2(){
-		global
 		mousegetpos, mousex, mousey
-		SetDefaultMouseSpeed, 0
-		Click, %A_CaretX% %A_caretY%,
+		; SetDefaultMouseSpeed, 0
+		Click, %A_CaretX%, %A_caretY%
+		sleep 50
 		mousemove, %mousex%, %mousey%, 0
-		SetDefaultMouseSpeed, 1
+		; SetDefaultMouseSpeed, 1
 	}
 
 
-ifPriorHotkey(The_PriorHotKey,FunctionOraction){
-	if A_PriorHotkey contains The_PriorHotkey
-	{
-		if IsFunc(FunctionName)
-			func(FunctionOraction)
-		else
-			sendinput % FunctionOraction
-		return ;FunctionOraction
-	}
-	else
-		return
-}
 
 
 isPixel(X,Y,SearchColor){
@@ -194,19 +371,17 @@ RemoveFileDuplicates(File,Sorting:="U CL R"){
   vOutput := ""
   ; vtext:=strReplace(vText, "`n`n", "")
 ; vText:=Trim(StrReplace(vText, "`t", ""))
-VarSetCapacity(vOutput, StrLen(vText)*2*2)
-oArray := {}
-StrReplace(vText, "`n",, vCount)
-oArray.SetCapacity(vCount+1)
-;Sort, vText, D, ;add this line to sort the list
-Loop Parse, vText, % "`r`n"
-{
-	if !oArray.HasKey("z" A_LoopField)
-		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
-}
-; MsgBox, % vOutput
-
-oArray := ""
+	VarSetCapacity(vOutput, StrLen(vText)*2*2)
+	oArray := {}
+	StrReplace(vText, "`n",, vCount)
+	oArray.SetCapacity(vCount+1)
+	;Sort, vText, D, ;add this line to sort the list
+	Loop Parse, vText, % "`r`n"
+	{
+		if !oArray.HasKey("z" A_LoopField)
+			oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
+	}
+	oArray := ""
   ; OutputVar:=Trim(OutputVar, " `t")
   ; OutputVar:=trim(StrReplace(OutputVar, "`t", ""))
   ; sleep 200
@@ -220,9 +395,7 @@ oArray := ""
 }
 
 RemoveTextDuplicates(vText){ ;maintaining order and case insensitive
-
 vOutput := ""
-
 ; vText:=Trim(StrReplace(vText, "`t", ""))
 VarSetCapacity(vOutput, StrLen(vText)*2*2)
 oArray := {}
@@ -234,8 +407,6 @@ Loop Parse, vText, % "`n"
 	if !oArray.HasKey("z" A_LoopField)
 		oArray["z" A_LoopField] := 1, vOutput .= A_LoopField "`r`n"
 }
-; MsgBox, % vOutput
-
 oArray := ""
 return vOutput
 }
@@ -266,78 +437,6 @@ class Breaking {
 
 
 
-  ; WM_LBUTTONDOWN(wParam, lParam) ;move around varbar
-	; 		{
-	; 			X := lParam & 0xFFFF
-	; 			Y := lParam >> 16
-	; 			if A_GuiControl
-	; 				ctrl := "`n(in control " . A_GuiControl . ")"
-	; 			; ToolTip You left-clicked in Gui window #%A_Gui% at client coordinates %X%x%Y%.%ctrl%
-	; 			PostMessage, 0xA1, 2
-	; 			; sleep 200
-	; 	; keywait, Lbutton, U T0.20
-	; 		; if !errorlevel
-	; 		; {
-	; 				; if errorlevel
-	; 					; MouseClick, Left, , , 1, 0, U
-	; 					; MouseClick, Left, , , 1, 0, U
-	; 			; keywait, Lbutton, U T5
-	; 	; MouseClick, Left, , , 1, 0, U
-	; 			wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-	; 			; sleep 200
-	; 			; IniWrite, %Varbar_X%, Settings.ini, Locations, VarBar_X
-	; 			; IniWrite, %Varbar_Y%, Settings.ini, Locations, VarBar_Y
-
-	; 			; return
-	; 		; }
-						; 		; else
-	; 	; MouseClick, Left, , , 1, 0, U
-	; 	return
-
-; }
-
-FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
-	global
-	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cw%Color%
-	if !Text
-		Text:=A_ThisHotkey
-		tt(Text,ToolTipTime,A_caretx,A_caretY,4)
-		; ToolTip, %Text%, %A_CaretX%, %A_CaretY%, 9
-	; ToolTip, %text%, 9
-	Sleep,10
-	SplashImage,off
-	; ToolTip,,,,9
-	return
-}
-
-
-windowInfo(){
-	global
-	CoordMode, mouse, window
-	MouseGetPos, mX, mY, ,winControl
-	winGetPos,wX,wY,wW,wH, A
-	winGetTitle, winTitle, A
-	winGetClass, winclass, A
-	ControlGetFocus, GUIFocus, VarBar
-	winGet, winProcess, ProcessName, A
-	; MouseGetPos, MouseX, MouseY
-PixelGetColor, PixelColor, %MX%, %MY%
-	MousePosition:=mX "`, " mY
-	Sleep, 100
-	TT(MousePosition "`n Title: " winTitle " `n Process: " winProcess " `n Control: "winControl " `n Class: " winclass "`nwindowPosition " wX ", " wY ", " wW ", " wH "`n" PixelColor "`n Focus Control: " GUIFocus,3000,,,2)
-	Process:= "ahk_exe " winProcess
-	winInfo:="winMove, " Process ", , " wX ", " wY ", " wW ", " wH
-	winLocation:= wX "," wY "," wW "," wH
-	; PixelColor:=PixelColor
-	iniwrite %MousePosition%, Settings.ini, SavedVariables, windowMousePosition
-	iniwrite %PixelColor%, Settings.ini, SavedVariables, PixelColor
-	; if Value Return
-	; keywait, F20, U T5
-
-	sleep 500
-	; Tooltip,
-	; SetTimer, RemoveToolTip, -2000
-	}
 
 DoublePress(action,Secondaction:="", ToolTip:=""){
 	If (A_Thishotkey=A_Priorhotkey && A_TimeSincePriorHotkey<300){
@@ -399,172 +498,6 @@ Fade(FadeAmount:=90){
     sleep 600
     winSet, Transparent, 235, AHK_id %GUIID%
 }
-
-
-Pop(Line1,Line2:="",PopupTime:=1000,Location:="Mouse"){
-  global
-; traytip, ,%Clipboard%
-	sleep 20
-; try {
-  ; GUI, Popup:destroy ;:
-  ; settimer, destroyGUI, off
-; }
-PopupColor1:="CE6D4B"
-PopupColor2:="FFFFFF"
-PopupTrans:=250
-CoordMode, mouse, window
-winGetPos,Popup_wX,Popup_wY,Popup_wW,Popup_wH, A
-; CoordMode, mouse, Screen
-MouseGetPos, Popup_x,Popup_y,
-if (Location = "window"){
-	popup_y:=Popup_wx
-	popup_x:=Popup_Wy
-	}
-if (Location = "Right"){
-	popup_y:=Popup_WW-100
-	popup_x:=Popup_Wy
-	}
-if (Location = "Screen"){
-	popup_y:=1
-	popup_x:=1
-	}
-else {
-	popup_y:=popup_y-300
-	popup_x:=Popup_x
-	}
-GUI, Popup: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
-
-GUI, Popup:color,%PopupColor1%, %PopupColor2%
-GUI, Popup:Font,s10 cBlack Bold, Consolas
-GUI, Popup:Add, Text,left, %Line1%
-GUI, Popup:Font,s8 cBlack Bold, Consolas
-  if (Line2)
-    GUI, Popup:Add, Text,Center, %Line2%
-GUI, Popup:Show, Noactivate x%popup_x% y%Popup_y%
- winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
-settimer, destroyGUI, -%PopupTime%
-return
-}
-
-DestroyGui:
-  try GUI, Popup:destroy
-  try GUI, Popup2:destroy
-return
-
-
-FloVar(VariableText:="", MousePopup:="", FontSize:=18){
-		Global
-		try GUI, FloVar:Destroy
-		if MouseIsOver("ahk_exe NOTEPAD.EXE") || MouseIsOver("ahk_exe WFICA32.EXE")
-			Color:="000000"
-		else
-			color:="FFFFFF"
-		CoordMode, Mouse, Screen
-		; MouseGetPos, Mx, My
-		OutlineColor := "282A36"  ; Can be any RGB color (it will be made transparent below).
-		Gui FloVar: +LastFound +AlwaysOnTop -Caption +Toolwindow  ; +Toolwindow avoids a taskbar button and an alt-tab menu item.
-		GUI, FloVar:Color, %OutlineColor%
-		GUI, FloVar:Font, % "s" Fontsize , Arial ; Set a large font size (32-point).
-		sleep 50
-		GUI, FloVar:Add, Text, +wrap R30 vMyText c%Color%, XXXXXXXXXXXXXXXXXXXXXXX YYYYYYYYYYYYYYYYYYYYYYY  ; XX & YY serve to auto-size the window.
-		; Make all pixels of this color transparent and make the text itself translucent (150):
-			winSet, TransColor, %OutlineColor%  250
-		; else
-
-			; winSet, TransColor, %OutlineColor%  150
-		; winSet, TransColor, 453936  250
-		if VariableText{
-			FloVarText:=VariableText
-			; GUI, FloVar:Font, s5
-			}
-		else {
-			FlovarText:=
-			if Product
-				FlovarText.=Product
-			if Batch
-				FlovarText.=" " Batch
-			if lot
-				FlovarText.=" " lot
-			if Coated
-				FlovarText.=" Ct#" Coated
-		}
-		; SetTimer, updateOSD, -100
-		Gosub, FloatOSD  ; Make the first update immediate rather than waiting for the timer.
-		if (MousePopup){
-			; GUI, FloVar:Font, % "s" MousePopup
-			; my-=500\
-			SetTimer, FloatOSD, 50
-			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
-			SetTimer, PopUpOSD, % "-" MousePopup
-		}
-		else
-			GUI, FloVar:Show, x%mx% y%my% NoActivate, FloVar  ; Noactivate avoids deactivating the currently active window.
-				CoordMode, Mouse, window
-	return
-		updateOSD:
-		MouseGetPos, Mx, My
-			return
-		PopupOSD:
-			try GUI, FloVar:destroy
-			SetTimer, FloatOSD, Off
-			return
-		FloatOSD:
-			CoordMode, mouse, Screen
-			MouseGetPos, Mx, My
-			My+=100
-			Mx-=100
-			GuiControl, FloVar:Text, MyText, % FloVarText
-			winMove, FloVar ahk_class AutoHotkeyGUI, ,Mx, My
-			; sleep 50
-			return
-	}
-
-
-
-TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
-	global
-	sleep 20
-	if (Position:="S")
-		CoordMode, ToolTip, Screen
-	if (Position:="R")
-		CoordMode, ToolTip, Relative
-	; If X:="-1"
-		; X:=A_CaretX-50
-	; If Y:="-1"
-		; Y:=A_CaretY-50
-	; if !msg
-		; msg:=A_PriorHotkey "`n" A_Thishotkey
-
-	if (Position:="C")
-		tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
-	else
-		tooltip, %msg%, %X%, %Y%,%N%
-	hwnd := winExist("ahk_class tooltips_class32")
-	if Transparent
-   	winSet, Trans, %Transparent%, % "ahk_id" hwnd
-   	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
-	; winSet, Trans, 200, %W%
-	; CoordMode, ToolTip, screen
-	CoordMode, ToolTip, Relative
-	SetTimer, RemoveToolTip%N%, -%time%
-	return
-	RemoveToolTip:
-		ToolTip
-	return
-	RemoveToolTip1:
-		ToolTip,,,,1
-	return
-	RemoveToolTip2:
-		ToolTip,,,,2
-	return
-	RemoveToolTip3:
-		ToolTip,,,,3
-	return
-	RemoveToolTip4:
-		ToolTip,,,,4
-	return
-	}
-
 
 LogError(exception) {
 	global
@@ -632,9 +565,6 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	setwindelay, 10
 	SetKeyDelay, -1, -1
 	SetMouseDelay, -1
-	; mx:=
-	; my:=
-	; mw:=
 	MouseGetPos, mx, my, mw,
 	MouseReturn:="{click " Mx ", " My ",0}"
 	; sleep 25
@@ -656,9 +586,6 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	SetMouseDelay, 1
 	SetKeyDelay, 1, 0.25
 	setwindelay, 200
-
-	; sleep 50
-	;  return, {Click, %x%,%y%,}
 }
 
 
@@ -718,9 +645,7 @@ CreditCard(){
 StopSub:
   exitapp
   Return
-VarBar_ResetSub:
-  VarBar.Reset()
-  return
+
 Run_Display:
   run, Display.url, C:\Users\mmignin\Desktop\
 DebugVars(){
@@ -747,15 +672,7 @@ Listlines(){
 windowSpy(){
   Run, windowSpy.ahk,C:\Program Files\AutoHotkey\
   }
-Exitsub(){
-	global
-  varbar.SaveVariables()
-	; CloseScript("cl3.ahk")
-	; sleep 200
-	; CloseScript("Vim.ahk")
-	; Sleep 200
-  exitapp
-  }
+
 	;Success:=CloseScript("Case insensitive script name")
 return
 

@@ -330,6 +330,103 @@ Search(){
 	}
 
 
+
+  Products(){
+    global
+      try Menu,Menu, deleteAll
+    If !winExist("Mats LMS Workbook.xlsb - Excel"){
+      varbar.historymenuItem()
+      return
+    }
+    menu,menu,add, [%Product%], ProductsList
+    menu,menu,Disable,[%Product%]
+    menu,menu,add
+    loop % Products.maxindex(){
+      temp:=Products[A_index]
+      menu,menu,add, %temp%, ProductsList
+    if (Products[a_index]=Product)
+          menu,menu,Check, %temp%,
+    }
+    Try Menu,menu,show
+    ProductsList:
+    if !A_ThisMenuItem
+      return
+    If winExist("Mats LMS Workbook.xlsb - Excel")
+      try XL.activeworkbook.Worksheets(A_ThisMenuItem).activate
+        ; excel.InfoLocations()
+    else
+    try GuiControl, Varbar:ChooseString, ComboBox1, %A_ThisMenuItem%
+    Catch
+      GuiControl,Varbar:Text, Product, %A_ThisMenuItem%
+      ; Pop(Product,Batch " " lot)
+    ; excel.MatchColor()
+    return
+
+    }
+  Batches(){
+      global
+      Batches:=[]
+      try Menu,Menu, deleteAll
+      If !winExist("Mats LMS Workbook.xlsb - Excel"){
+        varbar.historymenuItem()
+        return
+      }
+      ListOfBatches:=XL.Range("H1").Value
+      Batches:= StrSplit(ListOfBatches,"`n")
+      Sleep 50
+      loop % Batches.MaxIndex(){
+        temp:=trim(Batches[A_index])
+        if (Batches[A_index]){
+        menu,menu,add, &%A_Index% : %temp%, BatchesList
+        if (temp=Batch) || (temp=LastMenuItemSelected) || (temp=Trim(Batch " " Lot))  ;XL.Range("E1").Value)
+          menu,menu,check, %temp%,
+        }
+      }
+      Try Menu,menu,show
+
+      return
+
+  BatchesList:
+    if !A_ThisMenuItem
+      return
+    LastMenuItemSelected:=Trim(A_ThisMenuItem)
+    If winExist("Mats LMS Workbook.xlsb - Excel"){
+      This.RegexCell(A_ThisMenuItem)
+      XL.Range("E1").Value := A_ThisMenuItem
+      GuiControl, Varbar:Text, lot, %lot%
+      GuiControl, Varbar:Text, Batch, %Batch%
+      GuiControl, Varbar:Text, Coated, %coated%
+    }
+    else
+      try GuiControl, Varbar:ChooseString, ComboBox1, %A_ThisMenuItem%
+      Catch
+        GuiControl,Varbar:Text, Batch, %A_ThisMenuItem%
+    ; excel.MatchColor()
+    return
+    }
+    SetStatus(){
+      global
+      Status:=["CoA","Specs","Reviewed","Samples","Completed"]
+      try Menu,Menu, deleteAll
+      loop % Status.MaxIndex(){
+        temp:=Status[A_index]
+        menu,menu,add, %temp%, SetStatusList
+        if (Status[a_index]=XL.Range("B7").Value)
+          menu,menu,check, %temp%,
+      }
+      Try Menu,menu,show
+
+  SetStatusList:
+    XL.Range("B7").Value := A_ThisMenuItem
+    This.MatchColor()
+    	; GuiControl, Varbar:Text, lot, %lot%
+      ; GuiControl, Varbar:Text, Batch, %Batch%
+      ; GuiControl, Varbar:Text, Coated, %coated%
+    return
+    }
+
+
+
 }
 
 

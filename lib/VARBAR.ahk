@@ -440,6 +440,47 @@ Menu(){
   Try Menu,VarBarmenu,show
   }
 
+    ProductHistory(){
+    global
+		try Menu,Menu, deleteAll
+		Loop, Read, data\Products.txt
+			Menu, Menu, Add, %A_LoopReadLine%, ProductHistory
+		Menu, Menu, Show
+    return
+    }
+    ProductSelection(){
+    global
+    try menu,DropdownMenu, Deleteall
+		GUI , varbar: default
+  ;  ControlGet , Wholex, List, , Combobox1	;- get the whole listbox1
+    ; stringreplace , wholex, wholex, `n `n, `n, all
+    Loop, Read, data\CurrentCodes.Txt
+    {
+    ; If A_Index = 1 ;for if its an INI file
+      ; Continue
+    ParseList := StrSplit(A_LoopReadLine, "`n")
+      if A_index < 10
+        Selection:= % "&" A_index " " ParseList[1]
+        ; Selection:= % ParseList[1]
+       else
+        Selection:= % "&" A_index-10 " " ParseList[1]
+    Menu, Dropdownmenu, add, %Selection%, CurrentCodesMenu
+    }
+    Menu, DropdownMenu, Show,
+    return
+
+    CurrentCodesMenu:
+      GuiControl, Varbar:ChooseString, ComboBox1, % RegExReplace(A_ThismenuItem, "i)(&\d\s)", "")
+  		GUI, VarBar:submit,NoHide
+      ; ControlsetText , Edit5, %A_ThismenuItem%, VarBar
+      	; control , choose, %A_ThismenuItem%
+      ; sleep 200
+      ; Clipboard:=A_ThismenuItem
+      return
+    }
+
+
+
 ProductsMenu(Next:=""){
   global
   regProducts:=[]
@@ -834,7 +875,7 @@ SetColor(){
 		+wheeldown::Varbar.SubIteration(0)
 		; up::				Varbar.AddIteration(0)
 		; down::   		Varbar.SubIteration(0)
-		; F15::						ReloadScript()
+		; F15::						vscode.reloadscript()
 		F9::           Excel.connect()
 		F7::           Excel.NextSheet()
 		F6::           Excel.PrevSheet()
@@ -843,13 +884,13 @@ SetColor(){
 		Rbutton::
 		MouseGetPos,,,,winControl
 				if (winControl="Edit1")
-					menu.Products()
+					Excel.Products()
 				else if (winControl="Edit2") || (winControl="Edit3")
-					menu.Batches()
+					Excel.Batches()
 				else if (winControl="Static1")
 					VarBar.Menu()
 				else
-					menu.SetStatus()
+					Excel.setstatus()
 			return
 		numpaddot:: 	 Openapp.Workbook()
 	#if
@@ -914,6 +955,17 @@ SetColor(){
 ; }
 
 
-
+VarBar_ResetSub:
+  VarBar.Reset()
+  return
+Exitsub(){
+	global
+  varbar.SaveVariables()
+	; CloseScript("cl3.ahk")
+	; sleep 200
+	; CloseScript("Vim.ahk")
+	; Sleep 200
+  exitapp
+  }
 
 #include C:\Users\mmignin\Documents\VQuest\lib\BatchesDDL.ahk
