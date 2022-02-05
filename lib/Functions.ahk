@@ -1,8 +1,8 @@
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\VarBar.ahk
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
+; #include *i D:\VQuest\lib\clip.ahk
+; #include *i D:\VQuest\lib\VarBar.ahk
+; #include *i D:\VQuest\lib\Excel.ahk
+; #include *i D:\VQuest\lib\LMS.ahk
+  #include D:\VQuest\lib\menu.ahk
 
 
 
@@ -243,7 +243,8 @@ ExplorerSearch(text){
 			winactivate, ahk_exe explorer.exe
 		sleep 300
 		winGetPos, wX, wY, wW, wH, A
-		click, % ww-175, 75)
+		ww-=175
+		send, {click %ww%, 75}
 		sleep 400
 		; SetKeyDelay, 20, 1
 		Send, %Text%
@@ -317,9 +318,9 @@ Debug(Variable,Delete:="Delete"){
   else
     DebugText:=Variable
   if Delete=Delete
-    filedelete, C:\Users\mmignin\Documents\VQuest\data\debug.txt
+    filedelete, D:\VQuest\data\debug.txt
   sleep 200
-  fileAppend %Debugtext%, C:\Users\mmignin\Documents\VQuest\data\debug.txt
+  fileAppend %Debugtext%, D:\VQuest\data\debug.txt
 }
 
 

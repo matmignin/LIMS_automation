@@ -4,7 +4,7 @@
     RegexLot:=    "i)\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d"
     RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<oated>\d{3}-\d{4})"
 
-iniread, CodeString, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, CodeString
+iniread, CodeString, D:\VQuest\CodeString.ini, SavedVariables, CodeString
 regexmatch(CodeString,RegexProduct,Product)
 regexmatch(CodeString,RegexBatch,Batch)
 regexmatch(CodeString,RegexCoated,C)

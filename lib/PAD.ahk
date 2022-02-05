@@ -1,4 +1,4 @@
-#Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
+#Include D:\VQuest\lib\LMS.ahk
 #ifwinactive
 
 return

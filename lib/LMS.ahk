@@ -2116,7 +2116,7 @@ CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 				send {click 421, 504}
 			else ;if winactive("Edit sample (Field Configuration")
 				Send, {Click 425, 434}
-  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\Customers.ini
+  		Loop, Read, D:\VQuest\Data\Customers.ini
   		{
   		If A_Index = 1
   			Continue
@@ -2132,7 +2132,7 @@ CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			sleep 200
 			InputVar:=StrReplace(A_ThisMenuItem, "&", "")
 			; InputVar:=A_ThisMenuItem
-			IniRead,CustomerPosition, C:\Users\mmignin\Documents\VQuest\Data\Customers.ini, Customers, %InputVar%
+			IniRead,CustomerPosition, D:\VQuest\Data\Customers.ini, Customers, %InputVar%
 			sleep 20
       menu, Menu, DeleteAll
 			sleep 200
@@ -2414,7 +2414,7 @@ CopyProductRotation(){
   send, ^c
   clipwait, 1
   sleep 400
-  filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
+  filename:= "D:\VQuest\Data\Rotations\" Product ".txt"
   FileDelete, %FileName%
   FileAppend, %Clipboard%, %Filename%
   LMSwb:=ComObjactive("Excel.Application")
@@ -2425,7 +2425,7 @@ CopyProductRotation(){
 
 PasteProductRotation(){
 	global
-  filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
+  filename:= "D:\VQuest\Data\Rotations\" Product ".txt"
   FileRead, Clipboard, %Filename%
   ; iniread Clipboard,Settings.ini, Rotations, %Product%
   LMSwb:=ComObjactive("Excel.Application")

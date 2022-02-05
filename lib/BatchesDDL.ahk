@@ -14,7 +14,7 @@ OnMessage(0x002B, "ODDDL_DrawItem")    ; WM_DRAWITEM
 
    ; CodeList:=[]
    CurrentCodesDDL2 =
-		loop, read, C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
+		loop, read, D:\VQuest\Data\CurrentCodes.txt
 			; CodeList.Insert(A_LoopReadLine)
 			CurrentCodesDDL2 .= A_LoopReadLine "|"
 ; ==================================================================================================================================

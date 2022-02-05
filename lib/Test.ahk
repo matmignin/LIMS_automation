@@ -206,8 +206,8 @@ return
 ;------------------------------------------------------------------------------------------------------------------------
 
 ;Test_3:
-Test_3(File:="C:\Users\mmignin\Documents\VQuest\lib\Data\CurrentCodes.txt"){
-	; Remove_Duplicates(File:="C:\Users\mmignin\Documents\VQuest\lib\data\Products.txt")
+Test_3(File:="D:\VQuest\lib\Data\CurrentCodes.txt"){
+	; Remove_Duplicates(File:="D:\VQuest\lib\data\Products.txt")
 	FileRead, OutputVar, data\CurrentCodes.txt
 	Sort, OutputVar, u CL
 	; NewOutputVar := RegExReplace( OutputVar , "m`a)(^\s+)|(\s+$)")

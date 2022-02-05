@@ -96,7 +96,7 @@ VQuest_Start:
 
 
   ;CurrentList:=[]
-  ; Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
+  ; Loop, Read, D:\VQuest\data\CurrentCodes.txt
     ; {
       ; CurrentList.Insert(A_loopreadline)
       ; maxindex := A_Index
@@ -109,26 +109,26 @@ VQuest_Start:
 
 
         #include <cl3api>
-  #Include C:\Users\mmignin\Documents\VQuest\lib\SuppressErrorDialog.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Toggles.ahk
-  #Include C:\Users\mmignin\Documents\VQuest\lib\Temp.ahk
+  #Include D:\VQuest\lib\SuppressErrorDialog.ahk
+  #include D:\VQuest\lib\Toggles.ahk
+  #Include D:\VQuest\lib\Temp.ahk
   ; if !VimOpen
-  #include C:\Users\mmignin\Documents\VQuest\lib\VIM.ahk
-  #Include C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
-  ; #include C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
-   #include C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\PAD.ahk
-  #Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
-  #Include C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-  ; #Include C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\varBar.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-  #include C:\Users\mmignin\Documents\VQuest\lib\Xml.ahk
+  #include D:\VQuest\lib\VIM.ahk
+  #Include D:\VQuest\lib\Test.ahk
+  ; #include D:\VQuest\lib\HotStrings.ahk
+   #include D:\VQuest\lib\KEYS.ahk
+  #include D:\VQuest\lib\PAD.ahk
+  #Include D:\VQuest\lib\LMS.ahk
+  #Include D:\VQuest\lib\clip.ahk
+  ; #Include D:\VQuest\lib\OpenApp.ahk
+  #include D:\VQuest\lib\Excel.ahk
+  #include D:\VQuest\lib\varBar.ahk
+  #include D:\VQuest\lib\menu.ahk
+  #include D:\VQuest\lib\Vis\Gdip_All.ahk
+  #include D:\VQuest\lib\Vis\JSON.ahk
+  #include D:\VQuest\lib\Vis\Vis2.ahk
+  #include D:\VQuest\lib\Functions.ahk
+  #include D:\VQuest\lib\Xml.ahk
 
 ; return
 ; your functions

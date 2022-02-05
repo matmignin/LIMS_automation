@@ -16,22 +16,22 @@ SetNumlockState Alwayson
 setcapslockstate alwaysoff
 #ClipboardTimeout 1500
 SetTitleMatchMode, 2
-try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
+try Menu, Tray, Icon, D:\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
-; try Run, cl3.Ahk, C:\Users\mmignin\Documents\VQuest\lib\CL3
+; try Run, cl3.Ahk, D:\VQuest\lib\CL3
 AutoTrim, On
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
-#Include *i C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Pad.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
+#include *i D:\VQuest\lib\Functions.ahk
+#include *i D:\VQuest\lib\Excel.ahk
+#Include *i D:\VQuest\lib\Test.ahk
+#include *i D:\VQuest\lib\OpenApp.ahk
+#include *i D:\VQuest\lib\KEYS.ahk
+#include *i D:\VQuest\lib\Pad.ahk
+#include *i D:\VQuest\lib\clip.ahk
+#include *i D:\VQuest\lib\Vis\Gdip_All.ahk
+#include *i D:\VQuest\lib\Vis\JSON.ahk
+#include *i D:\VQuest\lib\Vis\Vis2.ahk
+#include *i D:\VQuest\lib\HotStrings.ahk
 
 return
 
@@ -109,12 +109,7 @@ return
 	F13 & ,::Vim.WordLeft()
 	F13 & /::Vim.End()
 	F13 & x::Vim.Delete()
-	F13 & a::
-		if getkeystate("Lshift", "p")
-			sendinput, {Left}
-		else
-			Vim.SelectAll()
-		return
+	F13 & a::Vim.SelectAll()
 	F13 & z::SendInput, {backspace}
 	F13 & d up::
 		; if getkeystate("s", "p"){
@@ -131,7 +126,7 @@ return
 	F13 & o::vim.NewLine()
 	F13 & 9::Vim.OpenParentheses()
 	F13 & 0::Vim.CloseParentheses()
-	F13 & p::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
+	F13 & p up::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
                       ; sendinput, {F3} ;undo
 	F13 & g::vim.Git()
 	F13 & down::									  sendinput, {altdown}{lwindown}{down}{altup}{lwinup}
@@ -524,13 +519,13 @@ Class Vim {
 		}
 
 
-	Find(){
+		Find(){
 		if Getkeystate("LControl","p")
 			Sendinput,{altdown}{ctrldown}{r}{ctrlup}{altup}
 		else
 			sendinput, !#+{f 2}
 		return
-		}
+			}
 	Git(){
 		if Getkeystate("LControl","p")
 			Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}{tab} ;Git message helper
@@ -635,8 +630,12 @@ Class Vim {
 		return
 	}
 	SelectAll(){
+		if getkeystate("Lshift", "p"){
+			sendinput, {Left}
+			return
+		}
 		if Getkeystate("LControl","p")
-			Sendinput, {shiftdown}{altdown}{a}{altup}{shiftup} ;select All occurances
+			Sendinput, {shiftdown}{ctrldown}{a}{ctrlup}{shiftup} ;select All occurances
 		else
 			Sendinput,{home 2}{shiftdown}{end}{shiftup} ;select whole line
 		Return
@@ -767,7 +766,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
     else
     {
       try menu, Menu, DeleteAll
-  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
+  		Loop, Read, D:\VQuest\Data\Menu.ini
   		{
   		If A_Index = 1
   			Continue
@@ -786,7 +785,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 			PreClip:=ClipboardAll
 			Clipboard:=
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini, MenuItems, %InputVar%
+			IniRead,vOutput, D:\VQuest\Data\Menu.ini, MenuItems, %InputVar%
 			sleep 20
 			Clipboard:=vOutput
 			sleep 100
@@ -801,7 +800,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
       AddTextMenuItem:
       InputBox, Variable, Variable Name = Variable
       VARIABLEITEM:= "`n" Variable
-      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
+      FileAppend, %VARIABLEITEM%, D:\VQuest\Data\Menu.ini
       Return
 	}
 
@@ -810,7 +809,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 
 
 VScodeTabsMenu(){
-		try Menu,VScodeTabs, deleteAll
+		try Menu,VScodeTabs, DeleteAll
 		Menu, VScodeTabs,add, V&quest, SelectVScodeTab
 		Menu, VScodeTabs,add, VAR&BAR, SelectVScodeTab
 		Menu, VScodeTabs,add, &VIM, SelectVScodeTab
@@ -834,7 +833,7 @@ VScodeTabsMenu(){
 
 SelectVScodeTab:
 	If (A_ThisMenuItem Contains E&xit) {
-		Menu,VScodeTabs, deleteAll
+		Menu,VScodeTabs, DeleteAll
 		return
 		}
 	If (A_ThisMenuItem Contains &Previous) {
@@ -850,7 +849,7 @@ SelectVScodeTab:
 	}
 	sleep 200
 	send, {enter}
-	Menu,VScodeTabs, deleteAll
+	Menu,VScodeTabs, DeleteAll
 	return
 	}
 
@@ -878,7 +877,7 @@ class VScode{
 		; winSet, Transparent, 155, ahk_exe Code.exe
 		sleep 100
 		; winSet, Transparent, off, ahk_exe Code.exe
-		try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+		try	run, VQuest.ahk, D:\VQuest
 		if A_DebuggerName || DebuggingScript
 		{
 				varbar.SaveVariables()
@@ -888,7 +887,7 @@ class VScode{
 		else
 		{
 			varbar.SaveVariables()
-			try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+			try	run, VQuest.ahk, D:\VQuest
 			; catch
 				; reload
 		}
@@ -903,7 +902,7 @@ class VScode{
 			return
 	}
 			; global
-			; try Menu,Menu, deleteAll
+			; try Menu,Menu, DeleteAll
 			;   Menu, Menu, add, All &Products,   <#Space
 			;   Menu, Menu, add, All &Batches,    <!Space
 			;   Menu, Menu, add, All &WorkSheets, F19 & up
@@ -921,7 +920,7 @@ class VScode{
 			;       Menu, Menu, add, E&xit, ExitMenu
 			;   Menu, Menu, Show
 			;   ; KeyWait, Rbutton, U
-			;     ; try Menu,Menu, deleteAll
+			;     ; try Menu,Menu, DeleteAll
 			; }
 
 
@@ -929,7 +928,7 @@ class VScode{
 
     Menu(){
     global
-		try Menu,Menu, deleteAll
+		try Menu,Menu, DeleteAll
     if winactive("ahk_exe Code.exe")
       Menu, Menu, add, &LMS Title, InputToVsCode
     Menu, Menu, add, window Title, InputToVsCode
@@ -952,7 +951,7 @@ class VScode{
       return
     }
     else if (A_thismenuitem Contains E&xit) || (A_priorkey contains esc)
-      Menu,Menu, deleteAll
+      Menu,Menu, DeleteAll
     else
     {
     tt("find window and click space",3000)
@@ -971,7 +970,7 @@ class VScode{
     else if A_thismenuItem contains window Location
       send % winLocation
     ; sendinput, %A_thismenuItem%
-    try Menu,Menu, deleteAll
+    try Menu,Menu, DeleteAll
     }
     return
     }

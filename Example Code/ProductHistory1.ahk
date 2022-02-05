@@ -1,5 +1,5 @@
 ﻿#include C:\Windows\ShellNew\TemplateIncludeFile.ahk
-;#include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+;#include D:\VQuest\lib\Functions.ahk
 DispToolTipText(TextIn,Format=0)
 	{
 	 TextOut:=RegExReplace(TextIn,"^\s*")
@@ -13,7 +13,7 @@ DispToolTipText(TextIn,Format=0)
 
 
 CurrentList:=[]
-  Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
+  Loop, Read, D:\VQuest\data\CurrentCodes.txt
     {
       CurrentList.Insert(A_loopreadline)
       maxindex := A_Index
