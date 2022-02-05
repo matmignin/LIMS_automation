@@ -194,12 +194,7 @@ ClipListTrans:=250
 
 GUI, ClipList:color,%ClipListColor1%, %ClipListColor2%
 		GUI, ClipList:Font,s11 cBlack Normal, Arial Narrow
-			GUI, ClipList:Add, Listview, r6 w500 0x2000 -LV0x20 -E0x200 +Background262525 cWhite -hdr, Clip ;vTText1, %Line1%
-			; GUI, ClipList:Add, Listview, r7, Clip ;vTText1, %Line1%
-
-		; GuiControl, -Redraw, ClipList
-		; LV_ModifyCol()
-
+			GUI, ClipList:Add, Listview, r7 w520 0x2000 -LV0x20 -E0x200 +Background262525 cWhite -hdr, Clip ;vTText1, %Line1%
  winSet, Transparent, %ClipListTrans%, AHK_Id %GUIID%
 ; settimer, destroyListGUI, -%PopupTime%
 return
@@ -361,7 +356,8 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 		ttext3:=% DispToolTipText(History[ClipCycleCounter+1].text) ;"`n`n" DispToolTipText(History[ClipCycleCounter+2].text) "`n`n" DispToolTipText(History[ClipCycleCounter+3].text)
 		ttext4:=% DispToolTipText(History[ClipCycleCounter+2].text) ;"`n`n" DispToolTipText(History[ClipCycleCounter+3].text)
 		ttext5:=% DispToolTipText(History[ClipCycleCounter+3].text)
-		ttext:=ttext0 ttext1 ttext2 ttext3 ttext4 ttext5
+		ttext6:=% DispToolTipText(History[ClipCycleCounter+4].text)
+		ttext:=ttext0 ttext1 ttext2 ttext3 ttext4 ttext5 ttext6
 	 }
 	 else
 		ttext:="[cancelled]"
@@ -378,7 +374,10 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 		LV_ADD("Select",ttext2)
 		LV_ADD("",ttext3)
 		LV_ADD("",ttext4)
+		if !ttext1
 		LV_ADD("",ttext5)
+		if !ttext0
+		LV_ADD("",ttext6)
 				; LV_ModifyCol(1, 595)
 			; Loop 50 {
 				; Random, rnd, 1, 999999

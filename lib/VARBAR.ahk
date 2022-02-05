@@ -1,5 +1,5 @@
 return
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+; #include *i D:\VQuest\lib\Functions.ahk
 
 Class VarBar{
 Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -14,7 +14,7 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 		VarBar_H_max=58
 		VarBar_T:=235
 		VarBar_W=350
-		CurrentCodesFile=C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
+		CurrentCodesFile=D:\VQuest\Data\CurrentCodes.txt
 	fileread,CurrentCodes,%CurrentCodesFile%
 	This.loadSavedVariables()
 	Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
@@ -94,7 +94,7 @@ Gui, Varbar:+Delimiter`n
 		;  stringreplace,wholex,wholex,`n`n,`n,all
 		;  filedelete,%CurrentCodesFile%
 		;  fileappend,%CodeString%,%CurrentCodesFile%
-		;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+		;  RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
 		;  }
 		; }
 		return
@@ -178,7 +178,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			; GUI, VarBar:submit,NoHide
 		; If (!RegexMatch(Product, RegexProduct) && !RegexMatch(Batch, RegexBatch) && !RegexMatch(Lot, RegexLot) && !RegexMatch(Coated, RegexCoated))
 		; CodeString:=Trim(Product " " Batch " " Lot Ct Coated)
-		; IniWrite, %CodeString%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, CodeString
+		; IniWrite, %CodeString%, D:\VQuest\CodeString.ini, SavedVariables, CodeString
 		; return
 
 		ExcelConnectCheck:
@@ -190,7 +190,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Product, RegexProduct, r){
-			IniWrite, %Product%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Product
+			IniWrite, %Product%, D:\VQuest\CodeString.ini, SavedVariables, Product
 			ControlGetText, CodeString, Edit5, VarBar
 			CodeString:=Trim(CodeString)
 			sleep 20
@@ -212,7 +212,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Batch, RegexBatch, r){
-			IniWrite, %Batch%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Batch
+			IniWrite, %Batch%, D:\VQuest\CodeString.ini, SavedVariables, Batch
 			ControlGetText, CodeString, Edit5, VarBar
 			sleep 30
 			CodeString:=Trim(CodeString)
@@ -233,7 +233,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Lot, RegexLot, r){
-			IniWrite, %Lot%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Lot
+			IniWrite, %Lot%, D:\VQuest\CodeString.ini, SavedVariables, Lot
 			ControlGetText, CodeString, Edit5, VarBar
 			if RegExMatch(CodeString, RegexLot){
 				Codestring:=RegExReplace(CodeString, RegexLot, rLot)
@@ -251,7 +251,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Coated, RegexCoated, r){
-			IniWrite, %Coated%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Coated
+			IniWrite, %Coated%, D:\VQuest\CodeString.ini, SavedVariables, Coated
 			ControlGetText, CodeString, Edit5, VarBar
 			if RegExMatch(CodeString, RegexCoated){
 				Codestring:=RegExReplace(CodeString, RegexCoated, rCoated)
@@ -287,7 +287,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 		 stringreplace,wholex,wholex,`n`n,`n,all
 		 filedelete,%CurrentCodesFile%
 		 fileappend,%wholex%,%CurrentCodesFile%
-		; RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+		; RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
 	}
 return
 	}
@@ -344,7 +344,7 @@ SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 	IniWrite, %ModeSelections%, Settings.ini, Options, ModeSelections
 	FileAppend, %CodeString%, Data\CurrentCodes.txt
 	sleep 200
-	RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+	RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
 	}
 
 
@@ -373,7 +373,7 @@ AddToList(Input:=""){  ;; __Add to List
 		; sort,Wholex, U R
 		filedelete,%CurrentCodesFile%
 		fileappend,%Wholex%,%CurrentCodesFile%
-		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+		RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
 	 }
 }
 
@@ -968,4 +968,4 @@ Exitsub(){
   exitapp
   }
 
-#include C:\Users\mmignin\Documents\VQuest\lib\BatchesDDL.ahk
+#include D:\VQuest\lib\BatchesDDL.ahk

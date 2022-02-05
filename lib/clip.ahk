@@ -1,4 +1,4 @@
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+; #include *i D:\VQuest\lib\Functions.ahk
 
 #ifwinactive,
 Return
@@ -106,7 +106,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
     ; Send, {blind}%AllProducts%
 
     ; msgbox, %AllProducts%,
- ;FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
+ ;FileRead, CurrentCodes,D:\VQuest\data\CurrentCodes.txt
 }
 
 
@@ -439,7 +439,7 @@ Clip(input=0,Wait:="0.45"){
     ;;; -----Retrieves saved clipboard information since when this script last ran
       ; ^F20::
       ; CurrentList:=[]
-      ;   Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.Txt
+      ;   Loop, Read, D:\VQuest\data\CurrentCodes.Txt
       ;     {
       ;       CurrentList.Insert(A_loopreadline)
       ;           maxindex := A_Index
@@ -452,7 +452,7 @@ Clip(input=0,Wait:="0.45"){
       ;     }
 
       ;     Return
-      ;   ; Loop , Read,  C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
+      ;   ; Loop , Read,  D:\VQuest\ClipHistory\clipvar*.txt
       ;   ; {
       ;     ; clipindex += 1
       ;     ; FileRead clipvar%A_Index%, %A_LoopFileFullPath%
@@ -520,7 +520,7 @@ Clip(input=0,Wait:="0.45"){
       ;     {
       ;       zindex := SubStr("0000000000" . A_Index, -9)
       ;       thisclip := clipvar%A_Index%
-      ;       FileAppend %thisclip%, C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar%zindex%.txt
+      ;       FileAppend %thisclip%, D:\VQuest\ClipHistory\clipvar%zindex%.txt
       ;     }
       ;  ExitApp
 
@@ -715,7 +715,7 @@ Parse(Value:=""){
           ; FileAppend, %CurrentCodes%, data\CurrentCodes.txt
           ; Varbar.AddToList(CurrentCodes)
           ; sleep 100
-        ;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+        ;  RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
           ; sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default
@@ -793,7 +793,7 @@ Parse1(Value:=""){
           sleep 100
           FileAppend, %CurrentCodes%, data\CurrentCodes.txt
           sleep 100
-          RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+          RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
           sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default

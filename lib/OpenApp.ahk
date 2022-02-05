@@ -24,8 +24,8 @@ OpenApps:
   ;<#v::OpenApp.vsCode()
   ;!v::OpenApp.vsCode()
   ^F1::Varbar.reset()
-  !v::run, C:\Users\mmignin\Documents\VQuest\Example Code\CodeQuickTester.ahk
-  #^v::Run, C:\Users\mmignin\Documents\VQuest\
+  !v::run, D:\VQuest\Example Code\CodeQuickTester.ahk
+  #^v::Run, D:\VQuest\
   #^+s::Run, C:\Users\mmignin\OneDrive - Vitaquest International\Screenshots
   #^F3::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\All Label Copy
   #^F2::Run, C:\Users\mmignin\Desktop\Desktop Stuff\Label Copy\
@@ -44,8 +44,8 @@ OpenApps:
 +#^F12::run, \\10.1.2.118\share\QC LAB\Master Rotation WB 2014 (Start from 10-14-2014).xlsx
 +#^F11::run, C:\Users\mmignin\OneDrive - Vitaquest International\My JasperSoft Reports
 +#^F10::run, \\10.1.2.118\users\vitaquest\mmignin\COA EXAMPLES
-+#^F9::run, C:\Users\mmignin\Documents\VQuest\Data\%A_ThisMenuItem%
-+#^F8::run, C:\Users\mmignin\Documents\VQuest\Settings.ini
++#^F9::run, D:\VQuest\Data\%A_ThisMenuItem%
++#^F8::run, D:\VQuest\Settings.ini
 +#^F7::
 winactivate, ahk_exe Code.exe
 send, {F9}

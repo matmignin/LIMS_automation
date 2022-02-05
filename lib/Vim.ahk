@@ -16,22 +16,22 @@ SetNumlockState Alwayson
 setcapslockstate alwaysoff
 #ClipboardTimeout 1500
 SetTitleMatchMode, 2
-try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
+try Menu, Tray, Icon, D:\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
-; try Run, cl3.Ahk, C:\Users\mmignin\Documents\VQuest\lib\CL3
+; try Run, cl3.Ahk, D:\VQuest\lib\CL3
 AutoTrim, On
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
-#Include *i C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Pad.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
-#include *i C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
+#include *i D:\VQuest\lib\Functions.ahk
+#include *i D:\VQuest\lib\Excel.ahk
+#Include *i D:\VQuest\lib\Test.ahk
+#include *i D:\VQuest\lib\OpenApp.ahk
+#include *i D:\VQuest\lib\KEYS.ahk
+#include *i D:\VQuest\lib\Pad.ahk
+#include *i D:\VQuest\lib\clip.ahk
+#include *i D:\VQuest\lib\Vis\Gdip_All.ahk
+#include *i D:\VQuest\lib\Vis\JSON.ahk
+#include *i D:\VQuest\lib\Vis\Vis2.ahk
+#include *i D:\VQuest\lib\HotStrings.ahk
 
 return
 
@@ -525,7 +525,7 @@ Class Vim {
 		else
 			sendinput, !#+{f 2}
 		return
-		}
+			}
 	Git(){
 		if Getkeystate("LControl","p")
 			Sendinput,{shiftdown}{altdown}{ctrldown}{c}{ctrlup}{altup}{shiftup}{tab} ;Git message helper
@@ -766,7 +766,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
     else
     {
       try menu, Menu, DeleteAll
-  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
+  		Loop, Read, D:\VQuest\Data\Menu.ini
   		{
   		If A_Index = 1
   			Continue
@@ -785,7 +785,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 			PreClip:=ClipboardAll
 			Clipboard:=
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini, MenuItems, %InputVar%
+			IniRead,vOutput, D:\VQuest\Data\Menu.ini, MenuItems, %InputVar%
 			sleep 20
 			Clipboard:=vOutput
 			sleep 100
@@ -800,7 +800,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
       AddTextMenuItem:
       InputBox, Variable, Variable Name = Variable
       VARIABLEITEM:= "`n" Variable
-      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
+      FileAppend, %VARIABLEITEM%, D:\VQuest\Data\Menu.ini
       Return
 	}
 
@@ -877,7 +877,7 @@ class VScode{
 		; winSet, Transparent, 155, ahk_exe Code.exe
 		sleep 100
 		; winSet, Transparent, off, ahk_exe Code.exe
-		try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+		try	run, VQuest.ahk, D:\VQuest
 		if A_DebuggerName || DebuggingScript
 		{
 				varbar.SaveVariables()
@@ -887,7 +887,7 @@ class VScode{
 		else
 		{
 			varbar.SaveVariables()
-			try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+			try	run, VQuest.ahk, D:\VQuest
 			; catch
 				; reload
 		}

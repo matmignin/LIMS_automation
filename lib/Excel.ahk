@@ -1,5 +1,5 @@
-; #include C:\Users\mmignin\Documents\VQuest\lib\varbar.ahk
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+; #include D:\VQuest\lib\varbar.ahk
+; #include *i D:\VQuest\lib\Functions.ahk
 return
 
 Class Excel{

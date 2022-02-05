@@ -192,7 +192,7 @@ return
     }
   return
 
-RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\Duplicate Test - Copy.txt")
+RemoveFileDuplicates("D:\VQuest\Data\Duplicate Test - Copy.txt")
 ; test_3() ; delete duplicates
 return
 
@@ -303,7 +303,7 @@ Return
 ADD_A_TODO_LIST_ITEM_IN_VSCODE:
 InputBox, TODO, Write a Todo
 VSCODEToDo:= "☐ " TODO "`n"
-FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
+FileAppend, %VSCODETODO%, D:\VQuest\TODO
 Return
 
 

@@ -3,7 +3,7 @@
 ; ExitMenu:
 ; Menu,Menu, deleteAll
 return
-;#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+;#include *i D:\VQuest\lib\clip.ahk
 
 class Menu{
 

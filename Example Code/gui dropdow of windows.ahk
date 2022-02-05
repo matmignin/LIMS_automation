@@ -3,7 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 #Persistent
 #SingleInstance,Force
-setworkingdir, "C:\Users\mmignin\Documents\VQuest\"
+setworkingdir, "D:\VQuest\"
 #maxthreadsperhotkey, 1
 ; WindowLiseate amthe proc DroDownList The script also builds a Gui with a DropDownList The script also builds patibility with future Aut for performance and compatibility with future Aut forund ; Wit ChoosetCtrl+R, GuiReset Menu, MyMenuBar, Add,d, &Rescan`tCtrl+R, GuiReset Menu, MyMenuBar, Add,d, &Rescan`tCtrl+R, GuiReset Menu, MyMenuBar, Add,d, &Rescan`tCtrl+R, GMenu, WindowMenu, Delete Menu,trol,,WindowMove, | Menu, WindowMenu, Deletle[1] . " |" . OpenWindow%A_IwMenu, Insrol. ^# ice: ProcessID := SH40, ndowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,, 20, 20 Return r Y2 > H1) WinMove, %WindowMove%,; WindowListMenu.ahk
 ; AutoHotkey Version: 1.x
@@ -20,16 +20,16 @@ setworkingdir, "C:\Users\mmignin\Documents\VQuest\"
 	from that list. It includes the process ids in the menu items to ensure unique menu item
 	names. Otherwise, similar menu items (e.g. multiple blank Notepad windows) would only open the topmost
 	window.
-	
+
 	The app detects when new windows open and the closing of old windows, then updates the menu.
-	
+
 	The script also builds a Gui with a DropDownList similar to the original WindowList.ahk script.
 	You can comment out or remove this code if not wanted.
 	Use Ctrl+Alt+W, Ctrl+Win+M, or XButton2 to open menu. (You may need to assign Hotkey to XButton2
 	in mouse setup app.)
-	
+
 	Use Ctrl+Win+L to open Gui Window.
-	
+
 	Click "Rescan Windows" to manually update the list. Menu appears in most-recently-used order
 	from topmost down.
 */
@@ -90,7 +90,7 @@ Loop, %OpenWindow%
 	WinGetTitle, Title, % "ahk_id " OpenWindow%A_Index%
 	WinGetClass, Class, % "ahk_id " OpenWindow%A_Index%
 	WinGet, AppName, ProcessPath, %Title%
-	
+
 	If (Title != "" and Class != "BasicWindow" and Title != "Start"
 		and Title != "Program Manager")
 	{

@@ -15,7 +15,7 @@ History:
 - 1.1 Added minor fix for "non-empty" empty lines?
 
 */
-#include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+#include D:\VQuest\lib\Functions.ahk
 ClipChainInit:
 	CoordMode, Mouse Screen
 	MouseGetPos, Mx, MY,
