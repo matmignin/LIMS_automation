@@ -109,12 +109,7 @@ return
 	F13 & ,::Vim.WordLeft()
 	F13 & /::Vim.End()
 	F13 & x::Vim.Delete()
-	F13 & a::
-		if getkeystate("Lshift", "p")
-			sendinput, {Left}
-		else
-			Vim.SelectAll()
-		return
+	F13 & a::Vim.SelectAll()
 	F13 & z::SendInput, {backspace}
 	F13 & d up::
 		; if getkeystate("s", "p"){
@@ -131,7 +126,7 @@ return
 	F13 & o::vim.NewLine()
 	F13 & 9::Vim.OpenParentheses()
 	F13 & 0::Vim.CloseParentheses()
-	F13 & p::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
+	F13 & p up::vim.GotoFile() ;                   		Sendinput,{F9} ;quick open editors view
                       ; sendinput, {F3} ;undo
 	F13 & g::vim.Git()
 	F13 & down::									  sendinput, {altdown}{lwindown}{down}{altup}{lwinup}
@@ -524,7 +519,7 @@ Class Vim {
 		}
 
 
-	Find(){
+		Find(){
 		if Getkeystate("LControl","p")
 			Sendinput,{altdown}{ctrldown}{r}{ctrlup}{altup}
 		else
@@ -635,8 +630,12 @@ Class Vim {
 		return
 	}
 	SelectAll(){
+		if getkeystate("Lshift", "p"){
+			sendinput, {Left}
+			return
+		}
 		if Getkeystate("LControl","p")
-			Sendinput, {shiftdown}{altdown}{a}{altup}{shiftup} ;select All occurances
+			Sendinput, {shiftdown}{ctrldown}{a}{ctrlup}{shiftup} ;select All occurances
 		else
 			Sendinput,{home 2}{shiftdown}{end}{shiftup} ;select whole line
 		Return
@@ -810,7 +809,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 
 
 VScodeTabsMenu(){
-		try Menu,VScodeTabs, deleteAll
+		try Menu,VScodeTabs, DeleteAll
 		Menu, VScodeTabs,add, V&quest, SelectVScodeTab
 		Menu, VScodeTabs,add, VAR&BAR, SelectVScodeTab
 		Menu, VScodeTabs,add, &VIM, SelectVScodeTab
@@ -834,7 +833,7 @@ VScodeTabsMenu(){
 
 SelectVScodeTab:
 	If (A_ThisMenuItem Contains E&xit) {
-		Menu,VScodeTabs, deleteAll
+		Menu,VScodeTabs, DeleteAll
 		return
 		}
 	If (A_ThisMenuItem Contains &Previous) {
@@ -850,7 +849,7 @@ SelectVScodeTab:
 	}
 	sleep 200
 	send, {enter}
-	Menu,VScodeTabs, deleteAll
+	Menu,VScodeTabs, DeleteAll
 	return
 	}
 
@@ -903,7 +902,7 @@ class VScode{
 			return
 	}
 			; global
-			; try Menu,Menu, deleteAll
+			; try Menu,Menu, DeleteAll
 			;   Menu, Menu, add, All &Products,   <#Space
 			;   Menu, Menu, add, All &Batches,    <!Space
 			;   Menu, Menu, add, All &WorkSheets, F19 & up
@@ -921,7 +920,7 @@ class VScode{
 			;       Menu, Menu, add, E&xit, ExitMenu
 			;   Menu, Menu, Show
 			;   ; KeyWait, Rbutton, U
-			;     ; try Menu,Menu, deleteAll
+			;     ; try Menu,Menu, DeleteAll
 			; }
 
 
@@ -929,7 +928,7 @@ class VScode{
 
     Menu(){
     global
-		try Menu,Menu, deleteAll
+		try Menu,Menu, DeleteAll
     if winactive("ahk_exe Code.exe")
       Menu, Menu, add, &LMS Title, InputToVsCode
     Menu, Menu, add, window Title, InputToVsCode
@@ -952,7 +951,7 @@ class VScode{
       return
     }
     else if (A_thismenuitem Contains E&xit) || (A_priorkey contains esc)
-      Menu,Menu, deleteAll
+      Menu,Menu, DeleteAll
     else
     {
     tt("find window and click space",3000)
@@ -971,7 +970,7 @@ class VScode{
     else if A_thismenuItem contains window Location
       send % winLocation
     ; sendinput, %A_thismenuItem%
-    try Menu,Menu, deleteAll
+    try Menu,Menu, DeleteAll
     }
     return
     }
