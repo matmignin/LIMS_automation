@@ -1,5 +1,5 @@
 return
-; #include *i D:\VQuest\lib\Functions.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 Class VarBar{
 Show(X:=1, Y:=1, Destroy:="Reset"){
@@ -10,11 +10,11 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 	; Variables
 		TopScreen:=1 ;A_ScreenHeight-35
 		MidScreen:=A_ScreenWidth//2
-		VarBar_H=58
+		VarBar_H=30
 		VarBar_H_max=58
 		VarBar_T:=235
 		VarBar_W=350
-		CurrentCodesFile=D:\VQuest\Data\CurrentCodes.txt
+		CurrentCodesFile=C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
 	fileread,CurrentCodes,%CurrentCodesFile%
 	This.loadSavedVariables()
 	Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
@@ -24,17 +24,17 @@ Gui, Varbar:+Delimiter`n
 	winSet, Transparent, 100, %GUIID%
 	This.SetColor()
 	this.AddEdit("Product",	  "left h29 x1 y0 w65",				"16 Bold")
-	this.AddEdit("Batch",		  "left h29 x+0 y0 w90", 			"12,Consolas")
-	this.AddEdit("Lot",			  "left h29 x+0 y0 w75", 			"9, Consolas")
-	this.AddEdit("Coated",	  "left h29 x+0 y0 wrap w70",	"8.5, Arial Narrow")
+	this.AddEdit("Batch",	  "left h29 x+0 y0 w90", 			"12,Consolas")
+	this.AddEdit("Lot",		  "left h29 x+0 y0 w75", 			"9, Consolas")
+	this.AddEdit("Coated",	  "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
 	GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
 	This.AddText("Iteration", "x+1 center y-1 w23",			  "19 Bold 107C41, Consolas")	; Text1
-	GUI, VarBar:Font, cBlack s14, Consolas
+	; GUI, VarBar:Font, cBlack s14, Consolas
 	Gui, Varbar:Add, Combobox, vCodeStringEdit  Left +Multi  Altsubmit gDDLVarbar  x1 yP+30 w350 r25 hwndHDDL , %CurrentCodes%
 	GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
 ;; -----------------new DDL test
-	Gui, Varbar:Add, Button, gDelx  Hidden y200 x10  v1, Delete
-	Gui, Varbar:Add, Button, gAddx  Hidden Default x+2  v2, Add
+	; Gui, Varbar:Add, Button, gDelx  Hidden y200 x10  v1, Delete
+	; Gui, Varbar:Add, Button, gAddx  Hidden Default x+2  v2, Add
 ;----------------------end of testK
 	this.AddBoxes()
 			CoordMode, mouse, screen
@@ -94,7 +94,7 @@ Gui, Varbar:+Delimiter`n
 		;  stringreplace,wholex,wholex,`n`n,`n,all
 		;  filedelete,%CurrentCodesFile%
 		;  fileappend,%CodeString%,%CurrentCodesFile%
-		;  RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+		;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 		;  }
 		; }
 		return
@@ -155,7 +155,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			else
 				GuiControl,Varbar:Text, Product, %Product%
 
-			if RegexMatch(CodeString, a, r)
+			if RegexMatch(CodeString, regexBatch, r)
 				GuiControl,Varbar:Text, Batch, %rBatch%
 			else
 				GuiControl,Varbar:Text, Batch,
@@ -178,7 +178,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			; GUI, VarBar:submit,NoHide
 		; If (!RegexMatch(Product, RegexProduct) && !RegexMatch(Batch, RegexBatch) && !RegexMatch(Lot, RegexLot) && !RegexMatch(Coated, RegexCoated))
 		; CodeString:=Trim(Product " " Batch " " Lot Ct Coated)
-		; IniWrite, %CodeString%, D:\VQuest\CodeString.ini, SavedVariables, CodeString
+		; IniWrite, %CodeString%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, CodeString
 		; return
 
 		ExcelConnectCheck:
@@ -190,7 +190,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Product, RegexProduct, r){
-			IniWrite, %Product%, D:\VQuest\CodeString.ini, SavedVariables, Product
+			IniWrite, %Product%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Product
 			ControlGetText, CodeString, Edit5, VarBar
 			CodeString:=Trim(CodeString)
 			sleep 20
@@ -212,7 +212,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Batch, RegexBatch, r){
-			IniWrite, %Batch%, D:\VQuest\CodeString.ini, SavedVariables, Batch
+			IniWrite, %Batch%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Batch
 			ControlGetText, CodeString, Edit5, VarBar
 			sleep 30
 			CodeString:=Trim(CodeString)
@@ -233,7 +233,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Lot, RegexLot, r){
-			IniWrite, %Lot%, D:\VQuest\CodeString.ini, SavedVariables, Lot
+			IniWrite, %Lot%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Lot
 			ControlGetText, CodeString, Edit5, VarBar
 			if RegExMatch(CodeString, RegexLot){
 				Codestring:=RegExReplace(CodeString, RegexLot, rLot)
@@ -251,7 +251,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 			return
 		GUI, VarBar:submit,NoHide
 			if RegexMatch(Coated, RegexCoated, r){
-			IniWrite, %Coated%, D:\VQuest\CodeString.ini, SavedVariables, Coated
+			IniWrite, %Coated%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Coated
 			ControlGetText, CodeString, Edit5, VarBar
 			if RegExMatch(CodeString, RegexCoated){
 				Codestring:=RegExReplace(CodeString, RegexCoated, rCoated)
@@ -287,7 +287,7 @@ DDLVarbar:  ;; ComboBox1 Hanfler
 		 stringreplace,wholex,wholex,`n`n,`n,all
 		 filedelete,%CurrentCodesFile%
 		 fileappend,%wholex%,%CurrentCodesFile%
-		; RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+		; RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 	}
 return
 	}
@@ -344,7 +344,7 @@ SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 	IniWrite, %ModeSelections%, Settings.ini, Options, ModeSelections
 	FileAppend, %CodeString%, Data\CurrentCodes.txt
 	sleep 200
-	RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+	RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 	}
 
 
@@ -373,7 +373,7 @@ AddToList(Input:=""){  ;; __Add to List
 		; sort,Wholex, U R
 		filedelete,%CurrentCodesFile%
 		fileappend,%Wholex%,%CurrentCodesFile%
-		RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+		RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
 	 }
 }
 
@@ -749,28 +749,28 @@ SetColor(){
 		return
 		}
 
-		AddIteration(speed:=350){
+		AddIteration(speed:=300){
 		global Iteration
 		; GuiControl, -redraw, varbar
-		sleep 5
+		sleep 15
 		Iteration+=1
 		sleep %Speed%
 		ControlsetText, Static1,%Iteration%,VarBar
-		flovar(Iteration,200)
+		; flovar(Iteration,200)
 		; Pop(Iteration)
 		; tt(Iteration,500,Varbar_x,Varbar_y,2,200)
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
 		}
-		SubIteration(speed:=350){
+		SubIteration(speed:=300){
 		global Iteration
 		; GuiControl, -redraw, varbar
-		sleep 5
+		sleep 15
 		Iteration-=1
 		sleep %speed%
 		ControlsetText, Static1,%Iteration%,VarBar
-		Pop(Iteration)
+		; Pop(Iteration)
 		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
@@ -854,7 +854,7 @@ SetColor(){
 		; GUI, varbar:default
 		; GUI, Varbar:Submit, Nohide
 		return
-		; Numlock::gosub, Volume_Mute
+		; !+Lbutton::gosub, Volume_Mute
 		; 	MouseGetPos,,,,winControl
 		; 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 		; 			click
@@ -968,4 +968,4 @@ Exitsub(){
   exitapp
   }
 
-#include D:\VQuest\lib\BatchesDDL.ahk
+#include C:\Users\mmignin\Documents\VQuest\lib\BatchesDDL.ahk

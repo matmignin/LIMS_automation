@@ -1,8 +1,8 @@
-; #include *i D:\VQuest\lib\clip.ahk
-; #include *i D:\VQuest\lib\VarBar.ahk
-; #include *i D:\VQuest\lib\Excel.ahk
-; #include *i D:\VQuest\lib\LMS.ahk
-  #include D:\VQuest\lib\menu.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\VarBar.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
 
 
 
@@ -256,6 +256,68 @@ ExplorerSearch(text){
 
 
 
+Remote_desktop_Menu(){
+  global
+  try Menu,Menu, deleteAll
+      if winexist("Login - \\Remote"){
+      Menu,Menu, add, &Production Server, LMS_Env
+      Menu,Menu, add, &Test Server, LMS_Env
+      }
+    Menu, Menu, Add, TESTING LMS, Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
+    Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
+    Menu, Menu, Add, Other Servers, Remote_desktop
+    Menu, SubMenu, Add, TEST_LMS, Remote_desktop
+    Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
+    Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
+    Menu, SubMenu, Add, LMS_PRD, Remote_desktop
+    Menu, SubMenu, Add, NuGenesis, Remote_desktop`
+    Menu, SubMenu, Add, SDMS, Remote_desktop
+    Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
+    Menu, SubMenu, Add,empower, Remote_desktop
+    Menu, SubMenu, Add,LACEs, Remote_desktop
+
+    Menu, Menu, add, Other Servers, :SubMenu
+  Try Menu,menu,show
+  return
+  Remote_Desktop:
+    If (A_thisMenuItem = "TESTING LMS"){
+      Sendinput,{Click 182, 97}10.1.2.153 ;{enter}
+      ; winwaitactive, windows Security,,2
+      ; if !errorlevel
+      ; Sendinput, Kilgore7744 ;{enter}
+      return
+      }
+    if (A_thisMenuItem = "TEST_LMS")
+      Sendinput,{Click 182, 97}10.1.2.152 ;{enter}
+    if (A_thisMenuItem = "TEST_NuGen")
+      Sendinput,{Click 182, 97}10.1.2.150 ;{enter}
+    if (A_thisMenuItem = "TEST_SDMS")
+      Sendinput,{Click 182, 97}10.1.2.149 ;{enter}
+    if (A_thisMenuItem = "PRD_Citrix_One")
+      Sendinput,{Click 182, 97}10.1.2.134 ;{enter}
+    if (A_thisMenuItem = "PRD_Citrix_Two")
+      Sendinput,{Click 182, 97}10.1.2.226 ;{enter}
+    if (A_thisMenuItem = "PRD_Citrix_Three")
+      Sendinput,{Click 182, 97}10.1.2.227 ;{enter}
+    if (A_thisMenuItem = "LMS_PRD")
+      Sendinput,{Click 182, 97}10.1.2.138 ;{enter}
+    if (A_thisMenuItem = "NuGenesis")
+      Sendinput,{Click 182, 97}10.1.2.164 ;{enter}
+    if (A_thisMenuItem = "SDMS")
+      Sendinput,{Click 182, 97}10.1.2.142 ;{enter}
+    if (A_thisMenuItem = "PRD_EMPCitrix")
+      Sendinput,{Click 182, 97}10.1.2.242 ;{enter}
+    if (A_thisMenuItem = "Empower")
+      Sendinput,{Click 182, 97}10.1.2.228 ;{enter}
+    if (A_thisMenuItem = "LACEs")
+      Sendinput,{Click 182, 97}LACE-#{shiftdown}{left}{shiftup} ;{enter}
+    else
+      Try Menu,Menu, deleteAll
+    return
+
+}
 FindAndReplaceWord(find,Replace,AllOrOne:="a"){
 		Send, ^{h}%find%{tab}%replace%{altdown}{%AllOrOne%}{altup}
 		if (Allorone=="a"){
@@ -318,9 +380,9 @@ Debug(Variable,Delete:="Delete"){
   else
     DebugText:=Variable
   if Delete=Delete
-    filedelete, D:\VQuest\data\debug.txt
+    filedelete, C:\Users\mmignin\Documents\VQuest\data\debug.txt
   sleep 200
-  fileAppend %Debugtext%, D:\VQuest\data\debug.txt
+  fileAppend %Debugtext%, C:\Users\mmignin\Documents\VQuest\data\debug.txt
 }
 
 
@@ -579,14 +641,14 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	If (ReturnMouse=0){
 		SetMouseDelay, 1
 		SetKeyDelay, 1, 0.25
-		setwindelay, 200
+		setwindelay, 60
 		Return MouseReturn
 	}
 	else
 		mousemove,%mx%,%my%,0
 	SetMouseDelay, 1
 	SetKeyDelay, 1, 0.25
-	setwindelay, 200
+	setwindelay, 60
 }
 
 

@@ -1,5 +1,5 @@
-; #include D:\VQuest\lib\varbar.ahk
-; #include *i D:\VQuest\lib\Functions.ahk
+; #include C:\Users\mmignin\Documents\VQuest\lib\varbar.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 return
 
 Class Excel{
@@ -167,6 +167,7 @@ InfoLocations(){
 	GuiControl, Varbar:Text, Coated, %coated%
 	CodeString:=Trim(Product " " Batch " " Lot " " Coated)
 	ControlsetText, Edit5,%CodeString%, VarBar
+	ControlsetText, Edit1,%Product%, VarBar
 	; if Coated
 	; GuiControl, Varbar:Text, SampleID,
 	; GuiControl, Varbar:Text, name, %name%

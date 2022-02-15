@@ -1,4 +1,4 @@
-#Include D:\VQuest\lib\LMS.ahk
+#Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
 #ifwinactive
 
 return
@@ -51,7 +51,7 @@ _MouseIsOver:
 
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		;^Wheeldown::Blockrepeat(500) clip()
-		; Numlock::
+		; !+Lbutton::
 		; 	If !winactive("ahk_exe OUTLOOK.EXE")
 		; 	click
 		; 	3tap()
@@ -67,7 +67,7 @@ _MouseIsOver:
 	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 		F7::LMS.SearchBar(Batch,"{enter}")
 		F6::LMS.SearchBar(Product,"{enter}")
-		Numlock::4tap()
+		!+Lbutton::4tap()
 		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
 		; Wheeldown::LMS.Scrolldown()
@@ -91,7 +91,7 @@ clipCheckIfEmpty(){
 3tap(){
 	Global
 	FlashScreen("3-Tap")
-	; setwindelay, 100
+
 	If winactive("ahk_exe WFICA32.EXE") {
 		if winactive("NuGenesis LMS - \\Remote"){ ; If Nugeneses
 			LMS.DetectTab()
@@ -114,7 +114,7 @@ clipCheckIfEmpty(){
 				clk(67, 754) ;edit results
 			else if (Tab="Samples"){
 				; blockinput, on
-				; setwindelay, 400
+
 				send, {click 124, 294} ;assign Requests
 				sleep 500
 				if !winactive("Edit request - \\Remote")
@@ -125,7 +125,7 @@ clipCheckIfEmpty(){
 					sleep 500
 				winactivate, Select tests for request: R
 					send, {click, 31, 102}
-				; setwindelay, 100
+
 				; blockinput, off
 			return
 			}
@@ -197,7 +197,7 @@ clipCheckIfEmpty(){
 	;		else if winactive("Program Manager ahk_exe explorer.exe") || winactive("ahk_exe explorer.exe ahk_class CabinetWClass")
 		;Send, {lwindown}{e}{lwinup}
 	else if winactive("ahk_class TscShellContainerClass") || winactive("ahk_class #32770") || winactive("Remote Desktop Connection")
-			menu.Remote_Desktop()
+			Remote_Desktop_menu()
 			return
 		}
 
@@ -315,6 +315,8 @@ clipCheckIfEmpty(){
 	FlashScreen("4-Tap")
 	if winactive("ahk_exe WFICA32.EXE"){
 		If winactive("NuGenesis LMS - \\Remote") {
+			lms.menu()
+			return
 			LMS.Detecttab()
 			if (Tab="Requests") {
 					if Mode("Entering_Rotations") {
@@ -340,11 +342,12 @@ clipCheckIfEmpty(){
 				Return
 				}
 			else if (Tab="Specs") {
-					if Mode("Entering_Rotations")
-						Excel.Products()
-					else
-						clk(67, 754) ;edit results
-				return
+					; if Mode("Entering_Rotations")
+						; Excel.Products()
+					; else
+						; clk(67, 754) ;edit results
+					lms.menu()
+				; return
 				; click
 				; Return
 					; lms.menu()
@@ -357,7 +360,7 @@ clipCheckIfEmpty(){
 		else if winactive("Composition - \\Remote") || Mode("Edit_Batches")
 			ProductTab.AddCOASpace()
 		else if winactive("Register new samples - \\Remote"){
-				Send, {click}
+			Send, {click}
 			Excel.Batches()
 			winactivate, Register new samples - \\Remote
 				sleep 200

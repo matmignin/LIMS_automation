@@ -8,6 +8,7 @@ VQuest_Start:
     Iniread, Iteration, Settings.ini, SavedVariables, Iteration
     iniread, DebuggingScript, Settings.ini, Options, DebuggingScript
     iniread, Validating, Settings.ini, Options, Validating
+    iniread, Mode, Settings.ini, Options, Mode
     Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
     #KeyHistory 500
     #InstallKeybdHook
@@ -19,7 +20,8 @@ VQuest_Start:
     ; #MaxThreadsBuffer, On
     #InstallKeybdHook
     ; OnMessage(0x004A, "Receive_WM_COPYDATA")  ; 0x004A is WM_COPYDATA
-
+SetKeyDelay,-1,1
+setwindelay, 50
     #InstallMouseHook
     #HotkeyModifierTimeout
     #maxthreadsperhotkey, 2
@@ -30,7 +32,7 @@ VQuest_Start:
     FormatTime, The_Day,, MMMM d
     FormatTime, The_Hour,, htt
     FormatTime, The_Time,, hh:mm
-    SetNumLockState, on
+    SetNumlockState, on
     SetscrolllockState, off
     CrLf=`r`n
     SetNumlockState Alwayson
@@ -89,14 +91,27 @@ VQuest_Start:
     RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
     RegexBatch:=  "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
     RegexLot:=    "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
-    RegexCoated:= "i)(coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
-
-
+    RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
     ; if A_DebuggerName
 
 
+Parse_LMS_Menu(){
+	global
+	clipboard:=
+	Send, ^c
+	clipwait, 1
+	; SplitLMSSample(){
+	RowSplit:=[]
+	ParsedSample:=[]
+	RowSplit:= strsplit(Clipboard,"`n")
+	row2:=RowSplit[2]
+	Loop, parse, Row2, `t
+		ParsedSample.insert(A_LoopField)
+	msgbox % "Product:" ParsedSample[1] "`n|Batch| " ParsedSample[2] "`n|PkgLot| " ParsedSample[3] "`n|Coated| " ParsedSample[4] "`n|Blister|" ParsedSample[5] "`n|ShipTo| " ParsedSample[8] "`n||`n" ParsedSample[6]
+return
+}
   ;CurrentList:=[]
-  ; Loop, Read, D:\VQuest\data\CurrentCodes.txt
+  ; Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
     ; {
       ; CurrentList.Insert(A_loopreadline)
       ; maxindex := A_Index
@@ -109,26 +124,26 @@ VQuest_Start:
 
 
         #include <cl3api>
-  #Include D:\VQuest\lib\SuppressErrorDialog.ahk
-  #include D:\VQuest\lib\Toggles.ahk
-  #Include D:\VQuest\lib\Temp.ahk
+  #Include C:\Users\mmignin\Documents\VQuest\lib\SuppressErrorDialog.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Toggles.ahk
+  #Include C:\Users\mmignin\Documents\VQuest\lib\Temp.ahk
   ; if !VimOpen
-  #include D:\VQuest\lib\VIM.ahk
-  #Include D:\VQuest\lib\Test.ahk
-  ; #include D:\VQuest\lib\HotStrings.ahk
-   #include D:\VQuest\lib\KEYS.ahk
-  #include D:\VQuest\lib\PAD.ahk
-  #Include D:\VQuest\lib\LMS.ahk
-  #Include D:\VQuest\lib\clip.ahk
-  ; #Include D:\VQuest\lib\OpenApp.ahk
-  #include D:\VQuest\lib\Excel.ahk
-  #include D:\VQuest\lib\varBar.ahk
-  #include D:\VQuest\lib\menu.ahk
-  #include D:\VQuest\lib\Vis\Gdip_All.ahk
-  #include D:\VQuest\lib\Vis\JSON.ahk
-  #include D:\VQuest\lib\Vis\Vis2.ahk
-  #include D:\VQuest\lib\Functions.ahk
-  #include D:\VQuest\lib\Xml.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\VIM.ahk
+  #Include C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
+  ; #include C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
+   #include C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\PAD.ahk
+  #Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk
+  #Include C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+  ; #Include C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\varBar.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\menu.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\Xml.ahk
 
 ; return
 ; your functions

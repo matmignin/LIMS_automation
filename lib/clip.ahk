@@ -1,4 +1,4 @@
-; #include *i D:\VQuest\lib\Functions.ahk
+; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
 #ifwinactive,
 Return
@@ -106,7 +106,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
     ; Send, {blind}%AllProducts%
 
     ; msgbox, %AllProducts%,
- ;FileRead, CurrentCodes,D:\VQuest\data\CurrentCodes.txt
+ ;FileRead, CurrentCodes,C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.txt
 }
 
 
@@ -208,71 +208,71 @@ Tab & 2::Excel.Batches()
 return
 
 
-;;  Tab
+; ;;  Tab
 
-	;Tab & 1::
-  ; Tab & wheeldown::
-	Product_cyclebackward:
-		GUI, varbar:default
+; 	;Tab & 1::
+;   ; Tab & wheeldown::
+; 	Product_cyclebackward:
+; 		GUI, varbar:default
 
-		winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
-		CurrentList := StrSplit(CurrentCodes, "`n")
-		If !ActiveWindowID
-			WinGet, ActiveWindowID, ID, A
-		cyclebackward:=1
-		PreviousClipCycleCounter:=0 ; 13/10/2017 test
-		ClipCycleCounter:=1
-		ClipCycleFirst:=1
-		While GetKeyState("Tab","D") and cyclebackward
-			{
-			If (ClipCycleCounter <> 0)
-			{
-				Var:=CurrentList[ClipCycleCounter]
-				ttext:=% DisplayToolTipText(Var)
-			}
-			else
-				ttext:="[cancelled]"
-			If (oldttext <> ttext)
-				{
-				ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-				oldttext:=ttext
-				GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
-				}
-			Sleep 100
-			KeyWait, 1
-			}ToolTip
-		If (ClipCycleCounter > 0) ; If zero we've cancelled it
-			{
-			Clipboard:=CurrentList[ClipCycleCounter]
-			sleep 100
-			Gosub, ProductsHandler
-			ClipCycleCounter:=1
-			}
-		Return
+; 		winMove, VarBar ahk_class AutoHotkeyGUI ahk_exe AutoHotkey.exe, ,,,,%Varbar_H_max%
+; 		CurrentList := StrSplit(CurrentCodes, "`n")
+; 		If !ActiveWindowID
+; 			WinGet, ActiveWindowID, ID, A
+; 		cyclebackward:=1
+; 		PreviousClipCycleCounter:=0 ; 13/10/2017 test
+; 		ClipCycleCounter:=1
+; 		ClipCycleFirst:=1
+; 		While GetKeyState("Tab","D") and cyclebackward
+; 			{
+; 			If (ClipCycleCounter <> 0)
+; 			{
+; 				Var:=CurrentList[ClipCycleCounter]
+; 				ttext:=% DisplayToolTipText(Var)
+; 			}
+; 			else
+; 				ttext:="[cancelled]"
+; 			If (oldttext <> ttext)
+; 				{
+; 				ToolTip, % ttext, %A_CaretX%, %A_CaretY%
+; 				oldttext:=ttext
+; 				GuiControl, Varbar:ChooseString, ComboBox1, %ttext%
+; 				}
+; 			Sleep 100
+; 			KeyWait, 1
+; 			}ToolTip
+; 		If (ClipCycleCounter > 0) ; If zero we've cancelled it
+; 			{
+; 			Clipboard:=CurrentList[ClipCycleCounter]
+; 			sleep 100
+; 			Gosub, ProductsHandler
+; 			ClipCycleCounter:=1
+; 			}
+; 		Return
 
-	;Tab & 1 Up::
-	Product_cyclebackward_up:
-	PreviousClipCycleCounter:=ClipCycleCounter
-	If (ClipCycleFirst = 0)
-		ClipCycleCounter++
-	ClipCycleFirst:=0
-	; settimer, ShrinkVarBar, 200
-	Return
+; 	;Tab & 1 Up::
+; 	Product_cyclebackward_up:
+; 	PreviousClipCycleCounter:=ClipCycleCounter
+; 	If (ClipCycleFirst = 0)
+; 		ClipCycleCounter++
+; 	ClipCycleFirst:=0
+; 	; settimer, ShrinkVarBar, 200
+; 	Return
 
-	ProductsHandler:
-	oldttext:="", ttext:="", ActiveWindowID:=""
-	WinActivate, ahk_id %ActiveWindowID%
-		Gui Varbar:Default
-	sleep 30
-	; send, ^{v}
-	GuiControl, Varbar:ChooseString, ComboBox1, % CurrentList[ClipCycleCounter]
-	;ControlGetText, CodeString, Edit5, VarBar
-	sleep 200
-	clip.CodesRegex(CodeString)
-	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
-	Cliptext:=
-	CycleBackward:=
-	Return
+; 	ProductsHandler:
+; 	oldttext:="", ttext:="", ActiveWindowID:=""
+; 	WinActivate, ahk_id %ActiveWindowID%
+; 		Gui Varbar:Default
+; 	sleep 30
+; 	; send, ^{v}
+; 	GuiControl, Varbar:ChooseString, ComboBox1, % CurrentList[ClipCycleCounter]
+; 	;ControlGetText, CodeString, Edit5, VarBar
+; 	sleep 200
+; 	clip.CodesRegex(CodeString)
+; 	oldttext:="", ttext:="", ActiveWindowID:="",ClipboardOwnerProcessName:=""
+; 	Cliptext:=
+; 	CycleBackward:=
+; 	Return
 
 
 	DisplayToolTipText(TextIn,Format=0){
@@ -439,7 +439,7 @@ Clip(input=0,Wait:="0.45"){
     ;;; -----Retrieves saved clipboard information since when this script last ran
       ; ^F20::
       ; CurrentList:=[]
-      ;   Loop, Read, D:\VQuest\data\CurrentCodes.Txt
+      ;   Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.Txt
       ;     {
       ;       CurrentList.Insert(A_loopreadline)
       ;           maxindex := A_Index
@@ -452,7 +452,7 @@ Clip(input=0,Wait:="0.45"){
       ;     }
 
       ;     Return
-      ;   ; Loop , Read,  D:\VQuest\ClipHistory\clipvar*.txt
+      ;   ; Loop , Read,  C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
       ;   ; {
       ;     ; clipindex += 1
       ;     ; FileRead clipvar%A_Index%, %A_LoopFileFullPath%
@@ -520,7 +520,7 @@ Clip(input=0,Wait:="0.45"){
       ;     {
       ;       zindex := SubStr("0000000000" . A_Index, -9)
       ;       thisclip := clipvar%A_Index%
-      ;       FileAppend %thisclip%, D:\VQuest\ClipHistory\clipvar%zindex%.txt
+      ;       FileAppend %thisclip%, C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar%zindex%.txt
       ;     }
       ;  ExitApp
 
@@ -551,6 +551,7 @@ clipChange(type){
       FloVar(Clipboard,2000,13)
     else if A_PriorKey = b
       return
+    ; }
 }
 
 
@@ -665,7 +666,7 @@ CodesRegex(input:=""){
 }
 
 
-Parse(Value:=""){
+Parse1(Value:=""){
   global
   Gui Varbar:Default
   regProducts:=[], regBatches:=[],
@@ -715,7 +716,7 @@ Parse(Value:=""){
           ; FileAppend, %CurrentCodes%, data\CurrentCodes.txt
           ; Varbar.AddToList(CurrentCodes)
           ; sleep 100
-        ;  RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+        ;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
           ; sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default
@@ -735,7 +736,7 @@ Parse(Value:=""){
 }
 }
 
-Parse1(Value:=""){
+Parse(Value:=""){
   global
   regProducts:=[], regBatches:=[],
   Gui Varbar:Default
@@ -793,7 +794,7 @@ Parse1(Value:=""){
           sleep 100
           FileAppend, %CurrentCodes%, data\CurrentCodes.txt
           sleep 100
-          RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+          RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
           sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default
@@ -951,7 +952,7 @@ Regex(Category:=""){
       }
       GuiControl, Varbar:MoveDraw, Coated
       gui varbar:submit, nohide
-      FloVar(0,2000,16)
+      ; FloVar(0,2000,16)
       sleep 20
   }
 Department(DepartmentInput:=""){
