@@ -127,11 +127,11 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
 ; #If winactive("Select methods tests - \\Remote") && TempCode
 ; #If winactive("Results Definition - \\Remote") && TempCode
 ;     Mbutton::send, {enter}
-;     !+Lbutton::gosub, AddRAE_ResultsDefinition
+;     Insert::gosub, AddRAE_ResultsDefinition
 ;     rbutton::lms.menu()
 ;     ; Lbutton::
 ; #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
-;   ; !+Lbutton::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+;   ; Insert::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
 ;   ; F20::gosub, CheckExcelRow
 ;   ; F15::gosub, CheckExcelRow
 

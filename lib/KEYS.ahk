@@ -3,7 +3,7 @@ return
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		!+Lbutton::4tap() ;LMS.COA()
+		Insert::4tap() ;LMS.COA()
 		mbutton:: 3tap()
 		+mbutton:: 4tap()
 		F7::		  3Right()
@@ -30,17 +30,17 @@ return
 		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
 		wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 			#MaxThreadsPerHotkey 2
-				!+Lbutton::WorkTab.ChangeTestResults("loop")
+				Insert::WorkTab.ChangeTestResults("loop")
 			#MaxThreadsPerHotkey 1
-			; !+Lbutton:: old use for test result loop
+			; Insert:: old use for test result loop
 
 
 
 
 	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
 	; wheelup::Mouse_click("Edit")
-		; !+Lbutton::Send, % clk(712, 663) "{esc}"
-		;!+Lbutton::lms.menu()
+		; Insert::Send, % clk(712, 663) "{esc}"
+		;Insert::lms.menu()
 		space::sendinput,{ctrldown}{click}{ctrlup}
 		mbutton::Spectab.Table()
 
@@ -211,7 +211,7 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 ; <#enter::										GetAllProducts("`n")
 rwin::return
 <#tab::										GetAllProducts(A_tab)					;suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
-!+Lbutton::								  4tap()
+Insert::								  4tap()
 ;;	___Lbuton:
 Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
 Lbutton & F20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;snip and pin
@@ -514,7 +514,7 @@ if !winactive("CodeQuickTester*")
 	F1::F1
 	F2::F2
 	F4::F4
-	; !+Lbutton::Send, {shiftdown}{F9}{shiftup}
+	; Insert::Send, {shiftdown}{F9}{shiftup}
 	; F9::                 excel.search()
 	F9::						3up()
 	F7::                 excel.Search()
@@ -545,7 +545,7 @@ if !winactive("CodeQuickTester*")
 	<+F20::       		   Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{Shiftdownwn}{ctrldown}{left 2}{ctrlup}{Shiftup}"
 	; <+F19::       		   Sendinput % Trim(Product, OmitChars = " `n")
 	;F20 & F19::          Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
-	!+Lbutton::sendinput, %Batch% is updated.
+	Insert::sendinput, %Batch% is updated.
 	numpadmult::
 
 	F7::						LMS.SearchRequest(Batch,"{enter}")
@@ -571,7 +571,7 @@ if !winactive("CodeQuickTester*")
 	q & u::										Sendinput, {q}{u}
 	q::q
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
-	; !+Lbutton::				Send, {Backspace}
+	; Insert::				Send, {Backspace}
 	F19::						Send, ^{click}
 
 
@@ -579,7 +579,7 @@ if !winactive("CodeQuickTester*")
 .
 
 #ifwinactive, Touchpoint | Microsoft Teams ;; 	___Teams
-; !+Lbutton::MuteTeamsMicrophone()
+; Insert::MuteTeamsMicrophone()
 F15::MuteTeamsMicrophone()
 
 #ifwinactive, OneNote for windows 10 ;; 	___OneNote

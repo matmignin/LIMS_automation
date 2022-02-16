@@ -51,7 +51,7 @@ _MouseIsOver:
 
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		;^Wheeldown::Blockrepeat(500) clip()
-		; !+Lbutton::
+		; Insert::
 		; 	If !winactive("ahk_exe OUTLOOK.EXE")
 		; 	click
 		; 	3tap()
@@ -67,7 +67,7 @@ _MouseIsOver:
 	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 		F7::LMS.SearchBar(Batch,"{enter}")
 		F6::LMS.SearchBar(Product,"{enter}")
-		!+Lbutton::4tap()
+		Insert::4tap()
 		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
 		; Wheeldown::LMS.Scrolldown()

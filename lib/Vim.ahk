@@ -280,10 +280,10 @@ return
 #Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
 	Lbutton & F13::return
 	F13 & Tab::
-	;!+Lbutton::vscode.reloadscript()
+	;Insert::vscode.reloadscript()
 	Mbutton::sendinput, !{f}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
-	;F13 & !+Lbutton::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
+	;F13 & Insert::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	F13 & Lalt::vscode.FindMatchingwindows()
 	F13 & `::Sendinput,+{F9}
 	; F13 & '::Sendinput,!+{F9}
@@ -376,7 +376,7 @@ return
 	`::`
 	/::/
 
-	; !+Lbutton::#\
+	; Insert::#\
 	^r::!r
 	; <^h::[
 	; <^l::]

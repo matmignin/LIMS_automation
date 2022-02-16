@@ -854,7 +854,7 @@ SetColor(){
 		; GUI, varbar:default
 		; GUI, Varbar:Submit, Nohide
 		return
-		; !+Lbutton::gosub, Volume_Mute
+		; Insert::gosub, Volume_Mute
 		; 	MouseGetPos,,,,winControl
 		; 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 		; 			click
