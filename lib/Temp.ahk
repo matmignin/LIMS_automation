@@ -127,11 +127,11 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
 ; #If winactive("Select methods tests - \\Remote") && TempCode
 ; #If winactive("Results Definition - \\Remote") && TempCode
 ;     Mbutton::send, {enter}
-;     numlock::gosub, AddRAE_ResultsDefinition
+;     !+Lbutton::gosub, AddRAE_ResultsDefinition
 ;     rbutton::lms.menu()
 ;     ; Lbutton::
 ; #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
-;   ; NumLock::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+;   ; !+Lbutton::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
 ;   ; F20::gosub, CheckExcelRow
 ;   ; F15::gosub, CheckExcelRow
 
@@ -192,7 +192,7 @@ return
     }
   return
 
-RemoveFileDuplicates("D:\VQuest\Data\Duplicate Test - Copy.txt")
+RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\Duplicate Test - Copy.txt")
 ; test_3() ; delete duplicates
 return
 
@@ -303,7 +303,7 @@ Return
 ADD_A_TODO_LIST_ITEM_IN_VSCODE:
 InputBox, TODO, Write a Todo
 VSCODEToDo:= "☐ " TODO "`n"
-FileAppend, %VSCODETODO%, D:\VQuest\TODO
+FileAppend, %VSCODETODO%, C:\Users\mmignin\Documents\VQuest\TODO
 Return
 
 

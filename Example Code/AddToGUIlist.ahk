@@ -3,7 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 #Persistent
 #SingleInstance,Force
-setworkingdir, "D:\VQuest\"
+setworkingdir, "C:\Users\mmignin\Documents\VQuest\"
 #maxthreadsperhotkey, 1
 
 

@@ -2,13 +2,13 @@
 SendMode Input
 SetWorkingDir, %A_ScriptDir%
 
-#include D:\VQuest\lib\Vis\Vis2.ahk
+#include C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
 
 
 
 ; FileRead, SnipasteOCR, bin/OCRoutput.txt
 
-Clipboard:= OCR("D:\VQuest\bin\OCR.png")
+Clipboard:= OCR("C:\Users\mmignin\Documents\VQuest\bin\OCR.png")
 
 	try Gui, EditBox:Destroy
 	result := Clipboard

@@ -1,7 +1,29 @@
 #SingleInstance, Force
+if A_username != mmignin
+	exitapp
 SendMode Input
+    SetNumlockState, on
+    SetNumlockState Alwayson
+    SetscrolllockState, off
+    setcapslockstate alwaysoff
 SetWorkingDir, %A_ScriptDir%
-#include C:\Windows\ShellNew\TemplateIncludeFile.ahk
+return
+
++F8::
+	MouseMove, 100, 100, 10, R
+	MouseMove, 100, 0, 10, R
+	MouseMove, 0, 100, 10, R
+return
+
+mbutton::
+	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cwBlack
+	ToolTip, %clipboard%, 9
+	Sleep,10
+	SplashImage,off
+	ToolTip,,,,9
+	return
+
++F7::
 ; Create the sub-menus for the menu bar:
 Menu, FileMenu, Add, &New, FileNew
 Menu, FileMenu, Add, &Open, FileOpen
@@ -20,7 +42,7 @@ Gui, Menu, MyMenuBar
 
 ; Create the main Edit control and display the window:
 Gui, +Resize  ; Make the window resizable.
-Gui, Add, Edit, vMainEdit WantTab W600 R20
+Gui, Add, Edit, vMainEdit WantTab W600 R20, %A_username% `n %clipboard%
 Gui, Show,, Untitled
 CurrentFileName := ""  ; Indicate that there is no current file.
 return
@@ -115,4 +137,4 @@ return
 
 FileExit:     ; User chose "Exit" from the File menu.
 GuiClose:  ; User closed the window.
-ExitApp
+reload

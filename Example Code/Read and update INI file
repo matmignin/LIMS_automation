@@ -22,7 +22,7 @@ SetWorkingDir %A_ScriptDir%
 ; .....................................................
 
 ; Create the ini file (scriptname.ini)
-iniFile := "D:\VQuest\Settings2.ini" ;SubStr( A_ScriptName, 1, -3 ) . "ini"
+iniFile := "C:\Users\mmignin\Documents\VQuest\Settings2.ini" ;SubStr( A_ScriptName, 1, -3 ) . "ini"
 iniContent =
 (
 [Options]

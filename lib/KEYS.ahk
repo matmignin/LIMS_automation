@@ -3,8 +3,9 @@ return
 
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS - \\Remote ;; ___Nugenesis
-		Numlock:: lms.menu() ;4tap() ;LMS.COA()
+		!+Lbutton::4tap() ;LMS.COA()
 		mbutton:: 3tap()
+		+mbutton:: 4tap()
 		F7::		  3Right()
 		F6::			3Left()
 		^F::
@@ -18,12 +19,7 @@ return
 		Enter::LMS.SaveCode()
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
-		<^v::      	       	lms.searchbarPaste()
-		; wheelright::clk(HScrollBarRightX, HScrollBarRightY,,1)     ;2right()
-		; wheelleft::clk(HScrollBarLeftX, HScrollBarLeftY,,1) ;2left()
-
-		; f20 up::4tap()
-
+		<^v::lms.searchbarPaste()
 
  #Ifwinactive,Select Iterations - \\Remote
    F20::LMS.PasteProductRotation()
@@ -34,17 +30,17 @@ return
 		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
 		wheeldown::    sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 			#MaxThreadsPerHotkey 2
-				Numlock::WorkTab.ChangeTestResults("loop")
+				!+Lbutton::WorkTab.ChangeTestResults("loop")
 			#MaxThreadsPerHotkey 1
-			; Numlock:: old use for test result loop
+			; !+Lbutton:: old use for test result loop
 
 
 
 
 	#Ifwinactive, Results Definition - \\Remote ;;__Results_Definition:
 	; wheelup::Mouse_click("Edit")
-		; numlock::Send, % clk(712, 663) "{esc}"
-		Numlock::lms.menu()
+		; !+Lbutton::Send, % clk(712, 663) "{esc}"
+		;!+Lbutton::lms.menu()
 		space::sendinput,{ctrldown}{click}{ctrlup}
 		mbutton::Spectab.Table()
 
@@ -82,8 +78,7 @@ return
 			; F19 & down::			Varbar.SubIteration(0)
 			; F19 & up::	 			Varbar.AddIteration(0)
 			Rbutton up::		2Tap()
-			F14::
-			^`::						Varbar.reset()
+			;^`::						Varbar.reset()
 			enter::					 LMSclick.okay()
 			esc::						 LMSclick.esc()
 			numpaddot::			4down()
@@ -141,32 +136,33 @@ Ins::flovar()
 !^c:: 										clip.Append(A_Space)
 !^x:: 										send % clip.Append() "{backspace}"
 ;; moved over from Vim ____________________________________________________
-	F19 & m::              	numpad1
-	F19 & ,::              	numpad2
-	F19 & .::              	numpad3
-	F19 & j::              	numpad4
-	F19 & k::              	numpad5
-	F19 & l::              	numpad6
-	F19 & u::              	numpad7
+	F19 & m::1    ;          	numpad1
+	F19 & ,::2    ;          	numpad2
+	F19 & .::3    ;         	numpad3
+	F19 & j::4    ;          	numpad4
+	F19 & k::5   ;           	numpad5
+	F19 & l::6    ;          	numpad6
+	F19 & u::7    ;          	numpad7
 	F19 & /::              	sendinput, {tab}
-	F19 & i::              	numpad8
-	F19 & o::              	numpad9
+	F19 & i::8   ;           	numpad8
+	F19 & o::9   ;           	numpad9
 	F19 & `;::             	Sendinput,{numpad0}
 	F19 & y::              	sendinput, +{Tab}
-	F19 & p::              	numpad0
+	F19 & p::0  ;            	numpad0
 	F19 & =::              	-
 	F19 & -::              	-
-	F19 & [::              	left
-	F19 & ]::              	right
+	F19 & 0::              	-
+	F19 & 9::              	-
+	F19 & [::0   ;           	left
+	F19 & ]::0  ;            	right
 	F19 & h::              	sendinput, {,}
 	F19 & n::              	sendinput, {.}
 	F19 & 8::              	sendinput, {*}
-	F19 & 0::              	sendinput, {-}
-	F19 & '::              	numpad0
+	F19 & '::0  ;            	numpad0
 	F19 & Backspace::      	backspace
 	;F19 & ENTER::        	  Sendinput,+{F18}
 
-+#s::											send, {lwindown}{s}{lwinup}
+	+#s::											send, {lwindown}{s}{lwinup}
 	$lwin::									return
 	#F6::										#left
 	#a::										#left
@@ -214,9 +210,8 @@ F19 & up::									Sendinput % excel.GetAllSheets()
 ; <!F13::											GetAllBatches("`n")
 ; <#enter::										GetAllProducts("`n")
 rwin::return
-<#tab::										GetAllProducts(A_tab)
-Scrolllock::							suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
-Numlock::								  4tap()
+<#tab::										GetAllProducts(A_tab)					;suspend ;SetCapsLockState % !GetKeyState("CapsLock", "T")
+!+Lbutton::								  4tap()
 ;;	___Lbuton:
 Lbutton & F19::          	Send % BlockRepeat() "{shiftdown}{ctrldown}{2}{ctrlup}{shiftup}"
 Lbutton & F20::						send, {shiftdown}{ctrldown}{4}{ctrlup}{shiftup} ;snip and pin
@@ -519,7 +514,7 @@ if !winactive("CodeQuickTester*")
 	F1::F1
 	F2::F2
 	F4::F4
-	; Numlock::Send, {shiftdown}{F9}{shiftup}
+	; !+Lbutton::Send, {shiftdown}{F9}{shiftup}
 	; F9::                 excel.search()
 	F9::						3up()
 	F7::                 excel.Search()
@@ -550,7 +545,7 @@ if !winactive("CodeQuickTester*")
 	<+F20::       		   Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.{Shiftdownwn}{ctrldown}{left 2}{ctrlup}{Shiftup}"
 	; <+F19::       		   Sendinput % Trim(Product, OmitChars = " `n")
 	;F20 & F19::          Sendinput % Trim(Batch, OmitChars = " `n") " is updated in LMS.
-	Numlock::sendinput, %Batch% is updated.
+	!+Lbutton::sendinput, %Batch% is updated.
 	numpadmult::
 
 	F7::						LMS.SearchRequest(Batch,"{enter}")
@@ -576,7 +571,7 @@ if !winactive("CodeQuickTester*")
 	q & u::										Sendinput, {q}{u}
 	q::q
 #Ifwinactive, Affinity Photo ahk_exe Photo.exe
-	; Numlock::				Send, {Backspace}
+	; !+Lbutton::				Send, {Backspace}
 	F19::						Send, ^{click}
 
 
@@ -584,7 +579,7 @@ if !winactive("CodeQuickTester*")
 .
 
 #ifwinactive, Touchpoint | Microsoft Teams ;; 	___Teams
-; Numlock::MuteTeamsMicrophone()
+; !+Lbutton::MuteTeamsMicrophone()
 F15::MuteTeamsMicrophone()
 
 #ifwinactive, OneNote for windows 10 ;; 	___OneNote

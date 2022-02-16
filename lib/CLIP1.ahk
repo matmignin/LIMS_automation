@@ -50,7 +50,7 @@ clipChange(type){
 return
 
 }
-
+}
 
 
 Class Clip {
@@ -193,7 +193,7 @@ Parse(Value:=""){
           sleep 100
           FileAppend, %CurrentCodes%, data\CurrentCodes.txt
           sleep 100
-          RemoveFileDuplicates("D:\VQuest\Data\CurrentCodes.txt")
+          RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
           sleep 100
                     ; RegProducts.InsertAt(1, Trim(Match))
                     ; gui, Varbar:Default

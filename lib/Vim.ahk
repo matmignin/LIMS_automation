@@ -10,28 +10,28 @@ Process, Priority, , High
 FormatTime, DayString,, MM/d/yy
 FormatTime, TimeString, R
 FormatTime, CurrentDateTime,, MM/dd/yy
-SetNumLockState, on
+SetNumlockState, on
 SetscrolllockState, off
 SetNumlockState Alwayson
 setcapslockstate alwaysoff
 #ClipboardTimeout 1500
 SetTitleMatchMode, 2
-try Menu, Tray, Icon, D:\VQuest\bin\Vim.ico
+try Menu, Tray, Icon, C:\Users\mmignin\Documents\VQuest\bin\Vim.ico
 Menu, Tray, Add, E&xit, ExitSub
 Menu, Tray, Default, E&xit
-; try Run, cl3.Ahk, D:\VQuest\lib\CL3
+; try Run, cl3.Ahk, C:\Users\mmignin\Documents\VQuest\lib\CL3
 AutoTrim, On
-#include *i D:\VQuest\lib\Functions.ahk
-#include *i D:\VQuest\lib\Excel.ahk
-#Include *i D:\VQuest\lib\Test.ahk
-#include *i D:\VQuest\lib\OpenApp.ahk
-#include *i D:\VQuest\lib\KEYS.ahk
-#include *i D:\VQuest\lib\Pad.ahk
-#include *i D:\VQuest\lib\clip.ahk
-#include *i D:\VQuest\lib\Vis\Gdip_All.ahk
-#include *i D:\VQuest\lib\Vis\JSON.ahk
-#include *i D:\VQuest\lib\Vis\Vis2.ahk
-#include *i D:\VQuest\lib\HotStrings.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Excel.ahk
+#Include *i C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\OpenApp.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Pad.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Gdip_All.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\JSON.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\Vis\Vis2.ahk
+#include *i C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
 
 return
 
@@ -67,7 +67,7 @@ return
 	; ; Volume_down::				Send,			;clipboard:="K111 222-2222 3333B3 ct#444-4444"
 	; Media_Next::							Clipboard:="K555 666-6666"
   ;Media_Prev::						F6 ;MakeTransparent()
-	; ; Media_Play_Pause::			Numlock
+	; ; Media_Play_Pause::			numlock
 	; ; Media_Next::						F7
 	 Media_Next::							sendinput, {altdown}{ctrldown}{lwin down}{]}{lwin up}{ctrlup}{altup} ;debug next
 	;Media_Play_Pause::				sendinput, {altdown}{ctrldown}{lwin down}{\}{lwin up}{ctrlup}{altup} ;debug stat
@@ -280,10 +280,10 @@ return
 #Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
 	Lbutton & F13::return
 	F13 & Tab::
-	numlock::vscode.reloadscript()
+	;!+Lbutton::vscode.reloadscript()
 	Mbutton::sendinput, !{f}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
-	F13 & numlock::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
+	;F13 & !+Lbutton::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	F13 & Lalt::vscode.FindMatchingwindows()
 	F13 & `::Sendinput,+{F9}
 	; F13 & '::Sendinput,!+{F9}
@@ -376,7 +376,7 @@ return
 	`::`
 	/::/
 
-	; numlock::#\
+	; !+Lbutton::#\
 	^r::!r
 	; <^h::[
 	; <^l::]
@@ -766,7 +766,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
     else
     {
       try menu, Menu, DeleteAll
-  		Loop, Read, D:\VQuest\Data\Menu.ini
+  		Loop, Read, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
   		{
   		If A_Index = 1
   			Continue
@@ -785,7 +785,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
 			PreClip:=ClipboardAll
 			Clipboard:=
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, D:\VQuest\Data\Menu.ini, MenuItems, %InputVar%
+			IniRead,vOutput, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini, MenuItems, %InputVar%
 			sleep 20
 			Clipboard:=vOutput
 			sleep 100
@@ -800,7 +800,7 @@ SavedTextMenu() { ;; create a dropdown from SavedTextMenu ini datafile
       AddTextMenuItem:
       InputBox, Variable, Variable Name = Variable
       VARIABLEITEM:= "`n" Variable
-      FileAppend, %VARIABLEITEM%, D:\VQuest\Data\Menu.ini
+      FileAppend, %VARIABLEITEM%, C:\Users\mmignin\Documents\VQuest\Data\Menu.ini
       Return
 	}
 
@@ -877,7 +877,7 @@ class VScode{
 		; winSet, Transparent, 155, ahk_exe Code.exe
 		sleep 100
 		; winSet, Transparent, off, ahk_exe Code.exe
-		try	run, VQuest.ahk, D:\VQuest
+		try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
 		if A_DebuggerName || DebuggingScript
 		{
 				varbar.SaveVariables()
@@ -887,7 +887,7 @@ class VScode{
 		else
 		{
 			varbar.SaveVariables()
-			try	run, VQuest.ahk, D:\VQuest
+			try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
 			; catch
 				; reload
 		}

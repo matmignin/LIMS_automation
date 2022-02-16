@@ -3,7 +3,7 @@
 ; ExitMenu:
 ; Menu,Menu, deleteAll
 return
-;#include *i D:\VQuest\lib\clip.ahk
+;#include *i C:\Users\mmignin\Documents\VQuest\lib\clip.ahk
 
 class Menu{
 
@@ -137,71 +137,6 @@ TaskBar(){
 
 
 
-Remote_desktop(){
-  global
-  try Menu,Menu, deleteAll
-      if winexist("Login - \\Remote"){
-      Menu,Menu, add, &Production Server, LMS_Env
-      Menu,Menu, add, &Test Server, LMS_Env
-      }
-    Menu, Menu, Add, TESTING LMS, Remote_desktop
-    Menu, Menu, Add, PRD_Citrix_One, Remote_desktop
-    Menu, Menu, Add, PRD_Citrix_Two, Remote_desktop
-    Menu, Menu, Add, PRD_Citrix_Three, Remote_desktop
-    Menu, Menu, Add, Other Servers, Remote_desktop
-    Menu, SubMenu, Add, TEST_LMS, Remote_desktop
-    Menu, SubMenu, Add, TEST_NuGen, Remote_desktop
-    Menu, SubMenu, Add, TEST_SDMS, Remote_desktop
-    Menu, SubMenu, Add, LMS_PRD, Remote_desktop
-    Menu, SubMenu, Add, NuGenesis, Remote_desktop`
-    Menu, SubMenu, Add, SDMS, Remote_desktop
-    Menu, SubMenu, Add, PRD_EMPCitrix, Remote_desktop
-    Menu, SubMenu, Add,empower, Remote_desktop
-    Menu, SubMenu, Add,LACEs, Remote_desktop
-
-    Menu, Menu, add, Other Servers, :SubMenu
-    Menu, Menu, Add, &LMS Login, Passwords
-    Menu, Menu, Add, &VQ Login, Passwords
-    Menu, Menu, Add,&Kilgore, Passwords
-  Try Menu,menu,show
-  return
-  Remote_Desktop:
-    If (A_thisMenuItem = "TESTING LMS"){
-      Sendinput,{Click 182, 97}10.1.2.153 ;{enter}
-      ; winwaitactive, windows Security,,2
-      ; if !errorlevel
-      ; Sendinput, Kilgore7744 ;{enter}
-      return
-      }
-    if (A_thisMenuItem = "TEST_LMS")
-      Sendinput,{Click 182, 97}10.1.2.152 ;{enter}
-    if (A_thisMenuItem = "TEST_NuGen")
-      Sendinput,{Click 182, 97}10.1.2.150 ;{enter}
-    if (A_thisMenuItem = "TEST_SDMS")
-      Sendinput,{Click 182, 97}10.1.2.149 ;{enter}
-    if (A_thisMenuItem = "PRD_Citrix_One")
-      Sendinput,{Click 182, 97}10.1.2.134 ;{enter}
-    if (A_thisMenuItem = "PRD_Citrix_Two")
-      Sendinput,{Click 182, 97}10.1.2.226 ;{enter}
-    if (A_thisMenuItem = "PRD_Citrix_Three")
-      Sendinput,{Click 182, 97}10.1.2.227 ;{enter}
-    if (A_thisMenuItem = "LMS_PRD")
-      Sendinput,{Click 182, 97}10.1.2.138 ;{enter}
-    if (A_thisMenuItem = "NuGenesis")
-      Sendinput,{Click 182, 97}10.1.2.164 ;{enter}
-    if (A_thisMenuItem = "SDMS")
-      Sendinput,{Click 182, 97}10.1.2.142 ;{enter}
-    if (A_thisMenuItem = "PRD_EMPCitrix")
-      Sendinput,{Click 182, 97}10.1.2.242 ;{enter}
-    if (A_thisMenuItem = "Empower")
-      Sendinput,{Click 182, 97}10.1.2.228 ;{enter}
-    if (A_thisMenuItem = "LACEs")
-      Sendinput,{Click 182, 97}LACE-#{shiftdown}{left}{shiftup} ;{enter}
-    else
-      Try Menu,Menu, deleteAll
-    return
-
-}
 return
 
 ; ProductsList:

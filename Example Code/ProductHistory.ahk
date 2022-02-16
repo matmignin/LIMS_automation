@@ -1,7 +1,7 @@
 ﻿#include C:\Windows\ShellNew\TemplateIncludeFile.ahk
 ;^F20::
 CurrentList:=[]
-  Loop, Read, D:\VQuest\data\CurrentCodes.Txt
+  Loop, Read, C:\Users\mmignin\Documents\VQuest\data\CurrentCodes.Txt
     {
       CurrentList.Insert(A_loopreadline)
           maxindex := A_Index
@@ -14,7 +14,7 @@ CurrentList:=[]
     }
 
     Return
-  ; Loop , Read,  D:\VQuest\ClipHistory\clipvar*.txt
+  ; Loop , Read,  C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar*.txt
   ; {
     ; clipindex += 1
     ; FileRead clipvar%A_Index%, %A_LoopFileFullPath%
@@ -87,5 +87,5 @@ keywait, Rshift, U
     {
       zindex := SubStr("0000000000" . A_Index, -9)
       thisclip := clipvar%A_Index%
-      FileAppend %thisclip%, D:\VQuest\ClipHistory\clipvar%zindex%.txt
+      FileAppend %thisclip%, C:\Users\mmignin\Documents\VQuest\ClipHistory\clipvar%zindex%.txt
     }
