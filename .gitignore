@@ -1,44 +1,30 @@
 AHK-Studio Backup/*
 
 lib/CL3/ClipData/*
-lib/DebugVars/DebugVars.ahk
-
-lib/DebugVars/DebugVars.ahk - Shortcut.lnk
-lib/DebugVars/DebugVarsGui.ahk
-lib/DebugVars/empty.png
-lib/DebugVars/minus.png
-lib/DebugVars/plus.png
-lib/DebugVars/readme.md
-lib/DebugVars/TreeListView_test.ahk
-lib/DebugVars/TreeListView.ahk
-lib/DebugVars/VarEdit_test.ahk
-lib/DebugVars/VarEditGui.ahk
-lib/DebugVars/VarTree_test.ahk
-lib/DebugVars/VarTreeGui.ahk
-lib/DebugVars/VarTreeObjectNode.ahk
+lib/DebugVars/*
 lib/dbgp_console.ahk
 lib/dbgp_listvars.ahk
 lib/dbgp_test.ahk
 lib/dbgp.ahk
 
 .vscode/*
-data\Products.txt
+data/Products.txt
 Batch.txt
-lib\codes.ini
+lib/codes.ini
 .vscode/settings.json
 Batch.txt
-lib\codes.ini
-data\Products.txt
-data\customers.ini
+lib/codes.ini
+data/Products.txt
+data/customers.ini
 Batch.txt
-lib\codes.ini
-data\Products.txt
-data\Products.txt
+lib/codes.ini
+data/Products.txt
+data/Products.txt
 data.ini
-lib\codes.ini
+lib/codes.ini
 bin/OCR.png
 bin/OCRoutput.txt
-lib\codes.ini
+lib/codes.ini
 .vscode/settings.json
 lib/Menu.ahk
 bin/OCRoutput.txt
@@ -57,8 +43,6 @@ CodeString.ini
 desktop.ini
 .vscode/launch.json
 bin/OCR.png
-Data/CurrentCodes.txt
-Data/CurrentCodes.txt
 Data/Customers.ini
 bin/OCR.png
 .vscode/launch.json
@@ -66,3 +50,4 @@ Settings.ini
 CodeString.ini
 Settings.ini
 Settings.ini
+**/Data/*.txt
