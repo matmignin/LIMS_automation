@@ -248,8 +248,3 @@ VarBar_ResetSub:
 	VarBar.Reset()
 return
 
-Exitsub(){
-	global
-exitapp
-}
-

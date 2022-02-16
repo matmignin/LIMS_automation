@@ -31,16 +31,13 @@ VQuest_Start:
 	#winactivateForce
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
-	Menu, tray, NoStandard
-	; Menu, tray, Click,
-	Menu, Tray, Add, KeyHistory, KeyHistory
-	Menu, Tray, Add, listlines, listlines
 	Menu, Tray, Add, windowSpy, windowSpy
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
-	Mode:="Entering_Rotations"
 	Menu, Tray, Add, E&xit, ExitSub
-	Menu, Tray, Default, E&xit
+	Menu, Tray, Add, &Reload, ReloadSub
+	Menu, Tray, Default, &Reload
+	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\VQRemote.ico
 	varbar.Show()
 	LMS.Orient()
 	copypasteToggle:=0
@@ -53,6 +50,17 @@ VQuest_Start:
 
 return
 
+Reloadsub(){
+	global
+	reload
+  }
+Exitsub(){
+	global
+	exitapp
+  }
+windowSpy(){
+  Run, WindowSpy.exe,\\10.1.2.118\users\vitaquest\mmignin\
+  }
 activeCheck:
 	If winactive("Result Entry - \\Remote") || winactive("Register new samples - \\Remote")
 		varbar.FloatAtopwindow()
@@ -220,4 +228,37 @@ HasValue(haystack, needle) {
 	if !(IsObject(haystack))
 		throw Exception("Bad haystack!", -1, haystack)
 return 0
+}
+Block(Time:=300, action:=""){
+	Global N
+	If N
+		exit
+	If action
+		send % action
+		sleep 100
+		; TT(TooltipMessage)
+	N:=1
+	SetTimer, Block, -%time%
+	return
+
+	Block:
+		N:=
+		return
+}
+
+BlockRepeat(Time:=300, ToolTipMessage:=""){
+	Global N
+	sleep 25
+	If N
+		exit
+	If ToolTipMessage
+		TT(TooltipMessage)
+	N:=1
+	SetTimer, BlockTheInput, -%time%
+	sleep 50
+	return
+
+	BlockTheInput:
+		N:=
+		return
 }
