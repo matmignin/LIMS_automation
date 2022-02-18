@@ -42,6 +42,8 @@ name:="CL3 "
 version:="v1.100"
 CycleFormat:=0
 Templates:={}
+; EnvSet, ClipOpen,
+ClipOpen:=1
 Global CyclePlugins,History,SettingsObj,Slots,ClipChainData ; CyclePlugins v1.72+, others v1.9.4 for API access
 Error:=0
 CoordMode, Menu, Screen
@@ -50,7 +52,7 @@ PasteTime:=A_TickCount
 CyclePluginsToolTipLine := "`n" StrReplace( Format( "{:020}", "" ), 0, Chr(0x2014) ) "`n"
 ClipboardHistoryToggle:=0
 TemplateClip:=0
-CyclePluginClip:=0
+;CyclePluginClip:=0
 
 iconlist:="a,c,s,t,x,y,z"
 loop, parse, iconlist, CSV
@@ -100,11 +102,6 @@ Menu, SubMenu1, Add, TempText, MenuHandler
 Menu, SubMenu2, Add, TempText, MenuHandler
 Menu, SubMenu3, Add, TempText, MenuHandler
 Menu, SubMenu4, Add, TempText, MenuHandler
-
-
-
-
-
 
 ; load clipboard history and templates
 IfNotExist, %A_ScriptDir%\ClipData\History\History.xml
@@ -165,179 +162,96 @@ If ActivateApi
 
 #Include %A_ScriptDir%\plugins\plugins.ahk
 
-return
-; Gui, -DPIScale
-; RowHeight   := 150 ; you can play with this value ( 150 pixels is the minumum to produce wrap in my environment )
-; Gui, Add, ListView, w700 r10, Data|Values
-; LV_ModifyCol(1,300)
-; LV_ModifyCol(2,"200 Integer")
-; Loop 100 {
-;    Random, rnd, 1, 999999
-;    rw := Format("{:03}",A_Index)
-;    LV_Add( "", "Row : " rw . "`nSubRow-" rw "-1`nSubRow-" rw "-2`nSubRow-" rw "-3", rnd )
-; }
-; LV_SetImageList( DllCall( "ImageList_Create", Int,1, Int, RowHeight, Int,0x10, Int,1, Int,1 ), 1 )
-; Gui, Show,, Multiline ListView
-; return
-
-Cl3List(){
-	global
-	try GUI, ClipList:destroy
-	GUI, ClipList:Default
-	Gui ClipList:+LastFound +Toolwindow  -DPIScale +Owner +AlwaysOnTop -SysMenu -Caption  +HwndGUIID ;+MinimizeBox
-	sleep 20
-ClipListColor1:="272822"
-ClipListColor2:="FFFFFF"
-ClipListTrans:=250
-; RowHeight   := 30 ; you can play with this value ( 150 pixels is the minumum to produce wrap in my environment )
-; GUI, ClipList: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
-
-GUI, ClipList:color,%ClipListColor1%, %ClipListColor2%
-		GUI, ClipList:Font,s11 cBlack Normal, Arial Narrow
-			GUI, ClipList:Add, Listview, r7 w520 0x2000 -LV0x20 -E0x200 +Background262525 cWhite -hdr, Clip ;vTText1, %Line1%
- winSet, Transparent, %ClipListTrans%, AHK_Id %GUIID%
-; settimer, destroyListGUI, -%PopupTime%
-return
-DestroyClipListGui:
-  try GUI, ClipList:destroy
-  ; try GUI, Popup2:destroy
-return
-}
-
-
-Cl3Pop(Line1,Line2:="",Line3:="",PopupTime:=1000){
-  global
-	sleep 20
-	try GUI, Popup:destroy
-	PopupColor1:="F1F8FE"
-	PopupColor2:="FFFFFF"
-	PopupTrans:=250
-	GUI, Popup: +AlwaysOnTop +Disabled -SysMenu +Owner -Caption +Toolwindow +HwndGUIID  ;+AlwaysOnTop +owner +HwndGUIID +Owner avoids a taskbar button.
-
-	GUI, Popup:color,%PopupColor1%, %PopupColor2%
-		; If !(Line1){
-			GUI, Popup:Font,s8 cGrey Normal, Arial Narrow
-			GUI, Popup:Add, Text,vTText1, %Line1%
-		; }
-		; if (Line2){
-			GUI, Popup:Font,s12 cBlack Bold, Arial
-			GUI, Popup:Add, Text,vTText2, %Line2%
-		; }
-		; if (Line3){
-			GUI, Popup:Font,s8 cGrey Normal, Arial Narrow
-			GUI, Popup:Add, Text,vTText3, %Line3%
-		; }
-	try GUI, Popup:Show, Noactivate x%A_CaretX% y%A_CaretY%
-	catch
-			GUI, Popup:Show, Noactivate ; x%A_CaretX% y%A_CaretY%
-
-	winSet, Transparent, %PopupTrans%, AHK_Id %GUIID%
-	settimer, destroyGUI, -%PopupTime%
-	return
-	DestroyGui:
-			GuiControl, Popup:Text, TText1, % TText1
-			GuiControl, Popup:Text, TText2, % TText2
-			GuiControl, Popup:Text, TText3, % TText3
-		; try GUI, Popup:destroy
-		; try GUI, Popup2:destroy
-	return
+UpdateTemplate(folder,Changes)                        ; WatchFolder() above
+	{
+	 Reload
+	 Sleep 1000
+	 ExitApp
 	}
 
+~^x::
+~^c::
+WinGet, IconExe, ProcessPath , A
+Sleep 100
+ClipText:=Clipboard
+Return
 
-	UpdateTemplate(folder,Changes)                        ; WatchFolder() above
-		{
-		Reload
-		Sleep 1000
-		ExitApp
-		}
+hk_BypassAutoReplace:
+OnClipboardChange("FuncOnClipboardChange", 0)
+Clipboard:=ClipboardByPass
+Sleep 100
+Send ^v
+Sleep 100
+Clipboard:=""
+Clipboard:=History[1].text
+OnClipboardChange("FuncOnClipboardChange", 1)
+Return
 
-	~^x::
-	~^c::
-	WinGet, IconExe, ProcessPath , A
-	SkipCl3:=
-	Sleep 100
-	ClipText:=Clipboard
-	Return
-
-	hk_BypassAutoReplace:
-	OnClipboardChange("FuncOnClipboardChange", 0)
-	Clipboard:=ClipboardByPass
-	Sleep 100
-	Send ^v
-	Sleep 100
-	Clipboard:=""
-	Clipboard:=History[1].text
-	OnClipboardChange("FuncOnClipboardChange", 1)
-	Return
-
-	; show clipboard history menu
-	;!^v::
-	hk_menu2:
-	MousePos:=1
-	hk_menu:
-	Gosub, FifoInit
-	BuildMenuFromFifo:
-	Gosub, BuildMenuHistory
-	Gosub, BuildMenuPluginTemplate
-	WinGetPos, MenuX, MenuY, , , A
-	MenuX+=A_CaretX
-	MenuX+=20
-	MenuY+=A_CaretY
-	MenuY+=10
-	If !MousePos
-		{
-		If (A_CaretX <> "")
-			Menu, ClipMenu, Show, %MenuX%, %MenuY%
-		Else
-		{
-		;	TrayTip, TrayMenu, CL3Coords2, 2 ; debug
-			Menu, ClipMenu, Show
-		}
-		}
-	else
-		{
-		MouseGetPos, MenuX, MenuY
+; show clipboard history menu
+;!^v::
+hk_menu2:
+MousePos:=1
+hk_menu:
+Gosub, FifoInit
+BuildMenuFromFifo:
+Gosub, BuildMenuHistory
+Gosub, BuildMenuPluginTemplate
+WinGetPos, MenuX, MenuY, , , A
+MenuX+=A_CaretX
+MenuX+=20
+MenuY+=A_CaretY
+MenuY+=10
+If !MousePos
+	{
+	 If (A_CaretX <> "")
 		Menu, ClipMenu, Show, %MenuX%, %MenuY%
-		}
-	MousePos:=0
-	Return
+	 Else
+	 {
+	 ;	TrayTip, TrayMenu, CL3Coords2, 2 ; debug
+		Menu, ClipMenu, Show
+	 }
+	}
+else
+	{
+	 MouseGetPos, MenuX, MenuY
+	 Menu, ClipMenu, Show, %MenuX%, %MenuY%
+	}
+MousePos:=0
+Return
 
-	; 1x paste as plain text
-	;^+v::
-	hk_plaintext:
-	If (Clipboard = "") ; probably image format in Clipboard
-		Clipboard:=History[1].text
-	Clipboard:=Trim(Clipboard,"`n`r`t ")
-	PasteIt()
-	Return
+; 1x paste as plain text
+;^+v::
+hk_plaintext:
+If (Clipboard = "") ; probably image format in Clipboard
+	Clipboard:=History[1].text
+Clipboard:=Trim(Clipboard,"`n`r`t ")
+PasteIt()
+Return
 
-	$^v:: ; v1.91, $ for v1.95 (due to clipchain updates)
-	hk_clipchainpaste_defaultpaste:
-	If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
-		{
-		PasteIt("normal")
-		Return
-		}
-	If WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
-		{
-		If (hk_clipchainpaste <> "^v") or ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
-			PasteIt()
-		else
-			Gosub, ClipChainPasteDoubleClick
-		}
-	else
+$^v:: ; v1.91, $ for v1.95 (due to clipchain updates)
+hk_clipchainpaste_defaultpaste:
+If !WinExist("CL3ClipChain ahk_class AutoHotkeyGUI") or ClipChainPause
+	{
+	 PasteIt("normal")
+	 Return
+	}
+If WinExist("CL3ClipChain ahk_class AutoHotkeyGUI")
+	{
+	 If (hk_clipchainpaste <> "^v") or ClipChainPause ; exception so user can use ^v as clipchain hotkey if they wish
+		PasteIt()
+	 else
 		Gosub, ClipChainPasteDoubleClick
-	Return
+	}
+else
+	Gosub, ClipChainPasteDoubleClick
+Return
 
-	; Cycle through clipboard history
-	;#v::
-
+; Cycle through clipboard history
+;#v::
 hk_cyclebackward:
 If !ActiveWindowID
 	WinGet, ActiveWindowID, ID, A
 cyclebackward:=1
-	GUI, ClipList:Default
-Gui ClipList:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 PreviousClipCycleCounter:=0 ; 13/10/2017 test
 ClipCycleCounter:=1
 ClipCycleFirst:=1
@@ -347,58 +261,19 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 	 Indicator:=""
 	 If (ClipCycleCounter = 1) and (ClipboardPrivate = 1)
 		Indicator:="*"
-	 If (ClipCycleCounter <> 0){
-		; ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
-		; ttext:=% DispToolTipText(History[ClipCycleCounter-1].text) " `n`n " DispToolTipText(History[ClipCycleCounter].text) "`n`n" DispToolTipText(History[ClipCycleCounter+1].text)
-			ttext0:=% DispToolTipText(History[ClipCycleCounter-2].text) ;"`n`n"
-			ttext1:=% DispToolTipText(History[ClipCycleCounter-1].text) ;"`n`n"
-		ttext2:=% DispToolTipText(History[ClipCycleCounter].text) ;"`n`n"
-		ttext3:=% DispToolTipText(History[ClipCycleCounter+1].text) ;"`n`n" DispToolTipText(History[ClipCycleCounter+2].text) "`n`n" DispToolTipText(History[ClipCycleCounter+3].text)
-		ttext4:=% DispToolTipText(History[ClipCycleCounter+2].text) ;"`n`n" DispToolTipText(History[ClipCycleCounter+3].text)
-		ttext5:=% DispToolTipText(History[ClipCycleCounter+3].text)
-		ttext6:=% DispToolTipText(History[ClipCycleCounter+4].text)
-		ttext:=ttext0 ttext1 ttext2 ttext3 ttext4 ttext5 ttext6
-	 }
+	 If (ClipCycleCounter <> 0)
+		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
 	 else
 		ttext:="[cancelled]"
 	 If (oldttext <> ttext)
 		{
-		;  ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-		 cl3list()
+		 ToolTip, % ttext, %A_CaretX%, %A_CaretY%
 		 oldttext:=ttext
-
-		if ttext0
-			LV_ADD("",ttext0)
-		if ttext1
-			LV_ADD("",ttext1)
-		LV_ADD("Select",ttext2)
-		LV_ADD("",ttext3)
-		LV_ADD("",ttext4)
-		if !ttext1
-		LV_ADD("",ttext5)
-		if !ttext0
-		LV_ADD("",ttext6)
-				; LV_ModifyCol(1, 595)
-			; Loop 50 {
-				; Random, rnd, 1, 999999
-				; rw := Format("{:03}",A_Index)
-				; LV_Add( "", "Row : " rw . "`nSubRow-" rw "-1`nSubRow-" rw "-2`nSubRow-" rw "-3", rnd )
-			; }
-			; LV_SetImageList( DllCall( "ImageList_Create", Int,1, Int, RowHeight, Int,0x10, Int,1, Int,1 ), 1 )
-		LV_ModifyCol()
-		; GuiControl, +Redraw, ClipList
-		MouseGetPos,mx,my
-		GUI, ClipList:Show, Noactivate  x%mX% y%mY%
-		; GuiControl, Popup:Text, Line1, % TText1
-		; GuiControl, Popup:Text, Line2, % TText2
-		; GuiControl, Popup:Text, Line3, % TText3
 		}
 	 Sleep 100
 	 KeyWait, %hk_cyclebackward% ; This prevents the keyboard's auto-repeat feature from interfering.
 	}
-		GUI, Cliplist:destroy
-; ToolTip
-  ; try GUI, Popup:destroy
+ToolTip
 If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	{
 	 ClipText:=History[ClipCycleCounter].text
@@ -408,61 +283,6 @@ If (ClipCycleCounter > 0) ; If zero we've cancelled it
 	 ClipCycleCounter:=1
 	}
 Return
-
-
-
-			; hk_cyclebackward: ;;popup
-			; If !ActiveWindowID
-			; 	WinGet, ActiveWindowID, ID, A
-			; cyclebackward:=1
-			; PreviousClipCycleCounter:=0 ; 13/10/2017 test
-			; ClipCycleCounter:=1
-			; ClipCycleFirst:=1
-			; While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
-			; 	{
-			; ;	 If !(PreviousClipCycleCounter = ClipCycleCounter) and (oldttext <> ttext)
-			; 	Indicator:=""
-			; 	If (ClipCycleCounter = 1) and (ClipboardPrivate = 1)
-			; 		Indicator:="*"
-			; 	If (ClipCycleCounter <> 0){
-			; 		; ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
-			; 		; ttext:=% DispToolTipText(History[ClipCycleCounter-1].text) " `n`n " DispToolTipText(History[ClipCycleCounter].text) "`n`n" DispToolTipText(History[ClipCycleCounter+1].text)
-			; 		if (clipcyclecounter = 1)
-			; 			ttext1:=
-			; 		else
-			; 			ttext1:=% DispToolTipText(History[ClipCycleCounter-1].text) "`n`n"
-			; 		ttext2:=% DispToolTipText(History[ClipCycleCounter].text) "`n`n"
-			; 		ttext3:=% DispToolTipText(History[ClipCycleCounter+1].text) "`n`n" DispToolTipText(History[ClipCycleCounter+2].text) "`n`n" DispToolTipText(History[ClipCycleCounter+3].text)
-			; 		; ttext4:=% DispToolTipText(History[ClipCycleCounter+2].text) "`n`n" DispToolTipText(History[ClipCycleCounter+3].text)
-			; 		; ttext5:=% DispToolTipText(History[ClipCycleCounter+3].text)
-			; 		ttext:=ttext1 ttext2 ttext3 ; ttext4 ttext5
-			; 	}
-			; 	else
-			; 		ttext:="[cancelled]"
-			; 	If (oldttext <> ttext)
-			; 		{
-			; 		;  ToolTip, % ttext, %A_CaretX%, %A_CaretY%
-			; 		cl3Pop(ttext1,ttext2,ttext3)
-			; 		oldttext:=ttext
-			; 		GuiControl, Popup:Text, Line1, % TText1
-			; 		GuiControl, Popup:Text, Line2, % TText2
-			; 		GuiControl, Popup:Text, Line3, % TText3
-			; 		}
-			; 	Sleep 100
-			; 	KeyWait, %hk_cyclebackward% ; This prevents the keyboard's auto-repeat feature from interfering.
-			; 	}
-			; 		GUI, Popup:destroy
-			; ; ToolTip
-			; 	; try GUI, Popup:destroy
-			; If (ClipCycleCounter > 0) ; If zero we've cancelled it
-			; 	{
-			; 	ClipText:=History[ClipCycleCounter].text
-			; 	;MenuItemPos:=ClipCycleCounter ; ClipboardHandler will handle deleting it from the chosen position in History
-			; 	Gosub, ClipboardHandler
-			; 	stats.cyclepaste++
-			; 	ClipCycleCounter:=1
-			; 	}
-			; Return
 
 ;#v up::
 hk_cyclebackward_up:
@@ -903,7 +723,6 @@ Return
 
 ClipBoardHandler:
 oldttext:="", ttext:="", ActiveWindowID:=""
-
 If (ClipText <> Clipboard)
 	{
 	 StrReplace(ClipText,"`n", "`n", Count)
@@ -929,8 +748,6 @@ Return
 ; check clipboard
 FuncOnClipboardChange() {
  global
-if SkipCl3
-return
 Critical, On
 
 ; The built-in variable A_EventInfo contains:
