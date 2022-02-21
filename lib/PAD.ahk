@@ -51,7 +51,7 @@ _MouseIsOver:
 
 	#If MouseIsOver("ahk_exe OUTLOOK.exe")
 		;^Wheeldown::Blockrepeat(500) clip()
-		; Insert::
+		; ins::
 		; 	If !winactive("ahk_exe OUTLOOK.EXE")
 		; 	click
 		; 	3tap()
@@ -67,11 +67,12 @@ _MouseIsOver:
 	#If MouseIsOver("NuGenesis LMS - \\Remote ahk_exe")
 		F7::LMS.SearchBar(Batch,"{enter}")
 		F6::LMS.SearchBar(Product,"{enter}")
-		Insert::4tap()
+		ins::4tap()
 		^Wheeldown::send % Blockrepeat(500) "{click}" clip()
 	; #If MouseIsOver("Result Editor - \\Remote") || MouseIsOver("Test Definition Editor - \\Remote") || MouseIsOver("Edit Formulation - \\Remote")
 		; Wheeldown::LMS.Scrolldown()
 	#if
+
 
 clipCheckIfEmpty(){
 	clipboard:=
@@ -315,11 +316,11 @@ clipCheckIfEmpty(){
 	FlashScreen("4-Tap")
 	if winactive("ahk_exe WFICA32.EXE"){
 		If winactive("NuGenesis LMS - \\Remote") {
-			lms.menu()
-			return
+			; lms.menu()
+			; return
 			LMS.Detecttab()
 			if (Tab="Requests") {
-					if Mode("Entering_Rotations") {
+					; if Mode("Entering_Rotations") {
 						MouseGetPos, mx, mY
 						send, {click 2}
 						sleep 300
@@ -330,13 +331,14 @@ clipCheckIfEmpty(){
 							if winactive("NuGenesis LMS - \\Remote")
 								mousemove, %mx%, %My% ,0
 							return
-					}
-					else
-						clk(68, 630) ;enter results
+					; }
+					; else
+						; clk(68, 630) ;enter results
 					return
 				}
 				else If (tab:="Samples")
-					Excel.setstatus()
+				lms.menu()
+					; Excel.setstatus()
 			else if (Tab:="Products") {
 					clk(86, 443) ;edit composition
 				Return
@@ -626,14 +628,14 @@ clipCheckIfEmpty(){
 			VarBar.Menu()
 		return
 	}
-	If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
-	{
-		If MouseIsOver("NuGenesis LMS - \\Remote")
-			lms.menu()
-		else
-			click Right
-		return
-	}
+	; If (A_PriorHotKey = A_ThisHotKey and A_TimeSincePriorHotkey < 550) ;double click right mouse
+	; {
+		; If MouseIsOver("NuGenesis LMS - \\Remote")
+		; 	lms.menu()
+		; else
+			; click Right
+		; return
+	; }
 	; else if (A_PriorHotKey != A_ThisHotKey and A_TimeSincePriorHotkey < 550)
 		; return
 	; else if (A_PriorHotKey = A_ThisHotKey AND A_TimeSincePriorHotkey > 450)

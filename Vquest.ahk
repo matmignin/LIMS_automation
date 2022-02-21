@@ -130,7 +130,7 @@ return
   ; if !VimOpen
   #include C:\Users\mmignin\Documents\VQuest\lib\VIM.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\Test.ahk
-  ; #include C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
+  #include C:\Users\mmignin\Documents\VQuest\lib\HotStrings.ahk
    #include C:\Users\mmignin\Documents\VQuest\lib\KEYS.ahk
   #include C:\Users\mmignin\Documents\VQuest\lib\PAD.ahk
   #Include C:\Users\mmignin\Documents\VQuest\lib\LMS.ahk

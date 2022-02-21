@@ -1650,10 +1650,10 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
 		mx:=
 		my:=
-		; If Coated = "ERROR"
-		; Coated:=
-		; If Lot = "ERROR"
-		; lot:=
+		If Coated = "ERROR"
+		Coated:=
+		If Lot = "ERROR"
+		lot:=
 		; blockinput, on
 		ControlGetText, Iteration, Static1, VarBar
 		ifwinactive, Register new samples - \\Remote
@@ -1672,6 +1672,16 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
 			{
 				Sendinput,{ctrldown}{a}{ctrlup}%Lot%
+				Sendinput,{tab 3}
+				sleep 100
+				if Coated
+					Sendinput, ^{a}%Coated%
+				sleep 100
+				Sendinput, +{tab 2}
+			}
+			Ifwinactive, Edit sample `(Field Configuration: CT`, - \\Remote
+			{
+				; Sendinput,{ctrld;own}{a}{ctrlup}%Lot%
 				Sendinput,{tab 3}
 				sleep 100
 				if Coated

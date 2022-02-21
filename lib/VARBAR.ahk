@@ -14,12 +14,12 @@ Show(X:=1, Y:=1, Destroy:="Reset"){
 		VarBar_H_max=58
 		VarBar_T:=235
 		VarBar_W=350
-		CurrentCodesFile=C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
-	fileread,CurrentCodes,%CurrentCodesFile%
+		; CurrentCodesFile=C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt
+	; fileread,CurrentCodes,%CurrentCodesFile%
 	This.loadSavedVariables()
 	Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 	Gui Varbar:Default
-	iniread, CodeString, Settings.ini, SavedVariables, CodeString
+	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
 Gui, Varbar:+Delimiter`n
 	winSet, Transparent, 100, %GUIID%
 	This.SetColor()
@@ -30,8 +30,8 @@ Gui, Varbar:+Delimiter`n
 	GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
 	This.AddText("Iteration", "x+1 center y-1 w23",			  "19 Bold 107C41, Consolas")	; Text1
 	; GUI, VarBar:Font, cBlack s14, Consolas
-	Gui, Varbar:Add, Combobox, vCodeStringEdit  Left +Multi  Altsubmit gDDLVarbar  x1 yP+30 w350 r25 hwndHDDL , %CurrentCodes%
-	GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
+	; Gui, Varbar:Add, Combobox, vCodeStringEdit  Left +Multi  Altsubmit gDDLVarbar  x1 yP+30 w350 r25 hwndHDDL , %CurrentCodes%
+	; GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
 ;; -----------------new DDL test
 	; Gui, Varbar:Add, Button, gDelx  Hidden y200 x10  v1, Delete
 	; Gui, Varbar:Add, Button, gAddx  Hidden Default x+2  v2, Add
@@ -69,200 +69,126 @@ Gui, Varbar:+Delimiter`n
 	Return
 
 
-	addx:
-		Gui, Varbar:submit, nohide
-		ControlGetText, CodeString, Edit5, VarBar
-		sleep 100
-    ; try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
-      ; catch
-				Clip.CodesRegex(CodeString)
-  	; Gui, Varbar:submit, nohide
-		; If CodeString is integer
-		; {
-		; 	control, choose, %CodeStringEdit%, ComboBox1, VarBar
+	; addx:
+	; 	Gui, Varbar:submit, nohide
+	; 	ControlGetText, CodeString, Edit5, VarBar
+	; 	sleep 100
+    ; ; try GuiControl, Varbar:ChooseString, ComboBox1, % CodeString
+    ;   ; catch
+	; 			Clip.CodesRegex(CodeString)
+  	; ; Gui, Varbar:submit, nohide
+	; 	; If CodeString is integer
+	; 	; {
+	; 	; 	control, choose, %CodeStringEdit%, ComboBox1, VarBar
+	; 	; }
+	; 	; else
+	; 	; {
+	; 	; 	ControlGetText, CodeString, Edit5, VarBar
+	; 	; 	sleep 200
+	; 	; 	Control, Add, %CodeString%, Combobox1, Varbar    ; add to the bottom of the list
+	; 	; 	ControlGet, Wholex, List,,Combobox1, VarBar              ;- get the whole listbox1
+	; 	; 	sort,Wholex, U R
+	; 	; 	control, choose, %CodeString%, ComboBox1, VarBar
+	; 	; if wholex<>
+	; 	;  {
+	; 	;  stringreplace,wholex,wholex,`n`n,`n,all
+	; 	;  filedelete,%CurrentCodesFile%
+	; 	;  fileappend,%CodeString%,%CurrentCodesFile%
+	; 	;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
+	; 	;  }
 		; }
-		; else
-		; {
-		; 	ControlGetText, CodeString, Edit5, VarBar
-		; 	sleep 200
-		; 	Control, Add, %CodeString%, Combobox1, Varbar    ; add to the bottom of the list
-		; 	ControlGet, Wholex, List,,Combobox1, VarBar              ;- get the whole listbox1
-		; 	sort,Wholex, U R
-		; 	control, choose, %CodeString%, ComboBox1, VarBar
-		; if wholex<>
-		;  {
-		;  stringreplace,wholex,wholex,`n`n,`n,all
-		;  filedelete,%CurrentCodesFile%
-		;  fileappend,%CodeString%,%CurrentCodesFile%
-		;  RemoveFileDuplicates("C:\Users\mmignin\Documents\VQuest\Data\CurrentCodes.txt")
-		;  }
-		; }
-		return
+	; 	return
 
 
-	delx:
-		; GUI, VarBar:submit,NoHide
-		GuiControlGet,   TheSelectedLine,, CodeStringEdit      ; get the focused item Number
-		Control, Delete, %TheSelectedLine%, Combobox1,VarBar    ; delete the focused item
-		ControlGet, Wholex, List,,Combobox1,VarBar         ;- get the whole listbox1
-			sort,Wholex, U R
-		if wholex<>
-		 {
-		 stringreplace,wholex,wholex,`n`n,`n,all
-		 filedelete,%CurrentCodesFile%
-		 fileappend,%wholex%,%CurrentCodesFile%
-		 }
-		return
+	; delx:
+	; 	; GUI, VarBar:submit,NoHide
+	; 	GuiControlGet,   TheSelectedLine,, CodeStringEdit      ; get the focused item Number
+	; 	Control, Delete, %TheSelectedLine%, Combobox1,VarBar    ; delete the focused item
+	; 	ControlGet, Wholex, List,,Combobox1,VarBar         ;- get the whole listbox1
+	; 		sort,Wholex, U R
+	; 	if wholex<>
+	; 	 {
+	; 	 stringreplace,wholex,wholex,`n`n,`n,all
+	; 	 filedelete,%CurrentCodesFile%
+	; 	 fileappend,%wholex%,%CurrentCodesFile%
+	; 	 }
+	; 	return
 
 
-DDLVarbar:  ;; ComboBox1 Hanfler
-		GUI, Varbatr:default
-		; If (!RegexMatch(CodeString, RegexProduct) && !RegexMatch(CodeString, RegexBatch) && !RegexMatch(CodeString, RegexLot) && !RegexMatch(CodeString, RegexCoated))
-		; If !RegexMatch(CodeString, RegexProduct)
-			; return
-		; else if !RegexMatch(CodeString, RegexBatch)
-		; else if !RegexMatch(CodeString, RegexLot)
-		; else if !RegexMatch(CodeString, RegexCoated))
-; sleep 1000
-			; Product:=RegexMatch(CodeString, RegexProduct,r) ? rProduct : ""
-      ; Batch:=RegexMatch(CodeString, RegexBatch, r) ? rBatch : ""
-      ; Lot:=RegexMatch(CodeString, RegexLot, r) ? rLot : ""
-      ; Coated:=RegExMatch(CodeString, RegexCoated, r) ? rCoated : ""
-      ; Ct:=rCoated ? " ct#" : ""
+; DDLVarbar:  ;; ComboBox1 Hanfler
+; 		GUI, Varbatr:default
+; 		; If (!RegexMatch(CodeString, RegexProduct) && !RegexMatch(CodeString, RegexBatch) && !RegexMatch(CodeString, RegexLot) && !RegexMatch(CodeString, RegexCoated))
+; 		; If !RegexMatch(CodeString, RegexProduct)
+; 			; return
+; 		; else if !RegexMatch(CodeString, RegexBatch)
+; 		; else if !RegexMatch(CodeString, RegexLot)
+; 		; else if !RegexMatch(CodeString, RegexCoated))
+; ; sleep 1000
+; 			; Product:=RegexMatch(CodeString, RegexProduct,r) ? rProduct : ""
+;       ; Batch:=RegexMatch(CodeString, RegexBatch, r) ? rBatch : ""
+;       ; Lot:=RegexMatch(CodeString, RegexLot, r) ? rLot : ""
+;       ; Coated:=RegExMatch(CodeString, RegexCoated, r) ? rCoated : ""
+;       ; Ct:=rCoated ? " ct#" : ""
 
-		; rProduct:=
-		; rBatch:=
-		; rlot:=
-		; rCoated:=
-		; ct:=
-		if DeleteMatch
-			{
-				Gui, Varbar:submit,nohide
-				sleep 200
-				Control, Delete, %CodeStringEdit%, Combobox1, VarBar
-				sleep 200
-				Control, Add, %Variable%, Combobox1, VarBar
-				sleep 200
-				GuiControl, Varbar:ChooseString, ComboBox1, %Variable%
-			Return
-			}
-			; if !Startup
-			stopHandler:=1
-			ControlGetText, CodeString, Edit5, VarBar
-		; sleep 100
-			if RegexMatch(CodeString, RegexProduct, r)
-				GuiControl,Varbar:Text, Product, %rProduct%
-			else
-				GuiControl,Varbar:Text, Product, %Product%
+; 		; rProduct:=
+; 		; rBatch:=
+; 		; rlot:=
+; 		; rCoated:=
+; 		; ct:=
+; 		if DeleteMatch
+; 			{
+; 				Gui, Varbar:submit,nohide
+; 				sleep 200
+; 				Control, Delete, %CodeStringEdit%, Combobox1, VarBar
+; 				sleep 200
+; 				Control, Add, %Variable%, Combobox1, VarBar
+; 				sleep 200
+; 				GuiControl, Varbar:ChooseString, ComboBox1, %Variable%
+; 			Return
+; 			}
+; 			; if !Startup
+; 			stopHandler:=1
+; 			ControlGetText, CodeString, Edit5, VarBar
+; 		; sleep 100
+; 			if RegexMatch(CodeString, RegexProduct, r)
+; 				GuiControl,Varbar:Text, Product, %rProduct%
+; 			else
+; 				GuiControl,Varbar:Text, Product, %Product%
 
-			if RegexMatch(CodeString, regexBatch, r)
-				GuiControl,Varbar:Text, Batch, %rBatch%
-			else
-				GuiControl,Varbar:Text, Batch,
+; 			if RegexMatch(CodeString, regexBatch, r)
+; 				GuiControl,Varbar:Text, Batch, %rBatch%
+; 			else
+; 				GuiControl,Varbar:Text, Batch,
 
-			if RegexMatch(CodeString, RegexLot, r)
-				GuiControl,Varbar:Text, lot, %rlot%
-			else
-				GuiControl,Varbar:Text, lot,
+; 			if RegexMatch(CodeString, RegexLot, r)
+; 				GuiControl,Varbar:Text, lot, %rlot%
+; 			else
+; 				GuiControl,Varbar:Text, lot,
 
-			if RegexMatch(CodeString, RegexCoated, r)
-				GuiControl,Varbar:Text, Coated, %rCoated%
-			else
-				GuiControl,Varbar:Text, Coated,
+; 			if RegexMatch(CodeString, RegexCoated, r)
+; 				GuiControl,Varbar:Text, Coated, %rCoated%
+; 			else
+; 				GuiControl,Varbar:Text, Coated,
 
-			StopHandle:=
-			; CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
-			return
+; 			StopHandle:=
+; 			; CodeString:=Trim(rProduct " " rBatch " " rLot Ct rCoated)
+; 			return
 
-		; VarbarHandler:
-			; GUI, VarBar:submit,NoHide
-		; If (!RegexMatch(Product, RegexProduct) && !RegexMatch(Batch, RegexBatch) && !RegexMatch(Lot, RegexLot) && !RegexMatch(Coated, RegexCoated))
-		; CodeString:=Trim(Product " " Batch " " Lot Ct Coated)
-		; IniWrite, %CodeString%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, CodeString
-		; return
+; 		; VarbarHandler:
+; 			; GUI, VarBar:submit,NoHide
+; 		; If (!RegexMatch(Product, RegexProduct) && !RegexMatch(Batch, RegexBatch) && !RegexMatch(Lot, RegexLot) && !RegexMatch(Coated, RegexCoated))
+; 		; CodeString:=Trim(Product " " Batch " " Lot Ct Coated)
+; 		; IniWrite, %CodeString%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, CodeString
+; 		; return
 
 		ExcelConnectCheck:
 			GUI, Varbar:Submit, Nohide
 			IniWrite, %ExcelConnect%, Settings.ini, Options, ExcelConnect
 			return
-		ProductHandler:
-		if StopHandle
-			return
+		varbarHandler:
 		GUI, VarBar:submit,NoHide
-			if RegexMatch(Product, RegexProduct, r){
-			IniWrite, %Product%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Product
-			ControlGetText, CodeString, Edit5, VarBar
-			CodeString:=Trim(CodeString)
-			sleep 20
-			if RegExMatch(CodeString, RegexProduct){
-				Codestring:=RegExReplace(CodeString, RegexProduct, rProduct)
-			sleep 30
-			; try GuiControl, Varbar:ChooseString, ComboBox1, % Product " " rProduct
-			; catch
-				ControlsetText, Edit5,%CodeString%, VarBar
-			}
-			else {
-			CodeString:=Trim(rProduct " " CodeString)
-			ControlsetText, Edit5,%CodeString%, VarBar
-				}
-		}
 		return
-		BatchHandler:
 		if StopHandle
-			return
-		GUI, VarBar:submit,NoHide
-			if RegexMatch(Batch, RegexBatch, r){
-			IniWrite, %Batch%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Batch
-			ControlGetText, CodeString, Edit5, VarBar
-			sleep 30
-			CodeString:=Trim(CodeString)
-			if RegExMatch(CodeString, RegexBatch){
-				Codestring:=RegExReplace(CodeString, RegexBatch, rBatch)
-			sleep 30
-			; try GuiControl, Varbar:ChooseString, ComboBox1, % Product " " rBatch
-			; catch
-				ControlsetText, Edit5,%CodeString%, VarBar
-			}
-			else
-				ControlsetText, Edit5,%CodeString% %rBatch%, VarBar
-
-		}
-		return
-		LotHandler:
-		if StopHandle
-			return
-		GUI, VarBar:submit,NoHide
-			if RegexMatch(Lot, RegexLot, r){
-			IniWrite, %Lot%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Lot
-			ControlGetText, CodeString, Edit5, VarBar
-			if RegExMatch(CodeString, RegexLot){
-				Codestring:=RegExReplace(CodeString, RegexLot, rLot)
-			sleep 30
-			; try GuiControl, Varbar:ChooseString, ComboBox1, % Product " " Batch " " rLot
-			; catch
-				ControlsetText, Edit5,%CodeString%, VarBar
-			}
-			else
-				ControlsetText, Edit5,%CodeString% %rLot%, VarBar
-		}
-		return
-		CoatedHandler:
-		if StopHandle
-			return
-		GUI, VarBar:submit,NoHide
-			if RegexMatch(Coated, RegexCoated, r){
-			IniWrite, %Coated%, C:\Users\mmignin\Documents\VQuest\CodeString.ini, SavedVariables, Coated
-			ControlGetText, CodeString, Edit5, VarBar
-			if RegExMatch(CodeString, RegexCoated){
-				Codestring:=RegExReplace(CodeString, RegexCoated, rCoated)
-			sleep 30
-			; try GuiControl, Varbar:ChooseString, ComboBox1, % Product " " Batch " " Lot " Ct#" rCoated
-			; catch
-				ControlsetText, Edit5,%CodeString%, VarBar
-			}
-			else
-				ControlsetText, Edit5,%CodeString% Ct#%rCoated%, VarBar
-		}
 		return
 		VarBarGuiClose:
 		VarBarButtonOK:
@@ -299,11 +225,11 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		IniRead, Varbar_X, Settings.ini, Locations, VarBar_X
 		IniRead, Varbar_Y, Settings.ini, Locations, VarBar_Y
 		Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-		ControlGetText, CodeString, Edit5, VarBar
-		; iniRead, Product, Settings.ini, SavedVariables, Product
-		; iniRead, Batch, Settings.ini, SavedVariables, Batch
-		; iniRead, Lot, Settings.ini, SavedVariables, Lot
-		; iniRead, Coated, Settings.ini, SavedVariables, Coated
+		; ControlGetText, CodeString, Edit5, VarBar
+		iniRead, Product, Settings.ini, SavedVariables, Product
+		iniRead, Batch, Settings.ini, SavedVariables, Batch
+		iniRead, Lot, Settings.ini, SavedVariables, Lot
+		iniRead, Coated, Settings.ini, SavedVariables, Coated
 		Iniread, HideVarBar, Settings.ini, Options, HideVarBar
 		Iniread, ExcelConnect, Settings.ini, Options, ExcelConnect
 		Iniread, ModeSelections, Settings.ini, Options, ModeSelections
@@ -414,7 +340,7 @@ AddBatchesDDL(Variable:="",Options:=""){
 		AddEdit(Variable,Dimensions:="",Font:=""){
 			global
 				GUI,VarBar:Font,			 s%Font%  , consolas ;cBlack Bold, %Font%
-				GUI,VarBar:Add,edit,		v%Variable% +wrap -multi	g%Variable%Handler %Dimensions%,		%    %Variable%
+				GUI,VarBar:Add,edit,		v%Variable% +wrap -multi	gVarbarHandler %Dimensions%,		%    %Variable%
 		}
 		AddText(Variable,Dimensions:="",Font:=""){
 			global
@@ -854,7 +780,7 @@ SetColor(){
 		; GUI, varbar:default
 		; GUI, Varbar:Submit, Nohide
 		return
-		; Insert::gosub, Volume_Mute
+		; ins::gosub, Volume_Mute
 		; 	MouseGetPos,,,,winControl
 		; 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 		; 			click
@@ -889,8 +815,8 @@ SetColor(){
 					Excel.Batches()
 				else if (winControl="Static1")
 					VarBar.Menu()
-				else
-					Excel.setstatus()
+				; else
+					; Excel.setstatus()
 			return
 		numpaddot:: 	 Openapp.Workbook()
 	#if

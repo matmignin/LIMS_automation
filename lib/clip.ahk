@@ -110,37 +110,43 @@ GetAllProducts(Delimiter:=" ",File:=""){
 }
 
 
-	F13 & 1::             sendinput,%product% ;gosub, Product_cyclebackward
-												; if Getkeystate("LCtrl","p")
-													; GetAllProducts()
-												; else
-
-												; return
-
-
-	F13 & 2::             sendinput, %Batch%
-												; if Getkeystate("LCtrl","p")
-												; 	GetAllBatches()
-												; else
-
-												; return
-	F13 & 3::							sendinput, %Lot%
-	F13 & 4::
+	F13 & 1::
     if GetKeyState("Lctrl","D")
-      GetAllProducts("`n")
+      GetAllProducts()
     else if GetKeyState("Lalt","D")
+      GetAllProducts("`n")
+    else if GetKeyState("Lshift","D")
       GetAllProducts("`t")
     else
-      GetAllProducts()
+      sendinput, %product%
     return
-	F13 & 5::
+	F13 & 2::
     if GetKeyState("Lctrl","D")
-      GetAllBatches("`n")
+      GetAllBatches()
     else if GetKeyState("Lalt","D")
+      GetAllBatches("`n")
+    else if GetKeyState("Lshift","D")
       GetAllBatches("`t")
     else
-      GetAllBatches()
-    Return
+      sendinput, %Batch%
+      return
+	F13 & 3::							sendinput, %Lot%
+	F13 & 4::GetAllProducts()
+    ; if GetKeyState("Lctrl","D")
+    ;   GetAllProducts("`n")
+    ; else if GetKeyState("Lalt","D")
+    ;   GetAllProducts("`t")
+    ; else
+    ;   GetAllProducts()
+    ; return
+	F13 & 5::GetAllBatches()
+    ; ; if GetKeyState("Lctrl","D")
+    ;   GetAllBatches("`n")
+    ; else if GetKeyState("Lalt","D")
+    ;   GetAllBatches("`t")
+    ; else
+    ;   GetAllBatches()
+    ; Return
 
 
   F13 & 6::Sendinput % excel.GetAllSheets()
@@ -541,8 +547,10 @@ clipChange(type){
     clip.Parse1()
     sleep 25
 
-    ; if winactive("ahk_exe WFICA32.EXE"){
-      ; clip.Department()
+    if winactive("ahk_exe WFICA32.EXE"){
+      clip.regex()
+      clip.Department()
+    }
     if A_PriorKey = c
       FloVar(Clipboard,2000,13)
     else if A_PriorhotKey = F19
@@ -666,7 +674,7 @@ CodesRegex(input:=""){
 }
 
 
-Parse1(Value:=""){
+Parse(Value:=""){
   global
   Gui Varbar:Default
   regProducts:=[], regBatches:=[],
@@ -736,7 +744,7 @@ Parse1(Value:=""){
 }
 }
 
-Parse(Value:=""){
+Parse1(Value:=""){
   global
   regProducts:=[], regBatches:=[],
   Gui Varbar:Default
@@ -964,7 +972,7 @@ Department(DepartmentInput:=""){
       DepartmentHaystack:=DepartmentInput
       sleep 100
       ; Regexmatch(DepartmentHaystack, "i)(Analytical \(In Process\)|I, Analytical|In Process, Analytical)", Analytical)
-      ; Regexmatch(DepartmentHaystack, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
+      Regexmatch(DepartmentHaystack, "i)(\bI, Physical\b|In Process, Physical\b|\bPhysical \(In Process\))", cPhysical)
       Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
       Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
       Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
@@ -984,7 +992,8 @@ Department(DepartmentInput:=""){
       ; else If Analytical
         ; Department:="Analytical"
       else
-        msgbox % "`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical
+        return
+        ; msgbox % "`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical
       ; sleep 300
       ; tt(Department)
   return %Department%

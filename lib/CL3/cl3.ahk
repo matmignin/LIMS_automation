@@ -262,7 +262,8 @@ While GetKeyState(hk_cyclemodkey,"D") and cyclebackward
 	 If (ClipCycleCounter = 1) and (ClipboardPrivate = 1)
 		Indicator:="*"
 	 If (ClipCycleCounter <> 0)
-		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
+		; ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
+		ttext:=% DispToolTipText(History[ClipCycleCounter].text)
 	 else
 		ttext:="[cancelled]"
 	 If (oldttext <> ttext)
@@ -310,7 +311,9 @@ While GetKeyState(hk_cyclemodkey,"D") and cycleforward
 	 If (ClipCycleCounter = 1) and (ClipboardPrivate = 1)
 		Indicator:="*"
 	 If (ClipCycleCounter <> 0)
-		ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
+		; ttext:=% Chr(96+ClipCycleCounter) Indicator " : " DispToolTipText(History[ClipCycleCounter].text)
+		ttext:=% DispToolTipText(History[ClipCycleCounter].text)
+
 	 else
 		ttext:="[cancelled]"
 	 If (oldttext <> ttext)

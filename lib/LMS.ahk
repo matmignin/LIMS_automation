@@ -767,8 +767,8 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 	}
 
 	EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
-		;; the final input window for adding ingredients
 		Global
+		;; the final input window for adding ingredients
 		Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
 		Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
 		Ingredient_position:=Trim(Ingredient_Position,"`r`n")
@@ -786,16 +786,16 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 		}
 		; winactivate, Edit Ingredient - \\Remote
 		Excel.Get_Current_row()
-		sleep 50
+		sleep 150
 		if winactive("Composition - \\Remote")
-		return
-	Send,{tab 6}^a%Ingredient_position%{tab}^a
+			return
+	Sendinput,{tab 6}^a%Ingredient_position%{tab}^a
 	Sendinput,%Ingredient_Name%
 	; sleep 100
 	If Ingredient_Claim contains Heavy Metal,Allergens
-		Send,{tab}
-	Send,{tab 2}^a
-	Send,%Ingredient_Claim%
+		Sendinput,{tab}
+	Sendinput,{tab 2}^a
+	Sendinput,%Ingredient_Claim%
 	; Sleep 200
 	Current_Row:= Current_Row+1
 	; Sleep 200
@@ -819,13 +819,13 @@ DropdownSelect(A_DropdownCount){
 	;Breaking.Point()
 
 	AbsSelection:=Abs(A_DropdownCount)
-	Breaking.Point()
+	; Breaking.Point()
 	if (A_DropdownCount > 0)
 		Sendinput, {tab}{home}{right %A_DropdownCount%}
-	Breaking.Point()
+	; Breaking.Point()
 	if (A_DropdownCount < 0)
 		Sendinput, {tab}{end}{left %AbsSelection%}
-	Breaking.Point()
+	; Breaking.Point()
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
 	if (a_DropdownCount = ""){
@@ -897,12 +897,14 @@ Blends(n,Measurment){
 EditProduct(){ ;for naming Product code and customer,
 	global Product, Name, Customer, ShapeAndSize, color
 	setwindelay, 260
-	Excel.Connect(1)
+	Excel.Connect()
+	simpleclip:=1
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
 	sleep 200
 	Sendinput,%Name%{tab 8}
 	sleep 400
+	Breaking.Point()
 	winwaitactive,NuGenesis LMS - \\Remote,,20
 	winactivate, NuGenesis LMS - \\Remote
 	click, 67, 283
@@ -911,8 +913,9 @@ EditProduct(){ ;for naming Product code and customer,
 	This.EditFormulation()
 	; clk(287, 578) ;click save
 	Iteration:=1
-	return
 	setwindelay, 60
+	simpleclip:=
+	return
 }
 
 EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
@@ -971,6 +974,7 @@ HM_ReportOnly(){
 	Breaking.Point()
 
 	click 390, 659	;click okay
+	setwindelay, 60 ;testing out
 	return
 }
 
@@ -1182,8 +1186,8 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		global
 		GUI, Spec_Table:Default
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
+		GUI, Spec_Table:Font, s15 cBlack, Arial Narrow
 		GUI, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid altSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		GUI, Spec_Table:Font, s16 cBlack Bold, Consolas
 		loop, %Total_Rows%{
 			if Position[A_index] =""
 			{
@@ -1325,7 +1329,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		Clipwait,1
 		Description:=Clipboard
 		sleep 200
-		StrReplace(Description, "eurofins",intertek)
+		StrReplace(Description, "eurofins","intertek")
 		; StrReplace(Description, "(Send out)","")
 		; MouseClick, left, 464, 532,2,0
 		MouseClick, left, 464, 533,1,0
@@ -1333,7 +1337,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		MouseClick, left, 245, 489,1,0
 		;  LMSclick.TestDefinitionEditor_Results()
 		winactivate, Results Definition - \\Remote
-		winWaitactive, Results Definition,,0.35
+		winWaitactive, Results Definition,,0.65
 		if errorlevel
 			winactivate, Results Definition
 		winactivate, Results Definition - \\Remote
@@ -1381,11 +1385,11 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		sleep 250
 		MouseClick, left, 245, 489,1,0
 		winactivate, Results Definition - \\Remote
-		winWaitactive, Results Definition,,0.25
+		winWaitactive, Results Definition,,0.75
 		if errorlevel
 			winactivate, Results Definition
 		click 84, 65
-		winwaitactive, Result Editor - \\Remote,,0.25
+		winwaitactive, Result Editor - \\Remote,,0.75
 		if errorlevel
 			winactivate, Result Editor - \\Remote
 		sleep 400
@@ -1439,18 +1443,18 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			sleep 200
 			Breaking.Point()
 			winactivate, Results Definition - \\Remote
-
+			sleep 300
 		}
 		if winactive("Results Definition - \\Remote") ;Selection window
 		{
-
-			winactivate, Results Definition - \\Remote
+			; winactivate, Results Definition - \\Remote
+			; sleep 200
 			If Method contains ICP-MS 231
-				Send,{click 217, 141}
-			Send,{click 80, 66} ;click edit
+				Sendinput,{click 217, 141}
+			Sendinput,{click 80, 66} ;click edit
 			sleep 200
 			Breaking.Point()
-			winwaitactive, Result Editor - \\Remote,,0.5
+			winwaitactive, Result Editor - \\Remote,,2
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; blockinput, off
@@ -1594,11 +1598,23 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 			Sendinput, %CreateRequirements%
 		; Sendinput, %Requirement%
 	}
-	sleep 100
+	sleep 200
 	Breaking.Point()
 	click 350, 660 ; click okay
-	; winWaitClose, Results Definition,, 6
-	; if errorlevel
+	If Method contains ICP-MS 231
+		return
+	winWaitClose, Results Definition,, 0.5
+		if errorlevel
+			click, 890, 667
+	sleep 100
+	Breaking.Point()
+	; sleep 200
+	; winWaitClose, Test Definition Editor - \\Remote,, .2
+	sleep 300
+	; winactivate, Test Definition Editor - \\Remote
+		click,347, 620
+		; if errorlevel
+	Breaking.Point()
 	return
 }
 
@@ -1618,9 +1634,9 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 		Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
 		Click, 187, 200 ;Orient_SpecTab.TestDefinitionEditor
 		if Name contains Vitamin C
-			Send,{Home}{Delete 12}%Trimmed_Description%
+			Sendinput,{Home}{Delete 12}%Trimmed_Description%
 		else
-			Send,^a%Trimmed_Description%
+			Sendinput,^a%Trimmed_Description%
 		sleep 300
 		Breaking.Point()
 	}
@@ -2026,6 +2042,8 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				This.DropdownSelect(ShipTo)
 			sleep 200
 			Breaking.Point()
+				if Coated
+					Sendinput, {tab}^{a}%Coated%
 			Sendinput, {enter}
 			sleep 100
 			blockinput, off

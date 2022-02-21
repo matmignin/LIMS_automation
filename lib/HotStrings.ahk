@@ -1,5 +1,37 @@
 return
 
+#Ifwinactive, Edit Formulation - \\Remote
+	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
+	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
+	:*R:#3`;::`#3 capsule / 0.626`" x 0.229`"
+	:*R:#2`;::`#2 capsule / 0.709`" x 0.250`"
+	:*R:#1`;::`#1 capsule / 0.765`" x 0.272`"
+	:*R:#0`;::`#0 capsule / 0.854`" x 0.300`"
+	:*R:USP`;::Meets USP Requirements
+	:*R:fr`;::Fixing Rotation
+
+	:*R:7/16`;::`Round / 0.4375`"
+	:*R:5.5 oblong`;::Oblong / 0.750`" x 0.313`"
+	:*R:5.5 oval`;::Oval / 0.625`" x 0.344`""
+	:*RR:5 oblong`;::Oblong / 0.750`" x 0.250`""
+	:*:1c`;::`Each (1) capsule contains
+	:*:2c`;::`Each two (2) capsules contains
+	:*:3c`;::`Each three (3) capsules contains
+	:*:4c`;::`Each four (4) capsules contains
+	:*:5c`;::`Each five (5) capsules contains
+	:*:6c`;::`Each six (6) capsules contains
+	:*:7c`;::`Each seven (7) capsules contains
+	:*:1t`;::`Each `(1`) tablet contains
+	:*:2t`;::`Each two `(2`) tablets contains
+	:*:3t`;::`Each three `(3`) tablets contains
+	:*:4t`;::`Each four (4) tablets contains
+	:*:5t`;::`Each five (5) tablets contains
+	:*:6t`;::`Each six (6) tablets contains
+	:*:7t`;::`Each seven (7) tablets contains
+
+#ifwinactive
+
+
 _General:
 :*:ol`;::
 Sendinput, Hello Osvaldo,`n`t Can you please fill out the results for organoleptic test for the following lot(s)?`n %Product% %Batch% `n`nThank you,{up 2}
@@ -277,34 +309,9 @@ _windowNames:
 _LMS_HOTSTRINGS:
 	:*R:mm`;::mmignin
 	:*:MM`;::MM{tab}%DateString%
-#Ifwinactive,ahk_exe WFICA32.EXE
-	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
-	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
-	:*R:#3`;::`#3 capsule / 0.626`" x 0.229`"
-	:*R:#2`;::`#2 capsule / 0.709`" x 0.250`"
-	:*R:#1`;::`#1 capsule / 0.765`" x 0.272`"
-	:*R:#0`;::`#0 capsule / 0.854`" x 0.300`"
-	:*R:USP`;::Meets USP Requirements
-	:*R:fr`;::Fixing Rotation
 
-	:*R:7/16`;::`Round / 0.4375`"
-	:*R:5.5 oblong`;::Oblong / 0.750`" x 0.313`"
-	:*R:5.5 oval`;::Oval / 0.625`" x 0.344`""
-	:*R:5 oblong`;::Oblong / 0.750`" x 0.250`""
-	:*:1c`;::`Each (1) capsule contains {ctrl down}{left}{ctrl up}{left}
-	:*:2c`;::`Each two (2) capsules contains {ctrl down}{left}{ctrl up}{left}
-	:*:3c`;::`Each three (3) capsules contains {ctrl down}{left}{ctrl up}{left}
-	:*:4c`;::`Each four (4) capsules contains {ctrl down}{left}{ctrl up}{left}
-	:*:5c`;::`Each five (5) capsules contains {ctrl down}{left}{ctrl up}{left}
-	:*:6c`;::`Each six (6) capsules contains {ctrl down}{left}{ctrl up}{left}
-	:*:7c`;::`Each seven (7) capsules contains {ctrl down}{left}{ctrl up}{left}
-	:*:1t`;::`Each (1) tablet contains {ctrl down}{left}{ctrl up}{left}
-	:*:2t`;::`Each two (2) tablets contains {ctrl down}{left}{ctrl up}{left}
-	:*:3t`;::`Each three (3) tablets contains {ctrl down}{left}{ctrl up}{left}
-	:*:4t`;::`Each four (4) tablets contains {ctrl down}{left}{ctrl up}{left}
-	:*:5t`;::`Each five (5) tablets contains {ctrl down}{left}{ctrl up}{left}
-	:*:6t`;::`Each six (6) tablets contains {ctrl down}{left}{ctrl up}{left}
-	:*:7t`;::`Each seven (7) tablets contains {ctrl down}{left}{ctrl up}{left}
+#ifwinactive, Edit Ingredient - \\Remote
+
 	:*:H`;::Heavy Metals `*
 	:*:H1`;::`* Heavy Metals results are based on a daily dose of (1) capsule{ctrl down}{left}{left}{ctrl up}{right}
 	:*:H2`;::`* Heavy Metals results are based on a daily dose of twi (2) capsules{ctrl down}{left}{left}{ctrl up}{right}
