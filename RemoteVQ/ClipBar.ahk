@@ -19,7 +19,7 @@ Class VarBar{
 		Gui Varbar:Default
 		Gui, Varbar:+Delimiter`n
 		winSet, Transparent, 100, %GUIID%
-		This.SetColor()
+		GUI, VarBar:color,DC734F, 97BA7F
 		; this.AddEdit("Product",	 "left h29 x1 y0 w65",				"16 Bold")
 			GUI,VarBar:Font,			 s16 Bold , consolas
 			GUI,VarBar:Add,edit,		vProduct +wrap -multi	gVarbarHandler left h29 x1 y0 w65,	%Product%
@@ -34,8 +34,8 @@ Class VarBar{
 		catch
 			GUI, VarBar:Show, x%Win_X% y%Win_Y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
 		CoordMode, mouse, window
-		OnMessage(0x0201, "WM_LBUTTONDOWN")
-		OnMessage(0x0203, "WM_LBUTTONDBLCLK")
+		; OnMessage(0x0201, "WM_LBUTTONDOWN")
+		; OnMessage(0x0203, "WM_LBUTTONDBLCLK")
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
 		winSet, Transparent, %Varbar_T%, AHK_id %GUIID%
@@ -50,18 +50,6 @@ Class VarBar{
 			; GUI, VarBar:submit,NoHide
 			sleep 50
 			this.SaveVariables()
-		return
-	}
-
-	WM_LBUTTONDBLCLK(){
-		global
-		GUI, varbar:default
-		Gui, Varbar:+Delimiter`r`n
-		; Gui, Varbar:submit, nohide
-		GuiControlGet, TheSelectedLine,,CodeStringEdit
-		Control, Delete, %TheSelectedLine%, Combobox1, VarBar ; delete the focused item
-		; ControlGet, Wholex, List,,Combobox1, VarBar ;- get the whole listbox1
-		; sort,Wholex, U R
 		return
 	}
 
@@ -83,13 +71,6 @@ Class VarBar{
 		Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID
 		Try Menu,VarBarmenu,show
 	}
-
-	SetColor(){
-		global
-			; excel.matchcolor()
-			GUI, VarBar:color,DC734F, 97BA7F ; normal color
-	}
-
 	Reset(){
 		Global
 		coordmode, mouse, Screen
@@ -129,7 +110,7 @@ Class VarBar{
 		; flovar(Iteration,200)
 		; Pop(Iteration)
 		; tt(Iteration,500,Varbar_x,Varbar_y,2,200)
-		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+		; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
 	}
@@ -141,7 +122,7 @@ Class VarBar{
 		sleep %speed%
 		ControlsetText, Static1,%Iteration%,VarBar
 		; Pop(Iteration)
-		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+		; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; GuiControl, +redraw, varbar
 		return
 	}
@@ -153,19 +134,6 @@ Class VarBar{
 	^enter::
 		winactivate, %the_winTitle%
 		click, %caret_X%, %caret_y%
-	return
-
-	Mbutton::
-		winactivate, %the_winTitle%
-		click
-		Varbar.WM_LBUTTONDBLCLK()
-	return
-	Delete::
-		ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
-		if (winControl="Edit5")
-			varbar.WM_LBUTTONDBLCLK()
-		else
-			sendinput, ^a{delete}
 	return
 	enter::
 		ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
@@ -190,30 +158,20 @@ Wheelup::Varbar.AddIteration(10)
 Wheeldown::Varbar.SubIteration(10)
 +wheelup::Varbar.AddIteration(0)
 +wheeldown::Varbar.SubIteration(0)
-numpaddot:: 	 Openapp.Workbook()
 #if
 
-WM_LBUTTONDOWN(wParam, lParam){
-	If !MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-		return
-	PostMessage, 0xA1, 2
-	X := lParam & 0xFFFF
-	Y := lParam >> 16
-	if A_GuiControl
-		ctrl := "`n(in control " . A_GuiControl . ")"
-	PostMessage, 0xA1, 2
-	MouseGetPos,,,,winControl
+; WM_LBUTTONDOWN(wParam, lParam){
+; 	If !MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
+; 		return
+; 	PostMessage, 0xA1, 2
+; 	X := lParam & 0xFFFF
+; 	Y := lParam >> 16
+; 	if A_GuiControl
+; 		ctrl := "`n(in control " . A_GuiControl . ")"
+; 	PostMessage, 0xA1, 2
+; 	MouseGetPos,,,,winControl
 
-return
-SaveVarBarLocaton:
-	; sleep 200
-	wingetpos, Varbar_X, Varbar_Y,W,H, VarBar ahk_class AutoHotkeyGUI
-	IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
-	IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
-return
-}
-
-; }
+; return
 
 VarBar_ResetSub:
 	VarBar.Reset()

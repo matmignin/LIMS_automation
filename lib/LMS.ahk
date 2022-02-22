@@ -2318,24 +2318,33 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
 		SelectTestSample(){
 			global
-			blockinput on
+				setwindelay, 260
+			; blockinput on
 			click 647, 75 ;click assign Samples
-			winactivate, Select samples for test:
-				sleep 900
+			; winactivate, Select samples for test:
+				; sleep 900
 				click 467, 71 ;Click Filter button
 				sleep 200
-				Breaking.Point()
-				send, {click 248, 68} ;click dropdown then
+				; Breaking.Point()
+				sendinput, {click 248, 68} ;click dropdown then
 				sleep 200
 				send, {click 212, 188} ; select Batches
 				sleep 400
 				Send, {click 136, 119}^a ;flick filter box
-				if winactive("Select samples for test: Organoleptic Sensory Test - \\Remote") || winactive("Select samples for test: Average Capsule Weight - \\Remote") || winactive("Select samples for test: Average Tablet Weight - \\Remote")
-					Department:="Physical"
-				if winactive("Select samples for test: Microbiological - \\Remote")
-					Department:="Micro"
-				send, %Department%{enter} ; send department
+				sleep 400
+					; Department:="Physical"
+					; WinGetTitle, WindowTitle
+				; if windowTitle="Select samples for test: Microbiological"
+				; ifwinactive, Select samples for test: Microbiological
+					sendinput, {h}{enter} ; send department
+					; sendraw, Micro ; send department
+				; if windowtitle="Select samples for test: Organoleptic"
+					; send, {p} ; send department
+				; ifwinactive, Select samples for test: Organoleptic ;") || winactive("Select samples for test: Average Capsule Weight") || winactive("Select samples for test: Average Tablet Weight"))
+					; Department:="Micro"
 				sleep 200
+				return
+				; send, {enter}
 				Breaking.Point()
 				sleep 200
 				send, {click 504, 324}
@@ -2343,12 +2352,11 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				sleep 200
 				send, {click, 849, 661}
 				Breaking.Point()
-				Pop(Department)
-				blockinput off
+				; Pop(Department)
+				; blockinput off
 				setwindelay, 60
 			return
 		}
-
 		CopyProductRotation(){
 			global
 			clipboard:=
