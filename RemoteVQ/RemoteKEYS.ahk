@@ -5,7 +5,19 @@ F19 & right::								GetAllBatches()
 
 		F10::
 			; if (A_GuiEvent="DoubleClick"){
-
+	Name:=			[]
+	IngredientID:=[]
+	Position:=		[]
+	LabelClaim:=	[]
+	MinLimit:=		[]
+	MaxLimit:=		[]
+	Units:=			[]
+	Percision:=		[]
+	LabelName:=		[]
+	Description:=	[]
+	Assay:=			[]
+	Requirement:=	[]
+	Method:= 		[]
 		; Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
 		; Current_Row:=A_EventInfo
 		; Loop % Rows_left {
@@ -14,86 +26,52 @@ F19 & right::								GetAllBatches()
 			; LabelCopy:=[]
 			loop, parse, clipboard, "`n"
 			{
-				line:=A_index
+				Line:=A_index
 				Ingredient:=[]
+				Spec:=[]
 				ingredient:=StrSplit(A_LoopField,"|")
-				Name_%Line%:=ingredient[4]
-				Claim_%Line%:=ingredient[5]
-				Position_%Line%:=ingredient[3]
-				IngredientID_%Line%:=ingredient[2]
+				Name[%Line%]:=ingredient[2]
+				IngredientID[%Line%]:=ingredient[3]
+				Position[%Line%]:=ingredient[4]
+				LabelName[%Line%]:=ingredient[5]
+				labelClaim[%Line%]:=ingredient[6]
+				if !ingredient[7]
+					continue
+				Assay[%Line%]:=ingredient[7]
+				Method[%Line%]:=ingredient[8]
+				Description[%Line%]:=ingredient[9]
+				MinLimit[%Line%]:=ingredient[10]
+				MaxLimit[%Line%]:=ingredient[11]
+				Units[%Line%]:=ingredient[12]
+				Percision[%Line%]:=ingredient[13]
+				Requirement[%Line%]:=ingredient[14]
+				; Spec.%line%:=StrSplit(A_LoopField,"\\")
 			}
 				; msgbox % " Name: " Name_%A_index% "`n Claim: " Claim_%A_index% "`n Position: " Position_%A_index% "`n IngredientID: " IngredientID_%A_index%
-			loop, 5
-			{
-				sleep 200
-				if (Name_%iteration%){
-					ProductTab.EditIngredient(Name_%iteration%,Claim_%iteration%,Position_%iteration%,IngredientID_%iteration%)
-					Varbar.AddIteration()
-					sleep 300
-					winactivate, Composition
-				}
-				else
-				return
-			}
-			
-			GetRowText(){
-				global
-				LV_GetText(Name, 				A_EventInfo,1)
-				LV_GetText(LabelClaim, 		A_EventInfo,2)
-				LV_GetText(MinLimit, 		A_EventInfo,3)
-				LV_GetText(MaxLimit, 		A_EventInfo,4)
-				LV_GetText(Units, 			A_EventInfo,5)
-				LV_GetText(Percision, 		A_EventInfo,6)
-				LV_GetText(Description, 	A_EventInfo,7)
-				LV_GetText(Method, 			A_EventInfo,8)
-				GUI, Spec_Table:submit,NoHide
-			}
-			GetExcelData(){
-				Global
-				Name:=			[]
-				Position:=		[]
-				LabelClaim:=	[]
-				MinLimit:=		[]
-				MaxLimit:=		[]
-				Units:=			[]
-				Percision:=		[]
-				LabelName:=		[]
-				Description:=	[]
-				Requirement:=	[]
-				method:= 		[]
-				while (Xl.Range("AK" . A_Index+6).Value != ""){
-					Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
-					Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
-					LabelClaim[A_index]:=			Xl.Range("AJ" . A_Index+7).Text
-					MinLimit[A_index]:=				Xl.Range("AE" . A_Index+7).Text
-					MaxLimit[A_index]:=				Xl.Range("AF" . A_Index+7).Text
-					Units[A_index]:=					Xl.Range("AG" . A_Index+7).Text
-					Percision[A_index]:=				Xl.Range("AH" . A_Index+7).Text
-					Description[A_index]:=			Xl.Range("AL" . A_Index+7).Text
-					Method[A_index]:=					Xl.Range("AB" . A_Index+7).Text
-					Total_rows:=A_index
-					Table_Height:=A_index
-					if (Table_Height > 20)
-						Table_Height = 20
-				}
+			; loop, 3
+			; {
+				; sleep 200
+				; if (labelName[1]){
+					ProductTab.EditIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1])
+					; sleep 300
+					; Varbar.AddIteration()
+					; winactivate, Composition
 				; }
-		
-			}
-			
-			
-			
-			
-			
-				Spec:=[]
-				Spec:=StrSplit(A_LoopField,"/")
-				Spec_MinLimit:=Spec[3]
-				Spec_MaxLimit:=Spec[4]
-				Spec_Units:=Spec[5]
-				Spec_Percision:=Spec[6]
-				Spec_Method:=Spec[7]
-				Spec_Description:=Spec[2]
-				SpecTab.TestDefinitionEditor(Spec_Description)
-				SpecTab.ResultEditor(Spec_MinLimit,Spec_MaxLimit,Spec_Units,Spec_Percision,1,1)
+				; else
+				; return
+			; }
+
+
+				; Spec:=[]
+				; Spec:=StrSplit(A_LoopField,"/")
+				; Spec_MinLimit:=Spec[3]
+				; Spec_MaxLimit:=Spec[4]
+				; Spec_Units:=Spec[5]
+				; Spec_Percision:=Spec[6]
+				; Spec_Method:=Spec[7]
+				; Spec_Description:=Spec[2]
+				; SpecTab.TestDefinitionEditor(Spec_Description)
+				; SpecTab.ResultEditor(Spec_MinLimit,Spec_MaxLimit,Spec_Units,Spec_Percision,1,1)
 
 			; if winactive("Duplicate Spec ID") || winactive("NuGenesis LMS") || winactive("Edit Formulation") || winactive("Warning")
 				; break

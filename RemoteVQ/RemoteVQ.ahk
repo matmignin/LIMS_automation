@@ -39,7 +39,7 @@ if A_username != mmignin
 	Menu, Tray, Add, &Reload, ReloadSub
 	; Menu, Tray, Default, &Reload
 	Menu, Tray, Default, E&xit
-	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\VQRemote.ico
+	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
 	varbar.Show()
 	LMS.Orient()
 	; SetTimer,activeCheck, 1000

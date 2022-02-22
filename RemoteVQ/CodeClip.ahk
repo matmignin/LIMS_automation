@@ -125,6 +125,8 @@ clipChange(type){
     return
   if SimpleClip
     return
+  if RegexMatch(Clipboard, "<<LabelCopy>>\|.*")
+    msgbox, Yo a label copy
   sleep 50
   clip.codesRegex()
     sleep 25
