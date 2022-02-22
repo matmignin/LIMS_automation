@@ -81,8 +81,17 @@ F19 & right::								GetAllBatches()
 						sleep 300
 					}
 				}
-			else if (Tab="Specs")
+			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
+			Method:=ingredient[8]
+			Description:=ingredient[9]
+			MinLimit:=ingredient[10]
+			MaxLimit:=ingredient[11]
+			Units:=ingredient[12]
+			Percision:=ingredient[13]
+			Requirement:=ingredient[14]
 				SpecTab.Autofill()
+		  }
+		  }
 			; msgbox, Yo a label copy
   		if RegexMatch(Pointer, "<<TestSpecs>>")
 			msgbox, Yo a testSpec
@@ -120,7 +129,6 @@ F19 & right::								GetAllBatches()
 				; break
 			sleep 100
 		return
-		  }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		; F10::4tap()
