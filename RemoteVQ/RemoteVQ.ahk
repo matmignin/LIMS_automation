@@ -1,10 +1,11 @@
-VQuest_Start:
+if A_username != mmignin
+	exitapp
 	#SingleInstance,Force
 	#Persistent
-	Process, Priority, , High
+	; Process, Priority, , High
 	#NoEnv
 	Iteration=1
-	#KeyHistory 500
+	; #KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 1500
@@ -26,7 +27,7 @@ VQuest_Start:
 	CrLf=`r`n
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
-	CoordMode, mouse, window
+	; CoordMode, mouse, window
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
 	SetscrolllockState, alwaysoff
@@ -36,10 +37,12 @@ VQuest_Start:
 	PasteTime:=A_TickCount
 	Menu, Tray, Add, E&xit, ExitSub
 	Menu, Tray, Add, &Reload, ReloadSub
-	Menu, Tray, Default, &Reload
+	; Menu, Tray, Default, &Reload
+	Menu, Tray, Default, E&xit
 	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\VQRemote.ico
 	varbar.Show()
 	LMS.Orient()
+	; SetTimer,activeCheck, 1000
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -47,6 +50,7 @@ VQuest_Start:
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
   #include ClipBar.ahk
   #Include CodeClip.ahk
+  #Include RemoteKEYS.ahk
 
 return
 
@@ -59,24 +63,122 @@ Exitsub(){
 	exitapp
   }
 windowSpy(){
-  Run, WindowSpy.exe,\\10.1.2.118\users\vitaquest\mmignin\
+  Run, WS.exe,\\10.1.2.118\users\vitaquest\mmignin\
   }
+
 activeCheck:
-	If winactive("Result Entry - \\Remote") || winactive("Register new samples - \\Remote")
-		varbar.FloatAtopwindow()
-	else if winactive("Error - \\Remote") {
-		ControlSend,, {enter}, Error - \\Remote
+	wingetpos, Nugenesis_X2, Nugenesis_Y2, Nugenesis_W2, Nugenesis_h2, NuGenesis LMS
+	if (Nugenesis_X != Nugenesis_X2) || (Nugenesis_Y != Nugenesis_Y2) || (Nugenesis_W != Nugenesis_W2){
+		VarBar_x2:=Nugenesis_X2+(Nugenesis_W2/2)
+		winMove, VarBar, ,%VarBar_X2%, %Nugenesis_Y2%,
+		Nugenesis_X:=Nugenesis_X2
+		Nugenesis_W:=Nugenesis_W2
+		Nugenesis_Y:=Nugenesis_Y2
+	}
+	; If winactive("Result Entry") || winactive("Register new samples")
+		; varbar.FloatAtopwindow()
+	else if winactive("Error") {
+		ControlSend,, {enter}, Error
 		sleep 200
-		if winExist("Register new samples - \\Remote"){
+		if winExist("Register new samples") && Product{
 			winactivate,
-			Send, {click 180, 103,2}%Product%{enter}
+			Send, {click 185, 103,2}%Product%{enter}
 		}
 	}
-	else if winactive("Information - \\Remote")
+	else if winactive("Information")
 		send, {enter}
 	else
 		return
 return
+Orient(){
+	global
+	CoordMode, mouse, window
+	Tab:=
+	Tab1:=
+	Tab2:=
+	Tab3:=
+	Tab4:=
+	Tab5:=
+	Tab6:=
+	; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
+	winGetPos,Nux,NuY,NuW,NuH,NuGenesis LMS
+	; winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
+	; winGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
+	WbX:=WbX+400
+	Flovar_x:= NuX +900
+	Flovar_y:= NuH + NuY -28
+	varBar_nuX:=NuX+450
+	varBar_nuY:=NuY
+	TabSelect:=NuW-10
+	yTabSelect:=45
+	yTabDropdown:=45
+	SamplesTab:=(NuW/2)-80
+	RequestsTab:=(NuW/2)+20
+	DocumentsTab:=(NuW/3)+(NuW/3)-50
+	TestsTab:=(NuW/3)+(NuW/3)-220
+	ResultsTab:=(NuW/3)+(NuW/3)-150
+	HScrollBarRightX:=NuW-40
+	HScrollBarLeftX:=(NuW/5)+35
+	HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
+	yWorkTabs:=74
+	yMyWorkTabs:=74
+	xDivider:=(NuW/5)
+	xTab1=150
+	xTab2=350
+	MyWorkTab=350
+	xTab3=550
+	ProductsTab=550
+	xTab4=750
+	SpecsTab=750
+	xTab5=950
+	xTab6=1150
+	xTab7=1550
+	xTab8=358+1000
+	xTab9=358+1200
+	xTab10=358+1400
+	yTabs:=36
+	xWorkTab:=334, 47 ;1st
+	yWorkTabSearch:=128
+	XCoA:=(NuW-131)
+	xClearfilter:=xDivider+16
+	yClearfilter:=270
+	xFilterIcon:=NuW-22
+	yFilterIcon:=131
+
+	xProductsSearch:=xDivider+180
+	xSpecsSearch:=xDivider+183
+	yProductsSearch:=93
+	ySpecsSearch:=93
+	xRequestsSearch:=xDivider+190 ;175 ;103
+	xRequestsSearchDefault:=xDivider+170 ;155 ;103
+	xSamplesSearch:=xDivider+145
+	xResultsSearch:=xDivider+185
+	xResultsSearch:=xDivider+185
+	xTestsSearch:=xDivider+125
+	xDocumentsSearch:=xDivider+25
+
+	yProductsFilter:=181
+	ySpecsFilter:=181
+
+	xFormulationFilter:=xDivider+75
+	xProductFilter:=xDivider+75
+	xBatchFilter:=xDivider+168
+	xLotFilter:=xDivider+229
+
+	yMyWorkTabFilter:=182
+	yMyWorkFilter:=182
+	yWorkTabFilter:=182
+
+	xDocumentsFilter:=xDivider+68
+
+	xEdit_Composition:=76
+	yEdit_Composition:=443
+	xAdd_methods:=74
+	yAdd_methods:=565
+	xEnter_Results:=57
+	yEnter_Results:=630
+	return
+}
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
@@ -171,7 +273,7 @@ SendPassword(){
 		sleep 50
 		; send, {Enter}
 	}
-	if winExist("Login - \\Remote"){
+	if winExist("Login"){
 		winactivate
 		Sendinput, mmignin{tab}{K}ilgore7744{enter}
 	}
@@ -261,4 +363,32 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 	BlockTheInput:
 		N:=
 		return
+}
+
+Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
+	global
+	setwindelay, 10
+	SetKeyDelay, -1, -1
+	SetMouseDelay, -1
+	MouseGetPos, mx, my, mw,
+	MouseReturn:="{click " Mx ", " My ",0}"
+	; sleep 25
+	if window
+		if !winactive(window)
+			sleep 500 ; winactivate, %window%
+	mouseclick, %Button%, %x%,%y%,%n%,0
+	sleep 25
+	if (window!="")
+		winactivate, %mw%
+	If (ReturnMouse=0){
+		SetMouseDelay, 1
+		SetKeyDelay, 1, 0.25
+		setwindelay, 60
+		Return MouseReturn
+	}
+	else
+		mousemove,%mx%,%my%,0
+	SetMouseDelay, 1
+	SetKeyDelay, 1, 0.25
+	setwindelay, 60
 }

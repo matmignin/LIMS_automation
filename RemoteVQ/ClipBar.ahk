@@ -6,17 +6,23 @@ Class VarBar{
 		try GUI,VarBar:Destroy
 		TopScreen:=1 ;A_ScreenHeight-35
 		MidScreen:=A_ScreenWidth//2
+		wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
+		wingetpos, Win_X, Win_y, Win_w, Win_h, A
 		VarBar_H=30
 		VarBar_H_max=58
 		VarBar_T:=235
 		VarBar_W=350
-		This.loadSavedVariables()
+		VarBar_x:=Nugenesis_X+(Nugenesis_W/2)
+		VarBar_Y:=Nugenesis_Y
+		; This.loadSavedVariables()
 		Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui Varbar:Default
 		Gui, Varbar:+Delimiter`n
 		winSet, Transparent, 100, %GUIID%
 		This.SetColor()
-		this.AddEdit("Product",	 "left h29 x1 y0 w65",				"16 Bold")
+		; this.AddEdit("Product",	 "left h29 x1 y0 w65",				"16 Bold")
+			GUI,VarBar:Font,			 s16 Bold , consolas
+			GUI,VarBar:Add,edit,		vProduct +wrap -multi	gVarbarHandler left h29 x1 y0 w65,	%Product%
 		this.AddEdit("Batch",	 "left h29 x+0 y0 w90", 			"12,Consolas")
 		this.AddEdit("Lot",		 "left h29 x+0 y0 w75", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
@@ -26,7 +32,7 @@ Class VarBar{
 		CoordMode, mouse, screen
 		try GUI, VarBar:Show, x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
 		catch
-			GUI, VarBar:Show, x1 y1 w%VarBar_w% h%varbar_H% Noactivate, VarBar
+			GUI, VarBar:Show, x%Win_X% y%Win_Y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
 		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_LBUTTONDOWN")
 		OnMessage(0x0203, "WM_LBUTTONDBLCLK")
@@ -90,16 +96,8 @@ Class VarBar{
 
 	SetColor(){
 		global
-		; GuiControl, -redraw, varbar
-		if (A_mode=="TempCode")
-			GUI, VarBar:color,272822, FFFFFF
-		else If (Mode=="Debugging")
-			GUI, VarBar:color,272822, 808000 ;pink
-		else if winactive("Mats LMS Workbook.xlsb - Excel")
-			excel.matchcolor()
-		else
+			; excel.matchcolor()
 			GUI, VarBar:color,DC734F, 97BA7F ; normal color
-		; GuiControl, +redraw, varbar
 	}
 
 	FloatAtopwindow(FloatTime:=""){
@@ -107,7 +105,7 @@ Class VarBar{
 		wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
 		winGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
 		winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,varbar_oX+100, Varbar_oy
-		winWaitNotactive, ;- \\Remote,, 20, NuGenesis LMS - \\Remote
+		winWaitNotactive, ;- \\Remote,, 20, NuGenesis LMS
 		winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
 	}
 
@@ -117,10 +115,10 @@ Class VarBar{
 		; keywait, Lbutton, U T2
 		MouseGetPos,Varbar_X,Varbar_Y
 		; tooltip,
-		IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
-		IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
-		IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
-		IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
+		; IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
+		; IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
+		; IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
+		; IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
 
 		VarBar.show(0)
 		coordmode, mouse, window

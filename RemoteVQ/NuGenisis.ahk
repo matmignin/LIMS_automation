@@ -25,7 +25,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 	Menu(){
 		Global
 		try Menu,Menu, deleteAll
-		if winactive("NuGenesis LMS - \\Remote"){
+		if winactive("NuGenesis LMS"){
 			LMS.Orient()
 			LMS.DetectTab()
 			;Menu,Menu, add, Copy &Template, autofill
@@ -54,7 +54,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 			Menu, Menu, add, Paste All &WorkSheets, F19 & up
 			Try Menu,menu,show
 		}
-		if winactive("Edit specification - \\Remote"){
+		if winactive("Edit specification"){
 			Menu, Menu, add, &Analytical, AutoFill
 			Menu, Menu, add, &Physical, AutoFill
 			Menu, Menu, add, &Micro, AutoFill
@@ -63,7 +63,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 			Menu, Menu, add, &Coated_Retain, AutoFill
 			Try Menu,menu,show
 		}
-		if winactive("Results Definition - \\Remote") || winactive("Composition - \\Remote"){
+		if winactive("Results Definition") || winactive("Composition"){
 			; This.add("&Spec Table","Tests")
 			Menu,Menu, add
 			Menu, Menu, Add, &USP Heavy Metal,Autofill
@@ -73,7 +73,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 			Try Menu,menu,show
 			return
 		}
-		if winactive("Edit specification - \\Remote"){
+		if winactive("Edit specification"){
 			Menu,Menu, add, Departments, Autofill
 			Menu, DepartmentsMenu, add, Analytical, AutoFill
 			Menu, DepartmentsMenu, add, Physical, AutoFill
@@ -85,7 +85,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 			Try Menu,menu,show
 			return
 		}
-		if winactive("Login - \\Remote"){
+		if winactive("Login"){
 			Menu,Menu, add, &Login, LMS_Env
 			Menu,Menu, add, &Production Server, LMS_Env
 			Menu,Menu, add, &Test Server, LMS_Env
@@ -99,20 +99,20 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		if !winactive("ahk_exe WFICA32.EXE")
-			winactivate, ahk_exe WFICA32.EXE
+		if !winactive("ahk_exe eln.exe")
+			winactivate, ahk_exe eln.exe
 		if (Lms.Filter()=On) {
 			Lms.FilterBar(Code,PostCmd)
 			Send, {ctrlup}
 			exit
 		}
-		if winactive("Select methods tests - \\Remote")
+		if winactive("Select methods tests")
 			clk(246,77, 2)
-		else If winactive("Register new samples - \\Remote") {
+		else If winactive("Register new samples") {
 			Clk(180, 103, 2)
 			Send, {click 180, 103,2}%Product%{enter}
 		}
-		else if winactive("NuGenesis LMS - \\Remote") {
+		else if winactive("NuGenesis LMS") {
 			LMS.DetectTab()
 			if (Tab="Products") {
 				If (Code=Product){
@@ -183,7 +183,16 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 		}
 
 	}
-
+	SaveCode(){
+		global
+		Batches:=[]
+		Send, {ctrldown}{a}{ctrlup}
+		sleep 20
+		send, ^c
+		sleep 200
+		Send, {enter}
+		return
+	}
 	SearchbarPaste(){
 		Clipboard := StrReplace(Clipboard, "`r`n", A_Space)
 		Clipboard := StrReplace(Clipboard, "`n", A_Space)
@@ -202,7 +211,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 
 DetectTab(){
 	global
-	winSet, Transparent, Off, ahk_exe WFICA32.EXE
+	winSet, Transparent, Off, ahk_exe eln.exe
 	tab:=
 	FoundSamples:=
 	FoundRequests:=
@@ -218,24 +227,24 @@ DetectTab(){
 	TAB5:=
 	TAB6:=
 	TAB7:=
-	ifwinnotactive, ahk_exe WFICA32.EXE
-		winactivate, ahk_exe WFICA32.EXE
+	; ifwinnotactive, ahk_exe eln.exe
+		; winactivate, ahk_exe eln.exe
 	LMS.Orient()
 	; CoordMode, pixel, window
-	if winactive("NuGenesis LMS - \\Remote") {
-		PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-		if !Tab1 {
-			PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
+	; if winactive("NuGenesis LMS") {
+		; PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+		; if !Tab1 {
+			PixelSearch, FoundSamples, FoundY, SamplesTab, yMyWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
+			PixelSearch, FoundRequests, FoundY, RequestsTab, yMyWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
 			if FoundSamples {
-				Tab=Samples
+				Tab:="Samples"
 				return Tab
 			}
 			else
 			{
-				PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 				If FoundRequests {
-					Tab=Requests
-					return tab
+					Tab:="Requests"
+					return Tab
 				}
 				PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 				If FoundDocuments {
@@ -269,39 +278,25 @@ DetectTab(){
 						return Tab
 					}
 				}
-				else
-					return
-				; exit
+				; else
+					; return
 			}
-		}
-	}
+		; }
+	; }
 	return Tab
 }
 
 
-SaveCode(){
-	global
-	Batches:=[]
-	Send, {ctrldown}{a}{ctrlup}
-	sleep 20
-	send, ^c
-	sleep 200
-	Send, {enter}
-	return
-}
+
 
 Orient(){
 	global
-	CoordMode, mouse, window
-	Tab:=
-	Tab1:=
-	Tab2:=
-	Tab3:=
-	Tab4:=
-	Tab5:=
-	Tab6:=
-	; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
-	winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS - \\Remote
+	; CoordMode, mouse, window
+FoundSamples:=
+FoundRequests:=
+FoundDocuments:=
+	; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
+	winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
 	; winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
 	; winGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
 	WbX:=WbX+400
@@ -320,8 +315,10 @@ Orient(){
 	HScrollBarRightX:=NuW-40
 	HScrollBarLeftX:=(NuW/5)+35
 	HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
-	yWorkTabs:=74
-	yMyWorkTabs:=74
+	yWorkTabs:=71
+	MyWorkTabs:=71
+	yMyWorkTabs:=71
+	yMyWorkTab:=71
 	xDivider:=(NuW/5)
 	xTab1=150
 	xTab2=350
@@ -377,22 +374,32 @@ Orient(){
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
+	PixelSearch, FoundSamples, FoundY, SamplesTab, MyWorkTabs, SamplesTab+2, MyWorkTabs+2, 0xfffd353, 10, Fast RGB
+	PixelSearch, FoundRequests, FoundY, RequestsTab, MyWorkTabs, RequestsTab+2, MyWorkTabs+2, 0xffd353, 10, Fast RGB
+	PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+	; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+	if FoundSamples
+		Tab:="Samples"
+	If FoundRequests
+		Tab:="Requests"
+	If FoundDocuments
+		Tab:="Documents"
 	return
 }
 
 Scrolldown(){
 	Global
-	if winactive("Result Editor - \\Remote") {
+	if winactive("Result Editor") {
 		clk(503, 574,1)
 		Sleep 800
 		return
 	}
-	if winactive("Test Definition Editor - \\Remote") {
+	if winactive("Test Definition Editor") {
 		clk(464, 532,,2)
 		Sleep 800
 		return
 	}
-	if winactive("Edit Formulation - \\Remote") {
+	if winactive("Edit Formulation") {
 		clk(452, 473,,2)
 		Sleep 800
 		return
@@ -403,73 +410,6 @@ Scrolldown(){
 }
 
 Class ProductTab { ;;__________________ProductTab Class_____________________
-/*
-	Table(){
-		Global
-		ShiftTable_X:=-450
-		ShiftTable_Y:=200
-		; if Iteration >=20
-		; {
-		iteration:=0
-		varbar.AddIteration(0)
-		; }
-		Excel.Connect()
-		try GUI, Ingredient_table:destroy
-		CoordMode, mouse, window
-		; CoordMode, , Screen
-		ifwinnotactive, ahk_exe WFICA32.EXE
-			winactivate, ahk_exe WFICA32.EXE
-		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
-		Table_height=10
-		ProductTable_X:= LMS_w+LMS_X+ShiftTable_X
-		ProductTable_Y:= LMS_Y+ShiftTable_Y
-		Name:=		 	 []
-		LabelClaim:= 	[]
-		Position:=		 []
-		LabelName:=		 []
-		DropdownCount:= []
-		Sub_Table_height:=0
-		while (Xl.Range("AK" . A_Index+7).Value != "") {
-			Position[A_index] := Xl.Range("AD" . A_Index+7).Text
-			Name[A_index] := Xl.Range("AI" . A_Index+7).text
-			LabelClaim[A_index] :=	Xl.Range("AJ" . A_Index+7).Text
-			LabelName[A_index] :=	Xl.Range("AK" . A_Index+7).Text
-			DropdownCount[A_index]:=	Xl.Range("AM" . A_Index+7).Text
-			Total_rows :=	A_index +1
-			Table_Height :=	A_index
-			if (Xl.Range("AD" . A_Index+7).text = "")
-				Sub_Table_Height:=Sub_Table_Height+1
-		}
-		Table_Height:=Table_height-Sub_table_Height
-		GUI,Ingredient_Table:Default
-		GUI,Ingredient_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop ;-SysMenu
-		GUI,Ingredient_Table:Font,s10 cBlack arial ;Consolas
-		GUI,Ingredient_Table:Add,ListView,x0 y0 r%Table_height% W400 Grid NoSortHdr -hdr gIngredient_Table, Position|Name|LabelClaim|LabelName|DropdownCount
-		loop,%Total_Rows% {
-			if Position[A_index] =""
-			{
-				Total_rows:=total_rows - 1
-				continue
-			}
-			else
-				LV_Insert(A_index,"",Position[A_index],Name[A_index],LabelClaim[A_index],LabelName[A_index],DropdownCount[A_index])
-		}
-		GUI,Ingredient_Table:Add,Checkbox,vAutoEnter x20 checked,Auto-Enter Results?
-		LV_ModifyCol(1,50)
-		LV_ModifyCol(2,180)
-		LV_ModifyCol(3,100)
-		LV_ModifyCol(4,2)
-		LV_ModifyCol(5,2)
-		sleep 40
-		CoordMode,mouse,screen
-		ScreenEdge_X:=A_ScreenWidth-550
-		ScreenEdge_Y:=A_Screenheight-450
-		try GUI,Ingredient_Table:Show,x%ProductTable_X% y%ProductTable_Y% w320,%Product% Ingredient Table
-		catch GUI,Ingredient_Table:Show,x%ScreenEdge_X% y%ScreenEdge_Y% w380, %Product% Ingredient Table
-			CoordMode,mouse,window
-		return
-	}
- */
 	EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
 		;; the final input window for adding ingredients
 		Global
@@ -477,9 +417,9 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 		Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
 		Ingredient_position:=Trim(Ingredient_Position,"`r`n")
 		; sleep 120
-		ifwinnotexist, Edit Ingredient - \\Remote
+		ifwinnotexist, Edit Ingredient
 		{
-			winactivate, Composition - \\Remote
+			winactivate, Composition
 			; Breaking.Point()
 			click 57, 65
 			;sleep 50
@@ -488,10 +428,9 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 			this.DropdownSelect(Dropdown_count)
 			; sleep 100
 		}
-		; winactivate, Edit Ingredient - \\Remote
 		Excel.Get_Current_row()
 		sleep 50
-		if winactive("Composition - \\Remote")
+		if winactive("Composition")
 		return
 	Send,{tab 6}^a%Ingredient_position%{tab}^a
 	Sendinput,%Ingredient_Name%
@@ -500,11 +439,11 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 		Send,{tab}
 	Send,{tab 2}^a
 	Send,%Ingredient_Claim%
-	; Sleep 200
+
 	Current_Row:= Current_Row+1
-	; Sleep 200
+
 	Breaking.Point()
-	ifwinexist, Duplicate ingredient ID - \\Remote
+	ifwinexist, Duplicate ingredient ID
 		exit
 	If !ManualInput
 		Send,{enter}
@@ -516,8 +455,8 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 
 DropdownSelect(A_DropdownCount){
 	global
-	ifWinNotActive, Edit Ingredient - \\Remote
-		winactivate, Edit Ingredient - \\Remote
+	ifWinNotActive, Edit Ingredient
+		winactivate, Edit Ingredient
 	click, 150, 73 ;click dropdown box
 	sleep 100
 	AbsSelection:=Abs(A_DropdownCount)
@@ -545,7 +484,7 @@ DropdownSelect(A_DropdownCount){
 Blends(n,Measurment){
 	global ServingSize, Color, ShapeAndSize
 	setwindelay, 260
-	winactivate, Edit Formulation - \\Remote
+	winactivate, Edit Formulation
 	click 450, 462, 3
 	Send, {click 385, 347}
 	if (N!=1)
@@ -582,8 +521,8 @@ EditProduct(){ ;for naming Product code and customer,
 	sleep 200
 	Sendinput,%Name%{tab 8}
 	sleep 400
-	winwaitactive,NuGenesis LMS - \\Remote,,20
-	winactivate, NuGenesis LMS - \\Remote
+	winwaitactive,NuGenesis LMS,,20
+	winactivate, NuGenesis LMS
 	click, 67, 283
 	sleep 200
 	Breaking.Point()
@@ -596,8 +535,8 @@ EditProduct(){ ;for naming Product code and customer,
 
 EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
 	global Product, ShapeAndSize, color, ServingSize, ServingType
-	if !winactive("Edit Formulation - \\Remote") && winexist("Edit Formulation - \\Remote")
-		winactivate, Edit Formulation - \\Remote,
+	if !winactive("Edit Formulation") && winexist("Edit Formulation")
+		winactivate, Edit Formulation,
 	Send, {tab}%product%
 	Send, {Tab 23} ;{click 268, 578}
 	sleep 200
@@ -625,27 +564,27 @@ HM_ReportOnly(){
 	click 125,120 ;click 1st row
 
 	clk(45, 65)
-	winwaitactive, Edit Ingredient - \\Remote,,4
+	winwaitactive, Edit Ingredient,,4
 	Sendinput,{click 150,73}{tab}{right 11} ;arsenic
 	Breaking.Point()
-	winWaitClose, Edit Ingredient - \\Remote,,4
+	winWaitClose, Edit Ingredient,,4
 	click 125,140 ;click 2nd row
 	clk(45, 65)
-	winwaitactive, Edit Ingredient - \\Remote,,4
+	winwaitactive, Edit Ingredient,,4
 	Sendinput,{click 150,73}{tab}{right 167} ;lead
 	Breaking.Point()
 	click 390, 659	;click okay
-	winWaitClose, Edit Ingredient - \\Remote,,4
+	winWaitClose, Edit Ingredient,,4
 	click 125,180 ;click 3rd row
 	clk(45, 65)
-	winwaitactive, Edit Ingredient - \\Remote,,4
+	winwaitactive, Edit Ingredient,,4
 	Sendinput,{click 150,73}{tab}{right 23} ;cadmium
 	Breaking.Point()
 	click 390, 659	;click okay
-	winWaitClose, Edit Ingredient - \\Remote,,4
+	winWaitClose, Edit Ingredient,,4
 	click 125,200 ;click 4th row
 	clk(45, 65)
-	winwaitactive, Edit Ingredient - \\Remote,,4
+	winwaitactive, Edit Ingredient,,4
 	Sendinput,{click 150,73}{tab}{right 189} ;mercury
 	Breaking.Point()
 
@@ -802,7 +741,7 @@ Ingredient_table:
 		Loop % Rows_left {
 			Excel.Get_Current_row()
 			ProductTab.EditIngredient(LabelName,LabelClaim,Position,DropdownCount)
-			if winactive("Duplicate ingredient ID - \\Remote") || winactive("NuGenesis LMS - \\Remote") || winactive("Edit Formulation - \\Remote") || winactive("Warning - \\Remote")
+			if winactive("Duplicate ingredient ID") || winactive("NuGenesis LMS") || winactive("Edit Formulation") || winactive("Warning")
 				break
 			sleep 100
 		}
@@ -825,8 +764,8 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, window
 		;  CoordMode, , Screen
-		ifwinnotactive, ahk_exe WFICA32.EXE
-			winactivate, ahk_exe WFICA32.EXE
+		ifwinnotactive, ahk_exe eln.exe
+			winactivate, ahk_exe eln.exe
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
 
 		; Iniread, SpecTable_X, Settings.ini, Locations, SpecTable_X
@@ -899,7 +838,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 
 	Methods() {
 		global
-		winactivate, Select methods tests - \\Remote
+		winactivate, Select methods tests
 		click, 229, 72,2
 		Send, ^a
 		Loop, Read, data\Methods.ini
@@ -931,7 +870,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		Critical, On
 		clipboard:=
 		; sleep 100
-		if winactive("NuGenesis LMS - \\Remote"){
+		if winactive("NuGenesis LMS"){
 			MouseGetPos, premx, premy
 			click
 			Sendinput, {ctrldown}{c}{ctrlup}
@@ -959,7 +898,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			SpecTab.Edit_Retain()
 		sleep 50
 		; Breaking.Point()
-		; WinActivate, NuGenesis LMS - \\Remote
+		; WinActivate, NuGenesis LMS
 		;excel.NextSheet()
 		; excel.connect(0)
 		Breaking.Point()
@@ -971,15 +910,15 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 
 	CopySpecs(){
 		global
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		BlockInput, on
 		critical, On
 		clipboard:=
 		click 57, 715 ; edit Test
 		; click 57, 750 ; edit results
-		winwaitactive, Test Definition Editor - \\Remote,,0.25
+		winwaitactive, Test Definition Editor,,0.25
 		if errorlevel
-			winactivate, Test Definition Editor - \\Remote
+			winactivate, Test Definition Editor
 		; sleep 400
 		click 418, 202
 		Send, ^a^c
@@ -993,11 +932,11 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		sleep 150
 		MouseClick, left, 245, 489,1,0
 		;  LMSclick.TestDefinitionEditor_Results()
-		winactivate, Results Definition - \\Remote
+		winactivate, Results Definition
 		winWaitactive, Results Definition,,0.35
 		if errorlevel
 			winactivate, Results Definition
-		winactivate, Results Definition - \\Remote
+		winactivate, Results Definition
 		click 282, 141 ; click row
 		sleep 80
 		clipboard:=
@@ -1029,11 +968,11 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 	PasteSpecs(){
 		Global
 		Critical, On
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		click 57, 715 ; edit Test
-		winwaitactive, Test Definition Editor - \\Remote,,0.35
+		winwaitactive, Test Definition Editor,,0.35
 		; if errorlevel
-		winactivate, Test Definition Editor - \\Remote
+		winactivate, Test Definition Editor
 		sleep 400
 		click 418, 202
 		SpecTab.TestDefinitionEditor(Description) ; the pre window
@@ -1041,14 +980,14 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		MouseClick, left, 464, 533,1,0
 		sleep 250
 		MouseClick, left, 245, 489,1,0
-		winactivate, Results Definition - \\Remote
+		winactivate, Results Definition
 		winWaitactive, Results Definition,,0.25
 		if errorlevel
 			winactivate, Results Definition
 		click 84, 65
-		winwaitactive, Result Editor - \\Remote,,0.25
+		winwaitactive, Result Editor,,0.25
 		if errorlevel
-			winactivate, Result Editor - \\Remote
+			winactivate, Result Editor
 		sleep 400
 		Breaking.Point()
 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
@@ -1059,13 +998,13 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 	}
 
 	AddMethod(MethodID){
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		click 67, 562 ; Add Methods
-		winwaitactive, Select methods tests - \\Remote,,0.25
+		winwaitactive, Select methods tests,,0.25
 		click 227, 69. 2 ; method search bar
 		Sendinput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
 		sleep 200
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		click 397, 591 ; click attrobutes
 		return
 	}
@@ -1074,10 +1013,10 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 ;; Run through all the menues to add
 	AutoFill(){
 		global
-		winactivate, ahk_exe WFICA32.EXE
+		winactivate, ahk_exe eln.exe
 		sleep 200
 		;blockinput, on
-		If winactive("NuGenesis LMS - \\Remote")
+		If winactive("NuGenesis LMS")
 		{
 			;Sendinput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
 			sleep 200
@@ -1085,10 +1024,10 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			click, 57, 719 ;click Edit Test
 			Sleep 200
 			Breaking.Point()
-			winactivate, Test Definition Editor - \\Remote
+			winactivate, Test Definition Editor
 			sleep 200
 		}
-		If winactive("Test Definition Editor - \\Remote")
+		If winactive("Test Definition Editor")
 		{
 			sleep 200
 			Breaking.Point()
@@ -1100,28 +1039,28 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			;  LMSclick.TestDefinitionEditor_Results()
 			sleep 200
 			Breaking.Point()
-			winactivate, Results Definition - \\Remote
+			winactivate, Results Definition
 
 		}
-		if winactive("Results Definition - \\Remote") ;Selection window
+		if winactive("Results Definition") ;Selection window
 		{
 
-			winactivate, Results Definition - \\Remote
+			winactivate, Results Definition
 			If Method contains ICP-MS 231
 				Send,{click 217, 141}
 			Send,{click 80, 66} ;click edit
 			sleep 200
 			Breaking.Point()
-			winwaitactive, Result Editor - \\Remote,,0.5
+			winwaitactive, Result Editor,,0.5
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; blockinput, off
 			Breaking.Point()
 			sleep 400
 		}
-		If winactive("Result Editor - \\Remote") ;the editing window
+		If winactive("Result Editor") ;the editing window
 		{
-			winactivate, Result Editor - \\Remote
+			winactivate, Result Editor
 			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
 			; blockinput, off
@@ -1191,10 +1130,10 @@ GetExcelData(){
 
 EditSampleTemplate_A(){
 	global
-	winactivate, Edit sample template - \\Remote
+	winactivate, Edit sample template
 	Breaking.Point()
 	Sendinput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
-	winWaitactive, NuGenesis LMS - \\Remote,,8
+	winWaitactive, NuGenesis LMS,,8
 	Breaking.Point()
 	if !errorlevel
 		click, 73, 562
@@ -1203,7 +1142,7 @@ EditSampleTemplate_A(){
 
 EditSpecification_Analytical(){
 	global
-	winactivate, Edit specification - \\Remote
+	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
 	Sendinput, %Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 4}^a%Product%{tab}{enter}{tab}{space}{enter 2}{Tab}{right}{tab}{right 4}{tab}
 	Breaking.Point()
@@ -1211,11 +1150,11 @@ EditSpecification_Analytical(){
 	Breaking.Point()
 	click, 340, 622 ;click okay
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	winwaitactive, NuGenesis LMS, ,8
 	if !ErrorLevel
 		click, 88, 327 ; click add sample template
 	Breaking.Point()
-	winwaitactive, Edit sample template - \\Remote,, 8
+	winwaitactive, Edit sample template,, 8
 	if !errorlevel
 		SpecTab.EditSampleTemplate_A()
 	return
@@ -1276,7 +1215,7 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 	else
 	{
 		Breaking.Point()
-		winactivate, Test Definition Editor - \\Remote
+		winactivate, Test Definition Editor
 		DescriptionRaw:=The_Description
 		Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
 		Click, 187, 200 ;Orient_SpecTab.TestDefinitionEditor
@@ -1292,7 +1231,7 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 
 Edit_Physical(){
 	Global
-	winactivate, Edit specification - \\Remote
+	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
 	Send,%Product%`,{space}{shift down}I{shift up}n{shift down}{space}P{shift up}rocess`,{space}{shift down}P{shift up}hysical{tab 3}^a{backspace}
 	Breaking.Point()
@@ -1302,7 +1241,7 @@ Edit_Physical(){
 	Send,{Space}
 	sleep 200
 	Breaking.Point()
-	winwaitactive, Products List - \\Remote, , 8
+	winwaitactive, Products List, , 8
 	if !errorlevel
 		sleep 300
 	Send,{enter 2}
@@ -1314,20 +1253,20 @@ Edit_Physical(){
 	sleep 500
 	Breaking.Point()
 	click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS - \\Remote, ,8
+	winwaitactive, NuGenesis LMS, ,8
 	if !errorlevel
 		sleep 300
 	Breaking.Point()
 	click, 70, 518 ;edit sample method
 	sleep 499
-	winwaitactive, Edit sample template - \\Remote,,4
+	winwaitactive, Edit sample template,,4
 	if !errorlevel
 		sleep 300
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
 	sleep 400
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS - \\Remote,,5
+	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
 	click
@@ -1336,7 +1275,7 @@ Edit_Physical(){
 
 Edit_CoatedRetain(){
 	global
-	winactivate, Edit specification - \\Remote
+	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
 	Breaking.Point()
 	Send,%Product%`,{space}{shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
@@ -1348,7 +1287,7 @@ Edit_CoatedRetain(){
 	sleep 200
 	Breaking.Point()
 	click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS - \\Remote, ,12
+	winwaitactive, NuGenesis LMS, ,12
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
@@ -1357,7 +1296,7 @@ Edit_CoatedRetain(){
 	Breaking.Point()
 	send, {enter}
 	sleep 400
-	winwaitactive, NuGenesis LMS - \\Remote,,5
+	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
 	; click
@@ -1367,7 +1306,7 @@ Edit_CoatedRetain(){
 
 Edit_CoatedPhysical(){
 	global
-	winactivate, Edit specification - \\Remote
+	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
 	Send,%Product%`,{space}{shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	sleep 400
@@ -1379,13 +1318,13 @@ Edit_CoatedPhysical(){
 	sleep 200
 	Breaking.Point()
 	click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS - \\Remote, ,12
+	winwaitactive, NuGenesis LMS, ,12
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
 	sleep 400
-	winwaitactive, NuGenesis LMS - \\Remote,,5
+	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
 	; click
@@ -1394,7 +1333,7 @@ Edit_CoatedPhysical(){
 
 Edit_Retain(){
 	Global
-	winactivate, Edit specification - \\Remote
+	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
 	Send,%Product%`,{space}{shift down}I{shift up}n{space}{shift down}P{shift up}rocess`,{space}{shift down}R{shift up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	Breaking.Point()
@@ -1404,11 +1343,11 @@ Edit_Retain(){
 	Send,{tab}{right}
 	sleep 1500
 	Breaking.Point()
-	winWaitactive, Edit specification - \\Remote,, 1
+	winWaitactive, Edit specification,, 1
 	if !errorlevel
 		click, 340, 622 ;click okay
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS - \\Remote, ,4
+	winwaitactive, NuGenesis LMS, ,4
 	if !errorlevel
 		sleep 300
 	Breaking.Point()
@@ -1417,7 +1356,7 @@ Edit_Retain(){
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
 	sleep 400
-	winwaitactive, NuGenesis LMS - \\Remote,,5
+	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
 	; click
@@ -1426,9 +1365,9 @@ Edit_Retain(){
 Edit_Analytical(){
 	Global
 	Breaking.Point()
-	If winactive("Edit sample template - \\Remote")
+	If winactive("Edit sample template")
 		SpecTab.EditSampleTemplate_A()
-	else If winexist("Edit specification - \\Remote")
+	else If winexist("Edit specification")
 	{
 		winactivate,
 		Breaking.Point()
@@ -1439,20 +1378,20 @@ Edit_Analytical(){
 
 Edit_Micro(){
 	Global
-	winactivate, Edit specification - \\Remote
+	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
 	Send,%Product%`,{space}{shift down}F{shift up}inished`,{space}{shift down}M{shift up}icro{tab 4}^a%Product%{tab 2}
 	Sleep 200
 	Send,{Space}
 	sleep 200
-	winwaitactive, Products List - \\Remote, ,2
+	winwaitactive, Products List, ,2
 	Send,{enter 2}
 	sleep 200
 	Send,{tab}
 	sleep 200
 	Breaking.Point()
 	Send,{right}{tab}{left 2}{enter}
-	winwaitactive, NuGenesis LMS - \\Remote, ,4
+	winwaitactive, NuGenesis LMS, ,4
 	if !errorlevel
 		sleep 300
 	Breaking.Point()
@@ -1461,7 +1400,7 @@ Edit_Micro(){
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
 	sleep 400
-	winwaitactive, NuGenesis LMS - \\Remote,,5
+	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
 	; click
@@ -1480,28 +1419,28 @@ HM_ReportOnly(){
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab 6}Report Only
 	click 390, 659	;click okay
 	return
@@ -1511,31 +1450,31 @@ HM_USP(){
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	; click 125,150 ;click 2nd row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	; click 125,190 ;click 3rd row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}5{tab 5}NMT 5 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	; click 125,210 ;click 4th row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
 	click 390, 659	;click okay
 	return
@@ -1545,32 +1484,32 @@ HM_Canada(){
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
 	Breaking.Point()
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}9.8{tab 5}NMT 9.8 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}6.3{tab 5}NMT 6.3 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
+	winWaitClose, Result Editor,,4
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 2}0{tab}20.3{tab 5}NMT 20.3 mcg/day
 	click 390, 659	;click okay
 	return
@@ -1580,44 +1519,44 @@ HM_Prop65(){
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winactivate, Result Editor - \\Remote
-	winwaitactive, Result Editor - \\Remote,,4
+	winactivate, Result Editor
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 12}{space}{tab 2}^{a}
 	;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
 	Sendinput, 0{tab}^{a}
 	sleep 100
 	Sendinput, 9.999{tab 5}^a<10 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
-	winactivate, Result Definition - \\Remote
+	winWaitClose, Result Editor,,4
+	winactivate, Result Definition
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 12}{space}{tab 2}^a
 	;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
 	Sendinput, 0{tab}^a
 	sleep 100
 	Sendinput, 0.499{tab 5}^a<0.5 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
-	winactivate, Result Definition - \\Remote
+	winWaitClose, Result Editor,,4
+	winactivate, Result Definition
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 12}{space}{tab 2}^a
 	;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
 	Sendinput, 0{tab}^a
 	sleep 100
 	Sendinput, 4.099{tab 5}^a<4.1 mcg/day
 	click 390, 659	;click okay
-	winWaitClose, Result Editor - \\Remote,,4
-	winactivate, Result Definition - \\Remote
+	winWaitClose, Result Editor,,4
+	winactivate, Result Definition
 	click 125,130 ;click 1st row
 	click 80,70 ;Edit
 	Breaking.Point()
-	winwaitactive, Result Editor - \\Remote,,4
+	winwaitactive, Result Editor,,4
 	Sendinput,{tab 12}{space}{tab 2}^a
 	;Sendinput,{tab 5}mcg/day{tab 7}{tab 2}^a
 	Sendinput, 0{tab}^a
@@ -1656,7 +1595,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 		lot:=
 		; blockinput, on
 		ControlGetText, Iteration, Static1, VarBar
-		ifwinactive, Register new samples - \\Remote
+		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
 		sleep 200
@@ -1666,10 +1605,10 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			if ErrorLevel
 				exit
 			Sendinput, {tab 2}{right}{click 277, 139}{tab 6}
-			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
+			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`)
 				Send,{tab}^{a}
 			Sendinput, ^{a}%Batch%{tab}^{a}
-			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`) - \\Remote
+			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`)
 			{
 				Sendinput,{ctrldown}{a}{ctrlup}%Lot%
 				Sendinput,{tab 3}
@@ -1679,7 +1618,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				sleep 100
 				Sendinput, +{tab 2}
 			}
-			Ifwinactive, Edit sample `(Field Configuration: CT`, - \\Remote
+			Ifwinactive, Edit sample `(Field Configuration: CT`,
 			{
 				; Sendinput,{ctrld;own}{a}{ctrlup}%Lot%
 				Sendinput,{tab 3}
@@ -1702,7 +1641,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			Sendinput, {enter}
 			sleep 100
 			blockinput, off
-			winactivate, Register new samples - \\Remote
+			winactivate, Register new samples
 			sleep 300
 			my:=my+30
 			MouseMove, mx, my
@@ -1713,7 +1652,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			global
 			try menu, Menu, DeleteAll
-			if winactive("Edit sample (Field Configuration: F, Micro) - \\Remote")
+			if winactive("Edit sample (Field Configuration: F, Micro)")
 				send {click 421, 504}
 			else ;if winactive("Edit sample (Field Configuration")
 				Send, {Click 425, 434}
@@ -1769,7 +1708,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			SetDefaultMouseSpeed, 0
 			CoordMode, mouse, Relative
 			; Breaking.Preamble()
-			winactivate, NuGenesis LMS - \\Remote
+			winactivate, NuGenesis LMS
 			MouseGetPos, mx, mY
 			; InputBox, n, number of retains to delte, , , , , mx, my,,,50
 			n:=Iteration*10
@@ -1781,31 +1720,31 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				CoordMode, mouse, relative
 				; TT(n,800)
 				; Breaking.Point()
-				; winactivate, ahk_exe WFICA32.EXE
-				; ControlClick, x61 y258, ahk_exe WFICA32.EXE
-				winactivate, NuGenesis LMS - \\Remote
-				; clk(61, 258,,,"ahk_exe WFICA32.EXE")
+				; winactivate, ahk_exe eln.exe
+				; ControlClick, x61 y258, ahk_exe eln.exe
+				winactivate, NuGenesis LMS
+				; clk(61, 258,,,"ahk_exe eln.exe")
 				send, {click 61, 258}
 				CoordMode, mouse, Screen
 				; send, {click %mx%,%my%,0}
 				MouseMove, %mX%, %mY%, 0,
 				; send, {click %mx%,%my%,0}
-				;clk(61, 258,,,"ahk_exe WFICA32.EXE")
+				;clk(61, 258,,,"ahk_exe eln.exe")
 				; previousProduct:=Product
 				sleep 100
-				winwait, Delete Tests - \\Remote,,1.5
+				winwait, Delete Tests,,1.5
 				if errorlevel
 				{
 					sleep 100
-					if winexist("Warning - \\Remote")
-						ControlSend,, {enter}, Warning - \\Remote
-					; winactivate, NuGenesis LMS - \\Remote
+					if winexist("Warning")
+						ControlSend,, {enter}, Warning
+					; winactivate, NuGenesis LMS
 					; MouseClick, left, 0, 26, 1, 0, , R
 				}
 				; MouseClick, left, 0, 26, 1, 0, , R
 				sleep 200
-				if winExist("Delete Tests - \\Remote")
-					ControlSend,, {enter}, Delete Tests - \\Remote
+				if winExist("Delete Tests")
+					ControlSend,, {enter}, Delete Tests
 				; Send, {enter}
 				sleep 100
 				; sleep 500
@@ -1820,7 +1759,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			SetwinDelay, 550
 			department:= ; Clip()
 			Clipboard:=
-			winactivate, NuGenesis LMS - \\Remote
+			winactivate, NuGenesis LMS
 			click
 			Send, ^c
 			clip()
@@ -1828,10 +1767,10 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			sleep 400
 			click 64, 300 ;click Assign To New rewuest link
 			Breaking.Point()
-			winwaitactive, Edit request - \\Remote,,3
+			winwaitactive, Edit request,,3
 			if !Errorlevel
 				sleep 200
-			winactivate, Edit request - \\Remote,
+			winactivate, Edit request,
 			click 238, 622 ;pick test
 			Breaking.Point()
 			winwaitactive, Select tests for request,,3
@@ -1950,9 +1889,9 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			if !winactive("Edit test (Field Configuration: ")
 				winwaitactive, Edit test (Field Configuration: ,, 2
 				Send,{Click, 402, 284}{end}(on sample log){click, 334, 618}
-				winwaitactive, NuGenesis LMS - \\Remote,,2
+				winwaitactive, NuGenesis LMS,,2
 				sleep 300
-				winactivate, NuGenesis LMS - \\Remote
+				winactivate, NuGenesis LMS
 				sleep 500
 				Send,{click, 1290, 703}{down %A_index%}
 			}
@@ -1962,7 +1901,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 		Main_EditResults()
 		{
 			Sendinput,{click}{click 77, 751} ;edit results
-			winwaitactive, Results Definition - \\Remote,,3
+			winwaitactive, Results Definition,,3
 			return
 		}
 		AddTestDescription(Text){
@@ -1984,9 +1923,9 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				send, {click 212, 188} ; select Batches
 				sleep 400
 				Send, {click 136, 119}^a ;flick filter box
-				if winactive("Select samples for test: Organoleptic Sensory Test - \\Remote") || winactive("Select samples for test: Average Capsule Weight - \\Remote") || winactive("Select samples for test: Average Tablet Weight - \\Remote")
+				if winactive("Select samples for test: Organoleptic Sensory Test") || winactive("Select samples for test: Average Capsule Weight") || winactive("Select samples for test: Average Tablet Weight")
 					Department:="Physical"
-				if winactive("Select samples for test: Microbiological - \\Remote")
+				if winactive("Select samples for test: Microbiological")
 					Department:="Micro"
 				send, %Department%{enter} ; send department
 				sleep 200
@@ -2045,40 +1984,40 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				clk(265, 561)
 			else if winactive("Result Entry")
 				clk(1028, 860)
-			else if winexist("Delete Test - \\Remote") {
-				winactivate, Delete Test - \\Remote
+			else if winexist("Delete Test") {
+				winactivate, Delete Test
 				clk(229, 136)
 			}
-			else if winactive("Results Definition - \\Remote")
+			else if winactive("Results Definition")
 				clk(951, 751)
-			; else if winactive("Barcode Scanner - \\Remote")
+			; else if winactive("Barcode Scanner")
 			; Send, {enter},
-			else if winactive("Microsoft Excel Security Notice - \\Remote")
+			else if winactive("Microsoft Excel Security Notice")
 				Send, !y
-			else if winactive("Reason For Change - \\Remote")
+			else if winactive("Reason For Change")
 				clk(229, 236)
-			else if winactive("New Document - \\Remote")
+			else if winactive("New Document")
 				clk(415, 360)
-			else if winactive("Edit specification - \\Remote")
+			else if winactive("Edit specification")
 				clk(323, 621)
-			else if winactive("Reason for Change - \\Remote")
+			else if winactive("Reason for Change")
 			Return clk(170, 331)
-		else if winexist("Error - \\Remote") {
+		else if winexist("Error") {
 			winactivate
 			clk(148, 104)
-			winactivate, Register new samples - \\Remote
+			winactivate, Register new samples
 			clk(181, 104, 2)
 			Send, %product%{enter}
 		}
-		else if winexist("Change Configuration - \\Remote")
-			clk(131, 296,"Change Configuration - \\Remote")
+		else if winexist("Change Configuration")
+			clk(131, 296,"Change Configuration")
 		Else
 			Send,{enter}
 		return
 	}
 
 	esc(){
-		if winexist("Change Configuration - \\Remote")
+		if winexist("Change Configuration")
 			click 342, 296
 		Else
 			Send,{esc}
@@ -2122,14 +2061,14 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 		return
 	}
 	EditTest_1(){
-		ifwinnotactive, NuGenesis LMS - \\Remote
-			winactivate, NuGenesis LMS - \\Remote
+		ifwinnotactive, NuGenesis LMS
+			winactivate, NuGenesis LMS
 		Send,{click, 56, 784 }
 		return
 	}
 	EnterResults(){
-		winactivate, NuGenesis LMS - \\Remote
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
+		winactivate, NuGenesis LMS
 		click 74, 900
 		return
 	}
@@ -2144,7 +2083,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			return
 	}
 	CopySpecTemplate(){
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		click 102, 289 ;copy into new spec
 		winWaitactive, Edit specification - Remote, ,1
 		if ErrorLevel
@@ -2154,15 +2093,15 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 		return
 	}
 	NewSampleTemplate(){
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		click 103, 325
 		return
 	}
 
 	EditSampleTemplate(){
-		winactivate, NuGenesis LMS - \\Remote
+		winactivate, NuGenesis LMS
 		click 70, 518
-		winwaitactive, Edit sample template - \\Remote,, 5
+		winwaitactive, Edit sample template,, 5
 		return
 	}
 }
@@ -2217,8 +2156,8 @@ return
 
 
 LMS_Env:
-	IfwinExist, Login - \\Remote,
-		winactivate, Login - \\Remote
+	IfwinExist, Login,
+		winactivate, Login
 	sleep 200
 	Send,mmignin{tab}Kilgore7744
 	if A_thismenuItem contains &Login
@@ -2234,9 +2173,9 @@ return
 
 SwitchEnv(ServerEnv){
 	sleep 200
-	Send,{Tab}{Tab}{down} ; winwaitactive, Change Configuration - \\Remote ahk_class Transparent windows Client
+	Send,{Tab}{Tab}{down} ; winwaitactive, Change Configuration ahk_class Transparent windows Client
 	sleep 200
 	Send,{Home}{Right}{Right}{Right}{Right}{LShift down}{End}{End}{LShift up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
-	sleep 200 ; winwaitactive, Login - \\Remote ahk_class Transparent windows Client
+	sleep 200 ; winwaitactive, Login ahk_class Transparent windows Client
 	Send,{Enter}
 }
