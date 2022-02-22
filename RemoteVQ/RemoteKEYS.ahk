@@ -21,21 +21,7 @@ F19 & right::								GetAllBatches()
 				Claim_%Line%:=ingredient[4]
 				Position_%Line%:=ingredient[2]
 				IngredientID_%Line%:=ingredient[1]
-				; Parse:=A_LoopField
-				; Ingredient_%Line% := {}
-				; for x,y in ArrayKeys
-					; Ingredient_%Line%[y] := StrSplit(Parse,"|")[x]
 			}
-			; LabelCopy:=StrSplit(Clipboard,"|")
-			; msgbox % Label_1["Ingredient_ID"]
-		; if Ingredient_ID is integer
-			; msgbox % "integer:" Ingredient_ID
-		; else if Ingredient_ID is Number
-			; msgbox % "Number:" Ingredient_ID
-		; else if Ingredient_ID is digit
-			; msgbox % "digit:" Ingredient_ID
-		; else
-			; msgbox % "notingn:" Ingredient_ID
 				; msgbox % " Name: " Name_%A_index% "`n Claim: " Claim_%A_index% "`n Position: " Position_%A_index% "`n IngredientID: " IngredientID_%A_index%
 			loop, 5
 			{
@@ -50,15 +36,15 @@ F19 & right::								GetAllBatches()
 				return
 			}
 				Spec:=[]
-				Spec:=StrSplit(A_LoopField,"|")
-				Spec_MinLimit:=Spec[4]
-				Spec_MaxLimit:=Spec[2]
-				Spec_Units:=Spec[1]
-				Spec_Percision:=Spec[1]
-				Spec_Method:=Spec[1]
-				Spec_Description:=Spec[1]
-				SpecTab.TestDefinitionEditor(Description)
-				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+				Spec:=StrSplit(A_LoopField,"/")
+				Spec_MinLimit:=Spec[3]
+				Spec_MaxLimit:=Spec[4]
+				Spec_Units:=Spec[5]
+				Spec_Percision:=Spec[6]
+				Spec_Method:=Spec[7]
+				Spec_Description:=Spec[2]
+				SpecTab.TestDefinitionEditor(Spec_Description)
+				SpecTab.ResultEditor(Spec_MinLimit,Spec_MaxLimit,Spec_Units,Spec_Percision,1,1)
 
 			; if winactive("Duplicate Spec ID") || winactive("NuGenesis LMS") || winactive("Edit Formulation") || winactive("Warning")
 				; break
