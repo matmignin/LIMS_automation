@@ -17,10 +17,10 @@ F19 & right::								GetAllBatches()
 				line:=A_index
 				Ingredient:=[]
 				ingredient:=StrSplit(A_LoopField,"|")
-				Name_%Line%:=ingredient[3]
-				Claim_%Line%:=ingredient[4]
-				Position_%Line%:=ingredient[2]
-				IngredientID_%Line%:=ingredient[1]
+				Name_%Line%:=ingredient[4]
+				Claim_%Line%:=ingredient[5]
+				Position_%Line%:=ingredient[3]
+				IngredientID_%Line%:=ingredient[2]
 			}
 				; msgbox % " Name: " Name_%A_index% "`n Claim: " Claim_%A_index% "`n Position: " Position_%A_index% "`n IngredientID: " IngredientID_%A_index%
 			loop, 5
@@ -35,6 +35,55 @@ F19 & right::								GetAllBatches()
 				else
 				return
 			}
+			
+			GetRowText(){
+				global
+				LV_GetText(Name, 				A_EventInfo,1)
+				LV_GetText(LabelClaim, 		A_EventInfo,2)
+				LV_GetText(MinLimit, 		A_EventInfo,3)
+				LV_GetText(MaxLimit, 		A_EventInfo,4)
+				LV_GetText(Units, 			A_EventInfo,5)
+				LV_GetText(Percision, 		A_EventInfo,6)
+				LV_GetText(Description, 	A_EventInfo,7)
+				LV_GetText(Method, 			A_EventInfo,8)
+				GUI, Spec_Table:submit,NoHide
+			}
+			GetExcelData(){
+				Global
+				Name:=			[]
+				Position:=		[]
+				LabelClaim:=	[]
+				MinLimit:=		[]
+				MaxLimit:=		[]
+				Units:=			[]
+				Percision:=		[]
+				LabelName:=		[]
+				Description:=	[]
+				Requirement:=	[]
+				method:= 		[]
+				while (Xl.Range("AK" . A_Index+6).Value != ""){
+					Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
+					Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
+					LabelClaim[A_index]:=			Xl.Range("AJ" . A_Index+7).Text
+					MinLimit[A_index]:=				Xl.Range("AE" . A_Index+7).Text
+					MaxLimit[A_index]:=				Xl.Range("AF" . A_Index+7).Text
+					Units[A_index]:=					Xl.Range("AG" . A_Index+7).Text
+					Percision[A_index]:=				Xl.Range("AH" . A_Index+7).Text
+					Description[A_index]:=			Xl.Range("AL" . A_Index+7).Text
+					Method[A_index]:=					Xl.Range("AB" . A_Index+7).Text
+					Total_rows:=A_index
+					Table_Height:=A_index
+					if (Table_Height > 20)
+						Table_Height = 20
+				}
+				; }
+		
+			}
+			
+			
+			
+			
+			
 				Spec:=[]
 				Spec:=StrSplit(A_LoopField,"/")
 				Spec_MinLimit:=Spec[3]
