@@ -33,6 +33,8 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 				Menu,Menu, add, Paste &Specs, Autofill
 			If CopyPasteToggle=0
 				Menu,Menu, add, Copy &Specs, Autofill
+			Menu, Menu, add, Paste All &Products, F19 & left
+			Menu, Menu, add, Paste All &Batches, F19 & right
 
 			; msgbox, %Tab%
 			; click
@@ -49,9 +51,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 				Menu,Menu, add, &Production Server, LMS_Env
 				Menu,Menu, add, &Test Server, LMS_Env
 			}
-			Menu, Menu, add, Paste All &Products, F19 & down
-			Menu, Menu, add, Paste All &Batches, F19 & Left
-			Menu, Menu, add, Paste All &WorkSheets, F19 & up
+			; Menu, Menu, add, Paste All &WorkSheets, F19 & up
 			Try Menu,menu,show
 		}
 		if winactive("Edit specification"){
@@ -99,13 +99,13 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		if !winactive("ahk_exe eln.exe")
-			winactivate, ahk_exe eln.exe
-		if (Lms.Filter()=On) {
-			Lms.FilterBar(Code,PostCmd)
-			Send, {ctrlup}
-			exit
-		}
+		; if !winactive("ahk_exe eln.exe")
+			; winactivate, ahk_exe eln.exe
+		; if (Lms.Filter()=On) {
+		; 	Lms.FilterBar(Code,PostCmd)
+		; 	Send, {ctrlup}
+		; 	return
+		; }
 		if winactive("Select methods tests")
 			clk(246,77, 2)
 		else If winactive("Register new samples") {
@@ -117,69 +117,63 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 			if (Tab="Products") {
 				If (Code=Product){
 					clk(x%Tab%Search,yProductsSearch)
-					Send, {ctrldown}{a}{ctrlup}
+					Sendinput, {ctrldown}{a}{ctrlup}
 					If Overwrite=true
-						Send, ^{x}
-					Send, %Product%{ctrldown}{a}{ctrlup}
+						Sendinput, ^{x}
+					Sendinput, %Product%{ctrldown}{a}{ctrlup}
 					If Overwrite=true
-						send, {right}{space}^{v}^{a}^{c}
+						sendinput, {right}{space}^{v}^{a}^{c}
 					if PostCmd!=""
-						send % PostCmd
-					ControlsetText, Edit8,%Clipboard%,VarBar
-					Send, {ctrlup}
-					exit
+						sendinput % PostCmd
+					return
 				}
 				If (Code=Batch) { ;click something edit comp
 					clk(40, 384)
 					sleep 200
 					clk(455, 472,,2)
-					exit
+					return
 				}
 			}
 			if (Tab="Specs") {
 				; If (Code=Product) {
 				clk(x%Tab%Search,yProductsSearch)
-				Send, {ctrldown}{a}{ctrlup}
+				Sendinput, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					Send, ^{x}
-				Send, %Product%{ctrldown}{a}{ctrlup}
+					Sendinput, ^{x}
+				Sendinput, %Product%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					send, {right}{space}^{v}^{a}^{c}
+					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				ControlsetText, Edit8,%Clipboard%,VarBar
-				Send, {ctrlup}
-				exit
+				return
 			}
 			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 				clk(x%Tab%Search,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					Send, ^{x}
+					Sendinput, ^{x}
 				Send, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					send, {right}{space}^{v}^{a}^{c}
+					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
-					send % PostCmd
-				ControlsetText, Edit8,%Clipboard%,VarBar
-				Send, {ctrlup}
-				exit
+					sendinput % PostCmd
+				return
 			}
 			If (Tab="Requests") {
 				clk(x%Tab%Search-40,yWorkTabSearch,,2)
 				sleep 20
-				Send, {ctrldown}{a}{ctrlup}
+				Sendinput, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
 				Send, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					send, {right}{space}^{v}^{a}^{c}
+					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
-					send % PostCmd
-				ControlsetText, Edit8,%Clipboard%,VarBar
-				Send, {ctrlup}
-				exit
+					sendinput % PostCmd
+				return
 			}
+			else
+				sendinput, %Code%
 		}
 
 	}
@@ -231,9 +225,9 @@ DetectTab(){
 		; winactivate, ahk_exe eln.exe
 	LMS.Orient()
 	; CoordMode, pixel, window
-	; if winactive("NuGenesis LMS") {
-		; PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-		; if !Tab1 {
+	if winactive("NuGenesis LMS") {
+		PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+		if !Tab1 {
 			PixelSearch, FoundSamples, FoundY, SamplesTab, yMyWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
 			PixelSearch, FoundRequests, FoundY, RequestsTab, yMyWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
 			if FoundSamples {
@@ -253,12 +247,12 @@ DetectTab(){
 				}
 				PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 				If FoundResults {
-					Tab=Results
+					Tab:="Results"
 					return tab
 				}
 				PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 				If FoundTests {
-					Tab=Tests
+					Tab:="Tests"
 					return tab
 				}
 				else if Errorlevel
@@ -270,19 +264,20 @@ DetectTab(){
 						return tab
 					}
 					else {
-						PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+						PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
+						; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
-							tab=Specs
+							Tab:="Products"
 						else
-							Tab=Products
+							tab:="Specs"
 						return Tab
 					}
 				}
 				; else
 					; return
 			}
-		; }
-	; }
+		}
+	}
 	return Tab
 }
 
@@ -292,11 +287,11 @@ DetectTab(){
 Orient(){
 	global
 	; CoordMode, mouse, window
-FoundSamples:=
-FoundRequests:=
-FoundDocuments:=
+	; FoundSamples:=
+	; FoundRequests:=
+	; FoundDocuments:=
 	; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
-	winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
+	winGetPos,Nux,NuY,NuW,NuH,NuGenesis LMS
 	; winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
 	; winGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
 	WbX:=WbX+400
@@ -374,16 +369,17 @@ FoundDocuments:=
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
-	PixelSearch, FoundSamples, FoundY, SamplesTab, MyWorkTabs, SamplesTab+2, MyWorkTabs+2, 0xfffd353, 10, Fast RGB
-	PixelSearch, FoundRequests, FoundY, RequestsTab, MyWorkTabs, RequestsTab+2, MyWorkTabs+2, 0xffd353, 10, Fast RGB
-	PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+	; PixelSearch, FoundSamples, FoundY, SamplesTab, MyWorkTabs, SamplesTab+2, MyWorkTabs+2, 0xfffd353, 10, Fast RGB
+	; if FoundSamples
+	; 	Tab:="Samples"
+	; PixelSearch, FoundRequests, FoundY, RequestsTab, MyWorkTabs, RequestsTab+2, MyWorkTabs+2, 0xffd353, 10, Fast RGB
+	; If FoundRequests
+	; 	Tab:="Requests"
+	; PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+	; If FoundDocuments
+	; 	Tab:="Documents"
 	; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-	if FoundSamples
-		Tab:="Samples"
-	If FoundRequests
-		Tab:="Requests"
-	If FoundDocuments
-		Tab:="Documents"
+	; tt(Tab)
 	return
 }
 
@@ -410,13 +406,19 @@ Scrolldown(){
 }
 
 Class ProductTab { ;;__________________ProductTab Class_____________________
-	EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Dropdown_count){
-		;; the final input window for adding ingredients
+	EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id_count){
 		Global
-		Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
-		Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
-		Ingredient_position:=Trim(Ingredient_Position,"`r`n")
+		;; the final input window for adding ingredients
+
+		; Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
+		; Ingredient_Id_count:=Trim(Ingredient_Id_count)
+		; Ingredient_Id_count:=Format("{:d}", Ingredient_Id_count)
+		; Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
+		; Ingredient_position:=Trim(Ingredient_Position,"`r`n")
 		; sleep 120
+		; ifwinactive, Edit Ingredient
+		; ifwinactive, Edit Ingredient
+			; this.DropdownSelect(Ingredient_Id_count)
 		ifwinnotexist, Edit Ingredient
 		{
 			winactivate, Composition
@@ -425,22 +427,24 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 			;sleep 50
 			sleep 50
 			; Breaking.Point()
-			this.DropdownSelect(Dropdown_count)
+			this.DropdownSelect(Ingredient_Id_count)
+		; winactivate, Edit Ingredient
 			; sleep 100
 		}
-		Excel.Get_Current_row()
+		; Excel.Get_Current_row()
 		sleep 50
 		if winactive("Composition")
 		return
-	Send,{tab 6}^a%Ingredient_position%{tab}^a
+
+	Sendinput,{tab 6}^a%Ingredient_position%{tab}^a
 	Sendinput,%Ingredient_Name%
 	; sleep 100
 	If Ingredient_Claim contains Heavy Metal,Allergens
-		Send,{tab}
-	Send,{tab 2}^a
-	Send,%Ingredient_Claim%
+		Sendinput,{tab}
+	Sendinput,{tab 2}^a
+	Sendinput,%Ingredient_Claim%
 
-	Current_Row:= Current_Row+1
+	; Current_Row:= Current_Row+1
 
 	Breaking.Point()
 	ifwinexist, Duplicate ingredient ID
@@ -448,6 +452,7 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 	If !ManualInput
 		Send,{enter}
 	Tooltip,
+	sleep 300
 	ManualInput:=
 	Breaking.Point()
 	return
@@ -459,8 +464,9 @@ DropdownSelect(A_DropdownCount){
 		winactivate, Edit Ingredient
 	click, 150, 73 ;click dropdown box
 	sleep 100
+		; msgbox % a_DropdownCount
 	AbsSelection:=Abs(A_DropdownCount)
-	Breaking.Point()
+	; Breaking.Point()
 	if (A_DropdownCount > 0)
 		Sendinput, {tab}{home}{right %A_DropdownCount%}
 	Breaking.Point()
@@ -470,6 +476,7 @@ DropdownSelect(A_DropdownCount){
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
 	if (a_DropdownCount = ""){
+		; msgbox % a_DropdownCount
 		this.Dropdown_Ingredient(Iteration)
 		Breaking.Point()
 		if Iteration >=20
@@ -735,7 +742,6 @@ return
 Ingredient_table:
 	if (A_GuiEvent="DoubleClick"){
 		GUI,Ingredient_Table:submit,NoHide
-		;Send, {space}
 		Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
 		Current_Row:=A_EventInfo
 		Loop % Rows_left {
@@ -1936,7 +1942,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				sleep 200
 				send, {click, 849, 661}
 				Breaking.Point()
-				Pop(Department)
+				tt(Department)
 				blockinput off
 				setwindelay, 60
 			return

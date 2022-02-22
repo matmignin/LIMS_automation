@@ -1,38 +1,68 @@
 
 		#ifwinactive,
+F19 & left::								GetAllProducts()
+F19 & right::								GetAllBatches()
 
 		F10::
-			; LMS.Detecttab()
-			; tab:=LMS.Detecttab()
-			lms.orient()
-			; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
-			; RequestsTab:=(NuW/2)+20
-			; SamplesTab:=(NuW/2)-80
-			; MyWorkTabs:=43
-			; MyWorkTabs:=71
-			PixelSearch, FoundSamples, FoundY, SamplesTab, MyWorkTabs, SamplesTab+2, MyWorkTabs+2, 0xfffd353, 10, Fast RGB
-			PixelSearch, FoundRequests, FoundY, RequestsTab, MyWorkTabs, RequestsTab+2, MyWorkTabs+2, 0xffd353, 10, Fast RGB
-			PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-			; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-			if FoundSamples
-				Tab:="Samples"
-			If FoundRequests
-				Tab:="Requests"
-			If FoundDocuments
-				Tab:="Documents"
+			; if (A_GuiEvent="DoubleClick"){
 
-			; ResultsTab:=(NuW/3)+(NuW/3)-150
-			; RequestsTab:=(NuW/2)+20
-			; yMyWorkTabs:=74
-			tt(tab)
-			; MyWorkTabs:=45
-			; sendinput,{click %RequestsTab%, %yMyWorkTabs%}
-			; tt(RequestsTab " `n " yMyWorkTabs "`n" Tab)
-
-					; LMS.Orient()
-		; tooltip, %RequestsTab%  %yMyWorkTabs% `n %tab%
-			; WorkTab.AddTestDescription("(on sample log)")
+		; Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
+		; Current_Row:=A_EventInfo
+		; Loop % Rows_left {
+			; Excel.Get_Current_row()
+			; ArrayKeys:=["Ingredient_ID","Position","Name","Claim"]
+			; LabelCopy:=[]
+			loop, parse, clipboard, "`n"
+			{
+				line:=A_index
+				Ingredient:=[]
+				ingredient:=StrSplit(A_LoopField,"|")
+				Name_%Line%:=ingredient[3]
+				Claim_%Line%:=ingredient[4]
+				Position_%Line%:=ingredient[2]
+				IngredientID_%Line%:=ingredient[1]
+				; Parse:=A_LoopField
+				; Ingredient_%Line% := {}
+				; for x,y in ArrayKeys
+					; Ingredient_%Line%[y] := StrSplit(Parse,"|")[x]
+			}
+			; LabelCopy:=StrSplit(Clipboard,"|")
+			; msgbox % Label_1["Ingredient_ID"]
+		; if Ingredient_ID is integer
+			; msgbox % "integer:" Ingredient_ID
+		; else if Ingredient_ID is Number
+			; msgbox % "Number:" Ingredient_ID
+		; else if Ingredient_ID is digit
+			; msgbox % "digit:" Ingredient_ID
 		; else
+			; msgbox % "notingn:" Ingredient_ID
+				; msgbox % " Name: " Name_%A_index% "`n Claim: " Claim_%A_index% "`n Position: " Position_%A_index% "`n IngredientID: " IngredientID_%A_index%
+			loop, 5
+			{
+				sleep 200
+				if (Name_%iteration%){
+					ProductTab.EditIngredient(Name_%iteration%,Claim_%iteration%,Position_%iteration%,IngredientID_%iteration%)
+					Varbar.AddIteration()
+					sleep 300
+					winactivate, Composition
+				}
+				else
+				return
+			}
+				Spec:=[]
+				Spec:=StrSplit(A_LoopField,"|")
+				Spec_MinLimit:=Spec[4]
+				Spec_MaxLimit:=Spec[2]
+				Spec_Units:=Spec[1]
+				Spec_Percision:=Spec[1]
+				Spec_Method:=Spec[1]
+				Spec_Description:=Spec[1]
+				SpecTab.TestDefinitionEditor(Description)
+				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+
+			; if winactive("Duplicate Spec ID") || winactive("NuGenesis LMS") || winactive("Edit Formulation") || winactive("Warning")
+				; break
+			sleep 100
 		return
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
@@ -210,10 +240,8 @@
 
 	3Right(){
 		global
-		FlashScreen("3-Right")
-		if mouseisover("Mats LMS Workbook.xlsb - Excel")
-			excel.nextsheet()
-		else If winactive("NuGenesis LMS")
+		; FlashScreen("3-Right")
+		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
 		else If winactive("Result Entry")
 			WorkTab.ChangeTestResults()
@@ -247,10 +275,8 @@
 		}
 	3left(){
 		global
-		FlashScreen("3-Left")
-		if mouseisover("Mats LMS Workbook.xlsb - Excel")
-			excel.prevsheet()
-		else if winactive("NuGenesis LMS")
+		; FlashScreen("3-Left")
+		if winactive("NuGenesis LMS")
 				LMS.SearchBar(Product,"{enter}",0)
 		else If winactive("Select methods tests")
 			Send, {esc}
@@ -308,19 +334,7 @@
 		;;	_____4Fingers
 	4tap(){
 		global
-		; if winactive("Edit test"){
-				; sendinput, {click 384, 222}{tab 2}{end 2}
-				; sendinput % "(on sample log)"
-				; sendinput, {Click 334, 618}
-		; }
-		LMS.Orient()
-		LMS.Detecttab()
-			; WorkTab.AddTestDescription("(on sample log)")
-		; else
-		tooltip, %RequestsTab%  %yMyWorkTabs% `n %tab%
-			; lms.menu()
-		return
-		FlashScreen(tab)
+		; FlashScreen(tab)
 			If winactive("NuGenesis LMS") {
 				LMS.Detecttab()
 				if (Tab="Requests") {

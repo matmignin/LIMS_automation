@@ -12,7 +12,7 @@ Class VarBar{
 		VarBar_H_max=58
 		VarBar_T:=235
 		VarBar_W=350
-		VarBar_x:=Nugenesis_X+(Nugenesis_W/2)
+		VarBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		VarBar_Y:=Nugenesis_Y
 		; This.loadSavedVariables()
 		Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
@@ -60,7 +60,7 @@ Class VarBar{
 		; Gui, Varbar:submit, nohide
 		GuiControlGet, TheSelectedLine,,CodeStringEdit
 		Control, Delete, %TheSelectedLine%, Combobox1, VarBar ; delete the focused item
-		ControlGet, Wholex, List,,Combobox1, VarBar ;- get the whole listbox1
+		; ControlGet, Wholex, List,,Combobox1, VarBar ;- get the whole listbox1
 		; sort,Wholex, U R
 		return
 	}
@@ -80,17 +80,7 @@ Class VarBar{
 		global
 		MouseGetPos,,,,winControl
 		try Menu, VarBarmenu, DeleteAll
-		; HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
-		; HideVarBar:=CreateMenu("showVarbar","VarBarMenu")
 		Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID
-		if ShowSampleID=1
-			menu, VarBarmenu, Check, 	Show&SampleID
-		Menu, VarBarMenu, Add,		 		Tables, 					Varbar.LaunchTable
-
-		If winExist("Mats LMS Workbook.xlsb - Excel"){
-			Menu,VarBarMenu,add,				&Spec Table,						Tests
-			Menu,VarBarMenu,add,				&Ingredient Table,			Tests
-		}
 		Try Menu,VarBarmenu,show
 	}
 
@@ -100,26 +90,11 @@ Class VarBar{
 			GUI, VarBar:color,DC734F, 97BA7F ; normal color
 	}
 
-	FloatAtopwindow(FloatTime:=""){
-		Global Varbar_X, Varbar_Y
-		wingetpos, Varbar_X, Varbar_y, Varbar_w, Varbar_h, VarBar ahk_exe AutoHotkey.exe
-		winGetPos, VarBar_oX, VarBar_oY, Varbar_oW,Varbar_oH, A
-		winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,varbar_oX+100, Varbar_oy
-		winWaitNotactive, ;- \\Remote,, 20, NuGenesis LMS
-		winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,varbar_x, Varbar_y
-	}
-
 	Reset(){
 		Global
 		coordmode, mouse, Screen
 		; keywait, Lbutton, U T2
 		MouseGetPos,Varbar_X,Varbar_Y
-		; tooltip,
-		; IniWrite, %VarBar_y%, Settings.ini, Locations, VarBar_Y
-		; IniWrite, %varbar_x%, Settings.ini, Locations, VarBar_X
-		; IniWrite, %Xpos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainX
-		; IniWrite, %Ypos%, %A_ScriptDir%\ClipData\ClipChain\ClipChain.ini, Settings, ClipChainY
-
 		VarBar.show(0)
 		coordmode, mouse, window
 		return
@@ -133,8 +108,6 @@ Class VarBar{
 		winactivate, VarBar ahk_exe AutoHotkey.exe
 		FlashScreen()
 		GuiControl Varbar:Focus, %Control%
-		; sleep 100
-		tt(CodeString,2000,A_caretx,A_caretY,4)
 		Sendinput, ^{a}
 		return
 	}
@@ -206,16 +179,16 @@ Class VarBar{
 	return
 #ifwinactive
 
-#If MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
+#If MouseIsOver("VarBar")
 	Mbutton::
 	click
 	sleep 100
 	Varbar.WM_LBUTTONDBLCLK()
 return
 return
-Wheelup:: sendInput % Blockrepeat(300) Varbar.AddIteration(10)
-Wheeldown:: sendInput % Blockrepeat(300) Varbar.SubIteration(10)
-+wheelup::	Varbar.AddIteration(0)
+Wheelup::Varbar.AddIteration(10)
+Wheeldown::Varbar.SubIteration(10)
++wheelup::Varbar.AddIteration(0)
 +wheeldown::Varbar.SubIteration(0)
 numpaddot:: 	 Openapp.Workbook()
 #if

@@ -217,10 +217,10 @@ CodesRegex(input:=""){
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Ct:=rCoated ? " ct#" : ""
-      GuiControl,Varbar:Text, Product, %rProduct%
-      GuiControl,Varbar:Text, Batch, %rBatch%
-      GuiControl,Varbar:Text, lot, %rlot%
-      GuiControl,Varbar:Text, Coated, %rCoated%
+      GuiControl,Varbar:Text, Product, %Product%
+      GuiControl,Varbar:Text, Batch, %Batch%
+      GuiControl,Varbar:Text, lot, %lot%
+      GuiControl,Varbar:Text, Coated, %Coated%
       codeString:=trim(rProduct " " rBatch " " rLot Ct rCoated)
       tt(CodeString)
      Return Trim(CodeString)
@@ -231,13 +231,13 @@ CodesRegex(input:=""){
 
 
 SetVarbar(){
-  global Product, Batch, Lot, Coated, CodeString
+  global Product, Batch, Lot, Coated
     Gui Varbar:Default
       GuiControl,Varbar:Text, Product, %Product%
       GuiControl,Varbar:Text, Batch, %Batch%
       GuiControl,Varbar:Text, lot, %lot%
       GuiControl,Varbar:Text, Coated, %Coated%
-      Ct:=Coated ? " ct#" : ""
+      ; Ct:=Coated ? " ct#" : ""
 }
 
 
