@@ -279,10 +279,10 @@ return
 #Ifwinactive,ahk_exe Code.exe  ;;___________________________VSCODE____________________________
 	Lbutton & F13::return
 	F13 & Tab::
-	;ins::vscode.reloadscript()
+	;F10::vscode.reloadscript()
 	Mbutton::sendinput, !{f}
 	; F13 & 5::												send {blind}{shiftdown}{`5}{shiftup} ;send %
-	;F13 & ins::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
+	;F13 & F10::									send % tt("`n Toggle Column Selection `n ") "^+{\}"
 	F13 & Lalt::vscode.FindMatchingwindows()
 	F13 & `::Sendinput,+{F9}
 	; F13 & '::Sendinput,!+{F9}
@@ -375,7 +375,7 @@ return
 	`::`
 	/::/
 
-	; ins::#\
+	; F10::#\
 	^r::!r
 	; <^h::[
 	; <^l::]
@@ -876,7 +876,8 @@ class VScode{
 		; winSet, Transparent, 155, ahk_exe Code.exe
 		sleep 100
 		; winSet, Transparent, off, ahk_exe Code.exe
-		try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+		; try	run, VQuest.ahk, E:\VQuest
+		try reload
 		if A_DebuggerName || DebuggingScript
 		{
 				varbar.SaveVariables()
@@ -886,7 +887,8 @@ class VScode{
 		else
 		{
 			varbar.SaveVariables()
-			try	run, VQuest.ahk, C:\Users\mmignin\Documents\VQuest
+			reload
+			; try	run, VQuest.ahk, E:\VQuest
 			; catch
 				; reload
 		}

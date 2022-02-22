@@ -78,28 +78,6 @@ GetAllProducts(Delimiter:=" ",File:=""){
 }
 
 
-	F13 & 1::             sendinput,%product%
-	F13 & 2::             sendinput, %Batch%
-	F13 & 3::							sendinput, %Lot%
-	F13 & 4::
-    if GetKeyState("Lctrl","D")
-      GetAllProducts("`n")
-    else if GetKeyState("Lalt","D")
-      GetAllProducts("`t")
-    else
-      GetAllProducts()
-    return
-	F13 & 5::
-    if GetKeyState("Lctrl","D")
-      GetAllBatches("`n")
-    else if GetKeyState("Lalt","D")
-      GetAllBatches("`t")
-    else
-      GetAllBatches()
-    Return
-
-
-
 
 
 Clip(input=0,Wait:="0.45"){

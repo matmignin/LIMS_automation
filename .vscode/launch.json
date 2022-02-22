@@ -10,6 +10,16 @@
       "program": "C:\\Users\\mmignin\\Documents\\VQuest\\Vquest.ahk",
 			"args": [],
 			"useDebugDirective": true
+    },
+    {
+      "type": "autohotkey",
+      "request": "launch",
+      "name": "RemoteVQ",
+      "port":"9002-9010",
+      "useAutoJumpToError": true,
+      "program": "C:\\Users\\mmignin\\Documents\\VQuest\\RemoteVQ\\RemoteVQ.ahk",
+			"args": [],
+			"useDebugDirective": true
     }
   ]
 }

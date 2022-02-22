@@ -2363,23 +2363,23 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			send, ^c
 			clipwait, 1
 			sleep 400
-			filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
+			filename=Rotations\%Product%.txt
 			FileDelete, %FileName%
 			FileAppend, %Clipboard%, %Filename%
-			LMSwb:=ComObjactive("Excel.Application")
-			Rotation:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,5)
-			Rotation.Value:=Product ".txt"
+			;LMSwb:=ComObjactive("Excel.Application")
+			;Rotation:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,5)
+			;Rotation.Value:=Product ".txt"
 			; iniwrite %Clipboard%, Settings.ini, Rotations, %Product%
 		}
 
 		PasteProductRotation(){
 			global
-			filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
+			filename=Rotations\%Product%.txt
 			FileRead, Clipboard, %Filename%
 			; iniread Clipboard,Settings.ini, Rotations, %Product%
-			LMSwb:=ComObjactive("Excel.Application")
-			RotationDone:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,6)
-			RotationDone.Value:="1"
+			;LMSwb:=ComObjactive("Excel.Application")
+			;RotationDone:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,6)
+			;RotationDone.Value:="1"
 			sleep 200
 			send, ^v
 		}

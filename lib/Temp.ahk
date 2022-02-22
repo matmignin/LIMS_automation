@@ -9,6 +9,12 @@ return
 ; #If Mode("TempCode")
 TEST_1: ;;||||||||||||||||||||||||||||||||||||||||||||||| TEST 1 ||||||||||||||||||||||||||||||||||||||||||||||||||||
 ; CopyNewestFile("K880")
+IfLabelCopy:=Clipboard
+  if RegexMatch(IfLabelCopy, "<<LabelCopy>>")
+    msgbox, Yo a label copy
+return
+
+
 Excel.Batches()
 ; CopyNewestFile("K784")
 
@@ -127,11 +133,11 @@ CopyWordDoc(ProductToFind, RegexSearchPattern, RegexReplacePattern){
 ; #If winactive("Select methods tests - \\Remote") && TempCode
 ; #If winactive("Results Definition - \\Remote") && TempCode
 ;     Mbutton::send, {enter}
-;     ins::gosub, AddRAE_ResultsDefinition
+;     F10::gosub, AddRAE_ResultsDefinition
 ;     rbutton::lms.menu()
 ;     ; Lbutton::
 ; #If mouseisover("NuGenesis LMS - \\Remote") && TempCode
-;   ; ins::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
+;   ; F10::gosub, AddRAE ;Send, {Click 83, 560} ; click edit method
 ;   ; F20::gosub, CheckExcelRow
 ;   ; F15::gosub, CheckExcelRow
 

@@ -3,56 +3,99 @@
 F19 & left::								GetAllProducts()
 F19 & right::								GetAllBatches()
 
-		F10::
-			; if (A_GuiEvent="DoubleClick"){
-	Name:=			[]
-	IngredientID:=[]
-	Position:=		[]
-	LabelClaim:=	[]
-	MinLimit:=		[]
-	MaxLimit:=		[]
-	Units:=			[]
-	Percision:=		[]
-	LabelName:=		[]
-	Description:=	[]
-	Assay:=			[]
-	Requirement:=	[]
-	Method:= 		[]
-		; Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
-		; Current_Row:=A_EventInfo
-		; Loop % Rows_left {
-			; Excel.Get_Current_row()
-			; ArrayKeys:=["Ingredient_ID","Position","Name","Claim"]
-			; LabelCopy:=[]
-			loop, parse, clipboard, "`n"
-			{
-				Line:=A_index
-				Ingredient:=[]
-				Spec:=[]
-				ingredient:=StrSplit(A_LoopField,"|")
-				Name[%Line%]:=ingredient[2]
-				IngredientID[%Line%]:=ingredient[3]
-				Position[%Line%]:=ingredient[4]
-				LabelName[%Line%]:=ingredient[5]
-				labelClaim[%Line%]:=ingredient[6]
-				if !ingredient[7]
-					continue
-				Assay[%Line%]:=ingredient[7]
-				Method[%Line%]:=ingredient[8]
-				Description[%Line%]:=ingredient[9]
-				MinLimit[%Line%]:=ingredient[10]
-				MaxLimit[%Line%]:=ingredient[11]
-				Units[%Line%]:=ingredient[12]
-				Percision[%Line%]:=ingredient[13]
-				Requirement[%Line%]:=ingredient[14]
-				; Spec.%line%:=StrSplit(A_LoopField,"\\")
+	F1::
+	F13 & 1::
+		if GetKeyState("Lctrl","D")
+		GetAllProducts()
+		else if GetKeyState("Lalt","D")
+		GetAllProducts("`n")
+		else if GetKeyState("Lshift","D")
+		GetAllProducts("`t")
+		else
+		sendinput, %product%
+		return
+	F2::
+	F13 & 2::
+		if GetKeyState("Lctrl","D")
+		GetAllBatches()
+		else if GetKeyState("Lalt","D")
+		GetAllBatches("`n")
+		else if GetKeyState("Lshift","D")
+		GetAllBatches("`t")
+		else
+		sendinput, %Batch%
+		return
+	F3::
+	F13 & 3::							sendinput, %Lot%
+
+
++Mbutton::
+	F10::
+	Pointer:=Clipboard
+  		if RegexMatch(Pointer, "<<LabelCopy>>"){
+			Name:=			[]
+			IngredientID:=	[]
+			Position:=		[]
+			LabelClaim:=	[]
+			MinLimit:=		[]
+			MaxLimit:=		[]
+			Units:=			[]
+			Percision:=		[]
+			LabelName:=		[]
+			Description:=	[]
+			Assay:=			[]
+			Requirement:=	[]
+			Method:= 		[]
+		loop, parse, clipboard, "`n"
+		{
+			Line:=A_index
+			Ingredient:=[]
+			Spec:=[]
+			ingredient:=StrSplit(A_LoopField,"|")
+			Name[Line]:=ingredient[2]
+			IngredientID[Line]:=ingredient[3]
+			Position[Line]:=ingredient[4]
+			LabelName[Line]:=ingredient[5]
+			labelClaim[Line]:=ingredient[6]
+			if !ingredient[7]
+				continue
+			Assay[Line]:=ingredient[7]
+			Method[Line]:=ingredient[8]
+			Description[Line]:=ingredient[9]
+			MinLimit[Line]:=ingredient[10]
+			MaxLimit[Line]:=ingredient[11]
+			Units[Line]:=ingredient[12]
+			Percision[Line]:=ingredient[13]
+			Requirement[Line]:=ingredient[14]
 			}
+			  Lms.detectTab()
+			tt(Tab)
+			if Winactive("Composition") || winactive("Edit Ingredient"){
+				winactivate "Composition"
+				loop % Line
+				{
+					If !Position[A_index]
+						return
+					ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
+					ifwinnotactive, Composition
+						sleep 300
+					}
+				}
+			else if (Tab="Specs")
+				SpecTab.Autofill()
+			; msgbox, Yo a label copy
+  		if RegexMatch(Pointer, "<<TestSpecs>>")
+			msgbox, Yo a testSpec
+  		if RegexMatch(Pointer, "<<Batches>>")
+			msgbox, Yo a Bateches
+  		if RegexMatch(Pointer, "<<SheetInfo>>")
+			msgbox, Yo a Bateches
+
 				; msgbox % " Name: " Name_%A_index% "`n Claim: " Claim_%A_index% "`n Position: " Position_%A_index% "`n IngredientID: " IngredientID_%A_index%
 			; loop, 3
 			; {
 				; sleep 200
 				; if (labelName[1]){
-					ProductTab.EditIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1])
 					; sleep 300
 					; Varbar.AddIteration()
 					; winactivate, Composition
@@ -77,11 +120,12 @@ F19 & right::								GetAllBatches()
 				; break
 			sleep 100
 		return
+		  }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		; F10::4tap()
 		mbutton:: 3tap()
-		+mbutton::lms.Menu()
+		; +mbutton::lms.Menu()
 		F7::		 3Right()
 		F6::		3Left()
 		F20 & Space::Varbar.Focus(Product)
@@ -397,3 +441,34 @@ F19 & right::								GetAllBatches()
 		else
 			return
 	}
+
+
+#Ifwinactive, Edit Formulation
+	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
+	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
+	:*R:#3`;::`#3 capsule / 0.626`" x 0.229`"
+	:*R:#2`;::`#2 capsule / 0.709`" x 0.250`"
+	:*R:#1`;::`#1 capsule / 0.765`" x 0.272`"
+	:*R:#0`;::`#0 capsule / 0.854`" x 0.300`"
+	:*R:USP`;::Meets USP Requirements
+	:*R:fr`;::Fixing Rotation
+	:*R:7/16`;::`Round / 0.4375`"
+	:*R:5.5 oblong`;::Oblong / 0.750`" x 0.313`"
+	:*R:5.5 oval`;::Oval / 0.625`" x 0.344`""
+	:*RR:5 oblong`;::Oblong / 0.750`" x 0.250`""
+	:*:1c`;::`Each (1) capsule contains
+	:*:2c`;::`Each two (2) capsules contains
+	:*:3c`;::`Each three (3) capsules contains
+	:*:4c`;::`Each four (4) capsules contains
+	:*:5c`;::`Each five (5) capsules contains
+	:*:6c`;::`Each six (6) capsules contains
+	:*:7c`;::`Each seven (7) capsules contains
+	:*:1t`;::`Each `(1`) tablet contains
+	:*:2t`;::`Each two `(2`) tablets contains
+	:*:3t`;::`Each three `(3`) tablets contains
+	:*:4t`;::`Each four (4) tablets contains
+	:*:5t`;::`Each five (5) tablets contains
+	:*:6t`;::`Each six (6) tablets contains
+	:*:7t`;::`Each seven (7) tablets contains
+
+#ifwinactive

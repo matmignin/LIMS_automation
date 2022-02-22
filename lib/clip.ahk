@@ -539,8 +539,6 @@ clipChange(type){
   global
   ifwinactive, Select tests for request: R
     return
-  ; ifwinexist, Mats LMS Workbook.xlsb - Excel
-      ; return
   if SimpleClip
     return
   sleep 50

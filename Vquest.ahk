@@ -155,6 +155,8 @@ return
 CL3Api_Close()
 
 
+
+
 Receive_WM_COPYDATA(wParam, lParam)
 {
     StringAddress := NumGet(lParam + 2*A_PtrSize)  ; Retrieves the CopyDataStruct's lpData member.

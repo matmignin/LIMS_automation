@@ -408,55 +408,33 @@ Scrolldown(){
 Class ProductTab { ;;__________________ProductTab Class_____________________
 	EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id){
 		Global
-		;; the final input window for adding ingredients
-
-		; Ingredient_Name:=Trim(Ingredient_Name,"`r`n")
-		; Ingredient_Id_count:=Trim(Ingredient_Id_count)
-		; Ingredient_Id_count:=Format("{:d}", Ingredient_Id_count)
-		; Ingredient_Claim:=Trim(Ingredient_Claim,"`r`n")
-		; Ingredient_position:=Trim(Ingredient_Position,"`r`n")
-		; sleep 120
-		; ifwinactive, Edit Ingredient
-		; ifwinactive, Edit Ingredient
-			; this.DropdownSelect(Ingredient_Id_count)
 		ifwinnotexist, Edit Ingredient
 		{
 			winactivate, Composition
-			; Breaking.Point()
 			click 57, 65
-			;sleep 50
 			sleep 50
-			; Breaking.Point()
 			this.DropdownSelect(Ingredient_Id)
-		; winactivate, Edit Ingredient
-			; sleep 100
+			;sleep 100
 		}
-		; Excel.Get_Current_row()
-		sleep 50
+		;sleep 50
 		if winactive("Composition")
+			return
+		Sendinput,{tab 6}^a%Ingredient_position%{tab}^a
+		Sendinput,%Ingredient_Name%
+		If Ingredient_Claim contains Heavy Metal,Allergens
+			Sendinput,{tab}
+		Sendinput,{tab 2}^a
+		Sendinput,%Ingredient_Claim%
+		Breaking.Point()
+		If !ManualInput
+			Send,{enter}
+		ifwinexist, Duplicate ingredient ID
+			return
+		sleep 200
+		ManualInput:=
+		Breaking.Point()
 		return
-
-	Sendinput,{tab 6}^a%Ingredient_position%{tab}^a
-	Sendinput,%Ingredient_Name%
-	; sleep 100
-	If Ingredient_Claim contains Heavy Metal,Allergens
-		Sendinput,{tab}
-	Sendinput,{tab 2}^a
-	Sendinput,%Ingredient_Claim%
-
-	; Current_Row:= Current_Row+1
-
-	Breaking.Point()
-	ifwinexist, Duplicate ingredient ID
-		exit
-	If !ManualInput
-		Send,{enter}
-	Tooltip,
-	sleep 300
-	ManualInput:=
-	Breaking.Point()
-	return
-}
+	}
 
 DropdownSelect(A_DropdownCount){
 	global
@@ -466,19 +444,14 @@ DropdownSelect(A_DropdownCount){
 	sleep 100
 		; msgbox % a_DropdownCount
 	AbsSelection:=Abs(A_DropdownCount)
-	; Breaking.Point()
 	if (A_DropdownCount > 0)
 		Sendinput, {tab}{home}{right %A_DropdownCount%}
-	Breaking.Point()
 	if (A_DropdownCount < 0)
 		Sendinput, {tab}{end}{left %AbsSelection%}
-	Breaking.Point()
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
 	if (a_DropdownCount = ""){
-		; msgbox % a_DropdownCount
 		this.Dropdown_Ingredient(Iteration)
-		Breaking.Point()
 		if Iteration >=20
 			iteration:=0
 		varbar.AddIteration(0)
@@ -488,41 +461,11 @@ DropdownSelect(A_DropdownCount){
 }
 
 
-Blends(n,Measurment){
-	global ServingSize, Color, ShapeAndSize
-	setwindelay, 260
-	winactivate, Edit Formulation
-	click 450, 462, 3
-	Send, {click 385, 347}
-	if (N!=1)
-		Plural:="s"
-	if (n=1)
-		TextNumber:="{backspace}"
-	if (n=2)
-		TextNumber:="two"
-	if (n=3)
-		TextNumber:="three"
-	if (n=4)
-		TextNumber:="four"
-	if (n=5)
-		TextNumber:="five"
-	if (n=6)
-		TextNumber:="six"
-	if (n=7)
-		TextNumber:="seven"
-	if !color
-		Color:="PENDING"
-	If !ShapeAndSize
-		ShapeAndSize:= " g"
-	Send, Each %textNumber% (%n%){space}%measurment%%plural% (%ShapeAndSize%) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}
-	setwindelay, 60
-	exit
-}
+
 
 EditProduct(){ ;for naming Product code and customer,
 	global Product, Name, Customer, ShapeAndSize, color
 	setwindelay, 260
-	Excel.Connect(1)
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
 	sleep 200
@@ -762,27 +705,23 @@ return
 
 return
 class SpecTab { 	;;  	 ________________SpecTab class__________________
-/*
+
 	Table(){
 		Global
 		ShiftTable_X:=-350
 		ShiftTable_Y:=50
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, window
-		;  CoordMode, , Screen
 		ifwinnotactive, ahk_exe eln.exe
 			winactivate, ahk_exe eln.exe
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
-
-		; Iniread, SpecTable_X, Settings.ini, Locations, SpecTable_X
-		; Iniread, SpecTable_Y, Settings.ini, Locations, SpecTable_Y
 		CoordMode, mouse, window
 		SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		SpecTable_Y:=LMS_Y+ShiftTable_Y
 		Table_height=15
 		CoordMode, mouse, screen
 		Excel.Connect()
-		SpecTab.GetExcelData()
+		; SpecTab.GetExcelData()
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		SpecTab.ShowGUI()
@@ -807,29 +746,41 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		GUI, Spec_Table:Default
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid altSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		GUI, Spec_Table:Font, s16 cBlack Bold, Consolas
-		loop, %Total_Rows%{
-			if Position[A_index] =""
-			{
-				Table_height:=table_height+1
-				Total_rows:=total_rows-1
-				continue
-			}
-			if Method[A_index] =""
-			{
-				Total_rows:=total_rows - 1
-				continue
-			}
-			else
-			{
-				LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
-				temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-				Test:= Name[A_index]
-				; Iniwrite, %Temp%, Settings.ini, %Product%, %Test%
+		GUI, Spec_Table:Font, s12 cBlack Bold, Consolas
+		loop % Assay.Maxindex(){
+			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
+			temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
+			Test:= Name[A_index]
 			}
 		}
-	}
- */
+
+ModifyColumns(){
+	Global
+	LV_ModifyCol(1,130)
+	LV_ModifyCol(2,0)
+	LV_ModifyCol(3,20)
+	LV_ModifyCol(5,20)
+	LV_ModifyCol(6,0)
+	LV_ModifyCol(7,0)
+	LV_ModifyCol(8,10)
+	LV_ModifyCol(9,0)
+	; LV_Delete(Table_Height)
+}
+
+GetRowText(){
+	global
+	LV_GetText(Name, 			A_EventInfo,1)
+	LV_GetText(LabelClaim, 		A_EventInfo,2)
+	LV_GetText(MinLimit, 		A_EventInfo,3)
+	LV_GetText(MaxLimit, 		A_EventInfo,4)
+	LV_GetText(Units, 			A_EventInfo,5)
+	LV_GetText(Percision, 		A_EventInfo,6)
+	LV_GetText(Description, 	A_EventInfo,7)
+	LV_GetText(Method, 			A_EventInfo,8)
+	GUI, Spec_Table:submit,NoHide
+}
+
+
 	CopyPasteSpec(){
 		global copypasteToggle
 		click
@@ -847,7 +798,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		winactivate, Select methods tests
 		click, 229, 72,2
 		Send, ^a
-		Loop, Read, data\Methods.ini
+		Loop, Read, Methods.ini
 		{
 			If A_Index = 1
 				Continue
@@ -1015,16 +966,14 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		return
 	}
 
-/*
+
 ;; Run through all the menues to add
 	AutoFill(){
 		global
 		winactivate, ahk_exe eln.exe
 		sleep 200
-		;blockinput, on
 		If winactive("NuGenesis LMS")
 		{
-			;Sendinput,{click, 565, 692}^a%Name%{enter}{click r, 270, 809}+{tab 2}{enter}
 			sleep 200
 			Breaking.Point()
 			click, 57, 719 ;click Edit Test
@@ -1040,9 +989,7 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
 			sleep 200
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
-			; click 236, 246
 			click 239, 246
-			;  LMSclick.TestDefinitionEditor_Results()
 			sleep 200
 			Breaking.Point()
 			winactivate, Results Definition
@@ -1050,7 +997,6 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		}
 		if winactive("Results Definition") ;Selection window
 		{
-
 			winactivate, Results Definition
 			If Method contains ICP-MS 231
 				Send,{click 217, 141}
@@ -1060,7 +1006,6 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			winwaitactive, Result Editor,,0.5
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-			; blockinput, off
 			Breaking.Point()
 			sleep 400
 		}
@@ -1069,7 +1014,6 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 			winactivate, Result Editor
 			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
-			; blockinput, off
 			Breaking.Point()
 		return
 	}
@@ -1078,61 +1022,38 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 	return
 }
 
-ModifyColumns(){
-	Global
-	LV_ModifyCol(1,130)
-	LV_ModifyCol(2,0)
-	LV_ModifyCol(6,0)
-	LV_ModifyCol(7,0)
-	LV_ModifyCol(8,80)
-	LV_ModifyCol(9,0)
-	LV_Delete(Table_Height)
-}
 
-GetRowText(){
-	global
-	LV_GetText(Name, 				A_EventInfo,1)
-	LV_GetText(LabelClaim, 		A_EventInfo,2)
-	LV_GetText(MinLimit, 		A_EventInfo,3)
-	LV_GetText(MaxLimit, 		A_EventInfo,4)
-	LV_GetText(Units, 			A_EventInfo,5)
-	LV_GetText(Percision, 		A_EventInfo,6)
-	LV_GetText(Description, 	A_EventInfo,7)
-	LV_GetText(Method, 			A_EventInfo,8)
-	GUI, Spec_Table:submit,NoHide
-}
-GetExcelData(){
-	Global
-	Name:=			[]
-	Position:=		[]
-	LabelClaim:=	[]
-	MinLimit:=		[]
-	MaxLimit:=		[]
-	Units:=			[]
-	Percision:=		[]
-	LabelName:=		[]
-	Description:=	[]
-	Requirement:=	[]
-	method:= 		[]
-	while (Xl.Range("AK" . A_Index+6).Value != ""){
-		Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
-		Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
-		LabelClaim[A_index]:=			Xl.Range("AJ" . A_Index+7).Text
-		MinLimit[A_index]:=				Xl.Range("AE" . A_Index+7).Text
-		MaxLimit[A_index]:=				Xl.Range("AF" . A_Index+7).Text
-		Units[A_index]:=					Xl.Range("AG" . A_Index+7).Text
-		Percision[A_index]:=				Xl.Range("AH" . A_Index+7).Text
-		Description[A_index]:=			Xl.Range("AL" . A_Index+7).Text
-		Method[A_index]:=					Xl.Range("AB" . A_Index+7).Text
-		Total_rows:=A_index
-		Table_Height:=A_index
-		if (Table_Height > 20)
-			Table_Height = 20
-	}
-	; }
+; GetExcelData(){
+; 	Global
+; 	Name:=			[]
+; 	Position:=		[]
+; 	LabelClaim:=	[]
+; 	MinLimit:=		[]
+; 	MaxLimit:=		[]
+; 	Units:=			[]
+; 	Percision:=		[]
+; 	LabelName:=		[]
+; 	Description:=	[]
+; 	Requirement:=	[]
+; 	method:= 		[]
+; 	loop % Method.maxindex(){
+; 	; while (Xl.Range("AK" . A_Index+6).Value != ""){
+; 		Position[A_index]:=				Xl.Range("AD" . A_Index+7).Text
+; 		Name[A_index]:=					Xl.Range("AI" . A_Index+7).text
+; 		LabelClaim[A_index]:=			Xl.Range("AJ" . A_Index+7).Text
+; 		MinLimit[A_index]:=				Xl.Range("AE" . A_Index+7).Text
+; 		MaxLimit[A_index]:=				Xl.Range("AF" . A_Index+7).Text
+; 		Units[A_index]:=					Xl.Range("AG" . A_Index+7).Text
+; 		Percision[A_index]:=				Xl.Range("AH" . A_Index+7).Text
+; 		Description[A_index]:=			Xl.Range("AL" . A_Index+7).Text
+; 		Method[A_index]:=					Xl.Range("AB" . A_Index+7).Text
+; 		Total_rows:=A_index
+; 		Table_Height:=A_index
+; 		if (Table_Height > 20)
+; 			Table_Height = 20
+; 	}
+; }
 
-}
-*/
 
 EditSampleTemplate_A(){
 	global
@@ -1572,7 +1493,6 @@ HM_Prop65(){
 	return
 }
 }
-
 WM_Lbuttondown:
 Spec_Table:
 	if (A_GuiEvent = "NORMAL" ){

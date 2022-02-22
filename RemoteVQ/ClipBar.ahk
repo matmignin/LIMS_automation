@@ -107,11 +107,6 @@ Class VarBar{
 		Iteration+=1
 		sleep %Speed%
 		ControlsetText, Static1,%Iteration%,VarBar
-		; flovar(Iteration,200)
-		; Pop(Iteration)
-		; tt(Iteration,500,Varbar_x,Varbar_y,2,200)
-		; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-		; GuiControl, +redraw, varbar
 		return
 	}
 	SubIteration(speed:=300){
@@ -121,9 +116,6 @@ Class VarBar{
 		Iteration-=1
 		sleep %speed%
 		ControlsetText, Static1,%Iteration%,VarBar
-		; Pop(Iteration)
-		; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-		; GuiControl, +redraw, varbar
 		return
 	}
 
@@ -131,10 +123,6 @@ Class VarBar{
 
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
 #Ifwinactive, VarBar ahk_exe AutoHotkey.exe
-	^enter::
-		winactivate, %the_winTitle%
-		click, %caret_X%, %caret_y%
-	return
 	enter::
 		ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3") ||(winControl="Edit4"){
@@ -142,36 +130,15 @@ Class VarBar{
 			Gui, Varbar:submit, nohide
 			LMS.Searchbar(clipboard,"{enter}")
 		}
-		else if (winControl="Edit5")
-			varbar.AddToList()
 	return
 #ifwinactive
 
 #If MouseIsOver("VarBar")
-	Mbutton::
-	click
-	sleep 100
-	Varbar.WM_LBUTTONDBLCLK()
-return
-return
-Wheelup::Varbar.AddIteration(10)
-Wheeldown::Varbar.SubIteration(10)
+Wheelup::Varbar.AddIteration(30)
+Wheeldown::Varbar.SubIteration(30)
 +wheelup::Varbar.AddIteration(0)
 +wheeldown::Varbar.SubIteration(0)
 #if
-
-; WM_LBUTTONDOWN(wParam, lParam){
-; 	If !MouseIsOver("VarBar ahk_exe AutoHotkey.exe")
-; 		return
-; 	PostMessage, 0xA1, 2
-; 	X := lParam & 0xFFFF
-; 	Y := lParam >> 16
-; 	if A_GuiControl
-; 		ctrl := "`n(in control " . A_GuiControl . ")"
-; 	PostMessage, 0xA1, 2
-; 	MouseGetPos,,,,winControl
-
-; return
 
 VarBar_ResetSub:
 	VarBar.Reset()

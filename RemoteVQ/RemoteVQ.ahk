@@ -2,10 +2,11 @@ if A_username != mmignin
 	exitapp
 	#SingleInstance,Force
 	#Persistent
-	; Process, Priority, , High
+	Process, Priority, , High
 	#NoEnv
 	Iteration=1
-	; #KeyHistory 500
+	#ErrorStdOut
+	#KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 1500
