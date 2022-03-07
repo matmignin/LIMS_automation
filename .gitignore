@@ -52,3 +52,6 @@ Settings.ini
 Settings.ini
 **/Data/*.txt
 Data/CurrentCodes.txt
+RemoteVQ/RemoteVQ.exe
+**/.vscode/launch.json
+
