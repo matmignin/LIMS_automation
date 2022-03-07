@@ -1,134 +1,56 @@
 
 		#ifwinactive,
-F19 & left::								GetAllProducts()
-F19 & right::								GetAllBatches()
 
-	F1::
-	F13 & 1::
-		if GetKeyState("Lctrl","D")
-		GetAllProducts()
-		else if GetKeyState("Lalt","D")
-		GetAllProducts("`n")
-		else if GetKeyState("Lshift","D")
-		GetAllProducts("`t")
-		else
-		sendinput, %product%
+	<!left::GetAllProducts()
+	<!right::GetAllBatches()
+	F1::sendinput, %Product%
+	+F1::GetAllProducts()
+	!F1::GetAllProducts("`n")
+	^F1::GetAllProducts("`t")
+	F2::sendinput, %Batch%
+	+F2::GetAllBatches()
+	!F2::GetAllBatches("`n")
+	^F2::GetAllBatches("`t")
+	F3::sendinput, %Lot%
+	F4::sendinput, %Coated%
+	; !F2::GetAllBatches()
+	+F3::3tap()
+	!F3::4tap()
+	+F4::4tap()
+	+F9::
+		Sendinput, ^{c}
+		sleep 100
+		TT(Clipboard)
 		return
-	F2::
-	F13 & 2::
-		if GetKeyState("Lctrl","D")
-		GetAllBatches()
-		else if GetKeyState("Lalt","D")
-		GetAllBatches("`n")
-		else if GetKeyState("Lshift","D")
-		GetAllBatches("`t")
-		else
-		sendinput, %Batch%
-		return
-	F3::
-	F13 & 3::							sendinput, %Lot%
+	F18::
+	^F9::send, ^v
 
 
-+Mbutton::
-	F10::
-	Pointer:=Clipboard
-  		if RegexMatch(Pointer, "<<LabelCopy>>"){
-			Name:=			[]
-			IngredientID:=	[]
-			Position:=		[]
-			LabelClaim:=	[]
-			MinLimit:=		[]
-			MaxLimit:=		[]
-			Units:=			[]
-			Percision:=		[]
-			LabelName:=		[]
-			Description:=	[]
-			Assay:=			[]
-			Requirement:=	[]
-			Method:= 		[]
-		loop, parse, clipboard, "`n"
-		{
-			Line:=A_index
-			Ingredient:=[]
-			Spec:=[]
-			ingredient:=StrSplit(A_LoopField,"|")
-			Name[Line]:=ingredient[2]
-			IngredientID[Line]:=ingredient[3]
-			Position[Line]:=ingredient[4]
-			LabelName[Line]:=ingredient[5]
-			labelClaim[Line]:=ingredient[6]
-			if !ingredient[7]
-				continue
-			Assay[Line]:=ingredient[7]
-			Method[Line]:=ingredient[8]
-			Description[Line]:=ingredient[9]
-			MinLimit[Line]:=ingredient[10]
-			MaxLimit[Line]:=ingredient[11]
-			Units[Line]:=ingredient[12]
-			Percision[Line]:=ingredient[13]
-			Requirement[Line]:=ingredient[14]
-			}
-			  Lms.detectTab()
-			tt(Tab)
-			if Winactive("Composition") || winactive("Edit Ingredient"){
-				winactivate "Composition"
-				loop % Line
-				{
-					If !Position[A_index]
-						return
-					ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
-					ifwinnotactive, Composition
-						sleep 300
-					}
-				}
-			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
-			Method:=ingredient[8]
-			Description:=ingredient[9]
-			MinLimit:=ingredient[10]
-			MaxLimit:=ingredient[11]
-			Units:=ingredient[12]
-			Percision:=ingredient[13]
-			Requirement:=ingredient[14]
-				SpecTab.Autofill()
-		  }
-		  }
-			; msgbox, Yo a label copy
-  		if RegexMatch(Pointer, "<<TestSpecs>>")
-			msgbox, Yo a testSpec
-  		if RegexMatch(Pointer, "<<Batches>>")
-			msgbox, Yo a Bateches
-  		if RegexMatch(Pointer, "<<SheetInfo>>")
-			msgbox, Yo a Bateches
-
-				; msgbox % " Name: " Name_%A_index% "`n Claim: " Claim_%A_index% "`n Position: " Position_%A_index% "`n IngredientID: " IngredientID_%A_index%
-			; loop, 3
-			; {
-				; sleep 200
-				; if (labelName[1]){
-					; sleep 300
-					; Varbar.AddIteration()
-					; winactivate, Composition
-				; }
-				; else
-				; return
-			; }
 
 
-				; Spec:=[]
-				; Spec:=StrSplit(A_LoopField,"/")
-				; Spec_MinLimit:=Spec[3]
-				; Spec_MaxLimit:=Spec[4]
-				; Spec_Units:=Spec[5]
-				; Spec_Percision:=Spec[6]
-				; Spec_Method:=Spec[7]
-				; Spec_Description:=Spec[2]
-				; SpecTab.TestDefinitionEditor(Spec_Description)
-				; SpecTab.ResultEditor(Spec_MinLimit,Spec_MaxLimit,Spec_Units,Spec_Percision,1,1)
 
-			; if winactive("Duplicate Spec ID") || winactive("NuGenesis LMS") || winactive("Edit Formulation") || winactive("Warning")
-				; break
-			sleep 100
-		return
+
+Test_msgbox(msg){
+	global
+	; msgbox % " Name: " Name[] "`n Claim: " Claim[] "`n Position: " Position[] "`n IngredientID: " IngredientID[]
+	; TT(Listarray(Name))
+	TT(msg,2000)
+	; listarray(Position),1000,300,300,2,,"R")
+	return
+}
+test_1:
+	clipboard:=
+(
+"<<LabelCopy>>|Vitamin D|283|2|Vitamin D (as cholecalciferol)|12.5 mcg|1.65|HPLC 176|(as cholecalciferol)|12.50|20.63|mcg|2|12.50 - 20.63 mcg
+<<LabelCopy>>|Calcium|29|4|Calcium|100 mg|
+<<LabelCopy>>|Zinc|-0|6|Zinc (as zinc oxide)|10 mcg|1.25|ICP-MS 231|(as zinc oxide)|10.0|12.5|mcg|1|10.0 - 12.5 mcg
+<<LabelCopy>>|Selenium|253|8|Selenium (as sodium selenate)|35 mcg|
+<<LabelCopy>>|White willow bark extract||10|White willow bark extract (25% salicin)|250 mg|
+<<LabelCopy>>|N-Acetyl-L-cysteine||12|N-Acetyl-L-cysteine|162.5 mg|
+<<LabelCopy>>|Turmeric root extract||14|Turmeric root extract (95% curcuminoids)|100 mg|"
+	)
+	return
+
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		; F10::4tap()
@@ -140,15 +62,17 @@ F19 & right::								GetAllBatches()
 		F20 & left::Send, %Product%(on sample log)
 		F20 & down::Send, %Batch%
 		F20 & right::Send, %lot%
+		Enter::LMS.SaveCode()
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::lms.searchbarPaste()
+		^F9::LMS.SearchBar()
 
 
 	#Ifwinactive,Select Iterations
-		F20::LMS.PasteProductRotation()
+		^F9::LMS.PasteProductRotation()
 	#Ifwinactive,Book
-		F19::LMS.CopyProductRotation()
+		+F9::LMS.CopyProductRotation()
 
 	#Ifwinactive, Result Entry ;;___Result_Entry
 		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
@@ -173,20 +97,18 @@ F19 & right::								GetAllBatches()
 		rbutton::send, ^{click}
 		Numpaddot::send, {click 837, 656}{
 	#ifwinactive, Select samples for test:
-	#Ifwinactive, ahk_exe eln.exe, ;;___LMS app
+	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
 		^`::						Varbar.reset()
-		enter::					 LMSclick.okay()
-		esc::						 LMSclick.esc()
+		enter::						LMSclick.okay()
+		esc::						LMSclick.esc()
 		F9::						3up()
 		F8::						3down()
 		F7::						3Right()
 		F6::						3Left()
-		; F10::						4tap()
-
-	#Ifwinactive, Barcode Scanner
-		enter::enter
-		; F20::LMS.SearchbarPaste()
-		^v::LMS.SearchbarPaste()
+		F10::						4tap()
+		+^F10::						4tap()
+		mbutton::					3tap()
+		+!F10::						3tap()
 	#Ifwinactive,
 
 		; Lbutton & Rbutton::       send, ^{x}
@@ -206,7 +128,7 @@ F19 & right::								GetAllBatches()
 		F20 & backspace:: 		Send, {delete}
 		F20 & =:: 		Send,{ctrldown}{=}{ctrlup}
 		F20 & -:: 		Send,{ctrldown}{-}{ctrlup}
-		F19 & Rshift::				Varbar.focus("Edit1")
+		; F19 & Rshift::				Varbar.focus("Edit1")
 		F20 & enter::
 			Varbar.focus("Edit5")
 			send, {esc}{home}^{right}
@@ -451,6 +373,8 @@ F19 & right::								GetAllBatches()
 	}
 
 
+
+
 #Ifwinactive, Edit Formulation
 	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
 	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
@@ -480,3 +404,80 @@ F19 & right::								GetAllBatches()
 	:*:7t`;::`Each seven (7) tablets contains
 
 #ifwinactive
+
+
+GetAllBatches(Delimiter:=" ",File:=""){
+  global
+  regBatches:=[]
+		Haystack:=Clipboard
+		PreClip:=Clipboard
+		sleep 50
+  while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
+      regBatches.insert(aBatch)
+  ; }
+      AllBatches:=[], oTemp := {}
+      for vKey, vValue in regBatches
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllBatches:=Listarray(AllBatches,"")
+    AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
+    AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
+
+
+    SimpleClip:=1
+    sleep 20
+		clipboard:=AllBatches
+		sleep 200
+		send, ^v
+    sleep 400
+    SimpleClip:=1
+    clipboard:=PreClip
+		return AllBatches
+}
+
+GetAllProducts(Delimiter:=" ",File:=""){
+  global
+  regProducts:=[]
+  pos=0
+		Haystack:=Clipboard
+    PreClip:=Clipboard
+		sleep 50
+  while pos := RegexMatch(Haystack, RegexProduct, aProduct, pos+1) ; {
+      regProducts.insert(aProduct)
+  ; }
+      AllProducts:=[], oTemp := {}
+      for vKey, vValue in regProducts
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllProducts:=Listarray(AllProducts,"")
+    AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
+    SimpleClip:=1
+    sleep 20
+    clipboard:=AllProducts
+    sleep 200
+    send, ^v
+    sleep 400
+    SimpleClip:=1
+    clipboard:=Preclip
+		Return AllProducts
+}
