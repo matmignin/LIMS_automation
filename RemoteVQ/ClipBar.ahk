@@ -14,7 +14,6 @@ Class VarBar{
 		VarBar_W=350
 		VarBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		VarBar_Y:=Nugenesis_Y
-		; This.loadSavedVariables()
 		Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui Varbar:Default
 		Gui, Varbar:+Delimiter`n
@@ -27,7 +26,7 @@ Class VarBar{
 		this.AddEdit("Lot",		 "left h29 x+0 y0 w75", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
 		GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
-		This.AddText("Iteration", "x+1 center y-1 w23",			 "19 Bold 107C41, Consolas")	; Text1
+		This.AddText("Iteration", "x+1 center y-1 w45",			 "19 Bold 107C41, Consolas")	; Text1
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, VarBar:Show, x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
@@ -35,6 +34,7 @@ Class VarBar{
 			GUI, VarBar:Show, x%Win_X% y%Win_Y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
 		CoordMode, mouse, window
 		; OnMessage(0x0201, "WM_LBUTTONDOWN")
+		this.loadSavedVariables()
 		; OnMessage(0x0203, "WM_LBUTTONDBLCLK")
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
@@ -118,7 +118,37 @@ Class VarBar{
 		ControlsetText, Static1,%Iteration%,VarBar
 		return
 	}
-
+	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
+	global
+		GUI, varbar:default
+		GUI, Varbar:Submit, Nohide
+		sleep 200
+		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+		iniwrite, %Product%, Settings.ini, SavedVariables, Product
+		iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
+		iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
+		iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+	}
+loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
+	global
+		GUI, varbar:default
+		Iniread, Iteration, Settings.ini, SavedVariables, Iteration
+		iniRead, Product, Settings.ini, SavedVariables, Product
+		iniRead, Batch, Settings.ini, SavedVariables, Batch
+		iniRead, Lot, Settings.ini, SavedVariables, Lot
+		iniRead, Coated, Settings.ini, SavedVariables, Coated
+		if Iteration
+			GuiControl,Varbar:Text, Iteration, %Iteration%
+		if Product
+			GuiControl,Varbar:Text, Product, %Product%
+		if Batch
+			GuiControl,Varbar:Text, Batch, %Batch%
+		if lot
+			GuiControl,Varbar:Text, lot, %lot%
+		if Coated
+			GuiControl,Varbar:Text, Coated, %Coated%
+		GUI, Varbar:Submit, Nohide
+	}
 }
 
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
