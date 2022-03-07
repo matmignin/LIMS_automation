@@ -1,6 +1,6 @@
 Return
 
-GetSampleInfo(){
+GetSampleInfo(){ ;on the lms main menu
 	global Customer, Name, ShipToIndex
 	ParsedSample:=[]
 	; clipboard:=
@@ -13,7 +13,7 @@ GetSampleInfo(){
 	TotalColumns:=Parsedsample.maxindex()//2
 
 	Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
-	Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
 	IniRead,ShipToIndex, Data\customers.ini, Customers, %Customer%
 	; if !ShipTo
 	; ShipTo:=ShipToIndex
@@ -33,8 +33,8 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 				Menu,Menu, add, Paste &Specs, Autofill
 			If CopyPasteToggle=0
 				Menu,Menu, add, Copy &Specs, Autofill
-			Menu, Menu, add, Paste All &Products, F19 & left
-			Menu, Menu, add, Paste All &Batches, F19 & right
+			Menu, Menu, add, Paste All &Products, +F1
+			Menu, Menu, add, Paste All &Batches, +F2
 
 			; msgbox, %Tab%
 			; click
@@ -49,7 +49,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 
 			else {
 				Menu,Menu, add, &Production Server, LMS_Env
-				Menu,Menu, add, &Test Server, LMS_Env
+		Menu,Menu, add, &Test Server, LMS_Env
 			}
 			; Menu, Menu, add, Paste All &WorkSheets, F19 & up
 			Try Menu,menu,show
@@ -74,7 +74,7 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 			return
 		}
 		if winactive("Edit specification"){
-			Menu,Menu, add, Departments, Autofill
+			;Menu,Menu, add, Departments, Autofill
 			Menu, DepartmentsMenu, add, Analytical, AutoFill
 			Menu, DepartmentsMenu, add, Physical, AutoFill
 			Menu, DepartmentsMenu, add, Micro, AutoFill
@@ -99,13 +99,6 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		; if !winactive("ahk_exe eln.exe")
-			; winactivate, ahk_exe eln.exe
-		; if (Lms.Filter()=On) {
-		; 	Lms.FilterBar(Code,PostCmd)
-		; 	Send, {ctrlup}
-		; 	return
-		; }
 		if winactive("Select methods tests")
 			clk(246,77, 2)
 		else If winactive("Register new samples") {
@@ -179,7 +172,6 @@ Class LMS { 			;;_____________________Generl LMS_________________________
 	}
 	SaveCode(){
 		global
-		Batches:=[]
 		Send, {ctrldown}{a}{ctrlup}
 		sleep 20
 		send, ^c
@@ -369,17 +361,6 @@ Orient(){
 	yAdd_methods:=565
 	xEnter_Results:=57
 	yEnter_Results:=630
-	; PixelSearch, FoundSamples, FoundY, SamplesTab, MyWorkTabs, SamplesTab+2, MyWorkTabs+2, 0xfffd353, 10, Fast RGB
-	; if FoundSamples
-	; 	Tab:="Samples"
-	; PixelSearch, FoundRequests, FoundY, RequestsTab, MyWorkTabs, RequestsTab+2, MyWorkTabs+2, 0xffd353, 10, Fast RGB
-	; If FoundRequests
-	; 	Tab:="Requests"
-	; PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-	; If FoundDocuments
-	; 	Tab:="Documents"
-	; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-	; tt(Tab)
 	return
 }
 
@@ -406,35 +387,35 @@ Scrolldown(){
 }
 
 Class ProductTab { ;;__________________ProductTab Class_____________________
-	EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id){
-		Global
-		ifwinnotexist, Edit Ingredient
-		{
-			winactivate, Composition
-			click 57, 65
-			sleep 50
-			this.DropdownSelect(Ingredient_Id)
-			;sleep 100
-		}
-		;sleep 50
-		if winactive("Composition")
-			return
-		Sendinput,{tab 6}^a%Ingredient_position%{tab}^a
-		Sendinput,%Ingredient_Name%
-		If Ingredient_Claim contains Heavy Metal,Allergens
-			Sendinput,{tab}
-		Sendinput,{tab 2}^a
-		Sendinput,%Ingredient_Claim%
-		Breaking.Point()
-		If !ManualInput
-			Send,{enter}
-		ifwinexist, Duplicate ingredient ID
-			return
-		sleep 200
-		ManualInput:=
-		Breaking.Point()
-		return
+EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id){
+	Global
+	ifwinnotexist, Edit Ingredient
+	{
+		winactivate, Composition
+		click 57, 65
+		sleep 50
+		this.DropdownSelect(Ingredient_Id)
+		;sleep 100
 	}
+	;sleep 50
+	if winactive("Composition")
+		return
+	Sendinput,{tab 6}^a%Ingredient_position%{tab}^a
+	Sendinput,%Ingredient_Name%
+	If Ingredient_Claim contains Heavy Metal,Allergens
+		Sendinput,{tab}
+	Sendinput,{tab 2}^a
+	Sendinput,%Ingredient_Claim%
+	Breaking.Point()
+	If !ManualInput
+		Send,{enter}
+	ifwinexist, Duplicate ingredient ID
+		return
+	sleep 200
+	ManualInput:=
+	Breaking.Point()
+	return
+}
 
 DropdownSelect(A_DropdownCount){
 	global
@@ -442,7 +423,6 @@ DropdownSelect(A_DropdownCount){
 		winactivate, Edit Ingredient
 	click, 150, 73 ;click dropdown box
 	sleep 100
-		; msgbox % a_DropdownCount
 	AbsSelection:=Abs(A_DropdownCount)
 	if (A_DropdownCount > 0)
 		Sendinput, {tab}{home}{right %A_DropdownCount%}
@@ -451,9 +431,9 @@ DropdownSelect(A_DropdownCount){
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
 	if (a_DropdownCount = ""){
+		if Iteration >=25
+			iteration:=1
 		this.Dropdown_Ingredient(Iteration)
-		if Iteration >=20
-			iteration:=0
 		varbar.AddIteration(0)
 	}
 	Breaking.Point()
@@ -464,15 +444,16 @@ DropdownSelect(A_DropdownCount){
 
 
 EditProduct(){ ;for naming Product code and customer,
-	global Product, Name, Customer, ShapeAndSize, color
+	global Product, ProductName, Customer, ShapeAndSize, color
 	setwindelay, 260
 	click 120,80 ;click product box
-	Sendinput,%Product%`,{space}%Name%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
+	Sendinput,%Product%`,{space}%ProductName%{tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
 	sleep 200
-	Sendinput,%Name%{tab 8}
+	Sendinput,%ProductName%{tab 8}
 	sleep 400
 	winwaitactive,NuGenesis LMS,,20
 	winactivate, NuGenesis LMS
+	Breaking.Point()
 	click, 67, 283
 	sleep 200
 	Breaking.Point()
@@ -483,29 +464,23 @@ EditProduct(){ ;for naming Product code and customer,
 	setwindelay, 60
 }
 
-EditFormulation(){ ;then click on Edit Formulation, puts in code, then tabs to serving size
+EditFormulation(){     ;then click on Edit Formulation, puts in code, then tabs to serving size
 	global Product, ShapeAndSize, color, ServingSize, ServingType
 	if !winactive("Edit Formulation") && winexist("Edit Formulation")
 		winactivate, Edit Formulation,
-	Send, {tab}%product%
-	Send, {Tab 23} ;{click 268, 578}
+	Sendinput, {tab}%product%
+	Sendinput, {Tab 23} ;{click 268, 578}
 	sleep 200
-	Breaking.Point()
-	; if (ServingSize=1 ? "(" ServingSize ")" : "Two (" ServingSize ")" ) ;|| ServingSize=2 || ServingSize=3 || ServingSize=4)
-	;  send, Each %ServingType% {space} contains {ctrl down}{left}{ctrl up}{left}
-	; if ShapeAndSize
-	send, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
-
-	; ShapeAndsize:=
+	sendinput, {tab}^a%ShapeAndSize%{shiftdown}{tab}{shiftup}
 	sleep 200
 	If !Color
 		color:="Pending"
 	else
 		send, {tab 2}^a%Color%{shiftdown}{tab 2}{shiftup}
-	sleep 200
-	; clk(287, 578) ;click save
+	sleep 900
+	Breaking.Point()
+	clk(287, 578) ;click save
 	return
-	Producttab.Table()
 
 }
 
@@ -682,34 +657,14 @@ IngredientMenuHandler:
 	; tt(GeneralCount)
 return
 
-Ingredient_table:
-	if (A_GuiEvent="DoubleClick"){
-		GUI,Ingredient_Table:submit,NoHide
-		Rows_left:=((LV_GetCount()-A_EventInfo)*Autoenter)+1
-		Current_Row:=A_EventInfo
-		Loop % Rows_left {
-			Excel.Get_Current_row()
-			ProductTab.EditIngredient(LabelName,LabelClaim,Position,DropdownCount)
-			if winactive("Duplicate ingredient ID") || winactive("NuGenesis LMS") || winactive("Edit Formulation") || winactive("Warning")
-				break
-			sleep 100
-		}
-	}
-return
-
-Ingredient_TableGuiClose:
-	sleep 100
-	GUI,Ingredient_Table:destroy
-
-return
 
 return
 class SpecTab { 	;;  	 ________________SpecTab class__________________
 
 	Table(){
 		Global
-		ShiftTable_X:=-350
-		ShiftTable_Y:=50
+		ShiftTable_X:=-355
+		ShiftTable_Y:=250
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, window
 		ifwinnotactive, ahk_exe eln.exe
@@ -718,9 +673,9 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 		CoordMode, mouse, window
 		SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		SpecTable_Y:=LMS_Y+ShiftTable_Y
-		Table_height=15
+
 		CoordMode, mouse, screen
-		Excel.Connect()
+		;Excel.Connect()
 		; SpecTab.GetExcelData()
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
@@ -732,10 +687,10 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 	ShowGUI(){
 		global
 		CoordMode, mouse, screen
-		ScreenEdge_X:=A_ScreenWidth-350
+		ScreenEdge_X:=A_ScreenWidth-15
 		ScreenEdge_Y:=A_Screenheight-150
-		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
-		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
 			CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
 		return
@@ -743,12 +698,16 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 
 	CreateGUI(){
 		global
+		Try GUI, Spec_Table:destroy
 		GUI, Spec_Table:Default
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-		GUI, Spec_Table:Add, ListView, x0 y0 r%Table_height% w380 checked Grid altSubmit gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		GUI, Spec_Table:Font, s12 cBlack Bold, Consolas
-		loop % Assay.Maxindex(){
-			LV_add(,""Name[A_index],LabelClaim[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
+		GUI, Spec_Table:Font, s12 cBlack, Arial Narrow
+		; Table_height:=Assay.maxindex()
+		GUI, Spec_Table:Add, ListView, x0 y0 w350 checked Grid altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		loop % Name.Maxindex(){
+			if !(Requirement[A_index])
+				continue
+			LV_add(,""Name[A_index], Requirement[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
 			temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 			Test:= Name[A_index]
 			}
@@ -756,13 +715,14 @@ class SpecTab { 	;;  	 ________________SpecTab class__________________
 
 ModifyColumns(){
 	Global
-	LV_ModifyCol(1,130)
-	LV_ModifyCol(2,0)
-	LV_ModifyCol(3,20)
-	LV_ModifyCol(5,20)
+	LV_ModifyCol(1,140)
+	LV_ModifyCol(2,200)
+	LV_ModifyCol(3,0)
+	LV_ModifyCol(4,0)
+	LV_ModifyCol(5,0)
 	LV_ModifyCol(6,0)
 	LV_ModifyCol(7,0)
-	LV_ModifyCol(8,10)
+	LV_ModifyCol(8,0)
 	LV_ModifyCol(9,0)
 	; LV_Delete(Table_Height)
 }
@@ -796,25 +756,26 @@ GetRowText(){
 	Methods() {
 		global
 		winactivate, Select methods tests
-		click, 229, 72,2
+		click, 235, 72
 		Send, ^a
 		Loop, Read, Methods.ini
 		{
 			If A_Index = 1
 				Continue
-			Method := StrSplit(A_LoopReadLine, "=")
-			; MethodGroup := StrSplit(A_LoopReadLine, "|") ;for a 2nd split
-			Selection:= % Method[1]
-			; Group:= % MethodGroup[2] ;for a second split
+			Methodmenu := StrSplit(A_LoopReadLine, "=")
+			Selection:= % MethodMenu[1]
 			Menu, Methodmenu, add, %Selection%, Methods
 		}
-		Menu, MethodMenu, Show,
+		; sleep 300
+		Menu, MethodMenu, Show
 		return
 
 		Methods:
 			sleep 200
 			InputVar:=A_ThisMenuItem
-			IniRead,vOutput, data\Methods.ini, Methods, %InputVar%
+			IniRead,vOutput, Methods.ini, Methods, %InputVar%
+			click, 235, 72
+			sleep 100
 			Sendinput, %vOutput%{enter}
 			sleep 300
 			click 506, 341
@@ -957,8 +918,8 @@ GetRowText(){
 	AddMethod(MethodID){
 		winactivate, NuGenesis LMS
 		click 67, 562 ; Add Methods
-		winwaitactive, Select methods tests,,0.25
-		click 227, 69. 2 ; method search bar
+		winwaitactive, Select methods tests,,0.45
+		click 235, 69. 2 ; method search bar
 		Sendinput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
 		sleep 200
 		winactivate, NuGenesis LMS
@@ -1338,7 +1299,7 @@ InsertDescription(){
 	Global
 	DescriptionRaw:=Description
 	Description:=RTrim(DescriptionRaw, "`r`n")
-	Send,^a%Description%
+	Sendinput,^a%Description%
 	Return
 }
 
@@ -1512,67 +1473,62 @@ return
 Class WorkTab { 		;;___________________WorkTab Class______________________
 	registerNewSamples(){
 		global
-
 		mx:=
 		my:=
 		If Coated = "ERROR"
 		Coated:=
 		If Lot = "ERROR"
 		lot:=
+		setwindelay, 280
+		SetKeyDelay,1,1
 		; blockinput, on
 		ControlGetText, Iteration, Static1, VarBar
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
 		sleep 200
-		Breaking.Point()
 		sleep 200
-		winwaitactive, Edit sample `(Field Configuration,, 6
+		winwaitactive, Edit sample `(Field Configuration,, 2
 			if ErrorLevel
-				exit
+				sleep 800
 			Sendinput, {tab 2}{right}{click 277, 139}{tab 6}
 			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`)
-				Send,{tab}^{a}
+				Send, {tab}^{a}
 			Sendinput, ^{a}%Batch%{tab}^{a}
 			Ifwinactive, Edit sample `(Field Configuration: F`, Micro`)
-			{
-				Sendinput,{ctrldown}{a}{ctrlup}%Lot%
-				Sendinput,{tab 3}
-				sleep 100
-				if Coated
-					Sendinput, ^{a}%Coated%
-				sleep 100
-				Sendinput, +{tab 2}
-			}
+				{
+					Sendinput,^{a}%Lot%{tab 3}
+					sleep 100
+					if Coated
+						Sendinput, ^{a}%Coated%
+					sleep 100
+					Sendinput, +{tab 2}
+				}
 			Ifwinactive, Edit sample `(Field Configuration: CT`,
-			{
-				; Sendinput,{ctrld;own}{a}{ctrlup}%Lot%
-				Sendinput,{tab 3}
-				sleep 100
-				if Coated
+				{
+					Sendinput, {tab}
 					Sendinput, ^{a}%Coated%
-				sleep 100
-				Sendinput, +{tab 2}
-			}
+					Sendinput, +{tab}
+				}
 			Breaking.Point()
 			sleep 200
-			If !ShipTo && !ShipToIndex
-				return
-			else if ShipToIndex
-				This.DropdownSelect(ShipToIndex)
+			If !CustomerPosition
+				This.customerDropdownSelect(200)
 			else
-				This.DropdownSelect(ShipTo)
-			sleep 200
+				WorkTab.CustomerDropdownSelect(Iteration)
 			Breaking.Point()
-			Sendinput, {enter}
-			sleep 100
-			blockinput, off
+			sleep 400
+			Send, {enter}
+			sleep 200
+			;blockinput, off
 			winactivate, Register new samples
 			sleep 300
 			my:=my+30
 			MouseMove, mx, my
+			setwindelay, 60
+			SetKeyDelay,-1,1
 
-			; return
+			return
 		}
 
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
@@ -1602,28 +1558,26 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				sleep 20
 				menu, Menu, DeleteAll
 				sleep 200
-				this.DropdownSelect(CustomerPosition)
+				this.CustomerDropdownSelect(CustomerPosition)
 			return
 		}
 
-		DropdownSelect(A_ShipTo){
+		CustomerDropdownSelect(A_ShipTo){
 			sleep 100
-			; SetKeyDelay, 0, 0
-
+			SetKeyDelay, -1, -1
 			AbsSelection:=Abs(A_ShipTo)-1
 			if (a_shipto = "-1")
 				Sendinput,{end}
-			else if (a_shipTo = "1")
+			else if (a_shipTo = 1)
 				Sendinput,{home}
 			else if (a_ShipTo > 1)
-				Sendinput,{home}{right}{right %A_ShipTo%}
+				Sendinput,{home}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
-				Sendinput,{end}{left}{left %Absselection%}
-
+				Sendinput,{end}{left %Absselection%}
 			sleep 400
 			if winactive("Edit sample `(Field Configuration:")
-				sleep 400
-			; SetKeyDelay, 1, 0.25
+				sleep 500
+			SetKeyDelay, -1, 1
 			return
 		}
 
