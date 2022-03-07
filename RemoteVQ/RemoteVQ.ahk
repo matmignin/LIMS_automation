@@ -5,14 +5,15 @@ if A_username != mmignin
 	Process, Priority, , High
 	#NoEnv
 	Iteration=1
-	#ErrorStdOut
-	#KeyHistory 500
+	; #ErrorStdOut
+	; #KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 1500
+	#ClipboardTimeout 4000
 	#InstallKeybdHook
+	setwindelay, 60
 	SetKeyDelay,-1,1
-	setwindelay, 50
+	; setwindelay, 50
 	#InstallMouseHook
 	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2
@@ -34,6 +35,8 @@ if A_username != mmignin
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
+	Menu, Tray, Add, msgbox, test_Msgbox
+	Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	Menu, Tray, Add, E&xit, ExitSub
@@ -51,7 +54,7 @@ if A_username != mmignin
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
   #include ClipBar.ahk
   #include Nugenisis.ahk
-  #Include CodeClip.ahk
+  #include CodeClip.ahk
   #Include RemoteKEYS.ahk
 
 return
@@ -92,95 +95,7 @@ activeCheck:
 	else
 		return
 return
-Orient(){
-	global
-	CoordMode, mouse, window
-	Tab:=
-	Tab1:=
-	Tab2:=
-	Tab3:=
-	Tab4:=
-	Tab5:=
-	Tab6:=
-	; winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
-	winGetPos,Nux,NuY,NuW,NuH,NuGenesis LMS
-	; winGetPos,WbX,WbY,WbW,WbH, Mats LMS Workbook.xlsb - Excel
-	; winGetPos, VarBar_X, VarBar_Y,Varbar_W,Varbar_H, VarBar ahk_exe AutoHotkey.exe
-	WbX:=WbX+400
-	Flovar_x:= NuX +900
-	Flovar_y:= NuH + NuY -28
-	varBar_nuX:=NuX+450
-	varBar_nuY:=NuY
-	TabSelect:=NuW-10
-	yTabSelect:=45
-	yTabDropdown:=45
-	SamplesTab:=(NuW/2)-80
-	RequestsTab:=(NuW/2)+20
-	DocumentsTab:=(NuW/3)+(NuW/3)-50
-	TestsTab:=(NuW/3)+(NuW/3)-220
-	ResultsTab:=(NuW/3)+(NuW/3)-150
-	HScrollBarRightX:=NuW-40
-	HScrollBarLeftX:=(NuW/5)+35
-	HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
-	yWorkTabs:=74
-	yMyWorkTabs:=74
-	xDivider:=(NuW/5)
-	xTab1=150
-	xTab2=350
-	MyWorkTab=350
-	xTab3=550
-	ProductsTab=550
-	xTab4=750
-	SpecsTab=750
-	xTab5=950
-	xTab6=1150
-	xTab7=1550
-	xTab8=358+1000
-	xTab9=358+1200
-	xTab10=358+1400
-	yTabs:=36
-	xWorkTab:=334, 47 ;1st
-	yWorkTabSearch:=128
-	XCoA:=(NuW-131)
-	xClearfilter:=xDivider+16
-	yClearfilter:=270
-	xFilterIcon:=NuW-22
-	yFilterIcon:=131
 
-	xProductsSearch:=xDivider+180
-	xSpecsSearch:=xDivider+183
-	yProductsSearch:=93
-	ySpecsSearch:=93
-	xRequestsSearch:=xDivider+190 ;175 ;103
-	xRequestsSearchDefault:=xDivider+170 ;155 ;103
-	xSamplesSearch:=xDivider+145
-	xResultsSearch:=xDivider+185
-	xResultsSearch:=xDivider+185
-	xTestsSearch:=xDivider+125
-	xDocumentsSearch:=xDivider+25
-
-	yProductsFilter:=181
-	ySpecsFilter:=181
-
-	xFormulationFilter:=xDivider+75
-	xProductFilter:=xDivider+75
-	xBatchFilter:=xDivider+168
-	xLotFilter:=xDivider+229
-
-	yMyWorkTabFilter:=182
-	yMyWorkFilter:=182
-	yWorkTabFilter:=182
-
-	xDocumentsFilter:=xDivider+68
-
-	xEdit_Composition:=76
-	yEdit_Composition:=443
-	xAdd_methods:=74
-	yAdd_methods:=565
-	xEnter_Results:=57
-	yEnter_Results:=630
-	return
-}
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
@@ -238,6 +153,8 @@ class Breaking {
 		Global
 		If GetKeyState("Lbutton", "P") {
 			TT("Broke")
+	setwindelay, 60
+	SetKeyDelay,-1,1
 			exit
 		}
 		if keep_running = n ;another signal to stop
@@ -369,12 +286,8 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 
 Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	global
-	setwindelay, 10
-	SetKeyDelay, -1, -1
-	SetMouseDelay, -1
 	MouseGetPos, mx, my, mw,
 	MouseReturn:="{click " Mx ", " My ",0}"
-	; sleep 25
 	if window
 		if !winactive(window)
 			sleep 500 ; winactivate, %window%
@@ -382,15 +295,8 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	sleep 25
 	if (window!="")
 		winactivate, %mw%
-	If (ReturnMouse=0){
-		SetMouseDelay, 1
-		SetKeyDelay, 1, 0.25
-		setwindelay, 60
+	If (ReturnMouse=0)
 		Return MouseReturn
-	}
 	else
 		mousemove,%mx%,%my%,0
-	SetMouseDelay, 1
-	SetKeyDelay, 1, 0.25
-	setwindelay, 60
 }

@@ -2,90 +2,138 @@
 
 #ifwinactive,
 Return
-GetAllBatches(Delimiter:=" ",File:=""){
+clipChange(type){
   global
-  regBatches:=[]
-		Haystack:=Clipboard
-		PreClip:=Clipboard
-		sleep 50
-  while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
-      regBatches.insert(aBatch)
-  ; }
-      AllBatches:=[], oTemp := {}
-      for vKey, vValue in regBatches
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
-    AllBatches:=Listarray(AllBatches,"")
-    AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
-    AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
-
-
-    SimpleClip:=1
-    sleep 20
-		clipboard:=AllBatches
-		sleep 200
-		send, ^v
-    sleep 400
-    SimpleClip:=1
-    clipboard:=PreClip
-		return AllBatches
-}
-GetAllProducts(Delimiter:=" ",File:=""){
-  global
-  regProducts:=[]
-  pos=0
-		Haystack:=Clipboard
-    PreClip:=Clipboard
-		sleep 50
-  while pos := RegexMatch(Haystack, RegexProduct, aProduct, pos+1) ; {
-      regProducts.insert(aProduct)
-  ; }
-      AllProducts:=[], oTemp := {}
-      for vKey, vValue in regProducts
-      {
-          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-          {
-              if !ObjHasKey(oTemp, vValue+0)
-                  AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
-          }
-          else
-          {
-              if !ObjHasKey(oTemp, "" vValue)
-                  AllProducts.Push("" vValue), oTemp["" vValue] := ""
-          }
-        }
-    AllProducts:=Listarray(AllProducts,"")
-    AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
-    SimpleClip:=1
-    sleep 20
-    clipboard:=AllProducts
-    sleep 200
-    send, ^v
-    sleep 400
-    SimpleClip:=1
-    clipboard:=Preclip
-		Return AllProducts
+  sleep 100
+  ifwinactive, Select tests for request: R
+    return
+  if SimpleClip
+    return
+  if RegexMatch(Clipboard, "<<LabelCopy>>")
+    AddIngredient()
+  if RegexMatch(Clipboard, "<<SheetInfo>>")
+    AddProduct()
+  else
+    clip.codesRegex()
+  ; if RegexMatch(Clipboard, "<<MsgBoXTesT>>")
+    ; Test_msgbox(clipboard)
+  ; if RegexMatch(Clipboard, "<<QuIT>>")
+    ; exitapp
+    ; sleep 25
+    ; }
 }
 
 
 
+AddProduct(){
+	Global
+    loop, parse, clipboard, "`n"
+		{
+			SheetInfo:=[]
+			SheetInfo:=StrSplit(A_LoopField,"|")
+      Product:=SheetInfo[2]
+      ProductName:=SheetInfo[3]
+      Customer:=SheetInfo[4]
+      CustomerPosition:=SheetInfo[5]
+      ShapeAndSize:=SheetInfo[6]
+      Color:=SheetInfo[7]
+      ServingSize:=SheetInfo[8]
+      clip.codesRegex(SheetInfo[9])
+      Iteration:=CustomerPosition
+      ; ControlsetText, Static1,%CustomerPosition%,VarBar
+      GuiControl,Varbar:Text, Iteration, %Iteration%
+    }
+    if winactive("NuGenesis LMS"){
+      Lms.detectTab()
+			tt(Tab)
+      if (Tab="Product"){
+        click 74, 153
+        sleep 1000
+      }
+      else
+        return
+    }
+    if Winactive("Edit Product")
+      ProductTab.EditProduct()
+    else if winactive("Edit Formulation")
+      ProductTab.EditFormulation()
+    else
+      return
+  }
 
-Clip(input=0,Wait:="0.45"){
+AddIngredient(){
+	global
+	Pointer:=Clipboard
+  		if RegexMatch(Pointer, "<<LabelCopy>>"){
+			Name:=			[]
+			IngredientID:=	[]
+			Position:=		[]
+			LabelClaim:=	[]
+			MinLimit:=		[]
+			MaxLimit:=		[]
+			Units:=			[]
+			Percision:=		[]
+			LabelName:=		[]
+			Description:=	[]
+			Assay:=			[]
+			Requirement:=	[]
+			Method:= 		[]
+      Table_height=0
+		loop, parse, clipboard, "`n"
+		{
+			Line:=A_index
+			Ingredient:=[]
+			ingredient:=StrSplit(A_LoopField,"|")
+			Name[Line]:=ingredient[2]
+			IngredientID[Line]:=ingredient[3]
+			Position[Line]:=ingredient[4]
+			LabelName[Line]:=ingredient[5]
+			labelClaim[Line]:=ingredient[6]
+			if !ingredient[7]
+				continue
+			Assay[Line]:=ingredient[7]
+			Method[Line]:=ingredient[8]
+			Description[Line]:=ingredient[9]
+			MinLimit[Line]:=ingredient[10]
+			MaxLimit[Line]:=ingredient[11]
+			Units[Line]:=ingredient[12]
+			Percision[Line]:=ingredient[13]
+			Requirement[Line]:=ingredient[14]
+      Table_height+=1
+			}
+			  Lms.detectTab()
+			tt(Tab)
+			if Winactive("Composition") || winactive("Edit Ingredient"){
+				winactivate "Composition"
+				loop % Line
+				{
+					If !Position[A_index]
+						return
+					ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
+					ifwinnotactive, Composition
+						sleep 300
+					}
+				}
+			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
+        SpecTab.Table()
+        return
+		  }
+		  }
+			sleep 100
+		return
+
+}
+
+
+
+
+
+Clip(input=50,Wait:="0.95"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
   clipboard:=
     Send, ^{c}
-  clipwait,%Wait%
   sleep %input%
+  clipwait,%Wait%
   if errorlevel
   {
     tt("clip error level")
@@ -97,27 +145,6 @@ Clip(input=0,Wait:="0.45"){
 
 
 
-clipChange(type){
-  global
-  ifwinactive, Select tests for request: R
-    return
-  if SimpleClip
-    return
-  if RegexMatch(Clipboard, "<<LabelCopy>>\|.*")
-    msgbox, Yo a label copy
-  sleep 50
-  clip.codesRegex()
-    sleep 25
-    if A_PriorKey = c
-      tt(Clipboard,2000,3)
-    else if A_PriorhotKey = F19
-      tt(Clipboard,2000,3)
-    else if A_PriorKey = x
-      tt(Clipboard,2000,3)
-    else if A_PriorKey = b
-      return
-    ; }
-}
 
 
 Class Clip {
@@ -196,13 +223,13 @@ CodesRegex(input:=""){
       Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      Ct:=rCoated ? " ct#" : ""
+      ; Ct:=rCoated ? " ct#" : ""
       GuiControl,Varbar:Text, Product, %Product%
       GuiControl,Varbar:Text, Batch, %Batch%
       GuiControl,Varbar:Text, lot, %lot%
       GuiControl,Varbar:Text, Coated, %Coated%
       codeString:=trim(rProduct " " rBatch " " rLot Ct rCoated)
-      tt(CodeString)
+      ; tt(CodeString)
      Return Trim(CodeString)
 }
 
@@ -232,28 +259,28 @@ Regex(Category:=""){
       Haystack:=Clipboard
     else
       Haystack:=Category
-    sleep      20
+    sleep      100
       Gui Varbar:Default
       RegExMatch(HayStack, RegexProduct,r)  ;"i)[abdefghijkl]\d{3}", rProduct)
+        If rProduct {
+          GuiControl,Varbar:Text, Product, %rProduct%
+          Product:=rProduct
+        }
       RegExMatch(HayStack, RegexBatch, r)
+        If rBatch {
+          GuiControl,Varbar:Text, Batch, %rBatch%
+          Batch:=rBatch
+        }
       RegExMatch(HayStack, RegexLot, r)
+        If rLot {
+          GuiControl,Varbar:Text, lot, %rlot%
+          lot:=rLot
+        }
       RegExMatch(HayStack, RegexCoated, r)
-      If rProduct {
-        GuiControl,Varbar:Text, Product, %rProduct%
-        Product:=rProduct
-      }
-      If rBatch {
-        GuiControl,Varbar:Text, Batch, %rBatch%
-        Batch:=rBatch
-      }
-      If rLot {
-        GuiControl,Varbar:Text, lot, %rlot%
-        lot:=rLot
-      }
-      If rCoated {
-        GuiControl,Varbar:Text, Coated, %rCoated%
-        Coated:=rCoated
-      }
+        If rCoated {
+          GuiControl,Varbar:Text, Coated, %rCoated%
+          Coated:=rCoated
+        }
       If !rLot {
         GuiControl,Varbar:Text, lot, %rlot%
         lot:=
@@ -262,9 +289,9 @@ Regex(Category:=""){
         GuiControl,Varbar:Text, Coated, %rCoated%
         Coated:=
       }
-      GuiControl, Varbar:MoveDraw, Coated
+      ; GuiControl, Varbar:MoveDraw, Coated
       gui varbar:submit, nohide
-      tt(Product " " Batch " " lot " " Coated)
+      ; tt(Product " " Batch " " lot " " Coated)
       sleep 20
   }
 Department(DepartmentInput:=""){
@@ -341,5 +368,4 @@ IfNothingSelected(action){
 
 
 }
-
 
