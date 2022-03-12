@@ -641,14 +641,14 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	If (ReturnMouse=0){
 		SetMouseDelay, 1
 		SetKeyDelay, 1, 0.25
-		setwindelay, 60
+		setwindelay, 100
 		Return MouseReturn
 	}
 	else
 		mousemove,%mx%,%my%,0
 	SetMouseDelay, 1
 	SetKeyDelay, 1, 0.25
-	setwindelay, 60
+	setwindelay, 100
 }
 
 

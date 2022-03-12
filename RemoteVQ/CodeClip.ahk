@@ -5,124 +5,26 @@ Return
 clipChange(type){
   global
   sleep 100
-  ifwinactive, Select tests for request: R
-    return
   if SimpleClip
     return
-  if RegexMatch(Clipboard, "<<LabelCopy>>")
-    AddIngredient()
+  if RegexMatch(Clipboard, "<<LabelCopy>>"){
+    if (Iteration >=25) || (Iteration < 0)
+      iteration:=1
+  ; if RegexMatch(Clipboard, "<<[abcdefghijkl]\d{3}>>")
+    ProductTab.AddIngredient()
+  }
   if RegexMatch(Clipboard, "<<SheetInfo>>")
-    AddProduct()
+    ProductTab.AddProduct()
   else
     clip.codesRegex()
   ; if RegexMatch(Clipboard, "<<MsgBoXTesT>>")
     ; Test_msgbox(clipboard)
-  ; if RegexMatch(Clipboard, "<<QuIT>>")
-    ; exitapp
-    ; sleep 25
-    ; }
+  if RegexMatch(Clipboard, "<<QuIT>>"){
+    exitapp
+    sleep 25
+    }
 }
 
-
-
-AddProduct(){
-	Global
-    loop, parse, clipboard, "`n"
-		{
-			SheetInfo:=[]
-			SheetInfo:=StrSplit(A_LoopField,"|")
-      Product:=SheetInfo[2]
-      ProductName:=SheetInfo[3]
-      Customer:=SheetInfo[4]
-      CustomerPosition:=SheetInfo[5]
-      ShapeAndSize:=SheetInfo[6]
-      Color:=SheetInfo[7]
-      ServingSize:=SheetInfo[8]
-      clip.codesRegex(SheetInfo[9])
-      Iteration:=CustomerPosition
-      ; ControlsetText, Static1,%CustomerPosition%,VarBar
-      GuiControl,Varbar:Text, Iteration, %Iteration%
-    }
-    if winactive("NuGenesis LMS"){
-      Lms.detectTab()
-			tt(Tab)
-      if (Tab="Product"){
-        click 74, 153
-        sleep 1000
-      }
-      else
-        return
-    }
-    if Winactive("Edit Product")
-      ProductTab.EditProduct()
-    else if winactive("Edit Formulation")
-      ProductTab.EditFormulation()
-    else
-      return
-  }
-
-AddIngredient(){
-	global
-	Pointer:=Clipboard
-  		if RegexMatch(Pointer, "<<LabelCopy>>"){
-			Name:=			[]
-			IngredientID:=	[]
-			Position:=		[]
-			LabelClaim:=	[]
-			MinLimit:=		[]
-			MaxLimit:=		[]
-			Units:=			[]
-			Percision:=		[]
-			LabelName:=		[]
-			Description:=	[]
-			Assay:=			[]
-			Requirement:=	[]
-			Method:= 		[]
-      Table_height=0
-		loop, parse, clipboard, "`n"
-		{
-			Line:=A_index
-			Ingredient:=[]
-			ingredient:=StrSplit(A_LoopField,"|")
-			Name[Line]:=ingredient[2]
-			IngredientID[Line]:=ingredient[3]
-			Position[Line]:=ingredient[4]
-			LabelName[Line]:=ingredient[5]
-			labelClaim[Line]:=ingredient[6]
-			if !ingredient[7]
-				continue
-			Assay[Line]:=ingredient[7]
-			Method[Line]:=ingredient[8]
-			Description[Line]:=ingredient[9]
-			MinLimit[Line]:=ingredient[10]
-			MaxLimit[Line]:=ingredient[11]
-			Units[Line]:=ingredient[12]
-			Percision[Line]:=ingredient[13]
-			Requirement[Line]:=ingredient[14]
-      Table_height+=1
-			}
-			  Lms.detectTab()
-			tt(Tab)
-			if Winactive("Composition") || winactive("Edit Ingredient"){
-				winactivate "Composition"
-				loop % Line
-				{
-					If !Position[A_index]
-						return
-					ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
-					ifwinnotactive, Composition
-						sleep 300
-					}
-				}
-			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
-        SpecTab.Table()
-        return
-		  }
-		  }
-			sleep 100
-		return
-
-}
 
 
 

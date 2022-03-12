@@ -781,7 +781,7 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 			;sleep 50
 			sleep 50
 			; Breaking.Point()
-			this.DropdownSelect(Dropdown_count)
+			this.Dropdown_IngredientSelect(Dropdown_count)
 			; sleep 100
 		}
 		; winactivate, Edit Ingredient - \\Remote
@@ -810,7 +810,7 @@ Class ProductTab { ;;__________________ProductTab Class_____________________
 	return
 }
 
-DropdownSelect(A_DropdownCount){
+Dropdown_IngredientSelect(A_DropdownCount){
 	global
 	ifWinNotActive, Edit Ingredient - \\Remote
 		winactivate, Edit Ingredient - \\Remote
@@ -829,7 +829,7 @@ DropdownSelect(A_DropdownCount){
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
 	if (a_DropdownCount = ""){
-		this.Dropdown_Ingredient(Iteration)
+		this.Dropdown_GenericIngredient(Iteration)
 		Breaking.Point()
 		if Iteration >=20
 			iteration:=0
@@ -890,7 +890,7 @@ Blends(n,Measurment){
 	If !ShapeAndSize
 		ShapeAndSize:= " g"
 	Send, Each %textNumber% (%n%){space}%measurment%%plural% (%ShapeAndSize%) contains{left 12}{tab 2}^{a}%color%+{tab}^{a}Blend+{tab}
-	setwindelay, 60
+	setwindelay, 100
 	exit
 }
 
@@ -913,7 +913,7 @@ EditProduct(){ ;for naming Product code and customer,
 	This.EditFormulation()
 	; clk(287, 578) ;click save
 	Iteration:=1
-	setwindelay, 60
+	setwindelay, 100
 	simpleclip:=
 	return
 }
@@ -974,11 +974,11 @@ HM_ReportOnly(){
 	Breaking.Point()
 
 	click 390, 659	;click okay
-	setwindelay, 60 ;testing out
+	setwindelay, 100 ;testing out
 	return
 }
 
-Dropdown_Ingredient(IterationCount:=""){
+Dropdown_GenericIngredient(IterationCount:=""){
 	global
 
 	; if (GeneralCount=2){
@@ -2037,9 +2037,9 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			If !ShipTo && !ShipToIndex
 				return
 			else if ShipToIndex
-				This.DropdownSelect(ShipToIndex)
+				This.Dropdown_IngredientSelect(ShipToIndex)
 			else
-				This.DropdownSelect(ShipTo)
+				This.Dropdown_IngredientSelect(ShipTo)
 			sleep 200
 			Breaking.Point()
 				if Coated
@@ -2082,18 +2082,18 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				sleep 20
 				menu, Menu, DeleteAll
 				sleep 200
-				this.DropdownSelect(CustomerPosition)
+				this.Dropdown_IngredientSelect(CustomerPosition)
 			return
 		}
 
-		DropdownSelect(A_ShipTo){
+		Dropdown_IngredientSelect(A_ShipTo){
 			sleep 100
 			; SetKeyDelay, 0, 0
 
 			AbsSelection:=Abs(A_ShipTo)-1
 			if (a_shipto = "-1")
 				Sendinput,{end}
-			else if (a_shipTo = "1")
+			else if (a_shipTo = 1)
 				Sendinput,{home}
 			else if (a_ShipTo > 1)
 				Sendinput,{home}{right}{right %A_ShipTo%}
@@ -2157,7 +2157,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				n--
 				Breaking.Point()
 			}
-			setwindelay, 60
+			setwindelay, 100
 		}
 
 		NewRequest(){
@@ -2217,7 +2217,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			Breaking.Point()
 			Send,{tab}{enter}
 			; tooltip,
-			setwindelay, 60
+			setwindelay, 100
 			return
 		}
 
@@ -2289,7 +2289,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 	AddSampleLog(count)
 	{
 		global
-		setwindelay, 60
+		setwindelay, 100
 		loop, %count%
 		{
 			click 46, 877
@@ -2354,7 +2354,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				Breaking.Point()
 				; Pop(Department)
 				; blockinput off
-				setwindelay, 60
+				setwindelay, 100
 			return
 		}
 		CopyProductRotation(){

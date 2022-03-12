@@ -11,9 +11,8 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 4000
 	#InstallKeybdHook
-	setwindelay, 60
-	SetKeyDelay,-1,1
-	; setwindelay, 50
+	setwindelay, 100
+	SetKeyDelay, 0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2
@@ -42,11 +41,11 @@ if A_username != mmignin
 	Menu, Tray, Add, E&xit, ExitSub
 	Menu, Tray, Add, &Reload, ReloadSub
 	; Menu, Tray, Default, &Reload
-	Menu, Tray, Default, E&xit
+	Menu, Tray, Default, &Reload
 	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
 	varbar.Show()
 	LMS.Orient()
-	; SetTimer,activeCheck, 1000
+	SetTimer,activeCheck, 800
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -72,22 +71,24 @@ windowSpy(){
   }
 
 activeCheck:
-	wingetpos, Nugenesis_X2, Nugenesis_Y2, Nugenesis_W2, Nugenesis_h2, NuGenesis LMS
-	if (Nugenesis_X != Nugenesis_X2) || (Nugenesis_Y != Nugenesis_Y2) || (Nugenesis_W != Nugenesis_W2){
-		VarBar_x2:=Nugenesis_X2+(Nugenesis_W2/2)
-		winMove, VarBar, ,%VarBar_X2%, %Nugenesis_Y2%,
-		Nugenesis_X:=Nugenesis_X2
-		Nugenesis_W:=Nugenesis_W2
-		Nugenesis_Y:=Nugenesis_Y2
+	If winactive("Delete Attribute"){
+		mousemove, 245, 137
+		sleep 2000
 	}
-	; If winactive("Result Entry") || winactive("Register new samples")
-		; varbar.FloatAtopwindow()
+	else If winactive("Approve specification"){
+		mousemove, 280, 138
+		sleep 2000
+	}
+	else If winactive("Delete Test"){
+		mousemove, 222, 138
+		sleep 2000
+	}
 	else if winactive("Error") {
 		ControlSend,, {enter}, Error
 		sleep 200
 		if winExist("Register new samples") && Product{
 			winactivate,
-			Send, {click 185, 103,2}%Product%{enter}
+			Sendinput, {click 185, 103,2}%Product%{enter}
 		}
 	}
 	else if winactive("Information")
@@ -153,8 +154,8 @@ class Breaking {
 		Global
 		If GetKeyState("Lbutton", "P") {
 			TT("Broke")
-	setwindelay, 60
-	SetKeyDelay,-1,1
+	setwindelay, 100
+	SetKeyDelay, 0,1
 			exit
 		}
 		if keep_running = n ;another signal to stop

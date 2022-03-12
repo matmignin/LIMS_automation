@@ -67,13 +67,19 @@ test_1:
 		+^v::LMS.SearchbarPaste()
 		<^v::lms.searchbarPaste()
 		^F9::LMS.SearchBar()
+		^d::sendinput, {click 81, 1061} ; delete test
 
 
 	#Ifwinactive,Select Iterations
 		^F9::LMS.PasteProductRotation()
 	#Ifwinactive,Book
 		+F9::LMS.CopyProductRotation()
-
+	#Ifwinactive,Test Definition Editor
+		mbutton::
+			clk(338,617)
+			sleep 400
+			clk(910,668)
+			return
 	#Ifwinactive, Result Entry ;;___Result_Entry
 		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
 		wheeldown:: sendInput % Blockrepeat(400) Varbar.SubIteration(10)
@@ -81,10 +87,10 @@ test_1:
 		F10::WorkTab.ChangeTestResults("loop")
 		#MaxThreadsPerHotkey 1
 	#Ifwinactive, Results Definition ;;__Results_Definition:
+		mbutton::clk(910,668)
 		F10::lms.menu()
 		+mbutton::lms.menu()
 		space::sendinput,{ctrldown}{click}{ctrlup}
-		mbutton::Spectab.Table()
 	#ifwinactive, Register new samples ;;__Register_new_samples:
 		F9::
 		clk(181, 104,2,2)
@@ -374,7 +380,16 @@ test_1:
 
 
 
-
+#ifwinactive, ahk_exe eln.exe
+	:*:osl`;::`(On Sample Log)
+	:*:fm`;::`, Finished, Micro
+	:*:ia`;::`, In Process, Analytical
+	:*:ip`;::`, In Process, Physical
+	:*:ir`;::`, In Process, Retain
+	:*:ci`;::`, Coated, Retain
+	:*:ca`;::`, Coated, Analytical
+	:*:Cp`;::`, Coated, Physical
+	:*:in`;::`ingredient
 #Ifwinactive, Edit Formulation
 	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
 	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
@@ -382,12 +397,18 @@ test_1:
 	:*R:#2`;::`#2 capsule / 0.709`" x 0.250`"
 	:*R:#1`;::`#1 capsule / 0.765`" x 0.272`"
 	:*R:#0`;::`#0 capsule / 0.854`" x 0.300`"
-	:*R:USP`;::Meets USP Requirements
-	:*R:fr`;::Fixing Rotation
+	:*R:USP`;::`Meets USP Requirements
+	:*R:fr`;::`ixing Rotation
 	:*R:7/16`;::`Round / 0.4375`"
-	:*R:5.5 oblong`;::Oblong / 0.750`" x 0.313`"
-	:*R:5.5 oval`;::Oval / 0.625`" x 0.344`""
-	:*RR:5 oblong`;::Oblong / 0.750`" x 0.250`""
+	:*R:5.5o`;::`Oblong / 0.750`" x 0.313`"
+	:*R:5.5ov`;::`Oval / 0.625`" x 0.344`"
+	:*RR:5o`;::`Oblong / 0.750`" x 0.250`"
+	:*:1s`;::`Each (1) scoop ( g) contains
+	:*:2s`;::`Each two (2) scoop ( g) contains
+	:*:3s`;::`Each three (3) scoop ( g) contains
+	:*:1sp`;::`Each (1) stick packet ( g) contains
+	:*:2sp`;::`Each two (2) stick packet ( g) contains
+	:*:3sp`;::`Each three (3) stick packet ( g) contains
 	:*:1c`;::`Each (1) capsule contains
 	:*:2c`;::`Each two (2) capsules contains
 	:*:3c`;::`Each three (3) capsules contains
@@ -395,9 +416,9 @@ test_1:
 	:*:5c`;::`Each five (5) capsules contains
 	:*:6c`;::`Each six (6) capsules contains
 	:*:7c`;::`Each seven (7) capsules contains
-	:*:1t`;::`Each `(1`) tablet contains
-	:*:2t`;::`Each two `(2`) tablets contains
-	:*:3t`;::`Each three `(3`) tablets contains
+	:*:1t`;::`Each (1) tablet contains
+	:*:2t`;::`Each two (2) tablets contains
+	:*:3t`;::`Each three (3) tablets contains
 	:*:4t`;::`Each four (4) tablets contains
 	:*:5t`;::`Each five (5) tablets contains
 	:*:6t`;::`Each six (6) tablets contains

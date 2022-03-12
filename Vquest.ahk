@@ -20,7 +20,7 @@ VQuest_Start:
     ; #MaxThreadsBuffer, On
     #InstallKeybdHook
     ; OnMessage(0x004A, "Receive_WM_COPYDATA")  ; 0x004A is WM_COPYDATA
-SetKeyDelay,-1,1
+SetKeyDelay,0,1
 setwindelay, 50
     #InstallMouseHook
     #HotkeyModifierTimeout
