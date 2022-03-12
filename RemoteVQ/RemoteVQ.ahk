@@ -13,11 +13,10 @@ if A_username != mmignin
 	#InstallKeybdHook
 	setwindelay, 60
 	SetKeyDelay,-1,1
-	; setwindelay, 50
 	#InstallMouseHook
 	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2
-	SetTitleMatchMode, 2
+	SetTitleMatchMode, 2           
 	FormatTime, DayString,, MM/d/yy
 	FormatTime, TimeString, R
 	FormatTime, CurrentDateTime,, MM/dd/yy
@@ -42,7 +41,7 @@ if A_username != mmignin
 	Menu, Tray, Add, E&xit, ExitSub
 	Menu, Tray, Add, &Reload, ReloadSub
 	; Menu, Tray, Default, &Reload
-	Menu, Tray, Default, E&xit
+	Menu, Tray, Default, &Reload
 	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
 	varbar.Show()
 	LMS.Orient()
