@@ -1,5 +1,11 @@
 ; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
 
+  ; if RegexMatch(Clipboard, "<<LabelCopy>>"){
+  ; if RegexMatch(Clipboard, "<<[abcdefghijkl]\d{3}>>")
+  ; if RegexMatch(Clipboard, "<<SheetInfo>>")
+  ; if RegexMatch(Clipboard, "<<QuIT>>"){
+  ; if RegexMatch(Clipboard, "<<MsgBoXTesT>>")
+    ; Test_msgbox(clipboard)
 #ifwinactive,
 Return
 clipChange(type){
@@ -7,22 +13,23 @@ clipChange(type){
   sleep 100
   if SimpleClip
     return
-  if RegexMatch(Clipboard, "<<LabelCopy>>"){
+  if InStr(Clipboard, "<<LabelCopy>>", true,1,1){
     if (Iteration >=25) || (Iteration < 0)
       iteration:=1
-  ; if RegexMatch(Clipboard, "<<[abcdefghijkl]\d{3}>>")
     ProductTab.AddIngredient()
   }
-  if RegexMatch(Clipboard, "<<SheetInfo>>")
+  else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProduct()
-  else
-    clip.codesRegex()
-  ; if RegexMatch(Clipboard, "<<MsgBoXTesT>>")
-    ; Test_msgbox(clipboard)
-  if RegexMatch(Clipboard, "<<QuIT>>"){
+  else if RegexMatch(Clipboard, "<<-?\d+>>", CustomerPosition){
+      Iteration:=CustomerPosition
+      GuiControl,Varbar:Text, Iteration, %Iteration%
+  }
+  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
     exitapp
     sleep 25
     }
+  else
+    clip.codesRegex()
 }
 
 
@@ -125,7 +132,13 @@ CodesRegex(input:=""){
       Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+      Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+      if RegexMatch(Parse, "\[\[-?\d+\]\]", CustomerPosition){
+        Iteration:=CustomerPosition
+        GuiControl,Varbar:Text, Iteration, %Iteration%
+    }
       ; Ct:=rCoated ? " ct#" : ""
+      stringUpper, Product, Product
       GuiControl,Varbar:Text, Product, %Product%
       GuiControl,Varbar:Text, Batch, %Batch%
       GuiControl,Varbar:Text, lot, %lot%
@@ -142,6 +155,7 @@ CodesRegex(input:=""){
 SetVarbar(){
   global Product, Batch, Lot, Coated
     Gui Varbar:Default
+      stringUpper, Product, Product
       GuiControl,Varbar:Text, Product, %Product%
       GuiControl,Varbar:Text, Batch, %Batch%
       GuiControl,Varbar:Text, lot, %lot%
@@ -166,6 +180,7 @@ Regex(Category:=""){
       RegExMatch(HayStack, RegexProduct,r)  ;"i)[abdefghijkl]\d{3}", rProduct)
         If rProduct {
           GuiControl,Varbar:Text, Product, %rProduct%
+          stringUpper, rProduct, rProduct
           Product:=rProduct
         }
       RegExMatch(HayStack, RegexBatch, r)

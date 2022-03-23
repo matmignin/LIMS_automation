@@ -11,8 +11,8 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 4000
 	#InstallKeybdHook
-	setwindelay, 100
-	SetKeyDelay, 0,0
+	setwindelay, 60
+	SetKeyDelay,-1,1
 	#InstallMouseHook
 	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2

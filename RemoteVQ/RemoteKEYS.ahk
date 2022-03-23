@@ -1,6 +1,6 @@
 
 		#ifwinactive,
-
+	~RWin::Send {Blind}{vkFF}
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
 	F1::sendinput, %Product%
@@ -24,7 +24,7 @@
 		return
 	F18::
 	^F9::send, ^v
-
+	$LWin::return
 
 
 
@@ -386,29 +386,41 @@ test_1:
 	:*:ia`;::`, In Process, Analytical
 	:*:ip`;::`, In Process, Physical
 	:*:ir`;::`, In Process, Retain
-	:*:ci`;::`, Coated, Retain
+	:*:cr`;::`, Coated, Retain
 	:*:ca`;::`, Coated, Analytical
-	:*:Cp`;::`, Coated, Physical
+	:*:cp`;::`, Coated, Physical
 	:*:in`;::`ingredient
 #Ifwinactive, Edit Formulation
-	:*R:#00`;::`#00 capsule / 0.917`" x 0.336`"
-	:*R:#00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
-	:*R:#3`;::`#3 capsule / 0.626`" x 0.229`"
-	:*R:#2`;::`#2 capsule / 0.709`" x 0.250`"
-	:*R:#1`;::`#1 capsule / 0.765`" x 0.272`"
-	:*R:#0`;::`#0 capsule / 0.854`" x 0.300`"
+	:*R:00`;::`#00 capsule / 0.917`" x 0.336`"
+	:*R:00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
+	:*R:3`;::`#3 capsule / 0.626`" x 0.229`"
+	:*R:2`;::`#2 capsule / 0.709`" x 0.250`"
+	:*R:1`;::`#1 capsule / 0.765`" x 0.272`"
+	:*R:0`;::`#0 capsule / 0.854`" x 0.300`"
 	:*R:USP`;::`Meets USP Requirements
-	:*R:fr`;::`ixing Rotation
+	:*R:fr`;::`Fixing Rotation
 	:*R:7/16`;::`Round / 0.4375`"
 	:*R:5.5o`;::`Oblong / 0.750`" x 0.313`"
 	:*R:5.5ov`;::`Oval / 0.625`" x 0.344`"
 	:*RR:5o`;::`Oblong / 0.750`" x 0.250`"
-	:*:1s`;::`Each (1) scoop ( g) contains
-	:*:2s`;::`Each two (2) scoop ( g) contains
-	:*:3s`;::`Each three (3) scoop ( g) contains
-	:*:1sp`;::`Each (1) stick packet ( g) contains
-	:*:2sp`;::`Each two (2) stick packet ( g) contains
-	:*:3sp`;::`Each three (3) stick packet ( g) contains
+	:*:1s`;::
+	sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:2s`;::
+	sendinput, `Each two (2) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:3s`;::
+	sendinput, `Each three (3) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:1sp`;::
+	sendinput, `Each (1) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:2sp`;::
+	sendinput, `Each two (2) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:3sp`;::
+	sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
 	:*:1c`;::`Each (1) capsule contains
 	:*:2c`;::`Each two (2) capsules contains
 	:*:3c`;::`Each three (3) capsules contains

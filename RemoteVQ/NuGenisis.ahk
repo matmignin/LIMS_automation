@@ -449,14 +449,16 @@ AddIngredient(){
 			Units[Line]:=ingredient[12]
 			Percision[Line]:=ingredient[13]
 			Requirement[Line]:=ingredient[14]
-      Table_height+=1
+    		  Table_height+=1
 			}
 			  Lms.detectTab()
 			tt(Tab)
 			If winactive("Edit Ingredient"){
 				winactivate "Edit Ingredient"
-				ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index],1)
-					exit
+				sleep 150
+				ProductTab.EditIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
+				sleep 300
+				return
 				}
 			else if Winactive("Composition"){
 				winactivate "Composition"
@@ -465,10 +467,10 @@ AddIngredient(){
 					If !Position[A_index]
 						return
 					ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
-					sleep 200
+					sleep 150
 					ifwinnotactive, Composition
 					winactivate, Composition
-					sleep 300
+					sleep 150
 					}
 				}
 			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
@@ -494,15 +496,17 @@ EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_I
 		}
 			sleep 200
 	}
-	ProductTab.Dropdown_IngredientSelect(Ingredient_Id)
-	sleep 100
+	if Dont_Hit_Okay
+		click, 150, 73
+	else
+		ProductTab.Dropdown_IngredientSelect(Ingredient_Id)
 	Send,{tab 6}^{a}
 	sleep 20
 	sendinput, %Ingredient_position%{tab}^a
 	Sendinput,%Ingredient_Name%
 	sleep 200
 	if Strlen(Ingredient_Name) > 250
-		sleep 500
+		sleep 400
 	If Ingredient_Claim contains Heavy Metal,Allergens
 		Sendinput,{tab}
 	Send,{tab 2}^a
@@ -995,20 +999,21 @@ GetRowText(){
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
 			sleep 200
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
-			click 239, 246
+			click 239, 246  ;results link
 			sleep 200
-			Breaking.Point()
 			winactivate, Results Definition
+			sleep 100
+			Breaking.Point()
 
 		}
 		if winactive("Results Definition") ;Selection window
 		{
 			winactivate, Results Definition
+			sleep 100
 			If Method contains ICP-MS 231
 				Send,{click 217, 141}
 			Send,{click 80, 66} ;click edit
 			sleep 200
-			Breaking.Point()
 			winwaitactive, Result Editor,,0.5
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
@@ -1100,6 +1105,10 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	sleep 400
 	Breaking.Point()
 	mousemove, 910, 668
+	WinWaitClose, Results Definition,, 8
+	winactivate, Test Definition Editor
+	mousemove, 335, 617
+
 	return
 }
 
@@ -1107,10 +1116,11 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 	Global
 	if !(The_description)
 	{
-		MouseClick, left, 464, 532,2,0 	;click scrollbar
+		; MouseClick, left, 464, 532,2,0 	;click scrollbar
 		sleep 100
-		click 239, 246 					;click results link
-		sleep 100
+		; click 239, 246 					;click results link
+		; sleep 100
+		return
 	}
 	else
 	{
@@ -1126,13 +1136,12 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 			Send, ^{a}
 		sleep 100
 		sendinput, %Trimmed_Description%
-		if strLen(Trimmed_Description) > 50
+		if strLen(Trimmed_Description) > 100
 			sleep 300
 		Breaking.Point()
-		MouseClick, left, 464, 532,2,0 	;click scrollbar
+		; MouseClick, left, 464, 532,2,0 	;click scrollbar
 		sleep 100
-		click 239, 246 					;click results link
-		sleep 100
+		; click 239, 246 					;click results link
 	}
 	;Send,{shift down}{Tab 15}{Shift up}{enter}
 }
@@ -1158,7 +1167,7 @@ Edit_Physical(){
 	Send,{tab}
 	sleep 200
 	Send,{right}
-	sleep 500
+	sleep 300
 	Breaking.Point()
 	click, 340, 622 ;click okay
 	winwaitactive, NuGenesis LMS, ,8
@@ -1169,10 +1178,10 @@ Edit_Physical(){
 	sleep 499
 	winwaitactive, Edit sample template,,4
 	if !errorlevel
-		sleep 300
+		sleep 200
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
-	sleep 400
+	sleep 200
 	Breaking.Point()
 	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
@@ -1195,15 +1204,15 @@ Edit_CoatedRetain(){
 	sleep 200
 	Breaking.Point()
 	click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS, ,12
+	winwaitactive, NuGenesis LMS, ,5
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain
-	sleep 400
+	sleep 300
 	Breaking.Point()
 	send, {enter}
-	sleep 400
+	sleep 300
 	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
@@ -1226,12 +1235,13 @@ Edit_CoatedPhysical(){
 	sleep 200
 	Breaking.Point()
 	click, 340, 622 ;click okay
-	winwaitactive, NuGenesis LMS, ,12
+	sleep 50
+	winwaitactive, NuGenesis LMS,,5
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
-	sleep 400
+	sleep 300
 	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
@@ -1263,7 +1273,7 @@ Edit_Retain(){
 	sleep 300
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
-	sleep 400
+	sleep 300
 	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
@@ -1307,7 +1317,7 @@ Edit_Micro(){
 	sleep 300
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
-	sleep 400
+	sleep 300
 	winwaitactive, NuGenesis LMS,,5
 	If !ErrorLevel
 		MouseMove, %premx%, %premy%, 0
@@ -1592,12 +1602,12 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				Sendinput,{home}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
 				Sendinput,{end}{left %Absselection%}
-				sleep 400
+			sleep 400
 			setkeydelay, 0, 0
 			if (a_shipto > 175) || (absselection > 175)
-				sleep 500
+				sleep 200
 			if winactive("Edit sample `(Field Configuration:")
-				sleep 500
+				sleep 100
 			return
 		}
 
