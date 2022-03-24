@@ -10,7 +10,7 @@
 Return
 clipChange(type){
   global
-  sleep 100
+  sleep 50
   if SimpleClip
     return
   if InStr(Clipboard, "<<LabelCopy>>", true,1,1){
@@ -20,16 +20,13 @@ clipChange(type){
   }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProduct()
-  else if RegexMatch(Clipboard, "<<-?\d+>>", CustomerPosition){
-      Iteration:=CustomerPosition
-      GuiControl,Varbar:Text, Iteration, %Iteration%
-  }
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
     exitapp
     sleep 25
     }
   else
     clip.codesRegex()
+    sleep 50
 }
 
 
@@ -133,8 +130,9 @@ CodesRegex(input:=""){
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      if RegexMatch(Parse, "\[\[-?\d+\]\]", CustomerPosition){
+      if RegexMatch(Parse, "\[\[(?P<ustomerPosition>-?\d+)\]\]", C){
         Iteration:=CustomerPosition
+        sleep 40
         GuiControl,Varbar:Text, Iteration, %Iteration%
     }
       ; Ct:=rCoated ? " ct#" : ""

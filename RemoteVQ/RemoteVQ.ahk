@@ -44,6 +44,7 @@ if A_username != mmignin
 	Menu, Tray, Default, &Reload
 	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
 	varbar.Show()
+OnExit("Varbar.SaveVariables")
 	LMS.Orient()
 	SetTimer,activeCheck, 800
 	copypasteToggle:=0

@@ -11,7 +11,7 @@ Class VarBar{
 		VarBar_H=30
 		VarBar_H_max=58
 		VarBar_T:=235
-		VarBar_W=350
+		VarBar_W=370
 		VarBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		VarBar_Y:=Nugenesis_Y
 		Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
@@ -26,7 +26,7 @@ Class VarBar{
 		this.AddEdit("Lot",		 "left h29 x+0 y0 w75", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
 		GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
-		This.AddText("Iteration", "x+1 center y-1 w45",			 "19 Bold 107C41, Consolas")	; Text1
+		This.AddEdit("Iteration", "x+2 h29 left y0 w60",			 "17 Bold 107C41, Consolas")	; Text1
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, VarBar:Show, x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
@@ -49,7 +49,7 @@ Class VarBar{
 		VarBarGuiEscape:
 			; GUI, VarBar:submit,NoHide
 			sleep 50
-			this.SaveVariables()
+			VarBar.SaveVariables()
 		return
 	}
 
@@ -106,7 +106,7 @@ Class VarBar{
 		sleep 15
 		Iteration+=1
 		sleep %Speed%
-		ControlsetText, Static1,%Iteration%,VarBar
+		ControlsetText, Edit5,%Iteration%,VarBar
 		return
 	}
 	SubIteration(speed:=300){
@@ -115,24 +115,34 @@ Class VarBar{
 		sleep 15
 		Iteration-=1
 		sleep %speed%
-		ControlsetText, Static1,%Iteration%,VarBar
+		ControlsetText, Edit5,%Iteration%,VarBar
 		return
 	}
 	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 	global
 		GUI, varbar:default
-		GUI, Varbar:Submit, Nohide
-		sleep 200
-		IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-		iniwrite, %Product%, Settings.ini, SavedVariables, Product
-		iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
-		iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
-		iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+		; GUI, Varbar:Submit, Nohide
+		ControlGetText, Product, Edit1, VarBar
+		ControlGetText, Batch, Edit2, VarBar
+		ControlGetText, Lot, Edit3, VarBar
+		ControlGetText, Coated, Edit4, VarBar
+		ControlGetText, Iteration, Edit5, VarBar
+		sleep 100
+		if Product
+			iniwrite, %Product%, Settings.ini, SavedVariables, Product
+		if Batch
+			iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
+		if lot
+			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
+		if Coated
+			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+		; if CustomerPosition
+			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
 loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
 	global
 		GUI, varbar:default
-		Iniread, Iteration, Settings.ini, SavedVariables, Iteration
+		; Iniread, Iteration, Settings.ini, SavedVariables, Iteration
 		iniRead, Product, Settings.ini, SavedVariables, Product
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
 		iniRead, Lot, Settings.ini, SavedVariables, Lot

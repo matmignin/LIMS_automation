@@ -1511,7 +1511,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 		lot:=
 		setwindelay, 280
 		; blockinput, on
-		ControlGetText, Iteration, Static1, VarBar
+		ControlGetText, Iteration, Edit5, VarBar
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
@@ -1605,9 +1605,9 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 			sleep 400
 			setkeydelay, 0, 0
 			if (a_shipto > 175) || (absselection > 175)
-				sleep 200
+				sleep 500
 			if winactive("Edit sample `(Field Configuration:")
-				sleep 100
+				sleep 500
 			return
 		}
 
