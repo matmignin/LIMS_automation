@@ -130,10 +130,10 @@ CodesRegex(input:=""){
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      if RegexMatch(Parse, "\[\[(?P<ustomerPosition>-?\d+)\]\]", C){
-        Iteration:=CustomerPosition
+      if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
+        Iteration:=Floor(rCustomerPosition)
+        CustomerPosition:=rCustomerPosition
         sleep 40
-        GuiControl,Varbar:Text, Iteration, %Iteration%
     }
       ; Ct:=rCoated ? " ct#" : ""
       stringUpper, Product, Product
@@ -141,6 +141,8 @@ CodesRegex(input:=""){
       GuiControl,Varbar:Text, Batch, %Batch%
       GuiControl,Varbar:Text, lot, %lot%
       GuiControl,Varbar:Text, Coated, %Coated%
+      GuiControl,Varbar:Text, Iteration, %Iteration%
+      			GUI, VarBar:submit,NoHide
       codeString:=trim(rProduct " " rBatch " " rLot Ct rCoated)
       ; tt(CodeString)
      Return Trim(CodeString)

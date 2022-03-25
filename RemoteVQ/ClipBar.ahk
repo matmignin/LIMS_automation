@@ -26,7 +26,7 @@ Class VarBar{
 		this.AddEdit("Lot",		 "left h29 x+0 y0 w75", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
 		GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
-		This.AddEdit("Iteration", "x+2 h29 left y0 w60",			 "17 Bold 107C41, Consolas")	; Text1
+		This.AddEdit("Iteration", "x+2 h29 left y0 w60",			 "16 Bold 107C41, Consolas")	; Text1
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, VarBar:Show, x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
@@ -143,20 +143,20 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 	global
 		GUI, varbar:default
 		; Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-		iniRead, Product, Settings.ini, SavedVariables, Product
-		iniRead, Batch, Settings.ini, SavedVariables, Batch
-		iniRead, Lot, Settings.ini, SavedVariables, Lot
-		iniRead, Coated, Settings.ini, SavedVariables, Coated
-		if Iteration
-			GuiControl,Varbar:Text, Iteration, %Iteration%
-		if Product
-			GuiControl,Varbar:Text, Product, %Product%
-		if Batch
-			GuiControl,Varbar:Text, Batch, %Batch%
-		if lot
-			GuiControl,Varbar:Text, lot, %lot%
-		if Coated
-			GuiControl,Varbar:Text, Coated, %Coated%
+		; iniRead, Product, Settings.ini, SavedVariables, Product
+		; iniRead, Batch, Settings.ini, SavedVariables, Batch
+		; iniRead, Lot, Settings.ini, SavedVariables, Lot
+		; iniRead, Coated, Settings.ini, SavedVariables, Coated
+		; if Iteration
+		; 	GuiControl,Varbar:Text, Iteration, %Iteration%
+		; if Product
+		; 	GuiControl,Varbar:Text, Product, %Product%
+		; if Batch
+		; 	GuiControl,Varbar:Text, Batch, %Batch%
+		; if lot
+		; 	GuiControl,Varbar:Text, lot, %lot%
+		; if Coated
+		; 	GuiControl,Varbar:Text, Coated, %Coated%
 		GUI, Varbar:Submit, Nohide
 	}
 }

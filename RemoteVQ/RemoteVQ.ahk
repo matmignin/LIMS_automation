@@ -11,8 +11,8 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 4000
 	#InstallKeybdHook
-	setwindelay, 60
-	SetKeyDelay,-1,1
+	setwindelay, 100
+	SetKeyDelay,0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2
@@ -44,7 +44,7 @@ if A_username != mmignin
 	Menu, Tray, Default, &Reload
 	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
 	varbar.Show()
-OnExit("Varbar.SaveVariables")
+; OnExit("Varbar.SaveVariables")
 	LMS.Orient()
 	SetTimer,activeCheck, 800
 	copypasteToggle:=0

@@ -403,6 +403,7 @@ AddProduct(){
       else
         return
     }
+	Breaking.Point()
     if Winactive("Edit Product")
       ProductTab.EditProduct()
     else if winactive("Edit Formulation")
@@ -455,9 +456,9 @@ AddIngredient(){
 			tt(Tab)
 			If winactive("Edit Ingredient"){
 				winactivate "Edit Ingredient"
-				sleep 150
+				sleep 250
 				ProductTab.EditIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
-				sleep 300
+				sleep 320
 				return
 				}
 			else if Winactive("Composition"){
@@ -500,55 +501,56 @@ EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_I
 		click, 150, 73
 	else
 		ProductTab.Dropdown_IngredientSelect(Ingredient_Id)
+	sleep 100
 	Send,{tab 6}^{a}
-	sleep 20
+	sleep 40
 	sendinput, %Ingredient_position%{tab}^a
 	Sendinput,%Ingredient_Name%
 	sleep 200
 	if Strlen(Ingredient_Name) > 250
-		sleep 400
+		sleep 500
 	If Ingredient_Claim contains Heavy Metal,Allergens
 		Sendinput,{tab}
 	Send,{tab 2}^a
 	Send,%Ingredient_Claim%
-	sleep 100
+	sleep 150
 	Breaking.Point()
 	If !Dont_Hit_Okay
 		Sendinput,{enter}
 	Breaking.Point()
-	sleep 100
+	sleep 150
 	ifwinexist, Duplicate ingredient ID
 		exit
+
 	return
 }
 
 Dropdown_IngredientSelect(A_DropdownCount){
 	global
+	SetKeyDelay,-1,-1
 	ifWinNotActive, Edit Ingredient
 		winactivate, Edit Ingredient
 	click, 150, 73 ;click dropdown box
-	sleep 50
+	sleep 110
 	AbsSelection:=Abs(A_DropdownCount)
 	if (A_DropdownCount > 0){
 		Sendinput, {tab}{home}{right %A_DropdownCount%}
-		if (A_DropdownCount > 150)
-			sleep 250
 		}
 	if (A_DropdownCount < 0){
 		Sendinput, {tab}{end}{left %AbsSelection%}
-		if (abselection > 150)
-			sleep 250
 	}
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
 	if (a_DropdownCount = ""){
-		if Iteration >=25
+		if Iteration >25
 			iteration:=1
 		sleep 50
 		this.Dropdown_GenericIngredient(Iteration)
 		Breaking.Point()
 		varbar.AddIteration(0)
 	}
+	SetKeyDelay,0,0
+	sleep 200
 	Breaking.Point()
 	return
 }
@@ -1541,10 +1543,15 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				}
 			Breaking.Point()
 			sleep 200
-			If !CustomerPosition
-				This.Dropdown_CustomerSelect(200)
-			else
-				WorkTab.Dropdown_CustomerSelect(Iteration)
+			; If !CustomerPosition
+				; This.CustomerMenu()
+			; else				if CustomerPosition > 0
+				if Iteration > 0
+					CustomerPosition:= Iteration + 1
+				if Iteration < 0
+					CustomerPosition:= Iteration - 1
+					; Iteration-=1
+				WorkTab.Dropdown_CustomerSelect(CustomerPosition)
 			Breaking.Point()
 			sleep 400
 			Send, {enter}
@@ -1574,8 +1581,6 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				Selection:= % MenuItems[1]
 				Menu, Menu, add, &%Selection%, CustomerMenu
 			}
-			menu, menu, add
-			menu, menu, add, E&xit, ExitMenu
 			Menu, Menu, Show,
 			return
 			CustomerMenu:
@@ -1585,6 +1590,10 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				IniRead,CustomerPosition, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Customers.ini, Customers, %InputVar%
 				sleep 20
 				menu, Menu, DeleteAll
+				if CustomerPosition > 0
+					customerPosition+=1
+				if CustomerPosition < 0
+					customerPosition-=1
 				sleep 200
 				this.Dropdown_CustomerSelect(CustomerPosition)
 			return
@@ -1602,12 +1611,13 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				Sendinput,{home}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
 				Sendinput,{end}{left %Absselection%}
-			sleep 400
+			else
+				sleep 400
+			; if (a_shipto > 175) || (absselection > 175)
+			; 	sleep 500
+			; if winactive("Edit sample `(Field Configuration:")
+				sleep 500
 			setkeydelay, 0, 0
-			if (a_shipto > 175) || (absselection > 175)
-				sleep 500
-			if winactive("Edit sample `(Field Configuration:")
-				sleep 500
 			return
 		}
 
