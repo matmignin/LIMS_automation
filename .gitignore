@@ -55,3 +55,5 @@ Data/CurrentCodes.txt
 RemoteVQ/RemoteVQ.exe
 **/.vscode/launch.json
 
+.DS_Store
+SQLs/.vscode/SQL.code-workspace
