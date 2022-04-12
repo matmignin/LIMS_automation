@@ -91,6 +91,7 @@ activeCheck:
 			winactivate,
 			Sendinput, {click 185, 103,2}%Product%{enter}
 		}
+		sleep 2000
 	}
 	else if winactive("Information")
 		send, {enter}

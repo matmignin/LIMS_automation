@@ -644,9 +644,9 @@ Dropdown_GenericIngredient(IterationCount:=""){
 	GeneralCount:=IterationCount
 	Click 150, 73
 	sleep 50
-	Sendinput,{tab}{Home}{right 10}
+	Sendinput,{tab}{Home}{right 11}
 	sleep 80
-	if GeneralCount=1
+	if GeneralCount=1			; Generic ingredient A.1
 		Sendinput, {right 56}
 	else if GeneralCount=2
 		Sendinput, {right 62}
@@ -1551,14 +1551,14 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				if Iteration < 0
 					CustomerPosition:= Iteration - 1
 					; Iteration-=1
-				WorkTab.Dropdown_CustomerSelect(CustomerPosition)
+			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
 			Breaking.Point()
-			sleep 400
+			; sleep 800
 			Send, {enter}
 			sleep 200
-			;blockinput, off
+			; blockinput, off
 			winactivate, Register new samples
-			sleep 300
+			; sleep 300
 			my:=my+30
 			MouseMove, mx, my
 			setwindelay, 100
@@ -1601,6 +1601,7 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 
 		Dropdown_CustomerSelect(A_ShipTo){
 			sleep 100
+			Critical, on
 			setkeydelay, -1,-1
 			AbsSelection:=Abs(A_ShipTo)-1
 			if (a_shipto = "-1")
@@ -1611,13 +1612,14 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 				Sendinput,{home}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
 				Sendinput,{end}{left %Absselection%}
-			else
-				sleep 400
+			; else
+				; sleep 400
 			; if (a_shipto > 175) || (absselection > 175)
 			; 	sleep 500
 			; if winactive("Edit sample `(Field Configuration:")
-				sleep 500
+				; sleep 800
 			setkeydelay, 0, 0
+			critical, off
 			return
 		}
 
