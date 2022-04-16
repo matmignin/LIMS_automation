@@ -1553,14 +1553,14 @@ Class WorkTab { 		;;___________________WorkTab Class______________________
 					; Iteration-=1
 			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
 			Breaking.Point()
-			; sleep 800
+			sleep 800
 			Send, {enter}
 			sleep 200
 			; blockinput, off
-			winactivate, Register new samples
+			; winactivate, Register new samples
 			; sleep 300
-			my:=my+30
-			MouseMove, mx, my
+			; my:=my+30
+			; MouseMove, mx, my
 			setwindelay, 100
 
 			return
