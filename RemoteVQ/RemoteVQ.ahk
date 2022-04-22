@@ -34,8 +34,8 @@ if A_username != mmignin
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
-	Menu, Tray, Add, msgbox, test_Msgbox
-	Menu, Tray, Add, Test_1, test_1
+	; Menu, Tray, Add, msgbox, test_Msgbox
+	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	Menu, Tray, Add, E&xit, ExitSub

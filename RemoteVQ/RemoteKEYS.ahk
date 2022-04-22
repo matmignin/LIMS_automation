@@ -6,13 +6,15 @@
 	F1::sendinput, %Product%
 	+F1::GetAllProducts()
 	!F1::GetAllProducts("`n")
-	^F1::GetAllProducts("`t")
+	^F1::Varbar.Focus("Product")
 	F2::sendinput, %Batch%
 	+F2::GetAllBatches()
 	!F2::GetAllBatches("`n")
-	^F2::GetAllBatches("`t")
+	^F2::Varbar.Focus("Batch")
 	F3::sendinput, %Lot%
+	^F3::Varbar.Focus("Lot")
 	F4::sendinput, %Coated%
+	^F4::Varbar.Focus("Coated")
 	; !F2::GetAllBatches()
 	+F3::3tap()
 	!F3::4tap()
@@ -58,10 +60,6 @@ test_1:
 		; +mbutton::lms.Menu()
 		F7::		 3Right()
 		F6::		3Left()
-		F20 & Space::Varbar.Focus(Product)
-		F20 & left::Send, %Product%(on sample log)
-		F20 & down::Send, %Batch%
-		F20 & right::Send, %lot%
 		Enter::LMS.SaveCode()
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
@@ -97,7 +95,14 @@ test_1:
 		sleep 300
 		Send, %Product%{enter}
 		return
+
+	#ifwinactive, New Document
+		Enter::
+		LMS.SaveCode()
+		LMS.SaveCode()
+		return
 	#ifwinactive, Reason for Change
+		:*:fr::`Fixing Rotation
 	#ifwinactive, Select tests for request:
 		space::send, ^{click}
 		rbutton::send, ^{click}
@@ -382,13 +387,13 @@ test_1:
 
 #ifwinactive, ahk_exe eln.exe
 	:*:osl`;::`(On Sample Log)
-	:*:fm`;::`, Finished, Micro
-	:*:ia`;::`, In Process, Analytical
-	:*:ip`;::`, In Process, Physical
-	:*:ir`;::`, In Process, Retain
-	:*:cr`;::`, Coated, Retain
-	:*:ca`;::`, Coated, Analytical
-	:*:cp`;::`, Coated, Physical
+	:*:fm`;::`Finished, Micro
+	:*:ia`;::`In Process, Analytical
+	:*:ip`;::`In Process, Physical
+	:*:ir`;::`In Process, Retain
+	:*:cr`;::`Coated, Retain
+	:*:ca`;::`Coated, Analytical
+	:*:cp`;::`Coated, Physical
 	:*:in`;::`ingredient
 #Ifwinactive, Edit Formulation
 	:*R:00`;::`#00 capsule / 0.917`" x 0.336`"

@@ -174,8 +174,8 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 #ifwinactive
 
 #If MouseIsOver("VarBar")
-Wheelup::Varbar.AddIteration(30)
-Wheeldown::Varbar.SubIteration(30)
+Wheelup::Varbar.AddIteration(50)
+Wheeldown::Varbar.SubIteration(50)
 +wheelup::Varbar.AddIteration(0)
 +wheeldown::Varbar.SubIteration(0)
 #if
