@@ -224,6 +224,7 @@ Department(DepartmentInput:=""){
       Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
       Regexmatch(DepartmentHaystack, "CT,\sPhysical", ctPhysical)
       Regexmatch(DepartmentHaystack, "CT,\sRetain", ctRetain)
+      Regexmatch(DepartmentHaystack, "I,\sAnalytical", Analytical)
       Sleep      20
       If Micro
         Department:="Micro"
@@ -235,6 +236,8 @@ Department(DepartmentInput:=""){
         Department:="Physical"
       else If ctPhysical
         Department:="ctPhysical"
+      else If Analytical
+        Department:="Analytical"
       else
         msgbox % "`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical
   return %Department%

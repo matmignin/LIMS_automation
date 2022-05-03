@@ -83,13 +83,13 @@ Class VarBar{
 
 	Focus(Control){
 		global
-		winGetTitle, the_winTitle, A
-		caret_x:=A_CaretX
-		caret_y:=A_Carety
+		; winGetTitle, the_winTitle, A
+		; caret_x:=A_CaretX
+		; caret_y:=A_Carety
 		winactivate, VarBar ahk_exe AutoHotkey.exe
-		FlashScreen()
+		; FlashScreen()
 		GuiControl Varbar:Focus, %Control%
-		Sendinput, ^{a}
+		Sendinput, +{left}
 		return
 	}
 

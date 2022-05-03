@@ -509,7 +509,7 @@ EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_I
 	sleep 200
 	if Strlen(Ingredient_Name) > 250
 		sleep 500
-	If Ingredient_Claim contains Heavy Metal,Allergens
+	If Ingredient_Claim contains Heavy Metal,Allergens,Other
 		Sendinput,{tab}
 	Send,{tab 2}^a
 	Send,%Ingredient_Claim%
@@ -644,7 +644,7 @@ Dropdown_GenericIngredient(IterationCount:=""){
 	GeneralCount:=IterationCount
 	Click 150, 73
 	sleep 50
-	Sendinput,{tab}{Home}{right 11}
+	Sendinput,{tab}{Home}{right 12}
 	sleep 80
 	if GeneralCount=1			; Generic ingredient A.1
 		Sendinput, {right 56}
@@ -854,9 +854,9 @@ GetRowText(){
 		clip.Department()
 		Breaking.Point()
 		sleep 100
-		; If (clip.Department() = "Analytical")
-		; SpecTab.Edit_Analytical()
-		If (Department = "ctPhysical")
+		If (Department = "Analytical")
+			SpecTab.Edit_Analytical_Copy()
+		else If (Department = "ctPhysical")
 			SpecTab.Edit_CoatedPhysical()
 		else If (Department = "Physical")
 			SpecTab.Edit_Physical()
@@ -872,7 +872,7 @@ GetRowText(){
 		;excel.NextSheet()
 		; excel.connect(0)
 		Breaking.Point()
-		excel.infolocations()
+		;excel.infolocations()
 		;TT(Product)
 		Critical, Off
 		return
@@ -1148,6 +1148,47 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 	;Send,{shift down}{Tab 15}{Shift up}{enter}
 }
 
+Edit_Analytical_Copy(){
+	Global
+	winactivate, Edit specification
+	Sendinput,{click 376, 87}{home}
+	Sendinput,%Product%`,{space}{shift down}I{shift up}n{shift down}{space}P{shift up}rocess`,{space}{shift down}A{Shift up}nalytical{tab 3}^a{backspace}
+	Breaking.Point()
+	Sendinput,{tab}^a%Product%{tab 2}
+	Breaking.Point()
+	Sleep 200
+	Send,{Space}
+	sleep 200
+	Breaking.Point()
+	winwaitactive, Products List, , 3
+	if !errorlevel
+		sleep 300
+	Send,{enter 2}
+	sleep 200
+	Breaking.Point()
+	Send,{tab}
+	sleep 200
+	Send,{right}
+	sleep 300
+	Breaking.Point()
+	click, 340, 622 ;click Save
+	ifwinactive, Warning,
+		return
+	winwaitactive, NuGenesis LMS, ,8
+	if !errorlevel
+		sleep 300
+	Breaking.Point()
+	click, 70, 518 ;edit sample method
+	sleep 499
+	winwaitactive, Edit sample template,,8
+	if !errorlevel
+		sleep 200
+	Breaking.Point()
+	Sendinput,{tab}{delete 4}%Product%{enter}
+	sleep 200
+	Breaking.Point()
+	return
+}
 Edit_Physical(){
 	Global
 	winactivate, Edit specification
@@ -1172,6 +1213,8 @@ Edit_Physical(){
 	sleep 300
 	Breaking.Point()
 	click, 340, 622 ;click okay
+		ifwinactive, Warning,
+		return
 	winwaitactive, NuGenesis LMS, ,8
 	if !errorlevel
 		sleep 300
@@ -1206,6 +1249,8 @@ Edit_CoatedRetain(){
 	sleep 200
 	Breaking.Point()
 	click, 340, 622 ;click okay
+		ifwinactive, Warning,
+		return
 	winwaitactive, NuGenesis LMS, ,5
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
@@ -1215,9 +1260,9 @@ Edit_CoatedRetain(){
 	Breaking.Point()
 	send, {enter}
 	sleep 300
-	winwaitactive, NuGenesis LMS,,5
-	If !ErrorLevel
-		MouseMove, %premx%, %premy%, 0
+	; winwaitactive, NuGenesis LMS,,5
+	; If !ErrorLevel
+		; MouseMove, %premx%, %premy%, 0
 	; click
 	Breaking.Point()
 	return
@@ -1238,6 +1283,8 @@ Edit_CoatedPhysical(){
 	Breaking.Point()
 	click, 340, 622 ;click okay
 	sleep 50
+		ifwinactive, Warning,
+		return
 	winwaitactive, NuGenesis LMS,,5
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
@@ -1245,8 +1292,8 @@ Edit_CoatedPhysical(){
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
 	sleep 300
 	winwaitactive, NuGenesis LMS,,5
-	If !ErrorLevel
-		MouseMove, %premx%, %premy%, 0
+	; If !ErrorLevel
+		; MouseMove, %premx%, %premy%, 0
 	; click
 	return
 }
@@ -1261,7 +1308,7 @@ Edit_Retain(){
 	Send,{tab}{right}
 	sleep 400
 	Send,{tab}{right}
-	sleep 1500
+	sleep 900
 	Breaking.Point()
 	winWaitactive, Edit specification,, 1
 	if !errorlevel
@@ -1502,7 +1549,7 @@ Spec_TableGuiClose:
 	coordmode, mouse, window
 return
 
-Class WorkTab { 		;;___________________WorkTab Class______________________
+Class WorkTab { 		;;______WorkTab Class______________
 	registerNewSamples(){
 		global
 		mx:=

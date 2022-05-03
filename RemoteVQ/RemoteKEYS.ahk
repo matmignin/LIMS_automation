@@ -6,15 +6,15 @@
 	F1::sendinput, %Product%
 	+F1::GetAllProducts()
 	!F1::GetAllProducts("`n")
-	^F1::Varbar.Focus("Product")
+	^F1::Varbar.Focus("Edit1")
 	F2::sendinput, %Batch%
 	+F2::GetAllBatches()
 	!F2::GetAllBatches("`n")
-	^F2::Varbar.Focus("Batch")
+	^F2::Varbar.Focus("Edit2")
 	F3::sendinput, %Lot%
-	^F3::Varbar.Focus("Lot")
+	^F3::Varbar.Focus("Edit3")
 	F4::sendinput, %Coated%
-	^F4::Varbar.Focus("Coated")
+	^F4::Varbar.Focus("Edit4")
 	; !F2::GetAllBatches()
 	+F3::3tap()
 	!F3::4tap()
@@ -53,9 +53,58 @@ test_1:
 	)
 	return
 
+NewVersion(){
+	; MouseGetPos, mx, mY
+	click, 69, 249 ; new version
+	sleep 300
+	winactivate, Edit specification
+	click, 393, 177 ; click description
+	sleep 300
+	sendinput, P. aeruginosa Removed
+	sleep 300
+	Breaking.Point()
+	click, 331, 617
+	; winwaitnotactive, Edit specification, 2
+	; if errorlevel
+		; winactivate, NuGenesis LMS
+	; sleep 300
+	; MouseMove, mx, my+26, 1
+
+}
+
+RemoveTestSpec(){
+	click, 63, 754 ;; edit results
+	sleep 400
+	winactivate, Results Definition
+	click, 111, 96 ;; sort Seq
+	sleep 300
+	click, 128, 65 ;; Remove
+	winactivate, Delete results
+	sendinput, {enter}
+	sleep 300
+	Breaking.Point()
+	sendinput, {enter}
+	; sleep 300
+}
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
-		; F10::4tap()
+		^F10::RemoveTestSpec()
+		+F10::NewVersion()
+		+^F10::
+			loop 3 {
+			CoordMode, ToolTip, Window
+			MouseGetPos, mx, mY
+			sleep 900
+			RemoveTestSpec()
+			my=+26
+			sleep 5000
+			winactivate, NuGenesis LMS
+			; MouseMove, %mx%, %my%,
+			click, Lbutton, %mx%, %my%
+			sleep 5000
+			}
+			return
+
 		mbutton:: 3tap()
 		; +mbutton::lms.Menu()
 		F7::		 3Right()
@@ -88,7 +137,7 @@ test_1:
 		mbutton::clk(910,668)
 		F10::lms.menu()
 		+mbutton::lms.menu()
-		space::sendinput,{ctrldown}{click}{ctrlup}
+; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
 		F9::
 		clk(181, 104,2,2)
@@ -99,10 +148,9 @@ test_1:
 	#ifwinactive, New Document
 		Enter::
 		LMS.SaveCode()
-		LMS.SaveCode()
+		LMSclick.okay()
 		return
 	#ifwinactive, Reason for Change
-		:*:fr::`Fixing Rotation
 	#ifwinactive, Select tests for request:
 		space::send, ^{click}
 		rbutton::send, ^{click}
@@ -188,7 +236,7 @@ test_1:
 				}
 				}
 			else if winexist("Delete Test") || winexist("Delete Tests") || winexist("Delete results") || winexist("Delete sample templates") || winExist("Delete specification") { ; Press Okay
-					winactivate, Delete
+					winactivate,
 					send, y
 					clk(229, 136)
 					return
@@ -200,6 +248,8 @@ test_1:
 				}
 			else if winactive("Register new samples")
 					WorkTab.registerNewSamples()
+			else if winactive("Test Definition Editor")
+					mouseclick, left, 333, 615
 			else if winactive("Login")
 					menu.passwords()
 			else if winactive("Result Entry") {
@@ -207,7 +257,9 @@ test_1:
 					WorkTab.ChangeTestResults("toggle")
 					mousemove, %xpos%, %yPos%+26,0
 				}
-			else if winactive("Edit specification") || winactive("Results Definition")
+			else if winactive("Edit specification")
+					SpecTab.Edit_Analytical()
+			else if winactive("Results Definition")
 					lms.menu()
 			else if winactive("Composition")
 					ProductTab.Table()
