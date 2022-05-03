@@ -28,7 +28,7 @@ if A_username != mmignin
 	CrLf=`r`n
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
-	; CoordMode, mouse, window
+	CoordMode, mouse, window
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
 	SetscrolllockState, alwaysoff
@@ -51,7 +51,8 @@ if A_username != mmignin
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
-	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+	; RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
+	RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
   #include ClipBar.ahk
   #include Nugenisis.ahk
   #include CodeClip.ahk
@@ -103,21 +104,21 @@ return
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
 	sleep 20
-	if (Position:="S")
-		CoordMode, ToolTip, Screen
-	if (Position:="R")
-		CoordMode, ToolTip, Relative
-	if (Position:="C")
-		tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
-	else
+	; if (Position:="S")
+		; CoordMode, ToolTip, Screen
+	; if (Position:="R")
+		; CoordMode, ToolTip, Relative
+	; if (Position:="C")
+		; tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
+	; else
 		tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := winExist("ahk_class tooltips_class32")
 	if Transparent
 		winSet, Trans, %Transparent%, % "ahk_id" hwnd
 	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; winSet, Trans, 200, %W%
-	; CoordMode, ToolTip, screen
-	CoordMode, ToolTip, Relative
+	CoordMode, ToolTip, screen
+	; CoordMode, ToolTip, Relative
 	SetTimer, RemoveToolTip%N%, -%time%
 return
 RemoveToolTip:
@@ -154,10 +155,10 @@ return
 class Breaking {
 	Point(){
 		Global
-		If GetKeyState("Lbutton", "P") {
-			TT("Broke")
-	setwindelay, 100
-	SetKeyDelay, 0,1
+		If (GetKeyState("Lbutton", "P") || GetKeyState("Space", "P")) {
+			TT("Broke",3000)
+			setwindelay, 100
+			SetKeyDelay, 0,0
 			exit
 		}
 		if keep_running = n ;another signal to stop

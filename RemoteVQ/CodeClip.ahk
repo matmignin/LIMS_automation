@@ -20,10 +20,10 @@ clipChange(type){
   }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProduct()
-  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
-    exitapp
-    sleep 25
-    }
+  ; else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    ; exitapp
+    ; sleep 25
+    ; }
   else
     clip.codesRegex()
     sleep 50
