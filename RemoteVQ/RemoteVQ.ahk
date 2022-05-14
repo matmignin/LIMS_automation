@@ -88,9 +88,10 @@ windowSpy(){
 activeCheck:
 	If winexist("Delete Attribute"){
 		winactivate,
+		sleep 200
 		sendinput, {enter}
 		; mousemove, 245, 137
-		sleep 2000
+		sleep 1000
 	}
 	else If winexist("Approve specification"){
 		winactivate,
@@ -99,17 +100,26 @@ activeCheck:
 	}
 	else If winexist("Delete Test"){
 		winactivate,
+		sleep 200
 		sendinput, {enter}
 		; mousemove, 222, 138
 		; click
-		sleep 2000
+		sleep 1000
+	}
+	else If winexist("Delete results"){
+		winactivate,
+		sleep 200
+		sendinput, {enter}
+		; mousemove, 222, 138
+		; click
+		sleep 1000
 	}
 	else If winexist("Delete ingredients"){
 		winactivate,
 		sleep 200
 		sendinput, {enter}
 		; mousemove, 222, 138
-		sleep 2000
+		sleep 1000
 	}
 	else if winactive("Error") {
 		ControlSend,, {enter}, Error

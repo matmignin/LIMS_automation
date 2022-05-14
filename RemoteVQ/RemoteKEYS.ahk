@@ -40,17 +40,7 @@ Test_msgbox(msg){
 	; listarray(Position),1000,300,300,2,,"R")
 	return
 }
-test_1:
-	clipboard:=
-(
-"<<LabelCopy>>|Vitamin D|283|2|Vitamin D (as cholecalciferol)|12.5 mcg|1.65|HPLC 176|(as cholecalciferol)|12.50|20.63|mcg|2|12.50 - 20.63 mcg
-<<LabelCopy>>|Calcium|29|4|Calcium|100 mg|
-<<LabelCopy>>|Zinc|-0|6|Zinc (as zinc oxide)|10 mcg|1.25|ICP-MS 231|(as zinc oxide)|10.0|12.5|mcg|1|10.0 - 12.5 mcg
-<<LabelCopy>>|Selenium|253|8|Selenium (as sodium selenate)|35 mcg|
-<<LabelCopy>>|White willow bark extract||10|White willow bark extract (25% salicin)|250 mg|
-<<LabelCopy>>|N-Acetyl-L-cysteine||12|N-Acetyl-L-cysteine|162.5 mg|
-<<LabelCopy>>|Turmeric root extract||14|Turmeric root extract (95% curcuminoids)|100 mg|"
-	)
+Ctest_1:
 	return
 
 NewVersion(){
@@ -122,6 +112,7 @@ RemoveTestSpec(){
 	#Ifwinactive,Book
 		+F9::LMS.CopyProductRotation()
 	#Ifwinactive,Test Definition Editor
+		enter::clk(333,615)
 		mbutton::
 			clk(338,617)
 			sleep 400
@@ -129,33 +120,36 @@ RemoveTestSpec(){
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
-		wheeldown:: sendInput % Blockrepeat(400) Varbar.SubIteration(10)
+		; wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
+		; wheeldown:: sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 		#MaxThreadsPerHotkey 2
 		F10::WorkTab.ChangeTestResults("loop")
 		#MaxThreadsPerHotkey 1
 	#Ifwinactive, Results Definition ;;__Results_Definition:
+		Enter::
 		mbutton::clk(910,668)
 		F10::lms.menu()
 		+mbutton::lms.menu()
+		+enter::sendinput, {enter}
 ; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
 		F9::
-		clk(181, 104,2,2)
-		sleep 300
-		Send, %Product%{enter}
-		return
+			clk(181, 104,2,2)
+			sleep 300
+			Send, %Product%{enter}
+			return
 
 	#ifwinactive, New Document
 		Enter::
-		LMS.SaveCode()
-		LMSclick.okay()
-		return
+			LMS.SaveCode()
+			LMSclick.okay()
+			return
+		+enter::sendinput, {enter}
 	#ifwinactive, Reason for Change
 	#ifwinactive, Select tests for request:
-		space::send, ^{click}
-		rbutton::send, ^{click}
-		Numpaddot::send, {click 837, 656}{
+		; space::send, ^{click}
+		; rbutton::send, ^{click}
+		; Numpaddot::send, {click 837, 656}{
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
 		;;^`::						Varbar.reset()
@@ -172,15 +166,8 @@ RemoveTestSpec(){
 		mbutton::					3tap()
 		+!F10::						3tap()
 	#Ifwinactive,
-
-		; Lbutton & Rbutton::       send, ^{x}
-
 		;;	___Esc:
 		esc::						esc
-		; numpadsub:: 		4Left()
-		; numpadadd:: 		4right()
-		; numpadMult:: 		4up()
-		; numpaddot:: 		4down()
 		pause::						Suspend, Toggle
 		#h::return
 		#p::return
@@ -190,7 +177,7 @@ RemoveTestSpec(){
 		F20 & backspace:: 		Send, {delete}
 		F20 & =:: 		Send,{ctrldown}{=}{ctrlup}
 		F20 & -:: 		Send,{ctrldown}{-}{ctrlup}
-		; F19 & Rshift::				Varbar.focus("Edit1")
+		^+F9::				Varbar.focus("Edit2")
 		F20 & enter::
 			Varbar.focus("Edit5")
 			send, {esc}{home}^{right}
