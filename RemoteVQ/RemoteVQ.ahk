@@ -4,12 +4,12 @@ if A_username != mmignin
 	#Persistent
 	Process, Priority, , High
 	#NoEnv
-	Iteration=1
+	; Iteration=1
 	; #ErrorStdOut
 	; #KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 4000
+	#ClipboardTimeout 4500
 	#InstallKeybdHook
 	setwindelay, 100
 	SetKeyDelay,0,0
@@ -43,20 +43,33 @@ if A_username != mmignin
 	; Menu, Tray, Default, &Reload
 	Menu, Tray, Default, &Reload
 	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
+	CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
 	varbar.Show()
 ; OnExit("Varbar.SaveVariables")
 	LMS.Orient()
-	SetTimer,activeCheck, 800
+	SetTimer,activeCheck, 600
+	iniRead, Ingredient_List_Adjustment, Settings.ini, SavedVariables, Ingredient_List_Adjustment
+	iniRead, HM_Units, Settings.ini, HeavyMetal_Variables, HM_Units
+	iniRead, HM_Lower_Limit, Settings.ini, HeavyMetal_Variables, HM_Lower_Limit
+	iniRead, Arsenic_Limit, Settings.ini, HeavyMetal_Variables, Arsenic_Limit
+	iniRead, Arsenic_Requirement, Settings.ini, HeavyMetal_Variables, Arsenic_Requirement
+	iniRead, Lead_Limit, Settings.ini, HeavyMetal_Variables, Lead_Limit
+	iniRead, Lead_Requirement, Settings.ini, HeavyMetal_Variables, Lead_Requirement
+	iniRead, Cadmium_Limit, Settings.ini, HeavyMetal_Variables, Cadmium_Limit
+	iniRead, Cadmium_Requirement, Settings.ini, HeavyMetal_Variables, Cadmium_Requirement
+	iniRead, Mercury_Limit, Settings.ini, HeavyMetal_Variables, Mercury_Limit
+	iniRead, Mercury_Requirement, Settings.ini, HeavyMetal_Variables, Mercury_Requirement
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
-	; RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#?|ct\s?|coated\s?)(?P<Coated>\d{3}-\d{4})"
-	RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
+	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
+	; RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
   #include ClipBar.ahk
   #include Nugenisis.ahk
   #include CodeClip.ahk
   #Include RemoteKEYS.ahk
+
 
 return
 
@@ -73,16 +86,29 @@ windowSpy(){
   }
 
 activeCheck:
-	If winactive("Delete Attribute"){
-		mousemove, 245, 137
+	If winexist("Delete Attribute"){
+		winactivate,
+		sendinput, {enter}
+		; mousemove, 245, 137
 		sleep 2000
 	}
-	else If winactive("Approve specification"){
+	else If winexist("Approve specification"){
+		winactivate,
 		mousemove, 280, 138
 		sleep 2000
 	}
-	else If winactive("Delete Test"){
-		mousemove, 222, 138
+	else If winexist("Delete Test"){
+		winactivate,
+		sendinput, {enter}
+		; mousemove, 222, 138
+		; click
+		sleep 2000
+	}
+	else If winexist("Delete ingredients"){
+		winactivate,
+		sleep 200
+		sendinput, {enter}
+		; mousemove, 222, 138
 		sleep 2000
 	}
 	else if winactive("Error") {
@@ -94,8 +120,10 @@ activeCheck:
 		}
 		sleep 2000
 	}
-	else if winactive("Information")
+	else if winexist("Information"){
+		winactivate,
 		send, {enter}
+	}
 	else
 		return
 return
@@ -104,13 +132,6 @@ return
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
 	sleep 20
-	; if (Position:="S")
-		; CoordMode, ToolTip, Screen
-	; if (Position:="R")
-		; CoordMode, ToolTip, Relative
-	; if (Position:="C")
-		; tooltip, %msg%, %A_CaretX%, %A_CaretY%,%N%
-	; else
 		tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := winExist("ahk_class tooltips_class32")
 	if Transparent
@@ -144,11 +165,8 @@ FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
 	if !Text
 		Text:=A_ThisHotkey
 	tt(Text,ToolTipTime,A_caretx,A_caretY,4)
-	; ToolTip, %Text%, %A_CaretX%, %A_CaretY%, 9
-	; ToolTip, %text%, 9
 	Sleep,10
 	SplashImage,off
-	; ToolTip,,,,9
 return
 }
 

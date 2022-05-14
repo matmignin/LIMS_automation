@@ -20,10 +20,12 @@ clipChange(type){
   }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProduct()
-  ; else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
-    ; exitapp
-    ; sleep 25
-    ; }
+  else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
+    clip.HeavyMetalSpecs()
+  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    exitapp
+    sleep 25
+    }
   else
     clip.codesRegex()
     sleep 50
@@ -54,6 +56,22 @@ Clip(input=50,Wait:="0.95"){
 
 
 Class Clip {
+
+  HeavyMetalSpecs(){
+    global
+    HM_Specs:=StrSplit(clipboard,"|")
+    HM_Unit:=HM_Specs[2]
+    HM_Lower_Limit:=HM_Specs[3] " " HM_Unit
+    Arsenic_Limit:=HM_Specs[4]
+    Lead_Limit:=HM_Specs[5]
+    Cadmium_Limit:=HM_Specs[6]
+    Mercury_Limit:=HM_Specs[7]
+    Arsenic_Requirement:=HM_Specs[8] " " HM_Unit
+    Lead_Requirement:=HM_Specs[9] " " HM_Unit
+    Cadmium_Requirement:=HM_Specs[10] " " HM_Unit
+    Mercury_Requirement:=HM_Specs[11] " " HM_Unit
+
+	}
 
 EditBox(Input:=""){
   Global EditBox
@@ -122,20 +140,28 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile
     Gui Varbar:Default
+    PriorCodestring:=CodeString
+    PriorBatch:=Batch
+    codestring:=
       Parse:= Input ? Input : Clipboard
       Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
       Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
+      ; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+      if (Batch!=PriorBatch) && (!rlot && !rCoated){
+        Lot:=
+        Coated:=
+      }
+      ; Iteration:=RegExMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r) ? rCoated : Coated
       if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
         Iteration:=Floor(rCustomerPosition)
         CustomerPosition:=rCustomerPosition
         sleep 40
     }
-      ; Ct:=rCoated ? " ct#" : ""
+      Ct:=Coated ? " ct#" : ""
       stringUpper, Product, Product
       GuiControl,Varbar:Text, Product, %Product%
       GuiControl,Varbar:Text, Batch, %Batch%
@@ -143,9 +169,15 @@ CodesRegex(input:=""){
       GuiControl,Varbar:Text, Coated, %Coated%
       GuiControl,Varbar:Text, Iteration, %Iteration%
       			GUI, VarBar:submit,NoHide
-      codeString:=trim(rProduct " " rBatch " " rLot Ct rCoated)
+      codeString:=trim(Product " " Batch " " Lot Ct Coated)
+      if (PriorCodestring!=Codestring){
+        FileDelete, %CodeFile%
+        sleep 200
+        FileAppend, %CodeString%, %CodeFile%
+      }
       ; tt(CodeString)
-     Return Trim(CodeString)
+      ; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
+     Return ;CodeString
 }
 
 

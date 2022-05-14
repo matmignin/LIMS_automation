@@ -65,6 +65,7 @@ Class LMS { ;;__________Generl LMS__________________
 			Menu, Menu, Add, &Canada Heavy Metal,Autofill
 			Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
 			Menu, Menu, Add, &Report Only Heavy Metal,Autofill
+			Menu, Menu, Add, Custom Heavy Metal,Autofill
 			Try Menu,menu,show
 			return
 		}
@@ -395,7 +396,7 @@ AddProduct(){
     }
     if winactive("NuGenesis LMS"){
       Lms.detectTab()
-			tt(Tab)
+			; tt(Tab)
       if (Tab="Product"){
         click 74, 153
         sleep 1000
@@ -453,7 +454,7 @@ AddIngredient(){
     		  Table_height+=1
 			}
 			  Lms.detectTab()
-			tt(Tab)
+			; tt(Tab)
 			If winactive("Edit Ingredient"){
 				winactivate "Edit Ingredient"
 				sleep 250
@@ -639,12 +640,12 @@ HM_ReportOnly(){
 	return
 }
 
-Dropdown_GenericIngredient(IterationCount:=""){
+Dropdown_GenericIngredient(IterationCount:=""){ ;; Generic List
 	global
 	GeneralCount:=IterationCount
 	Click 150, 73
 	sleep 50
-	Sendinput,{tab}{Home}{right 12}
+	Sendinput,{tab}{Home}{right %Ingredient_List_Adjustment%}
 	sleep 80
 	if GeneralCount=1			; Generic ingredient A.1
 		Sendinput, {right 56}
@@ -809,6 +810,7 @@ GetRowText(){
 		global
 		winactivate, Select methods tests
 		click, 235, 72
+		sleep 100
 		Send, ^a
 		Loop, Read, Methods.ini
 		{
@@ -831,7 +833,9 @@ GetRowText(){
 			Sendinput, %vOutput%{enter}
 			sleep 300
 			click 506, 341
+			menu, Methodmenu, deleteAll
 			SpecTab.Methods()
+
 		return
 	}
 
@@ -969,7 +973,7 @@ GetRowText(){
 	AddMethod(MethodID){
 		winactivate, NuGenesis LMS
 		click 67, 562 ; Add Methods
-		winwaitactive, Select methods tests,,0.45
+		winwaitactive, Select methods tests,,0.65
 		click 235, 69. 2 ; method search bar
 		Sendinput, %MethodID%{enter}^{a}{click 506, 337}{click 851, 656} ; add test and hit okay
 		sleep 200
@@ -1027,7 +1031,6 @@ GetRowText(){
 			winactivate, Result Editor
 			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
-			Breaking.Point()
 		return
 	}
 	else
@@ -1107,10 +1110,14 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	sleep 400
 	Breaking.Point()
 	mousemove, 910, 668
-	WinWaitClose, Results Definition,, 8
+	If Method contains ICP-MS 231
+		return
+	WinWaitClose, Results Definition,, 4
 	winactivate, Test Definition Editor
 	mousemove, 335, 617
-
+	sleep 500
+	Breaking.Point()
+	click
 	return
 }
 
@@ -1226,12 +1233,13 @@ Edit_Physical(){
 		sleep 200
 	Breaking.Point()
 	Sendinput,{tab}{delete 4}%Product%{enter}
-	sleep 200
+	sleep 300
 	Breaking.Point()
+	send, {enter}
 	winwaitactive, NuGenesis LMS,,5
-	If !ErrorLevel
-		MouseMove, %premx%, %premy%, 0
-	click
+	; If !ErrorLevel
+		; MouseMove, %premx%, %premy%, 0
+	; click
 	return
 }
 
@@ -1260,7 +1268,7 @@ Edit_CoatedRetain(){
 	Breaking.Point()
 	send, {enter}
 	sleep 300
-	; winwaitactive, NuGenesis LMS,,5
+	winwaitactive, NuGenesis LMS,,5
 	; If !ErrorLevel
 		; MouseMove, %premx%, %premy%, 0
 	; click
@@ -1291,6 +1299,7 @@ Edit_CoatedPhysical(){
 	Breaking.Point()
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
 	sleep 300
+	send, {enter}
 	winwaitactive, NuGenesis LMS,,5
 	; If !ErrorLevel
 		; MouseMove, %premx%, %premy%, 0
@@ -1324,8 +1333,8 @@ Edit_Retain(){
 	Sendinput,{tab}{delete 4}%Product%{enter}
 	sleep 300
 	winwaitactive, NuGenesis LMS,,5
-	If !ErrorLevel
-		MouseMove, %premx%, %premy%, 0
+	; If !ErrorLevel
+		; MouseMove, %premx%, %premy%, 0
 	; click
 	return
 }
@@ -1368,8 +1377,8 @@ Edit_Micro(){
 	Sendinput,{tab}{delete 4}%Product%{enter}
 	sleep 300
 	winwaitactive, NuGenesis LMS,,5
-	If !ErrorLevel
-		MouseMove, %premx%, %premy%, 0
+	; If !ErrorLevel
+		; MouseMove, %premx%, %premy%, 0
 	; click
 	return
 }
@@ -1443,6 +1452,45 @@ HM_USP(){
 	Breaking.Point()
 	winwaitactive, Result Editor,,4
 	Sendinput,{tab 5}mcg/day{tab 7}{space}{tab 3}15{tab 5}NMT 15 mcg/day
+	click 390, 659	;click okay
+	return
+}
+
+HM_Custom(){
+	global HM_Units, Arsenic_Limit, Arsenic_Requirement, Lead_Limit, Lead_Requirement, Cadmium_Limit, Cadmium_Requirement, Mercury_Limit, Mercury_Requirement,HM_Lower_Limit
+	if !HM_Lower_Limit
+		HM_Lower_Limit:=""
+	winactivate, Result Definition
+	click 125,130 ;click 1st row
+	click 80,70 ;Edit
+	Breaking.Point()
+	winwaitactive, Result Editor,,2
+	Sendinput,{tab 5}%HM_Units%{tab 7}{space}{tab 2}%HM_Lower_Limit%{tab}%Arsenic_Limit%{tab 5}%Arsenic_Requirement%%A_space%%HM_Units%
+	click 390, 659	;click okay
+	Breaking.Point()
+	winWaitClose, Result Editor,,2
+	click 125,130 ;click 1st row
+	click 80,70 ;Edit
+	Breaking.Point()
+	Breaking.Point()
+	winwaitactive, Result Editor,,2
+	Sendinput,{tab 5}%HM_Units%{tab 7}{space}{tab 2}%HM_Lower_Limit%{tab}%Lead_Limit%{tab 5}%Lead_Requirement%%A_space%%HM_Units%
+	click 390, 659	;click okay
+	winWaitClose, Result Editor,,2
+	click 125,130 ;click 1st row
+	click 80,70 ;Edit
+	Breaking.Point()
+	Breaking.Point()
+	winwaitactive, Result Editor,,2
+	Sendinput,{tab 5}%HM_Units%{tab 7}{space}{tab 2}%HM_Lower_Limit%{tab}%Cadmium_Limit%{tab 5}%Cadmium_Requirement%%A_space%%HM_Units%
+	click 390, 659	;click okay
+	winWaitClose, Result Editor,,2
+	click 125,130 ;click 1st row
+	click 80,70 ;Edit
+	Breaking.Point()
+	Breaking.Point()
+	winwaitactive, Result Editor,,2
+	Sendinput,{tab 5}%HM_Units%{tab 7}{space}{tab 2}%HM_Lower_Limit%{tab}%Mercury_Limit%{tab 5}%Mercury_Requirement%%A_space%%HM_Units%
 	click 390, 659	;click okay
 	return
 }
@@ -1590,8 +1638,11 @@ Class WorkTab { 		;;______WorkTab Class______________
 				}
 			Breaking.Point()
 			sleep 200
-			; If !CustomerPosition
-				; This.CustomerMenu()
+			If !Iteration
+			{
+				Worktab.CustomerMenu()
+				return
+				}
 			; else				if CustomerPosition > 0
 				if Iteration > 0
 					CustomerPosition:= Iteration + 1
@@ -1616,10 +1667,13 @@ Class WorkTab { 		;;______WorkTab Class______________
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			global
 			try menu, Menu, DeleteAll
-			if winactive("Edit sample (Field Configuration: F, Micro)")
-				send {click 421, 504}
-			else ;if winactive("Edit sample (Field Configuration")
-				Send, {Click 425, 434}
+			send, {pgup 2}
+			sleep 20
+			send, {click 250, 150}
+			; if winactive("Edit sample (Field Configuration: F, Micro)")
+				; send, {click 421, 504}
+			; else ;if winactive("Edit sample (Field Configuration")
+				; Send, {Click 425, 434}
 			Loop, Read, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Customers.ini
 			{
 				If A_Index = 1
@@ -1635,6 +1689,11 @@ Class WorkTab { 		;;______WorkTab Class______________
 				InputVar:=StrReplace(A_ThisMenuItem, "&", "")
 				; InputVar:=A_ThisMenuItem
 				IniRead,CustomerPosition, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Customers.ini, Customers, %InputVar%
+				sleep 30
+				if winactive("Edit sample (Field Configuration: F, Micro)")
+					sendinput, {tab 9}
+				else
+					sendinput, {tab 7}
 				sleep 20
 				menu, Menu, DeleteAll
 				if CustomerPosition > 0
@@ -1642,6 +1701,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 				if CustomerPosition < 0
 					customerPosition-=1
 				sleep 200
+				Iteration:=CustomerPosition
+				GUI, VarBar:submit,NoHide
 				this.Dropdown_CustomerSelect(CustomerPosition)
 			return
 		}
@@ -1659,6 +1720,12 @@ Class WorkTab { 		;;______WorkTab Class______________
 				Sendinput,{home}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
 				Sendinput,{end}{left %Absselection%}
+			else if (a_ShipTo = "")
+				worktab.CustomerMenu()
+			else if (a_ShipTo = 0)
+				worktab.CustomerMenu()
+			else
+				exit
 			; else
 				; sleep 400
 			; if (a_shipto > 175) || (absselection > 175)
@@ -1863,18 +1930,18 @@ Class WorkTab { 		;;______WorkTab Class______________
 			send, ^c
 			clipwait, 1
 			sleep 400
-			filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
+			filename:= "Rotations\" Product ".txt"
 			FileDelete, %FileName%
 			FileAppend, %Clipboard%, %Filename%
 			LMSwb:=ComObjactive("Excel.Application")
 			Rotation:=lmswb.activeSheet.Range("A:A").Find(Product).offset(0,5)
 			Rotation.Value:=Product ".txt"
-			; iniwrite %Clipboard%, Settings.ini, Rotations, %Product%
+			;iniwrite %Clipboard%, Settings.ini, Rotations, %Product%
 		}
 
 		PasteProductRotation(){
 			global
-			filename:= "C:\Users\mmignin\Documents\VQuest\Data\Rotations\" Product ".txt"
+			filename:= "Rotations\" Product ".txt"
 			FileRead, Clipboard, %Filename%
 			; iniread Clipboard,Settings.ini, Rotations, %Product%
 			LMSwb:=ComObjactive("Excel.Application")
@@ -1915,6 +1982,10 @@ Class WorkTab { 		;;______WorkTab Class______________
 				clk(415, 360)
 			else if winactive("Edit specification")
 				clk(323, 621)
+			else if winactive("Edit Ingredient")
+				clk(277, 557)
+			else If winactive("Test Definition Editor ")
+				Click 341, 618
 			else if winactive("Reason for Change")
 			Return clk(170, 331)
 		else if winexist("Error") {
@@ -2030,6 +2101,8 @@ Heavy_metals:
 		SpecTab.HM_Prop65()
 	else if (A_ThisMenuItem = "Report Only Heavy Metal")
 		SpecTab.HM_ReportOnly()
+	else if (A_ThisMenuItem = "Custom Heavy Metal")
+		SpecTab.HM_Custom()
 	else
 		Menu,Menu, deleteAll
 return
@@ -2063,6 +2136,8 @@ Autofill:
 		SpecTab.HM_Prop65()
 	else if (A_ThisMenuItem = "&Report Only Heavy Metal")
 		SpecTab.HM_ReportOnly()
+	else if (A_ThisMenuItem = "Custom Heavy Metal")
+		SpecTab.HM_Custom()
 	else if (A_ThisMenuItem = "&Delete Retain")
 		WorkTab.DeleteRetain()
 	Menu,Menu, deleteAll

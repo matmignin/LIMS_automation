@@ -127,6 +127,7 @@ RemoveTestSpec(){
 			sleep 400
 			clk(910,668)
 			return
+		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
 		wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
 		wheeldown:: sendInput % Blockrepeat(400) Varbar.SubIteration(10)
@@ -157,8 +158,10 @@ RemoveTestSpec(){
 		Numpaddot::send, {click 837, 656}{
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
-		^`::						Varbar.reset()
+		;;^`::						Varbar.reset()
 		enter::						LMSclick.okay()
+		+enter::					sendinput, {enter}
+		^enter::					sendinput, {enter}
 		esc::						LMSclick.esc()
 		F9::						3up()
 		F8::						3down()
@@ -263,8 +266,10 @@ RemoveTestSpec(){
 					lms.menu()
 			else if winactive("Composition")
 					ProductTab.Table()
-			else If winactive("Select methods tests")
-					SpecTab.Table()
+			else if winactive("Select methods tests")
+					clk(854, 658)
+			; else If winactive("Select methods tests")
+					; SpecTab.Table()
 			else if winactive("Edit Formulation")
 					productTab.EditFormulation()
 			else if winactive("Select Product ahk_exe eln.exe")
@@ -441,6 +446,7 @@ RemoveTestSpec(){
 	:*:osl`;::`(On Sample Log)
 	:*:fm`;::`Finished, Micro
 	:*:ia`;::`In Process, Analytical
+	:*:iaa`;::`In Process, Analytical (Annual)
 	:*:ip`;::`In Process, Physical
 	:*:ir`;::`In Process, Retain
 	:*:cr`;::`Coated, Retain

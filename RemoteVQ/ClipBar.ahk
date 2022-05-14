@@ -42,7 +42,28 @@ Class VarBar{
 		Return
 
 		VarBarHandler:
+		; while (A_TimeIdle < 1000) && winactive("VarBar")
+			; tt("",500)
+		; sleep 25
+		; sleep 300
+			; sleep 1000
+			PriorCodestring:=CodeString
 			GUI, VarBar:submit,NoHide
+			; ControlGetText, Product, Edit1, VarBar
+			; ControlGetText, Batch, Edit2, VarBar
+			; ControlGetText, Lot, Edit3, VarBar
+			; ControlGetText, Coated, Edit4, VarBar
+			; ControlGetText, Iteration, Edit5, VarBar
+			Ct:=Coated ? " ct#" : ""
+			; CodeString:=clip.CodesRegex(clipboard)
+			CodeString:=trim(Product " " Batch " " Lot Ct Coated)
+			      if (PriorCodestring!=Codestring){
+					FileDelete, %CodeFile%
+					sleep 200
+					FileAppend, %CodeString%, %CodeFile%
+				}
+			; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
+
 		return
 		VarBarGuiClose:
 		VarBarButtonOK:
