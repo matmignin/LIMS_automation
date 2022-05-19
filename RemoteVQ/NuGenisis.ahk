@@ -404,6 +404,7 @@ AddProduct(){
       else
         return
     }
+	sleep 200
 	Breaking.Point()
     if Winactive("Edit Product")
       ProductTab.EditProduct()
@@ -547,12 +548,10 @@ Dropdown_IngredientSelect(A_DropdownCount){
 			iteration:=1
 		sleep 50
 		this.Dropdown_GenericIngredient(Iteration)
-		Breaking.Point()
 		varbar.AddIteration(0)
 	}
 	SetKeyDelay,0,0
 	sleep 200
-	Breaking.Point()
 	return
 }
 
@@ -1893,6 +1892,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		SelectTestSample(){
 			global
+			Click
 			blockinput on
 			click 647, 75 ;click assign Samples
 			winactivate, Select samples for test:

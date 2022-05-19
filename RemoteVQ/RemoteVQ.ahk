@@ -93,6 +93,11 @@ activeCheck:
 		; mousemove, 245, 137
 		sleep 1000
 	}
+	else if winexist("Delete specification"){
+		sleep 4000
+		reload
+		return
+	}
 	else If winexist("Approve specification"){
 		winactivate,
 		mousemove, 280, 138

@@ -3,7 +3,8 @@
 	~RWin::Send {Blind}{vkFF}
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
-	F1::sendinput, %Product%
+	; F1::sendinput, %Product%
+	; F1::CountFiles()
 	+F1::GetAllProducts()
 	!F1::GetAllProducts("`n")
 	^F1::Varbar.Focus("Edit1")
@@ -44,56 +45,102 @@ Ctest_1:
 	return
 
 NewVersion(){
-	; MouseGetPos, mx, mY
+
 	click, 69, 249 ; new version
+	if winexist("Delete specification")
+		exit
+	if winactive("Delete specification")
+		exit
 	sleep 300
 	winactivate, Edit specification
+	if !winactive("Edit specification")
+		exit
 	click, 393, 177 ; click description
+	send, ^{a}
 	sleep 300
 	sendinput, P. aeruginosa Removed
-	sleep 300
+	sleep 200
 	Breaking.Point()
+	if !winactive("Edit specification")
+		exit
 	click, 331, 617
 	; winwaitnotactive, Edit specification, 2
 	; if errorlevel
 		; winactivate, NuGenesis LMS
-	; sleep 300
+		sleep 600
+		Breaking.Point()
 	; MouseMove, mx, my+26, 1
+	winwaitnotactive, Edit specification
+		sleep 400
+	; RemoveTestSpec()
 
-}
+
+	}
 
 RemoveTestSpec(){
-	click, 63, 754 ;; edit results
-	sleep 400
-	winactivate, Results Definition
+	if winactive("NuGenesis LMS")
+		click, 63, 754 ;; edit results
+	else
+		sleep 600
+	sleep 450
+	;winactivate, Results Definition
+	if !winexist("Results Definition")
+		exit
 	click, 111, 96 ;; sort Seq
 	sleep 300
 	click, 128, 65 ;; Remove
-	winactivate, Delete results
-	sendinput, {enter}
+	Breaking.Point()
+	; winactivate, Delete results
+	if winexist("Delete results")
+		sendinput, {enter}
+	else
+		return
 	sleep 300
 	Breaking.Point()
-	sendinput, {enter}
+	if winactive("Results Definition")
+		sendinput, {enter}
 	; sleep 300
 }
+
+
+; CountFiles(){
+; 	global
+; 	currentfile:="\\10.1.2.118\Final_C_O_A"
+; 	currentfile3:="\\10.1.2.118\Final_C_O_A\*.pdf"
+; ; msgBox, % ComObjCreate("Scripting.FileSystemObject").GetFolder("\\10.1.2.118\Final_C_O_A").Files.Count
+; ; MsgBox, % ComObjCreate("Shell.Application").NameSpace("\\10.1.2.118\Final_C_O_A").Items.Count
+; Loop, %currentfile3%{
+; oOwner:=ComObjGet("winmgmts:").ExecQuery("Associators Of {" "Win32_LogicalFileSecuritySetting='" %Currentfile% A_LoopFileName "'} Where As" "socClass= Win32_LogicalFileOwner ResultRole=Owner")
+; For itm in oOwner
+;   Owner:=itm.ReferencedDomainName . "\" . itm.AccountName
+
+; msgbox % Owner
+; }
+
+; }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
-		^F10::RemoveTestSpec()
-		+F10::NewVersion()
 		+^F10::
-			loop 3 {
-			CoordMode, ToolTip, Window
+			; CoordMode, Mouse, Screen
 			MouseGetPos, mx, mY
-			sleep 900
+			NewVersion()
+			if winexist("Delete specification")
+				exit
+			if winactive("Delete specification")
+				exit
+			sleep 700
+			winwaitactive, NuGenesis LMS
+			sleep 500
+			Breaking.Point()
 			RemoveTestSpec()
-			my=+26
-			sleep 5000
-			winactivate, NuGenesis LMS
-			; MouseMove, %mx%, %my%,
-			click, Lbutton, %mx%, %my%
-			sleep 5000
-			}
+			winwaitactive, NuGenesis LMS
+			sleep 700
+			; my:= my
+			Mousemove, %mx%, %my%,0
+			; CoordMode, Mouse, Window
 			return
+		+F10::NewVersion()
+		^F10::RemoveTestSpec()
 
 		mbutton:: 3tap()
 		; +mbutton::lms.Menu()
