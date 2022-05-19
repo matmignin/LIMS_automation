@@ -44,10 +44,10 @@ Test_msgbox(msg){
 Ctest_1:
 	return
 
-NewVersion(){
-
+NewSpecVersion(){
+	Global DescriptionTextInput
 	click, 69, 249 ; new version
-	if winexist("Delete specification")
+	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
 		exit
 	if winactive("Delete specification")
 		exit
@@ -58,23 +58,17 @@ NewVersion(){
 	click, 393, 177 ; click description
 	send, ^{a}
 	sleep 300
-	sendinput, P. aeruginosa Removed
+	sendinput, %DescriptionTextInput%
 	sleep 200
 	Breaking.Point()
 	if !winactive("Edit specification")
 		exit
-	click, 331, 617
-	; winwaitnotactive, Edit specification, 2
-	; if errorlevel
-		; winactivate, NuGenesis LMS
+	click, 331, 617 ;click okay
 		sleep 600
 		Breaking.Point()
-	; MouseMove, mx, my+26, 1
-	winwaitnotactive, Edit specification
-		sleep 400
-	; RemoveTestSpec()
-
-
+	winwaitactive, NuGenesis LMS,,3
+		if errorlevel
+			sleep 800
 	}
 
 RemoveTestSpec(){
@@ -83,7 +77,6 @@ RemoveTestSpec(){
 	else
 		sleep 600
 	sleep 450
-	;winactivate, Results Definition
 	if !winexist("Results Definition")
 		exit
 	click, 111, 96 ;; sort Seq
@@ -94,14 +87,68 @@ RemoveTestSpec(){
 	if winexist("Delete results")
 		sendinput, {enter}
 	else
-		return
-	sleep 300
+		exit
+	sleep 400
 	Breaking.Point()
 	if winactive("Results Definition")
-		sendinput, {enter}
+		send, {enter}
+	else
+		sleep 300
+	winwaitactive, NuGenesis LMS,,3
+		if errorlevel
+			exit
+
 	; sleep 300
 }
+	ApproveSpecVersion(){
+		global NuGenesis_w, Nugenesis_Y
+		; wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
+		ScrollBarTop_X:=Nugenesis_W - 5
+		TopListItem_X:=Nugenesis_W - 50
+		ScrollBarTop_Y:=Nugenesis_y + 190
+		Click, 76,269 ;click Approve Specification
+		sleep 300
+		if winexist("Delete specification") || winexist("Lock specification") ; || winexist("Approve specification") ; || !winexist("Approve specification")
+			exit
+		if winexist("Approve specification")
+			sendinput, {enter}
+		; ifwinexist("Approve secification")
+		; Breaking.Point()
+		sleep 500
+		; if Winactive("NuGenesis LMS")
+		; {
+			; msgbox, 3 `n %ScrollBarTop_x% `n %TopListItem_X% `n %ScrollBarTop_Y%
+			; exit
+			; }
+		CoordMode, mouse, screen
+		; Click, %ScrollBarTop_X%, %ScrollBarTop_Y%
+		sleep 300
+		Click, %TopListItem_X%, %ScrollBarTop_Y%
+		CoordMode, mouse, Window
 
+	}
+
+FullRemoveTest(){
+	global
+	MouseGetPos, mx, mY
+	NewSpecVersion()
+	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
+		exit
+	if winactive("Delete specification")
+		exit
+	sleep 700
+	winwaitactive, NuGenesis LMS
+	sleep 500
+	RemoveTestSpec()
+
+	sleep 700
+	Breaking.Point()
+	; my:= my
+	; Mousemove, %mx%, %my%,0
+	ApproveSpecVersion()
+	TT("Done")
+	return
+}
 
 ; CountFiles(){
 ; 	global
@@ -121,26 +168,15 @@ RemoveTestSpec(){
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		+^F10::
-			; CoordMode, Mouse, Screen
-			MouseGetPos, mx, mY
-			NewVersion()
-			if winexist("Delete specification")
-				exit
-			if winactive("Delete specification")
-				exit
-			sleep 700
-			winwaitactive, NuGenesis LMS
-			sleep 500
-			Breaking.Point()
-			RemoveTestSpec()
-			winwaitactive, NuGenesis LMS
-			sleep 700
-			; my:= my
-			Mousemove, %mx%, %my%,0
-			; CoordMode, Mouse, Window
+		loop 2 {
+			FullRemoveTest()
+			sleep 1000
+
+			}
 			return
-		+F10::NewVersion()
-		^F10::RemoveTestSpec()
+		+F10::ApproveSpecVersion()
+		; +F10::NewSpecVersion()
+		; F10::RemoveTestSpec()
 
 		mbutton:: 3tap()
 		; +mbutton::lms.Menu()

@@ -49,6 +49,7 @@ if A_username != mmignin
 	LMS.Orient()
 	SetTimer,activeCheck, 600
 	iniRead, Ingredient_List_Adjustment, Settings.ini, SavedVariables, Ingredient_List_Adjustment
+	iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
 	iniRead, HM_Units, Settings.ini, HeavyMetal_Variables, HM_Units
 	iniRead, HM_Lower_Limit, Settings.ini, HeavyMetal_Variables, HM_Lower_Limit
 	iniRead, Arsenic_Limit, Settings.ini, HeavyMetal_Variables, Arsenic_Limit
@@ -98,11 +99,11 @@ activeCheck:
 		reload
 		return
 	}
-	else If winexist("Approve specification"){
-		winactivate,
-		mousemove, 280, 138
-		sleep 2000
-	}
+	; else If winexist("Approve specification"){
+	; 	winactivate,
+	; 	mousemove, 280, 138
+	; 	sleep 2000
+	; }
 	else If winexist("Delete Test"){
 		winactivate,
 		sleep 200
