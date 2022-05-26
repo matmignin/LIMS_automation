@@ -281,6 +281,9 @@ Orient(){
 	varBar_nuX:=NuX+450
 	varBar_nuY:=NuY
 	TabSelect:=NuW-10
+	DocumentMenuSection_X:=NuW-200
+	DocumentMenuDocument_X:=NuW-140
+	DocumentMenu_Y:=110
 	yTabSelect:=45
 	yTabDropdown:=45
 	SamplesTab:=(NuW/2)-80
@@ -581,7 +584,7 @@ EditProduct(){ ;for naming Product code and customer,
 	; clk(287, 578) ;click save
 	Iteration:=1
 	return
-	setwindelay, 100
+	Setwindelay, 150
 }
 
 EditFormulation(){     ;then click on Edit Formulation, puts in code, then tabs to serving size
@@ -1658,7 +1661,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			; sleep 300
 			; my:=my+30
 			; MouseMove, mx, my
-			setwindelay, 100
+			Setwindelay, 150
 
 			return
 		}
@@ -1792,7 +1795,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Breaking.Point()
 			Send,{tab}{enter}
 			; tooltip,
-			setwindelay, 100
+			Setwindelay, 150
 			return
 		}
 
@@ -1863,7 +1866,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 	AddSampleLog(count)
 	{
 		global
-		setwindelay, 100
+		Setwindelay, 150
 		loop, %count%
 		{
 			click 46, 877
@@ -1920,7 +1923,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 				Breaking.Point()
 				tt(Department)
 				blockinput off
-				setwindelay, 100
+				Setwindelay, 150
 			return
 		}
 

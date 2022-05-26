@@ -10,9 +10,9 @@ if A_username != mmignin
 	; #KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 4500
+	#ClipboardTimeout 5500
 	#InstallKeybdHook
-	setwindelay, 200
+	Setwindelay, 150
 	SetKeyDelay,0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
@@ -101,12 +101,23 @@ activeCheck:
 		reload
 		return
 	}
-	; else If winexist("Approve specification"){
-	; 	winactivate,
-	; 	mousemove, 280, 138
+	else If winexist("Release: Rotational Testing Schedule"){
+		winactivate,
+		click 131, 141 ;click release
 	    winwaitclose
-	; 	return
-	; }
+		click %DocumentMenuSection_X%, %DocumentMenu_Y% ;click dropdown for Section menu
+		sendinput, {down}{enter}
+		winwaitactive, Sign:,,3
+		Sendpassword()
+		click %DocumentMenuDocument_X%, %DocumentMenu_Y% ;click dropdown for Document Menu
+		sendinput, {down}{enter}
+		return
+	}
+	else If winexist("Release: ahk_exe eln.exe"){
+		winactivate
+		click 128,146
+		return
+	}
 	else If winexist("Delete Test"){
 		winactivate,
 		sleep 200
@@ -200,7 +211,7 @@ class Breaking {
 		Global
 		If (GetKeyState("Lbutton", "P") || GetKeyState("Space", "P")) {
 			TT("Broke",3000)
-			setwindelay, 100
+			Setwindelay, 150
 			SetKeyDelay, 0,0
 			exit
 		}
@@ -234,11 +245,11 @@ SendPassword(){
 	}
 	else if winexist("windows Security"){
 		winactivate,
-		Sendinput, -Kilgore7744{enter}
+		Sendinput, {-}Kilgore7744{enter}
 	}
 	else if winexist("CredentialUIBroker.exe"){
 		winactivate,
-		Sendinput, -Kilgore7744{enter}
+		Sendinput, {-}Kilgore7744{enter}
 	}
 
 	else

@@ -182,6 +182,23 @@ FullRemoveTest(){
 	return
 }
 
+AddToList(ParseText){
+	ListItem:=[]
+	ListItem:=StrSplit(ParseText,"`n")
+	Loop, parse, clipboard, "`n"
+	{
+	Breaking.Point()
+	click 407, 73 ;click New Value
+	sleep 200
+	click 608,201 ;click First EditBox
+	sleep 200
+	sendinput, %A_loopField%
+	sleep 400
+	Breaking.Point()
+	}
+
+
+
 ; CountFiles(){
 ; 	global
 ; 	currentfile:="\\10.1.2.118\Final_C_O_A"
@@ -199,7 +216,6 @@ FullRemoveTest(){
 ; }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
-		;#MaxThreadsPerHotkey 2
 		+^F10::
 		if !(Iteration)
 			FullRemoveTest()
@@ -213,7 +229,6 @@ FullRemoveTest(){
 				}
 		}
 			return
-		;#MaxThreadsPerHotkey 1
 		+F10::ApproveSpecVersion()
 		^F10::NewSpecVersion()
 		!F10::RemoveTestSpec()
@@ -403,6 +418,12 @@ FullRemoveTest(){
 
 	3Right(){
 		global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			return
+		}
+		keep_running = y
 		; FlashScreen("3-Right")
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
@@ -434,10 +455,17 @@ FullRemoveTest(){
 			Send, %Batch%
 		else
 			Send, %Batch%
+		keep_running = n
 		return
 		}
 	3left(){
 		global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			return
+		}
+		keep_running = y
 		; FlashScreen("3-Left")
 		if winactive("NuGenesis LMS")
 				LMS.SearchBar(Product,"{enter}",0)
@@ -461,6 +489,7 @@ FullRemoveTest(){
 			Send, %Product%
 		else
 			send, %Product%
+		keep_running = n
 		return
 	}
 	3down(){
