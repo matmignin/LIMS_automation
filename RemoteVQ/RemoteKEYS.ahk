@@ -199,7 +199,7 @@ FullRemoveTest(){
 ; }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
-		#MaxThreadsPerHotkey 2
+		;#MaxThreadsPerHotkey 2
 		+^F10::
 		if !(Iteration)
 			FullRemoveTest()
@@ -213,7 +213,7 @@ FullRemoveTest(){
 				}
 		}
 			return
-		#MaxThreadsPerHotkey 1
+		;#MaxThreadsPerHotkey 1
 		+F10::ApproveSpecVersion()
 		^F10::NewSpecVersion()
 		!F10::RemoveTestSpec()

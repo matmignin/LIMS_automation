@@ -4,6 +4,7 @@ if A_username != mmignin
 	#Persistent
 	Process, Priority, , High
 	#NoEnv
+	Thread, NoTimers
 	; Iteration=1
 	; #ErrorStdOut
 	; #KeyHistory 500
@@ -11,7 +12,7 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 4500
 	#InstallKeybdHook
-	setwindelay, 100
+	setwindelay, 200
 	SetKeyDelay,0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
@@ -31,6 +32,7 @@ if A_username != mmignin
 	CoordMode, mouse, window
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
+	DetectHiddenWindows, On
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
@@ -95,14 +97,15 @@ activeCheck:
 		sleep 1000
 	}
 	else if winexist("Delete specification"){
-		sleep 4000
+		;sleep 4000
 		reload
 		return
 	}
 	; else If winexist("Approve specification"){
 	; 	winactivate,
 	; 	mousemove, 280, 138
-	; 	sleep 2000
+	    winwaitclose
+	; 	return
 	; }
 	else If winexist("Delete Test"){
 		winactivate,
@@ -129,7 +132,7 @@ activeCheck:
 	}
 	else if winexist("Lock specification")
 	{
-		sendinput, {n}
+		sendinput, !{n}
 		sleep 1000
 		return
 	}
