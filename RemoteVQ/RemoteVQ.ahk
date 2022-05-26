@@ -127,6 +127,12 @@ activeCheck:
 		; mousemove, 222, 138
 		sleep 1000
 	}
+	else if winexist("Lock specification")
+	{
+		sendinput, {n}
+		sleep 1000
+		return
+	}
 	else if winactive("Error") {
 		ControlSend,, {enter}, Error
 		sleep 200
@@ -215,44 +221,25 @@ Return winExist(winTitle . " ahk_id " . win)
 }
 
 SendPassword(){
-	if winactive("Remote Desktop")
-		Sendinput, mmignin{tab}{K}ilgore7744{enter}
-	; Sendinput, ?+{K}ilgore7744{enter}
-	if winExist("ahk_exe ONENOTE.EXE Protected Section"){
-		winactivate
-		Sendinput, {K}ilgore7744{enter}
-	}
-	if winActive("Vitaquest Virtual Office ahk_exe firefox.exe"){
-		click 661, 245
-		send, {tab}
-		sleep 50
-		send, mmignin{tab}+{`+}Kilgore7744
-		sleep 50
-		; send, {Enter}
-	}
 	if winExist("Login"){
 		winactivate
-		Sendinput, mmignin{tab}{K}ilgore7744{enter}
+		Sendinput, mmignin{tab}{-}{K}ilgore7744{enter}
 	}
 	Else If winexist("Sign :"){
 		winactivate,
-		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}Kilgore7744{enter}
+		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}{-}Kilgore7744{enter}
 	}
 	else if winexist("windows Security"){
 		winactivate,
-		Sendinput, Kilgore7744{enter}
+		Sendinput, -Kilgore7744{enter}
 	}
 	else if winexist("CredentialUIBroker.exe"){
 		winactivate,
-		Sendinput, Kilgore7744{enter}
+		Sendinput, -Kilgore7744{enter}
 	}
-	else if winexist("Map VQ drive.bat ahk_exe cmd.exe"){
-		winactivate,
-		Send, mmignin{enter}{/}Kilgore7744{enter}
-		return
-	}
+
 	else
-		Sendinput, +{K}ilgore7744{enter}
+		Sendinput, -{K}ilgore7744{enter}
 return
 }
 

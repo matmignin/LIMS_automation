@@ -46,7 +46,8 @@ Ctest_1:
 
 NewSpecVersion(){
 	Global DescriptionTextInput
-	click, 69, 249 ; new version
+		click, 69, 249 ; new version
+		sleep 200
 	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
 		exit
 	if winactive("Delete specification")
@@ -68,7 +69,8 @@ NewSpecVersion(){
 		Breaking.Point()
 	winwaitactive, NuGenesis LMS,,3
 		if errorlevel
-			sleep 800
+			return
+	return
 	}
 
 RemoveTestSpec(){
@@ -77,8 +79,10 @@ RemoveTestSpec(){
 	else
 		sleep 600
 	sleep 450
-	if !winexist("Results Definition")
-		exit
+	if winactive("NuGenesis LMS") && !winexist("Results Definition")
+		return
+	; if !winexist("Results Definition")
+		; exit
 	click, 111, 96 ;; sort Seq
 	sleep 300
 	click, 128, 65 ;; Remove
@@ -87,17 +91,27 @@ RemoveTestSpec(){
 	if winexist("Delete results")
 		sendinput, {enter}
 	else
-		exit
-	sleep 400
+		sleep 400
+	sleep 200
 	Breaking.Point()
+	; if winactive("NuGenesis LMS")
+		; exit
+	; else
 	if winactive("Results Definition")
 		send, {enter}
-	else
-		sleep 300
-	winwaitactive, NuGenesis LMS,,3
+	Else
+		; {
+			tt("ended cuz it was too long")
+			sleep 400
+			; if winactive("Results Definition")
+				; send, {enter}
+
+
+	winwaitactive, NuGenesis LMS,,5
 		if errorlevel
 			exit
-
+	sleep 300
+	return
 	; sleep 300
 }
 	ApproveSpecVersion(){
@@ -130,23 +144,41 @@ RemoveTestSpec(){
 
 FullRemoveTest(){
 	global
-	MouseGetPos, mx, mY
+	sleep 200
+	MouseGetPos, m_x, m_Y
+	click, 62, 717 ; click View test
+	sleep 200
+	if winactive("NuGenesis LMS")
+		{
+			CoordMode, mouse, screen
+			click, %m_x%, %m_y%
+			sendinput, {down}
+			CoordMode, mouse, window
+			return
+		}
+	if winactive("Test Definition Viewer")
+			send, {escape}
+	sleep 200
 	NewSpecVersion()
-	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
+	if winexist("Delete specification") || winexist("Edit specification") || winexist("Lock specification") || winexist("Approve specification")
 		exit
 	if winactive("Delete specification")
 		exit
 	sleep 700
-	winwaitactive, NuGenesis LMS
+	; winwaitactive, NuGenesis LMS,,3
+	; if errorlevel
+		; return
 	sleep 500
 	RemoveTestSpec()
 
 	sleep 700
 	Breaking.Point()
+	if !winactive("NuGenesis LMS")
+		sleep 500
 	; my:= my
 	; Mousemove, %mx%, %my%,0
 	ApproveSpecVersion()
-	TT("Done")
+	; TT("Done")
 	return
 }
 
@@ -167,19 +199,27 @@ FullRemoveTest(){
 ; }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
+		#MaxThreadsPerHotkey 2
 		+^F10::
-		loop 2 {
+		if !(Iteration)
 			FullRemoveTest()
-			sleep 1000
-
-			}
+		else
+		{
+			loop, %iteration%
+				{
+					FullRemoveTest()
+					sleep 2000
+					Breaking.Point()
+				}
+		}
 			return
+		#MaxThreadsPerHotkey 1
 		+F10::ApproveSpecVersion()
-		; +F10::NewSpecVersion()
-		; F10::RemoveTestSpec()
+		^F10::NewSpecVersion()
+		!F10::RemoveTestSpec()
 
 		mbutton:: 3tap()
-		; +mbutton::lms.Menu()
+		+mbutton::lms.Menu()
 		F7::		 3Right()
 		F6::		3Left()
 		Enter::LMS.SaveCode()
@@ -203,8 +243,6 @@ FullRemoveTest(){
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		; wheelup::			sendInput % Blockrepeat(400) Varbar.AddIteration(10)
-		; wheeldown:: sendInput % Blockrepeat(400) Varbar.SubIteration(10)
 		#MaxThreadsPerHotkey 2
 		F10::WorkTab.ChangeTestResults("loop")
 		#MaxThreadsPerHotkey 1
