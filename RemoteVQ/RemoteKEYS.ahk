@@ -10,8 +10,8 @@
 	^F1::Varbar.Focus("Edit1")
 	F2::sendinput, %Batch%
 	+F2::GetAllBatches()
-	!F2::GetAllBatches("`n")
-	^F2::Varbar.Focus("Edit2")
+	; !F2::GetAllBatches("`n")
+	; ^F2::Varbar.Focus("Edit2")
 	F3::sendinput, %Lot%
 	^F3::Varbar.Focus("Edit3")
 	F4::sendinput, %Coated%
@@ -25,7 +25,8 @@
 		sleep 100
 		TT(Clipboard)
 		return
-	F18::
+	^F2::AddToList()
+	; +F15::AddToList()
 	^F9::send, ^v
 	$LWin::return
 
@@ -182,20 +183,25 @@ FullRemoveTest(){
 	return
 }
 
-AddToList(ParseText){
-	ListItem:=[]
-	ListItem:=StrSplit(ParseText,"`n")
+AddToList(){
+	; ListItem:=[]
+	TT("AddToList")
+	; ListItem:=StrSplit(ParseText,"`n")
+	CoordMode, mouse, window
 	Loop, parse, clipboard, "`n"
 	{
-	Breaking.Point()
-	click 407, 73 ;click New Value
-	sleep 200
-	click 608,201 ;click First EditBox
-	sleep 200
-	sendinput, %A_loopField%
-	sleep 400
-	Breaking.Point()
+		TT(A_index ": `n" A_LoopField,2000)
+		Breaking.Point()
+		click, 407, 73 ;click New Value
+		sleep 200
+		click, 608, 201 ;click First EditBox
+		sleep 200
+		sendinput, %A_loopField%
+		sleep 400
+		Breaking.Point()
 	}
+		; CoordMode, mouse, Screen
+}
 
 
 
@@ -232,7 +238,7 @@ AddToList(ParseText){
 		+F10::ApproveSpecVersion()
 		^F10::NewSpecVersion()
 		!F10::RemoveTestSpec()
-
+		+F3::AddToList()
 		mbutton:: 3tap()
 		+mbutton::lms.Menu()
 		F7::		 3Right()
