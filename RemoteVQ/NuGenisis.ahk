@@ -1123,9 +1123,9 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	return
 }
 
-TestDefinitionEditor(The_Description){ ; 2nd window
-	Global
-	if !(The_description)
+TestDefinitionEditor(The_Description,Department:=""){ ; 2nd window
+	Global Name
+	if !(The_description) ; && !(Department)
 	{
 		; MouseClick, left, 464, 532,2,0 	;click scrollbar
 		sleep 100
@@ -1139,7 +1139,7 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 		DescriptionRaw:=The_Description
 		Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
 		sleep 85
-		Click, 187, 200
+		Click, 187, 200 ;click description box
 		sleep 200	;Orient
 		if Name contains Vitamin C
 			Sendinput,{Home}{Delete 12}
@@ -1149,6 +1149,15 @@ TestDefinitionEditor(The_Description){ ; 2nd window
 		sendinput, %Trimmed_Description%
 		if strLen(Trimmed_Description) > 100
 			sleep 300
+		; if (Department="Stability"){
+			; Sendinput, +{tab}^{a}Stability
+			; sleep 400
+			; click, 347, 287 ; click Department dropdown
+			; sleep 400
+			; sendinput, {pgdn}{up}{enter} ;select stability
+			; sleep 300
+		; }
+
 		Breaking.Point()
 		; MouseClick, left, 464, 532,2,0 	;click scrollbar
 		sleep 100
