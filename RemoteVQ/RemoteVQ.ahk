@@ -42,13 +42,13 @@ if A_username != mmignin
 	PasteTime:=A_TickCount
 	Menu, Tray, Add, E&xit, ExitSub
 	Menu, Tray, Add, &Reload, ReloadSub
-	; Menu, Tray, Default, &Reload
+	Menu, Tray, add, Show J Final Label Copy, ShowJ_FinalLabelCopy
+	Menu, Tray, add, Show K Final Label Copy, ShowK_FinalLabelCopy
+	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
+	Menu, Tray, add, AddClipBoardToList, AddToList
 	Menu, Tray, Default, &Reload
-	try Menu, Tray, Icon, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\icon.ico
-	CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
-	varbar.Show()
+	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
 ; OnExit("Varbar.SaveVariables")
-	LMS.Orient()
 	SetTimer,activeCheck, 600
 	iniRead, Ingredient_List_Adjustment, Settings.ini, SavedVariables, Ingredient_List_Adjustment
 	iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
@@ -65,7 +65,26 @@ if A_username != mmignin
 	iniRead, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
 	iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
 	iniRead, IngredientNoteDropDownCount, Settings.ini, SavedVariables, IngredientNoteDropDownCount
-	
+	iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
+	iniread, L_FinalLabelCopyPath, Settings.ini, FilePaths, L_FinalLabelCopyPath
+	iniread, K_FinalLabelCopyPath, Settings.ini, FilePaths, K_FinalLabelCopyPath
+	iniread, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
+	iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
+	iniread, 2022_Final_C_O_APath, Settings.ini, FilePaths, 2022_Final_C_O_APath
+	iniread, 2021_Final_C_O_APath, Settings.ini, FilePaths, 2021_Final_C_O_APath
+	iniread, FinishedLabelCopyPath, Settings.ini, FilePaths, FinishedLabelCopyPath
+	iniread, ManualCOAPath, Settings.ini, FilePaths, ManualCOAPath
+	iniread, mfgPath, Settings.ini, FilePaths, mfgPath
+	iniread, 2022_mfgPath, Settings.ini, FilePaths, 2022_mfgPath
+	iniread, 2021_mfgPath, Settings.ini, FilePaths, 2021_mfgPath
+	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
+	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
+	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
+	try Menu, Tray, Icon, %AppIconPath%
+
+	LMS.Orient()
+	varbar.Show()
+
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -89,8 +108,18 @@ Exitsub(){
 	exitapp
   }
 windowSpy(){
-  Run, WS.exe,\\10.1.2.118\users\vitaquest\mmignin\
+  Run, WS.exe,%WindowSpyPath%\
   }
+
+ShowK_FinalLabelCopy:
+	showLabelCopy(K_FinalLabelCopyPath,"doc*")
+	return
+ShowJ_FinalLabelCopy:
+	showLabelCopy(J_FinalLabelCopyPath,"doc")
+	return
+ShowScanLabelCopy:
+	showLabelCopy(ScansLabelCopyPath,"pdf")
+	return
 
 activeCheck:
 	If winexist("Delete Attribute"){
@@ -165,6 +194,11 @@ activeCheck:
 		send, {enter}
 	}
 	else
+		if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
+		LMS.Orient()
+		sleep 300
+		winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,%varBar_nuX%, %varBar_nuY%
+		}
 		return
 return
 

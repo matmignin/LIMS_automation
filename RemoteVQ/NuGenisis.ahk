@@ -95,6 +95,7 @@ Class LMS { ;;__________Generl LMS__________________
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
+		sleep 300
 		if winactive("Select methods tests")
 			clk(246,77, 2)
 		else If winactive("Register new samples") {
@@ -379,7 +380,7 @@ Scrolldown(){
 }
 
 Class ProductTab { ;;________ProductTab Class_______________
-AddProduct(){
+AddProductFromClipboard(){
 	Global
     loop, parse, clipboard, "`n"
 		{
@@ -410,14 +411,14 @@ AddProduct(){
 	sleep 200
 	Breaking.Point()
     if Winactive("Edit Product")
-      ProductTab.EditProduct()
+      ProductTab.AddNewProduct()
     else if winactive("Edit Formulation")
-      ProductTab.EditFormulation()
+      ProductTab.AddNewFormulation()
     else
       return
   }
 
-AddIngredient(){
+AddIngredientsFromClipboard(){
 	global
 	Pointer:=Clipboard
   		if RegexMatch(Pointer, "<<LabelCopy>>"){
@@ -462,7 +463,7 @@ AddIngredient(){
 			If winactive("Edit Ingredient"){
 				winactivate "Edit Ingredient"
 				sleep 250
-				ProductTab.EditIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
+				ProductTab.AddNewIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
 				sleep 320
 				return
 				}
@@ -472,7 +473,7 @@ AddIngredient(){
 				{
 					If !Position[A_index]
 						return
-					ProductTab.EditIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
+					ProductTab.AddNewIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
 					sleep 150
 					ifwinnotactive, Composition
 					winactivate, Composition
@@ -492,7 +493,7 @@ AddIngredient(){
 
 
 
-EditIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id,Dont_Hit_Okay:=""){
+AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id,Dont_Hit_Okay:=""){
 	Global
 	ifwinnotexist, Edit Ingredient
 	{
@@ -568,7 +569,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 
 
 
-EditProduct(){ ;for naming Product code and customer,
+AddNewProduct(){ ;for naming Product code and customer,
 	global Product, ProductName, Customer, ShapeAndSize, color
 	setwindelay, 260
 	click 120,80 ;click product box
@@ -590,14 +591,14 @@ EditProduct(){ ;for naming Product code and customer,
 	click, 67, 283
 	sleep 200
 	Breaking.Point()
-	This.EditFormulation()
+	This.AddNewFormulation()
 	; clk(287, 578) ;click save
 	Iteration:=1
 	return
 	Setwindelay, 150
 }
 
-EditFormulation(){     ;then click on Edit Formulation, puts in code, then tabs to serving size
+AddNewFormulation(){     ;then click on Edit Formulation, puts in code, then tabs to serving size
 	global Product, ShapeAndSize, color, ServingSize, ServingType
 	if !winactive("Edit Formulation") && winexist("Edit Formulation")
 		winactivate, Edit Formulation,
@@ -659,7 +660,7 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 	sleep 50
 	Sendinput,{tab}{Home}{right %Ingredient_List_Adjustment%}
 	sleep 80
-	if IngredientNote 
+	if IngredientNote
 	{
 	  Sendinput, {right %IngredientNoteDropDownCount%}{right %IterationCount%}
 	  sleep 505
@@ -784,33 +785,171 @@ class SpecTab { 	;; _________SpecTab class_______
 			}
 		}
 
-ModifyColumns(){
-	Global
-	LV_ModifyCol(1,140)
-	LV_ModifyCol(2,200)
-	LV_ModifyCol(3,0)
-	LV_ModifyCol(4,0)
-	LV_ModifyCol(5,0)
-	LV_ModifyCol(6,0)
-	LV_ModifyCol(7,0)
-	LV_ModifyCol(8,0)
-	LV_ModifyCol(9,0)
-	; LV_Delete(Table_Height)
-}
+			ModifyColumns(){
+				Global
+				LV_ModifyCol(1,140)
+				LV_ModifyCol(2,200)
+				LV_ModifyCol(3,0)
+				LV_ModifyCol(4,0)
+				LV_ModifyCol(5,0)
+				LV_ModifyCol(6,0)
+				LV_ModifyCol(7,0)
+				LV_ModifyCol(8,0)
+				LV_ModifyCol(9,0)
+				; LV_Delete(Table_Height)
+			}
 
-GetRowText(){
+			GetRowText(){
+				global
+				LV_GetText(Name, 			A_EventInfo,1)
+				LV_GetText(LabelClaim, 		A_EventInfo,2)
+				LV_GetText(MinLimit, 		A_EventInfo,3)
+				LV_GetText(MaxLimit, 		A_EventInfo,4)
+				LV_GetText(Units, 			A_EventInfo,5)
+				LV_GetText(Percision, 		A_EventInfo,6)
+				LV_GetText(Description, 	A_EventInfo,7)
+				LV_GetText(Method, 			A_EventInfo,8)
+				GUI, Spec_Table:submit,NoHide
+			}
+
+
+NewSpecVersion(){
+	Global DescriptionTextInput
+		click, 69, 249 ; new version
+		sleep 200
+	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
+		exit
+	if winactive("Delete specification")
+		exit
+	sleep 300
+	winactivate, Edit specification
+	if !winactive("Edit specification")
+		exit
+	click, 393, 177 ; click description
+	send, ^{a}
+	sleep 300
+	sendinput, %DescriptionTextInput%
+	sleep 200
+	Breaking.Point()
+	if !winactive("Edit specification")
+		exit
+	click, 331, 617 ;click okay
+		sleep 600
+		Breaking.Point()
+	winwaitactive, NuGenesis LMS,,3
+		if errorlevel
+			return
+	return
+	}
+
+RemoveTestSpec(){
+	if winactive("NuGenesis LMS")
+		click, 63, 754 ;; edit results
+	else
+		sleep 600
+	sleep 450
+	if winactive("NuGenesis LMS") && !winexist("Results Definition")
+		return
+	; if !winexist("Results Definition")
+		; exit
+	click, 111, 96 ;; sort Seq
+	sleep 300
+	click, 128, 65 ;; Remove
+	Breaking.Point()
+	; winactivate, Delete results
+	if winexist("Delete results")
+		sendinput, {enter}
+	else
+		sleep 400
+	sleep 200
+	Breaking.Point()
+	; if winactive("NuGenesis LMS")
+		; exit
+	; else
+	if winactive("Results Definition")
+		send, {enter}
+	Else
+		; {
+			tt("ended cuz it was too long")
+			sleep 400
+			; if winactive("Results Definition")
+				; send, {enter}
+
+
+	winwaitactive, NuGenesis LMS,,5
+		if errorlevel
+			exit
+	sleep 300
+	return
+	; sleep 300
+}
+	ApproveSpecVersion(){
+		global NuGenesis_w, Nugenesis_Y
+		; wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
+		ScrollBarTop_X:=Nugenesis_W - 5
+		TopListItem_X:=Nugenesis_W - 50
+		ScrollBarTop_Y:=Nugenesis_y + 190
+		Click, 76,269 ;click Approve Specification
+		sleep 300
+		if winexist("Delete specification") || winexist("Lock specification") ; || winexist("Approve specification") ; || !winexist("Approve specification")
+			exit
+		if winexist("Approve specification")
+			sendinput, {enter}
+		; ifwinexist("Approve secification")
+		; Breaking.Point()
+		sleep 500
+		; if Winactive("NuGenesis LMS")
+		; {
+			; msgbox, 3 `n %ScrollBarTop_x% `n %TopListItem_X% `n %ScrollBarTop_Y%
+			; exit
+			; }
+		CoordMode, mouse, screen
+		; Click, %ScrollBarTop_X%, %ScrollBarTop_Y%
+		sleep 300
+		Click, %TopListItem_X%, %ScrollBarTop_Y%
+		CoordMode, mouse, Window
+
+	}
+
+FullRemoveTest(){
 	global
-	LV_GetText(Name, 			A_EventInfo,1)
-	LV_GetText(LabelClaim, 		A_EventInfo,2)
-	LV_GetText(MinLimit, 		A_EventInfo,3)
-	LV_GetText(MaxLimit, 		A_EventInfo,4)
-	LV_GetText(Units, 			A_EventInfo,5)
-	LV_GetText(Percision, 		A_EventInfo,6)
-	LV_GetText(Description, 	A_EventInfo,7)
-	LV_GetText(Method, 			A_EventInfo,8)
-	GUI, Spec_Table:submit,NoHide
-}
+	sleep 200
+	MouseGetPos, m_x, m_Y
+	click, 62, 717 ; click View test
+	sleep 200
+	if winactive("NuGenesis LMS")
+		{
+			CoordMode, mouse, screen
+			click, %m_x%, %m_y%
+			sendinput, {down}
+			CoordMode, mouse, window
+			return
+		}
+	if winactive("Test Definition Viewer")
+			send, {escape}
+	sleep 200
+	this.NewSpecVersion()
+	if winexist("Delete specification") || winexist("Edit specification") || winexist("Lock specification") || winexist("Approve specification")
+		exit
+	if winactive("Delete specification")
+		exit
+	sleep 700
+	; winwaitactive, NuGenesis LMS,,3
+	; if errorlevel
+		; return
+	sleep 500
+	this.RemoveTestSpec()
 
+	sleep 700
+	Breaking.Point()
+	if !winactive("NuGenesis LMS")
+		sleep 500
+	; my:= my
+	; Mousemove, %mx%, %my%,0
+	this.ApproveSpecVersion()
+	; TT("Done")
+	return
+}
 
 	CopyPasteSpec(){
 		global copypasteToggle
@@ -1644,7 +1783,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 		winwaitactive, Edit sample (Field Configuration,, 2
 			if ErrorLevel
 				sleep 800
-			Sendinput, {tab 2}{right}{click 277, 139}{tab 6}
+			Sendinput, {tab 2}{right}{click 277, 139}{tab 7}
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
 				Send, {tab}^{a}
 			Sendinput, ^{a}%Batch%{tab}^{a}

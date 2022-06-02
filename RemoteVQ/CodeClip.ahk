@@ -16,10 +16,10 @@ clipChange(type){
   if InStr(Clipboard, "<<LabelCopy>>", true,1,1){
     if (Iteration >=25) || (Iteration < 0)
       iteration:=1
-    ProductTab.AddIngredient()
+    ProductTab.AddIngredientsFromClipboard()
   }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
-    ProductTab.AddProduct()
+    ProductTab.AddProductFromClipboard()
   else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
     clip.HeavyMetalSpecs()
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1){

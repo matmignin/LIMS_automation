@@ -89,7 +89,10 @@ Class VarBar{
 		global
 		MouseGetPos,,,,winControl
 		try Menu, VarBarmenu, DeleteAll
-		Menu, VarBarMenu, Add,		 		Show&SampleID, 					ShowSampleID
+		Menu, VarBarMenu, Add, &K Final Labels, ShowK_FinalLabelCopy
+		Menu, VarBarMenu, Add, &J Final Labels, ShowJ_FinalLabelCopy
+		Menu, VarBarMenu, Add, Label &Scans, ShowScanLabelCopy
+		Menu, VarBarMenu, Add, AddClipBoardToList, AddToList
 		Try Menu,VarBarmenu,show
 	}
 	Reset(){
@@ -122,21 +125,29 @@ Class VarBar{
 	}
 
 	AddIteration(speed:=300){
-		global Iteration
+		global Iteration, NAdd
 		; GuiControl, -redraw, varbar
+			If NAdd
+				exit
+		NAdd:=1
 		sleep 15
 		Iteration+=1
 		sleep %Speed%
 		ControlsetText, Edit5,%Iteration%,VarBar
+		NAdd:=0
 		return
 	}
 	SubIteration(speed:=300){
-		global Iteration
+		global Iteration, NSub
+			If Nsub
+				exit
+		Nsub:=1
 		; GuiControl, -redraw, varbar
 		sleep 15
 		Iteration-=1
 		sleep %speed%
 		ControlsetText, Edit5,%Iteration%,VarBar
+		Nsub:=0
 		return
 	}
 	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
@@ -195,10 +206,11 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 #ifwinactive
 
 #If MouseIsOver("VarBar")
-Wheelup::Varbar.AddIteration(50)
-Wheeldown::Varbar.SubIteration(50)
+Wheelup::Varbar.AddIteration(150)
+Wheeldown::Varbar.SubIteration(150)
 +wheelup::Varbar.AddIteration(0)
 +wheeldown::Varbar.SubIteration(0)
+Rbutton::VarBar.Menu()
 #if
 
 VarBar_ResetSub:

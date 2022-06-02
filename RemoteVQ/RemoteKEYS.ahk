@@ -8,13 +8,13 @@
 	+F1::GetAllProducts()
 	!F1::GetAllProducts("`n")
 	^F1::Varbar.Focus("Edit1")
-	F2::sendinput, %Batch%
+	;F2::sendinput, %Batch%
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
 	; ^F2::Varbar.Focus("Edit2")
 	; F3::sendinput, %Lot%
-	F3::showLabelCopy(ScansLabelCopyPath,"pdf")
-	+F3::showLabelCopy(FinalLabelCopyPath,"doc*")
+	+^F15::showLabelCopy(FinalLabelCopyPath,"doc*")
+	+^F16::showLabelCopy(ScansLabelCopyPath,"pdf")
 	^F3::Varbar.Focus("Edit3")
 	F4::sendinput, %Coated%
 	^F4::Varbar.Focus("Edit4")
@@ -50,173 +50,39 @@ Ctest_1:
 
 showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
   Global Product
-  Loop, %FileDir%\*%Product%.%FieType%
+  Loop, %FileDir%*%Product%*.%FieType%*
   {
-  If (A_LoopFileTimeCreated=Rec)
-      {
-      if FPath2 
-        FPath3=%FPath2%
-      FPath2=%A_LoopFileFullPath%
-      Rec=%A_LoopFileTimeCreated%
-      }
-  else If (A_LoopFileTimeCreated>Rec)
-    {
-    if FPath 
-      FPathB=%FPath%
-    FPath=%A_LoopFileFullPath%
-    Rec=%A_LoopFileTimeCreated%
-    }
-  }
-  Run, explore %Fpath
-  if !ShowMultiple
-    Return
-  Sleep 500
-  if FPath2
-    Run, explore %Fpath2%
-  if FPath3
-    Run, explore %Fpath3%
-  if FPathB
-    Run, explore %FpathB%
-  return  
-  }
-
-NewSpecVersion(){
-	Global DescriptionTextInput
-		click, 69, 249 ; new version
-		sleep 200
-	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
-		exit
-	if winactive("Delete specification")
-		exit
-	sleep 300
-	winactivate, Edit specification
-	if !winactive("Edit specification")
-		exit
-	click, 393, 177 ; click description
-	send, ^{a}
-	sleep 300
-	sendinput, %DescriptionTextInput%
-	sleep 200
-	Breaking.Point()
-	if !winactive("Edit specification")
-		exit
-	click, 331, 617 ;click okay
-		sleep 600
-		Breaking.Point()
-	winwaitactive, NuGenesis LMS,,3
-		if errorlevel
-			return
-	return
-	}
-
-RemoveTestSpec(){
-	if winactive("NuGenesis LMS")
-		click, 63, 754 ;; edit results
-	else
-		sleep 600
-	sleep 450
-	if winactive("NuGenesis LMS") && !winexist("Results Definition")
-		return
-	; if !winexist("Results Definition")
-		; exit
-	click, 111, 96 ;; sort Seq
-	sleep 300
-	click, 128, 65 ;; Remove
-	Breaking.Point()
-	; winactivate, Delete results
-	if winexist("Delete results")
-		sendinput, {enter}
-	else
-		sleep 400
-	sleep 200
-	Breaking.Point()
-	; if winactive("NuGenesis LMS")
-		; exit
-	; else
-	if winactive("Results Definition")
-		send, {enter}
-	Else
+	; If (A_LoopFileTimeCreated=Rec)
 		; {
-			tt("ended cuz it was too long")
-			sleep 400
-			; if winactive("Results Definition")
-				; send, {enter}
-
-
-	winwaitactive, NuGenesis LMS,,5
-		if errorlevel
-			exit
-	sleep 300
-	return
-	; sleep 300
-}
-	ApproveSpecVersion(){
-		global NuGenesis_w, Nugenesis_Y
-		; wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
-		ScrollBarTop_X:=Nugenesis_W - 5
-		TopListItem_X:=Nugenesis_W - 50
-		ScrollBarTop_Y:=Nugenesis_y + 190
-		Click, 76,269 ;click Approve Specification
-		sleep 300
-		if winexist("Delete specification") || winexist("Lock specification") ; || winexist("Approve specification") ; || !winexist("Approve specification")
-			exit
-		if winexist("Approve specification")
-			sendinput, {enter}
-		; ifwinexist("Approve secification")
-		; Breaking.Point()
-		sleep 500
-		; if Winactive("NuGenesis LMS")
-		; {
-			; msgbox, 3 `n %ScrollBarTop_x% `n %TopListItem_X% `n %ScrollBarTop_Y%
-			; exit
-			; }
-		CoordMode, mouse, screen
-		; Click, %ScrollBarTop_X%, %ScrollBarTop_Y%
-		sleep 300
-		Click, %TopListItem_X%, %ScrollBarTop_Y%
-		CoordMode, mouse, Window
-
-	}
-
-FullRemoveTest(){
-	global
-	sleep 200
-	MouseGetPos, m_x, m_Y
-	click, 62, 717 ; click View test
-	sleep 200
-	if winactive("NuGenesis LMS")
+		; if FPath2
+			; FPath3=%FPath2%
+		; FPath2=%A_LoopFileFullPath%
+		; Rec=%A_LoopFileTimeCreated%
+		; }
+	If (A_LoopFileTimeCreated>Rec)
 		{
-			CoordMode, mouse, screen
-			click, %m_x%, %m_y%
-			sendinput, {down}
-			CoordMode, mouse, window
-			return
+		; if FPath
+		; FPathB=%FPath%
+		FPath=%A_LoopFileFullPath%
+		Rec=%A_LoopFileTimeCreated%
 		}
-	if winactive("Test Definition Viewer")
-			send, {escape}
-	sleep 200
-	NewSpecVersion()
-	if winexist("Delete specification") || winexist("Edit specification") || winexist("Lock specification") || winexist("Approve specification")
-		exit
-	if winactive("Delete specification")
-		exit
-	sleep 700
-	; winwaitactive, NuGenesis LMS,,3
-	; if errorlevel
-		; return
-	sleep 500
-	RemoveTestSpec()
+	}
+	Run, explore %Fpath%
+;   if !ShowMultiple
+    ; Return
+;   Else
+;   Sleep 500
+;   if FPath2
+    ; Run, explore %Fpath2%
+;   if FPath3
+    ; Run, explore %Fpath3%
+;   if FPathB
+    ; Run, explore %FpathB%
+  return
+  }
 
-	sleep 700
-	Breaking.Point()
-	if !winactive("NuGenesis LMS")
-		sleep 500
-	; my:= my
-	; Mousemove, %mx%, %my%,0
-	ApproveSpecVersion()
-	; TT("Done")
-	return
-}
+
+
 
 AddToList(){
 	; ListItem:=[]
@@ -235,6 +101,7 @@ AddToList(){
 		sleep 400
 		Breaking.Point()
 	}
+	return
 		; CoordMode, mouse, Screen
 }
 
@@ -259,21 +126,21 @@ AddToList(){
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		+^F10::
 		if !(Iteration)
-			FullRemoveTest()
+			SpecTab.FullRemoveTest()
 		else
 		{
 			loop, %iteration%
 				{
-					FullRemoveTest()
+					SpecTab.FullRemoveTest()
 					sleep 2000
 					Breaking.Point()
 				}
 		}
 			return
-		+F10::ApproveSpecVersion()
-		^F10::NewSpecVersion()
-		!F10::RemoveTestSpec()
-		+F3::AddToList()
+		+F10::SpecTab.ApproveSpecVersion()
+		^F10::SpecTab.NewSpecVersion()
+		!F10::SpecTab.RemoveTestSpec()
+		;+F3::AddToList()
 		mbutton:: 3tap()
 		+mbutton::lms.Menu()
 		F7::		 3Right()
@@ -435,11 +302,11 @@ AddToList(){
 			; else If winactive("Select methods tests")
 					; SpecTab.Table()
 			else if winactive("Edit Formulation")
-					productTab.EditFormulation()
+					productTab.AddNewFormulation()
 			else if winactive("Select Product ahk_exe eln.exe")
 					send % clk(107, 66) Product "{enter}{enter}"
 			else if winactive("Edit Product")
-					ProductTab.EditProduct()
+					ProductTab.AddNewProduct()
 			else If winactive("Select tests for request: R")
 					WorkTab.SelectTestSample()
 			else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule") { ; Press Okay
@@ -711,11 +578,13 @@ GetAllBatches(Delimiter:=" ",File:=""){
     SimpleClip:=1
     sleep 20
 		clipboard:=AllBatches
+		LMS.Searchbar(AllBatches)
 		sleep 200
 		send, ^v
+		TT(AllBatches)
     sleep 400
     SimpleClip:=1
-    clipboard:=PreClip
+    ;clipboard:=PreClip
 		return AllBatches
 }
 
@@ -749,9 +618,11 @@ GetAllProducts(Delimiter:=" ",File:=""){
     sleep 20
     clipboard:=AllProducts
     sleep 200
+	; LMS.Searchbar(AllProducts)
     send, ^v
+	TT(AllProducts)
     sleep 400
     SimpleClip:=1
-    clipboard:=Preclip
+    ;clipboard:=Preclip
 		Return AllProducts
 }
