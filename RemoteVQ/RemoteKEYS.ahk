@@ -12,12 +12,14 @@
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
 	; ^F2::Varbar.Focus("Edit2")
-	F3::sendinput, %Lot%
+	; F3::sendinput, %Lot%
+	F3::showLabelCopy(ScansLabelCopyPath,"pdf")
+	+F3::showLabelCopy(FinalLabelCopyPath,"doc*")
 	^F3::Varbar.Focus("Edit3")
 	F4::sendinput, %Coated%
 	^F4::Varbar.Focus("Edit4")
 	; !F2::GetAllBatches()
-	+F3::3tap()
+	;+F3::3tap()
 	!F3::4tap()
 	+F4::4tap()
 	+F9::
@@ -44,6 +46,39 @@ Test_msgbox(msg){
 }
 Ctest_1:
 	return
+
+
+showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
+  Global Product
+  Loop, %FileDir%\*%Product%.%FieType%
+  {
+  If (A_LoopFileTimeCreated=Rec)
+      {
+      if FPath2 
+        FPath3=%FPath2%
+      FPath2=%A_LoopFileFullPath%
+      Rec=%A_LoopFileTimeCreated%
+      }
+  else If (A_LoopFileTimeCreated>Rec)
+    {
+    if FPath 
+      FPathB=%FPath%
+    FPath=%A_LoopFileFullPath%
+    Rec=%A_LoopFileTimeCreated%
+    }
+  }
+  Run, explore %Fpath
+  if !ShowMultiple
+    Return
+  Sleep 500
+  if FPath2
+    Run, explore %Fpath2%
+  if FPath3
+    Run, explore %Fpath3%
+  if FPathB
+    Run, explore %FpathB%
+  return  
+  }
 
 NewSpecVersion(){
 	Global DescriptionTextInput
