@@ -546,6 +546,13 @@ Dropdown_IngredientSelect(A_DropdownCount){
 	}
 	if (A_DropdownCount = "-0")
 		Sendinput, {tab}{end}
+	if (a_DropdownCount = "i"){
+			if !(IngredientNoteCount) || (IngredientNoteCount >8)
+				IngredientNoteCount:=1
+			sleep 50
+			this.Dropdown_GenericIngredient(IngredientNoteCount,1)
+			IngredientNoteCount+=1
+		}
 	if (a_DropdownCount = ""){
 		if Iteration >25
 			iteration:=1
@@ -568,13 +575,16 @@ EditProduct(){ ;for naming Product code and customer,
 	Sendinput,%Product%`,{space}
 	sendraw, %ProductName%
 	sleep 20
-	sendinput, {tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
+	; old code ; sendinput, {tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
+	sendinput, {tab 2}%Customer%{tab 2}{End}{tab}{right 3}{tab}%Product%{tab 2} ; new vitaquest selection
 	sleep 200
 	Sendraw,%ProductName%
 	sendinput, {tab 8}
 	sleep 300
 	Breaking.Point()
 	winwaitactive,NuGenesis LMS,,15
+	  if errorlevel
+	    Exit
 	winactivate, NuGenesis LMS
 	Breaking.Point()
 	click, 67, 283
@@ -642,13 +652,19 @@ HM_ReportOnly(){
 	return
 }
 
-Dropdown_GenericIngredient(IterationCount:=""){ ;; Generic List
+Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic List
 	global
 	GeneralCount:=IterationCount
 	Click 150, 73
 	sleep 50
 	Sendinput,{tab}{Home}{right %Ingredient_List_Adjustment%}
 	sleep 80
+	if IngredientNote 
+	{
+	  Sendinput, {right %IngredientNoteDropDownCount%}{right %IterationCount%}
+	  sleep 505
+	  return
+	  }
 	if GeneralCount=1			; Generic ingredient A.1
 		Sendinput, {right 56}
 	else if GeneralCount=2

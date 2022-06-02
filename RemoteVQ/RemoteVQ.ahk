@@ -64,6 +64,8 @@ if A_username != mmignin
 	iniRead, Mercury_Requirement, Settings.ini, HeavyMetal_Variables, Mercury_Requirement
 	iniRead, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
 	iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
+	iniRead, IngredientNoteDropDownCount, Settings.ini, SavedVariables, IngredientNoteDropDownCount
+	
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
