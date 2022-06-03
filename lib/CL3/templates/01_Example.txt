@@ -1,6 +1,0 @@
-﻿This is an example template 
-%Clipboard%
-text file placed in templates\
-which will be shown as the first menu
-entry in the templates submenu
-of CL3... see https://github.com/hi5/CL3
