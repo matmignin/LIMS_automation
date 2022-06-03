@@ -1164,19 +1164,20 @@ FullRemoveTest(){
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
 			click 239, 246  ;results link
 			sleep 200
-			winactivate, Results Definition
-			sleep 100
 			Breaking.Point()
+			winactivate, Results Definition
+			;sleep 100
 
 		}
 		if winactive("Results Definition") ;Selection window
 		{
 			winactivate, Results Definition
-			sleep 100
+			;sleep 100
 			If Method contains ICP-MS 231
 				Send,{click 217, 141}
 			Send,{click 80, 66} ;click edit
 			sleep 200
+			Breaking.Point()
 			winwaitactive, Result Editor,,0.5
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
@@ -1278,7 +1279,7 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	return
 }
 
-TestDefinitionEditor(The_Description,Department:=""){ ; 2nd window
+TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 	Global Name
 	if !(The_description) ; && !(Department)
 	{
