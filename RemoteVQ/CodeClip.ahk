@@ -279,7 +279,7 @@ IfNothingSelected(action){
   global
     ClipboardSaved:=ClipboardAll
     clipboard:=
-    Send, ^cl
+    Send, ^c
       clipwait,0.40
   if errorlevel ;if nothing selected
   {
