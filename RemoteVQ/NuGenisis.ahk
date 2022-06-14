@@ -35,7 +35,6 @@ Class LMS { ;;__________Generl LMS__________________
 				Menu,Menu, add, Copy &Specs, Autofill
 			Menu, Menu, add, Paste All &Products, +F1
 			Menu, Menu, add, Paste All &Batches, +F2
-
 			; msgbox, %Tab%
 			; click
 			if (Tab="Samples")
@@ -459,7 +458,6 @@ AddIngredientsFromClipboard(){
     		  Table_height+=1
 			}
 			  Lms.detectTab()
-			; tt(Tab)
 			If winactive("Edit Ingredient"){
 				winactivate "Edit Ingredient"
 				sleep 250
@@ -481,6 +479,7 @@ AddIngredientsFromClipboard(){
 					}
 				}
 			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
+		Try GUI, Spec_Table:destroy
         SpecTab.Table()
         return
 		  }
@@ -744,8 +743,6 @@ class SpecTab { 	;; _________SpecTab class_______
 		SpecTable_Y:=LMS_Y+ShiftTable_Y
 
 		CoordMode, mouse, screen
-		;Excel.Connect()
-		; SpecTab.GetExcelData()
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		SpecTab.ShowGUI()
@@ -756,11 +753,11 @@ class SpecTab { 	;; _________SpecTab class_______
 	ShowGUI(){
 		global
 		CoordMode, mouse, screen
-		ScreenEdge_X:=A_ScreenWidth-15
-		ScreenEdge_Y:=A_Screenheight-150
+		ScreenEdge_X:=A_ScreenWidth+10
+		ScreenEdge_Y:=A_Screenheight-180
 		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
 		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
-			CoordMode, mouse, window
+		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
 		return
 	}
@@ -813,155 +810,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			}
 
 
-NewSpecVersion(){
-	Global DescriptionTextInput
-		click, 69, 249 ; new version
-		sleep 200
-	if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
-		exit
-	if winactive("Delete specification")
-		exit
-	sleep 300
-	winactivate, Edit specification
-	if !winactive("Edit specification")
-		exit
-	click, 393, 177 ; click description
-	send, ^{a}
-	sleep 300
-	sendinput, %DescriptionTextInput%
-	sleep 200
-	Breaking.Point()
-	if !winactive("Edit specification")
-		exit
-	click, 331, 617 ;click okay
-		sleep 600
-		Breaking.Point()
-	winwaitactive, NuGenesis LMS,,3
-		if errorlevel
-			return
-	return
-	}
 
-RemoveTestSpec(){
-	if winactive("NuGenesis LMS")
-		click, 63, 754 ;; edit results
-	else
-		sleep 600
-	sleep 450
-	if winactive("NuGenesis LMS") && !winexist("Results Definition")
-		return
-	; if !winexist("Results Definition")
-		; exit
-	click, 111, 96 ;; sort Seq
-	sleep 300
-	click, 128, 65 ;; Remove
-	Breaking.Point()
-	; winactivate, Delete results
-	if winexist("Delete results")
-		sendinput, {enter}
-	else
-		sleep 400
-	sleep 200
-	Breaking.Point()
-	; if winactive("NuGenesis LMS")
-		; exit
-	; else
-	if winactive("Results Definition")
-		send, {enter}
-	Else
-		; {
-			tt("ended cuz it was too long")
-			sleep 400
-			; if winactive("Results Definition")
-				; send, {enter}
-
-
-	winwaitactive, NuGenesis LMS,,5
-		if errorlevel
-			exit
-	sleep 300
-	return
-	; sleep 300
-}
-	ApproveSpecVersion(){
-		global NuGenesis_w, Nugenesis_Y
-		; wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
-		ScrollBarTop_X:=Nugenesis_W - 5
-		TopListItem_X:=Nugenesis_W - 50
-		ScrollBarTop_Y:=Nugenesis_y + 190
-		Click, 76,269 ;click Approve Specification
-		sleep 300
-		if winexist("Delete specification") || winexist("Lock specification") ; || winexist("Approve specification") ; || !winexist("Approve specification")
-			exit
-		if winexist("Approve specification")
-			sendinput, {enter}
-		; ifwinexist("Approve secification")
-		; Breaking.Point()
-		sleep 500
-		; if Winactive("NuGenesis LMS")
-		; {
-			; msgbox, 3 `n %ScrollBarTop_x% `n %TopListItem_X% `n %ScrollBarTop_Y%
-			; exit
-			; }
-		CoordMode, mouse, screen
-		; Click, %ScrollBarTop_X%, %ScrollBarTop_Y%
-		sleep 300
-		Click, %TopListItem_X%, %ScrollBarTop_Y%
-		CoordMode, mouse, Window
-
-	}
-
-FullRemoveTest(){
-	global
-	sleep 200
-	MouseGetPos, m_x, m_Y
-	click, 62, 717 ; click View test
-	sleep 200
-	if winactive("NuGenesis LMS")
-		{
-			CoordMode, mouse, screen
-			click, %m_x%, %m_y%
-			sendinput, {down}
-			CoordMode, mouse, window
-			return
-		}
-	if winactive("Test Definition Viewer")
-			send, {escape}
-	sleep 200
-	this.NewSpecVersion()
-	if winexist("Delete specification") || winexist("Edit specification") || winexist("Lock specification") || winexist("Approve specification")
-		exit
-	if winactive("Delete specification")
-		exit
-	sleep 700
-	; winwaitactive, NuGenesis LMS,,3
-	; if errorlevel
-		; return
-	sleep 500
-	this.RemoveTestSpec()
-
-	sleep 700
-	Breaking.Point()
-	if !winactive("NuGenesis LMS")
-		sleep 500
-	; my:= my
-	; Mousemove, %mx%, %my%,0
-	this.ApproveSpecVersion()
-	; TT("Done")
-	return
-}
-
-	CopyPasteSpec(){
-		global copypasteToggle
-		click
-		try Menu,Menu, deleteAll
-		Menu,Menu, add, Copy &Template, autofill
-		If CopyPasteToggle=1
-			Menu,Menu, add, Paste &Specs, Autofill
-		If CopyPasteToggle=0
-			Menu,Menu, add, Copy &Specs, Autofill
-		return
-	}
 
 	Methods() {
 		global
@@ -995,7 +844,18 @@ FullRemoveTest(){
 
 		return
 	}
-
+		;; ____Copy spec template
+	CopyPasteSpec(){
+		global copypasteToggle
+		click
+		try Menu,Menu, deleteAll
+		Menu,Menu, add, Copy &Template, autofill
+		If CopyPasteToggle=1
+			Menu,Menu, add, Paste &Specs, Autofill
+		If CopyPasteToggle=0
+			Menu,Menu, add, Copy &Specs, Autofill
+		return
+	}
 	CopySpecTemplate(){
 		global
 		Critical, On
@@ -1028,13 +888,8 @@ FullRemoveTest(){
 		else If (Department = "Retain")
 			SpecTab.Edit_Retain()
 		sleep 50
-		; Breaking.Point()
 		; WinActivate, NuGenesis LMS
-		;excel.NextSheet()
-		; excel.connect(0)
 		Breaking.Point()
-		;excel.infolocations()
-		;TT(Product)
 		Critical, Off
 		return
 	}
@@ -1100,7 +955,7 @@ FullRemoveTest(){
 		Critical, On
 		winactivate, NuGenesis LMS
 		click 57, 715 ; edit Test
-		winwaitactive, Test Definition Editor,,0.35
+		winwaitactive, Test Definition Editor,,0.65
 		; if errorlevel
 			winactivate, Test Definition Editor
 		sleep 400
@@ -1143,13 +998,14 @@ FullRemoveTest(){
 ;; Run through all the menues to add
 	AutoFill(){
 		global
+		sleep 400
 		winactivate, ahk_exe eln.exe
-		sleep 200
+		CoordMode, mouse, window
 		If winactive("NuGenesis LMS")
 		{
 			sleep 200
 			Breaking.Point()
-			click, 57, 719 ;click Edit Test
+			click, 57, 755 ;click Edit Test
 			Sleep 200
 			Breaking.Point()
 			winactivate, Test Definition Editor
@@ -1192,6 +1048,8 @@ FullRemoveTest(){
 		return
 	}
 	else
+		return
+		; msgbox, got returned
 		; Blockinput,off
 	return
 }
@@ -1229,7 +1087,7 @@ EditSpecification_Analytical(){
 	return
 }
 
-;; ___Fill In Test Specs
+;;___Fill In Test Specs
 ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1){ ; 3rd window
 	Global
 	sleep 200
@@ -1270,23 +1128,23 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	mousemove, 910, 668
 	If Method contains ICP-MS 231
 		return
-	WinWaitClose, Results Definition,, 4
+	WinWaitClose, Results Definition,, 8
 	winactivate, Test Definition Editor
 	mousemove, 335, 617
-	sleep 500
-	Breaking.Point()
-	click
+	; sleep 500
+	; Breaking.Point()
+	; click
 	return
 }
 
 TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
-	Global Name
+	Global
 	if !(The_description) ; && !(Department)
 	{
-		; MouseClick, left, 464, 532,2,0 	;click scrollbar
+		MouseClick, left, 464, 532,2,0 	;click scrollbar
 		sleep 100
-		; click 239, 246 					;click results link
-		; sleep 100
+		click 239, 246 					;click results link
+		sleep 100
 		return
 	}
 	else
@@ -1295,7 +1153,7 @@ TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 		DescriptionRaw:=The_Description
 		Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
 		sleep 85
-		Click, 187, 200 ;click description box
+		Click, 187, 200  ;click description box
 		sleep 200	;Orient
 		if Name contains Vitamin C
 			Sendinput,{Home}{Delete 12}
@@ -1747,12 +1605,151 @@ HM_Prop65(){
 	click 390, 659	;click okay
 	return
 }
+;_____Remove tests from spec
+	NewSpecVersion(){
+		Global DescriptionTextInput
+			click, 69, 249 ; new version
+			sleep 200
+		if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
+			exit
+		if winactive("Delete specification")
+			exit
+		sleep 300
+		winactivate, Edit specification
+		if !winactive("Edit specification")
+			exit
+		click, 393, 177 ; click description
+		send, ^{a}
+		sleep 300
+		sendinput, %DescriptionTextInput%
+		sleep 200
+		Breaking.Point()
+		if !winactive("Edit specification")
+			exit
+		click, 331, 617 ;click okay
+			sleep 600
+			Breaking.Point()
+		winwaitactive, NuGenesis LMS,,3
+			if errorlevel
+				return
+		return
+		}
+
+	RemoveTestSpec(){
+		if winactive("NuGenesis LMS")
+			click, 63, 754 ;; edit results
+		else
+			sleep 600
+		sleep 450
+		if winactive("NuGenesis LMS") && !winexist("Results Definition")
+			return
+		; if !winexist("Results Definition")
+			; exit
+		click, 111, 96 ;; sort Seq
+		sleep 300
+		click, 128, 65 ;; Remove
+		Breaking.Point()
+		; winactivate, Delete results
+		if winexist("Delete results")
+			sendinput, {enter}
+		else
+			sleep 400
+		sleep 400
+		Breaking.Point()
+		; if winactive("NuGenesis LMS")
+			; exit
+		; else
+		if winactive("Results Definition")
+			send, {enter}
+		Else
+			; {
+				tt("ended cuz it was too long")
+				sleep 400
+				; if winactive("Results Definition")
+					; send, {enter}
+
+
+		winwaitactive, NuGenesis LMS,,5
+			if errorlevel
+				exit
+		sleep 300
+		return
+		; sleep 300
+	}
+		ApproveSpecVersion(){
+			global NuGenesis_w, Nugenesis_Y
+			; wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
+			ScrollBarTop_X:=Nugenesis_W - 5
+			TopListItem_X:=Nugenesis_W - 50
+			ScrollBarTop_Y:=Nugenesis_y + 190
+			Click, 76,269 ;click Approve Specification
+			sleep 300
+			if winexist("Delete specification") || winexist("Lock specification") ; || winexist("Approve specification") ; || !winexist("Approve specification")
+				exit
+			if winexist("Approve specification")
+				sendinput, {enter}
+			; ifwinexist("Approve secification")
+			; Breaking.Point()
+			sleep 500
+			; if Winactive("NuGenesis LMS")
+			; {
+				; msgbox, 3 `n %ScrollBarTop_x% `n %TopListItem_X% `n %ScrollBarTop_Y%
+				; exit
+				; }
+			CoordMode, mouse, screen
+			; Click, %ScrollBarTop_X%, %ScrollBarTop_Y%
+			sleep 300
+			Click, %TopListItem_X%, %ScrollBarTop_Y%
+			CoordMode, mouse, Window
+
+		}
+
+	FullRemoveTest(){
+		global
+		sleep 200
+		MouseGetPos, m_x, m_Y
+		click, 62, 717 ; click View test
+		sleep 200
+		if winactive("NuGenesis LMS")
+			{
+				CoordMode, mouse, screen
+				click, %m_x%, %m_y%
+				sendinput, {down}
+				CoordMode, mouse, window
+				return
+			}
+		if winactive("Test Definition Viewer")
+				send, {escape}
+		sleep 200
+		this.NewSpecVersion()
+		if winexist("Delete specification") || winexist("Edit specification") || winexist("Lock specification") || winexist("Approve specification")
+			exit
+		if winactive("Delete specification")
+			exit
+		sleep 700
+		; winwaitactive, NuGenesis LMS,,3
+		; if errorlevel
+			; return
+		sleep 500
+		this.RemoveTestSpec()
+
+		sleep 700
+		Breaking.Point()
+		if !winactive("NuGenesis LMS")
+			sleep 500
+		; my:= my
+		; Mousemove, %mx%, %my%,0
+		this.ApproveSpecVersion()
+		; TT("Done")
+		return
+	}
+
+
 }
 WM_Lbuttondown:
 Spec_Table:
 	if (A_GuiEvent = "NORMAL" ){
 		; if (A_GuiEvent := "I" ){
-
 		Sendinput,{space}
 		SpecTab.GetRowText()
 		SpecTab.AutoFill()
@@ -1964,14 +1961,14 @@ Class WorkTab { 		;;______WorkTab Class______________
 			return
 		}
 
-		ChangeTestResults(Checkbox_Toggle:=0,MoveNext:=""){
+		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
 
 			if (Iteration = "ERROR")
 				InputBox, Iteration, enter iteration, number please,, , , , , , , 1
 			if errorlevel
 				reload
-			if checkbox_toggle contains loop
+			if LoopThrough
 			{
 				if keep_running = y
 				{
@@ -1989,7 +1986,10 @@ Class WorkTab { 		;;______WorkTab Class______________
 					click 843, 202, 2
 					if keep_running = n ;another signal to stop
 						return
-					Send,{tab}{Space}{tab}{Space}
+					if Checkbox_Toggle ;Contains Toggle
+						Send,{tab}{Space}{tab}{Space}
+					else
+						Sendinput,{tab}{tab}
 					Send,{tab 10}^a
 					sleep 100
 					Send, %Iteration%
@@ -2012,17 +2012,17 @@ Class WorkTab { 		;;______WorkTab Class______________
 		MouseGetPos, xpos, ypos
 		click
 		click 843, 202, 2
-		if Checkbox_Toggle Contains Toggle
+		if Checkbox_Toggle ;Contains Toggle
 			Sendinput,{tab}{Space}{tab}{Space}
 		else
 			Sendinput,{tab}{tab}
 		Sendinput,{tab 10}^a
 		sleep 100
-		if Checkbox_Toggle Contains toggle
+		if Checkbox_Toggle ; Contains toggle
 			return
 		Send, %Iteration%
 		sleep 100
-		if Checkbox_Toggle Not Contains toggle
+		if !Checkbox_Toggle ; Not Contains toggle
 			mousemove, xpos, ypos+26,0
 
 		return

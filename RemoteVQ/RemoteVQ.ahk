@@ -12,7 +12,7 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 5500
 	#InstallKeybdHook
-	Setwindelay, 150
+	Setwindelay, 250
 	SetKeyDelay,0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
@@ -32,7 +32,7 @@ if A_username != mmignin
 	CoordMode, mouse, window
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
-	DetectHiddenWindows, On
+	; DetectHiddenWindows, On
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
@@ -40,13 +40,6 @@ if A_username != mmignin
 	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
-	Menu, Tray, Add, E&xit, ExitSub
-	Menu, Tray, Add, &Reload, ReloadSub
-	Menu, Tray, add, Show J Final Label Copy, ShowJ_FinalLabelCopy
-	Menu, Tray, add, Show K Final Label Copy, ShowK_FinalLabelCopy
-	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
-	Menu, Tray, add, AddClipBoardToList, AddToList
-	Menu, Tray, Default, &Reload
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
 ; OnExit("Varbar.SaveVariables")
 	SetTimer,activeCheck, 600
@@ -81,6 +74,14 @@ if A_username != mmignin
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
 	try Menu, Tray, Icon, %AppIconPath%
+	Menu, Tray, Add, E&xit, ExitSub
+	Menu, Tray, Add, &Reload, ReloadSub
+	Menu, Tray, add, Enter Specs, EnterSpecs
+	Menu, Tray, add, Show Final Label Copy, ShowFinalLabelCopy
+	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
+	Menu, Tray, add, Show Final CoAs, ShowFINAL_C_O_A
+	Menu, Tray, add, AddClipBoardToList, AddToList
+	Menu, Tray, Default, &Reload
 
 	LMS.Orient()
 	varbar.Show()
@@ -111,14 +112,26 @@ windowSpy(){
   Run, WS.exe,%WindowSpyPath%\
   }
 
-ShowK_FinalLabelCopy:
-	showLabelCopy(K_FinalLabelCopyPath,"doc*")
+EnterSpecs:
+	ProductTab.AddIngredientsFromClipboard()
+	msgbox % "Name: " Name "`nLabelclaim: " Labelclaim "`nminLimit: " minLimit "`nmaxLimit: " maxLimit "`nunits: " units
+	SpecTab.AutoFill()
 	return
-ShowJ_FinalLabelCopy:
-	showLabelCopy(J_FinalLabelCopyPath,"doc")
+ShowFinalLabelCopy:
+	run, find "\\10.1.2.118\Label Copy Final"
+	sleep 200
+	sendinput, %Product%{enter}
+	;showLabelCopy(J_FinalLabelCopyPath,"doc")
 	return
 ShowScanLabelCopy:
-	showLabelCopy(ScansLabelCopyPath,"pdf")
+	; showLabelCopy(ScansLabelCopyPath,"pdf")
+	run, find %ScansLabelCopyPath%
+	sleep 200
+	sendinput, %Product%{enter}
+	return
+ShowFINAL_C_O_A:
+	; showLabelCopy(ScansLabelCopyPath,"pdf")
+	run, explorer %2022_Final_C_O_APath%
 	return
 
 activeCheck:
@@ -194,11 +207,11 @@ activeCheck:
 		send, {enter}
 	}
 	else
-		if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
-		LMS.Orient()
-		sleep 300
-		winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,%varBar_nuX%, %varBar_nuY%
-		}
+		; if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
+		; LMS.Orient()
+		; sleep 300
+		; winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,%varBar_nuX%, %varBar_nuY%
+		; }
 		return
 return
 

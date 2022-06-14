@@ -13,15 +13,15 @@ clipChange(type){
   sleep 50
   if SimpleClip
     return
-  if InStr(Clipboard, "<<LabelCopy>>", true,1,1){
-    if (Iteration >=25) || (Iteration < 0)
-      iteration:=1
+  if InStr(Clipboard, "<<LabelCopy>>", true,1,1) || InStr(Clipboard, "<LC>|", true,1,1){
+    ; if (Iteration >=25) || (Iteration < 0)
+      ; iteration:=1
     ProductTab.AddIngredientsFromClipboard()
   }
-  else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
+  else if Instr(Clipboard, "<<SheetInfo>>",true,1,1) || Instr(Clipboard, "<<LC>>|",true,1,1)
     ProductTab.AddProductFromClipboard()
-  else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
-    clip.HeavyMetalSpecs()
+  ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
+    ; clip.HeavyMetalSpecs()
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
     exitapp
     sleep 25
@@ -32,8 +32,26 @@ clipChange(type){
 }
 
 
-
-
+;<LC>|
+;  IngredientId|
+; [1] IngredientLoacation|
+; [2] Sequene|
+; [3] IngredientText|
+; [4] LabelClaim|
+; [5] AssayRange%|
+; [6] MethodID|
+; [7] IngredientDescription|
+; [8] MinLimit|
+; [9] MaxLimit|
+; [10 ]Units|
+; [11] Percision|
+; [12] Requirement|
+;<<LC>>|
+; [1] Formulation|
+; [2] ProductName|
+; [3] Customer|
+; [4] CustomerDropdown|
+; [5] pillSize|
 
 
 Clip(input=50,Wait:="0.95"){
@@ -279,7 +297,7 @@ IfNothingSelected(action){
   global
     ClipboardSaved:=ClipboardAll
     clipboard:=
-    Send, ^cl
+    Send, ^c
       clipwait,0.40
   if errorlevel ;if nothing selected
   {

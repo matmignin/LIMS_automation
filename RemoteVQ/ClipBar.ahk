@@ -206,8 +206,8 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 #ifwinactive
 
 #If MouseIsOver("VarBar")
-Wheelup::Varbar.AddIteration(150)
-Wheeldown::Varbar.SubIteration(150)
+Wheelup::Varbar.AddIteration(250)
+Wheeldown::Varbar.SubIteration(250)
 +wheelup::Varbar.AddIteration(0)
 +wheeldown::Varbar.SubIteration(0)
 Rbutton::VarBar.Menu()

@@ -5,7 +5,11 @@
 	<!right::GetAllBatches()
 	; F1::sendinput, %Product%
 	; F1::CountFiles()
-	+F1::GetAllProducts()
+	; +F1::GetAllProducts()
+	+F1::
+		SpecTab.GetRowText()
+		SpecTab.AutoFill()
+		return
 	!F1::GetAllProducts("`n")
 	^F1::Varbar.Focus("Edit1")
 	;F2::sendinput, %Batch%
@@ -50,7 +54,7 @@ Ctest_1:
 
 showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
   Global Product
-  Loop, %FileDir%*%Product%*.%FieType%*
+  Loop, Files, %FileDir%*%Product%*.%FieType%*,R
   {
 	; If (A_LoopFileTimeCreated=Rec)
 		; {
@@ -63,10 +67,11 @@ showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
 		{
 		; if FPath
 		; FPathB=%FPath%
-		FPath=%A_LoopFileFullPath%
+		FPath=%A_LoopFileLongPath%
 		Rec=%A_LoopFileTimeCreated%
 		}
 	}
+	sleep 300
 	Run, explore %Fpath%
 ;   if !ShowMultiple
     ; Return
@@ -167,7 +172,7 @@ AddToList(){
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
 		#MaxThreadsPerHotkey 2
-		F10::WorkTab.ChangeTestResults("loop")
+		F10::WorkTab.CorrectTestResults("loop")
 		#MaxThreadsPerHotkey 1
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		Enter::
@@ -288,7 +293,7 @@ AddToList(){
 					menu.passwords()
 			else if winactive("Result Entry") {
 					MouseGetPos, xpos, ypos
-					WorkTab.ChangeTestResults("toggle")
+					WorkTab.CorrectTestResults("toggle")
 					mousemove, %xpos%, %yPos%+26,0
 				}
 			else if winactive("Edit specification")
@@ -336,7 +341,7 @@ AddToList(){
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
 		else If winactive("Result Entry")
-			WorkTab.ChangeTestResults()
+			WorkTab.CorrectTestResults()
 		else If winactive("Select methods tests")
 			SpecTab.Methods()
 		else If winactive("Composition")
@@ -392,7 +397,7 @@ AddToList(){
 		else if winactive("Select samples for test:")
 			Send, {esc}
 		else If winactive("Result Entry")   ;Enter Test Results window"
-			WorkTab.ChangeTestResults("toggle")
+			WorkTab.CorrectTestResults("toggle")
 		else if winactive("ahk_exe eln.exe")
 			Send, %Product%
 		else
