@@ -6,12 +6,12 @@
 	; F1::sendinput, %Product%
 	; F1::CountFiles()
 	; +F1::GetAllProducts()
-	+F1::
-		SpecTab.GetRowText()
-		SpecTab.AutoFill()
-		return
+	; +F1::
+		; SpecTab.GetRowText()
+		; SpecTab.AutoFill()
+		; return
 	!F1::GetAllProducts("`n")
-	^F1::Varbar.Focus("Edit1")
+	+F1::worktab.NewTestRequestLink()
 	;F2::sendinput, %Batch%
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
@@ -583,9 +583,9 @@ GetAllBatches(Delimiter:=" ",File:=""){
     SimpleClip:=1
     sleep 20
 		clipboard:=AllBatches
-		LMS.Searchbar(AllBatches)
+		; LMS.Searchbar(AllBatches)
 		sleep 200
-		send, ^v
+		; send, ^v
 		TT(AllBatches)
     sleep 400
     SimpleClip:=1
@@ -624,7 +624,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
     clipboard:=AllProducts
     sleep 200
 	; LMS.Searchbar(AllProducts)
-    send, ^v
+    ;send, ^v
 	TT(AllProducts)
     sleep 400
     SimpleClip:=1

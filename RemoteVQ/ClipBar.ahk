@@ -35,7 +35,7 @@ Class VarBar{
 		CoordMode, mouse, window
 		; OnMessage(0x0201, "WM_LBUTTONDOWN")
 		this.loadSavedVariables()
-		; OnMessage(0x0203, "WM_LBUTTONDBLCLK")
+
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
 		winSet, Transparent, %Varbar_T%, AHK_id %GUIID%
@@ -43,7 +43,6 @@ Class VarBar{
 
 		VarBarHandler:
 		; while (A_TimeIdle < 1000) && winactive("VarBar")
-			; tt("",500)
 		; sleep 25
 		; sleep 300
 			; sleep 1000
@@ -89,8 +88,8 @@ Class VarBar{
 		global
 		MouseGetPos,,,,winControl
 		try Menu, VarBarmenu, DeleteAll
-		Menu, VarBarMenu, Add, &K Final Labels, ShowK_FinalLabelCopy
-		Menu, VarBarMenu, Add, &J Final Labels, ShowJ_FinalLabelCopy
+		; Menu, VarBarMenu, Add, &K Final Labels, ShowK_FinalLabelCopy
+		; Menu, VarBarMenu, Add, &J Final Labels, ShowJ_FinalLabelCopy
 		Menu, VarBarMenu, Add, Label &Scans, ShowScanLabelCopy
 		Menu, VarBarMenu, Add, AddClipBoardToList, AddToList
 		Try Menu,VarBarmenu,show
@@ -126,28 +125,37 @@ Class VarBar{
 
 	AddIteration(speed:=300){
 		global Iteration, NAdd
-		; GuiControl, -redraw, varbar
 			If NAdd
 				exit
+			; #maxthreadsperhotkey, 1
+			; #MaxHotkeysPerInterval, 500
+		; GuiControl, -redraw, varbar
 		NAdd:=1
 		sleep 15
 		Iteration+=1
 		sleep %Speed%
 		ControlsetText, Edit5,%Iteration%,VarBar
+		; sleep 100
+			; #MaxHotkeysPerInterval, 70
 		NAdd:=0
+		; #maxthreadsperhotkey, 2
 		return
 	}
 	SubIteration(speed:=300){
 		global Iteration, NSub
 			If Nsub
 				exit
+			; #maxthreadsperhotkey, 1
+		; #MaxHotkeysPerInterval, 500
 		Nsub:=1
 		; GuiControl, -redraw, varbar
 		sleep 15
 		Iteration-=1
 		sleep %speed%
 		ControlsetText, Edit5,%Iteration%,VarBar
+		; sleep 100
 		Nsub:=0
+			; #maxthreadsperhotkey, 2
 		return
 	}
 	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
@@ -160,14 +168,14 @@ Class VarBar{
 		ControlGetText, Coated, Edit4, VarBar
 		ControlGetText, Iteration, Edit5, VarBar
 		sleep 100
-		if Product
-			iniwrite, %Product%, Settings.ini, SavedVariables, Product
-		if Batch
-			iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
-		if lot
-			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
-		if Coated
-			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+		; if Product
+			; iniwrite, %Product%, Settings.ini, SavedVariables, Product
+		; if Batch
+			; iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
+		; if lot
+			; iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
+		; if Coated
+			; iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
 		; if CustomerPosition
 			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
@@ -179,10 +187,10 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		; iniRead, Batch, Settings.ini, SavedVariables, Batch
 		; iniRead, Lot, Settings.ini, SavedVariables, Lot
 		; iniRead, Coated, Settings.ini, SavedVariables, Coated
-		; if Iteration
-		; 	GuiControl,Varbar:Text, Iteration, %Iteration%
-		; if Product
-		; 	GuiControl,Varbar:Text, Product, %Product%
+		; if !Iteration
+			; GuiControl,Varbar:Text, Iteration, %Iteration%
+		;  if !Product
+			; GuiControl,Varbar:Text, Product, %Product%
 		; if Batch
 		; 	GuiControl,Varbar:Text, Batch, %Batch%
 		; if lot

@@ -12,7 +12,7 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 5500
 	#InstallKeybdHook
-	Setwindelay, 250
+
 	SetKeyDelay,0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
@@ -32,19 +32,25 @@ if A_username != mmignin
 	CoordMode, mouse, window
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
-	; DetectHiddenWindows, On
+	DetectHiddenWindows, On
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
-	; Menu, Tray, Add, msgbox, test_Msgbox
+	Menu, Tray, Add, All Batches, AllBatchesMsgbox
+	Menu, Tray, Add, All Products, AllProductsMsgbox
 	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
-; OnExit("Varbar.SaveVariables")
-	SetTimer,activeCheck, 600
-	iniRead, Ingredient_List_Adjustment, Settings.ini, SavedVariables, Ingredient_List_Adjustment
+	; OnExit("Varbar.SaveVariables")
+	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
+	iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
+	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
+	iniRead, IngredientNoteDropDownCount, Settings.ini, Config, IngredientNoteDropDownCount
+
 	iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
+	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+
 	iniRead, HM_Units, Settings.ini, HeavyMetal_Variables, HM_Units
 	iniRead, HM_Lower_Limit, Settings.ini, HeavyMetal_Variables, HM_Lower_Limit
 	iniRead, Arsenic_Limit, Settings.ini, HeavyMetal_Variables, Arsenic_Limit
@@ -55,33 +61,29 @@ if A_username != mmignin
 	iniRead, Cadmium_Requirement, Settings.ini, HeavyMetal_Variables, Cadmium_Requirement
 	iniRead, Mercury_Limit, Settings.ini, HeavyMetal_Variables, Mercury_Limit
 	iniRead, Mercury_Requirement, Settings.ini, HeavyMetal_Variables, Mercury_Requirement
-	iniRead, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
+
 	iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
-	iniRead, IngredientNoteDropDownCount, Settings.ini, SavedVariables, IngredientNoteDropDownCount
-	iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
-	iniread, L_FinalLabelCopyPath, Settings.ini, FilePaths, L_FinalLabelCopyPath
-	iniread, K_FinalLabelCopyPath, Settings.ini, FilePaths, K_FinalLabelCopyPath
-	iniread, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
 	iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
 	iniread, 2022_Final_C_O_APath, Settings.ini, FilePaths, 2022_Final_C_O_APath
-	iniread, 2021_Final_C_O_APath, Settings.ini, FilePaths, 2021_Final_C_O_APath
 	iniread, FinishedLabelCopyPath, Settings.ini, FilePaths, FinishedLabelCopyPath
 	iniread, ManualCOAPath, Settings.ini, FilePaths, ManualCOAPath
 	iniread, mfgPath, Settings.ini, FilePaths, mfgPath
-	iniread, 2022_mfgPath, Settings.ini, FilePaths, 2022_mfgPath
-	iniread, 2021_mfgPath, Settings.ini, FilePaths, 2021_mfgPath
 	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
+
+	SetTimer,activeCheck, %ActiveTimerCheck%
 	try Menu, Tray, Icon, %AppIconPath%
-	Menu, Tray, Add, E&xit, ExitSub
+	; Menu, Tray, Add, E&xit, ExitSub
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, add, Enter Specs, EnterSpecs
 	Menu, Tray, add, Show Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
-	Menu, Tray, add, Show Final CoAs, ShowFINAL_C_O_A
+	Menu, Tray, add, Show Total CoAs, ShowFINAL_C_O_A
+	Menu, Tray, add, Show EditBox, ShowEditBox
 	Menu, Tray, add, AddClipBoardToList, AddToList
 	Menu, Tray, Default, &Reload
+	SetWinDelay, %NormalWinDelay%
 
 	LMS.Orient()
 	varbar.Show()
@@ -112,6 +114,17 @@ windowSpy(){
   Run, WS.exe,%WindowSpyPath%\
   }
 
+AllBatchesMsgbox:
+	AllBatchesMsg:=GetAllBatches("`n")
+	sleep 200
+	clip.EditBox(AllBatchesMsg)
+	return
+AllProductsMsgbox:
+	AllProductsMsg:=GetAllProducts(" ")
+	sleep 200
+	clip.EditBox(AllProductsMsg)
+	return
+
 EnterSpecs:
 	ProductTab.AddIngredientsFromClipboard()
 	msgbox % "Name: " Name "`nLabelclaim: " Labelclaim "`nminLimit: " minLimit "`nmaxLimit: " maxLimit "`nunits: " units
@@ -121,17 +134,17 @@ ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
 	sleep 200
 	sendinput, %Product%{enter}
-	;showLabelCopy(J_FinalLabelCopyPath,"doc")
 	return
 ShowScanLabelCopy:
-	; showLabelCopy(ScansLabelCopyPath,"pdf")
 	run, find %ScansLabelCopyPath%
 	sleep 200
 	sendinput, %Product%{enter}
 	return
 ShowFINAL_C_O_A:
-	; showLabelCopy(ScansLabelCopyPath,"pdf")
 	run, explorer %2022_Final_C_O_APath%
+	return
+ShowEditBox:
+	clip.editbox()
 	return
 
 activeCheck:
@@ -215,178 +228,3 @@ activeCheck:
 		return
 return
 
-
-TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
-	global
-	sleep 20
-		tooltip, %msg%, %X%, %Y%,%N%
-	hwnd := winExist("ahk_class tooltips_class32")
-	if Transparent
-		winSet, Trans, %Transparent%, % "ahk_id" hwnd
-	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
-	; winSet, Trans, 200, %W%
-	CoordMode, ToolTip, screen
-	; CoordMode, ToolTip, Relative
-	SetTimer, RemoveToolTip%N%, -%time%
-return
-RemoveToolTip:
-	ToolTip
-return
-RemoveToolTip1:
-	ToolTip,,,,1
-return
-RemoveToolTip2:
-	ToolTip,,,,2
-return
-RemoveToolTip3:
-	ToolTip,,,,3
-return
-RemoveToolTip4:
-	ToolTip,,,,4
-return
-}
-
-FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
-	global
-	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cw%Color%
-	if !Text
-		Text:=A_ThisHotkey
-	tt(Text,ToolTipTime,A_caretx,A_caretY,4)
-	Sleep,10
-	SplashImage,off
-return
-}
-
-class Breaking {
-	Point(){
-		Global
-		If (GetKeyState("Lbutton", "P") || GetKeyState("Space", "P")) {
-			TT("Broke",3000)
-			Setwindelay, 150
-			SetKeyDelay, 0,0
-			exit
-		}
-		if keep_running = n ;another signal to stop
-			Exit
-	}
-	Preamble(){
-		Global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			exit
-		}
-		keep_running = y
-	}
-}
-MouseIsOver(winTitle){
-	Global
-	MouseGetPos,,, win
-Return winExist(winTitle . " ahk_id " . win)
-}
-
-SendPassword(){
-	if winExist("Login"){
-		winactivate
-		Sendinput, mmignin{tab}{-}{K}ilgore7744{enter}
-	}
-	Else If winexist("Sign :"){
-		winactivate,
-		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}{-}Kilgore7744{enter}
-	}
-	else if winexist("windows Security"){
-		winactivate,
-		Sendinput, {-}Kilgore7744{enter}
-	}
-	else if winexist("CredentialUIBroker.exe"){
-		winactivate,
-		Sendinput, {-}Kilgore7744{enter}
-	}
-
-	else
-		Sendinput, -{K}ilgore7744{enter}
-return
-}
-
-ClickText(Button:="Lbutton", Count:="1"){
-	mousegetpos, mousex, mousey
-	SetDefaultMouseSpeed, 0
-	mouseClick, %Button%, %A_CaretX%, %A_caretY%, %Count%
-	mousemove, %mousex%, %mousey%, 0
-	SetDefaultMouseSpeed, 1
-}
-
-ListArray(The_Array,Option:="n"){
-	; global
-	if (option<>"n"){
-		for Each, Element in The_Array
-			ArrayList .=Element " " Option " "
-		return ArrayList
-	}
-	else {
-  For Each, Element In The_Array {
-        ArrayList .= "`n" A_index ": "
-    ArrayList .= Element
-  }
-	return ArrayList
-  }
-}
-
-HasValue(haystack, needle) {
-	for index, value in haystack
-		if (value = needle)
-		return index
-	if !(IsObject(haystack))
-		throw Exception("Bad haystack!", -1, haystack)
-return 0
-}
-Block(Time:=300, action:=""){
-	Global N
-	If N
-		exit
-	If action
-		send % action
-		sleep 100
-		; TT(TooltipMessage)
-	N:=1
-	SetTimer, Block, -%time%
-	return
-
-	Block:
-		N:=
-		return
-}
-
-BlockRepeat(Time:=300, ToolTipMessage:=""){
-	Global N
-	sleep 25
-	If N
-		exit
-	If ToolTipMessage
-		TT(TooltipMessage)
-	N:=1
-	SetTimer, BlockTheInput, -%time%
-	sleep 50
-	return
-
-	BlockTheInput:
-		N:=
-		return
-}
-
-Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
-	global
-	MouseGetPos, mx, my, mw,
-	MouseReturn:="{click " Mx ", " My ",0}"
-	if window
-		if !winactive(window)
-			sleep 500 ; winactivate, %window%
-	mouseclick, %Button%, %x%,%y%,%n%,0
-	sleep 25
-	if (window!="")
-		winactivate, %mw%
-	If (ReturnMouse=0)
-		Return MouseReturn
-	else
-		mousemove,%mx%,%my%,0
-}

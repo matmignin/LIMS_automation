@@ -13,12 +13,17 @@ clipChange(type){
   sleep 50
   if SimpleClip
     return
-  if InStr(Clipboard, "<<LabelCopy>>", true,1,1) || InStr(Clipboard, "<LC>|", true,1,1){
-    ; if (Iteration >=25) || (Iteration < 0)
-      ; iteration:=1
+  if InStr(Clipboard, "<<LabelCopy>>", true,1,1) {
+    if (Iteration >=25) || (Iteration < 0) || !(Iteration)
+      iteration:=1
     ProductTab.AddIngredientsFromClipboard()
   }
-  else if Instr(Clipboard, "<<SheetInfo>>",true,1,1) || Instr(Clipboard, "<<LC>>|",true,1,1)
+  if InStr(Clipboard, "}]>", true,1,1) {
+    if (Iteration >=25) || (Iteration < 0) || !(Iteration)
+      iteration:=1
+    ProductTab.AddIngredientsFromClipboard()
+  }
+  else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProductFromClipboard()
   ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
     ; clip.HeavyMetalSpecs()
@@ -158,7 +163,7 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile, CustomerPosition
     Gui Varbar:Default
     PriorCodestring:=CodeString
     PriorBatch:=Batch
@@ -186,7 +191,7 @@ CodesRegex(input:=""){
       GuiControl,Varbar:Text, lot, %lot%
       GuiControl,Varbar:Text, Coated, %Coated%
       GuiControl,Varbar:Text, Iteration, %Iteration%
-      			GUI, VarBar:submit,NoHide
+      		    GUI, VarBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated)
       if (PriorCodestring!=Codestring){
         FileDelete, %CodeFile%

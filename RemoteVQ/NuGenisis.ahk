@@ -396,10 +396,11 @@ AddProductFromClipboard(){
       Iteration:=CustomerPosition
       ; ControlsetText, Static1,%CustomerPosition%,VarBar
       GuiControl,Varbar:Text, Iteration, %Iteration%
+		if CustomerPosition
+			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
     }
     if winactive("NuGenesis LMS"){
       Lms.detectTab()
-			; tt(Tab)
       if (Tab="Product"){
         click 74, 153
         sleep 1000
@@ -570,7 +571,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 
 AddNewProduct(){ ;for naming Product code and customer,
 	global Product, ProductName, Customer, ShapeAndSize, color
-	setwindelay, 260
+	SetWinDelay, %NormalWinDelay%
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}
 	sendraw, %ProductName%
@@ -594,7 +595,7 @@ AddNewProduct(){ ;for naming Product code and customer,
 	; clk(287, 578) ;click save
 	Iteration:=1
 	return
-	Setwindelay, 150
+	SetWinDelay, %NormalWinDelay%
 }
 
 AddNewFormulation(){     ;then click on Edit Formulation, puts in code, then tabs to serving size
@@ -620,7 +621,7 @@ AddNewFormulation(){     ;then click on Edit Formulation, puts in code, then tab
 }
 
 HM_ReportOnly(){
-	setwindelay, 260 ;testing out
+	SetWinDelay, %NormalWinDelay% ;testing out
 	click 125,120 ;click 1st row
 
 	clk(45, 65)
@@ -732,33 +733,32 @@ class SpecTab { 	;; _________SpecTab class_______
 	Table(){
 		Global
 		ShiftTable_X:=-355
-		ShiftTable_Y:=250
+		ShiftTable_Y:=200
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, window
 		ifwinnotactive, ahk_exe eln.exe
 			winactivate, ahk_exe eln.exe
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
-		CoordMode, mouse, window
+		; CoordMode, mouse, window
 		SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		SpecTable_Y:=LMS_Y+ShiftTable_Y
 
-		CoordMode, mouse, screen
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		SpecTab.ShowGUI()
+		CoordMode, mouse, screen
 		; sleep 100
 		return
 	}
 
 	ShowGUI(){
 		global
-		CoordMode, mouse, screen
-		ScreenEdge_X:=A_ScreenWidth+10
+		ScreenEdge_X:=A_ScreenWidth-15
 		ScreenEdge_Y:=A_Screenheight-180
 		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
 		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
-		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
+		OnMessage(0x0204, "WM_RBUTTONDOWN")
 		return
 	}
 
@@ -772,7 +772,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			Table_height = 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
-		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% checked Grid altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
 				continue
@@ -966,11 +966,11 @@ class SpecTab { 	;; _________SpecTab class_______
 		sleep 250
 		MouseClick, left, 245, 489,1,0
 		winactivate, Results Definition
-		winWaitactive, Results Definition,,0.25
+		winWaitactive, Results Definition,,0.55
 		if errorlevel
 			winactivate, Results Definition
 		click 84, 65
-		winwaitactive, Result Editor,,0.25
+		winwaitactive, Result Editor,,0.55
 		if errorlevel
 			winactivate, Result Editor
 		sleep 400
@@ -1641,19 +1641,23 @@ HM_Prop65(){
 		else
 			sleep 600
 		sleep 450
-		if winactive("NuGenesis LMS") && !winexist("Results Definition")
-			return
-		; if !winexist("Results Definition")
+		; if winactive("NuGenesis LMS") && !winexist("Results Definition")
+			; msgbox, LMS window active, not Results window
+		sleep 200
+		ifwinactive, Results Definition
+			Sendinput, {click 111, 96} ;; sort Seq
 			; exit
-		click, 111, 96 ;; sort Seq
 		sleep 300
-		click, 128, 65 ;; Remove
+		sendinput, {click 128, 65} ;; Remove
 		Breaking.Point()
+		sleep 200
 		; winactivate, Delete results
 		if winexist("Delete results")
-			sendinput, {enter}
+			send, {enter}
 		else
 			sleep 400
+		if winexist("Delete results")
+			send, {enter}
 		sleep 400
 		Breaking.Point()
 		; if winactive("NuGenesis LMS")
@@ -1663,13 +1667,13 @@ HM_Prop65(){
 			send, {enter}
 		Else
 			; {
-				tt("ended cuz it was too long")
+				; tt("ended cuz it was too long")
 				sleep 400
 				; if winactive("Results Definition")
 					; send, {enter}
 
 
-		winwaitactive, NuGenesis LMS,,5
+		winwaitactive, NuGenesis LMS,,6
 			if errorlevel
 				exit
 		sleep 300
@@ -1746,22 +1750,104 @@ HM_Prop65(){
 
 
 }
+WM_RBUTTONDOWN:
+	; if (A_GuiEvent = "DoubleClick"){
+  Row := A_EventInfo
+		SpecTab.GetRowText()
+Gui, LV_Edit:Add, text,, Name
+Gui, LV_Edit:Add, Edit, vName w100
+Gui, LV_Edit:Add, text,, LabelClaim
+Gui, LV_Edit:Add, Edit, vLabelClaim w100
+Gui, LV_Edit:Add, text,, MinLimit
+Gui, LV_Edit:Add, Edit, vMinLimit w100
+Gui, LV_Edit:Add, text,, MaxLimiseft
+Gui, LV_Edit:Add, Edit, vMaxLimit w100
+Gui, LV_Edit:Add, text,, Units
+Gui, LV_Edit:Add, Edit, vUnits w100
+Gui, LV_Edit:Add, text,, Percision
+Gui, LV_Edit:Add, Edit, vPercision w100
+Gui, LV_Edit:Add, text,, Description
+Gui, LV_Edit:Add, Edit, vDescription w100
+Gui, LV_Edit:Add, text,, Method
+Gui, LV_Edit:Add, Edit, vMethod w100
+Gui, LV_Edit:Add, Button, , Submit
+Gui, LV_Edit:+OwnerSpec_Table
+;   LV_GetText(Text,Row)   ; default first column value
+;   LV_GetText(ShortDef,Row,2)
+;   LV_GetText(Latin,Row,3)
+;   LV_GetText(LongDef,Row,4)
+GuiControl, LV_Edit: , Name, %Name%
+GuiControl, LV_Edit: , LabelClaim, %LabelClaim%
+GuiControl, LV_Edit: , MinLimit, %MinLimit%
+GuiControl, LV_Edit: , MaxLimit, %MaxLimit%
+GuiControl, LV_Edit: , Units, %Units%
+GuiControl, LV_Edit: , Percision, %Percision%
+GuiControl, LV_Edit: , Description, %Description%
+GuiControl, LV_Edit: , Method, %Method%
+  Gui, LV_Edit:Show
+
+		; if (A_GuiEvent := "I" ){
+		; Sendinput,{space}
+		; SpecTab.GetRowText()
+		; SpecTab.AutoFill()
+	; }
+return
+
 WM_Lbuttondown:
 Spec_Table:
 	if (A_GuiEvent = "NORMAL" ){
 		; if (A_GuiEvent := "I" ){
 		Sendinput,{space}
 		SpecTab.GetRowText()
+		; ShowVariables:= "
+		; (
+		; 	Name: " Name "
+		; 	LabelClaim: " LabelClaim "
+		; 	MinLimit: " MinLimit "
+		; 	MaxLimit: " MaxLimit "
+		; 	Units: " Units "
+		; 	Percision: " Percision "
+		; 	Description: " Description "
+		; 	Method: " Method "
+		; )"
+		; tt(ShowVariables,1000)
+
 		SpecTab.AutoFill()
 	}
 Return
 
+LV_EditButtonSubmit:
+  Gui,LV_Edit:Submit
+  Gui, Spec_Table:Default
+  LV_Modify(Row, ,Name,LabelClaim,MinLimit,MaxLimit,Units,Percision,Description,Method)
+  Try GUI, LV_Edit:destroy
+Return
 Spec_TableGuiClose:
 	GUI, Spec_Table:destroy
 	coordmode, mouse, window
 return
+LV_EditButtonEscape:
+LV_EditButtonClose:
+  Try GUI, LV_Edit:destroy
+  return
+
 
 Class WorkTab { 		;;______WorkTab Class______________
+	NewTestRequestLink(){
+		Global
+		winactivate, Register new samples
+		MouseClick, Left, 351, 621
+		; sleep 200
+		if !Product
+			return
+		winwaitactive, Edit request
+		sendinput, {tab 4}%Product%{tab 2}{space}{enter 2}{tab}{down}{tab 2}%batch%
+		if !Batch
+			return
+		sleep 500
+		MouseClick, Left, 356, 619
+		return
+	}
 	registerNewSamples(){
 		global
 		mx:=
@@ -1770,8 +1856,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 		Coated:=
 		If Lot = "ERROR"
 		lot:=
-		setwindelay, 280
-		; blockinput, on
+		SetWinDelay, %NormalWinDelay%
+		blockinput, on
 		ControlGetText, Iteration, Edit5, VarBar
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
@@ -1801,29 +1887,31 @@ Class WorkTab { 		;;______WorkTab Class______________
 					Sendinput, +{tab}
 				}
 			Breaking.Point()
-			sleep 200
-			If !Iteration
+			sleep 300
+			If !(Iteration)
 			{
+				msgbox, no Iteration
 				Worktab.CustomerMenu()
 				return
 				}
 			; else				if CustomerPosition > 0
-				if Iteration > 0
+				if (Iteration > 0)
 					CustomerPosition:= Iteration + 1
-				if Iteration < 0
+				if (Iteration < 0)
 					CustomerPosition:= Iteration - 1
 					; Iteration-=1
+			sleep 150
 			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
-			Breaking.Point()
+			blockinput, off
 			sleep 800
+			Breaking.Point()
 			Send, {enter}
 			sleep 200
-			; blockinput, off
 			; winactivate, Register new samples
 			; sleep 300
 			; my:=my+30
 			; MouseMove, mx, my
-			Setwindelay, 150
+			SetWinDelay, %NormalWinDelay%
 
 			return
 		}
@@ -1855,9 +1943,9 @@ Class WorkTab { 		;;______WorkTab Class______________
 				IniRead,CustomerPosition, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Customers.ini, Customers, %InputVar%
 				sleep 30
 				if winactive("Edit sample (Field Configuration: F, Micro)")
-					sendinput, {tab 9}
+					send, {tab 9}
 				else
-					sendinput, {tab 7}
+					send, {tab 7}
 				sleep 20
 				menu, Menu, DeleteAll
 				if CustomerPosition > 0
@@ -1874,30 +1962,41 @@ Class WorkTab { 		;;______WorkTab Class______________
 		Dropdown_CustomerSelect(A_ShipTo){
 			sleep 100
 			Critical, on
+			; msgbox, shipto %A_shipto% `niteration: %iteration% `nAbsselection: %Absselection% `n customerPosition:  %CustomerPosition%
 			setkeydelay, -1,-1
 			AbsSelection:=Abs(A_ShipTo)-1
 			if (a_shipto = "-1")
+				; msgbox %A_shipto% -1
 				Sendinput,{end}
 			else if (a_shipTo = 1)
+				; msgbox %A_shipto% 1
 				Sendinput,{home}
 			else if (a_ShipTo > 1)
+				; msgbox %A_shipto% >1
 				Sendinput,{home}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
+				; msgbox %A_shipto% <1
 				Sendinput,{end}{left %Absselection%}
 			else if (a_ShipTo = "")
+				; msgbox %A_shipto% blank
 				worktab.CustomerMenu()
 			else if (a_ShipTo = 0)
+				; msgbox %A_shipto% 0
 				worktab.CustomerMenu()
 			else
+			{
+			setkeydelay, 0, 0
+				critical, off
 				exit
+			}
 			; else
 				; sleep 400
 			; if (a_shipto > 175) || (absselection > 175)
 			; 	sleep 500
 			; if winactive("Edit sample `(Field Configuration:")
 				; sleep 800
-			setkeydelay, 0, 0
 			critical, off
+			setkeydelay, 0, 0
 			return
 		}
 
@@ -1957,7 +2056,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Breaking.Point()
 			Send,{tab}{enter}
 			; tooltip,
-			Setwindelay, 150
+			SetWinDelay, %NormalWinDelay%
 			return
 		}
 
@@ -2031,7 +2130,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 	AddSampleLog(count)
 	{
 		global
-		Setwindelay, 150
+		SetWinDelay, %NormalWinDelay%
 		loop, %count%
 		{
 			click 46, 877
@@ -2088,7 +2187,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 				Breaking.Point()
 				tt(Department)
 				blockinput off
-				Setwindelay, 150
+				SetWinDelay, %NormalWinDelay%
 			return
 		}
 
@@ -2336,4 +2435,184 @@ SwitchEnv(ServerEnv){
 	Send,{Home}{Right}{Right}{Right}{Right}{LShift down}{End}{End}{LShift up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
 	sleep 200 ; winwaitactive, Login ahk_class Transparent windows Client
 	Send,{Enter}
+}
+
+
+
+
+;_______________________________________Other__________
+
+TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
+	global
+	sleep 20
+		tooltip, %msg%, %X%, %Y%,%N%
+	hwnd := winExist("ahk_class tooltips_class32")
+	if Transparent
+		winSet, Trans, %Transparent%, % "ahk_id" hwnd
+	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
+	; winSet, Trans, 200, %W%
+	CoordMode, ToolTip, screen
+	; CoordMode, ToolTip, Relative
+	SetTimer, RemoveToolTip%N%, -%time%
+return
+RemoveToolTip:
+	ToolTip
+return
+RemoveToolTip1:
+	ToolTip,,,,1
+return
+RemoveToolTip2:
+	ToolTip,,,,2
+return
+RemoveToolTip3:
+	ToolTip,,,,3
+return
+RemoveToolTip4:
+	ToolTip,,,,4
+return
+}
+
+FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
+	global
+	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cw%Color%
+	if !Text
+		Text:=A_ThisHotkey
+	tt(Text,ToolTipTime,A_caretx,A_caretY,4)
+	Sleep,10
+	SplashImage,off
+return
+}
+
+class Breaking {
+	Point(){
+		Global
+		If (GetKeyState("Lbutton", "P") || GetKeyState("Space", "P")) {
+			TT("Broke",3000)
+			SetWinDelay, %NormalWinDelay%
+			SetKeyDelay, 0,0
+			exit
+		}
+		if keep_running = n ;another signal to stop
+			Exit
+	}
+	Preamble(){
+		Global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			exit
+		}
+		keep_running = y
+	}
+}
+MouseIsOver(winTitle){
+	Global
+	MouseGetPos,,, win
+Return winExist(winTitle . " ahk_id " . win)
+}
+
+SendPassword(){
+	if winExist("Login"){
+		winactivate
+		Sendinput, mmignin{tab}{-}{K}ilgore7744{enter}
+	}
+	Else If winexist("Sign :"){
+		winactivate,
+		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}{-}Kilgore7744{enter}
+	}
+	else if winexist("windows Security"){
+		winactivate,
+		Sendinput, {-}Kilgore7744{enter}
+	}
+	else if winexist("CredentialUIBroker.exe"){
+		winactivate,
+		Sendinput, {-}Kilgore7744{enter}
+	}
+
+	else
+		Sendinput, -{K}ilgore7744{enter}
+return
+}
+
+ClickText(Button:="Lbutton", Count:="1"){
+	mousegetpos, mousex, mousey
+	SetDefaultMouseSpeed, 0
+	mouseClick, %Button%, %A_CaretX%, %A_caretY%, %Count%
+	mousemove, %mousex%, %mousey%, 0
+	SetDefaultMouseSpeed, 1
+}
+
+ListArray(The_Array,Option:="n"){
+	; global
+	if (option<>"n"){
+		for Each, Element in The_Array
+			ArrayList .=Element " " Option " "
+		return ArrayList
+	}
+	else {
+  For Each, Element In The_Array {
+        ArrayList .= "`n" A_index ": "
+    ArrayList .= Element
+  }
+	return ArrayList
+  }
+}
+
+HasValue(haystack, needle) {
+	for index, value in haystack
+		if (value = needle)
+		return index
+	if !(IsObject(haystack))
+		throw Exception("Bad haystack!", -1, haystack)
+return 0
+}
+Block(Time:=300, action:=""){
+	Global N
+	If N
+		exit
+	If action
+		send % action
+		sleep 100
+		; TT(TooltipMessage)
+	N:=1
+	SetTimer, Block, -%time%
+	return
+
+	Block:
+		N:=
+		return
+}
+
+BlockRepeat(Time:=300, ToolTipMessage:=""){
+	Global N
+	sleep 25
+	If N
+		exit
+	If ToolTipMessage
+		TT(TooltipMessage)
+	N:=1
+	SetTimer, BlockTheInput, -%time%
+	sleep 50
+	return
+
+	BlockTheInput:
+		N:=
+		return
+}
+
+Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
+	global
+	MouseGetPos, mx, my, mw,
+	MouseReturn:="{click " Mx ", " My ",0}"
+	if window
+		if !winactive(window)
+			sleep 500 ; winactivate, %window%
+	mouseclick, %Button%, %x%,%y%,%n%,0
+	sleep 25
+	if (window!="")
+		winactivate, %mw%
+	If (ReturnMouse=0)
+		Return MouseReturn
+	else
+		mousemove,%mx%,%my%,0
 }
