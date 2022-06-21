@@ -107,11 +107,12 @@ Class VarBar{
 	Focus(Control){
 		global
 		; winGetTitle, the_winTitle, A
+		winactivate, VarBar ahk_exe RemoteVQ.exe
 		; caret_x:=A_CaretX
-		; caret_y:=A_Carety
-		winactivate, VarBar ahk_exe AutoHotkey.exe
-		; FlashScreen()
 		GuiControl Varbar:Focus, %Control%
+		; caret_y:=A_Carety
+		; winactivate, VarBar ahk_exe RemoteVQ.exe
+		; FlashScreen()
 		Sendinput, +{left}
 		return
 	}
@@ -131,7 +132,7 @@ Class VarBar{
 			; #MaxHotkeysPerInterval, 500
 		; GuiControl, -redraw, varbar
 		NAdd:=1
-		sleep 15
+		sleep 55
 		Iteration+=1
 		sleep %Speed%
 		ControlsetText, Edit5,%Iteration%,VarBar
@@ -149,7 +150,7 @@ Class VarBar{
 		; #MaxHotkeysPerInterval, 500
 		Nsub:=1
 		; GuiControl, -redraw, varbar
-		sleep 15
+		sleep 55
 		Iteration-=1
 		sleep %speed%
 		ControlsetText, Edit5,%Iteration%,VarBar
@@ -161,21 +162,30 @@ Class VarBar{
 	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 	global
 		GUI, varbar:default
-		; GUI, Varbar:Submit, Nohide
+		GUI, Varbar:Submit, Nohide
 		ControlGetText, Product, Edit1, VarBar
 		ControlGetText, Batch, Edit2, VarBar
 		ControlGetText, Lot, Edit3, VarBar
 		ControlGetText, Coated, Edit4, VarBar
 		ControlGetText, Iteration, Edit5, VarBar
+		Null:=""
 		sleep 100
-		; if Product
-			; iniwrite, %Product%, Settings.ini, SavedVariables, Product
-		; if Batch
-			; iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
-		; if lot
-			; iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
-		; if Coated
-			; iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+		if Product
+			iniwrite, %Product%, Settings.ini, SavedVariables, Product
+		else
+			iniwrite, %Null%, Settings.ini, SavedVariables, Product
+		if Batch
+			iniwrite, %Batch%, Settings.ini, SavedVariables, Batch
+		else
+			iniwrite, %Null%, Settings.ini, SavedVariables, Batch
+		if lot
+			iniwrite, %Lot%, Settings.ini, SavedVariables, Lot
+		else
+			iniwrite, %Null%, Settings.ini, SavedVariables, Lot
+		if Coated
+			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
+		else
+			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
 		; if CustomerPosition
 			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
@@ -183,10 +193,10 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 	global
 		GUI, varbar:default
 		; Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-		; iniRead, Product, Settings.ini, SavedVariables, Product
-		; iniRead, Batch, Settings.ini, SavedVariables, Batch
-		; iniRead, Lot, Settings.ini, SavedVariables, Lot
-		; iniRead, Coated, Settings.ini, SavedVariables, Coated
+		iniRead, Product, Settings.ini, SavedVariables, Product
+		iniRead, Batch, Settings.ini, SavedVariables, Batch
+		iniRead, Lot, Settings.ini, SavedVariables, Lot
+		iniRead, Coated, Settings.ini, SavedVariables, Coated
 		; if !Iteration
 			; GuiControl,Varbar:Text, Iteration, %Iteration%
 		;  if !Product
@@ -197,14 +207,14 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		; 	GuiControl,Varbar:Text, lot, %lot%
 		; if Coated
 		; 	GuiControl,Varbar:Text, Coated, %Coated%
-		GUI, Varbar:Submit, Nohide
+		; GUI, Varbar:Submit, Nohide
 	}
 }
 
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, VarBar ahk_exe AutoHotkey.exe
+#Ifwinactive, VarBar ahk_exe RemoteVQ.exe
 	enter::
-		ControlGetFocus,winControl,VarBar ahk_exe AutoHotkey.exe
+		ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3") ||(winControl="Edit4"){
 			GUI, varbar:default
 			Gui, Varbar:submit, nohide

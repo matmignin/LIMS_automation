@@ -10,27 +10,39 @@
 Return
 clipChange(type){
   global
-  sleep 50
+  sleep 75
   if SimpleClip
     return
-  if InStr(Clipboard, "<<LabelCopy>>", true,1,1) {
+  if InStr(Clipboard, "<^>", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
-    ProductTab.AddIngredientsFromClipboard()
+    LMS.AddDataFromClipboard()
   }
-  if InStr(Clipboard, "}]>", true,1,1) {
+  else if InStr(Clipboard, "<<LabelCopy>>", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
-    ProductTab.AddIngredientsFromClipboard()
+    LMS.AddDataFromClipboard("<<LabelCopy>>")
   }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProductFromClipboard()
-  ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
-    ; clip.HeavyMetalSpecs()
+  else if Winactive("Test Definition Editior"){
+    iniwrite, %Clipboard%, Settings.ini, CopiedSpecs, Description
+    Description:=Clipboard
+  }
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
     exitapp
     sleep 25
     }
+  else if Winactive("Results Definition")
+    clip.ParseSpecTable()
+  else if Winactive("NuGenesis LMS") || (Tab="Spec"){
+    clip.ParseMainTable()
+  }
+  else if Winactive("Composition")
+    clip.ParseIngredientTable()
+  ; else if Instr(Clipboard, "Use the limits from the test",true,1,1)
+  ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
+    ; clip.HeavyMetalSpecs()
   else
     clip.codesRegex()
     sleep 50
@@ -58,6 +70,19 @@ clipChange(type){
 ; [4] CustomerDropdown|
 ; [5] pillSize|
 
+/*
+
+IngredientText=
+LabelClaim=
+AssayRange=
+IngredientDescription=
+MinLimit=
+MaxLimit=
+Units=
+Percision=
+Requirement=
+
+ */
 
 Clip(input=50,Wait:="0.95"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
@@ -79,6 +104,105 @@ Clip(input=50,Wait:="0.95"){
 
 
 Class Clip {
+
+		ParseIngredientTable(Save:=1){
+		Global
+    SimpleClip:=
+		ParsedIngredients:=[]
+		Loop, parse, Clipboard, `t
+			ParsedIngredients.insert(A_LoopField)
+			TotalColumns:=ParsedIngredients.maxindex()//2
+			Position:=ParsedIngredients[HasValue(ParsedIngredients, "Position") + TotalColumns]
+			IngredientId:=ParsedIngredients[HasValue(ParsedIngredients, "Ingredient Id") + TotalColumns]
+			LabelName:=ParsedIngredients[HasValue(ParsedIngredients, "Description") + TotalColumns]
+			LabelClaim:=ParsedIngredients[HasValue(ParsedIngredients, "Generic 1") + TotalColumns]
+			IngredientGroup:=ParsedIngredients[HasValue(ParsedIngredients, "Generic 2") + TotalColumns]
+      sleep 200
+      copiedText:= IngredientId "`t" LabelClaim "`t" IngredientGroup "`n" LabelName
+      If Save
+      {
+        iniwrite, %IngredientId%, Settings.ini, CopiedSpecs, IngredientId
+        iniwrite, %LabelClaim%, Settings.ini, CopiedSpecs, LabelClaim
+        iniwrite, %IngredientGroup%, Settings.ini, CopiedSpecs, IngredientGroup
+        iniwrite, %LabelName%, Settings.ini, CopiedSpecs, LabelName
+      }
+      SimpleClip:=
+      tt(CopiedText, 2000,1,1,2)
+      return
+		}
+		ParseSpecTable(Save:=1){
+		Global
+    SimpleClip:=
+		ParsedSpecs:=[]
+    ParseData:=Clipboard
+		Loop, parse, ParseData, `t
+			ParsedSpecs.insert(A_LoopField)
+			TotalColumns:=ParsedSpecs.maxindex()//2
+			MinLimit:=ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns]
+			MaxLimit:=ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns]
+			Percision:=ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns]
+			Requirement:=ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns]
+			; FullRequirement:=ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns]
+			Units:=ParsedSpecs[HasValue(ParsedSpecs, "Unit") + TotalColumns]
+			SeqNo:=ParsedSpecs[HasValue(ParsedSpecs, "Seq No") + TotalColumns]
+      Method:=ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns]
+			ResultID:=ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns]
+      sleep 200
+      copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
+      If Save
+      {
+        iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
+        iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
+        iniwrite, %Percision%, Settings.ini, CopiedSpecs, Percision
+        iniwrite, %Requirement%, Settings.ini, CopiedSpecs, Requirement
+        iniwrite, %Units%, Settings.ini, CopiedSpecs, Units
+        iniwrite, %ResultID%, Settings.ini, CopiedSpecs, ResultID
+        iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
+        iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
+      }
+      SimpleClip:=
+      copypastetoggle=1
+      tt(CopiedText, 2000,1,1,2)
+      return
+		}
+
+		ParseMainTable(Save:=1){
+		Global
+    SimpleClip:=
+		ParsedMainTable:=[]
+    ParseData:=Clipboard
+		Loop, parse, ParseData, `t
+			ParsedMainTable.insert(A_LoopField)
+    TotalColumns:=ParsedMainTable.maxindex()//2
+    Method:=ParsedMainTable[HasValue(ParsedMainTable, "Method Id") + TotalColumns]
+    Requirements:=ParsedMainTable[HasValue(ParsedMainTable, "Requirements") + TotalColumns]
+    minmax:=Strsplit(Requirements," - ","`n")
+    MinLimit:=Minmax[1]
+    MaxLimit:=minmax[2]
+    TestID:=ParsedMainTable[HasValue(ParsedMainTable, "Test Id") + TotalColumns]
+    Department:=ParsedMainTable[HasValue(ParsedMainTable, "Department") + TotalColumns]
+    SeqNo:=ParsedMainTable[HasValue(ParsedMainTable, "Seq No") + TotalColumns]
+    SampleTemplate:=ParsedMainTable[HasValue(ParsedMainTable, "Sample Template") + TotalColumns]
+    Description:=ParsedMainTable[HasValue(ParsedMainTable, "Description") + TotalColumns]
+      sleep 200
+      copiedText:= TestID "`t" Description "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " SampleTemplate "`n Department: " Department
+      If Save
+      {
+        iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
+        iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
+        iniwrite, %SampleTemplate%, Settings.ini, CopiedSpecs, SampleTemplate
+        iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
+        iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+        iniwrite, %TestID%, Settings.ini, CopiedSpecs, TestID
+        iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+        iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
+        iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
+      }
+      SimpleClip:=
+      tt(CopiedText, 2000,1,1,2)
+      return
+		}
+
 
   HeavyMetalSpecs(){
     global
@@ -163,7 +287,7 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile, CustomerPosition
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile, CustomerPosition, Iteration
     Gui Varbar:Default
     PriorCodestring:=CodeString
     PriorBatch:=Batch
@@ -178,7 +302,6 @@ CodesRegex(input:=""){
         Lot:=
         Coated:=
       }
-      ; Iteration:=RegExMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r) ? rCoated : Coated
       if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
         Iteration:=Floor(rCustomerPosition)
         CustomerPosition:=rCustomerPosition
@@ -190,15 +313,18 @@ CodesRegex(input:=""){
       GuiControl,Varbar:Text, Batch, %Batch%
       GuiControl,Varbar:Text, lot, %lot%
       GuiControl,Varbar:Text, Coated, %Coated%
-      GuiControl,Varbar:Text, Iteration, %Iteration%
+      if rCustomerPosition
+        GuiControl,Varbar:Text, Iteration, %CustomerPosition%
+      ; GuiControl,Varbar:Text, Iteration, %Iteration%
       		    GUI, VarBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated)
       if (PriorCodestring!=Codestring){
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
+        FileAppend, `n%PriorCodeString%, %PriorCodeFile%
       }
-      ; tt(CodeString)
+      tt(CodeString)
       ; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
      Return ;CodeString
 }
@@ -263,7 +389,7 @@ Regex(Category:=""){
       }
       ; GuiControl, Varbar:MoveDraw, Coated
       gui varbar:submit, nohide
-      ; tt(Product " " Batch " " lot " " Coated)
+      ; tt(Product " " Batch " " lot " ct#" Coated)
       sleep 20
   }
 Department(DepartmentInput:=""){

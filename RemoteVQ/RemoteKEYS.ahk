@@ -15,25 +15,39 @@
 	;F2::sendinput, %Batch%
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
-	; ^F2::Varbar.Focus("Edit2")
 	; F3::sendinput, %Lot%
-	+^F15::showLabelCopy(FinalLabelCopyPath,"doc*")
-	+^F16::showLabelCopy(ScansLabelCopyPath,"pdf")
+	^F1::Varbar.Focus("Edit1")
+	^F2::Varbar.Focus("Edit2")
 	^F3::Varbar.Focus("Edit3")
-	F4::sendinput, %Coated%
 	^F4::Varbar.Focus("Edit4")
-	; !F2::GetAllBatches()
+	^F5::Varbar.Focus("Edit5")
+	F4::sendinput, %Coated%
 	;+F3::3tap()
-	!F3::4tap()
+	F10::
+	; if !(Requirement)
+	    iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
+        iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
+        iniread, Percision, Settings.ini, CopiedSpecs, Percision
+        iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
+        iniread, Units, Settings.ini, CopiedSpecs, Units
+        iniread, Description, Settings.ini, CopiedSpecs, Description
+        iniread, ResultID, Settings.ini, CopiedSpecs, ResultID
+        iniread, SeqNo, Settings.ini, CopiedSpecs, SeqNo
+        iniread, Method, Settings.ini, CopiedSpecs, Method
+	; SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+	  copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
+	  TT(CopiedText,2000,1,1,1)
+		spectab.Autofill()
+		return
 	+F4::4tap()
 	+F9::
 		Sendinput, ^{c}
 		sleep 100
 		TT(Clipboard)
 		return
-	^F2::AddToList()
+	^F8::AddToList()
 	; +F15::AddToList()
-	^F9::send, ^v
+	; ^F9::send, ^v
 	$LWin::return
 
 
@@ -145,17 +159,20 @@ AddToList(){
 		+F10::SpecTab.ApproveSpecVersion()
 		^F10::SpecTab.NewSpecVersion()
 		!F10::SpecTab.RemoveTestSpec()
-		;+F3::AddToList()
+
+		; +F3::AddToList()
 		mbutton:: 3tap()
 		+mbutton::lms.Menu()
-		F7::		 3Right()
-		F6::		3Left()
+		F19::lms.Menu()
+		F7::3Right()
+		F6::3Left()
 		Enter::LMS.SaveCode()
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::lms.searchbarPaste()
 		^F9::LMS.SearchBar()
-		^d::sendinput, {click 81, 1061} ; delete test
+		; ^d::sendinput, {click 81, 1061} ; delete test
+		; ^d::sendinput, {click 81, 1061} ; delete test
 
 
 	#Ifwinactive,Select Iterations
@@ -177,7 +194,7 @@ AddToList(){
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		Enter::
 		mbutton::clk(910,668)
-		F10::lms.menu()
+		; F10::lms.menu()
 		+mbutton::lms.menu()
 		+enter::sendinput, {enter}
 ; space::sendinput,{ctrldown}{click}{ctrlup}
@@ -210,10 +227,10 @@ AddToList(){
 		F8::						3down()
 		F7::						3Right()
 		F6::						3Left()
-		F10::						4tap()
-		+^F10::						4tap()
+		+Mbutton::						4tap()
+		; +^F10::						4tap()
 		mbutton::					3tap()
-		+!F10::						3tap()
+		; +!F10::						3tap()
 	#Ifwinactive,
 		;;	___Esc:
 		esc::						esc
@@ -226,10 +243,6 @@ AddToList(){
 		F20 & backspace:: 		Send, {delete}
 		F20 & =:: 		Send,{ctrldown}{=}{ctrlup}
 		F20 & -:: 		Send,{ctrldown}{-}{ctrlup}
-		^+F9::				Varbar.focus("Edit2")
-		F20 & enter::
-			Varbar.focus("Edit5")
-			send, {esc}{home}^{right}
 		return
 
 
@@ -321,7 +334,7 @@ AddToList(){
 			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 					Sendpassword()
 			}
-		else if winactive("VarBar ahk_exe AutoHotkey.exe"){
+		else if winactive("VarBar ahk_exe RemoteVQ.exe"){
 				click
 				sleep 100
 				Varbar.WM_LBUTTONDBLCLK()

@@ -20,7 +20,116 @@ Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
 	return ShiptoIndex
 }
 
+
 Class LMS { ;;__________Generl LMS__________________
+AddDataFromClipboard(Pointer:="<\^>",Source:=""){
+	/*
+	[2] Name
+	[3] IngredientID
+	[4] Position
+	[5] LabelName
+	[6] labelClaim
+	[7] Assay
+	[8] Method
+	[9] Description
+	[10] MinLimit
+	[11] MaxLimit
+	[12] Units
+	[13] Percision
+	[14] Requirement
+	*/
+	global
+	if !Source
+		Source:=Clipboard
+	sleep 100
+	if RegexMatch(Source, Pointer){
+		Name:=			[]
+		IngredientID:=	[]
+		Position:=		[]
+		LabelClaim:=	[]
+		MinLimit:=		[]
+		MaxLimit:=		[]
+		Units:=			[]
+		Percision:=		[]
+		LabelName:=		[]
+		Description:=	[]
+		Assay:=			[]
+		Requirement:=	[]
+		Method:= 		[]
+      Table_height=0
+		loop, parse, clipboard, "`n"
+		{
+			Line:=A_index
+			Ingredient:=[]
+			ingredient:=StrSplit(A_LoopField,"|")
+			Name[Line]:=ingredient[2]
+			IngredientID[Line]:=ingredient[3]
+			Position[Line]:=ingredient[4]
+			LabelName[Line]:=ingredient[5]
+			labelClaim[Line]:=ingredient[6]
+			if !ingredient[7] 					;If there are spec tabs
+				continue
+			Assay[Line]:=ingredient[7]
+			Method[Line]:=ingredient[8]
+			Description[Line]:=ingredient[9]
+			MinLimit[Line]:=ingredient[10]
+			MaxLimit[Line]:=ingredient[11]
+			Units[Line]:=ingredient[12]
+			Percision[Line]:=ingredient[13]
+			Requirement[Line]:=ingredient[14]
+    		  Table_height+=1
+			}
+			  Lms.detectTab()
+			If winactive("Edit Ingredient"){
+				winactivate "Edit Ingredient"
+				sleep 250
+				ProductTab.AddNewIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
+				sleep 320
+				return
+				}
+			else if Winactive("Composition"){
+				winactivate "Composition"
+				loop % Line
+				{
+					If !Position[A_index]
+						return
+					ProductTab.AddNewIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
+					sleep 150
+					ifwinnotactive, Composition
+					winactivate, Composition
+					sleep 150
+					}
+				}
+			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor"){
+				SpecData:=[]
+				SpecData:=StrSplit(clipboard,"|")
+				Name:=SpecData[2]
+				IngredientID:=SpecData[3]
+				Method:=SpecData[8]
+				Description:=SpecData[9]
+				MinLimit:=SpecData[10]
+				MaxLimit:=SpecData[11]
+				Units:=SpecData[12]
+				Percision:=SpecData[13]
+				Requirement:=SpecData[14]
+				SpecTab.AutoFill()
+
+			}
+			else if (Tab="Specs") {
+				Try GUI, Spec_Table:destroy
+				SpecTab.Table()
+				return
+		  }
+		  }
+	else
+		clip.codesRegex()
+	sleep 100
+	return
+
+}
+
+
+
 
 	Menu(){
 		Global
@@ -29,9 +138,9 @@ Class LMS { ;;__________Generl LMS__________________
 			LMS.Orient()
 			LMS.DetectTab()
 			;Menu,Menu, add, Copy &Template, autofill
-			If CopyPasteToggle=1
+			; If CopyPasteToggle=1
 				Menu,Menu, add, Paste &Specs, Autofill
-			If CopyPasteToggle=0
+			; If CopyPasteToggle=0
 				Menu,Menu, add, Copy &Specs, Autofill
 			Menu, Menu, add, Paste All &Products, +F1
 			Menu, Menu, add, Paste All &Batches, +F2
@@ -379,6 +488,16 @@ Scrolldown(){
 }
 
 Class ProductTab { ;;________ProductTab Class_______________
+/*
+      [2] Product
+      [3] ProductName
+      [4] Customer
+      [5] CustomerPosition
+      [6] ShapeAndSize
+      [7] Color
+      [8] ServingSize
+      [9] clip.codesRegex
+ */
 AddProductFromClipboard(){
 	Global
     loop, parse, clipboard, "`n"
@@ -418,77 +537,7 @@ AddProductFromClipboard(){
       return
   }
 
-AddIngredientsFromClipboard(){
-	global
-	Pointer:=Clipboard
-  		if RegexMatch(Pointer, "<<LabelCopy>>"){
-			Name:=			[]
-			IngredientID:=	[]
-			Position:=		[]
-			LabelClaim:=	[]
-			MinLimit:=		[]
-			MaxLimit:=		[]
-			Units:=			[]
-			Percision:=		[]
-			LabelName:=		[]
-			Description:=	[]
-			Assay:=			[]
-			Requirement:=	[]
-			Method:= 		[]
-      Table_height=0
-		loop, parse, clipboard, "`n"
-		{
-			Line:=A_index
-			Ingredient:=[]
-			ingredient:=StrSplit(A_LoopField,"|")
-			Name[Line]:=ingredient[2]
-			IngredientID[Line]:=ingredient[3]
-			Position[Line]:=ingredient[4]
-			LabelName[Line]:=ingredient[5]
-			labelClaim[Line]:=ingredient[6]
-			if !ingredient[7]
-				continue
-			Assay[Line]:=ingredient[7]
-			Method[Line]:=ingredient[8]
-			Description[Line]:=ingredient[9]
-			MinLimit[Line]:=ingredient[10]
-			MaxLimit[Line]:=ingredient[11]
-			Units[Line]:=ingredient[12]
-			Percision[Line]:=ingredient[13]
-			Requirement[Line]:=ingredient[14]
-    		  Table_height+=1
-			}
-			  Lms.detectTab()
-			If winactive("Edit Ingredient"){
-				winactivate "Edit Ingredient"
-				sleep 250
-				ProductTab.AddNewIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
-				sleep 320
-				return
-				}
-			else if Winactive("Composition"){
-				winactivate "Composition"
-				loop % Line
-				{
-					If !Position[A_index]
-						return
-					ProductTab.AddNewIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
-					sleep 150
-					ifwinnotactive, Composition
-					winactivate, Composition
-					sleep 150
-					}
-				}
-			else if (Tab="Specs") || winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") {
-		Try GUI, Spec_Table:destroy
-        SpecTab.Table()
-        return
-		  }
-		  }
-			sleep 100
-		return
 
-}
 
 
 
@@ -914,14 +963,15 @@ class SpecTab { 	;; _________SpecTab class_______
 		; Clipwait,1
 		Description:=Clipboard
 		sleep 200
-		StrReplace(Description, "eurofins", "intertek")
+		; StrReplace(Description, "eurofins", "intertek")
+		iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
 		; MouseClick, left, 464, 532,2,0
 		MouseClick, left, 464, 533,1,0
 		sleep 150
 		MouseClick, left, 245, 489,1,0
 		;  LMSclick.TestDefinitionEditor_Results()
 		winactivate, Results Definition
-		winWaitactive, Results Definition,,0.35
+		winWaitactive, Results Definition,,0.45
 		if errorlevel
 			winactivate, Results Definition
 		click 282, 141 ; click row
@@ -932,50 +982,61 @@ class SpecTab { 	;; _________SpecTab class_______
 		clipwait, 3
 		sleep 200
 		Sendinput,{esc}
-		ParsedSpecs:=[]
-		Loop, parse, Clipboard, `t
-			ParsedSpecs.insert(A_LoopField)
-		MinLimit:=Parsedspecs[17]
-		MaxLimit:=Parsedspecs[18]
-		Percision:=Parsedspecs[19]
-		FullRequirements:=Parsedspecs[20]
-		Units:=Parsedspecs[21]
+		clip.ParseSpecTable()
+
 		sleep 200
 		blockinput off
 		Sendinput, {esc}
-		SimpleClip:=
-		copypastetoggle=1
+
 		Critical, Off
+		tt(FullRequirements " " Percision,2000)
 		exit
 		Return
 	}
 
+
 	PasteSpecs(){
 		global
 		Critical, On
-		winactivate, NuGenesis LMS
-		click 57, 715 ; edit Test
-		winwaitactive, Test Definition Editor,,0.65
-		; if errorlevel
+		iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
+		iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
+		iniread, Percision, Settings.ini, CopiedSpecs, Percision
+		iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
+		iniread, Units, Settings.ini, CopiedSpecs, Units
+		if winactive("NuGenesis LMS"){
+			winactivate, NuGenesis LMS
+			click 57, 715 ; edit Test
+			sleep 400
 			winactivate, Test Definition Editor
-		sleep 400
-		click 418, 202
-		SpecTab.TestDefinitionEditor(Description) ; the pre window
-		sleep 200
-		MouseClick, left, 464, 533,1,0
-		sleep 250
-		MouseClick, left, 245, 489,1,0
-		winactivate, Results Definition
-		winWaitactive, Results Definition,,0.55
-		if errorlevel
+			Breaking.Point()
+			; winwaitactive, Test Definition Editor,,0.95
+		}
+		if winactive("Test Definition Editor"){
+			click 418, 202 			;click description box
+			SpecTab.TestDefinitionEditor(Description) ; the pre window
+			sleep 200
+			MouseClick, left, 464, 533,1,0 ; Click scrollbar
+			sleep 250
+			MouseClick, left, 245, 485,1,0  ; click results
 			winactivate, Results Definition
-		click 84, 65
-		winwaitactive, Result Editor,,0.55
-		if errorlevel
+			sleep 300
+			Breaking.Point()
+		}
+		if winactive("Results Definition"){
+			winactivate, Results Definition
+			; winWaitactive, Results Definition,,0.75
+			; if errorlevel
+			click 84, 65  ;click Edit
+			sleep 300
+			}
+			; winwaitactive, Result Editor,,0.75
+			; if errorlevel
+		if winactive("Results Editor"){
 			winactivate, Result Editor
-		sleep 400
-		Breaking.Point()
-		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+			sleep 400
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
+			Breaking.Point()
+		}
 		CopyPasteToggle=0
 		Critical, Off
 		exit
@@ -2490,6 +2551,9 @@ class Breaking {
 			TT("Broke",3000)
 			SetWinDelay, %NormalWinDelay%
 			SetKeyDelay, 0,0
+			Critical, Off
+			CoordMode, mouse, window
+			CoordMode, Tooltip, window
 			exit
 		}
 		if keep_running = n ;another signal to stop

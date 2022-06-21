@@ -29,20 +29,63 @@ if A_username != mmignin
 	CrLf=`r`n
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
-	CoordMode, mouse, window
+	CoordMode, mouse, relative
+	CoordMode, Tooltip, relative
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
-	DetectHiddenWindows, On
+	; DetectHiddenWindows, On
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, Add, All Products, AllProductsMsgbox
+	Menu, Tray, Add, &Reload, ReloadSub
+	; Menu, Tray, add, Enter Specs, EnterSpecs
+	Menu, Tray, add, Show Final Label Copy, ShowFinalLabelCopy
+	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
+	Menu, Tray, add, Show Total CoAs, ShowFINAL_C_O_A
+	Menu, Tray, add, Show EditBox, ShowEditBox
+	Menu, Tray, add, AddClipBoardToList, AddToList
+	Menu, Tray, Add, Show Variables, ShowVariables
+	Menu, Tray, Default, &Reload
+	copypasteToggle:=0
+	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
+	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
+	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
+	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
-	; OnExit("Varbar.SaveVariables")
+	OnExit("Varbar.SaveVariables")
+	SetTimer,activeCheck, %ActiveTimerCheck%
+	ReadIniFiles()
+
+
+
+	; Menu, Tray, Add, E&xit, ExitSub
+	LMS.Orient()
+	sleep 200
+	varbar.Show()
+	try Menu, Tray, Icon, %AppIconPath%
+	#include ClipBar.ahk
+	#include Nugenisis.ahk
+	#include CodeClip.ahk
+	#Include RemoteKEYS.ahk
+	SetWinDelay, %NormalWinDelay%
+
+
+	; RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
+
+
+
+return
+ReadIniFiles(){
+	global
+	iniRead, Product, Settings.ini, SavedVariables, Product
+	iniRead, Batch, Settings.ini, SavedVariables, Batch
+	iniRead, Lot, Settings.ini, SavedVariables, Lot
+	iniRead, Coated, Settings.ini, SavedVariables, Coated
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
 	iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
@@ -71,36 +114,10 @@ if A_username != mmignin
 	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
-
-	SetTimer,activeCheck, %ActiveTimerCheck%
-	try Menu, Tray, Icon, %AppIconPath%
-	; Menu, Tray, Add, E&xit, ExitSub
-	Menu, Tray, Add, &Reload, ReloadSub
-	Menu, Tray, add, Enter Specs, EnterSpecs
-	Menu, Tray, add, Show Final Label Copy, ShowFinalLabelCopy
-	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
-	Menu, Tray, add, Show Total CoAs, ShowFINAL_C_O_A
-	Menu, Tray, add, Show EditBox, ShowEditBox
-	Menu, Tray, add, AddClipBoardToList, AddToList
-	Menu, Tray, Default, &Reload
-	SetWinDelay, %NormalWinDelay%
-
-	LMS.Orient()
-	varbar.Show()
-
-	copypasteToggle:=0
-	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
-	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
-	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
-	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
-	; RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
-  #include ClipBar.ahk
-  #include Nugenisis.ahk
-  #include CodeClip.ahk
-  #Include RemoteKEYS.ahk
+	iniread, PriorCodeFile, Settings.ini, FilePaths, PriorCodeFile
+}
 
 
-return
 
 Reloadsub(){
 	global
@@ -124,11 +141,17 @@ AllProductsMsgbox:
 	sleep 200
 	clip.EditBox(AllProductsMsg)
 	return
-
-EnterSpecs:
-	ProductTab.AddIngredientsFromClipboard()
-	msgbox % "Name: " Name "`nLabelclaim: " Labelclaim "`nminLimit: " minLimit "`nmaxLimit: " maxLimit "`nunits: " units
-	SpecTab.AutoFill()
+ShowVariables:
+	run, edit Settings.ini
+	sleep 200
+	WinWaitNotActive, Settings - Notepad,, 10
+			ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
+	; winwaitclose, Settings - Notepad,,10
+		; if errorlevel
+		; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
+		readInIFiles()
+		LMS.Orient()
+		varbar.Show()
 	return
 ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
@@ -140,6 +163,7 @@ ShowScanLabelCopy:
 	sleep 200
 	sendinput, %Product%{enter}
 	return
+
 ShowFINAL_C_O_A:
 	run, explorer %2022_Final_C_O_APath%
 	return
@@ -219,12 +243,19 @@ activeCheck:
 		winactivate,
 		send, {enter}
 	}
+	else if winactive("Settings - Notepad"){
+			WinWaitNotActive, Settings - Notepad,,
+			ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
+			readInIFiles()
+			LMS.Orient()
+			varbar.Show()
+	}
 	else
-		; if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
-		; LMS.Orient()
-		; sleep 300
-		; winMove, VarBar ahk_class VarBar ahk_exe AutoHotkey.exe, ,%varBar_nuX%, %varBar_nuY%
-		; }
+		if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
+		LMS.Orient()
+		sleep 300
+		winMove, VarBar ahk_class VarBar ahk_exe RemoteVQ.exe, ,%varBar_nuX%, %varBar_nuY%
+		}
 		return
 return
 
