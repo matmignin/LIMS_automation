@@ -153,6 +153,9 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 			else if (Tab="Specs"){
 				this.CopyPasteSpec()
 				Menu,Menu, add, &Delete Retain, Autofill
+				Menu,Menu, add, ApproveSpecVersion, +#F11
+				Menu,Menu, add, NewSpecVersion, ^#F11
+				Menu,Menu, add, RemoveTestSpec, !#F11
 			}
 
 			else {
@@ -488,6 +491,8 @@ Scrolldown(){
 }
 
 Class ProductTab { ;;________ProductTab Class_______________
+
+
 /*
       [2] Product
       [3] ProductName
@@ -620,7 +625,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 
 AddNewProduct(){ ;for naming Product code and customer,
 	global Product, ProductName, Customer, ShapeAndSize, color
-	SetWinDelay, %NormalWinDelay%
+	SetWinDelay, 260
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}
 	sendraw, %ProductName%
@@ -788,26 +793,27 @@ class SpecTab { 	;; _________SpecTab class_______
 		ifwinnotactive, ahk_exe eln.exe
 			winactivate, ahk_exe eln.exe
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
-		; CoordMode, mouse, window
 		SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		SpecTable_Y:=LMS_Y+ShiftTable_Y
+		CoordMode, mouse, screen
 
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		SpecTab.ShowGUI()
-		CoordMode, mouse, screen
+		CoordMode, mouse, window
 		; sleep 100
 		return
 	}
 
 	ShowGUI(){
 		global
+		CoordMode, mouse, screen
 		ScreenEdge_X:=A_ScreenWidth-15
 		ScreenEdge_Y:=A_Screenheight-180
 		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
 		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
+		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
-		OnMessage(0x0204, "WM_RBUTTONDOWN")
 		return
 	}
 
@@ -982,7 +988,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		clipwait, 3
 		sleep 200
 		Sendinput,{esc}
-		clip.ParseSpecTable()
+		clip.ParseSpecsTable()
 
 		sleep 200
 		blockinput off
@@ -1059,9 +1065,9 @@ class SpecTab { 	;; _________SpecTab class_______
 ;; Run through all the menues to add
 	AutoFill(){
 		global
-		sleep 400
 		winactivate, ahk_exe eln.exe
 		CoordMode, mouse, window
+		sleep 200
 		If winactive("NuGenesis LMS")
 		{
 			sleep 200
@@ -1238,6 +1244,48 @@ TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 		sleep 100
 		; click 239, 246 					;click results link
 	}
+	;Send,{shift down}{Tab 15}{Shift up}{enter}
+}
+TestDefinitionEditor_Stability(){ ;,Department:=""){ ; 2nd window
+	Global
+	if Winactive("NuGenesis LMS")
+		mouseclick, left, 61, 715,1,0
+		sleep 400
+		winwaitactive, Test Definition Editor,,2
+			if errorlevel
+				winactivate, Test Definition Editor
+		; CoordMode, Mouse, Screen
+		; DescriptionRaw:=The_Description
+		; Trimmed_Description:=RTrim(DescriptionRaw, "`r`n")
+		; sleep 85
+		mouseclick, left, 187, 200,1,0
+		sleep 100  ;click description box
+		sendinput, +{tab}^{a}Stability ;Stability Test Group
+		sleep 200	;Orient
+		mouseclick, left, 366, 280, 2,0 ;click department
+		sleep 200
+		sendinput, {down 15}{up}
+		; if Name contains Vitamin C
+			; Sendinput,{Home}{Delete 12}
+		; else
+			; Send, ^{a}
+		; sleep 100
+		; sendinput, %Trimmed_Description%
+		; if strLen(Trimmed_Description) > 100
+			; sleep 300
+		; if (Department="Stability"){
+			; Sendinput, +{tab}^{a}Stability
+			sleep 400
+			; click, 347, 287 ; click Department dropdown
+			; sleep 400
+			; sendinput, {pgdn}{up}{enter} ;select stability
+			; sleep 300
+		; }
+
+		Breaking.Point()
+		MouseClick, left, 464, 532,2,0 	;click scrollbar
+		; sleep 100
+		click 239, 246 					;click results link
 	;Send,{shift down}{Tab 15}{Shift up}{enter}
 }
 
@@ -1698,18 +1746,18 @@ HM_Prop65(){
 
 	RemoveTestSpec(){
 		if winactive("NuGenesis LMS")
-			click, 63, 754 ;; edit results
+			click, 63, 754   ; edit results
 		else
 			sleep 600
 		sleep 450
 		; if winactive("NuGenesis LMS") && !winexist("Results Definition")
 			; msgbox, LMS window active, not Results window
-		sleep 200
-		ifwinactive, Results Definition
-			Sendinput, {click 111, 96} ;; sort Seq
+		; ifwinactive, Results Definition
+		mouseclick, left, 111, 95,1,0
+			; Sendinput, {click 111, 96} ; sort Seq
 			; exit
 		sleep 300
-		sendinput, {click 128, 65} ;; Remove
+		sendinput, {click 128, 65} ; Remove
 		Breaking.Point()
 		sleep 200
 		; winactivate, Delete results
@@ -1811,48 +1859,7 @@ HM_Prop65(){
 
 
 }
-WM_RBUTTONDOWN:
-	; if (A_GuiEvent = "DoubleClick"){
-  Row := A_EventInfo
-		SpecTab.GetRowText()
-Gui, LV_Edit:Add, text,, Name
-Gui, LV_Edit:Add, Edit, vName w100
-Gui, LV_Edit:Add, text,, LabelClaim
-Gui, LV_Edit:Add, Edit, vLabelClaim w100
-Gui, LV_Edit:Add, text,, MinLimit
-Gui, LV_Edit:Add, Edit, vMinLimit w100
-Gui, LV_Edit:Add, text,, MaxLimiseft
-Gui, LV_Edit:Add, Edit, vMaxLimit w100
-Gui, LV_Edit:Add, text,, Units
-Gui, LV_Edit:Add, Edit, vUnits w100
-Gui, LV_Edit:Add, text,, Percision
-Gui, LV_Edit:Add, Edit, vPercision w100
-Gui, LV_Edit:Add, text,, Description
-Gui, LV_Edit:Add, Edit, vDescription w100
-Gui, LV_Edit:Add, text,, Method
-Gui, LV_Edit:Add, Edit, vMethod w100
-Gui, LV_Edit:Add, Button, , Submit
-Gui, LV_Edit:+OwnerSpec_Table
-;   LV_GetText(Text,Row)   ; default first column value
-;   LV_GetText(ShortDef,Row,2)
-;   LV_GetText(Latin,Row,3)
-;   LV_GetText(LongDef,Row,4)
-GuiControl, LV_Edit: , Name, %Name%
-GuiControl, LV_Edit: , LabelClaim, %LabelClaim%
-GuiControl, LV_Edit: , MinLimit, %MinLimit%
-GuiControl, LV_Edit: , MaxLimit, %MaxLimit%
-GuiControl, LV_Edit: , Units, %Units%
-GuiControl, LV_Edit: , Percision, %Percision%
-GuiControl, LV_Edit: , Description, %Description%
-GuiControl, LV_Edit: , Method, %Method%
-  Gui, LV_Edit:Show
 
-		; if (A_GuiEvent := "I" ){
-		; Sendinput,{space}
-		; SpecTab.GetRowText()
-		; SpecTab.AutoFill()
-	; }
-return
 
 WM_Lbuttondown:
 Spec_Table:
@@ -1860,37 +1867,17 @@ Spec_Table:
 		; if (A_GuiEvent := "I" ){
 		Sendinput,{space}
 		SpecTab.GetRowText()
-		; ShowVariables:= "
-		; (
-		; 	Name: " Name "
-		; 	LabelClaim: " LabelClaim "
-		; 	MinLimit: " MinLimit "
-		; 	MaxLimit: " MaxLimit "
-		; 	Units: " Units "
-		; 	Percision: " Percision "
-		; 	Description: " Description "
-		; 	Method: " Method "
-		; )"
 		; tt(ShowVariables,1000)
 
 		SpecTab.AutoFill()
 	}
 Return
 
-LV_EditButtonSubmit:
-  Gui,LV_Edit:Submit
-  Gui, Spec_Table:Default
-  LV_Modify(Row, ,Name,LabelClaim,MinLimit,MaxLimit,Units,Percision,Description,Method)
-  Try GUI, LV_Edit:destroy
-Return
+
 Spec_TableGuiClose:
 	GUI, Spec_Table:destroy
 	coordmode, mouse, window
 return
-LV_EditButtonEscape:
-LV_EditButtonClose:
-  Try GUI, LV_Edit:destroy
-  return
 
 
 Class WorkTab { 		;;______WorkTab Class______________
@@ -1949,12 +1936,12 @@ Class WorkTab { 		;;______WorkTab Class______________
 				}
 			Breaking.Point()
 			sleep 300
-			If !(Iteration)
-			{
-				msgbox, no Iteration
-				Worktab.CustomerMenu()
-				return
-				}
+			; If !(Iteration)
+			; {
+				; msgbox, no Iteration
+				; Worktab.CustomerMenu()
+				; return
+				; }
 			; else				if CustomerPosition > 0
 				if (Iteration > 0)
 					CustomerPosition:= Iteration + 1
@@ -1979,7 +1966,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			global
-			try menu, Menu, DeleteAll
+			try menu, CustomersMenu, DeleteAll
 			send, {pgup 2}
 			sleep 20
 			send, {click 250, 150}
@@ -1987,35 +1974,43 @@ Class WorkTab { 		;;______WorkTab Class______________
 				; send, {click 421, 504}
 			; else ;if winactive("Edit sample (Field Configuration")
 				; Send, {Click 425, 434}
-			Loop, Read, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Customers.ini
+			Loop, Read, %CustomerListPath%
 			{
 				If A_Index = 1
 					Continue
 				MenuItems := StrSplit(A_LoopReadLine, "=")
 				Selection:= % MenuItems[1]
-				Menu, Menu, add, &%Selection%, CustomerMenu
+				Count:= % MenuItems[2]
+				Menu, CustomersMenu, add, %Count% `t &%Selection%, CustomerMenu
 			}
-			Menu, Menu, Show,
+			Menu, CustomersMenu, Show,
 			return
 			CustomerMenu:
 				sleep 200
-				InputVar:=StrReplace(A_ThisMenuItem, "&", "")
+				MenuSelection:=[]
+				; InputVar:=StrReplace(A_ThisMenuItem,"&",)
+				MenuSelection:=StrSplit(A_ThisMenuItem, "&")
+				inputVar:=MenuSelection[2]
 				; InputVar:=A_ThisMenuItem
-				IniRead,CustomerPosition, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Customers.ini, Customers, %InputVar%
+				IniRead,CustomerPosition, %CustomerListPath%, Customers, %InputVar%
 				sleep 30
 				if winactive("Edit sample (Field Configuration: F, Micro)")
 					send, {tab 9}
 				else
 					send, {tab 7}
 				sleep 20
-				menu, Menu, DeleteAll
+				menu, CustomersMenu, DeleteAll
 				if CustomerPosition > 0
 					customerPosition+=1
 				if CustomerPosition < 0
 					customerPosition-=1
 				sleep 200
 				Iteration:=CustomerPosition
-				GUI, VarBar:submit,NoHide
+				sleep 200
+				GuiControl,Varbar:Text, Iteration, %CustomerPosition%
+				; GUI, VarBar:submit,NoHide
+				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+				mouseclick, Left, 431, 541,1,0
 				this.Dropdown_CustomerSelect(CustomerPosition)
 			return
 		}
@@ -2060,6 +2055,17 @@ Class WorkTab { 		;;______WorkTab Class______________
 			setkeydelay, 0, 0
 			return
 		}
+	EditRequest(){
+		Global
+		mouseclick, left, 369, 139,1,0
+		winactivate, Edit request
+		sendinput, {tab 2}%Product%{tab 2}{space}{enter 2}{tab}{down}{tab 2}%batch%
+		if !Batch
+			return
+		sleep 500
+		MouseClick, Left, 356, 619
+		return
+	}
 
 		NewRequest(){
 			global
@@ -2505,6 +2511,8 @@ SwitchEnv(ServerEnv){
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
+  if Simpleclip
+	return
 	sleep 20
 		tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := winExist("ahk_class tooltips_class32")

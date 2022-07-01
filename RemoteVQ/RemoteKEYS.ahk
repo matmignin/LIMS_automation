@@ -1,5 +1,8 @@
 
 		#ifwinactive,
+	+#F11::SpecTab.ApproveSpecVersion()
+	^#F11::SpecTab.NewSpecVersion()
+	!#F11::SpecTab.RemoveTestSpec()
 	~RWin::Send {Blind}{vkFF}
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
@@ -10,41 +13,42 @@
 		; SpecTab.GetRowText()
 		; SpecTab.AutoFill()
 		; return
+	^+s::specTab.TestDefinitionEditor_Stability()
 	!F1::GetAllProducts("`n")
 	+F1::worktab.NewTestRequestLink()
 	;F2::sendinput, %Batch%
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
 	; F3::sendinput, %Lot%
-	^F1::Varbar.Focus("Edit1")
-	^F2::Varbar.Focus("Edit2")
-	^F3::Varbar.Focus("Edit3")
-	^F4::Varbar.Focus("Edit4")
-	^F5::Varbar.Focus("Edit5")
+	!1::Varbar.Focus("Edit1")
+	!2::Varbar.Focus("Edit2")
+	!3::Varbar.Focus("Edit3")
+	!4::Varbar.Focus("Edit4")
+	!5::Varbar.Focus("Edit5")
 	F4::sendinput, %Coated%
 	;+F3::3tap()
-	F10::
+
+	+F10::spectab.Autofill()
 	; if !(Requirement)
-	    iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
-        iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
-        iniread, Percision, Settings.ini, CopiedSpecs, Percision
-        iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
-        iniread, Units, Settings.ini, CopiedSpecs, Units
-        iniread, Description, Settings.ini, CopiedSpecs, Description
-        iniread, ResultID, Settings.ini, CopiedSpecs, ResultID
-        iniread, SeqNo, Settings.ini, CopiedSpecs, SeqNo
-        iniread, Method, Settings.ini, CopiedSpecs, Method
-	; SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-	  copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
-	  TT(CopiedText,2000,1,1,1)
-		spectab.Autofill()
+	    ; iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
+        ; iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
+        ; iniread, Percision, Settings.ini, CopiedSpecs, Percision
+        ; iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
+        ; iniread, Units, Settings.ini, CopiedSpecs, Units
+        ; iniread, Description, Settings.ini, CopiedSpecs, Description
+        ; iniread, ResultID, Settings.ini, CopiedSpecs, ResultID
+        ; iniread, SeqNo, Settings.ini, CopiedSpecs, SeqNo
+        ; iniread, Method, Settings.ini, CopiedSpecs, Method
+	  ;copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
+	 ; TT(CopiedText,2000,1,1,1)
+
 		return
 	+F4::4tap()
-	+F9::
-		Sendinput, ^{c}
-		sleep 100
-		TT(Clipboard)
-		return
+	+F9::worktab.CustomerMenu()
+		; Sendinput, ^{c}
+		; sleep 100
+		; TT(Clipboard)
+		; return
 	^F8::AddToList()
 	; +F15::AddToList()
 	; ^F9::send, ^v
@@ -156,9 +160,7 @@ AddToList(){
 				}
 		}
 			return
-		+F10::SpecTab.ApproveSpecVersion()
-		^F10::SpecTab.NewSpecVersion()
-		!F10::SpecTab.RemoveTestSpec()
+
 
 		; +F3::AddToList()
 		mbutton:: 3tap()
@@ -170,9 +172,6 @@ AddToList(){
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::lms.searchbarPaste()
-		^F9::LMS.SearchBar()
-		; ^d::sendinput, {click 81, 1061} ; delete test
-		; ^d::sendinput, {click 81, 1061} ; delete test
 
 
 	#Ifwinactive,Select Iterations
@@ -199,7 +198,7 @@ AddToList(){
 		+enter::sendinput, {enter}
 ; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
-		F9::
+		F6::
 			clk(181, 104,2,2)
 			sleep 300
 			Send, %Product%{enter}
@@ -216,6 +215,8 @@ AddToList(){
 		; space::send, ^{click}
 		; rbutton::send, ^{click}
 		; Numpaddot::send, {click 837, 656}{
+	#ifwinactive, Edit request
+		F10::Worktab.EditRequest()
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
 		;;^`::						Varbar.reset()
@@ -223,16 +224,14 @@ AddToList(){
 		+enter::					sendinput, {enter}
 		^enter::					sendinput, {enter}
 		esc::						LMSclick.esc()
-		F9::						3up()
 		F8::						3down()
 		F7::						3Right()
 		F6::						3Left()
 		+Mbutton::						4tap()
-		; +^F10::						4tap()
+		^F10::						4tap()
 		mbutton::					3tap()
 		; +!F10::						3tap()
 	#Ifwinactive,
-		;;	___Esc:
 		esc::						esc
 		pause::						Suspend, Toggle
 		#h::return
@@ -293,10 +292,10 @@ AddToList(){
 					clk(229, 136)
 					return
 				}
-			else if winactive("Result Editor") && (copyPasteToggle=1) {
+			else if winactive("Result Editor") {
 					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-					winWaitactive, NuGenesis LMS, 10
-					copyPasteToggle=0
+					; winWaitactive, NuGenesis LMS, 10
+					; copyPasteToggle=0
 				}
 			else if winactive("Register new samples")
 					WorkTab.registerNewSamples()
@@ -323,6 +322,8 @@ AddToList(){
 					productTab.AddNewFormulation()
 			else if winactive("Select Product ahk_exe eln.exe")
 					send % clk(107, 66) Product "{enter}{enter}"
+			else if winactive("Edit request")
+				WorkTab.EditRequest()
 			else if winactive("Edit Product")
 					ProductTab.AddNewProduct()
 			else If winactive("Select tests for request: R")
@@ -404,7 +405,9 @@ AddToList(){
 		else If winactive("Results Definition")
 			Send, {esc}
 		else if winactive("Edit test (Field Configuration:")
-			Send, {esc}
+			send, {esc}
+		else if winactive("Edit sample template")
+			Sendinput, {click 438, 84}{home}{delete 4}%Product%{enter}
 		else if winactive("Register new samples")
 			Send, {esc}
 		else if winactive("Select samples for test:")
@@ -428,13 +431,7 @@ AddToList(){
 	3up(){
 		global
 		FlashScreen("3-Up")
-		if winexist("Mats LMS Workbook.xlsb"){
-			excel.Connect(1)
-			tt(Product " " Batch " " Lot " " Coated "`n`t" Name " " Customer,1000)
-			excel.MatchColor()
-			return
-		}
-		else if winactive("Results Definition")
+		if winactive("Results Definition")
 			lms.menu()
 		else if winactive("Result Entry")
 			return
@@ -458,7 +455,7 @@ AddToList(){
 				if (Tab="Requests") {
 							MouseGetPos, mx, mY
 							send, {click 2}
-							sleep 300
+							sleep 500
 								if !winactive("Edit test")
 									winactivate
 								sleep 300
@@ -469,16 +466,12 @@ AddToList(){
 					}
 					else If (tab:="Samples")
 					lms.menu()
-						; Excel.setstatus()
-				else if (Tab:="Products") {
-						clk(86, 443) ;edit composition
-					Return
-					}
-				else if (Tab="Specs") {
+				else if (Tab:="Products")
+						mouseclick, left, 78, 443 ;edit compositi
+				else if (Tab="Specs")
 						lms.menu()
-					}
 				else
-					lms.menu()
+					return
 			}
 			else if winactive("Edit sample")
 				worktab.CustomerMenu()
@@ -497,16 +490,13 @@ AddToList(){
 				sendinput % "(on sample log)"
 				sendinput, {Click 334, 618}
 			}
-			else if winactive("PDF Preview")
-				Sendinput, {altdown}{F4}{altup}
-		else
 			return
 	}
 
 
 
 #ifwinactive, ahk_exe eln.exe
-	:*:osl`;::`(On Sample Log)
+	:*:sl`;::`(On Sample Log)
 	:*:fm`;::`Finished, Micro
 	:*:ia`;::`In Process, Analytical
 	:*:iaa`;::`In Process, Analytical (Annual)

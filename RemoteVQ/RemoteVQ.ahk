@@ -12,7 +12,6 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 5500
 	#InstallKeybdHook
-
 	SetKeyDelay,0,0
 	#InstallMouseHook
 	#HotkeyModifierTimeout
@@ -29,11 +28,10 @@ if A_username != mmignin
 	CrLf=`r`n
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
-	CoordMode, mouse, relative
+	CoordMode, mouse, Window
 	CoordMode, Tooltip, relative
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
-	; DetectHiddenWindows, On
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu, Tray, Add, windowSpy, windowSpy
@@ -86,6 +84,8 @@ ReadIniFiles(){
 	iniRead, Batch, Settings.ini, SavedVariables, Batch
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
+	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
+	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
 	iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
@@ -113,8 +113,8 @@ ReadIniFiles(){
 	iniread, mfgPath, Settings.ini, FilePaths, mfgPath
 	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
+	iniread, CustomerListPath, Settings.ini, FilePaths, CustomerListPath
 	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
-	iniread, PriorCodeFile, Settings.ini, FilePaths, PriorCodeFile
 }
 
 
@@ -243,19 +243,19 @@ activeCheck:
 		winactivate,
 		send, {enter}
 	}
-	else if winactive("Settings - Notepad"){
-			WinWaitNotActive, Settings - Notepad,,
-			ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
-			readInIFiles()
-			LMS.Orient()
-			varbar.Show()
-	}
+	; else if winactive("Settings - Notepad"){
+			; WinWaitNotActive, Settings - Notepad,,
+			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
+			; readInIFiles()
+			; LMS.Orient()
+			; varbar.Show()
+	; }
 	else
-		if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
-		LMS.Orient()
-		sleep 300
-		winMove, VarBar ahk_class VarBar ahk_exe RemoteVQ.exe, ,%varBar_nuX%, %varBar_nuY%
-		}
+		; if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
+		; LMS.Orient()
+		; sleep 300
+		; winMove, VarBar ahk_class VarBar ahk_exe RemoteVQ.exe, ,%varBar_nuX%, %varBar_nuY%
+		; }
 		return
 return
 

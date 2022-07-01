@@ -34,12 +34,18 @@ clipChange(type){
     sleep 25
     }
   else if Winactive("Results Definition")
-    clip.ParseSpecTable()
-  else if Winactive("NuGenesis LMS") || (Tab="Spec"){
-    clip.ParseMainTable()
+    clip.ParseSpecsTable()
+  else if Winactive("NuGenesis LMS") {
+    LMS.DetectTab()
+    Sleep 200
+    if (Tab="Specs")
+      clip.ParseMainSpecTable()
+    if (Tab="Samples")
+      clip.ParseMainSamplesTable()
+    clip.codesRegex()
   }
   else if Winactive("Composition")
-    clip.ParseIngredientTable()
+    clip.ParseIngredientsTable()
   ; else if Instr(Clipboard, "Use the limits from the test",true,1,1)
   ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
     ; clip.HeavyMetalSpecs()
@@ -105,9 +111,9 @@ Clip(input=50,Wait:="0.95"){
 
 Class Clip {
 
-		ParseIngredientTable(Save:=1){
-		Global
-    SimpleClip:=
+		ParseIngredientsTable(Save:=1){
+		global
+    ; SimpleClip:=06/21/2
 		ParsedIngredients:=[]
 		Loop, parse, Clipboard, `t
 			ParsedIngredients.insert(A_LoopField)
@@ -117,6 +123,7 @@ Class Clip {
 			LabelName:=ParsedIngredients[HasValue(ParsedIngredients, "Description") + TotalColumns]
 			LabelClaim:=ParsedIngredients[HasValue(ParsedIngredients, "Generic 1") + TotalColumns]
 			IngredientGroup:=ParsedIngredients[HasValue(ParsedIngredients, "Generic 2") + TotalColumns]
+      StringReplace, IngredientGroup, IngredientGroup, `n, , All
       sleep 200
       copiedText:= IngredientId "`t" LabelClaim "`t" IngredientGroup "`n" LabelName
       If Save
@@ -126,13 +133,13 @@ Class Clip {
         iniwrite, %IngredientGroup%, Settings.ini, CopiedSpecs, IngredientGroup
         iniwrite, %LabelName%, Settings.ini, CopiedSpecs, LabelName
       }
-      SimpleClip:=
-      tt(CopiedText, 2000,1,1,2)
+      if !Simpleclip
+      ; tt(CopiedText, 2000,1,1,2)
       return
 		}
-		ParseSpecTable(Save:=1){
-		Global
-    SimpleClip:=
+		ParseSpecsTable(Save:=1){
+		global
+    ; SimpleClip:=
 		ParsedSpecs:=[]
     ParseData:=Clipboard
 		Loop, parse, ParseData, `t
@@ -160,30 +167,32 @@ Class Clip {
         iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
         iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
       }
-      SimpleClip:=
+      ; SimpleClip:=
       copypastetoggle=1
-      tt(CopiedText, 2000,1,1,2)
+      if !Simpleclip
+        ; tt(CopiedText, 2000,1,1,2)
       return
 		}
 
-		ParseMainTable(Save:=1){
-		Global
+		ParseMainSpecTable(Save:=1){
+		global
     SimpleClip:=
-		ParsedMainTable:=[]
+		ParsedMainSpecTable:=[]
     ParseData:=Clipboard
 		Loop, parse, ParseData, `t
-			ParsedMainTable.insert(A_LoopField)
-    TotalColumns:=ParsedMainTable.maxindex()//2
-    Method:=ParsedMainTable[HasValue(ParsedMainTable, "Method Id") + TotalColumns]
-    Requirements:=ParsedMainTable[HasValue(ParsedMainTable, "Requirements") + TotalColumns]
+			ParsedMainSpecTable.insert(A_LoopField)
+    TotalColumns:=ParsedMainSpecTable.maxindex()//2
+    Method:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Method Id") + TotalColumns]
+    Requirements:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns]
     minmax:=Strsplit(Requirements," - ","`n")
     MinLimit:=Minmax[1]
     MaxLimit:=minmax[2]
-    TestID:=ParsedMainTable[HasValue(ParsedMainTable, "Test Id") + TotalColumns]
-    Department:=ParsedMainTable[HasValue(ParsedMainTable, "Department") + TotalColumns]
-    SeqNo:=ParsedMainTable[HasValue(ParsedMainTable, "Seq No") + TotalColumns]
-    SampleTemplate:=ParsedMainTable[HasValue(ParsedMainTable, "Sample Template") + TotalColumns]
-    Description:=ParsedMainTable[HasValue(ParsedMainTable, "Description") + TotalColumns]
+    TestID:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Test Id") + TotalColumns]
+    Department:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Department") + TotalColumns]
+    SeqNo:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Seq No") + TotalColumns]
+    SampleTemplate:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Sample Template") + TotalColumns]
+    Description:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns]
+    StringReplace, Description, Description, `r`n, , All
       sleep 200
       copiedText:= TestID "`t" Description "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " SampleTemplate "`n Department: " Department
       If Save
@@ -199,7 +208,50 @@ Class Clip {
         iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
       }
       SimpleClip:=
-      tt(CopiedText, 2000,1,1,2)
+      ; tt(CopiedText, 2000,1,1,2)
+      return
+		}
+
+		ParseMainSamplesTable(Save:=1){
+		global
+    SimpleClip:=
+		ParsedMainSamplesTable:=[]
+    ParseData:=Clipboard
+		Loop, parse, ParseData, `t
+			ParsedMainSamplesTable.insert(A_LoopField)
+    TotalColumns:=ParsedMainSamplesTable.maxindex()//2
+    Batch:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Batch") + TotalColumns]
+    Coated:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Coated Lot #") + TotalColumns]
+    Lot:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Pkg Lot #") + TotalColumns]
+    if !lot
+      Lot:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Blister Lot #") + TotalColumns]
+    ShipTo:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Ship To") + TotalColumns]
+    Name:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Product Trade Name") + TotalColumns]
+    Department:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Department") + TotalColumns]
+      sleep 200
+				; InputVar:=A_ThisMenuItem
+				IniRead,CustomerPosition, %CustomerListPath%, Customers, %ShipTo%
+				sleep 30
+				if CustomerPosition > 0
+					customerPosition+=1
+				if CustomerPosition < 0
+					customerPosition-=1
+				sleep 200
+				Iteration:=CustomerPosition
+				sleep 200
+				GuiControl,Varbar:Text, Iteration, %CustomerPosition%
+      If Save
+      {
+        iniwrite, %Name%, Settings.ini, CopiedSpecs, Name
+        iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
+        iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+        iniwrite, %ShipTo%, Settings.ini, CopiedSpecs, ShipTo
+				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+				iniwrite, %CustomerPosition%, Settings.ini, SavedVariables, CustomerPosition
+      }
+      SimpleClip:=
+      if !Simpleclip
+        ; tt(ShipTo "`t" CustomerPosition, 2000,1,1,2)
       return
 		}
 
@@ -287,7 +339,7 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile, CustomerPosition, Iteration
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration
     Gui Varbar:Default
     PriorCodestring:=CodeString
     PriorBatch:=Batch
@@ -322,9 +374,12 @@ CodesRegex(input:=""){
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
-        FileAppend, `n%PriorCodeString%, %PriorCodeFile%
+
+        iniwrite, %PriorCodeString%, Settings.ini, SavedVariables, PriorCodeString
+        ; iniwrite, %CodeString%, Settin06/21/22gs.ini, SavedVariables, CodeString
+        ; FileAppend, `n%PriorCodeString%, %PriorCodeFile%
       }
-      tt(CodeString)
+      ;tt(CodeString)
       ; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
      Return ;CodeString
 }

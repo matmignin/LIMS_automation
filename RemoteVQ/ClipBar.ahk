@@ -88,10 +88,14 @@ Class VarBar{
 		global
 		MouseGetPos,,,,winControl
 		try Menu, VarBarmenu, DeleteAll
-		; Menu, VarBarMenu, Add, &K Final Labels, ShowK_FinalLabelCopy
-		; Menu, VarBarMenu, Add, &J Final Labels, ShowJ_FinalLabelCopy
-		Menu, VarBarMenu, Add, Label &Scans, ShowScanLabelCopy
-		Menu, VarBarMenu, Add, AddClipBoardToList, AddToList
+		Menu, VarbarMenu, Add, All Batches, AllBatchesMsgbox
+		Menu, VarbarMenu, Add, All Products, AllProductsMsgbox
+		Menu, VarbarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
+		Menu, VarbarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
+		Menu, VarbarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
+		Menu, VarbarMenu, add, Show EditBox, ShowEditBox
+		Menu, VarbarMenu, add, Paste Spec, +F10
+		Menu, VarbarMenu, Add, Show Variables, ShowVariables
 		Try Menu,VarBarmenu,show
 	}
 	Reset(){
@@ -223,12 +227,37 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 	return
 #ifwinactive
 
-#If MouseIsOver("VarBar")
-Wheelup::Varbar.AddIteration(250)
-Wheeldown::Varbar.SubIteration(250)
-+wheelup::Varbar.AddIteration(0)
-+wheeldown::Varbar.SubIteration(0)
-Rbutton::VarBar.Menu()
+#If MouseIsOver("VarBar ahk_exe RemoteVQ.exe")
+; Wheeldown::Varbar.SubIteration(250)
+; Wheelup::Varbar.AddIteration(250)
+Wheelup::
+	iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
+	sleep 200
+	clip.CodesRegex(PriorCodeString)
+	; sleep 400
+	return
+Wheeldown::
+	iniread, CodeString, Settings.ini, SavedVariables, CodeString
+	sleep 200
+	; Fileread, CodeString, %CodeFile%
+	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
+	clip.CodesRegex(CodeString)
+	; sleep 400
+	return
++wheelup::Varbar.AddIteration(350)
++wheeldown::Varbar.SubIteration(350)
+Rbutton::
+		; ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
+		MouseGetPos, , , winid, wincontrol
+		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3") || (winControl="Edit4"){
+			VarBar.Menu()
+			; GUI, varbar:default
+			; Gui, Varbar:submit, nohide
+			; LMS.Searchbar(clipboard,"{enter}")
+		}
+		if (winControl="Edit5")
+			worktab.CustomerMenu()
+		return
 #if
 
 VarBar_ResetSub:
