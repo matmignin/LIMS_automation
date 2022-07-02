@@ -187,9 +187,9 @@ AddToList(){
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		#MaxThreadsPerHotkey 2
+		; #MaxThreadsPerHotkey 2
 		F10::WorkTab.CorrectTestResults("loop")
-		#MaxThreadsPerHotkey 1
+		; #MaxThreadsPerHotkey 1
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		Enter::
 		mbutton::clk(910,668)

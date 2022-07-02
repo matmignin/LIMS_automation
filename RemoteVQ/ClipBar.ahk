@@ -8,12 +8,13 @@ Class VarBar{
 		MidScreen:=A_ScreenWidth//2
 		wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
 		wingetpos, Win_X, Win_y, Win_w, Win_h, A
-		VarBar_H=30
-		VarBar_H_max=58
+		VarBar_H=29
+		VarBar_H_max=56
 		VarBar_T:=235
 		VarBar_W=370
 		VarBar_x:=Nugenesis_X+(Nugenesis_W/3)
-		VarBar_Y:=Nugenesis_Y
+		; VarBar_Y:=-Nugenesis_h
+		VarBar_Y:=Nugenesis_Y+2
 		Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui Varbar:Default
 		Gui, Varbar:+Delimiter`n
@@ -190,6 +191,10 @@ Class VarBar{
 			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
+		if SampleID
+			iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+		else
+			iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
 		; if CustomerPosition
 			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
@@ -201,6 +206,9 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
 		iniRead, Lot, Settings.ini, SavedVariables, Lot
 		iniRead, Coated, Settings.ini, SavedVariables, Coated
+		iniRead, SampleID, Settings.ini, SavedVariables, SampleID
+
+
 		; if !Iteration
 			; GuiControl,Varbar:Text, Iteration, %Iteration%
 		;  if !Product
@@ -219,12 +227,34 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 #Ifwinactive, VarBar ahk_exe RemoteVQ.exe
 	enter::
 		ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
-		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3") ||(winControl="Edit4"){
+		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 			GUI, varbar:default
 			Gui, Varbar:submit, nohide
 			LMS.Searchbar(clipboard,"{enter}")
 		}
+			else if (winControl="Edit4"){
+				Coated:=
+				GUI, varbar:default
+				ControlsetText, Edit4,%Coated%,VarBar ahk_exe RemoteVQ.exe
+				Gui, Varbar:submit, nohide
+				iniwrite, Coated, Settings.ini, SavedVariables, Coated
+			}
+
 	return
+	Mbutton::
+			; ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
+			; MouseGetPos, , , winid, wincontrol
+			; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
+				VarBar.Menu()
+				return
+			; }
+			; else if (winControl="Edit4"){
+				; Coated:=
+				; GUI, varbar:default
+				; ControlsetText, Edit4,%Coated%,VarBar ahk_exe RemoteVQ.exe
+				; Gui, Varbar:submit, nohide
+				; iniwrite, Coated, Settings.ini, SavedVariables, Coated
+			; }
 #ifwinactive
 
 #If MouseIsOver("VarBar ahk_exe RemoteVQ.exe")
@@ -246,16 +276,32 @@ Wheeldown::
 	return
 +wheelup::Varbar.AddIteration(350)
 +wheeldown::Varbar.SubIteration(350)
+Mbutton::
 Rbutton::
 		; ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
 		MouseGetPos, , , winid, wincontrol
-		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3") || (winControl="Edit4"){
+		if (winControl="Edit1"){
 			VarBar.Menu()
-			; GUI, varbar:default
-			; Gui, Varbar:submit, nohide
-			; LMS.Searchbar(clipboard,"{enter}")
 		}
-		if (winControl="Edit5")
+		else if (winControl="Edit2"){
+			Batch:=
+			GUI, varbar:default
+			ControlsetText, Edit2,%Batch%,VarBar
+			iniwrite, Batch, Settings.ini, SavedVariables, Batch
+		}
+		else if (winControl="Edit3"){
+			Lot:=
+			GUI, varbar:default
+			ControlsetText, Edit3,%Lot%,VarBar
+			iniwrite, Lot, Settings.ini, SavedVariables, Lot
+		}
+		else if (winControl="Edit4"){
+			Coated:=
+			GUI, varbar:default
+			ControlsetText, Edit4,%Coated%,VarBar
+			iniwrite, Coated, Settings.ini, SavedVariables, Coated
+		}
+		else if (winControl="Edit5")
 			worktab.CustomerMenu()
 		return
 #if

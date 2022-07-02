@@ -18,21 +18,21 @@ clipChange(type){
       iteration:=1
     LMS.AddDataFromClipboard()
   }
-  else if InStr(Clipboard, "<<LabelCopy>>", true,1,1) {
-    if (Iteration >=25) || (Iteration < 0) || !(Iteration)
-      iteration:=1
-    LMS.AddDataFromClipboard("<<LabelCopy>>")
-  }
+  ; else if InStr(Clipboard, "<<LabelCopy>>", true,1,1) {
+    ; if (Iteration >=25) || (Iteration < 0) || !(Iteration)
+      ; iteration:=1
+    ; LMS.AddDataFromClipboard("<<LabelCopy>>")
+  ; }
+  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    exitapp
+    sleep 25
+    }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProductFromClipboard()
   else if Winactive("Test Definition Editior"){
     iniwrite, %Clipboard%, Settings.ini, CopiedSpecs, Description
     Description:=Clipboard
   }
-  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
-    exitapp
-    sleep 25
-    }
   else if Winactive("Results Definition")
     clip.ParseSpecsTable()
   else if Winactive("NuGenesis LMS") {
@@ -91,7 +91,7 @@ Requirement=
  */
 
 Clip(input=50,Wait:="0.95"){
-  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct
+  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct, regexBatch,regexlot,regexSampleID, regexCoated
   clipboard:=
     Send, ^{c}
   sleep %input%
@@ -168,8 +168,8 @@ Class Clip {
         iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
       }
       ; SimpleClip:=
-      copypastetoggle=1
-      if !Simpleclip
+      ; copypastetoggle=1
+      ; if !Simpleclip
         ; tt(CopiedText, 2000,1,1,2)
       return
 		}
@@ -339,9 +339,10 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, Product, Lot, Batch, Coated, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID,CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration
     Gui Varbar:Default
     PriorCodestring:=CodeString
+    PriorSampleID:=SampleID
     PriorBatch:=Batch
     codestring:=
       Parse:= Input ? Input : Clipboard
@@ -350,6 +351,7 @@ CodesRegex(input:=""){
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       ; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+      SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
       if (Batch!=PriorBatch) && (!rlot && !rCoated){
         Lot:=
         Coated:=
@@ -370,12 +372,19 @@ CodesRegex(input:=""){
       ; GuiControl,Varbar:Text, Iteration, %Iteration%
       		    GUI, VarBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated)
+      if (SampleID!=PriorSampleID){
+        iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+        ; FileAppend, %SampleId%, %CodeFile%
+      }
       if (PriorCodestring!=Codestring){
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
+        if sampleID
+          FileAppend, `n%SampleId%, %CodeFile%
 
-        iniwrite, %PriorCodeString%, Settings.ini, SavedVariables, PriorCodeString
+        ; iniwrite, %PriorCodeString%, Settings.ini, SavedVariables, PriorCodeString
+
         ; iniwrite, %CodeString%, Settin06/21/22gs.ini, SavedVariables, CodeString
         ; FileAppend, `n%PriorCodeString%, %PriorCodeFile%
       }
@@ -433,6 +442,16 @@ Regex(Category:=""){
         If rCoated {
           GuiControl,Varbar:Text, Coated, %rCoated%
           Coated:=rCoated
+        }
+      RegExMatch(HayStack, RegexSampleID, r)
+        If rSampleID {
+          SampleID:=rSampleID
+          ; GuiControl,Varbar:Text, SampleID, %rSampleID%
+        }
+      RegExMatch(HayStack, RegexSampleID, r)
+        If !rSampleID {
+          SampleID:=
+          ; GuiControl,Varbar:Text, SampleID, %rSampleID%
         }
       If !rLot {
         GuiControl,Varbar:Text, lot, %rlot%

@@ -11,10 +11,8 @@ if A_username != mmignin
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 5500
-	#InstallKeybdHook
+	; #HotkeyModifierTimeout
 	SetKeyDelay,0,0
-	#InstallMouseHook
-	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2
 	SetTitleMatchMode, 2
 	FormatTime, DayString,, MM/d/yy
@@ -51,6 +49,7 @@ if A_username != mmignin
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
+	RegexSampleID:="i)(?P<SampleID>(s|\$)202\d{5}-\d{3})"
 	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
@@ -66,8 +65,8 @@ if A_username != mmignin
 	sleep 200
 	varbar.Show()
 	try Menu, Tray, Icon, %AppIconPath%
-	#include ClipBar.ahk
 	#include Nugenisis.ahk
+	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
 	SetWinDelay, %NormalWinDelay%
@@ -84,8 +83,9 @@ ReadIniFiles(){
 	iniRead, Batch, Settings.ini, SavedVariables, Batch
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
+	iniRead, SampleID, Settings.ini, SavedVariables, SampleID
 	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
-	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
+	iniread, CodeString, Settings.ini, SavedVariables, CodeString
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
 	iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
@@ -132,20 +132,22 @@ windowSpy(){
   }
 
 AllBatchesMsgbox:
-	AllBatchesMsg:=GetAllBatches("`n")
-	sleep 200
-	clip.EditBox(AllBatchesMsg)
+	AllBatchesMsg:=GetAllBatches(" ")
+	sleep 400
+	tt(AllBatchesMsg)
+	; clip.EditBox(AllBatchesMsg)
 	return
 AllProductsMsgbox:
 	AllProductsMsg:=GetAllProducts(" ")
-	sleep 200
-	clip.EditBox(AllProductsMsg)
+	sleep 400
+	tt(AllProductsMsg)
+	; clip.EditBox(AllProductsMsg)
 	return
 ShowVariables:
 	run, edit Settings.ini
 	sleep 200
 	WinWaitNotActive, Settings - Notepad,, 10
-			ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
+			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 	; winwaitclose, Settings - Notepad,,10
 		; if errorlevel
 		; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
@@ -184,10 +186,15 @@ activeCheck:
 		reload
 		return
 	}
+	else if MouseIsOver("VarBar ahk_exe RemoteVQ.exe"){
+		TT(CodeString "`n" SampleID,2000,,,2)
+		TT(copiedText "`n",2000,,65,4)
+		TT(clipboard,1000,2,450,3)
+		}
 	else If winexist("Release: Rotational Testing Schedule"){
 		winactivate,
 		click 131, 141 ;click release
-	    winwaitclose
+		sleep 800
 		click %DocumentMenuSection_X%, %DocumentMenu_Y% ;click dropdown for Section menu
 		sendinput, {down}{enter}
 		winwaitactive, Sign:,,3
@@ -237,7 +244,7 @@ activeCheck:
 			winactivate,
 			Sendinput, {click 185, 103,2}%Product%{enter}
 		}
-		sleep 2000
+		sleep 1000
 	}
 	else if winexist("Information"){
 		winactivate,
@@ -250,12 +257,18 @@ activeCheck:
 			; LMS.Orient()
 			; varbar.Show()
 	; }
-	else
-		; if winactive("NuGenesis LMS") && (A_TimeIdle > 2000){
-		; LMS.Orient()
-		; sleep 300
+	else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
+		LMS.Orient()
+		sleep 300
+		SetKeyDelay,0,0
+		ReadIniFiles()
+		CoordMode, mouse, Window
+		CoordMode, Tooltip, relative
+		; #maxthreadsperhotkey, 2
+		; SetTitleMatchMode, 2
 		; winMove, VarBar ahk_class VarBar ahk_exe RemoteVQ.exe, ,%varBar_nuX%, %varBar_nuY%
-		; }
-		return
+		SetWinDelay, %NormalWinDelay%
+		}
+		; return
 return
 
