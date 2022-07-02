@@ -54,7 +54,7 @@ if A_username != mmignin
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
-	OnExit("Varbar.SaveVariables")
+	OnExit("Clipbar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	ReadIniFiles()
 
@@ -63,7 +63,7 @@ if A_username != mmignin
 	; Menu, Tray, Add, E&xit, ExitSub
 	LMS.Orient()
 	sleep 200
-	varbar.Show()
+	Clipbar.Show()
 	try Menu, Tray, Icon, %AppIconPath%
 	#include Nugenisis.ahk
 	#include ClipBar.ahk
@@ -153,7 +153,7 @@ ShowVariables:
 		; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 		readInIFiles()
 		LMS.Orient()
-		varbar.Show()
+		Clipbar.Show()
 	return
 ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
@@ -186,7 +186,7 @@ activeCheck:
 		reload
 		return
 	}
-	else if MouseIsOver("VarBar ahk_exe RemoteVQ.exe"){
+	else if MouseIsOver("Clipbar ahk_exe RemoteVQ.exe"){
 		TT(CodeString "`n" SampleID,2000,,,2)
 		TT(copiedText "`n",2000,,65,4)
 		TT(clipboard,1000,2,450,3)
@@ -255,7 +255,7 @@ activeCheck:
 			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 			; readInIFiles()
 			; LMS.Orient()
-			; varbar.Show()
+			; Clipbar.Show()
 	; }
 	else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
 		LMS.Orient()
@@ -266,7 +266,7 @@ activeCheck:
 		CoordMode, Tooltip, relative
 		; #maxthreadsperhotkey, 2
 		; SetTitleMatchMode, 2
-		; winMove, VarBar ahk_class VarBar ahk_exe RemoteVQ.exe, ,%varBar_nuX%, %varBar_nuY%
+		; winMove, Clipbar ahk_class Clipbar ahk_exe RemoteVQ.exe, ,%Clipbar_nuX%, %Clipbar_nuY%
 		SetWinDelay, %NormalWinDelay%
 		}
 		; return

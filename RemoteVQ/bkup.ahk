@@ -53,7 +53,7 @@ if A_username != mmignin
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
-	OnExit("Varbar.SaveVariables")
+	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	ReadIniFiles()
 
@@ -62,7 +62,7 @@ if A_username != mmignin
 	; Menu, Tray, Add, E&xit, ExitSub
 	LMS.Orient()
 	sleep 200
-	varbar.Show()
+	ClipBar.Show()
 	try Menu, Tray, Icon, %AppIconPath%
 	#include Nugenisis.ahk
 	#include ClipBar.ahk
@@ -151,7 +151,7 @@ ShowVariables:
 		; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 		readInIFiles()
 		LMS.Orient()
-		varbar.Show()
+		ClipBar.Show()
 	return
 ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
@@ -248,7 +248,7 @@ activeCheck:
 			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 			; readInIFiles()
 			; LMS.Orient()
-			; varbar.Show()
+			; ClipBar.Show()
 	; }
 	; else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
 	; 	LMS.Orient()
@@ -259,7 +259,7 @@ activeCheck:
 	; 	CoordMode, Tooltip, relative
 	; 	#maxthreadsperhotkey, 2
 	; 	SetTitleMatchMode, 2
-	; 	; winMove, VarBar ahk_class VarBar ahk_exe RemoteVQ.exe, ,%varBar_nuX%, %varBar_nuY%
+	; 	; winMove, ClipBar ahk_class ClipBar ahk_exe RemoteVQ.exe, ,%ClipBar_nuX%, %ClipBar_nuY%
 	; 	SetWinDelay, %NormalWinDelay%
 	; 	}
 		; return
@@ -698,8 +698,8 @@ Orient(){
 	WbX:=WbX+400
 	Flovar_x:= NuX +900
 	Flovar_y:= NuH + NuY -28
-	varBar_nuX:=NuX+450
-	varBar_nuY:=NuY
+	ClipBar_nuX:=NuX+450
+	ClipBar_nuY:=NuY
 	TabSelect:=NuW-10
 	DocumentMenuSection_X:=NuW-200
 	DocumentMenuDocument_X:=NuW-140
@@ -826,8 +826,8 @@ AddProductFromClipboard(){
       ServingSize:=SheetInfo[8]
       clip.codesRegex(SheetInfo[9])
       Iteration:=CustomerPosition
-      ; ControlsetText, Static1,%CustomerPosition%,VarBar
-      GuiControl,Varbar:Text, Iteration, %Iteration%
+      ; ControlsetText, Static1,%CustomerPosition%,ClipBar
+      GuiControl,ClipBar:Text, Iteration, %Iteration%
 		if CustomerPosition
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
     }
@@ -921,7 +921,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 			iteration:=1
 		sleep 50
 		this.Dropdown_GenericIngredient(Iteration)
-		varbar.AddIteration(0)
+		ClipBar.AddIteration(0)
 	}
 	SetKeyDelay,0,0
 	sleep 200
@@ -2214,7 +2214,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 		lot:=
 		SetWinDelay, %NormalWinDelay%
 		blockinput, on
-		ControlGetText, Iteration, Edit5, VarBar
+		ControlGetText, Iteration, Edit5, ClipBar
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
@@ -2315,8 +2315,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 				sleep 200
 				Iteration:=CustomerPosition
 				sleep 200
-				GuiControl,Varbar:Text, Iteration, %CustomerPosition%
-				; GUI, VarBar:submit,NoHide
+				GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+				; GUI, ClipBar:submit,NoHide
 				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 				mouseclick, Left, 431, 541,1,0
 				this.Dropdown_CustomerSelect(CustomerPosition)
@@ -3056,11 +3056,11 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
 	; F3::sendinput, %Lot%
-	!1::Varbar.Focus("Edit1")
-	!2::Varbar.Focus("Edit2")
-	!3::Varbar.Focus("Edit3")
-	!4::Varbar.Focus("Edit4")
-	!5::Varbar.Focus("Edit5")
+	!1::ClipBar.Focus("Edit1")
+	!2::ClipBar.Focus("Edit2")
+	!3::ClipBar.Focus("Edit3")
+	!4::ClipBar.Focus("Edit4")
+	!5::ClipBar.Focus("Edit5")
 	F4::sendinput, %Coated%
 	; +F3::3tap()
 
@@ -3256,7 +3256,7 @@ AddToList(){
 		F10::Worktab.EditRequest()
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
-		;;^`::						Varbar.reset()
+		;;^`::						ClipBar.reset()
 		enter::						LMSclick.okay()
 		+enter::					sendinput, {enter}
 		^enter::					sendinput, {enter}
@@ -3367,10 +3367,10 @@ AddToList(){
 					Sendpassword()
 				; return
 			; }
-		; else if winactive("VarBar ahk_exe RemoteVQ.exe"){
+		; else if winactive("ClipBar ahk_exe RemoteVQ.exe"){
 		; 		click
 		; 		sleep 100
-		; 		Varbar.WM_LBUTTONDBLCLK()
+		; 		ClipBar.WM_LBUTTONDBLCLK()
 		; }
 	}
 

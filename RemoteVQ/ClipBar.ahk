@@ -1,59 +1,59 @@
 return
 
-Class VarBar{
+Class ClipBar{
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 		Global
-		try GUI,VarBar:Destroy
+		try GUI,ClipBar:Destroy
 		TopScreen:=1 ;A_ScreenHeight-35
 		MidScreen:=A_ScreenWidth//2
 		wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
 		wingetpos, Win_X, Win_y, Win_w, Win_h, A
-		VarBar_H=29
-		VarBar_H_max=56
-		VarBar_T:=235
-		VarBar_W=370
-		VarBar_x:=Nugenesis_X+(Nugenesis_W/3)
-		; VarBar_Y:=-Nugenesis_h
-		VarBar_Y:=Nugenesis_Y+2
-		Gui VarBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
-		Gui Varbar:Default
-		Gui, Varbar:+Delimiter`n
+		ClipBar_H=29
+		ClipBar_H_max=56
+		ClipBar_T:=235
+		ClipBar_W=370
+		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
+		; ClipBar_Y:=-Nugenesis_h
+		ClipBar_Y:=Nugenesis_Y+2
+		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
+		Gui ClipBar:Default
+		Gui, ClipBar:+Delimiter`n
 		winSet, Transparent, 100, %GUIID%
-		GUI, VarBar:color,DC734F, 97BA7F
+		GUI, ClipBar:color,DC734F, 97BA7F
 		; this.AddEdit("Product",	 "left h29 x1 y0 w65",				"16 Bold")
-			GUI,VarBar:Font,			 s16 Bold , consolas
-			GUI,VarBar:Add,edit,		vProduct +wrap -multi	gVarbarHandler left h29 x1 y0 w65,	%Product%
+			GUI,ClipBar:Font,			 s16 Bold , consolas
+			GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h29 x1 y0 w65,	%Product%
 		this.AddEdit("Batch",	 "left h29 x+0 y0 w90", 			"12,Consolas")
 		this.AddEdit("Lot",		 "left h29 x+0 y0 w75", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
-		GUI, Varbar:font, cBlack s9 Norm w500 , Consolas
+		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
 		This.AddEdit("Iteration", "x+2 h29 left y0 w60",			 "16 Bold 107C41, Consolas")	; Text1
 		this.AddBoxes()
 		CoordMode, mouse, screen
-		try GUI, VarBar:Show, x%Varbar_X% y%Varbar_y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
+		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
 		catch
-			GUI, VarBar:Show, x%Win_X% y%Win_Y% w%VarBar_w% h%varbar_H% Noactivate, VarBar
+			GUI, ClipBar:Show, x%Win_X% y%Win_Y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
 		CoordMode, mouse, window
 		; OnMessage(0x0201, "WM_LBUTTONDOWN")
 		this.loadSavedVariables()
 
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
-		winSet, Transparent, %Varbar_T%, AHK_id %GUIID%
+		winSet, Transparent, %ClipBar_T%, AHK_id %GUIID%
 		Return
 
-		VarBarHandler:
-		; while (A_TimeIdle < 1000) && winactive("VarBar")
+		ClipBarHandler:
+		; while (A_TimeIdle < 1000) && winactive("ClipBar")
 		; sleep 25
 		; sleep 300
 			; sleep 1000
 			PriorCodestring:=CodeString
-			GUI, VarBar:submit,NoHide
-			; ControlGetText, Product, Edit1, VarBar
-			; ControlGetText, Batch, Edit2, VarBar
-			; ControlGetText, Lot, Edit3, VarBar
-			; ControlGetText, Coated, Edit4, VarBar
-			; ControlGetText, Iteration, Edit5, VarBar
+			GUI, ClipBar:submit,NoHide
+			; ControlGetText, Product, Edit1, ClipBar
+			; ControlGetText, Batch, Edit2, ClipBar
+			; ControlGetText, Lot, Edit3, ClipBar
+			; ControlGetText, Coated, Edit4, ClipBar
+			; ControlGetText, Iteration, Edit5, ClipBar
 			Ct:=Coated ? " ct#" : ""
 			; CodeString:=clip.CodesRegex(clipboard)
 			CodeString:=trim(Product " " Batch " " Lot Ct Coated)
@@ -65,46 +65,46 @@ Class VarBar{
 			; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
 
 		return
-		VarBarGuiClose:
-		VarBarButtonOK:
-		VarBarGuiEscape:
-			; GUI, VarBar:submit,NoHide
+		ClipBarGuiClose:
+		ClipBarButtonOK:
+		ClipBarGuiEscape:
+			; GUI, ClipBar:submit,NoHide
 			sleep 50
-			VarBar.SaveVariables()
+			ClipBar.SaveVariables()
 		return
 	}
 
 	AddEdit(Variable,Dimensions:="",Font:=""){
 		global
-		GUI,VarBar:Font,			 s%Font% , consolas ;cBlack Bold, %Font%
-		GUI,VarBar:Add,edit,		v%Variable% +wrap -multi	gVarbarHandler %Dimensions%,		% %Variable%
+		GUI,ClipBar:Font,			 s%Font% , consolas ;cBlack Bold, %Font%
+		GUI,ClipBar:Add,edit,		v%Variable% +wrap -multi	gClipBarHandler %Dimensions%,		% %Variable%
 	}
 	AddText(Variable,Dimensions:="",Font:=""){
 		global
-		GUI,VarBar:Font,			 s%Font% ;cBlack Bold, %Font%
-		GUI,VarBar:Add,Text,		v%Variable% 	%Dimensions%,		% %Variable%
+		GUI,ClipBar:Font,			 s%Font% ;cBlack Bold, %Font%
+		GUI,ClipBar:Add,Text,		v%Variable% 	%Dimensions%,		% %Variable%
 	}
 
 	Menu(){
 		global
 		MouseGetPos,,,,winControl
-		try Menu, VarBarmenu, DeleteAll
-		Menu, VarbarMenu, Add, All Batches, AllBatchesMsgbox
-		Menu, VarbarMenu, Add, All Products, AllProductsMsgbox
-		Menu, VarbarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
-		Menu, VarbarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
-		Menu, VarbarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
-		Menu, VarbarMenu, add, Show EditBox, ShowEditBox
-		Menu, VarbarMenu, add, Paste Spec, +F10
-		Menu, VarbarMenu, Add, Show Variables, ShowVariables
-		Try Menu,VarBarmenu,show
+		try Menu, ClipBarmenu, DeleteAll
+		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
+		Menu, ClipBarMenu, Add, All Products, AllProductsMsgbox
+		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
+		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
+		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
+		Menu, ClipBarMenu, add, Show EditBox, ShowEditBox
+		Menu, ClipBarMenu, add, Paste Spec, +F10
+		Menu, ClipBarMenu, Add, Show Variables, ShowVariables
+		Try Menu,ClipBarmenu,show
 	}
 	Reset(){
 		Global
 		coordmode, mouse, Screen
 		; keywait, Lbutton, U T2
-		MouseGetPos,Varbar_X,Varbar_Y
-		VarBar.show(0)
+		MouseGetPos,ClipBar_X,ClipBar_Y
+		ClipBar.show(0)
 		coordmode, mouse, window
 		return
 	}
@@ -112,11 +112,11 @@ Class VarBar{
 	Focus(Control){
 		global
 		; winGetTitle, the_winTitle, A
-		winactivate, VarBar ahk_exe RemoteVQ.exe
+		winactivate, ClipBar ahk_exe RemoteVQ.exe
 		; caret_x:=A_CaretX
-		GuiControl Varbar:Focus, %Control%
+		GuiControl ClipBar:Focus, %Control%
 		; caret_y:=A_Carety
-		; winactivate, VarBar ahk_exe RemoteVQ.exe
+		; winactivate, ClipBar ahk_exe RemoteVQ.exe
 		; FlashScreen()
 		Sendinput, +{left}
 		return
@@ -135,12 +135,12 @@ Class VarBar{
 				exit
 			; #maxthreadsperhotkey, 1
 			; #MaxHotkeysPerInterval, 500
-		; GuiControl, -redraw, varbar
+		; GuiControl, -redraw, ClipBar
 		NAdd:=1
 		sleep 55
 		Iteration+=1
 		sleep %Speed%
-		ControlsetText, Edit5,%Iteration%,VarBar
+		ControlsetText, Edit5,%Iteration%,ClipBar
 		; sleep 100
 			; #MaxHotkeysPerInterval, 70
 		NAdd:=0
@@ -154,11 +154,11 @@ Class VarBar{
 			; #maxthreadsperhotkey, 1
 		; #MaxHotkeysPerInterval, 500
 		Nsub:=1
-		; GuiControl, -redraw, varbar
+		; GuiControl, -redraw, ClipBar
 		sleep 55
 		Iteration-=1
 		sleep %speed%
-		ControlsetText, Edit5,%Iteration%,VarBar
+		ControlsetText, Edit5,%Iteration%,ClipBar
 		; sleep 100
 		Nsub:=0
 			; #maxthreadsperhotkey, 2
@@ -166,13 +166,13 @@ Class VarBar{
 	}
 	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
 	global
-		GUI, varbar:default
-		GUI, Varbar:Submit, Nohide
-		ControlGetText, Product, Edit1, VarBar
-		ControlGetText, Batch, Edit2, VarBar
-		ControlGetText, Lot, Edit3, VarBar
-		ControlGetText, Coated, Edit4, VarBar
-		ControlGetText, Iteration, Edit5, VarBar
+		GUI, ClipBar:default
+		GUI, ClipBar:Submit, Nohide
+		ControlGetText, Product, Edit1, ClipBar
+		ControlGetText, Batch, Edit2, ClipBar
+		ControlGetText, Lot, Edit3, ClipBar
+		ControlGetText, Coated, Edit4, ClipBar
+		ControlGetText, Iteration, Edit5, ClipBar
 		Null:=""
 		sleep 100
 		if Product
@@ -200,7 +200,7 @@ Class VarBar{
 	}
 loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
 	global
-		GUI, varbar:default
+		GUI, ClipBar:default
 		; Iniread, Iteration, Settings.ini, SavedVariables, Iteration
 		iniRead, Product, Settings.ini, SavedVariables, Product
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
@@ -210,56 +210,56 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 
 
 		; if !Iteration
-			; GuiControl,Varbar:Text, Iteration, %Iteration%
+			; GuiControl,ClipBar:Text, Iteration, %Iteration%
 		;  if !Product
-			; GuiControl,Varbar:Text, Product, %Product%
+			; GuiControl,ClipBar:Text, Product, %Product%
 		; if Batch
-		; 	GuiControl,Varbar:Text, Batch, %Batch%
+		; 	GuiControl,ClipBar:Text, Batch, %Batch%
 		; if lot
-		; 	GuiControl,Varbar:Text, lot, %lot%
+		; 	GuiControl,ClipBar:Text, lot, %lot%
 		; if Coated
-		; 	GuiControl,Varbar:Text, Coated, %Coated%
-		; GUI, Varbar:Submit, Nohide
+		; 	GuiControl,ClipBar:Text, Coated, %Coated%
+		; GUI, ClipBar:Submit, Nohide
 	}
 }
 
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, VarBar ahk_exe RemoteVQ.exe
+#Ifwinactive, ClipBar ahk_exe RemoteVQ.exe
 	enter::
-		ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
+		ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
-			GUI, varbar:default
-			Gui, Varbar:submit, nohide
+			GUI, ClipBar:default
+			Gui, ClipBar:submit, nohide
 			LMS.Searchbar(clipboard,"{enter}")
 		}
 			else if (winControl="Edit4"){
 				Coated:=
-				GUI, varbar:default
-				ControlsetText, Edit4,%Coated%,VarBar ahk_exe RemoteVQ.exe
-				Gui, Varbar:submit, nohide
+				GUI, ClipBar:default
+				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe RemoteVQ.exe
+				Gui, ClipBar:submit, nohide
 				iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			}
 
 	return
 	Mbutton::
-			; ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
+			; ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
 			; MouseGetPos, , , winid, wincontrol
 			; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
-				VarBar.Menu()
+				ClipBar.Menu()
 				return
 			; }
 			; else if (winControl="Edit4"){
 				; Coated:=
-				; GUI, varbar:default
-				; ControlsetText, Edit4,%Coated%,VarBar ahk_exe RemoteVQ.exe
-				; Gui, Varbar:submit, nohide
+				; GUI, ClipBar:default
+				; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe RemoteVQ.exe
+				; Gui, ClipBar:submit, nohide
 				; iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			; }
 #ifwinactive
 
-#If MouseIsOver("VarBar ahk_exe RemoteVQ.exe")
-; Wheeldown::Varbar.SubIteration(250)
-; Wheelup::Varbar.AddIteration(250)
+#If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+; Wheeldown::ClipBar.SubIteration(250)
+; Wheelup::ClipBar.AddIteration(250)
 Wheelup::
 	iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 	sleep 200
@@ -274,31 +274,31 @@ Wheeldown::
 	clip.CodesRegex(CodeString)
 	; sleep 400
 	return
-+wheelup::Varbar.AddIteration(350)
-+wheeldown::Varbar.SubIteration(350)
++wheelup::ClipBar.AddIteration(350)
++wheeldown::ClipBar.SubIteration(350)
 Mbutton::
 Rbutton::
-		; ControlGetFocus,winControl,VarBar ahk_exe RemoteVQ.exe
+		; ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
 		MouseGetPos, , , winid, wincontrol
 		if (winControl="Edit1"){
-			VarBar.Menu()
+			ClipBar.Menu()
 		}
 		else if (winControl="Edit2"){
 			Batch:=
-			GUI, varbar:default
-			ControlsetText, Edit2,%Batch%,VarBar
+			GUI, ClipBar:default
+			ControlsetText, Edit2,%Batch%,ClipBar
 			iniwrite, Batch, Settings.ini, SavedVariables, Batch
 		}
 		else if (winControl="Edit3"){
 			Lot:=
-			GUI, varbar:default
-			ControlsetText, Edit3,%Lot%,VarBar
+			GUI, ClipBar:default
+			ControlsetText, Edit3,%Lot%,ClipBar
 			iniwrite, Lot, Settings.ini, SavedVariables, Lot
 		}
 		else if (winControl="Edit4"){
 			Coated:=
-			GUI, varbar:default
-			ControlsetText, Edit4,%Coated%,VarBar
+			GUI, ClipBar:default
+			ControlsetText, Edit4,%Coated%,ClipBar
 			iniwrite, Coated, Settings.ini, SavedVariables, Coated
 		}
 		else if (winControl="Edit5")
@@ -306,7 +306,7 @@ Rbutton::
 		return
 #if
 
-VarBar_ResetSub:
-	VarBar.Reset()
+ClipBar_ResetSub:
+	ClipBar.Reset()
 return
 

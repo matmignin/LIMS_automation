@@ -389,8 +389,8 @@ Orient(){
 	WbX:=WbX+400
 	Flovar_x:= NuX +900
 	Flovar_y:= NuH + NuY -28
-	varBar_nuX:=NuX+450
-	varBar_nuY:=NuY
+	ClipBar_nuX:=NuX+450
+	ClipBar_nuY:=NuY
 	TabSelect:=NuW-10
 	DocumentMenuSection_X:=NuW-200
 	DocumentMenuDocument_X:=NuW-140
@@ -517,8 +517,8 @@ AddProductFromClipboard(){
       ServingSize:=SheetInfo[8]
       clip.codesRegex(SheetInfo[9])
       Iteration:=CustomerPosition
-      ; ControlsetText, Static1,%CustomerPosition%,VarBar
-      GuiControl,Varbar:Text, Iteration, %Iteration%
+      ; ControlsetText, Static1,%CustomerPosition%,ClipBar
+      GuiControl,ClipBar:Text, Iteration, %Iteration%
 		if CustomerPosition
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
     }
@@ -612,7 +612,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 			iteration:=1
 		sleep 50
 		this.Dropdown_GenericIngredient(Iteration)
-		varbar.AddIteration(0)
+		ClipBar.AddIteration(0)
 	}
 	SetKeyDelay,0,0
 	sleep 200
@@ -1905,7 +1905,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 		lot:=
 		SetWinDelay, %NormalWinDelay%
 		blockinput, on
-		ControlGetText, Iteration, Edit5, VarBar
+		ControlGetText, Iteration, Edit5, ClipBar
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
@@ -2006,8 +2006,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 				sleep 200
 				Iteration:=CustomerPosition
 				sleep 200
-				GuiControl,Varbar:Text, Iteration, %CustomerPosition%
-				; GUI, VarBar:submit,NoHide
+				GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+				; GUI, ClipBar:submit,NoHide
 				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 				mouseclick, Left, 431, 541,1,0
 				this.Dropdown_CustomerSelect(CustomerPosition)

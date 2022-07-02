@@ -239,7 +239,7 @@ Class Clip {
 				sleep 200
 				Iteration:=CustomerPosition
 				sleep 200
-				GuiControl,Varbar:Text, Iteration, %CustomerPosition%
+				GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
       If Save
       {
         iniwrite, %Name%, Settings.ini, CopiedSpecs, Name
@@ -340,7 +340,7 @@ Append(Delimiter:="`n"){
 
 CodesRegex(input:=""){
   global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID,CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration
-    Gui Varbar:Default
+    Gui ClipBar:Default
     PriorCodestring:=CodeString
     PriorSampleID:=SampleID
     PriorBatch:=Batch
@@ -363,14 +363,14 @@ CodesRegex(input:=""){
     }
       Ct:=Coated ? " ct#" : ""
       stringUpper, Product, Product
-      GuiControl,Varbar:Text, Product, %Product%
-      GuiControl,Varbar:Text, Batch, %Batch%
-      GuiControl,Varbar:Text, lot, %lot%
-      GuiControl,Varbar:Text, Coated, %Coated%
+      GuiControl,ClipBar:Text, Product, %Product%
+      GuiControl,ClipBar:Text, Batch, %Batch%
+      GuiControl,ClipBar:Text, lot, %lot%
+      GuiControl,ClipBar:Text, Coated, %Coated%
       if rCustomerPosition
-        GuiControl,Varbar:Text, Iteration, %CustomerPosition%
-      ; GuiControl,Varbar:Text, Iteration, %Iteration%
-      		    GUI, VarBar:submit,NoHide
+        GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+      ; GuiControl,ClipBar:Text, Iteration, %Iteration%
+      		    GUI, ClipBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated)
       if (SampleID!=PriorSampleID){
         iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
@@ -397,14 +397,14 @@ CodesRegex(input:=""){
 
 
 
-SetVarbar(){
+SetClipBar(){
   global Product, Batch, Lot, Coated
-    Gui Varbar:Default
+    Gui ClipBar:Default
       stringUpper, Product, Product
-      GuiControl,Varbar:Text, Product, %Product%
-      GuiControl,Varbar:Text, Batch, %Batch%
-      GuiControl,Varbar:Text, lot, %lot%
-      GuiControl,Varbar:Text, Coated, %Coated%
+      GuiControl,ClipBar:Text, Product, %Product%
+      GuiControl,ClipBar:Text, Batch, %Batch%
+      GuiControl,ClipBar:Text, lot, %lot%
+      GuiControl,ClipBar:Text, Coated, %Coated%
       ; Ct:=Coated ? " ct#" : ""
 }
 
@@ -421,48 +421,48 @@ Regex(Category:=""){
     else
       Haystack:=Category
     sleep      100
-      Gui Varbar:Default
+      Gui ClipBar:Default
       RegExMatch(HayStack, RegexProduct,r)  ;"i)[abdefghijkl]\d{3}", rProduct)
         If rProduct {
-          GuiControl,Varbar:Text, Product, %rProduct%
+          GuiControl,ClipBar:Text, Product, %rProduct%
           stringUpper, rProduct, rProduct
           Product:=rProduct
         }
       RegExMatch(HayStack, RegexBatch, r)
         If rBatch {
-          GuiControl,Varbar:Text, Batch, %rBatch%
+          GuiControl,ClipBar:Text, Batch, %rBatch%
           Batch:=rBatch
         }
       RegExMatch(HayStack, RegexLot, r)
         If rLot {
-          GuiControl,Varbar:Text, lot, %rlot%
+          GuiControl,ClipBar:Text, lot, %rlot%
           lot:=rLot
         }
       RegExMatch(HayStack, RegexCoated, r)
         If rCoated {
-          GuiControl,Varbar:Text, Coated, %rCoated%
+          GuiControl,ClipBar:Text, Coated, %rCoated%
           Coated:=rCoated
         }
       RegExMatch(HayStack, RegexSampleID, r)
         If rSampleID {
           SampleID:=rSampleID
-          ; GuiControl,Varbar:Text, SampleID, %rSampleID%
+          ; GuiControl,ClipBar:Text, SampleID, %rSampleID%
         }
       RegExMatch(HayStack, RegexSampleID, r)
         If !rSampleID {
           SampleID:=
-          ; GuiControl,Varbar:Text, SampleID, %rSampleID%
+          ; GuiControl,ClipBar:Text, SampleID, %rSampleID%
         }
       If !rLot {
-        GuiControl,Varbar:Text, lot, %rlot%
+        GuiControl,ClipBar:Text, lot, %rlot%
         lot:=
       }
       If !rCoated {
-        GuiControl,Varbar:Text, Coated, %rCoated%
+        GuiControl,ClipBar:Text, Coated, %rCoated%
         Coated:=
       }
-      ; GuiControl, Varbar:MoveDraw, Coated
-      gui varbar:submit, nohide
+      ; GuiControl, ClipBar:MoveDraw, Coated
+      gui ClipBar:submit, nohide
       ; tt(Product " " Batch " " lot " ct#" Coated)
       sleep 20
   }

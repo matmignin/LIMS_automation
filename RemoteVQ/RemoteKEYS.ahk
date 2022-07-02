@@ -20,11 +20,11 @@
 	+F2::GetAllBatches()
 	; !F2::GetAllBatches("`n")
 	; F3::sendinput, %Lot%
-	!1::Varbar.Focus("Edit1")
-	!2::Varbar.Focus("Edit2")
-	!3::Varbar.Focus("Edit3")
-	!4::Varbar.Focus("Edit4")
-	!5::Varbar.Focus("Edit5")
+	!1::Clipbar.Focus("Edit1")
+	!2::Clipbar.Focus("Edit2")
+	!3::Clipbar.Focus("Edit3")
+	!4::Clipbar.Focus("Edit4")
+	!5::Clipbar.Focus("Edit5")
 	F4::sendinput, %Coated%
 	;+F3::3tap()
 
@@ -219,7 +219,7 @@ AddToList(){
 		F10::Worktab.EditRequest()
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
-		;;^`::						Varbar.reset()
+		;;^`::						Clipbar.reset()
 		enter::						LMSclick.okay()
 		+enter::					sendinput, {enter}
 		^enter::					sendinput, {enter}
@@ -335,10 +335,10 @@ AddToList(){
 			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 					Sendpassword()
 			}
-		else if winactive("VarBar ahk_exe RemoteVQ.exe"){
+		else if winactive("Clipbar ahk_exe RemoteVQ.exe"){
 				click
 				sleep 100
-				Varbar.WM_LBUTTONDBLCLK()
+				Clipbar.WM_LBUTTONDBLCLK()
 		}
 	}
 
