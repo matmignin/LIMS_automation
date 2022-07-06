@@ -32,17 +32,25 @@ if A_username != mmignin
 	#winactivateForce
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
-	Menu, Tray, Add, windowSpy, windowSpy
+	Menu,Tray,NoStandard
+
+	; Menu, Tray, add, Enter Specs, EnterSpecs
+	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
+	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
+	Menu, Tray, add, Manual &COAs folder, ShowManualCOA
+	Menu, Tray, add, &mfg folder, Showmfg
+	Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
+	Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
+	Menu, Tray, Add,
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, Add, All Products, AllProductsMsgbox
-	Menu, Tray, Add, &Reload, ReloadSub
-	; Menu, Tray, add, Enter Specs, EnterSpecs
-	Menu, Tray, add, Show Final Label Copy, ShowFinalLabelCopy
-	Menu, Tray, add, Show Scan Label Copy, ShowScanLabelCopy
-	Menu, Tray, add, Show Total CoAs, ShowFINAL_C_O_A
 	Menu, Tray, add, Show EditBox, ShowEditBox
-	Menu, Tray, add, AddClipBoardToList, AddToList
 	Menu, Tray, Add, Show Variables, ShowVariables
+	; Menu, Tray, add, AddClipBoardToList, AddToList
+	Menu, Tray, Add,
+	Menu, Tray, Add, windowSpy, windowSpy
+	Menu, Tray, Add, &Reload, ReloadSub
+	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
@@ -57,9 +65,6 @@ if A_username != mmignin
 	OnExit("Clipbar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	ReadIniFiles()
-
-
-
 	; Menu, Tray, Add, E&xit, ExitSub
 	LMS.Orient()
 	sleep 200
@@ -70,9 +75,13 @@ if A_username != mmignin
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
 	SetWinDelay, %NormalWinDelay%
+	OnMessage(0x404, "AHK_NotifyIcon")
 
 
 	; RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
+
+
+	return
 
 
 
@@ -106,11 +115,11 @@ ReadIniFiles(){
 	iniRead, Mercury_Requirement, Settings.ini, HeavyMetal_Variables, Mercury_Requirement
 
 	iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
-	iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
+	; iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
 	iniread, 2022_Final_C_O_APath, Settings.ini, FilePaths, 2022_Final_C_O_APath
 	iniread, FinishedLabelCopyPath, Settings.ini, FilePaths, FinishedLabelCopyPath
 	iniread, ManualCOAPath, Settings.ini, FilePaths, ManualCOAPath
-	iniread, mfgPath, Settings.ini, FilePaths, mfgPath
+	; iniread, mfgPath, Settings.ini, FilePaths, mfgPath
 	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CustomerListPath, Settings.ini, FilePaths, CustomerListPath
@@ -158,14 +167,26 @@ ShowVariables:
 ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
 	sleep 200
-	sendinput, %Product%{enter}
+	sendinput, {*}%Product%{*}{enter}
 	return
 ShowScanLabelCopy:
 	run, find %ScansLabelCopyPath%
 	sleep 200
-	sendinput, %Product%{enter}
+	sendinput, {*}%Product%{*}{enter}
 	return
-
+ShowManualCOA:
+	run, find "\\netapp\coa-lot#"
+	return
+Showmfg:
+	run, find "\\10.1.2.118\lms\Information\ECOPY\mfg"
+	sleep 200
+	sendinput, {*}%Product%{*}{enter}
+	return
+ShowGlobalVision:
+	run, find "\\10.1.2.118\share\GLOBAL VISION"
+	sleep 200
+	sendinput, {*}%Product%{*}{enter}
+	return
 ShowFINAL_C_O_A:
 	run, explorer %2022_Final_C_O_APath%
 	return
@@ -258,12 +279,12 @@ activeCheck:
 			; Clipbar.Show()
 	; }
 	else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
-		LMS.Orient()
+		; LMS.Orient()
 		sleep 300
-		SetKeyDelay,0,0
-		ReadIniFiles()
+		; SetKeyDelay,0,0
+		; ReadIniFiles()
 		CoordMode, mouse, Window
-		CoordMode, Tooltip, relative
+		; CoordMode, Tooltip, relative
 		; #maxthreadsperhotkey, 2
 		; SetTitleMatchMode, 2
 		; winMove, Clipbar ahk_class Clipbar ahk_exe RemoteVQ.exe, ,%Clipbar_nuX%, %Clipbar_nuY%

@@ -24,6 +24,8 @@ clipChange(type){
     ; LMS.AddDataFromClipboard("<<LabelCopy>>")
   ; }
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    ifwinnotexist, RemoteVQ ahk_exe explorer.exe
+      run, explorer "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ"
     exitapp
     sleep 25
     }
@@ -158,14 +160,14 @@ Class Clip {
       copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
       If Save
       {
-        iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
-        iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
-        iniwrite, %Percision%, Settings.ini, CopiedSpecs, Percision
-        iniwrite, %Requirement%, Settings.ini, CopiedSpecs, Requirement
-        iniwrite, %Units%, Settings.ini, CopiedSpecs, Units
-        iniwrite, %ResultID%, Settings.ini, CopiedSpecs, ResultID
-        iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
-        iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
+        ; iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
+        ; iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
+        ; iniwrite, %Percision%, Settings.ini, CopiedSpecs, Percision
+        ; iniwrite, %Requirement%, Settings.ini, CopiedSpecs, Requirement
+        ; iniwrite, %Units%, Settings.ini, CopiedSpecs, Units
+        ; iniwrite, %ResultID%, Settings.ini, CopiedSpecs, ResultID
+        ; iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
+        ; iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
       }
       ; SimpleClip:=
       ; copypastetoggle=1
@@ -197,15 +199,15 @@ Class Clip {
       copiedText:= TestID "`t" Description "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " SampleTemplate "`n Department: " Department
       If Save
       {
-        iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
-        iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
-        iniwrite, %SampleTemplate%, Settings.ini, CopiedSpecs, SampleTemplate
-        iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
-        iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-        iniwrite, %TestID%, Settings.ini, CopiedSpecs, TestID
-        iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-        iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
-        iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
+        ; iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
+        ; iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
+        ; iniwrite, %SampleTemplate%, Settings.ini, CopiedSpecs, SampleTemplate
+        ; iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
+        ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+        ; iniwrite, %TestID%, Settings.ini, CopiedSpecs, TestID
+        ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+        ; iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
+        ; iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
       }
       SimpleClip:=
       ; tt(CopiedText, 2000,1,1,2)

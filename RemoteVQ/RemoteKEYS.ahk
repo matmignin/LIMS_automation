@@ -423,14 +423,14 @@ AddToList(){
 	}
 	3down(){
 		global
-		FlashScreen("3-Down")
+		;FlashScreen("3-Down")
 		if winactive("Select samples for test:")
 			Clk(853, 657) ; click okay.
 		return
 	}
 	3up(){
 		global
-		FlashScreen("3-Up")
+		;FlashScreen("3-Up")
 		if winactive("Results Definition")
 			lms.menu()
 		else if winactive("Result Entry")

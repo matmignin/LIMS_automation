@@ -2540,16 +2540,6 @@ RemoveToolTip4:
 return
 }
 
-FlashScreen(Text:="",Color:="Black", ToolTipTime:=250){
-	global
-	SplashImage,,B w%A_ScreenWidth% h%A_ScreenHeight% cw%Color%
-	if !Text
-		Text:=A_ThisHotkey
-	tt(Text,ToolTipTime,A_caretx,A_caretY,4)
-	Sleep,10
-	SplashImage,off
-return
-}
 
 class Breaking {
 	Point(){
@@ -2605,14 +2595,6 @@ SendPassword(){
 return
 }
 
-ClickText(Button:="Lbutton", Count:="1"){
-	mousegetpos, mousex, mousey
-	SetDefaultMouseSpeed, 0
-	mouseClick, %Button%, %A_CaretX%, %A_caretY%, %Count%
-	mousemove, %mousex%, %mousey%, 0
-	SetDefaultMouseSpeed, 1
-}
-
 ListArray(The_Array,Option:="n"){
 	; global
 	if (option<>"n"){
@@ -2636,22 +2618,6 @@ HasValue(haystack, needle) {
 	if !(IsObject(haystack))
 		throw Exception("Bad haystack!", -1, haystack)
 return 0
-}
-Block(Time:=300, action:=""){
-	Global N
-	If N
-		exit
-	If action
-		send % action
-		sleep 100
-		; TT(TooltipMessage)
-	N:=1
-	SetTimer, Block, -%time%
-	return
-
-	Block:
-		N:=
-		return
 }
 
 BlockRepeat(Time:=300, ToolTipMessage:=""){
@@ -2689,4 +2655,28 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 }
 
 
-
+AHK_NotifyIcon(wParam, lParam) {
+	Static lbutton_presses := 0, PosX := 0, PosY := 0
+	If (lParam = 0x202) {	; WM_LBUTTONUP
+		CoordMode, Mouse, Screen
+		MouseGetPos, PosX, PosY ; store co-ords in case mouse moves during the timed wait below
+		SetTimer, AHK_NotifyIcon_Continue, -300 ; Wait 300ms for a second left click, then Continue
+		; Set counter (lbutton_presses) to 1, unless already 1; then, set to 2
+		lbutton_presses := ((lbutton_presses != 1) ? (1) : (2))
+		Return
+		AHK_NotifyIcon_Continue:
+		If (lbutton_presses = 1) { ; If only a single left click was registered
+			CoordMode, Menu, Screen
+			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
+		}
+		lbutton_presses := 0 ; Reset the counter to 0
+		Return
+	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
+		Return ; Do nothing besides the built-in double left click action (open the default menu item).
+	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
+		ifwinnotexist, RemoteVQ ahk_exe explorer.exe
+			run, explorer "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ"
+		exitApp ; Do nothing besides the built-in right click action (show the menu)
+	}
+	Return true
+}
