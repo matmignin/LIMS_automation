@@ -13,18 +13,23 @@
 		; SpecTab.GetRowText()
 		; SpecTab.AutoFill()
 		; return
+	+!F5::LMS.Menu()
+	^Space::LMS.SearchBar("",,"False")
+	!^Space::LMS.SearchBar("","{delete}","False")
 	^+s::specTab.TestDefinitionEditor_Stability()
-	!F1::GetAllProducts("`n")
+	;!F1::GetAllProducts("`n")
 	+F1::worktab.NewTestRequestLink()
+	F2::Reload
 	;F2::sendinput, %Batch%
-	+F2::GetAllBatches()
+	^+F16::GetAllProducts()
+	^+F15::GetAllBatches()
 	; !F2::GetAllBatches("`n")
 	; F3::sendinput, %Lot%
-	!1::Clipbar.Focus("Edit1")
-	!2::Clipbar.Focus("Edit2")
-	!3::Clipbar.Focus("Edit3")
-	!4::Clipbar.Focus("Edit4")
-	!5::Clipbar.Focus("Edit5")
+	!F1::ClipBar.Focus("Edit1")
+	!F2::ClipBar.Focus("Edit2")
+	!F3::ClipBar.Focus("Edit3")
+	!F4::ClipBar.Focus("Edit4")
+	!F5::ClipBar.Focus("Edit5")
 	F4::sendinput, %Coated%
 	;+F3::3tap()
 
@@ -219,7 +224,7 @@ AddToList(){
 		F10::Worktab.EditRequest()
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
-		;;^`::						Clipbar.reset()
+		;;^`::						ClipBar.reset()
 		enter::						LMSclick.okay()
 		+enter::					sendinput, {enter}
 		^enter::					sendinput, {enter}
@@ -335,10 +340,10 @@ AddToList(){
 			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
 					Sendpassword()
 			}
-		else if winactive("Clipbar ahk_exe RemoteVQ.exe"){
+		else if winactive("ClipBar ahk_exe RemoteVQ.exe"){
 				click
 				sleep 100
-				Clipbar.WM_LBUTTONDBLCLK()
+				ClipBar.WM_LBUTTONDBLCLK()
 		}
 	}
 
@@ -473,6 +478,11 @@ AddToList(){
 				else
 					return
 			}
+			else if winactive("Edit test"){
+				sendinput, {click 384, 222}{tab 2}{end 2}
+				sendinput, {shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}
+				sendinput, {Click 334, 618}
+			}
 			else if winactive("Edit sample")
 				worktab.CustomerMenu()
 			else if winactive("Composition")
@@ -485,27 +495,25 @@ AddToList(){
 					WorkTab.registerNewSamples()
 					return
 			}
-			else if winactive("Edit test"){
-				sendinput,{click 384, 222}{tab 2}{end 2}
-				sendinput % "(on sample log)"
-				sendinput, {Click 334, 618}
-			}
 			return
 	}
 
 
 
 #ifwinactive, ahk_exe eln.exe
-	:*:sl`;::`(On Sample Log)
+	:*:osl`;::`(On Sample Log)
 	:*:fm`;::`Finished, Micro
 	:*:ia`;::`In Process, Analytical
 	:*:iaa`;::`In Process, Analytical (Annual)
 	:*:ip`;::`In Process, Physical
 	:*:ir`;::`In Process, Retain
+	:*:st`;::`Stability
 	:*:cr`;::`Coated, Retain
 	:*:ca`;::`Coated, Analytical
 	:*:cp`;::`Coated, Physical
 	:*:in`;::`ingredient
+	; :*:pa`;::`P. aeruginosa
+	:*:uc`;::`Update Total Coliforms Method
 #Ifwinactive, Edit Formulation
 	:*R:00`;::`#00 capsule / 0.917`" x 0.336`"
 	:*R:00e`;::`#00 elongated capsule / 0.995`" x 0.336`"

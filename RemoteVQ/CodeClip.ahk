@@ -23,17 +23,13 @@ clipChange(type){
       ; iteration:=1
     ; LMS.AddDataFromClipboard("<<LabelCopy>>")
   ; }
-  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
-    ifwinnotexist, RemoteVQ ahk_exe explorer.exe
-      run, explorer "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ"
-    exitapp
-    sleep 25
-    }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProductFromClipboard()
+  else if InStr(Clipboard, "<<QuIT>>",true, 1,1)
+    exitsub()
   else if Winactive("Test Definition Editior"){
-    iniwrite, %Clipboard%, Settings.ini, CopiedSpecs, Description
-    Description:=Clipboard
+    Description:=Trim(Clipboard)
+    iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
   }
   else if Winactive("Results Definition")
     clip.ParseSpecsTable()
@@ -296,7 +292,7 @@ EditBox(Input:=""){
     if !Text
 			clipboard:=EditBox
     sleep 50
-  TT(Editbox,500,,,,200)
+  ; TT(Editbox,500,,,,200)
 		return
 
     EditBoxGuiSize:

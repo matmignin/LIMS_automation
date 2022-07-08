@@ -10,7 +10,7 @@ if A_username != mmignin
 	; #KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 5500
+	#ClipboardTimeout 7500
 	; #HotkeyModifierTimeout
 	SetKeyDelay,0,0
 	#maxthreadsperhotkey, 2
@@ -35,6 +35,9 @@ if A_username != mmignin
 	Menu,Tray,NoStandard
 
 	; Menu, Tray, add, Enter Specs, EnterSpecs
+	ReadIniFiles()
+	OnMessage(0x404, "AHK_NotifyIcon")
+
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
 	Menu, Tray, add, Manual &COAs folder, ShowManualCOA
@@ -45,43 +48,49 @@ if A_username != mmignin
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, Add, All Products, AllProductsMsgbox
 	Menu, Tray, add, Show EditBox, ShowEditBox
-	Menu, Tray, Add, Show Variables, ShowVariables
 	; Menu, Tray, add, AddClipBoardToList, AddToList
 	Menu, Tray, Add,
-	Menu, Tray, Add, windowSpy, windowSpy
+	Menu, Tray, Add, Show Variables, ShowVariables
+	; Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
+	; Menu, Tray, Click, 1
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
-	RegexSampleID:="i)(?P<SampleID>(s|\$)202\d{5}-\d{3})"
+	; if SampleIDMode=GUID
+		; RegexSampleID:="i)(?P<SampleID>([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+	; else if SampleIDMode=SampleID
+		RegexSampleID:="i)(?P<SampleID>(s|\$)202\d{5}-\d{3}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+	; else
+		; sampleID:=
+
 	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
-	OnExit("Clipbar.SaveVariables")
+	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
-	ReadIniFiles()
 	; Menu, Tray, Add, E&xit, ExitSub
 	LMS.Orient()
 	sleep 200
-	Clipbar.Show()
+	ClipBar.Show()
 	try Menu, Tray, Icon, %AppIconPath%
 	#include Nugenisis.ahk
 	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
 	SetWinDelay, %NormalWinDelay%
-	OnMessage(0x404, "AHK_NotifyIcon")
 
 
 	; RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
 
 
 	return
+
 
 
 
@@ -93,6 +102,7 @@ ReadIniFiles(){
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
 	iniRead, SampleID, Settings.ini, SavedVariables, SampleID
+	; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
 	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
@@ -114,11 +124,11 @@ ReadIniFiles(){
 	iniRead, Mercury_Limit, Settings.ini, HeavyMetal_Variables, Mercury_Limit
 	iniRead, Mercury_Requirement, Settings.ini, HeavyMetal_Variables, Mercury_Requirement
 
-	iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
+	; iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
 	; iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
-	iniread, 2022_Final_C_O_APath, Settings.ini, FilePaths, 2022_Final_C_O_APath
-	iniread, FinishedLabelCopyPath, Settings.ini, FilePaths, FinishedLabelCopyPath
-	iniread, ManualCOAPath, Settings.ini, FilePaths, ManualCOAPath
+	; iniread, 2022_Final_C_O_APath, Settings.ini, FilePaths, 2022_Final_C_O_APath
+	; iniread, FinishedLabelCopyPath, Settings.ini, FilePaths, FinishedLabelCopyPath
+	; iniread, ManualCOAPath, Settings.ini, FilePaths, ManualCOAPath
 	; iniread, mfgPath, Settings.ini, FilePaths, mfgPath
 	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
@@ -134,10 +144,13 @@ Reloadsub(){
   }
 Exitsub(){
 	global
-	exitapp
+	ifwinnotexist, RemoteVQ ahk_exe explorer.exe
+		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ"
+	exitApp
+	sleep 200
   }
 windowSpy(){
-  Run, WS.exe,%WindowSpyPath%\
+  Run, WS.exe
   }
 
 AllBatchesMsgbox:
@@ -155,27 +168,31 @@ AllProductsMsgbox:
 ShowVariables:
 	run, edit Settings.ini
 	sleep 200
-	WinWaitNotActive, Settings - Notepad,, 10
+	; WinWaitNotActive, Settings - Notepad,, 10
 			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 	; winwaitclose, Settings - Notepad,,10
 		; if errorlevel
 		; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
-		readInIFiles()
-		LMS.Orient()
-		Clipbar.Show()
+		; readInIFiles()
+		; LMS.Orient()
+		; ClipBar.Show()
 	return
 ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
 	sleep 200
+	; winmaximize, Search Results
 	sendinput, {*}%Product%{*}{enter}
 	return
 ShowScanLabelCopy:
-	run, find %ScansLabelCopyPath%
+	run, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
 	sleep 200
+	; winmaximize, Search Results
 	sendinput, {*}%Product%{*}{enter}
 	return
 ShowManualCOA:
-	run, find "\\netapp\coa-lot#"
+	run, find "\\10.1.2.118\coa-lot#"
+	sleep 200
+	sendinput, {*}%Product%{*}{enter}
 	return
 Showmfg:
 	run, find "\\10.1.2.118\lms\Information\ECOPY\mfg"
@@ -186,9 +203,10 @@ ShowGlobalVision:
 	run, find "\\10.1.2.118\share\GLOBAL VISION"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
+	; winmaximize, Search Results
 	return
 ShowFINAL_C_O_A:
-	run, explorer %2022_Final_C_O_APath%
+	run, explorer "\\10.1.2.118\share\QC LAB\final_c_o_a\2022 CoAs"
 	return
 ShowEditBox:
 	clip.editbox()
@@ -207,23 +225,23 @@ activeCheck:
 		reload
 		return
 	}
-	else if MouseIsOver("Clipbar ahk_exe RemoteVQ.exe"){
+	else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
 		TT(CodeString "`n" SampleID,2000,,,2)
 		TT(copiedText "`n",2000,,65,4)
 		TT(clipboard,1000,2,450,3)
 		}
-	else If winexist("Release: Rotational Testing Schedule"){
-		winactivate,
-		click 131, 141 ;click release
-		sleep 800
-		click %DocumentMenuSection_X%, %DocumentMenu_Y% ;click dropdown for Section menu
-		sendinput, {down}{enter}
-		winwaitactive, Sign:,,3
-		Sendpassword()
-		click %DocumentMenuDocument_X%, %DocumentMenu_Y% ;click dropdown for Document Menu
-		sendinput, {down}{enter}
-		return
-	}
+	; else If winexist("Release: Rotational Testing Schedule"){
+	; 	winactivate,
+	; 	click 131, 141 ;click release
+	; 	sleep 800
+	; 	click %DocumentMenuSection_X%, %DocumentMenu_Y% ;click dropdown for Section menu
+	; 	sendinput, {down}{enter}
+	; 	winwaitactive, Sign:,,3
+	; 	Sendpassword()
+	; 	click %DocumentMenuDocument_X%, %DocumentMenu_Y% ;click dropdown for Document Menu
+	; 	sendinput, {down}{enter}
+	; 	return
+	; }
 	else If winexist("Release: ahk_exe eln.exe"){
 		winactivate
 		click 128,146
@@ -276,20 +294,49 @@ activeCheck:
 			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 			; readInIFiles()
 			; LMS.Orient()
-			; Clipbar.Show()
+			; ClipBar.Show()
 	; }
-	else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
-		; LMS.Orient()
-		sleep 300
-		; SetKeyDelay,0,0
-		; ReadIniFiles()
-		CoordMode, mouse, Window
-		; CoordMode, Tooltip, relative
-		; #maxthreadsperhotkey, 2
-		; SetTitleMatchMode, 2
-		; winMove, Clipbar ahk_class Clipbar ahk_exe RemoteVQ.exe, ,%Clipbar_nuX%, %Clipbar_nuY%
-		SetWinDelay, %NormalWinDelay%
-		}
+	else
+		return
+	; else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
+	; 	; LMS.Orient()
+	; 	sleep 300
+	; 	; SetKeyDelay,0,0
+	; 	; ReadIniFiles()
+	; 	CoordMode, mouse, Window
+	; 	; CoordMode, Tooltip, relative
+	; 	; #maxthreadsperhotkey, 2
+	; 	; SetTitleMatchMode, 2
+	; 	; winMove, ClipBar ahk_class ClipBar ahk_exe RemoteVQ.exe, ,%ClipBar_nuX%, %ClipBar_nuY%
+	; 	SetWinDelay, %NormalWinDelay%
+	; 	}
 		; return
 return
 
+
+
+AHK_NotifyIcon(wParam, lParam) {
+	Static lbutton_presses := 0, PosX := 0, PosY := 0
+	If (lParam = 0x202) {	; WM_LBUTTONUP
+		CoordMode, Mouse, Screen
+		MouseGetPos, PosX, PosY ; store co-ords in case mouse moves during the timed wait below
+		SetTimer, AHK_NotifyIcon_Continue, -300 ; Wait 300ms for a second left click, then Continue
+		; Set counter (lbutton_presses) to 1, unless already 1; then, set to 2
+		lbutton_presses := ((lbutton_presses != 1) ? (1) : (2))
+		CoordMode, Menu, Window
+		Return
+		AHK_NotifyIcon_Continue:
+		If (lbutton_presses = 1) { ; If only a single left click was registered
+			CoordMode, Menu, Screen
+			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
+		}
+		lbutton_presses := 0 ; Reset the counter to 0
+		CoordMode, Menu, Window
+		Return
+	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
+		Return ; Do nothing besides the built-in double left click action (open the default menu item).
+	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
+		exitsub()
+	}
+	Return true
+}

@@ -14,7 +14,7 @@ Class ClipBar{
 		ClipBar_W=370
 		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		; ClipBar_Y:=-Nugenesis_h
-		ClipBar_Y:=Nugenesis_Y+2
+		ClipBar_Y:=Nugenesis_Y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui ClipBar:Default
 		Gui, ClipBar:+Delimiter`n
@@ -36,7 +36,11 @@ Class ClipBar{
 		CoordMode, mouse, window
 		; OnMessage(0x0201, "WM_LBUTTONDOWN")
 		this.loadSavedVariables()
-
+			OnMessage(0x0201, "WM_LBUTTONDOWN")
+			OnMessage(0x0203, "WM_LBUTTONDBLCLK")
+			; OnMessage(  WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
+			;OnMessage(0x0200, "WM_MOUSEMOVE")
+			; OnMessage(0x203,  "VariableBar_Relocate")
 		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
 		OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
 		winSet, Transparent, %ClipBar_T%, AHK_id %GUIID%
@@ -222,7 +226,19 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		; GUI, ClipBar:Submit, Nohide
 	}
 }
-
+WM_LBUTTONDOWN(wParam, lParam){
+		If !MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+		return
+		PostMessage, 0xA1, 2
+				X := lParam & 0xFFFF
+				Y := lParam >> 16
+				if A_GuiControl
+					ctrl := "`n(in control " . A_GuiControl . ")"
+				PostMessage, 0xA1, 2
+				MouseGetPos,,,,winControl
+			;	setTimer, SaveVarBarLocaton, -1500
+}
+		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
 #Ifwinactive, ClipBar ahk_exe RemoteVQ.exe
 	enter::

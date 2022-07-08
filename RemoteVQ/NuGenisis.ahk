@@ -133,22 +133,28 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 	Menu(){
 		Global
 		try Menu,Menu, deleteAll
+			Menu, Menu, add, &Final Label Copy, ShowFinalLabelCopy
+			Menu, Menu, add, &Scan Label Copy, ShowScanLabelCopy
+			Menu, Menu, add, Manual &COAs folder, ShowManualCOA
+			Menu, Menu, add, &mfg folder, Showmfg
+			Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
+			Menu, Menu, add,
 		if winactive("NuGenesis LMS"){
 			LMS.Orient()
 			LMS.DetectTab()
 			;Menu,Menu, add, Copy &Template, autofill
 			; If CopyPasteToggle=1
-				Menu,Menu, add, Paste &Specs, Autofill
+			Menu,Menu, add, Copy &Specs, Autofill
+			Menu,Menu, add, Paste &Specs, Autofill
 			; If CopyPasteToggle=0
-				Menu,Menu, add, Copy &Specs, Autofill
-			Menu, Menu, add, Paste All &Products, +F1
-			Menu, Menu, add, Paste All &Batches, +F2
+			Menu, Menu, add, Paste All &Products, GetAllProducts
+			Menu, Menu, add, Paste All &Batches, GetAllBatches
 			; msgbox, %Tab%
 			; click
 			if (Tab="Samples")
 				Menu, Menu, add, New &Request, AutoFill
-			else if (Tab="Tests")
-				Menu,Menu, add, &Delete Retain, Autofill
+			; else if (Tab="Tests")
+				; Menu,Menu, add, &Delete Retain, Autofill
 			else if (Tab="Specs"){
 				this.CopyPasteSpec()
 				Menu,Menu, add, &Delete Retain, Autofill
@@ -156,11 +162,10 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 				Menu,Menu, add, NewSpecVersion, ^#F11
 				Menu,Menu, add, RemoveTestSpec, !#F11
 			}
-
-			else {
-				Menu,Menu, add, &Production Server, LMS_Env
-		Menu,Menu, add, &Test Server, LMS_Env
-			}
+			; else {
+			; 	Menu,Menu, add, &Production Server, LMS_Env
+			; 	Menu,Menu, add, &Test Server, LMS_Env
+			; }
 			; Menu, Menu, add, Paste All &WorkSheets, F19 & up
 			Try Menu,menu,show
 		}
@@ -191,12 +196,12 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 		; 	Try Menu,menu,show
 		; 	return
 		; }
-		if winactive("Login"){
-			Menu,Menu, add, &Login, LMS_Env
-			Menu,Menu, add, &Production Server, LMS_Env
-			Menu,Menu, add, &Test Server, LMS_Env
-			Try Menu,menu,show
-		}
+		; if winactive("Login"){
+		; 	Menu,Menu, add, &Login, LMS_Env
+		; 	Menu,Menu, add, &Production Server, LMS_Env
+		; 	Menu,Menu, add, &Test Server, LMS_Env
+		; 	Try Menu,menu,show
+		; }
 		else
 			return
 	}
@@ -215,24 +220,26 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 		else if winactive("NuGenesis LMS") {
 			LMS.DetectTab()
 			if (Tab="Products") {
-				If (Code=Product){
+				; If (Code=Product){
 					clk(x%Tab%Search,yProductsSearch)
 					Sendinput, {ctrldown}{a}{ctrlup}
 					If Overwrite=true
 						Sendinput, ^{x}
-					Sendinput, %Product%{ctrldown}{a}{ctrlup}
+					If Code
+						Sendinput, %Product%
+					sendinput, {ctrldown}{a}{ctrlup}
 					If Overwrite=true
 						sendinput, {right}{space}^{v}^{a}^{c}
 					if PostCmd!=""
 						sendinput % PostCmd
 					return
-				}
-				If (Code=Batch) { ;click something edit comp
-					clk(40, 384)
-					sleep 200
-					clk(455, 472,,2)
-					return
-				}
+				; }
+				; If (Code=Batch) { ;click something edit comp
+					; clk(40, 384)
+					; sleep 200
+					; clk(455, 472,,2)
+					; return
+				; }
 			}
 			if (Tab="Specs") {
 				; If (Code=Product) {
@@ -240,11 +247,13 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 				Sendinput, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Sendinput, ^{x}
-				Sendinput, %Product%{ctrldown}{a}{ctrlup}
+				if Code
+					Sendinput, %Product%
+				sendinput, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
-					send % PostCmd
+					sendinput % PostCmd
 				return
 			}
 			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
@@ -264,8 +273,8 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 				sleep 20
 				Sendinput, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					Send, ^{x}
-				Send, %Code%{ctrldown}{a}{ctrlup}
+					Sendinput, ^{x}
+				Sendinput, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
@@ -283,7 +292,7 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 		sleep 20
 		send, ^c
 		sleep 200
-		Send, {enter}
+		Sendinput, {enter}
 		return
 	}
 	SearchbarPaste(){
@@ -1898,20 +1907,22 @@ Class WorkTab { 		;;______WorkTab Class______________
 	registerNewSamples(){
 		global
 		mx:=
+		SetWinDelay, 500
 		my:=
 		If Coated = "ERROR"
 		Coated:=
 		If Lot = "ERROR"
 		lot:=
-		SetWinDelay, %NormalWinDelay%
+		if !Iteration
+			iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+		; ControlGetText, Iteration, Edit5, ClipBar
 		blockinput, on
-		ControlGetText, Iteration, Edit5, ClipBar
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
 		sleep 200
 		sleep 200
-		winwaitactive, Edit sample (Field Configuration,, 2
+		winwaitactive, Edit sample (Field Configuration,, 3
 			if ErrorLevel
 				sleep 800
 			Sendinput, {tab 2}{right}{click 277, 139}{tab 7}
@@ -1936,16 +1947,13 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Breaking.Point()
 			sleep 300
 			; If !(Iteration)
-			; {
-				; msgbox, no Iteration
-				; Worktab.CustomerMenu()
-				; return
-				; }
 			; else				if CustomerPosition > 0
 				if (Iteration > 0)
 					CustomerPosition:= Iteration + 1
-				if (Iteration < 0)
+				else if (Iteration < 0)
 					CustomerPosition:= Iteration - 1
+				else
+					customerPosition:=0
 					; Iteration-=1
 			sleep 150
 			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
@@ -2196,18 +2204,18 @@ Class WorkTab { 		;;______WorkTab Class______________
 	AddSampleLog(count)
 	{
 		global
-		SetWinDelay, %NormalWinDelay%
+		;SetWinDelay, %NormalWinDelay%
 		loop, %count%
 		{
 			click 46, 877
 			if !winactive("Edit test (Field Configuration: ")
-				winwaitactive, Edit test (Field Configuration: ,, 2
-				Send,{Click, 402, 284}{end}(on sample log){click, 334, 618}
-				winwaitactive, NuGenesis LMS,,2
-				sleep 300
-				winactivate, NuGenesis LMS
-				sleep 500
-				Send,{click, 1290, 703}{down %A_index%}
+				winactivate
+			Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
+			winwaitactive, NuGenesis LMS,,2
+			sleep 300
+			winactivate, NuGenesis LMS
+			sleep 500
+			Send,{click, 1290, 703}{down %A_index%}
 			}
 			return
 		}
@@ -2655,28 +2663,4 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 }
 
 
-AHK_NotifyIcon(wParam, lParam) {
-	Static lbutton_presses := 0, PosX := 0, PosY := 0
-	If (lParam = 0x202) {	; WM_LBUTTONUP
-		CoordMode, Mouse, Screen
-		MouseGetPos, PosX, PosY ; store co-ords in case mouse moves during the timed wait below
-		SetTimer, AHK_NotifyIcon_Continue, -300 ; Wait 300ms for a second left click, then Continue
-		; Set counter (lbutton_presses) to 1, unless already 1; then, set to 2
-		lbutton_presses := ((lbutton_presses != 1) ? (1) : (2))
-		Return
-		AHK_NotifyIcon_Continue:
-		If (lbutton_presses = 1) { ; If only a single left click was registered
-			CoordMode, Menu, Screen
-			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
-		}
-		lbutton_presses := 0 ; Reset the counter to 0
-		Return
-	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
-		Return ; Do nothing besides the built-in double left click action (open the default menu item).
-	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
-		ifwinnotexist, RemoteVQ ahk_exe explorer.exe
-			run, explorer "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ"
-		exitApp ; Do nothing besides the built-in right click action (show the menu)
-	}
-	Return true
-}
+
