@@ -798,15 +798,17 @@ class SpecTab { 	;; _________SpecTab class_______
 		ShiftTable_Y:=200
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, window
-		ifwinnotactive, ahk_exe eln.exe
+		; ifwinnotactive, ahk_exe eln.exe
 			winactivate, ahk_exe eln.exe
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
-		SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
-		SpecTable_Y:=LMS_Y+ShiftTable_Y
+		SpecTable_X:=LMS_X+10
+		; SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
+		; SpecTable_Y:=LMS_Y+ShiftTable_Y
+		SpecTable_Y:=LMS_Y+ShiftTable_Y+600
 		CoordMode, mouse, screen
-
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
+		; OnMessage(0x0201, "WM_Lbuttondown")
 		SpecTab.ShowGUI()
 		CoordMode, mouse, window
 		; sleep 100
@@ -818,10 +820,11 @@ class SpecTab { 	;; _________SpecTab class_______
 		CoordMode, mouse, screen
 		ScreenEdge_X:=A_ScreenWidth-15
 		ScreenEdge_Y:=A_Screenheight-180
+		sleep 200
 		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
 		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
 		CoordMode, mouse, window
-		OnMessage(0x0201, "WM_Lbuttondown")
+		; OnMessage(0x0201, "WM_Lbuttondown")
 		return
 	}
 
@@ -836,6 +839,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
 		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		OnMessage(0x0201, "WM_Lbuttondown")
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
 				continue
@@ -843,6 +847,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
 			Test:= Name[A_index]
 			}
+			; CoordMode, mouse, screen
 		}
 
 			ModifyColumns(){

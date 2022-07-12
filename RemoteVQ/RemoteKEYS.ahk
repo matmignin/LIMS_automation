@@ -177,6 +177,15 @@ AddToList(){
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::lms.searchbarPaste()
+		F10::
+			Click, 2
+			sleep 400
+			if winactive("Edit test (Field Configuration: ")
+				Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
+			return
+	#ifwinactive, Edit test (Field Configuration:
+			+Mbutton::
+			F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
 
 
 	#Ifwinactive,Select Iterations
@@ -485,11 +494,11 @@ AddToList(){
 			}
 			else if winactive("Edit sample")
 				worktab.CustomerMenu()
-			else if winactive("Composition")
-				ProductTab.AddCOASpace()
+			; else if winactive("Composition")
+				; ProductTab.AddCOASpace()
 			else if winactive("Register new samples"){
 				Send, {click}
-				Excel.Batches()
+				; Excel.Batches()
 				winactivate, Register new samples
 					sleep 200
 					WorkTab.registerNewSamples()

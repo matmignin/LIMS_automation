@@ -11,7 +11,7 @@ if A_username != mmignin
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
-	; #HotkeyModifierTimeout
+	#HotkeyModifierTimeout
 	SetKeyDelay,0,0
 	#maxthreadsperhotkey, 2
 	SetTitleMatchMode, 2
@@ -52,6 +52,7 @@ if A_username != mmignin
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
 	; Menu, Tray, Add, windowSpy, windowSpy
+	Menu, Tray, Add, Orient, OrientSub
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
@@ -79,7 +80,7 @@ if A_username != mmignin
 	sleep 200
 	ClipBar.Show()
 	try Menu, Tray, Icon, %AppIconPath%
-	#include Nugenisis.ahk
+	#include Nugenesis.ahk
 	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
@@ -139,8 +140,11 @@ ReadIniFiles(){
 
 
 Reloadsub(){
-	global
 	reload
+  }
+Orientsub(){
+	global
+	LMS.Orient()
   }
 Exitsub(){
 	global
@@ -190,7 +194,7 @@ ShowScanLabelCopy:
 	sendinput, {*}%Product%{*}{enter}
 	return
 ShowManualCOA:
-	run, find "\\10.1.2.118\coa-lot#"
+	run, find "\\10.1.2.118\coa-lot`#"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
 	return
@@ -331,12 +335,12 @@ AHK_NotifyIcon(wParam, lParam) {
 			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
 		}
 		lbutton_presses := 0 ; Reset the counter to 0
-		CoordMode, Menu, Window
+		CoordMode, Mouse, Window
 		Return
 	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
 		Return ; Do nothing besides the built-in double left click action (open the default menu item).
 	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
-		exitsub()
+		Reload()
 	}
 	Return true
 }
