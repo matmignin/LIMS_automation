@@ -95,8 +95,8 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 					ProductTab.AddNewIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
 					sleep 150
 					ifwinnotactive, Composition
-					winactivate, Composition
-					sleep 150
+						winactivate, Composition
+					sleep 175
 					}
 				}
 			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor"){
@@ -121,7 +121,8 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 		  }
 		  }
 	else
-		clip.codesRegex()
+		msgbox, add data from clipboard failed
+		; clip.codesRegex()
 	sleep 100
 	return
 
@@ -139,6 +140,8 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 			Menu, Menu, add, &mfg folder, Showmfg
 			Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
 			Menu, Menu, add,
+			Menu, Menu, add, Add Sample Logs, !^+F3
+
 		if winactive("NuGenesis LMS"){
 			LMS.Orient()
 			LMS.DetectTab()
@@ -146,15 +149,10 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 			; If CopyPasteToggle=1
 			Menu,Menu, add, Copy &Specs, Autofill
 			Menu,Menu, add, Paste &Specs, Autofill
-			; If CopyPasteToggle=0
 			Menu, Menu, add, Paste All &Products, GetAllProducts
 			Menu, Menu, add, Paste All &Batches, GetAllBatches
-			; msgbox, %Tab%
-			; click
 			if (Tab="Samples")
 				Menu, Menu, add, New &Request, AutoFill
-			; else if (Tab="Tests")
-				; Menu,Menu, add, &Delete Retain, Autofill
 			else if (Tab="Specs"){
 				this.CopyPasteSpec()
 				Menu,Menu, add, &Delete Retain, Autofill
@@ -162,11 +160,6 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 				Menu,Menu, add, NewSpecVersion, ^#F11
 				Menu,Menu, add, RemoveTestSpec, !#F11
 			}
-			; else {
-			; 	Menu,Menu, add, &Production Server, LMS_Env
-			; 	Menu,Menu, add, &Test Server, LMS_Env
-			; }
-			; Menu, Menu, add, Paste All &WorkSheets, F19 & up
 			Try Menu,menu,show
 		}
 		if winactive("Edit specification"){
@@ -184,24 +177,6 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 			Try Menu,menu,show
 			return
 		}
-		; if winactive("Edit specification"){
-		; 	;Menu,Menu, add, Departments, Autofill
-		; 	Menu, DepartmentsMenu, add, Analytical, AutoFill
-		; 	; Menu, DepartmentsMenu, add, Physical, AutoFill
-		; 	; Menu, DepartmentsMenu, add, Micro, AutoFill
-		; 	; Menu, DepartmentsMenu, add, Retain, AutoFill
-		; 	; Menu, DepartmentsMenu, add, Coated_Physical, AutoFill
-		; 	; Menu, DepartmentsMenu, add, Coated_Retain, AutoFill
-		; 	Menu,Menu, add, departments, :DepartmentsMenu
-		; 	Try Menu,menu,show
-		; 	return
-		; }
-		; if winactive("Login"){
-		; 	Menu,Menu, add, &Login, LMS_Env
-		; 	Menu,Menu, add, &Production Server, LMS_Env
-		; 	Menu,Menu, add, &Test Server, LMS_Env
-		; 	Try Menu,menu,show
-		; }
 		else
 			return
 	}
@@ -565,15 +540,16 @@ AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient
 		}
 			sleep 200
 	}
+	sleep 100
 	if Dont_Hit_Okay
 		click, 150, 73
 	else
 		ProductTab.Dropdown_IngredientSelect(Ingredient_Id)
-	sleep 100
+	sleep 200
 	Send,{tab 6}^{a}
 	sleep 40
-	sendinput, %Ingredient_position%{tab}^a
-	Sendinput,%Ingredient_Name%
+	sendinput % TRIM(Ingredient_position,"`r`n")
+	Sendinput,{tab}^a%Ingredient_Name%
 	sleep 200
 	if Strlen(Ingredient_Name) > 250
 		sleep 500
@@ -581,12 +557,12 @@ AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient
 		Sendinput,{tab}
 	Send,{tab 2}^a
 	Send,%Ingredient_Claim%
-	sleep 150
+	sleep 175
 	Breaking.Point()
 	If !Dont_Hit_Okay
 		Sendinput,{enter}
 	Breaking.Point()
-	sleep 150
+	sleep 250
 	ifwinexist, Duplicate ingredient ID
 		exit
 
@@ -798,8 +774,9 @@ class SpecTab { 	;; _________SpecTab class_______
 		ShiftTable_Y:=200
 		Try GUI, Spec_Table:destroy
 		CoordMode, mouse, window
-		; ifwinnotactive, ahk_exe eln.exe
+		ifwinnotactive, ahk_exe eln.exe
 			winactivate, ahk_exe eln.exe
+			sleep 200
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
 		SpecTable_X:=LMS_X+10
 		; SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
@@ -811,7 +788,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		; OnMessage(0x0201, "WM_Lbuttondown")
 		SpecTab.ShowGUI()
 		CoordMode, mouse, window
-		; sleep 100
+		sleep 100
 		return
 	}
 
@@ -874,6 +851,7 @@ class SpecTab { 	;; _________SpecTab class_______
 				LV_GetText(Percision, 		A_EventInfo,6)
 				LV_GetText(Description, 	A_EventInfo,7)
 				LV_GetText(Method, 			A_EventInfo,8)
+				sleep 200
 				GUI, Spec_Table:submit,NoHide
 			}
 
@@ -914,13 +892,13 @@ class SpecTab { 	;; _________SpecTab class_______
 	}
 		;; ____Copy spec template
 	CopyPasteSpec(){
-		global copypasteToggle
+		global
 		click
 		try Menu,Menu, deleteAll
 		Menu,Menu, add, Copy &Template, autofill
-		If CopyPasteToggle=1
+		; If CopyPasteToggle=1
 			Menu,Menu, add, Paste &Specs, Autofill
-		If CopyPasteToggle=0
+		; If CopyPasteToggle=0
 			Menu,Menu, add, Copy &Specs, Autofill
 		return
 	}
@@ -933,16 +911,17 @@ class SpecTab { 	;; _________SpecTab class_______
 			MouseGetPos, premx, premy
 			click
 			Sendinput, {ctrldown}{c}{ctrlup}
-			clipwait,1 ; Tooltip, %Clipboard%
-			if !ErrorLevel
-				Breaking.Point()
+			; clipwait,1 ; Tooltip, %Clipboard%
+			sleep 300
+			; if !ErrorLevel
+				; Breaking.Point()
 		}
 		If !errorlevel
 			click 102, 289
 		sleep 400
 		clip.Department()
 		Breaking.Point()
-		sleep 100
+		sleep 200
 		If (Department = "Analytical")
 			SpecTab.Edit_Analytical_Copy()
 		else If (Department = "ctPhysical")
@@ -955,7 +934,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			SpecTab.Edit_CoatedRetain()
 		else If (Department = "Retain")
 			SpecTab.Edit_Retain()
-		sleep 50
+		sleep 100
 		; WinActivate, NuGenesis LMS
 		Breaking.Point()
 		Critical, Off
@@ -970,7 +949,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		clipboard:=
 		click 57, 715 ; edit Test
 		; click 57, 750 ; edit results
-		winwaitactive, Test Definition Editor,,0.45
+		winwaitactive, Test Definition Editor,,1
 		if errorlevel
 			winactivate, Test Definition Editor
 		sleep 400
@@ -990,7 +969,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		MouseClick, left, 245, 489,1,0
 		;  LMSclick.TestDefinitionEditor_Results()
 		winactivate, Results Definition
-		winWaitactive, Results Definition,,0.45
+		winWaitactive, Results Definition,,1
 		if errorlevel
 			winactivate, Results Definition
 		click 282, 141 ; click row
@@ -1006,10 +985,10 @@ class SpecTab { 	;; _________SpecTab class_______
 		sleep 200
 		blockinput off
 		Sendinput, {esc}
-
+		SimpleClip:=
 		Critical, Off
 		tt(FullRequirements " " Percision,2000)
-		exit
+		; exit
 		Return
 	}
 
@@ -1083,9 +1062,9 @@ class SpecTab { 	;; _________SpecTab class_______
 		sleep 200
 		If winactive("NuGenesis LMS")
 		{
-			sleep 200
 			Breaking.Point()
-			click, 57, 755 ;click Edit Test
+			sleep 200
+			click, 57, 719 ;click Edit Test
 			Sleep 200
 			Breaking.Point()
 			winactivate, Test Definition Editor
@@ -1096,13 +1075,14 @@ class SpecTab { 	;; _________SpecTab class_______
 			sleep 200
 			Breaking.Point()
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
+			Breaking.Point()
 			sleep 200
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
 			click 239, 246  ;results link
 			sleep 200
 			Breaking.Point()
 			winactivate, Results Definition
-			;sleep 100
+			sleep 100
 
 		}
 		if winactive("Results Definition") ;Selection window
@@ -1114,7 +1094,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			Send,{click 80, 66} ;click edit
 			sleep 200
 			Breaking.Point()
-			winwaitactive, Result Editor,,0.5
+			winwaitactive, Result Editor,,2
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			Breaking.Point()
@@ -1140,7 +1120,7 @@ EditSampleTemplate_A(){
 	winactivate, Edit sample template
 	Breaking.Point()
 	Sendinput,{click 377, 82}{home}%Product%`,{space}{Shift down}I{Shift up}n{space}{Shift down}P{Shift up}rocess`,{space}{Shift down}A{Shift up}nalytical{tab 2}{Right 6}{tab}{right 6}{tab}{right}{enter}
-	winWaitactive, NuGenesis LMS,,8
+	winWaitactive, NuGenesis LMS,,5
 	Breaking.Point()
 	if !errorlevel
 		click, 73, 562
@@ -1157,11 +1137,11 @@ EditSpecification_Analytical(){
 	Breaking.Point()
 	click, 340, 622 ;click okay
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS, ,8
+	winwaitactive, NuGenesis LMS, ,5
 	if !ErrorLevel
 		click, 88, 327 ; click add sample template
 	Breaking.Point()
-	winwaitactive, Edit sample template,, 8
+	winwaitactive, Edit sample template,, 5
 	if !errorlevel
 		SpecTab.EditSampleTemplate_A()
 	return
@@ -1200,8 +1180,8 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 		else if CreateRequirements!=1
 			Sendinput, %CreateRequirements%
 	}
-	sleep 400
 	Breaking.Point()
+	sleep 400
 	Mouseclick, left, 378, 667,1,0 ; click okay
 	sleep 400
 	Breaking.Point()
@@ -1210,7 +1190,7 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 		return
 	WinWaitClose, Results Definition,, 8
 	winactivate, Test Definition Editor
-	mousemove, 335, 617
+	mousemove, 1028, 677
 	; sleep 500
 	; Breaking.Point()
 	; click
@@ -1252,7 +1232,6 @@ TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 			; sleep 300
 		; }
 
-		Breaking.Point()
 		; MouseClick, left, 464, 532,2,0 	;click scrollbar
 		sleep 100
 		; click 239, 246 					;click results link
@@ -1881,7 +1860,7 @@ Spec_Table:
 		Sendinput,{space}
 		SpecTab.GetRowText()
 		; tt(ShowVariables,1000)
-
+		sleep 200
 		SpecTab.AutoFill()
 	}
 Return
@@ -1889,7 +1868,7 @@ Return
 
 Spec_TableGuiClose:
 	GUI, Spec_Table:destroy
-	coordmode, mouse, window
+	; coordmode, mouse, window
 return
 
 
@@ -1912,28 +1891,29 @@ Class WorkTab { 		;;______WorkTab Class______________
 	registerNewSamples(){
 		global
 		mx:=
-		SetWinDelay, 500
+		; SetWinDelay, 500
 		my:=
 		If Coated = "ERROR"
 		Coated:=
 		If Lot = "ERROR"
 		lot:=
-		if !Iteration
-			iniRead, Iteration, Settings.ini, SavedVariables, Iteration
-		; ControlGetText, Iteration, Edit5, ClipBar
+		; if !Iteration
+			; iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+		ControlGetText, Iteration, Edit5, ClipBar
 		blockinput, on
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
-		sleep 200
-		sleep 200
+		sleep 400
 		winwaitactive, Edit sample (Field Configuration,, 3
 			if ErrorLevel
-				sleep 800
+				msgbox, Winwaitactive Field Config for 3 sec
+				; sleep 800
 			Sendinput, {tab 2}{right}{click 277, 139}{tab 7}
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
 				Send, {tab}^{a}
 			Sendinput, ^{a}%Batch%{tab}^{a}
+			sleep 150
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
 				{
 					Sendinput,^{a}%Lot%{tab 3}
@@ -1949,17 +1929,18 @@ Class WorkTab { 		;;______WorkTab Class______________
 					Send, ^{a}%Coated%
 					Sendinput, +{tab}
 				}
-			Breaking.Point()
+			Iteration:=CustomerPosition
 			sleep 300
+			Breaking.Point()
 			; If !(Iteration)
 			; else				if CustomerPosition > 0
-				if (Iteration > 0)
-					CustomerPosition:= Iteration + 1
-				else if (Iteration < 0)
-					CustomerPosition:= Iteration - 1
-				else
-					customerPosition:=0
-					; Iteration-=1
+				; if (CustomerPosition > 0)
+				; 	CustomerPosition+=1
+				; else if (CustomerPosition < 0)
+				; 	CustomerPosition-=1
+				; else
+				; 	customerPosition:=0
+				; 	; Iteration-=1
 			sleep 150
 			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
 			blockinput, off
@@ -1979,21 +1960,30 @@ Class WorkTab { 		;;______WorkTab Class______________
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			global
 			try menu, CustomersMenu, DeleteAll
-			send, {pgup 2}
-			sleep 20
-			send, {click 250, 150}
+			; send, {pgup 2}
+			; sleep 20
+			; send, {click 250, 150}
 			; if winactive("Edit sample (Field Configuration: F, Micro)")
 				; send, {click 421, 504}
 			; else ;if winactive("Edit sample (Field Configuration")
 				; Send, {Click 425, 434}
 			Loop, Read, %CustomerListPath%
 			{
-				If A_Index = 1
-					Continue
+				; If A_Index = 1
+				; 	Continue
+				; If A_Index = 60
+				; 	Addbreak:="+BarBreak"
+				; If A_Index = 120
+				; 	Addbreak:="+BarBreak"
+				; If A_Index = 180
+				; 	Addbreak:="+BarBreak"
+				; If A_Index = 240
+				; 	Addbreak:="+BarBreak"
 				MenuItems := StrSplit(A_LoopReadLine, "=")
 				Selection:= % MenuItems[1]
 				Count:= % MenuItems[2]
-				Menu, CustomersMenu, add, %Count% `t &%Selection%, CustomerMenu
+				Menu, CustomersMenu, add, %Count% `t &%Selection%, CustomerMenu ;%Addbreak%
+				; AddBreak:=
 			}
 			Menu, CustomersMenu, Show,
 			return
@@ -2006,10 +1996,10 @@ Class WorkTab { 		;;______WorkTab Class______________
 				; InputVar:=A_ThisMenuItem
 				IniRead,CustomerPosition, %CustomerListPath%, Customers, %InputVar%
 				sleep 30
-				if winactive("Edit sample (Field Configuration: F, Micro)")
-					send, {tab 9}
-				else
-					send, {tab 7}
+				; if winactive("Edit sample (Field Configuration: F, Micro)")
+					; send, {tab 9}
+				; else
+					; send, {tab 7}
 				sleep 20
 				menu, CustomersMenu, DeleteAll
 				if CustomerPosition > 0
@@ -2022,8 +2012,9 @@ Class WorkTab { 		;;______WorkTab Class______________
 				GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
 				; GUI, ClipBar:submit,NoHide
 				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-				mouseclick, Left, 431, 541,1,0
-				this.Dropdown_CustomerSelect(CustomerPosition)
+				iniwrite, %Iteration%, Settings.ini, SavedVariables, CustomerPosition
+				; mouseclick, Left, 431, 541,1,0
+				; this.Dropdown_CustomerSelect(CustomerPosition)
 			return
 		}
 
@@ -2041,10 +2032,10 @@ Class WorkTab { 		;;______WorkTab Class______________
 				Sendinput,{home}
 			else if (a_ShipTo > 1)
 				; msgbox %A_shipto% >1
-				Sendinput,{home}{right %A_ShipTo%}
+				Sendinput,{home}{right}{right %A_ShipTo%}
 			else if (a_ShipTo < 1)
 				; msgbox %A_shipto% <1
-				Sendinput,{end}{left %Absselection%}
+				Sendinput,{end}{left}{left %Absselection%}
 			else if (a_ShipTo = "")
 				; msgbox %A_shipto% blank
 				worktab.CustomerMenu()
@@ -2055,7 +2046,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 			{
 			setkeydelay, 0, 0
 				critical, off
-				exit
+				msgbox, This is before the exit
+				; exit
 			}
 			; else
 				; sleep 400
@@ -2087,6 +2079,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			winactivate, NuGenesis LMS
 			click
 			Send, ^c
+			sleep 100
 			clip()
 			sleep 400
 			click 64, 300 ;click Assign To New rewuest link
@@ -2129,7 +2122,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			While GetKeyState("Lbutton", "p")
 				sleep 100
 			Ifwinnotactive, Edit request
-				exit
+				reload
 			Sleep 100
 			winactivate, Edit request
 			Breaking.Point()
@@ -2139,9 +2132,38 @@ Class WorkTab { 		;;______WorkTab Class______________
 			return
 		}
 
+
+FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
+			global
+				MouseGetPos, xpos, ypos
+				sleep 200
+				numbermenu(6)
+				loop %LoopTrough%,
+				{
+					click
+					click 843, 202, 2
+					if Checkbox_Toggle
+						Send,{tab}{Space}{tab}{Space}
+					else
+						Sendinput,{tab}{tab}
+					Send,{tab 10}^a
+					sleep 100
+					Send, %iteration%
+					Breaking.Point()
+					ypos:=ypos+26
+					sleep 100
+					mousemove, xpos, ypos,0
+					sleep 100
+					Click
+					Breaking.Point()
+				}
+				Breaking.Point()
+			return
+		}
+
+
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
-
 			if (Iteration = "ERROR")
 				InputBox, Iteration, enter iteration, number please,, , , , , , , 1
 			if errorlevel
@@ -2170,7 +2192,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 						Sendinput,{tab}{tab}
 					Send,{tab 10}^a
 					sleep 100
-					Send, %Iteration%
+					Sendinput, %Iteration%
 					if keep_running = n ;another signal to stop
 						return
 					sleep 100
@@ -2225,10 +2247,11 @@ Class WorkTab { 		;;______WorkTab Class______________
 			return
 		}
 
-		Main_EditResults()
+		Click_EditResults()
 		{
-			Sendinput,{click}{click 77, 751} ;edit results
-			winwaitactive, Results Definition,,3
+			ifwinnotactive, NuGenesis LMS
+				winactivate
+			Sendinput,{click 63, 754} ;edit results
 			return
 		}
 		AddTestDescription(Text){
@@ -2266,7 +2289,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 				Breaking.Point()
 				tt(Department)
 				blockinput off
-				SetWinDelay, %NormalWinDelay%
+				; SetWinDelay, %NormalWinDelay%
 			return
 		}
 
@@ -2400,7 +2423,6 @@ Class WorkTab { 		;;______WorkTab Class______________
 	}
 	EnterResults(){
 		winactivate, NuGenesis LMS
-		winactivate, NuGenesis LMS
 		click 74, 900
 		return
 	}
@@ -2417,7 +2439,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 	CopySpecTemplate(){
 		winactivate, NuGenesis LMS
 		click 102, 289 ;copy into new spec
-		winWaitactive, Edit specification - Remote, ,1
+		winWaitactive, Edit specification - Remote, ,2
 		if ErrorLevel
 			winactivate, Edit specification - Remote
 		; click 317, 83
@@ -2433,7 +2455,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 	EditSampleTemplate(){
 		winactivate, NuGenesis LMS
 		click 70, 518
-		winwaitactive, Edit sample template,, 5
+		winwaitactive, Edit sample template,, 3
 		return
 	}
 }
@@ -2564,6 +2586,7 @@ class Breaking {
 			Critical, Off
 			CoordMode, mouse, window
 			CoordMode, Tooltip, window
+			blockinput, off
 			exit
 		}
 		if keep_running = n ;another signal to stop

@@ -1,11 +1,12 @@
 if A_username != mmignin
 	exitapp
+	; #MenuMaskKey vkFF
 	#SingleInstance,Force
 	#Persistent
 	Process, Priority, , High
 	#NoEnv
 	Thread, NoTimers
-	; Iteration=1
+	Iteration=1
 	; #ErrorStdOut
 	; #KeyHistory 500
 	#InstallKeybdHook
@@ -33,7 +34,8 @@ if A_username != mmignin
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Menu,Tray,NoStandard
-
+	Fileread, AllBatches, AllBatches.txt
+	Fileread, AllProducts, AllProducts.txt
 	; Menu, Tray, add, Enter Specs, EnterSpecs
 	ReadIniFiles()
 	OnMessage(0x404, "AHK_NotifyIcon")
@@ -48,6 +50,9 @@ if A_username != mmignin
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, Add, All Products, AllProductsMsgbox
 	Menu, Tray, add, Show EditBox, ShowEditBox
+	Menu, Tray, add, Add Sample Log, !^+F3
+	; Menu, Tray, add, Show Citrix Text, +!^F4
+
 	; Menu, Tray, add, AddClipBoardToList, AddToList
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
@@ -80,7 +85,7 @@ if A_username != mmignin
 	sleep 200
 	ClipBar.Show()
 	try Menu, Tray, Icon, %AppIconPath%
-	#include Nugenesis.ahk
+	#include NuGenesis.ahk
 	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
@@ -111,8 +116,10 @@ ReadIniFiles(){
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
 	iniRead, IngredientNoteDropDownCount, Settings.ini, Config, IngredientNoteDropDownCount
 
-	iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
+	; iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
 	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+	iniRead, Iteration, Settings.ini, SavedVariables, CustomerPosition
+
 
 	iniRead, HM_Units, Settings.ini, HeavyMetal_Variables, HM_Units
 	iniRead, HM_Lower_Limit, Settings.ini, HeavyMetal_Variables, HM_Lower_Limit
@@ -135,6 +142,7 @@ ReadIniFiles(){
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CustomerListPath, Settings.ini, FilePaths, CustomerListPath
 	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
+
 }
 
 
@@ -194,7 +202,7 @@ ShowScanLabelCopy:
 	sendinput, {*}%Product%{*}{enter}
 	return
 ShowManualCOA:
-	run, find "\\10.1.2.118\coa-lot`#"
+	run, explorer "\\10.1.2.118\coa-lot#"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
 	return
@@ -204,13 +212,13 @@ Showmfg:
 	sendinput, {*}%Product%{*}{enter}
 	return
 ShowGlobalVision:
-	run, find "\\10.1.2.118\share\GLOBAL VISION"
+	run, find "\\10.1.2.118\share\Globalvision Master Copy Files"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
 	; winmaximize, Search Results
 	return
 ShowFINAL_C_O_A:
-	run, explorer "\\10.1.2.118\share\QC LAB\final_c_o_a\2022 CoAs"
+	run, explorer "\\10.1.2.118\final_c_o_a\2022 CoAs"
 	return
 ShowEditBox:
 	clip.editbox()
@@ -229,11 +237,11 @@ activeCheck:
 		reload
 		return
 	}
-	else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
-		TT(CodeString "`n" SampleID,2000,,,2)
-		TT(copiedText "`n",2000,,65,4)
-		TT(clipboard,1000,2,450,3)
-		}
+	; else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
+		; TT(CodeString "`n" SampleID,2000,,,2)
+		; TT(copiedText "`n",2000,,65,4)
+		; TT(clipboard,1000,2,450,3)
+		; }
 	; else If winexist("Release: Rotational Testing Schedule"){
 	; 	winactivate,
 	; 	click 131, 141 ;click release
@@ -302,7 +310,8 @@ activeCheck:
 	; }
 	else
 		return
-	; else if winactive("NuGenesis LMS") && (A_TimeIdle > 6000){
+	; else if winactive("NuGenesis LMS") && (A_TimeIdle > 8000){
+		; Reload
 	; 	; LMS.Orient()
 	; 	sleep 300
 	; 	; SetKeyDelay,0,0
@@ -313,7 +322,7 @@ activeCheck:
 	; 	; SetTitleMatchMode, 2
 	; 	; winMove, ClipBar ahk_class ClipBar ahk_exe RemoteVQ.exe, ,%ClipBar_nuX%, %ClipBar_nuY%
 	; 	SetWinDelay, %NormalWinDelay%
-	; 	}
+		; }
 		; return
 return
 
@@ -340,7 +349,26 @@ AHK_NotifyIcon(wParam, lParam) {
 	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
 		Return ; Do nothing besides the built-in double left click action (open the default menu item).
 	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
-		Reload()
+		Reloadsub()
 	}
 	Return true
 }
+
+
+	NumberMenu(n){
+	global
+	try Menu, NumberMenu, DeleteAll
+	loop %n%,
+			{
+		Menu, NumberMenu, Add, &%A_index%, NumberMenubutton
+		}
+		Try Menu,NumberMenu,show
+		return
+		}
+NumberMenubutton:
+	ControlsetText, Edit5,%A_ThisMenuItemPos%,VarBar
+	loops=%A_ThisMenuItemPos%
+	Iteration:=A_ThisMenuItemPos
+Return
+
+

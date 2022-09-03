@@ -95,12 +95,17 @@ Class ClipBar{
 		try Menu, ClipBarmenu, DeleteAll
 		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
 		Menu, ClipBarMenu, Add, All Products, AllProductsMsgbox
+		Menu, ClipBarMenu, Add,
 		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
 		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
-		Menu, ClipBarMenu, add, Show EditBox, ShowEditBox
+		Menu, ClipbarMenu, add, Manual &COAs folder, ShowManualCOA
+		Menu, ClipbarMenu, add, &mfg folder, Showmfg
+		Menu, ClipbarMenu, add, &GLOBAL VISION folder, ShowGlobalVision
+		Menu, ClipBarMenu, add, Show EditBox, ShowEditBox, +Break
 		Menu, ClipBarMenu, add, Paste Spec, +F10
-		Menu, ClipBarMenu, Add, Show Variables, ShowVariables
+
+		Menu, ClipbarMenu, add, Add Sample Log, !^+F3
 		Try Menu,ClipBarmenu,show
 	}
 	Reset(){
@@ -148,6 +153,7 @@ Class ClipBar{
 		; sleep 100
 			; #MaxHotkeysPerInterval, 70
 		NAdd:=0
+		CustomerPosition:=Iteration
 		; #maxthreadsperhotkey, 2
 		return
 	}
@@ -165,6 +171,7 @@ Class ClipBar{
 		ControlsetText, Edit5,%Iteration%,ClipBar
 		; sleep 100
 		Nsub:=0
+		CustomerPosition:=Iteration
 			; #maxthreadsperhotkey, 2
 		return
 	}
@@ -276,35 +283,38 @@ WM_LBUTTONDOWN(wParam, lParam){
 #If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
 ; Wheeldown::ClipBar.SubIteration(250)
 ; Wheelup::ClipBar.AddIteration(250)
-Wheelup::
-	iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
-	sleep 200
-	clip.CodesRegex(PriorCodeString)
-	; sleep 400
-	return
-Wheeldown::
-	iniread, CodeString, Settings.ini, SavedVariables, CodeString
-	sleep 200
-	; Fileread, CodeString, %CodeFile%
-	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
-	clip.CodesRegex(CodeString)
-	; sleep 400
-	return
-+wheelup::ClipBar.AddIteration(350)
-+wheeldown::ClipBar.SubIteration(350)
-Mbutton::
+; Wheelup::
+; 	iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
+; 	sleep 200
+; 	; clip.CodesRegex(PriorCodeString)
+; 	; sleep 400
+; 	return
+; Wheeldown::
+; 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
+; 	sleep 200
+; 	; Fileread, CodeString, %CodeFile%
+; 	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
+; 	clip.CodesRegex(CodeString)
+; 	; sleep 400
+; 	return
+; ClipBar.AddIteration(450)
+; ClipBar.SubIteration(450)
+wheelup::
+worktab.CustomerMenu()
+sleep 800
+return
+wheeldown::
+ClipBar.Menu()
+sleep 500
+return
+Mbutton::reloadSub()
 Rbutton::
 		; ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
 		MouseGetPos, , , winid, wincontrol
-		if (winControl="Edit1"){
-			ClipBar.Menu()
-		}
-		else if (winControl="Edit2"){
-			Batch:=
-			GUI, ClipBar:default
-			ControlsetText, Edit2,%Batch%,ClipBar
-			iniwrite, Batch, Settings.ini, SavedVariables, Batch
-		}
+		if (winControl="Edit1")
+			GetAllProducts()
+		else if (winControl="Edit2")
+			GetAllBatches()
 		else if (winControl="Edit3"){
 			Lot:=
 			GUI, ClipBar:default

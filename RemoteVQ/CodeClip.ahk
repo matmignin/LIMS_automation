@@ -18,32 +18,26 @@ clipChange(type){
       iteration:=1
     LMS.AddDataFromClipboard()
   }
-  ; else if InStr(Clipboard, "<<LabelCopy>>", true,1,1) {
-    ; if (Iteration >=25) || (Iteration < 0) || !(Iteration)
-      ; iteration:=1
-    ; LMS.AddDataFromClipboard("<<LabelCopy>>")
-  ; }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProductFromClipboard()
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1)
     exitsub()
-  else if Winactive("Test Definition Editior"){
-    Description:=Trim(Clipboard)
-    iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-  }
+  else if Winactive("Test Definition Editior")
+    clipped_Description:=Trim(Clipboard,"`r`n")
+    ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
   else if Winactive("Results Definition")
     clip.ParseSpecsTable()
-  else if Winactive("NuGenesis LMS") {
-    LMS.DetectTab()
-    Sleep 200
-    if (Tab="Specs")
-      clip.ParseMainSpecTable()
-    if (Tab="Samples")
-      clip.ParseMainSamplesTable()
-    clip.codesRegex()
-  }
   else if Winactive("Composition")
     clip.ParseIngredientsTable()
+  ; else if Winactive("NuGenesis LMS") {
+  ;   LMS.DetectTab()
+  ;   Sleep 200
+  ;   ; if (Tab="Specs")
+  ;     ; clip.ParseMainSpecTable()
+  ;   ; if (Tab="Samples")
+  ;     ; clip.ParseMainSamplesTable()
+  ;   clip.codesRegex()
+  ; }
   ; else if Instr(Clipboard, "Use the limits from the test",true,1,1)
   ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
     ; clip.HeavyMetalSpecs()
@@ -111,144 +105,133 @@ Class Clip {
 
 		ParseIngredientsTable(Save:=1){
 		global
-    ; SimpleClip:=06/21/2
+    clipped_Position:=
+    clipped_IngredientId:=
+    clipped_LabelName:=
+    clipped_LabelClaim:=
+    clipped_IngredientGroup:=
 		ParsedIngredients:=[]
 		Loop, parse, Clipboard, `t
 			ParsedIngredients.insert(A_LoopField)
 			TotalColumns:=ParsedIngredients.maxindex()//2
-			Position:=ParsedIngredients[HasValue(ParsedIngredients, "Position") + TotalColumns]
-			IngredientId:=ParsedIngredients[HasValue(ParsedIngredients, "Ingredient Id") + TotalColumns]
-			LabelName:=ParsedIngredients[HasValue(ParsedIngredients, "Description") + TotalColumns]
-			LabelClaim:=ParsedIngredients[HasValue(ParsedIngredients, "Generic 1") + TotalColumns]
-			IngredientGroup:=ParsedIngredients[HasValue(ParsedIngredients, "Generic 2") + TotalColumns]
-      StringReplace, IngredientGroup, IngredientGroup, `n, , All
+			clipped_Position:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Position") + TotalColumns],"`r`n")
+			clipped_IngredientId:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Ingredient Id") + TotalColumns],"`r`n")
+			clipped_LabelName:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Description") + TotalColumns],"`r`n")
+			clipped_LabelClaim:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Generic 1") + TotalColumns],"`r`n")
+			clipped_IngredientGroup:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Generic 2") + TotalColumns],"`r`n")
       sleep 200
-      copiedText:= IngredientId "`t" LabelClaim "`t" IngredientGroup "`n" LabelName
-      If Save
-      {
-        iniwrite, %IngredientId%, Settings.ini, CopiedSpecs, IngredientId
-        iniwrite, %LabelClaim%, Settings.ini, CopiedSpecs, LabelClaim
-        iniwrite, %IngredientGroup%, Settings.ini, CopiedSpecs, IngredientGroup
-        iniwrite, %LabelName%, Settings.ini, CopiedSpecs, LabelName
-      }
-      if !Simpleclip
-      ; tt(CopiedText, 2000,1,1,2)
+      Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_LabelName "`n" Clipped_IngredientGroup
+      ; msgbox, %Clipped_Ingredients%
+      Tooltip, %Clipped_Ingredients%, 0,0
+      ; tt(Clipped_ingredients 9000,1,1,2)
       return
 		}
 		ParseSpecsTable(Save:=1){
 		global
-    ; SimpleClip:=
+    Clipped_MinLimit:=
+    Clipped_MaxLimit:=
+    Clipped_Percision:=
+    Clipped_Requirement:=
+    Clipped_ParsedSpecs:=
+    Clipped_FullRequirement:=
+    Clipped_Units:=
+    Clipped_SeqNo:=
+    Clipped_Method:=
+    Clipped_ResultID:=
 		ParsedSpecs:=[]
     ParseData:=Clipboard
 		Loop, parse, ParseData, `t
 			ParsedSpecs.insert(A_LoopField)
 			TotalColumns:=ParsedSpecs.maxindex()//2
-			MinLimit:=ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns]
-			MaxLimit:=ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns]
-			Percision:=ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns]
-			Requirement:=ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns]
-			; FullRequirement:=ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns]
-			Units:=ParsedSpecs[HasValue(ParsedSpecs, "Unit") + TotalColumns]
-			SeqNo:=ParsedSpecs[HasValue(ParsedSpecs, "Seq No") + TotalColumns]
-      Method:=ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns]
-			ResultID:=ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns]
+			Clipped_MinLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
+			Clipped_MaxLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
+			Clipped_Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
+			Clipped_Requirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns], "`r`n")
+      Clipped_ParsedSpecs:=Trim([HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
+			Clipped_FullRequirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
+			Clipped_Units:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Unit") + TotalColumns],"`r`n")
+			Clipped_SeqNo:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Seq No") + TotalColumns],"`r`n")
+      Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
+			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
-      copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
-      If Save
-      {
-        ; iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
-        ; iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
-        ; iniwrite, %Percision%, Settings.ini, CopiedSpecs, Percision
-        ; iniwrite, %Requirement%, Settings.ini, CopiedSpecs, Requirement
-        ; iniwrite, %Units%, Settings.ini, CopiedSpecs, Units
-        ; iniwrite, %ResultID%, Settings.ini, CopiedSpecs, ResultID
-        ; iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
-        ; iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
-      }
-      ; SimpleClip:=
-      ; copypastetoggle=1
-      ; if !Simpleclip
-        ; tt(CopiedText, 2000,1,1,2)
+      Clipped_Specs:= Clipped_ResultID "`t" Clipped_Description "`n MinLimit: " Clipped_MinLimit "`n MaxLimit: " Clipped_MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Clipped_Percision "`n Units: " Clipped_Units
+        tt(Clipped_specs, 9000,1,1,2)
       return
 		}
 
 		ParseMainSpecTable(Save:=1){
 		global
-    SimpleClip:=
+    Clipped_Method:=
+    Clipped_Requirements:=
+    Clipped_minmax:=
+    Clipped_MinLimit:=
+    Clipped_MaxLimit:=
+    Clipped_TestID:=
+    Clipped_Department:=
+    Clipped_SeqNo:=
+    Clipped_SampleTemplate:=
+    Clipped_Description:=
 		ParsedMainSpecTable:=[]
     ParseData:=Clipboard
-		Loop, parse, ParseData, `t
+		Loop, parse, ParseData, `t  //`t
 			ParsedMainSpecTable.insert(A_LoopField)
     TotalColumns:=ParsedMainSpecTable.maxindex()//2
-    Method:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Method Id") + TotalColumns]
-    Requirements:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns]
-    minmax:=Strsplit(Requirements," - ","`n")
-    MinLimit:=Minmax[1]
-    MaxLimit:=minmax[2]
-    TestID:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Test Id") + TotalColumns]
-    Department:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Department") + TotalColumns]
-    SeqNo:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Seq No") + TotalColumns]
-    SampleTemplate:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Sample Template") + TotalColumns]
-    Description:=ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns]
-    StringReplace, Description, Description, `r`n, , All
+    Clipped_Method:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Method Id") + TotalColumns],"`r`n")
+    Clipped_Requirements:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns],"`r`n")
+    Clipped_minmax:=Strsplit(Requirements," - ","`n")
+    Clipped_MinLimit:=Trim(Minmax[1],"`r`n")
+    Clipped_MaxLimit:=Trim(minmax[2],"`r`n")
+    Clipped_TestID:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Test Id") + TotalColumns],"`r`n")
+    Clipped_Department:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Department") + TotalColumns],"`r`n")
+    Clipped_SeqNo:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Seq No") + TotalColumns],"`r`n")
+    Clipped_SampleTemplate:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Sample Template") + TotalColumns],"`r`n")
+    Clipped_Description:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns],"`r`n")
+    ; StringReplace, Description, Description, `r`n, , All
       sleep 200
-      copiedText:= TestID "`t" Description "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " SampleTemplate "`n Department: " Department
-      If Save
-      {
-        ; iniwrite, %MinLimit%, Settings.ini, CopiedSpecs, MinLimit
-        ; iniwrite, %MaxLimit%, Settings.ini, CopiedSpecs, MaxLimit
-        ; iniwrite, %SampleTemplate%, Settings.ini, CopiedSpecs, SampleTemplate
-        ; iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
-        ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-        ; iniwrite, %TestID%, Settings.ini, CopiedSpecs, TestID
-        ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-        ; iniwrite, %SeqNo%, Settings.ini, CopiedSpecs, SeqNo
-        ; iniwrite, %Method%, Settings.ini, CopiedSpecs, Method
-      }
-      SimpleClip:=
-      ; tt(CopiedText, 2000,1,1,2)
+      Clipped_Specs:= Clipped_TestID "`t" Clipped_Description "`n MinMax: " Clipped_MinLimit " - " Clipped_MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
+      tt(Clipped_specs, 9000,1,1,2)
       return
 		}
 
 		ParseMainSamplesTable(Save:=1){
 		global
-    SimpleClip:=
-		ParsedMainSamplesTable:=[]
-    ParseData:=Clipboard
-		Loop, parse, ParseData, `t
-			ParsedMainSamplesTable.insert(A_LoopField)
-    TotalColumns:=ParsedMainSamplesTable.maxindex()//2
-    Batch:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Batch") + TotalColumns]
-    Coated:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Coated Lot #") + TotalColumns]
-    Lot:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Pkg Lot #") + TotalColumns]
-    if !lot
-      Lot:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Blister Lot #") + TotalColumns]
-    ShipTo:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Ship To") + TotalColumns]
-    Name:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Product Trade Name") + TotalColumns]
-    Department:=ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Department") + TotalColumns]
-      sleep 200
+    ; SimpleClip:=
+		; ParsedMainSamplesTable:=[]
+    ; ParseData:=Clipboard
+		; Loop, parse, ParseData, `t
+			; ParsedMainSamplesTable.insert(A_LoopField)
+    ; TotalColumns:=ParsedMainSamplesTable.maxindex()//2
+    ; Batch:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Batch") + TotalColumns],"`r`n")
+    ; Coated:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Coated Lot #") + TotalColumns],"`r`n")
+    ; Lot:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Pkg Lot #") + TotalColumns],"`r`n")
+    ; if !lot
+    ; Lot:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Blister Lot #") + TotalColumns],"`r`n")
+    ; ShipTo:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Ship To") + TotalColumns],"`r`n")
+    ; Name:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Product Trade Name") + TotalColumns],"`r`n")
+    ; Department:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Department") + TotalColumns],"`r`n")
+      ; sleep 200
 				; InputVar:=A_ThisMenuItem
-				IniRead,CustomerPosition, %CustomerListPath%, Customers, %ShipTo%
-				sleep 30
-				if CustomerPosition > 0
-					customerPosition+=1
-				if CustomerPosition < 0
-					customerPosition-=1
-				sleep 200
-				Iteration:=CustomerPosition
-				sleep 200
-				GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
-      If Save
-      {
-        iniwrite, %Name%, Settings.ini, CopiedSpecs, Name
-        iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
-        iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-        iniwrite, %ShipTo%, Settings.ini, CopiedSpecs, ShipTo
-				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-				iniwrite, %CustomerPosition%, Settings.ini, SavedVariables, CustomerPosition
-      }
-      SimpleClip:=
-      if !Simpleclip
+				; IniRead,CustomerPosition, %CustomerListPath%, Customers, %ShipTo%
+				; sleep 30
+				; if CustomerPosition > 0
+					; customerPosition+=1
+				; if CustomerPosition < 0
+					; customerPosition-=1
+				; sleep 200
+				; Iteration:=CustomerPosition
+				; sleep 200
+				; GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+      ; If Save
+      ; {
+        ; iniwrite, %Name%, Settings.ini, CopiedSpecs, Name
+        ; iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
+        ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+        ; iniwrite, %ShipTo%, Settings.ini, CopiedSpecs, ShipTo
+				; iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+				; iniwrite, %CustomerPosition%, Settings.ini, SavedVariables, CustomerPosition
+      ; }
+      ; SimpleClip:=
+      ; if !Simpleclip
         ; tt(ShipTo "`t" CustomerPosition, 2000,1,1,2)
       return
 		}
@@ -276,21 +259,27 @@ EditBox(Input:=""){
   if !Input
 		Result := Clipboard
   else
-    result := Text
+    result := Input
+    sleep 200
 	Gui EditBox: +AlwaysOnTop +Toolwindow +Resize +owner +HwndGUIID
 		GUI, EditBox:Font, s12 cBlack, Consolas
     gui, editbox:Margin,1,1
 		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
-		GUI, EditBox:add, button, X0 y0 h0 w0 Hidden default gEditBoxButtonOK, OK
-		GUI, EditBox:Show,Autosize, Clipboard
+		GUI, EditBox:add, button, default gEditBoxButtonOK, OK
+		GUI, EditBox:Show,Autosize, Result
     winSet, Transparent, 100, EditBox
 		return
 		EditBoxGuiClose:
+    try GUI, EditBox:Destroy
+    Return
 		EditBoxGuiEscape:
+    try GUI, EditBox:Destroy
+    Return
 		EditBoxButtonOK:
 		GUI, EditBox:submit
-    if !Text
+    if !Input
 			clipboard:=EditBox
+    try GUI, EditBox:Destroy
     sleep 50
   ; TT(Editbox,500,,,,200)
 		return
@@ -300,6 +289,7 @@ EditBox(Input:=""){
       return
     NewWidth := A_GuiWidth
     NewHeight := A_GuiHeight
+    sleep 200
     GuiControl, Move, EditBox, W%NewWidth% H%NewHeight%
     return
 
@@ -496,42 +486,7 @@ Department(DepartmentInput:=""){
   return %Department%
 }
 
-IfNothingSelected(action){
-  global
-    ClipboardSaved:=ClipboardAll
-    clipboard:=
-    Send, ^c
-      clipwait,0.40
-  if errorlevel ;if nothing selected
-  {
-    if action:="SelectLine"
-      Send, {home}+{end}^{c}
-    if action:="SelectAll"
-      Send, ^{a}^{c}{ctrlup}
-    if action:="Select"
-      Send, {click 3}^{c}{ctrlup}
-    If action:="cut"
-      {
-        Send, ^{x}
-        clipwait, 0.45
-        PostCut:=ClipboardAll
-        clipboard:=ClipboardSaved
-        sleep 35
-        Send, ^{v}
-        clipboard:=PostCut
-      }
-    If action:="Paste"
-    {
-      clipboard:=ClipboardSaved
-      Send, ^{v}{ctrlup}
-    }
-    else
-      send % action
-    return
-  }
-  else
-  return
-}
+
 
 
 

@@ -4,6 +4,10 @@
 	^#F11::SpecTab.NewSpecVersion()
 	!#F11::SpecTab.RemoveTestSpec()
 	~RWin::Send {Blind}{vkFF}
+	~LWin::Send {Blind}{vkFF}
+	F18::return
+	; $RWin::return
+	; $LWin::return
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
 	; F1::sendinput, %Product%
@@ -17,13 +21,13 @@
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
 	^+s::specTab.TestDefinitionEditor_Stability()
-	;!F1::GetAllProducts("`n")
+	;_!F1::GetAllProducts("`n")
 	+F1::worktab.NewTestRequestLink()
 	F2::Reload
 	;F2::sendinput, %Batch%
 	^+F16::GetAllProducts()
 	^+F15::GetAllBatches()
-	; !F2::GetAllBatches("`n")
+	;- !F2::GetAllBatches("`n")
 	; F3::sendinput, %Lot%
 	!F1::ClipBar.Focus("Edit1")
 	!F2::ClipBar.Focus("Edit2")
@@ -32,6 +36,10 @@
 	!F5::ClipBar.Focus("Edit5")
 	F4::sendinput, %Coated%
 	;+F3::3tap()
++!^F1::GetAllProducts()
++!^F2::GetAllBatches()
++!^F4::SwitchEnv("Test")
++!^F5::
 
 	+F10::spectab.Autofill()
 	; if !(Requirement)
@@ -57,7 +65,6 @@
 	^F8::AddToList()
 	; +F15::AddToList()
 	; ^F9::send, ^v
-	$LWin::return
 
 
 
@@ -133,23 +140,6 @@ AddToList(){
 		; CoordMode, mouse, Screen
 }
 
-
-
-; CountFiles(){
-; 	global
-; 	currentfile:="\\10.1.2.118\Final_C_O_A"
-; 	currentfile3:="\\10.1.2.118\Final_C_O_A\*.pdf"
-; ; msgBox, % ComObjCreate("Scripting.FileSystemObject").GetFolder("\\10.1.2.118\Final_C_O_A").Files.Count
-; ; MsgBox, % ComObjCreate("Shell.Application").NameSpace("\\10.1.2.118\Final_C_O_A").Items.Count
-; Loop, %currentfile3%{
-; oOwner:=ComObjGet("winmgmts:").ExecQuery("Associators Of {" "Win32_LogicalFileSecuritySetting='" %Currentfile% A_LoopFileName "'} Where As" "socClass= Win32_LogicalFileOwner ResultRole=Owner")
-; For itm in oOwner
-;   Owner:=itm.ReferencedDomainName . "\" . itm.AccountName
-
-; msgbox % Owner
-; }
-
-; }
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		+^F10::
@@ -177,16 +167,48 @@ AddToList(){
 		>+F20::LMS.SearchbarPaste()
 		+^v::LMS.SearchbarPaste()
 		<^v::lms.searchbarPaste()
-		F10::
-			Click, 2
-			sleep 400
-			if winactive("Edit test (Field Configuration: ")
-				Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
+		!^+F3::  ;add a bunch of sample logtests
+			Loop 20
+			{
+				Breaking.Point()
+				MouseGetPos, xpos, ypos
+				if winactive("NuGenesis LMS")
+					Click, 2
+				sleep 500
+				Breaking.Point()
+				if winactive("Edit test (Field Configuration: ")
+					Sendinput,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
+				Sleep 300
+				winactivate, NuGenesis LMS
+				sleep 400
+				Breaking.Point()
+				mousemove, xpos, ypos+26,0
+				click
+				sleep 300
+				Breaking.Point()
+			}
 			return
-	#ifwinactive, Edit test (Field Configuration:
+
+
+	#ifwinactive, Edit test `(Field Configuration
 			+Mbutton::
 			F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
 
+
+	#Ifwinactive,Edit Ingredient
+		Mbutton::
+		mouseclick, left, 244, 133,1,0
+			; sleep 100
+			sendinput, {tab 4}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim%  ;click potencty box
+			; sleep 100
+			; sendinput % clipped_LabelName
+			; sendinput,
+			if (clipped_IngredientGroup)
+				Sendinput, {Tab}%clipped_IngredientGroup%	;ingredientgroup
+			mousemove, 280, 558, 0
+			; msgbox, %Clipped_ingredients%
+			Tooltip
+			return
 
 	#Ifwinactive,Select Iterations
 		^F9::LMS.PasteProductRotation()
@@ -201,9 +223,9 @@ AddToList(){
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		; #MaxThreadsPerHotkey 2
+		+Mbutton::worktab.fixrotation(20,1)
 		F10::WorkTab.CorrectTestResults("loop")
-		; #MaxThreadsPerHotkey 1
+
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		Enter::
 		mbutton::clk(910,668)
@@ -252,10 +274,6 @@ AddToList(){
 		#p::return
 		#k::return
 		>+Backspace::			Delete
-		F20 & esc:: 			run, Taskmgr.exe
-		F20 & backspace:: 		Send, {delete}
-		F20 & =:: 		Send,{ctrldown}{=}{ctrlup}
-		F20 & -:: 		Send,{ctrldown}{-}{ctrlup}
 		return
 
 
@@ -274,10 +292,8 @@ AddToList(){
 					Menu,Menu, add, &Delete Retain, Autofill
 					Try Menu,menu,show
 				}
-				else if (Tab="Specs") {
+				else if (Tab="Specs")
 						SpecTab.CopySpecTemplate()
-					return
-				}
 				else if (Tab="Requests")
 					clk(61, 635) ;enter results
 				else if (Tab="Products")
@@ -287,13 +303,13 @@ AddToList(){
 
 					send, {click 124, 294} ;assign Requests
 					sleep 500
-					if !winactive("Edit request")
-						sleep 500
-					send, {click, 258, 613}
+					if winactive("Edit request")
+						send, {click, 258, 613}
+						; sleep 500
 					sleep 800
-					if !winactive("Select tests for request: R")
-						sleep 500
-					winactivate, Select tests for request: R
+					if winactive("Select tests for request: R")
+						; sleep 500
+					; winactivate, Select tests for request: R
 						send, {click, 31, 102}
 
 					; blockinput, off
@@ -308,15 +324,11 @@ AddToList(){
 				}
 			else if winactive("Result Editor") {
 					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-					; winWaitactive, NuGenesis LMS, 10
-					; copyPasteToggle=0
 				}
 			else if winactive("Register new samples")
 					WorkTab.registerNewSamples()
 			else if winactive("Test Definition Editor")
 					mouseclick, left, 333, 615
-			else if winactive("Login")
-					menu.passwords()
 			else if winactive("Result Entry") {
 					MouseGetPos, xpos, ypos
 					WorkTab.CorrectTestResults("toggle")
@@ -346,8 +358,6 @@ AddToList(){
 					winactivate,
 					clk(131, 144)
 				}
-			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe") || winexist("Map VQ drive.bat ahk_exe cmd.exe")
-					Sendpassword()
 			}
 		else if winactive("ClipBar ahk_exe RemoteVQ.exe"){
 				click
@@ -577,7 +587,7 @@ GetAllBatches(Delimiter:=" ",File:=""){
   regBatches:=[]
 		Haystack:=Clipboard
 		PreClip:=Clipboard
-		sleep 50
+		sleep 100
   while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
       regBatches.insert(aBatch)
   ; }
@@ -600,16 +610,20 @@ GetAllBatches(Delimiter:=" ",File:=""){
     AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
 
 
-    SimpleClip:=1
+    ; SimpleClip:=1
     sleep 20
-		clipboard:=AllBatches
+		; clipboard:=AllBatches
 		; LMS.Searchbar(AllBatches)
 		sleep 200
 		; send, ^v
-		TT(AllBatches)
+		; TT(AllBatches)
     sleep 400
-    SimpleClip:=1
+    ; SimpleClip:=1
     ;clipboard:=PreClip
+	FileDelete, AllBatches.txt
+	sleep 200
+	FileAppend, %AllBatches%, AllBatches.txt
+		clip.editbox(AllBatches)
 		return AllBatches
 }
 
@@ -618,8 +632,7 @@ GetAllProducts(Delimiter:=" ",File:=""){
   regProducts:=[]
   pos=0
 		Haystack:=Clipboard
-    PreClip:=Clipboard
-		sleep 50
+		sleep 100
   while pos := RegexMatch(Haystack, RegexProduct, aProduct, pos+1) ; {
       regProducts.insert(aProduct)
   ; }
@@ -639,15 +652,19 @@ GetAllProducts(Delimiter:=" ",File:=""){
         }
     AllProducts:=Listarray(AllProducts,"")
     AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
-    SimpleClip:=1
+    ; SimpleClip:=1
     sleep 20
-    clipboard:=AllProducts
+    ; clipboard:=AllProducts
     sleep 200
 	; LMS.Searchbar(AllProducts)
     ;send, ^v
-	TT(AllProducts)
+	; TT(AllProducts)
     sleep 400
-    SimpleClip:=1
+    ; SimpleClip:=1
+	FileDelete, AllProducts.txt
+	sleep 200
+	FileAppend, %AllProducts%, AllProducts.txt
+	clip.editbox(AllProducts)
     ;clipboard:=Preclip
 		Return AllProducts
 }
