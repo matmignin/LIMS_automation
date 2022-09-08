@@ -36,8 +36,8 @@ Class ClipBar{
 		CoordMode, mouse, window
 		; OnMessage(0x0201, "WM_LBUTTONDOWN")
 		this.loadSavedVariables()
-			OnMessage(0x0201, "WM_LBUTTONDOWN")
-			OnMessage(0x0203, "WM_LBUTTONDBLCLK")
+			; OnMessage(0x0201, "WM_LBUTTONDOWN")
+			; OnMessage(0x0203, "WM_LBUTTONDBLCLK")
 			; OnMessage(  WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
 			;OnMessage(0x0200, "WM_MOUSEMOVE")
 			; OnMessage(0x203,  "VariableBar_Relocate")

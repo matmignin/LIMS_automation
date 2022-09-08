@@ -197,16 +197,12 @@ AddToList(){
 
 	#Ifwinactive,Edit Ingredient
 		Mbutton::
+		Paste_Clipped_Ingredient:
 		mouseclick, left, 244, 133,1,0
-			; sleep 100
-			sendinput, {tab 4}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim%  ;click potencty box
-			; sleep 100
-			; sendinput % clipped_LabelName
-			; sendinput,
+			sendinput, {tab 4}^{a}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim%  ;click potencty box
 			if (clipped_IngredientGroup)
 				Sendinput, {Tab}%clipped_IngredientGroup%	;ingredientgroup
 			mousemove, 280, 558, 0
-			; msgbox, %Clipped_ingredients%
 			Tooltip
 			return
 
@@ -217,9 +213,20 @@ AddToList(){
 	#Ifwinactive,Test Definition Editor
 		enter::clk(333,615)
 		mbutton::
-			clk(338,617)
-			sleep 400
-			clk(910,668)
+		sleep 200
+		if (Description)
+			SpecTab.TestDefinitionEditor(Description) ; the pre window
+			Breaking.Point()
+			sleep 200
+			MouseClick, left, 464, 532,2,0 ;click scrollbar
+			click 239, 246  ;results link
+			sleep 200
+			Breaking.Point()
+			winactivate, Results Definition
+			sleep 100
+			; clk(338,617)
+			; sleep 400
+			; clk(910,668)
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
@@ -228,7 +235,44 @@ AddToList(){
 
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		Enter::
-		mbutton::clk(910,668)
+		mbutton::
+			winactivate, Results Definition
+			tooltip,
+			Send,{click 80, 66} ;click edit
+			sleep 200
+			Breaking.Point()
+			winwaitactive, Result Editor,,2
+			if !errorlevel
+				If (Clipped_specs){
+					SpecTab.ResultEditor(Clipped_MinLimit,Clipped_MaxLimit,Clipped_Units,Clipped_Percision,1,Clipped_FullRequirement)
+					clipped_Specs:=
+					Breaking.Point()
+					return
+					}
+				If (MinLimit || MaxLimit) && !(FullRequirement)
+					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+				If (MinLimit || MaxLimit) && (FullRequirement)
+					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirement)
+				else
+				{
+					; inputbox, InputVar, Requirements, Requirements
+					; FullRequirements:=InputVar
+					inputbox, MinLimit, MinLimit, MinLimit
+					inputbox, MaxLimit, MaxLimit, maxLimit
+					inputbox, Units, Units, Units
+
+					; Minlimit:=regexmatch(InputVar,Regexminlimit,r) ? Trim(rMinLimit, "`r`n") : 0
+					; Maxlimit:=regexmatch(InputVar,Regexmaxlimit,r) ? Trim(rMaxLimit, "`r`n") : 0
+					; Units:=regexmatch(InputVar,RegexUnit,r) ? trim(rUnit,"`r`n") : ""
+					; sleep 200
+					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,"",1,1)
+					minlimit:=
+					maxlimit:=
+					units:=
+				}
+				Breaking.Point()
+
+				return
 		; F10::lms.menu()
 		+mbutton::lms.menu()
 		+enter::sendinput, {enter}
@@ -292,8 +336,10 @@ AddToList(){
 					Menu,Menu, add, &Delete Retain, Autofill
 					Try Menu,menu,show
 				}
-				else if (Tab="Specs")
+				else if (Tab="Specs"){
 						SpecTab.CopySpecTemplate()
+						return
+				}
 				else if (Tab="Requests")
 					clk(61, 635) ;enter results
 				else if (Tab="Products")
@@ -331,6 +377,7 @@ AddToList(){
 					mouseclick, left, 333, 615
 			else if winactive("Result Entry") {
 					MouseGetPos, xpos, ypos
+					WorkTab.FixRotation(1,1)
 					WorkTab.CorrectTestResults("toggle")
 					mousemove, %xpos%, %yPos%+26,0
 				}
@@ -358,6 +405,8 @@ AddToList(){
 					winactivate,
 					clk(131, 144)
 				}
+			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe")
+				Sendpassword()
 			}
 		else if winactive("ClipBar ahk_exe RemoteVQ.exe"){
 				click

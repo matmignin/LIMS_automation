@@ -785,7 +785,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		CoordMode, mouse, screen
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
-		; OnMessage(0x0201, "WM_Lbuttondown")
+		OnMessage(0x0201, "WM_Lbuttondown")
 		SpecTab.ShowGUI()
 		CoordMode, mouse, window
 		sleep 100
@@ -801,7 +801,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
 		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
 		CoordMode, mouse, window
-		; OnMessage(0x0201, "WM_Lbuttondown")
+		OnMessage(0x0201, "WM_Lbuttondown")
 		return
 	}
 
@@ -829,6 +829,7 @@ class SpecTab { 	;; _________SpecTab class_______
 
 			ModifyColumns(){
 				Global
+				GUI, Spec_Table:Default
 				LV_ModifyCol(1,140)
 				LV_ModifyCol(2,200)
 				LV_ModifyCol(3,0)
@@ -843,6 +844,7 @@ class SpecTab { 	;; _________SpecTab class_______
 
 			GetRowText(){
 				global
+				GUI, Spec_Table:Default
 				LV_GetText(Name, 			A_EventInfo,1)
 				LV_GetText(LabelClaim, 		A_EventInfo,2)
 				LV_GetText(MinLimit, 		A_EventInfo,3)
@@ -853,6 +855,7 @@ class SpecTab { 	;; _________SpecTab class_______
 				LV_GetText(Method, 			A_EventInfo,8)
 				sleep 200
 				GUI, Spec_Table:submit,NoHide
+				winactivate, ahk_exe eln.exe
 			}
 
 
@@ -906,15 +909,15 @@ class SpecTab { 	;; _________SpecTab class_______
 		global
 		Critical, On
 		clipboard:=
-		; sleep 100
+		sleep 100
 		if winactive("NuGenesis LMS"){
 			MouseGetPos, premx, premy
 			click
 			Sendinput, {ctrldown}{c}{ctrlup}
-			; clipwait,1 ; Tooltip, %Clipboard%
+			clipwait,1 ; Tooltip, %Clipboard%
 			sleep 300
-			; if !ErrorLevel
-				; Breaking.Point()
+			if !ErrorLevel
+				Breaking.Point()
 		}
 		If !errorlevel
 			click 102, 289
@@ -1057,13 +1060,13 @@ class SpecTab { 	;; _________SpecTab class_______
 ;; Run through all the menues to add
 	AutoFill(){
 		global
-		winactivate, ahk_exe eln.exe
-		CoordMode, mouse, window
-		sleep 200
+		; CoordMode, mouse, window
+		; winactivate, ahk_exe eln.exe
+		; sleep 300
 		If winactive("NuGenesis LMS")
 		{
 			Breaking.Point()
-			sleep 200
+			; sleep 200
 			click, 57, 719 ;click Edit Test
 			Sleep 200
 			Breaking.Point()
@@ -1098,7 +1101,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			if !errorlevel
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			Breaking.Point()
-			sleep 400
+			sleep 250
 		}
 		If winactive("Result Editor") ;the editing window
 		{
@@ -1109,7 +1112,7 @@ class SpecTab { 	;; _________SpecTab class_______
 	}
 	else
 		return
-		; msgbox, got returned
+		msgbox, got returned
 		; Blockinput,off
 	return
 }
@@ -1182,15 +1185,17 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	}
 	Breaking.Point()
 	sleep 400
-	Mouseclick, left, 378, 667,1,0 ; click okay
+	if (The_Units)
+		Mouseclick, left, 378, 667,1,0 ; click okay
 	sleep 400
 	Breaking.Point()
-	mousemove, 910, 668
 	If Method contains ICP-MS 231
 		return
+	mousemove, 910, 668
 	WinWaitClose, Results Definition,, 8
 	winactivate, Test Definition Editor
-	mousemove, 1028, 677
+	; mousemove, 1028, 677
+	mousemove, 335, 617
 	; sleep 500
 	; Breaking.Point()
 	; click
@@ -1861,6 +1866,7 @@ Spec_Table:
 		SpecTab.GetRowText()
 		; tt(ShowVariables,1000)
 		sleep 200
+		winactivate, ahk_exe eln.exe
 		SpecTab.AutoFill()
 	}
 Return
@@ -2137,7 +2143,8 @@ FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
 			global
 				MouseGetPos, xpos, ypos
 				sleep 200
-				numbermenu(6)
+				if iteration > 6 || Iteration < 0
+					numbermenu(6)
 				loop %LoopTrough%,
 				{
 					click

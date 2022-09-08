@@ -23,7 +23,7 @@ clipChange(type){
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1)
     exitsub()
   else if Winactive("Test Definition Editior")
-    clipped_Description:=Trim(Clipboard,"`r`n")
+    DESCRIPTION:=Trim(Clipboard,"`r`n")
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
   else if Winactive("Results Definition")
     clip.ParseSpecsTable()
@@ -122,7 +122,7 @@ Class Clip {
       sleep 200
       Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_LabelName "`n" Clipped_IngredientGroup
       ; msgbox, %Clipped_Ingredients%
-      Tooltip, %Clipped_Ingredients%, 0,0
+      Tooltip, %Clipped_Ingredients%, 200,0
       ; tt(Clipped_ingredients 9000,1,1,2)
       return
 		}
@@ -154,8 +154,8 @@ Class Clip {
       Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
-      Clipped_Specs:= Clipped_ResultID "`t" Clipped_Description "`n MinLimit: " Clipped_MinLimit "`n MaxLimit: " Clipped_MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Clipped_Percision "`n Units: " Clipped_Units
-        tt(Clipped_specs, 9000,1,1,2)
+      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " Clipped_MinLimit "`n MaxLimit: " Clipped_MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Clipped_Percision "`n Units: " Clipped_Units
+        tooltip, %Clipped_specs%, 200,0
       return
 		}
 
@@ -170,14 +170,14 @@ Class Clip {
     Clipped_Department:=
     Clipped_SeqNo:=
     Clipped_SampleTemplate:=
-    Clipped_Description:=
+    DESCRIPTION:=
 		ParsedMainSpecTable:=[]
     ParseData:=Clipboard
 		Loop, parse, ParseData, `t  //`t
 			ParsedMainSpecTable.insert(A_LoopField)
     TotalColumns:=ParsedMainSpecTable.maxindex()//2
     Clipped_Method:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Method Id") + TotalColumns],"`r`n")
-    Clipped_Requirements:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns],"`r`n")
+    Clipped_FullRequirement:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns],"`r`n")
     Clipped_minmax:=Strsplit(Requirements," - ","`n")
     Clipped_MinLimit:=Trim(Minmax[1],"`r`n")
     Clipped_MaxLimit:=Trim(minmax[2],"`r`n")
@@ -185,11 +185,11 @@ Class Clip {
     Clipped_Department:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Department") + TotalColumns],"`r`n")
     Clipped_SeqNo:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Seq No") + TotalColumns],"`r`n")
     Clipped_SampleTemplate:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Sample Template") + TotalColumns],"`r`n")
-    Clipped_Description:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns],"`r`n")
+    DESCRIPTION:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns],"`r`n")
     ; StringReplace, Description, Description, `r`n, , All
       sleep 200
-      Clipped_Specs:= Clipped_TestID "`t" Clipped_Description "`n MinMax: " Clipped_MinLimit " - " Clipped_MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
-      tt(Clipped_specs, 9000,1,1,2)
+      Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " Clipped_MinLimit " - " Clipped_MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
+      tooltip, %Clipped_specs%, 200,0
       return
 		}
 

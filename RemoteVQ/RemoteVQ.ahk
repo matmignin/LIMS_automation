@@ -67,6 +67,9 @@ if A_username != mmignin
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
+	regexMaxLimit:="i)(<| - |NMT )(?P<maxLimit>[0-9,.]*)\s\w*"
+	regexMaxLimit:="i)(<|NLT )?(?P<minLimit>(?<!NMT )[0-9.,]*)"
+	regexunit:="i)(?P<unit>\w*)"
 	; if SampleIDMode=GUID
 		; RegexSampleID:="i)(?P<SampleID>([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else if SampleIDMode=SampleID
@@ -178,8 +181,9 @@ AllProductsMsgbox:
 	; clip.EditBox(AllProductsMsg)
 	return
 ShowVariables:
-	run, edit Settings.ini
-	sleep 200
+	listvars
+	; run, edit Settings.ini
+	; sleep 200
 	; WinWaitNotActive, Settings - Notepad,, 10
 			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
 	; winwaitclose, Settings - Notepad,,10
