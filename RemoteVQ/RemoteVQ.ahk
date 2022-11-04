@@ -73,7 +73,7 @@ if A_username != mmignin
 	; if SampleIDMode=GUID
 		; RegexSampleID:="i)(?P<SampleID>([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else if SampleIDMode=SampleID
-		RegexSampleID:="i)(?P<SampleID>(s|\$)202\d{5}-\d{3}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+		;RegexSampleID:="i)(?P<SampleID>(s|\$)202\d{5}-\d{3}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else
 		; sampleID:=
 
