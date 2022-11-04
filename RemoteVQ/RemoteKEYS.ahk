@@ -330,13 +330,7 @@ AddToList(){
 		If winactive("ahk_exe eln.exe") {
 			if winactive("NuGenesis LMS"){ ; If Nugeneses
 				LMS.DetectTab()
-				; if (Tab="Samples")
-					; Menu, Menu, add, New &Request, AutoFill
-				if (Tab="Tests"){
-					Menu,Menu, add, &Delete Retain, Autofill
-					Try Menu,menu,show
-				}
-				else if (Tab="Specs"){
+				if (Tab="Specs"){
 						SpecTab.CopySpecTemplate()
 						return
 				}
@@ -377,7 +371,7 @@ AddToList(){
 					mouseclick, left, 333, 615
 			else if winactive("Result Entry") {
 					MouseGetPos, xpos, ypos
-					WorkTab.FixRotation(1,1)
+					; WorkTab.FixRotation(1,1)
 					WorkTab.CorrectTestResults("toggle")
 					mousemove, %xpos%, %yPos%+26,0
 				}
@@ -408,11 +402,8 @@ AddToList(){
 			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe")
 				Sendpassword()
 			}
-		else if winactive("ClipBar ahk_exe RemoteVQ.exe"){
-				click
-				sleep 100
-				ClipBar.WM_LBUTTONDBLCLK()
-		}
+			else
+				return
 	}
 
 

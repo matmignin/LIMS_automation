@@ -41,8 +41,8 @@ Class ClipBar{
 			; OnMessage(  WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
 			;OnMessage(0x0200, "WM_MOUSEMOVE")
 			; OnMessage(0x203,  "VariableBar_Relocate")
-		OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
-		OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
+		; OnMessage(0x002C, "ODDDL_MeasureItem") ; WM_MEASUREITEM
+		; OnMessage(0x002B, "ODDDL_DrawItem") ; WM_DRAWITEM
 		winSet, Transparent, %ClipBar_T%, AHK_id %GUIID%
 		Return
 

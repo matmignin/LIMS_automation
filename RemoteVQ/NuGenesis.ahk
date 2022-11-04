@@ -288,7 +288,7 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
 
 DetectTab(){
 	global
-	winSet, Transparent, Off, ahk_exe eln.exe
+	; winSet, Transparent, Off, ahk_exe eln.exe
 	tab:=
 	FoundSamples:=
 	FoundRequests:=
@@ -323,30 +323,29 @@ DetectTab(){
 					Tab:="Requests"
 					return Tab
 				}
-				PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				If FoundDocuments {
-					Tab=Documents
-					return tab
-				}
-				PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				If FoundResults {
-					Tab:="Results"
-					return tab
-				}
-				PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				If FoundTests {
-					Tab:="Tests"
-					return tab
-				}
+				; PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+				; If FoundDocuments {
+				; 	Tab=Documents
+				; 	return tab
+				; }
+				; PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+				; If FoundResults {
+				; 	Tab:="Results"
+				; 	return tab
+				; }
+				; PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+				; If FoundTests {
+				; 	Tab:="Tests"
+				; 	return tab
+				; }
 				else if Errorlevel
 				{
-					PIXELSEARCH, FoundReagents, FoundY, 600, 75, 610, 79, 0xF0F0F0, 10, Fast RGB ;icon on
-					if FoundReagents {
-						tab=Reagents
-						; msgbox, %tab% "reagent check"
-						return tab
-					}
-					else {
+					; PIXELSEARCH, FoundReagents, FoundY, 600, 75, 610, 79, 0xF0F0F0, 10, Fast RGB ;icon on
+					; if FoundReagents {
+					; 	tab=Reagents
+					; 	return tab
+					; }
+					; else {
 						PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
 						; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
@@ -354,7 +353,7 @@ DetectTab(){
 						else
 							tab:="Specs"
 						return Tab
-					}
+					; }
 				}
 				; else
 					; return
@@ -2171,10 +2170,8 @@ FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
 
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
-			if (Iteration = "ERROR")
+			if (Iteration < 1) || (Iteration > 6)
 				InputBox, Iteration, enter iteration, number please,, , , , , , , 1
-			if errorlevel
-				reload
 			if LoopThrough
 			{
 				if keep_running = y
@@ -2199,7 +2196,7 @@ FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
 						Sendinput,{tab}{tab}
 					Send,{tab 10}^a
 					sleep 100
-					Sendinput, %Iteration%
+					Send, %Iteration%
 					if keep_running = n ;another signal to stop
 						return
 					sleep 100

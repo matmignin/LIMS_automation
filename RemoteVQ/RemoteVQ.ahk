@@ -6,7 +6,7 @@ if A_username != mmignin
 	Process, Priority, , High
 	#NoEnv
 	Thread, NoTimers
-	Iteration=1
+	; Iteration=1
 	; #ErrorStdOut
 	; #KeyHistory 500
 	#InstallKeybdHook
@@ -38,7 +38,7 @@ if A_username != mmignin
 	Fileread, AllProducts, AllProducts.txt
 	; Menu, Tray, add, Enter Specs, EnterSpecs
 	ReadIniFiles()
-	OnMessage(0x404, "AHK_NotifyIcon")
+	; OnMessage(0x404, "AHK_NotifyIcon")
 
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
@@ -57,7 +57,7 @@ if A_username != mmignin
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
 	; Menu, Tray, Add, windowSpy, windowSpy
-	Menu, Tray, Add, Orient, OrientSub
+	; Menu, Tray, Add, Orient, OrientSub
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
@@ -84,9 +84,9 @@ if A_username != mmignin
 	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	; Menu, Tray, Add, E&xit, ExitSub
-	LMS.Orient()
-	sleep 200
 	ClipBar.Show()
+	sleep 200
+	LMS.Orient()
 	try Menu, Tray, Icon, %AppIconPath%
 	#include NuGenesis.ahk
 	#include ClipBar.ahk
@@ -153,10 +153,10 @@ ReadIniFiles(){
 Reloadsub(){
 	reload
   }
-Orientsub(){
-	global
-	LMS.Orient()
-  }
+; Orientsub(){
+; 	global
+; 	LMS.Orient()
+;   }
 Exitsub(){
 	global
 	ifwinnotexist, RemoteVQ ahk_exe explorer.exe
@@ -216,7 +216,7 @@ Showmfg:
 	sendinput, {*}%Product%{*}{enter}
 	return
 ShowGlobalVision:
-	run, find "\\10.1.2.118\share\Globalvision Master Copy Files"
+	run, find "\\10.1.2.118\Globalvision Master Copy Files"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
 	; winmaximize, Search Results
