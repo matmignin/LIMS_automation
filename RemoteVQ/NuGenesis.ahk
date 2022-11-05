@@ -570,7 +570,7 @@ AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient
 
 Dropdown_IngredientSelect(A_DropdownCount){
 	global
-	SetKeyDelay,-1,-1
+	; SetKeyDelay,-1,-1
 	ifWinNotActive, Edit Ingredient
 		winactivate, Edit Ingredient
 	click, 150, 73 ;click dropdown box
@@ -598,7 +598,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 		this.Dropdown_GenericIngredient(Iteration)
 		ClipBar.AddIteration(0)
 	}
-	SetKeyDelay,0,0
+	; SetKeyDelay,0,0
 	sleep 200
 	return
 }
@@ -608,7 +608,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 
 AddNewProduct(){ ;for naming Product code and customer,
 	global Product, ProductName, Customer, ShapeAndSize, color
-	SetWinDelay, 260
+	; SetWinDelay, 260
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}
 	sendraw, %ProductName%
@@ -632,7 +632,7 @@ AddNewProduct(){ ;for naming Product code and customer,
 	; clk(287, 578) ;click save
 	Iteration:=1
 	return
-	SetWinDelay, %NormalWinDelay%
+	; SetWinDelay, %NormalWinDelay%
 }
 
 AddNewFormulation(){     ;then click on Edit Formulation, puts in code, then tabs to serving size
@@ -658,7 +658,7 @@ AddNewFormulation(){     ;then click on Edit Formulation, puts in code, then tab
 }
 
 HM_ReportOnly(){
-	SetWinDelay, %NormalWinDelay% ;testing out
+	; SetWinDelay, %NormalWinDelay% ;testing out
 	click 125,120 ;click 1st row
 
 	clk(45, 65)
@@ -1957,7 +1957,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			; sleep 300
 			; my:=my+30
 			; MouseMove, mx, my
-			SetWinDelay, %NormalWinDelay%
+			; SetWinDelay, %NormalWinDelay%
 
 			return
 		}
@@ -2027,7 +2027,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			sleep 100
 			Critical, on
 			; msgbox, shipto %A_shipto% `niteration: %iteration% `nAbsselection: %Absselection% `n customerPosition:  %CustomerPosition%
-			setkeydelay, -1,-1
+			; setkeydelay, -1,-1
 			AbsSelection:=Abs(A_ShipTo)-1
 			if (a_shipto = "-1")
 				; msgbox %A_shipto% -1
@@ -2049,7 +2049,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 				worktab.CustomerMenu()
 			else
 			{
-			setkeydelay, 0, 0
+			; setkeydelay, 0, 0
 				critical, off
 				msgbox, This is before the exit
 				; exit
@@ -2061,7 +2061,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			; if winactive("Edit sample `(Field Configuration:")
 				; sleep 800
 			critical, off
-			setkeydelay, 0, 0
+			; setkeydelay, 0, 0
 			return
 		}
 	EditRequest(){
@@ -2078,7 +2078,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		NewRequest(){
 			global
-			SetwinDelay, 550
+			; SetwinDelay, 550
 			department:= ; Clip()
 			Clipboard:=
 			winactivate, NuGenesis LMS
@@ -2133,7 +2133,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Breaking.Point()
 			Send,{tab}{enter}
 			; tooltip,
-			SetWinDelay, %NormalWinDelay%
+			; SetWinDelay, %NormalWinDelay%
 			return
 		}
 
@@ -2585,9 +2585,9 @@ class Breaking {
 		Global
 		If (GetKeyState("Lbutton", "P") || GetKeyState("Space", "P")) {
 			TT("Broke",3000)
-			SetWinDelay, %NormalWinDelay%
-			SetKeyDelay, 0,0
-			Critical, Off
+			; SetWinDelay, %NormalWinDelay%
+			; SetKeyDelay, 0,0
+			; Critical, Off
 			CoordMode, mouse, window
 			CoordMode, Tooltip, window
 			blockinput, off

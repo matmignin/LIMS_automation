@@ -13,7 +13,7 @@ if A_username != mmignin
 	#InstallMouseHook
 	#ClipboardTimeout 7500
 	#HotkeyModifierTimeout
-	SetKeyDelay,0,0
+	; SetKeyDelay,0,0
 	#maxthreadsperhotkey, 2
 	SetTitleMatchMode, 2
 	FormatTime, DayString,, MM/d/yy
@@ -36,9 +36,9 @@ if A_username != mmignin
 	Menu,Tray,NoStandard
 	Fileread, AllBatches, AllBatches.txt
 	Fileread, AllProducts, AllProducts.txt
-	; Menu, Tray, add, Enter Specs, EnterSpecs
+
 	ReadIniFiles()
-	; OnMessage(0x404, "AHK_NotifyIcon")
+
 
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
@@ -47,21 +47,18 @@ if A_username != mmignin
 	Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
 	Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
 	Menu, Tray, Add,
-	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, Add, All Products, AllProductsMsgbox
+	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, Show EditBox, ShowEditBox
 	Menu, Tray, add, Add Sample Log, !^+F3
-	; Menu, Tray, add, Show Citrix Text, +!^F4
 
-	; Menu, Tray, add, AddClipBoardToList, AddToList
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
 	; Menu, Tray, Add, windowSpy, windowSpy
-	; Menu, Tray, Add, Orient, OrientSub
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
-	; Menu, Tray, Click, 1
+
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -73,7 +70,7 @@ if A_username != mmignin
 	; if SampleIDMode=GUID
 		; RegexSampleID:="i)(?P<SampleID>([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else if SampleIDMode=SampleID
-		;RegexSampleID:="i)(?P<SampleID>(s|\$)202\d{5}-\d{3}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+		RegexSampleID:="i)(?P<SampleID>22[0-1][0-9][09]{4}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else
 		; sampleID:=
 
@@ -92,7 +89,7 @@ if A_username != mmignin
 	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
-	SetWinDelay, %NormalWinDelay%
+	; SetWinDelay, %NormalWinDelay%
 
 
 	; RegexCoated = "i)(?:\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated:?\s?|ct\#?\s?)(?P<Coated>\d{3}-\d{4})"
@@ -237,8 +234,8 @@ activeCheck:
 		sleep 1000
 	}
 	else if winexist("Delete specification"){
-		;sleep 4000
-		reload
+		sleep 300
+		msgbox, you sure?
 		return
 	}
 	; else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
@@ -263,30 +260,30 @@ activeCheck:
 		click 128,146
 		return
 	}
-	else If winexist("Delete Test"){
+	else If winactive("Delete Test"){
 		winactivate,
-		sleep 200
+		sleep 100
 		sendinput, {enter}
 		; mousemove, 222, 138
 		; click
 		sleep 1000
 	}
-	else If winexist("Delete results"){
+	else If winactive("Delete results"){
 		winactivate,
-		sleep 200
+		sleep 100
 		sendinput, {enter}
 		; mousemove, 222, 138
 		; click
 		sleep 1000
 	}
-	else If winexist("Delete ingredients"){
+	else If winactive("Delete ingredients"){
 		winactivate,
 		sleep 200
 		sendinput, {enter}
 		; mousemove, 222, 138
 		sleep 1000
 	}
-	else if winexist("Lock specification")
+	else if winactive("Lock specification")
 	{
 		sendinput, !{n}
 		sleep 1000
@@ -301,7 +298,7 @@ activeCheck:
 		}
 		sleep 1000
 	}
-	else if winexist("Information"){
+	else if winActive("Information"){
 		winactivate,
 		send, {enter}
 	}
@@ -332,31 +329,31 @@ return
 
 
 
-AHK_NotifyIcon(wParam, lParam) {
-	Static lbutton_presses := 0, PosX := 0, PosY := 0
-	If (lParam = 0x202) {	; WM_LBUTTONUP
-		CoordMode, Mouse, Screen
-		MouseGetPos, PosX, PosY ; store co-ords in case mouse moves during the timed wait below
-		SetTimer, AHK_NotifyIcon_Continue, -300 ; Wait 300ms for a second left click, then Continue
-		; Set counter (lbutton_presses) to 1, unless already 1; then, set to 2
-		lbutton_presses := ((lbutton_presses != 1) ? (1) : (2))
-		CoordMode, Menu, Window
-		Return
-		AHK_NotifyIcon_Continue:
-		If (lbutton_presses = 1) { ; If only a single left click was registered
-			CoordMode, Menu, Screen
-			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
-		}
-		lbutton_presses := 0 ; Reset the counter to 0
-		CoordMode, Mouse, Window
-		Return
-	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
-		Return ; Do nothing besides the built-in double left click action (open the default menu item).
-	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
-		Reloadsub()
-	}
-	Return true
-}
+; AHK_NotifyIcon(wParam, lParam) {
+; 	Static lbutton_presses := 0, PosX := 0, PosY := 0
+; 	If (lParam = 0x202) {	; WM_LBUTTONUP
+; 		CoordMode, Mouse, Screen
+; 		MouseGetPos, PosX, PosY ; store co-ords in case mouse moves during the timed wait below
+; 		SetTimer, AHK_NotifyIcon_Continue, -300 ; Wait 300ms for a second left click, then Continue
+; 		; Set counter (lbutton_presses) to 1, unless already 1; then, set to 2
+; 		lbutton_presses := ((lbutton_presses != 1) ? (1) : (2))
+; 		CoordMode, Menu, Window
+; 		Return
+; 		AHK_NotifyIcon_Continue:
+; 		If (lbutton_presses = 1) { ; If only a single left click was registered
+; 			CoordMode, Menu, Screen
+; 			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
+; 		}
+; 		lbutton_presses := 0 ; Reset the counter to 0
+; 		CoordMode, Mouse, Window
+; 		Return
+; 	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
+; 		Return ; Do nothing besides the built-in double left click action (open the default menu item).
+; 	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
+; 		Reloadsub()
+; 	}
+; 	Return true
+; }
 
 
 	NumberMenu(n){
@@ -370,7 +367,7 @@ AHK_NotifyIcon(wParam, lParam) {
 		return
 		}
 NumberMenubutton:
-	ControlsetText, Edit5,%A_ThisMenuItemPos%,VarBar
+	ControlsetText, Edit5,%A_ThisMenuItemPos%,ClipBar
 	loops=%A_ThisMenuItemPos%
 	Iteration:=A_ThisMenuItemPos
 Return

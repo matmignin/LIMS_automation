@@ -243,7 +243,6 @@ WM_LBUTTONDOWN(wParam, lParam){
 					ctrl := "`n(in control " . A_GuiControl . ")"
 				PostMessage, 0xA1, 2
 				MouseGetPos,,,,winControl
-			;	setTimer, SaveVarBarLocaton, -1500
 }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
