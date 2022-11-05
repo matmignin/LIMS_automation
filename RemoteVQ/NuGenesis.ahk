@@ -79,15 +79,15 @@ AddDataFromClipboard(Pointer:="<\^>",Source:=""){
     		  Table_height+=1
 			}
 			  Lms.detectTab()
-			If winactive("Edit Ingredient"){
-				winactivate "Edit Ingredient"
+			If winexist("Edit Ingredient"){
+				winactivate, Edit Ingredient
 				sleep 250
 				ProductTab.AddNewIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
 				sleep 320
 				return
 				}
-			else if Winactive("Composition"){
-				winactivate "Composition"
+			else if Winexist("Composition") || winactive("Edit Ingredient"){
+				winactivate, Composition
 				loop % Line
 				{
 					If !Position[A_index]
