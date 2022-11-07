@@ -93,8 +93,8 @@ Class ClipBar{
 		global
 		MouseGetPos,,,,winControl
 		try Menu, ClipBarmenu, DeleteAll
-		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
 		Menu, ClipBarMenu, Add, All Products, AllProductsMsgbox
+		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
 		Menu, ClipBarMenu, Add,
 		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
@@ -103,8 +103,9 @@ Class ClipBar{
 		Menu, ClipbarMenu, add, &mfg folder, Showmfg
 		Menu, ClipbarMenu, add, &GLOBAL VISION folder, ShowGlobalVision
 		Menu, ClipBarMenu, add, Show EditBox, ShowEditBox, +Break
-		Menu, ClipBarMenu, add, Paste Spec, +F10
-
+		Menu, ClipBarMenu, add, Paste Spec, +!^F10
+		Menu, ClipBarMenu, add, Add Data From Clipboard, #+!F10
+		Menu, ClipBarMenu, add, ParsespecsTable, #+^F10
 		Menu, ClipbarMenu, add, Add Sample Log, !^+F3
 		Try Menu,ClipBarmenu,show
 	}
@@ -207,12 +208,12 @@ Class ClipBar{
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
 		; if CustomerPosition
-			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
 loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
 	global
 		GUI, ClipBar:default
-		; Iniread, Iteration, Settings.ini, SavedVariables, Iteration
+		Iniread, Iteration, Settings.ini, SavedVariables, Iteration
 		iniRead, Product, Settings.ini, SavedVariables, Product
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
 		iniRead, Lot, Settings.ini, SavedVariables, Lot
@@ -233,17 +234,17 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		; GUI, ClipBar:Submit, Nohide
 	}
 }
-WM_LBUTTONDOWN(wParam, lParam){
-		If !MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
-		return
-		PostMessage, 0xA1, 2
-				X := lParam & 0xFFFF
-				Y := lParam >> 16
-				if A_GuiControl
-					ctrl := "`n(in control " . A_GuiControl . ")"
-				PostMessage, 0xA1, 2
-				MouseGetPos,,,,winControl
-}
+; WM_LBUTTONDOWN(wParam, lParam){
+; 		If !MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+; 		return
+; 		PostMessage, 0xA1, 2
+; 				X := lParam & 0xFFFF
+; 				Y := lParam >> 16
+; 				if A_GuiControl
+; 					ctrl := "`n(in control " . A_GuiControl . ")"
+; 				PostMessage, 0xA1, 2
+; 				MouseGetPos,,,,winControl
+; }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
 #Ifwinactive, ClipBar ahk_exe RemoteVQ.exe

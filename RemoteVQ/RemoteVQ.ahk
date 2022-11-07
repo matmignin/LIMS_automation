@@ -1,6 +1,7 @@
 if A_username != mmignin
 	exitapp
 	; #MenuMaskKey vkFF
+	; Critical, on
 	#SingleInstance,Force
 	#Persistent
 	Process, Priority, , High
@@ -117,9 +118,8 @@ ReadIniFiles(){
 	iniRead, IngredientNoteDropDownCount, Settings.ini, Config, IngredientNoteDropDownCount
 
 	; iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
-	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
-	iniRead, Iteration, Settings.ini, SavedVariables, CustomerPosition
-
+	;iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+	; iniRead, Iteration, Settings.ini, SavedVariables, CustomerPosition
 
 	iniRead, HM_Units, Settings.ini, HeavyMetal_Variables, HM_Units
 	iniRead, HM_Lower_Limit, Settings.ini, HeavyMetal_Variables, HM_Lower_Limit

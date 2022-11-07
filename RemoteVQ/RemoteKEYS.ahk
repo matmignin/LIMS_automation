@@ -1,11 +1,11 @@
 
 		#ifwinactive,
-	+#F11::SpecTab.ApproveSpecVersion()
-	^#F11::SpecTab.NewSpecVersion()
-	!#F11::SpecTab.RemoveTestSpec()
+	; +#F11::SpecTab.ApproveSpecVersion()
+	; ^#F11::SpecTab.NewSpecVersion()
+	; !#F11::SpecTab.RemoveTestSpec()
 	~RWin::Send {Blind}{vkFF}
 	~LWin::Send {Blind}{vkFF}
-	F18::return
+	; F18::return
 	; $RWin::return
 	; $LWin::return
 	<!left::GetAllProducts()
@@ -29,19 +29,20 @@
 	^+F15::GetAllBatches()
 	;- !F2::GetAllBatches("`n")
 	; F3::sendinput, %Lot%
-	!F1::ClipBar.Focus("Edit1")
-	!F2::ClipBar.Focus("Edit2")
-	!F3::ClipBar.Focus("Edit3")
-	!F4::ClipBar.Focus("Edit4")
-	!F5::ClipBar.Focus("Edit5")
-	F4::sendinput, %Coated%
+	;!F1::ClipBar.Focus("Edit1")
+	;!F2::ClipBar.Focus("Edit2")
+	;!F3::ClipBar.Focus("Edit3")
+	;!F4::ClipBar.Focus("Edit4")
+	;!F5::ClipBar.Focus("Edit5")
+	;F4::sendinput, %Coated%
 	;+F3::3tap()
 +!^F1::GetAllProducts()
 +!^F2::GetAllBatches()
-+!^F4::SwitchEnv("Test")
+;+!^F4::SwitchEnv("Test")
 +!^F5::
-
-	+F10::spectab.Autofill()
+			#+!F10::LMS.AddDataFromClipboard()
+			#+^F10::clip.ParseSpecsTable()
+	+!^F10::spectab.Autofill()
 	; if !(Requirement)
 	    ; iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
         ; iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
@@ -140,33 +141,13 @@ AddToList(){
 		; CoordMode, mouse, Screen
 }
 
-;; _____________________________LMS KEYBINDINGS____________________________
-	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
-		+^F10::
-		if !(Iteration)
-			SpecTab.FullRemoveTest()
-		else
-		{
-			loop, %iteration%
-				{
-					SpecTab.FullRemoveTest()
-					sleep 2000
-					Breaking.Point()
-				}
-		}
-			return
-
-
 		; +F3::AddToList()
-		mbutton:: 3tap()
+
 		+mbutton::lms.Menu()
 		F19::lms.Menu()
 		F7::3Right()
 		F6::3Left()
 		Enter::LMS.SaveCode()
-		>+F20::LMS.SearchbarPaste()
-		+^v::LMS.SearchbarPaste()
-		<^v::lms.searchbarPaste()
 		!^+F3::  ;add a bunch of sample logtests
 			Loop 20
 			{
@@ -188,12 +169,77 @@ AddToList(){
 				Breaking.Point()
 			}
 			return
+;; _____________________________LMS KEYBINDINGS____________________________
+	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
+		mbutton:: 3tap()
+		+^F10::
+		if !(Iteration)
+			SpecTab.FullRemoveTest()
+		else
+		{
+			loop, %iteration%
+				{
+					SpecTab.FullRemoveTest()
+					sleep 2000
+					Breaking.Point()
+				}
+		}
+			return
+
+			#ifwinactive, Result Editor
+					mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+
+
+
+			; #ifwinactive, Test Definition Editor
+			; 		mbutton::mouseclick, left, 333, 615
+
+
+			#ifwinactive, Edit specification
+					mbutton::SpecTab.Edit_Analytical()
+
+
+			#ifwinactive, Composition
+					mbutton::ProductTab.Table()
+			#ifwinactive, Select methods tests
+					mbutton::clk(854, 658)
+
+
+			#ifwinactive, Select Product ahk_exe eln.exe
+					mbutton::send % clk(107, 66) Product "{enter}{enter}"
+
+
+			#ifwinactive, Edit Product
+					mbutton::ProductTab.AddNewProduct()
+			#Ifwinactive, Select tests for request: R
+					mbutton::WorkTab.SelectTestSample()
+			#IFwinexist, Release: Rotational Testing Schedule ;
+					mbutton::
+						winactivate,Release: Rotational Testing Schedule
+						clk(131, 144)
+						return
+			#ifwinexist, Release:
+					mbutton::
+						winactivate, Release:
+						clk(131, 144)
+						return
+
+			#ifwinexist, Sign :
+				mbutton::Sendpassword()
+
+#ifwinactive
+
+
 
 
 	#ifwinactive, Edit test `(Field Configuration
 			+Mbutton::
 			F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
-
+			+F10::
+				sendinput, {click 384, 222}{tab 2}{end 2}
+				sendinput, {shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}
+				sendinput, {Click 334, 618}
+				return
 
 	#Ifwinactive,Edit Ingredient
 		Mbutton::
@@ -230,11 +276,17 @@ AddToList(){
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		+Mbutton::worktab.fixrotation(20,1)
+		; +Mbutton::worktab.fixrotation(20,1)
 		F10::WorkTab.CorrectTestResults("loop")
-
+					mbutton::
+						MouseGetPos, xpos, ypos
+						; WorkTab.FixRotation(1,1)
+						WorkTab.CorrectTestResults("toggle")
+						mousemove, %xpos%, %yPos%+26,0
+						return
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		Enter::
+		;mbutton::lms.menu()
 		mbutton::
 			winactivate, Results Definition
 			tooltip,
@@ -283,7 +335,14 @@ AddToList(){
 			sleep 300
 			Send, %Product%{enter}
 			return
-
+		; mbutton::WorkTab.registerNewSamples()
+		; +F10::
+						; Send, {click}
+				; Excel.Batches()
+				; winactivate, Register new samples
+					; sleep 200
+					; WorkTab.registerNewSamples()
+					; return
 	#ifwinactive, New Document
 		Enter::
 			LMS.SaveCode()
@@ -297,6 +356,9 @@ AddToList(){
 		; Numpaddot::send, {click 837, 656}{
 	#ifwinactive, Edit request
 		F10::Worktab.EditRequest()
+		mbutton::WorkTab.EditRequest()
+	#ifwinactive, Edit sample
+		+F10::worktab.CustomerMenu()
 	#ifwinactive, Select samples for test:
 	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
 		;;^`::						ClipBar.reset()
@@ -307,8 +369,7 @@ AddToList(){
 		F8::						3down()
 		F7::						3Right()
 		F6::						3Left()
-		+Mbutton::						4tap()
-		^F10::						4tap()
+
 		mbutton::					3tap()
 		; +!F10::						3tap()
 	#Ifwinactive,
@@ -322,12 +383,13 @@ AddToList(){
 
 
 
+
 ;;____________________TouchPad BINDINGS__________________________________________
 	3tap(){
 		Global
 		; FlashScreen("3-Tap")
 
-		If winactive("ahk_exe eln.exe") {
+				; If winactive("ahk_exe eln.exe") {
 			if winactive("NuGenesis LMS"){ ; If Nugeneses
 				LMS.DetectTab()
 				if (Tab="Specs"){
@@ -351,59 +413,58 @@ AddToList(){
 						; sleep 500
 					; winactivate, Select tests for request: R
 						send, {click, 31, 102}
-
 					; blockinput, off
 				return
 				}
 				}
-			else if winexist("Delete Test") || winexist("Delete Tests") || winexist("Delete results") || winexist("Delete sample templates") || winExist("Delete specification") { ; Press Okay
-					winactivate,
-					send, y
-					clk(229, 136)
-					return
-				}
-			else if winactive("Result Editor") {
-					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-				}
-			else if winactive("Register new samples")
-					WorkTab.registerNewSamples()
-			else if winactive("Test Definition Editor")
-					mouseclick, left, 333, 615
-			else if winactive("Result Entry") {
-					MouseGetPos, xpos, ypos
-					; WorkTab.FixRotation(1,1)
-					WorkTab.CorrectTestResults("toggle")
-					mousemove, %xpos%, %yPos%+26,0
-				}
-			else if winactive("Edit specification")
-					SpecTab.Edit_Analytical()
-			else if winactive("Results Definition")
-					lms.menu()
-			else if winactive("Composition")
-					ProductTab.Table()
-			else if winactive("Select methods tests")
-					clk(854, 658)
-			; else If winactive("Select methods tests")
-					; SpecTab.Table()
-			else if winactive("Edit Formulation")
-					productTab.AddNewFormulation()
-			else if winactive("Select Product ahk_exe eln.exe")
-					send % clk(107, 66) Product "{enter}{enter}"
-			else if winactive("Edit request")
-				WorkTab.EditRequest()
-			else if winactive("Edit Product")
-					ProductTab.AddNewProduct()
-			else If winactive("Select tests for request: R")
-					WorkTab.SelectTestSample()
-			else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule") { ; Press Okay
-					winactivate,
-					clk(131, 144)
-				}
-			else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe")
-				Sendpassword()
-			}
-			else
-				return
+			; else if winexist("Delete Test") || winexist("Delete Tests") || winexist("Delete results") || winexist("Delete sample templates") || winExist("Delete specification") { ; Press Okay
+			; 		winactivate,
+			; 		send, y
+			; 		clk(229, 136)
+			; 		return
+			; 	}
+			; else if winactive("Result Editor") {
+			; 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+			; 	}
+			; else if winactive("Register new samples")
+			; 		WorkTab.registerNewSamples()
+			; else if winactive("Test Definition Editor")
+			; 		mouseclick, left, 333, 615
+			; else if winactive("Result Entry") {
+			; 		MouseGetPos, xpos, ypos
+			; 		; WorkTab.FixRotation(1,1)
+			; 		WorkTab.CorrectTestResults("toggle")
+			; 		mousemove, %xpos%, %yPos%+26,0
+			; 	}
+			; else if winactive("Edit specification")
+			; 		SpecTab.Edit_Analytical()
+			; else if winactive("Results Definition")
+			; 		lms.menu()
+			; else if winactive("Composition")
+			; 		ProductTab.Table()
+			; else if winactive("Select methods tests")
+			; 		clk(854, 658)
+			; ; else If winactive("Select methods tests")
+			; 		; SpecTab.Table()
+			; else if winactive("Edit Formulation")
+			; 		productTab.AddNewFormulation()
+			; else if winactive("Select Product ahk_exe eln.exe")
+			; 		send % clk(107, 66) Product "{enter}{enter}"
+			; else if winactive("Edit request")
+			; 	WorkTab.EditRequest()
+			; else if winactive("Edit Product")
+			; 		ProductTab.AddNewProduct()
+			; else If winactive("Select tests for request: R")
+			; 		WorkTab.SelectTestSample()
+			; else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule") { ; Press Okay
+			; 		winactivate,
+			; 		clk(131, 144)
+			; 	}
+			; else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe")
+			; 	Sendpassword()
+			; }
+			; else
+				; return
 	}
 
 
@@ -513,8 +574,7 @@ AddToList(){
 		;;	_____4Fingers
 	4tap(){
 		global
-		; FlashScreen(tab)
-			If winactive("NuGenesis LMS") {
+If winactive("NuGenesis LMS") {
 				LMS.Detecttab()
 				if (Tab="Requests") {
 							MouseGetPos, mx, mY
@@ -528,7 +588,7 @@ AddToList(){
 								return
 						return
 					}
-					else If (tab:="Samples")
+				else If (Tab:="Samples")
 					lms.menu()
 				else if (Tab:="Products")
 						mouseclick, left, 78, 443 ;edit compositi
@@ -536,24 +596,7 @@ AddToList(){
 						lms.menu()
 				else
 					return
-			}
-			else if winactive("Edit test"){
-				sendinput, {click 384, 222}{tab 2}{end 2}
-				sendinput, {shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}
-				sendinput, {Click 334, 618}
-			}
-			else if winactive("Edit sample")
-				worktab.CustomerMenu()
-			; else if winactive("Composition")
-				; ProductTab.AddCOASpace()
-			else if winactive("Register new samples"){
-				Send, {click}
-				; Excel.Batches()
-				winactivate, Register new samples
-					sleep 200
-					WorkTab.registerNewSamples()
-					return
-			}
+}
 			return
 	}
 
@@ -563,7 +606,9 @@ AddToList(){
 	:*:osl`;::`(On Sample Log)
 	:*:fm`;::`Finished, Micro
 	:*:ia`;::`In Process, Analytical
+	;:*:pia`;::%product%`, In Process, Analytical
 	:*:iaa`;::`In Process, Analytical (Annual)
+	;:*:piaa`;::%Product%`, In Process, Analytical (Annual)
 	:*:ip`;::`In Process, Physical
 	:*:ir`;::`In Process, Retain
 	:*:st`;::`Stability
@@ -574,6 +619,7 @@ AddToList(){
 	; :*:pa`;::`P. aeruginosa
 	:*:uc`;::`Update Total Coliforms Method
 #Ifwinactive, Edit Formulation
+; mbutton::productTab.AddNewFormulation()
 	:*R:00`;::`#00 capsule / 0.917`" x 0.336`"
 	:*R:00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
 	:*R:3`;::`#3 capsule / 0.626`" x 0.229`"
