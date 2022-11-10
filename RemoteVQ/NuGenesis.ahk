@@ -372,8 +372,8 @@ Orient(){
 	WbX:=WbX+400
 	Flovar_x:= NuX +900
 	Flovar_y:= NuH + NuY -28
-	ClipBar_nuX:=NuX+450
 	ClipBar_nuY:=NuY
+	ClipBar_nuX:=NuX+450
 	TabSelect:=NuW-10
 	DocumentMenuSection_X:=NuW-200
 	DocumentMenuDocument_X:=NuW-140
@@ -490,6 +490,8 @@ AddProductFromClipboard(){
     loop, parse, clipboard, "`n"
 		{
 			SheetInfo:=[]
+			Coated:=
+			Lot:=
 			SheetInfo:=StrSplit(A_LoopField,"|")
       Product:=SheetInfo[2]
       ProductName:=SheetInfo[3]
@@ -499,28 +501,31 @@ AddProductFromClipboard(){
       Color:=SheetInfo[7]
       ServingSize:=SheetInfo[8]
       clip.codesRegex(SheetInfo[9])
-      Iteration:=CustomerPosition
       ; ControlsetText, Static1,%CustomerPosition%,ClipBar
-      GuiControl,ClipBar:Text, Iteration, %Iteration%
-		if CustomerPosition
-			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+      ; GuiControl,ClipBar:Text, Iteration, %Iteration%
     }
-    if winactive("NuGenesis LMS"){
-      Lms.detectTab()
-      if (Tab="Product"){
-        click 74, 153
-        sleep 1000
-      }
-      else
-        return
-    }
-	sleep 200
-	Breaking.Point()
-    if Winactive("Edit Product")
-      ProductTab.AddNewProduct()
-    else if winactive("Edit Formulation")
-      ProductTab.AddNewFormulation()
-    else
+			if CustomerPosition
+			{
+				Iteration:=CustomerPosition
+				ControlsetText, Edit5,%Iteration%,ClipBar
+				IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+			}
+    ; if winactive("NuGenesis LMS"){
+      ; Lms.detectTab()
+      ; if (Tab="Product"){
+        ; click 74, 153
+        ; sleep 1000
+      ; }
+      ; else
+        ; return
+    ; }
+	; sleep 200
+	; Breaking.Point()
+    ; if Winactive("Edit Product")
+      ; ProductTab.AddNewProduct()
+    ; else if winactive("Edit Formulation")
+      ; ProductTab.AddNewFormulation()
+    ; else
       return
   }
 
@@ -951,7 +956,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		clipboard:=
 		click 57, 715 ; edit Test
 		; click 57, 750 ; edit results
-		winwaitactive, Test Definition Editor,,1
+		winwaitactive, Test Definition Editor,,2
 		if errorlevel
 			winactivate, Test Definition Editor
 		sleep 400
@@ -997,12 +1002,13 @@ class SpecTab { 	;; _________SpecTab class_______
 
 	PasteSpecs(){
 		global
-		Critical, On
-		iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
-		iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
-		iniread, Percision, Settings.ini, CopiedSpecs, Percision
-		iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
-		iniread, Units, Settings.ini, CopiedSpecs, Units
+		tooltip,
+		; Critical, On
+		; iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
+		; iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
+		; iniread, Percision, Settings.ini, CopiedSpecs, Percision
+		; iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
+		; iniread, Units, Settings.ini, CopiedSpecs, Units
 		if winactive("NuGenesis LMS"){
 			winactivate, NuGenesis LMS
 			click 57, 715 ; edit Test
@@ -1038,7 +1044,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			Breaking.Point()
 		}
 		CopyPasteToggle=0
-		Critical, Off
+		; Critical, Off
 		exit
 		return
 	}
@@ -1062,6 +1068,10 @@ class SpecTab { 	;; _________SpecTab class_______
 		; CoordMode, mouse, window
 		; winactivate, ahk_exe eln.exe
 		; sleep 300
+		If (Clipped_specs){
+				clipped_Specs:=
+					sleep 100
+			}
 		If winactive("NuGenesis LMS")
 		{
 			Breaking.Point()
@@ -1097,9 +1107,10 @@ class SpecTab { 	;; _________SpecTab class_______
 			sleep 200
 			Breaking.Point()
 			winwaitactive, Result Editor,,2
-			if !errorlevel
-				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+			if errorlevel
+				winactivate,
 			Breaking.Point()
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			sleep 250
 		}
 		If winactive("Result Editor") ;the editing window
@@ -1139,11 +1150,11 @@ EditSpecification_Analytical(){
 	Breaking.Point()
 	click, 340, 622 ;click okay
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS, ,5
+	winwaitactive, NuGenesis LMS, ,8
 	if !ErrorLevel
 		click, 88, 327 ; click add sample template
 	Breaking.Point()
-	winwaitactive, Edit sample template,, 5
+	winwaitactive, Edit sample template,, 8
 	if !errorlevel
 		SpecTab.EditSampleTemplate_A()
 	return
@@ -1490,14 +1501,14 @@ Edit_Micro(){
 	Sleep 200
 	Send,{Space}
 	sleep 200
-	winwaitactive, Products List, ,2
+	winwaitactive, Products List,,2
 	Send,{enter 2}
 	sleep 200
 	Send,{tab}
 	sleep 200
 	Breaking.Point()
 	Send,{right}{tab}{left 2}{enter}
-	winwaitactive, NuGenesis LMS, ,4
+	winwaitactive, NuGenesis LMS,,4
 	if !errorlevel
 		sleep 300
 	Breaking.Point()
@@ -1861,11 +1872,13 @@ WM_Lbuttondown:
 Spec_Table:
 	if (A_GuiEvent = "NORMAL" ){
 		; if (A_GuiEvent := "I" ){
+		DESCRIPTION:=
 		Sendinput,{space}
 		SpecTab.GetRowText()
 		; tt(ShowVariables,1000)
 		sleep 200
 		winactivate, ahk_exe eln.exe
+		sleep 200
 		SpecTab.AutoFill()
 	}
 Return
@@ -1905,7 +1918,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 		; if !Iteration
 			; iniRead, Iteration, Settings.ini, SavedVariables, Iteration
 		ControlGetText, Iteration, Edit5, ClipBar
-		blockinput, on
+		; blockinput, on
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
@@ -1948,7 +1961,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 				; 	; Iteration-=1
 			sleep 150
 			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
-			blockinput, off
+			; blockinput, off
 			sleep 800
 			Breaking.Point()
 			Send, {enter}
@@ -2025,7 +2038,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		Dropdown_CustomerSelect(A_ShipTo){
 			sleep 100
-			Critical, on
+			; Critical, on
 			; msgbox, shipto %A_shipto% `niteration: %iteration% `nAbsselection: %Absselection% `n customerPosition:  %CustomerPosition%
 			; setkeydelay, -1,-1
 			AbsSelection:=Abs(A_ShipTo)-1
@@ -2050,7 +2063,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			else
 			{
 			; setkeydelay, 0, 0
-				critical, off
+				; critical, off
 				msgbox, This is before the exit
 				; exit
 			}
@@ -2060,7 +2073,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			; 	sleep 500
 			; if winactive("Edit sample `(Field Configuration:")
 				; sleep 800
-			critical, off
+			; critical, off
 			; setkeydelay, 0, 0
 			return
 		}
@@ -2176,7 +2189,7 @@ FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
 			ControlGetText, Iteration, Edit5, ClipBar
 			if (Iteration =! RotationIteration) && (RotationIteration = "")
 				InputBox, RotationIteration, enter iteration, number please,, , , , , , , 1
-			ControlsetText, %RotationIteration%, Edit5, ClipBar	
+			ControlsetText, %RotationIteration%, Edit5, ClipBar
 			if LoopThrough
 			{
 				if keep_running = y

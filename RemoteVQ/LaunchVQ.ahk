@@ -44,7 +44,7 @@ if A_username != mmignin
 ; }
 
 	LaunchVQSub:
-	run \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\RemoteVQ.exe
+	run \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\RemoteVQ
 	return
 
 

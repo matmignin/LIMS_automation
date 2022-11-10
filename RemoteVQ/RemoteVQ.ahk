@@ -55,6 +55,7 @@ if A_username != mmignin
 
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
+	Menu, Tray, Add, Stop Timer, StopTimer
 	; Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
@@ -81,6 +82,7 @@ if A_username != mmignin
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
 	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
+
 	; Menu, Tray, Add, E&xit, ExitSub
 	ClipBar.Show()
 	sleep 200
@@ -150,6 +152,9 @@ ReadIniFiles(){
 
 Reloadsub(){
 	reload
+  }
+StopTimer(){
+	SetTimer, activeCheck, Off
   }
 ; Orientsub(){
 ; 	global
@@ -264,10 +269,11 @@ activeCheck:
 	else If winactive("Delete Test"){
 		winactivate,
 		sleep 100
+
 		sendinput, {enter}
 		; mousemove, 222, 138
 		; click
-		sleep 1000
+		; sleep 1000
 	}
 	else If winactive("Delete results"){
 		winactivate,

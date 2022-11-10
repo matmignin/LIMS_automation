@@ -22,8 +22,10 @@ clipChange(type){
     ProductTab.AddProductFromClipboard()
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1)
     exitsub()
-  else if Winactive("Test Definition Editior")
+  else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
+    TT(Description,2000)
+  }
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
   else if Winactive("Results Definition")
     clip.ParseSpecsTable()
@@ -122,19 +124,19 @@ Class Clip {
       sleep 200
       Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_LabelName "`n" Clipped_IngredientGroup
       ; msgbox, %Clipped_Ingredients%
-      Tooltip, %Clipped_Ingredients%, 200,0
-      ; tt(Clipped_ingredients 9000,1,1,2)
+      ; Tooltip, %Clipped_Ingredients%, 200,0
+      tt(Clipped_ingredients 9000,1,1,2)
       return
 		}
 		ParseSpecsTable(Save:=1){
 		global
-    Clipped_MinLimit:=
-    Clipped_MaxLimit:=
-    Clipped_Percision:=
+    MinLimit:=
+    MaxLimit:=
+    Percision:=
     Clipped_Requirement:=
     Clipped_ParsedSpecs:=
-    Clipped_FullRequirement:=
-    Clipped_Units:=
+    FullRequirement:=
+    Units:=
     Clipped_SeqNo:=
     Clipped_Method:=
     Clipped_ResultID:=
@@ -143,19 +145,20 @@ Class Clip {
 		Loop, parse, ParseData, `t
 			ParsedSpecs.insert(A_LoopField)
 			TotalColumns:=ParsedSpecs.maxindex()//2
-			Clipped_MinLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
-			Clipped_MaxLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
-			Clipped_Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
+			MinLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
+			MaxLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
+			Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
 			Clipped_Requirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns], "`r`n")
       Clipped_ParsedSpecs:=Trim([HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
-			Clipped_FullRequirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
-			Clipped_Units:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Unit") + TotalColumns],"`r`n")
+			FullRequirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
+			Units:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Unit") + TotalColumns],"`r`n")
 			Clipped_SeqNo:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Seq No") + TotalColumns],"`r`n")
       Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
-      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " Clipped_MinLimit "`n MaxLimit: " Clipped_MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Clipped_Percision "`n Units: " Clipped_Units
-        tooltip, %Clipped_specs%, 200,0
+      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Percision "`n Units: " Units
+      tt(Clipped_Specs,4000)
+        ; tooltip, %Clipped_specs%, 200,0
       return
 		}
 
@@ -164,8 +167,8 @@ Class Clip {
     Clipped_Method:=
     Clipped_Requirements:=
     Clipped_minmax:=
-    Clipped_MinLimit:=
-    Clipped_MaxLimit:=
+    MinLimit:=
+    MaxLimit:=
     Clipped_TestID:=
     Clipped_Department:=
     Clipped_SeqNo:=
@@ -177,10 +180,10 @@ Class Clip {
 			ParsedMainSpecTable.insert(A_LoopField)
     TotalColumns:=ParsedMainSpecTable.maxindex()//2
     Clipped_Method:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Method Id") + TotalColumns],"`r`n")
-    Clipped_FullRequirement:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns],"`r`n")
+    FullRequirement:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Requirements") + TotalColumns],"`r`n")
     Clipped_minmax:=Strsplit(Requirements," - ","`n")
-    Clipped_MinLimit:=Trim(Minmax[1],"`r`n")
-    Clipped_MaxLimit:=Trim(minmax[2],"`r`n")
+    MinLimit:=Trim(Minmax[1],"`r`n")
+    MaxLimit:=Trim(minmax[2],"`r`n")
     Clipped_TestID:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Test Id") + TotalColumns],"`r`n")
     Clipped_Department:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Department") + TotalColumns],"`r`n")
     Clipped_SeqNo:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Seq No") + TotalColumns],"`r`n")
@@ -188,8 +191,9 @@ Class Clip {
     DESCRIPTION:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns],"`r`n")
     ; StringReplace, Description, Description, `r`n, , All
       sleep 200
-      Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " Clipped_MinLimit " - " Clipped_MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
-      tooltip, %Clipped_specs%, 200,0
+      Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
+      TT(%Clippsed_Specs%,4000)
+      ; tooltip, %Clipped_specs%, 200,0
       return
 		}
 
@@ -339,7 +343,7 @@ CodesRegex(input:=""){
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       ; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+      ; SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
       if (Batch!=PriorBatch) && (!rlot && !rCoated){
         Lot:=
         Coated:=
@@ -360,16 +364,16 @@ CodesRegex(input:=""){
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
       		    GUI, ClipBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated)
-      if (SampleID!=PriorSampleID){
-        iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+      ; if (SampleID!=PriorSampleID){
+        ; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
         ; FileAppend, %SampleId%, %CodeFile%
-      }
+      ; }
       if (PriorCodestring!=Codestring){
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
-        if sampleID
-          FileAppend, `n%SampleId%, %CodeFile%
+        ; if sampleID
+          ; FileAppend, `n%SampleId%, %CodeFile%
 
         ; iniwrite, %PriorCodeString%, Settings.ini, SavedVariables, PriorCodeString
 

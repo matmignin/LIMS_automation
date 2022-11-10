@@ -171,6 +171,7 @@ AddToList(){
 			return
 ;; _____________________________LMS KEYBINDINGS____________________________
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
+
 		mbutton:: 3tap()
 		+^F10::
 		;if !(Iteration)
@@ -286,8 +287,8 @@ AddToList(){
 						mousemove, %xpos%, %yPos%+26,0
 						return
 	#Ifwinactive, Results Definition ;;__Results_Definition:
-		Enter::
-		;mbutton::lms.menu()
+		; Enter::
+		+mbutton::SpecTab.Autofill()
 		mbutton::
 			winactivate, Results Definition
 			tooltip,
@@ -297,43 +298,31 @@ AddToList(){
 			winwaitactive, Result Editor,,2
 			if !errorlevel
 				If (Clipped_specs){
-				Clipped_MinLimit:=Minlimit
-				Clipped_MaxLimit:=maxlimit
-				Clipped_Units:=units
-				Clipped_Percision:=Percision
-				Clipped_FullRequirement:=FullRequirement
-					;SpecTab.ResultEditor(Clipped_MinLimit,Clipped_MaxLimit,Clipped_Units,Clipped_Percision,1,Clipped_FullRequirement)
 					clipped_Specs:=
 					sleep 100
-					;Breaking.Point()
-					;return
 					}
 				If (MinLimit || MaxLimit) && !(FullRequirement)
 					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-				If (MinLimit || MaxLimit) && (FullRequirement)
+				else If (MinLimit || MaxLimit) && (FullRequirement)
 					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirement)
-				else
+				else If (!MinLimit && !MaxLimit)
 				{
-					; inputbox, InputVar, Requirements, Requirements
-					; FullRequirements:=InputVar
 					inputbox, MinLimit, MinLimit, MinLimit
 					inputbox, MaxLimit, MaxLimit, maxLimit
 					inputbox, Units, Units, Units
-
-					; Minlimit:=regexmatch(InputVar,Regexminlimit,r) ? Trim(rMinLimit, "`r`n") : 0
-					; Maxlimit:=regexmatch(InputVar,Regexmaxlimit,r) ? Trim(rMaxLimit, "`r`n") : 0
-					; Units:=regexmatch(InputVar,RegexUnit,r) ? trim(rUnit,"`r`n") : ""
-					; sleep 200
+					sleep 200
+					Breaking.Point()
 					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,"",1,1)
 					minlimit:=
 					maxlimit:=
 					units:=
 				}
-				Breaking.Point()
+				else
+					return
+
 
 				return
 		; F10::lms.menu()
-		+mbutton::lms.menu()
 		+enter::sendinput, {enter}
 ; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
