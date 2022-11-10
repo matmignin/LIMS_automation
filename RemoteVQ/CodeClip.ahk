@@ -17,6 +17,7 @@ clipChange(type){
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
     LMS.AddDataFromClipboard()
+    return
   }
   else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
     ProductTab.AddProductFromClipboard()

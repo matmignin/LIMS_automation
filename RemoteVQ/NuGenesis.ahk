@@ -598,9 +598,10 @@ Dropdown_IngredientSelect(A_DropdownCount){
 		}
 	if (a_DropdownCount = ""){
 		if Iteration >25
-			iteration:=1
+			Iteration:=1
 		sleep 50
 		this.Dropdown_GenericIngredient(Iteration)
+
 		ClipBar.AddIteration(0)
 	}
 	; SetKeyDelay,0,0
@@ -612,7 +613,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 
 
 AddNewProduct(){ ;for naming Product code and customer,
-	global Product, ProductName, Customer, ShapeAndSize, color
+	global Product, ProductName, Customer, ShapeAndSize, color, Iteration
 	; SetWinDelay, 260
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}
@@ -625,9 +626,10 @@ AddNewProduct(){ ;for naming Product code and customer,
 	sendinput, {tab 8}
 	sleep 300
 	Breaking.Point()
-	winwaitactive,NuGenesis LMS,,10
+	winwaitactive, NuGenesis LMS,,10
 	  if errorlevel
-	    Exit
+			tt(you broke it,2000)
+	    ; Exit
 	winactivate, NuGenesis LMS
 	Breaking.Point()
 	click, 67, 283
@@ -1171,7 +1173,7 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
 	sleep 200
 	If (UseLimitsBox:=1)
-		Send,{space}
+		Sendinput,{space}
 	sleep 200
 	Sendinput,{tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 	if (Max_limit = ""){
@@ -2151,45 +2153,15 @@ Class WorkTab { 		;;______WorkTab Class______________
 		}
 
 
-FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
-			global
-				MouseGetPos, xpos, ypos
-				ControlGetText, Iteration, Edit5, ClipBar
-				sleep 200
-				if iteration > 6 || Iteration < 0
-					numbermenu(6)
-				loop %LoopTrough%,
-				{
-					click
-					click 843, 202, 2
-					if Checkbox_Toggle
-						Send,{tab}{Space}{tab}{Space}
-					else
-						Sendinput,{tab}{tab}
-					Send,{tab 10}^a
-					ControlGetText, Iteration, Edit5, ClipBar
-					sleep 100
-					Send, %iteration%
-					Breaking.Point()
-					ypos:=ypos+26
-					sleep 100
-					mousemove, xpos, ypos,0
-					sleep 100
-					Click
-					sleep 100
-					Breaking.Point()
-				}
-				Breaking.Point()
-			return
-		}
-
 
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
-			ControlGetText, Iteration, Edit5, ClipBar
-			if (Iteration =! RotationIteration) && (RotationIteration = "")
-				InputBox, RotationIteration, enter iteration, number please,, , , , , , , 1
-			ControlsetText, %RotationIteration%, Edit5, ClipBar
+				MouseGetPos, xpos, ypos
+			If (Iteration > 7) && (< 0){
+				Numbermenu(6)
+				mousemove, %xpos%, %yPos%,0
+				sleep 200
+			}
 			if LoopThrough
 			{
 				if keep_running = y
@@ -2214,10 +2186,14 @@ FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
 						Sendinput,{tab}{tab}
 					Send,{tab 10}^a
 					sleep 100
-					if (RotationIteration > 0)
-  					Send, %RotationIteration%
+					if keep_running = n ;another signal to stop
+						Return
+					if (Iteration != 0)
+  					Send, %Iteration%
 					sleep 100
 					ypos:=ypos+26
+					if keep_running = n ;another signal to stop
+						Return
 					mousemove, xpos, ypos,0
 					sleep 100
 				;	blockinput off
@@ -2226,23 +2202,26 @@ FixRotation(LoopThrough:=1,Checkbox_Toggle:=""){
 				if keep_running = n ;another signal to stop
 					return
 				click
-			return
+			; return
 		}
-		MouseGetPos, xpos, ypos
+		if keep_running = n ;another signal to stop
+			return
+		; MouseGetPos, xpos, ypos
 		click
 		click 843, 202, 2
 		if Checkbox_Toggle ;Contains Toggle
 			Sendinput,{tab}{Space}{tab}{Space}
 		else
 			Sendinput,{tab}{tab}
+		if keep_running = n ;another signal to stop
+			return
 		Sendinput,{tab 10}^a
 		sleep 100
-		if (RotationIteration > 0) ; Contains toggle
-		  Send, %RotationIteration%
+		if (Iteration != 0)  ; Contains toggle
+		  Send, %iteration%
 		sleep 100
 		;if !Checkbox_Toggle ; Not Contains toggle
-			mousemove, xpos, ypos+26,0
-
+		mousemove, xpos, ypos+26,0
 		return
 	}
 

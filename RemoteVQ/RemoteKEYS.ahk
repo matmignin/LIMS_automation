@@ -140,14 +140,6 @@ AddToList(){
 	return
 		; CoordMode, mouse, Screen
 }
-
-		; +F3::AddToList()
-
-		+mbutton::lms.Menu()
-		F19::lms.Menu()
-		F7::3Right()
-		F6::3Left()
-		Enter::LMS.SaveCode()
 		!^+F3::  ;add a bunch of sample logtests
 			Loop 20
 			{
@@ -169,23 +161,14 @@ AddToList(){
 				Breaking.Point()
 			}
 			return
-;; _____________________________LMS KEYBINDINGS____________________________
-	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
+;; +_____________________________LMS KEYBINDINGS____________________________
 
-		mbutton:: 3tap()
-		+^F10::
-		;if !(Iteration)
-		;	SpecTab.FullRemoveTest()
-		;else
-		{
-			loop, %iteration%
-				{
-					SpecTab.FullRemoveTest()
-					sleep 2000
-					Breaking.Point()
-				}
-		}
-			return
+
+
+
+
+
+
 
 			#ifwinactive, Result Editor
 					mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
@@ -212,6 +195,8 @@ AddToList(){
 
 			#ifwinactive, Edit Product
 					mbutton::ProductTab.AddNewProduct()
+				#Ifwinactive, Edit Formulation
+					mbutton::ProductTab.AddNewFormulation()
 			#Ifwinactive, Select tests for request: R
 					mbutton::WorkTab.SelectTestSample()
 			#IFwinexist, Release: Rotational Testing Schedule ;
@@ -228,7 +213,6 @@ AddToList(){
 			#ifwinexist, Sign :
 				mbutton::Sendpassword()
 
-#ifwinactive
 
 
 
@@ -276,16 +260,14 @@ AddToList(){
 			; clk(910,668)
 			return
 		+enter::sendinput, {enter}
+
+
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		+Mbutton::WorkTab.CorrectTestResults("toggle", 5)
-		;worktab.fixrotation(20,1)
-		F10::WorkTab.CorrectTestResults(0,2)
-					mbutton::
-						MouseGetPos, xpos, ypos
-						; WorkTab.FixRotation(1,1)
-						WorkTab.CorrectTestResults("toggle")
-						mousemove, %xpos%, %yPos%+26,0
-						return
+		F6::WorkTab.CorrectTestResults(0,5)
+		F10::
+		Mbutton::WorkTab.CorrectTestResults("Toggle")
+		F7::WorkTab.CorrectTestResults("toggle", "Loop")
+		+F10::numbermenu(6)
 	#Ifwinactive, Results Definition ;;__Results_Definition:
 		; Enter::
 		+mbutton::SpecTab.Autofill()
@@ -322,7 +304,7 @@ AddToList(){
 
 
 				return
-		; F10::lms.menu()
+		F10::lms.menu()
 		+enter::sendinput, {enter}
 ; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
@@ -332,13 +314,6 @@ AddToList(){
 			Send, %Product%{enter}
 			return
 		; mbutton::WorkTab.registerNewSamples()
-		; +F10::
-						; Send, {click}
-				; Excel.Batches()
-				; winactivate, Register new samples
-					; sleep 200
-					; WorkTab.registerNewSamples()
-					; return
 	#ifwinactive, New Document
 		Enter::
 			LMS.SaveCode()
@@ -356,7 +331,14 @@ AddToList(){
 	#ifwinactive, Edit sample
 		+F10::worktab.CustomerMenu()
 	#ifwinactive, Select samples for test:
-	#Ifwinactive, ahk_exe eln.exe ;;___LMS app
+;+ ___Nugenesis
+	#Ifwinactive, NuGenesis LMS
+		Enter::LMS.SaveCode()
+		mbutton:: 3tap()
+		+^v::LMS.Searchbarpaste()
+		<^v::LMS.Searchbarpaste()
+;+	___LMS app
+	#Ifwinactive, ahk_exe eln.exe
 		;;^`::						ClipBar.reset()
 		enter::						LMSclick.okay()
 		+enter::					sendinput, {enter}
@@ -365,7 +347,8 @@ AddToList(){
 		F8::						3down()
 		F7::						3Right()
 		F6::						3Left()
-
+		+mbutton::lms.Menu()
+		F19::lms.Menu()
 		mbutton::					3tap()
 		; +!F10::						3tap()
 	#Ifwinactive,
@@ -475,12 +458,12 @@ AddToList(){
 		; FlashScreen("3-Right")
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
-		else If winactive("Result Entry")
-			WorkTab.CorrectTestResults()
+		; else If winactive("Result Entry")
+		; 	WorkTab.CorrectTestResults()
 		else If winactive("Select methods tests")
 			SpecTab.Methods()
-		else If winactive("Composition")
-			Send, {enter}
+		; else If winactive("Composition")
+		; 	Send, {enter}
 		else If winactive("Test Definition Editor")
 			clk(330, 619) ;click save
 		else If winactive("Results Definition"){
@@ -502,8 +485,7 @@ AddToList(){
 		else if winactive("ahk_exe eln.exe")
 			Send, %Batch%
 		else
-			Send, %Batch%
-		keep_running = n
+			keep_running = n
 		return
 		}
 	3left(){
@@ -517,29 +499,28 @@ AddToList(){
 		; FlashScreen("3-Left")
 		if winactive("NuGenesis LMS")
 				LMS.SearchBar(Product,"{enter}",0)
-		else If winactive("Select methods tests")
-			Send, {esc}
-		else If winactive("Composition")
-			Send, {esc}
-		else If winactive("Test Definition Editor")
-			Send, {esc}
-		else If winactive("Results Definition")
-			Send, {esc}
-		else if winactive("Edit test (Field Configuration:")
-			send, {esc}
-		else if winactive("Edit sample template")
-			Sendinput, {click 438, 84}{home}{delete 4}%Product%{enter}
-		else if winactive("Register new samples")
-			Send, {esc}
-		else if winactive("Select samples for test:")
-			Send, {esc}
-		else If winactive("Result Entry")   ;Enter Test Results window"
-			WorkTab.CorrectTestResults("toggle")
+		; else If winactive("Select methods tests")
+		; 	Send, {esc}
+		; else If winactive("Composition")
+		; 	Send, {esc}
+		; else If winactive("Test Definition Editor")
+		; 	Send, {esc}
+		; else If winactive("Results Definition")
+		; 	Send, {esc}
+		; else if winactive("Edit test (Field Configuration:")
+		; 	send, {esc}
+		; else if winactive("Edit sample template")
+		; 	Sendinput, {click 438, 84}{home}{delete 4}%Product%{enter}
+		; else if winactive("Register new samples")
+		; 	Send, {esc}
+		; else if winactive("Select samples for test:")
+		; 	Send, {esc}
+		; else If winactive("Result Entry")   ;Enter Test Results window"
+			; WorkTab.CorrectTestResults("toggle")
 		else if winactive("ahk_exe eln.exe")
 			Send, %Product%
 		else
-			send, %Product%
-		keep_running = n
+			keep_running = n
 		return
 	}
 	3down(){

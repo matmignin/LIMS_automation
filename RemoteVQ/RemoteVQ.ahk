@@ -111,14 +111,14 @@ ReadIniFiles(){
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
 	iniRead, SampleID, Settings.ini, SavedVariables, SampleID
+	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
 	; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
 	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
-	iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
+	; iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
 	iniRead, IngredientNoteDropDownCount, Settings.ini, Config, IngredientNoteDropDownCount
-	iniRead, GenericIngredientIteration, Settings.ini, Config, GenericIngredientIteration
 
 	; iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
 	;iniRead, Iteration, Settings.ini, SavedVariables, Iteration
@@ -371,13 +371,11 @@ return
 		Menu, NumberMenu, Add, &%A_index%, NumberMenubutton
 		Try Menu,NumberMenu,show
 		return
-		}
 NumberMenubutton:
-	;ControlsetText, Edit5,%A_ThisMenuItemPos%,ClipBar
-	;loops=%A_ThisMenuItemPos%
-	Iteration:=A_ThisMenuItemPos
+	Iteration:=A_ThisMenuItemPos - 1
 	sleep 100
 	ControlsetText, Edit5,%Iteration%,ClipBar
 Return
+		}
 
 

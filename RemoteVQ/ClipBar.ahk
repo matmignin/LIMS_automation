@@ -205,12 +205,11 @@ Class ClipBar{
 			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
 		; if SampleID
 			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
-		if GenericIngredientIteration
-			iniwrite, %GenericIngredientIteration%, Settings.ini, SavedVariables, GenericIngredientIteration
+		; if Iteration
+			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; else
 			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
 		; if CustomerPosition
-			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
 loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
 	global
@@ -220,8 +219,6 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
 		iniRead, Lot, Settings.ini, SavedVariables, Lot
 		iniRead, Coated, Settings.ini, SavedVariables, Coated
-		iniRead, GenericIngredientIteration, Settings.ini, SavedVariables, GenericIngredientIteration
-
 
 		; if !Iteration
 			; GuiControl,ClipBar:Text, Iteration, %Iteration%
