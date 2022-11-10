@@ -360,17 +360,18 @@ return
 	NumberMenu(n){
 	global
 	try Menu, NumberMenu, DeleteAll
+	Menu, NumberMenu, Add, &0, NumberMenubutton
 	loop %n%,
-			{
 		Menu, NumberMenu, Add, &%A_index%, NumberMenubutton
-		}
 		Try Menu,NumberMenu,show
 		return
 		}
 NumberMenubutton:
-	ControlsetText, Edit5,%A_ThisMenuItemPos%,ClipBar
-	loops=%A_ThisMenuItemPos%
+	;ControlsetText, Edit5,%A_ThisMenuItemPos%,ClipBar
+	;loops=%A_ThisMenuItemPos%
 	Iteration:=A_ThisMenuItemPos
+	sleep 100
+	ControlsetText, Edit5,%Iteration%,ClipBar
 Return
 
 

@@ -173,9 +173,9 @@ AddToList(){
 	#Ifwinactive, NuGenesis LMS ;; ___Nugenesis
 		mbutton:: 3tap()
 		+^F10::
-		if !(Iteration)
-			SpecTab.FullRemoveTest()
-		else
+		;if !(Iteration)
+		;	SpecTab.FullRemoveTest()
+		;else
 		{
 			loop, %iteration%
 				{
@@ -276,8 +276,9 @@ AddToList(){
 			return
 		+enter::sendinput, {enter}
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		; +Mbutton::worktab.fixrotation(20,1)
-		F10::WorkTab.CorrectTestResults("loop")
+		+Mbutton::WorkTab.CorrectTestResults("toggle", 5)
+		;worktab.fixrotation(20,1)
+		F10::WorkTab.CorrectTestResults(0,2)
 					mbutton::
 						MouseGetPos, xpos, ypos
 						; WorkTab.FixRotation(1,1)
@@ -296,10 +297,16 @@ AddToList(){
 			winwaitactive, Result Editor,,2
 			if !errorlevel
 				If (Clipped_specs){
-					SpecTab.ResultEditor(Clipped_MinLimit,Clipped_MaxLimit,Clipped_Units,Clipped_Percision,1,Clipped_FullRequirement)
+				Clipped_MinLimit:=Minlimit
+				Clipped_MaxLimit:=maxlimit
+				Clipped_Units:=units
+				Clipped_Percision:=Percision
+				Clipped_FullRequirement:=FullRequirement
+					;SpecTab.ResultEditor(Clipped_MinLimit,Clipped_MaxLimit,Clipped_Units,Clipped_Percision,1,Clipped_FullRequirement)
 					clipped_Specs:=
-					Breaking.Point()
-					return
+					sleep 100
+					;Breaking.Point()
+					;return
 					}
 				If (MinLimit || MaxLimit) && !(FullRequirement)
 					SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
