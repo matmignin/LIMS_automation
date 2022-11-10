@@ -203,10 +203,12 @@ Class ClipBar{
 			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
-		if SampleID
-			iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
-		else
-			iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
+		; if SampleID
+			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+		if GenericIngredientIteration
+			iniwrite, %GenericIngredientIteration%, Settings.ini, SavedVariables, GenericIngredientIteration
+		; else
+			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
 		; if CustomerPosition
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 	}
@@ -218,7 +220,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
 		iniRead, Lot, Settings.ini, SavedVariables, Lot
 		iniRead, Coated, Settings.ini, SavedVariables, Coated
-		iniRead, SampleID, Settings.ini, SavedVariables, SampleID
+		iniRead, GenericIngredientIteration, Settings.ini, SavedVariables, GenericIngredientIteration
 
 
 		; if !Iteration
@@ -247,7 +249,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, ClipBar ahk_exe RemoteVQ.exe
+#Ifwinactive, ClipBar ahk_exe RemoteVQ
 	enter::
 		ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
@@ -280,7 +282,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 			; }
 #ifwinactive
 
-#If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+#If MouseIsOver("ClipBar ahk_exe RemoteVQ")
 ; Wheeldown::ClipBar.SubIteration(250)
 ; Wheelup::ClipBar.AddIteration(250)
 ; Wheelup::

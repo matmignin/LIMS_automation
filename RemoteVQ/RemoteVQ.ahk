@@ -116,6 +116,7 @@ ReadIniFiles(){
 	iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
 	iniRead, IngredientNoteDropDownCount, Settings.ini, Config, IngredientNoteDropDownCount
+	iniRead, GenericIngredientIteration, Settings.ini, Config, GenericIngredientIteration
 
 	; iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
 	;iniRead, Iteration, Settings.ini, SavedVariables, Iteration

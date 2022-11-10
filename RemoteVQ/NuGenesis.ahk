@@ -499,11 +499,11 @@ AddProductFromClipboard(){
       Color:=SheetInfo[7]
       ServingSize:=SheetInfo[8]
       clip.codesRegex(SheetInfo[9])
-      Iteration:=CustomerPosition
-      ; ControlsetText, Static1,%CustomerPosition%,ClipBar
       GuiControl,ClipBar:Text, Iteration, %Iteration%
+      ; Iteration:=CustomerPosition
 		if CustomerPosition
-			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+      ControlsetText, Static1,%CustomerPosition%,ClipBar
+			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
     }
     if winactive("NuGenesis LMS"){
       Lms.detectTab()
@@ -592,11 +592,12 @@ Dropdown_IngredientSelect(A_DropdownCount){
 			IngredientNoteCount+=1
 		}
 	if (a_DropdownCount = ""){
-		if Iteration >25
-			iteration:=1
+		if GenericIngredientIteration >25
+			GenericIngredientIteration:=1
 		sleep 50
-		this.Dropdown_GenericIngredient(Iteration)
-		ClipBar.AddIteration(0)
+		this.Dropdown_GenericIngredient(GenericIngredientIteration)
+		GenericIngredientIteration+=1
+		; ClipBar.AddIteration(0)
 	}
 	; SetKeyDelay,0,0
 	sleep 200
@@ -607,7 +608,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 
 
 AddNewProduct(){ ;for naming Product code and customer,
-	global Product, ProductName, Customer, ShapeAndSize, color, Iteration
+	global Product, ProductName, Customer, ShapeAndSize, color, GenericIngredientIteration, IngredientNoteCount
 	; SetWinDelay, 260
 	click 120,80 ;click product box
 	Sendinput,%Product%`,{space}
@@ -630,7 +631,8 @@ AddNewProduct(){ ;for naming Product code and customer,
 	Breaking.Point()
 	This.AddNewFormulation()
 	; clk(287, 578) ;click save
-	Iteration:=1
+	GenericIngredientIteration:=1
+	IngredientNoteCount:=1
 	; GuiControl,ClipBar:Text, Iteration, %Iteration%
 	return
 	; SetWinDelay, %NormalWinDelay%
@@ -2576,7 +2578,7 @@ return
 class Breaking {
 	Point(){
 		Global
-		If (GetKeyState("Lbutton", "P") || GetKeyState("Space", "P")) {
+		If GetKeyState("Lbutton", "P") {
 			TT("Broke",3000)
 			; SetWinDelay, %NormalWinDelay%
 			; SetKeyDelay, 0,0
