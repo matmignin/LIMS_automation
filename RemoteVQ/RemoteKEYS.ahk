@@ -313,7 +313,7 @@ AddToList(){
 			sleep 300
 			Send, %Product%{enter}
 			return
-		; mbutton::WorkTab.registerNewSamples()
+		mbutton::WorkTab.registerNewSamples()
 	#ifwinactive, New Document
 		Enter::
 			LMS.SaveCode()
