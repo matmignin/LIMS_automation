@@ -550,17 +550,17 @@ AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient
 	else
 		ProductTab.Dropdown_IngredientSelect(Ingredient_Id)
 	; sleep 200
-	Send,{tab 6}^{a}
+	Sendinput,{tab 6}^{a}
 	; sleep 40
 	sendinput % TRIM(Ingredient_position,"`r`n")
 	Sendinput,{tab}^a%Ingredient_Name%
 	; sleep 200
-	; if Strlen(Ingredient_Name) > 250
-		; sleep 500
+	if Strlen(Ingredient_Name) > 250
+		sleep 500
 	If Ingredient_Claim contains Heavy Metal,Allergens,Other
 		Sendinput,{tab}
-	Send,{tab 2}^a
-	Send,%Ingredient_Claim%
+	Sendinput,{tab 2}^a
+	Sendinput,%Ingredient_Claim%
 	; sleep 175
 	Breaking.Point()
 	If !Dont_Hit_Okay
@@ -1090,7 +1090,8 @@ class SpecTab { 	;; _________SpecTab class_______
 			Breaking.Point()
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
 			Breaking.Point()
-			sleep 200
+			; sleep 200
+			winactivate, Test Definition Editor
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
 			click 239, 246  ;results link
 			sleep 200
@@ -1106,14 +1107,14 @@ class SpecTab { 	;; _________SpecTab class_______
 			If Method contains ICP-MS 231
 				Send,{click 217, 141}
 			Send,{click 80, 66} ;click edit
-			sleep 200
+			; sleep 200
 			Breaking.Point()
-			winwaitactive, Result Editor,,2
+			winwaitactive, Result Editor,,4
 			if errorlevel
-				winactivate,
+				tt(broke after Timeout, 2300)
 			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-			sleep 250
+			; sleep 250
 		}
 		If winactive("Result Editor") ;the editing window
 		{
@@ -1124,7 +1125,7 @@ class SpecTab { 	;; _________SpecTab class_______
 	}
 	else
 		return
-		msgbox, got returned
+		; msgbox, got returned
 		; Blockinput,off
 	return
 }
@@ -1239,7 +1240,7 @@ TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 		; sleep 100
 		sendinput, %Trimmed_Description%
 		if strLen(Trimmed_Description) > 100
-			; sleep 300
+			sleep 300
 		; if (Department="Stability"){
 			; Sendinput, +{tab}^{a}Stability
 			; sleep 400
@@ -1250,7 +1251,7 @@ TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 		; }
 
 		; MouseClick, left, 464, 532,2,0 	;click scrollbar
-		sleep 100
+		; sleep 100
 		; click 239, 246 					;click results link
 	}
 	;Send,{shift down}{Tab 15}{Shift up}{enter}
@@ -1274,23 +1275,6 @@ TestDefinitionEditor_Stability(){ ;,Department:=""){ ; 2nd window
 		mouseclick, left, 366, 280, 2,0 ;click department
 		sleep 200
 		sendinput, {down 15}{up}
-		; if Name contains Vitamin C
-			; Sendinput,{Home}{Delete 12}
-		; else
-			; Send, ^{a}
-		; sleep 100
-		; sendinput, %Trimmed_Description%
-		; if strLen(Trimmed_Description) > 100
-			; sleep 300
-		; if (Department="Stability"){
-			; Sendinput, +{tab}^{a}Stability
-			sleep 400
-			; click, 347, 287 ; click Department dropdown
-			; sleep 400
-			; sendinput, {pgdn}{up}{enter} ;select stability
-			; sleep 300
-		; }
-
 		Breaking.Point()
 		MouseClick, left, 464, 532,2,0 	;click scrollbar
 		; sleep 100
@@ -1307,25 +1291,27 @@ Edit_Analytical_Copy(){
 	Sendinput,{tab}^a%Product%{tab 2}
 	Breaking.Point()
 	; Sleep 200
-	Send,{Space}
+	Sendinput,{Space}
 	; sleep 200
 	Breaking.Point()
-	winwaitactive, Products List, , 3
+	winwaitactive, Products List, , 2
 	; if !errorlevel
 		; sleep 300
-	Send,{enter 2}
+	Sendinput,{enter 2}
 	; sleep 200
 	Breaking.Point()
-	Send,{tab}
+	Sendinput,{tab}
 	; sleep 200
-	Send,{right}
-	; sleep 300
+	Sendinput,{right}
+	sleep 300
 	Breaking.Point()
-	click, 340, 622 ;click Save
+	send, {enter}
+	; click, 340, 622 ;click Save
 	ifwinactive, Warning,
-		return
+		exit
 	winwaitactive, NuGenesis LMS, ,8
-	; if !errorlevel
+	if errorlevel
+		exit
 		; sleep 300
 	Breaking.Point()
 	click, 70, 518 ;edit sample method
@@ -1334,8 +1320,9 @@ Edit_Analytical_Copy(){
 	; if !errorlevel
 		; sleep 200
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%{enter}
-	sleep 200
+	Sendinput,{tab}{delete 4}%Product%
+	send, {enter}
+	sleep 400
 	Breaking.Point()
 	return
 }
@@ -1348,26 +1335,30 @@ Edit_Physical(){
 	Sendinput,{tab}^a%Product%{tab 2}
 	Breaking.Point()
 	; Sleep 200
-	Send,{Space}
+	Sendinput,{Space}
 	; sleep 200
 	Breaking.Point()
-	winwaitactive, Products List, , 8
-	; if !errorlevel
+	winwaitactive, Products List, ,2
+	if errorlevel
+		exit
 		; sleep 300
-	Send,{enter 2}
+	Sendinput,{enter 2}
 	; sleep 200
 	Breaking.Point()
-	Send,{tab}
+	Sendinput,{tab}
 	; sleep 200
-	Send,{right}
-	; sleep 300
+	Sendinput,{right}
+	sleep 400
 	Breaking.Point()
-	click, 340, 622 ;click okay
-		ifwinactive, Warning,
-		return
-	winwaitactive, NuGenesis LMS, ,8
-	; if !errorlevel
-		; sleep 300
+	Send,{enter}
+	; click, 340, 622 ;click okay
+	ifwinexist, Warning
+		Exit
+	Breaking.Point()
+	winwaitactive, NuGenesis LMS, ,5
+	if errorlevel
+		exit
+	sleep 300
 	Breaking.Point()
 	click, 70, 518 ;edit sample method
 	; sleep 499
@@ -1393,21 +1384,22 @@ Edit_CoatedRetain(){
 	Breaking.Point()
 	Sendinput,%Product%`,{space}{shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	; sleep 400
-	Send,{tab}{right}
+	Sendinput,{tab}{right}
 	; sleep 200
 	Breaking.Point()
-	Send,{tab}{right}{tab 3} ;{left 4}
-	; sleep 200
+	Sendinput,{tab}{right}{tab 3} ;{left 4}
+	sleep 200
+	send, {enter}
 	Breaking.Point()
-	click, 340, 622 ;click okay
-		ifwinactive, Warning,
-		return
-	winwaitactive, NuGenesis LMS, ,5
+	; click, 340, 622 ;click okay
+	ifwinactive, Warning,
+		exit
+	winwaitactive, NuGenesis LMS, ,4
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain
-	; sleep 300
+	sleep 400
 	Breaking.Point()
 	send, {enter}
 	; sleep 300
@@ -1425,23 +1417,25 @@ Edit_CoatedPhysical(){
 	Sendinput,{click 376, 87}{home}
 	Sendinput,%Product%`,{space}{shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	; sleep 400
-	Send,{tab}{right}
+	Sendinput,{tab}{right}
 	Breaking.Point()
 	; sleep 200
-	Send,{tab}{right}{tab} ;{left 4}
+	Sendinput,{tab}{right}{tab} ;{left 4}
+	sleep 400
 	Breaking.Point()
-	; sleep 200
+	send, {enter}
 	Breaking.Point()
-	click, 340, 622 ;click okay
+	; click, 340, 622 ;click okay
 	; sleep 50
-		ifwinactive, Warning,
-		return
-	winwaitactive, NuGenesis LMS,,5
+	ifwinactive, Warning,
+		exit
+	winwaitactive, NuGenesis LMS,,4
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
 	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
-	; sleep 300
+	sleep 300
+	Breaking.Point()
 	send, {enter}
 	winwaitactive, NuGenesis LMS,,5
 	; If !ErrorLevel
@@ -1457,24 +1451,27 @@ Edit_Retain(){
 	Sendinput,%Product%`,{space}{shift down}I{shift up}n{space}{shift down}P{shift up}rocess`,{space}{shift down}R{shift up}etain{tab 4}^a%Product%{tab}{enter}{tab}{space}{Return 2}
 	Breaking.Point()
 	; sleep 200
-	Send,{tab}{right}
-	; sleep 400
-	Send,{tab}{right}
+	Sendinput,{tab}{right}
+	Sendinput,{tab}{right}
 	; sleep 900
+	sleep 400
 	Breaking.Point()
-	winWaitactive, Edit specification,, 1
-	if !errorlevel
-		click, 340, 622 ;click okay
+	send, {enter}
+	; winWaitactive, Edit specification,, 4
+	; if !errorlevel
+		; click, 340, 622 ;click okay
 	Breaking.Point()
-	winwaitactive, NuGenesis LMS, ,4
-	if !errorlevel
+	winwaitactive, NuGenesis LMS, ,5
+	; if !errorlevel
 		; sleep 300
 	Breaking.Point()
 	LMSclick.EditSampleTemplate()
 	; sleep 300
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%{enter}
-	; sleep 300
+	Sendinput,{tab}{delete 4}%Product%
+	sleep 500
+	Breaking.Point()
+	Send, {enter}
 	winwaitactive, NuGenesis LMS,,5
 	; If !ErrorLevel
 		; MouseMove, %premx%, %premy%, 0
@@ -1499,26 +1496,25 @@ Edit_Micro(){
 	Global
 	winactivate, Edit specification
 	Sendinput,{click 376, 87}{home}
-	Send,%Product%`,{space}{shift down}F{shift up}inished`,{space}{shift down}M{shift up}icro{tab 4}^a%Product%{tab 2}
-	; Sleep 200
-	Send,{Space}
-	; sleep 200
+	Sendinput,%Product%`,{space}{shift down}F{shift up}inished`,{space}{shift down}M{shift up}icro{tab 4}^a%Product%{tab 2}
+	Sendinput,{Space}
 	winwaitactive, Products List,,2
-	Send,{enter 2}
-	; sleep 200
-	Send,{tab}
-	; sleep 200
+	Sendinput,{enter 2}
+	Sendinput,{tab}
 	Breaking.Point()
-	Send,{right}{tab}{left 2}{enter}
-	winwaitactive, NuGenesis LMS,,4
-	if !errorlevel
+	Sendinput,{right}{tab}{left 2}
+	send, {enter}
+	winwaitactive, NuGenesis LMS,,5
+	; if !errorlevel
 		; sleep 300
 	Breaking.Point()
 	LMSclick.EditSampleTemplate()
 	; sleep 300
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%{enter}
-	; sleep 300
+	Sendinput,{tab}{delete 4}%Product%
+	sleep 500
+	Breaking.Point()
+	send, {enter}
 	winwaitactive, NuGenesis LMS,,5
 	; If !ErrorLevel
 		; MouseMove, %premx%, %premy%, 0
@@ -1899,12 +1895,12 @@ Class WorkTab { 		;;______WorkTab Class______________
 		MouseClick, Left, 351, 621
 		; sleep 200
 		if !Product
-			return
+			exit
 		winwaitactive, Edit request,,3
 		sendinput, {tab 4}%Product%{tab 2}{space}{enter 2}{tab}{down}{tab 2}%batch%
 		if !Batch
-			return
-		sleep 500
+			exit
+		; sleep 500
 		MouseClick, Left, 356, 619
 		return
 	}
@@ -1924,10 +1920,10 @@ Class WorkTab { 		;;______WorkTab Class______________
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
-		sleep 400
+		; sleep 400
 		winwaitactive, Edit sample (Field Configuration,, 3
-			if ErrorLevel
-				msgbox, Winwaitactive Field Config for 3 sec
+			; if ErrorLevel
+				; msgbox, Winwaitactive Field Config for 3 sec
 				; sleep 800
 			Sendinput, {tab 2}{right}{click 277, 139}{tab 7}
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
@@ -1949,7 +1945,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 					Send, ^{a}%Coated%
 					Sendinput, +{tab}
 				}
-			Iteration:=CustomerPosition
+			; Iteration:=CustomerPosition
 			; sleep 300
 			Breaking.Point()
 			; If !(Iteration)
@@ -1962,7 +1958,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 				; 	customerPosition:=0
 				; 	; Iteration-=1
 			; sleep 150
-			WorkTab.Dropdown_CustomerSelect(CustomerPosition)
+			WorkTab.Dropdown_CustomerSelect(Iteration)
 			; blockinput, off
 			; sleep 800
 			Breaking.Point()
@@ -2119,16 +2115,16 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Send,{up}{enter}
 			; sleep 100
 			click, 97, 125 ; click filter
-			Send, %Department%{enter}{tab 2}
+			Sendinput, %Department%{enter}{tab 2}
 			; sleep 100
 			Breaking.Point()
-			Send, %product%{enter}
-			Send,{tab}{ctrldown}{a}{ctrlup}
+			Sendinput, %product%{enter}
+			Sendinput,{tab}{ctrldown}{a}{ctrlup}
 			input, , V T3,{Lbutton}{enter}
 			click 504, 338 ; click arrow
 			winactivate, Select tests for request
 				click, right, 264, 590 ; click to clear filter
-			Send,{up}{enter}
+			Sendinput,{up}{enter}
 			; sleep 100
 			winactivate, Select tests for request
 				; sleep 100
@@ -2157,7 +2153,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
 				MouseGetPos, xpos, ypos
-			If (Iteration > 7) && (< 0){
+			If (Iteration > 7) || (Iteration < 0){
 				Numbermenu(6)
 				mousemove, %xpos%, %yPos%,0
 				; sleep 200
@@ -2259,33 +2255,33 @@ Class WorkTab { 		;;______WorkTab Class______________
 		SelectTestSample(){
 			global
 			Click
-			blockinput on
+			; blockinput on
 			click 647, 75 ;click assign Samples
 			winactivate, Select samples for test:
-				sleep 900
+				; sleep 900
 				click 467, 71 ;Click Filter button
-				sleep 200
+				; sleep 200
 				Breaking.Point()
-				send, {click 248, 68} ;click dropdown then
-				sleep 200
-				send, {click 212, 188} ; select Batches
-				sleep 400
-				Send, {click 136, 119}^a ;flick filter box
+				sendinput, {click 248, 68} ;click dropdown then
+				; sleep 200
+				sendinput, {click 212, 188} ; select Batches
+				; sleep 400
+				Sendinput, {click 136, 119}^a ;flick filter box
 				if winactive("Select samples for test: Organoleptic Sensory Test") || winactive("Select samples for test: Average Capsule Weight") || winactive("Select samples for test: Average Tablet Weight")
 					Department:="Physical"
-				if winactive("Select samples for test: Microbiological")
+				if winactive("Select samples for test: Microbiological") || if winactive("Select samples for test: Pathoge")
 					Department:="Micro"
-				send, %Department%{enter} ; send department
-				sleep 200
+				sendinput, %Department%{enter} ; send department
+				; sleep 200
 				Breaking.Point()
-				sleep 200
-				send, {click 504, 324}
+				; sleep 200
+				sendinput, {click 504, 324}
 				Breaking.Point()
-				sleep 200
-				send, {click, 849, 661}
+				; sleep 200
+				sendinput, {click, 849, 661}
 				Breaking.Point()
 				tt(Department)
-				blockinput off
+				; blockinput off
 				; SetWinDelay, %NormalWinDelay%
 			return
 		}
@@ -2543,12 +2539,12 @@ SwitchEnv(ServerEnv){
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
   if Simpleclip
-	return
+		return
 	sleep 20
 		tooltip, %msg%, %X%, %Y%,%N%
 	hwnd := winExist("ahk_class tooltips_class32")
-	if Transparent
-		winSet, Trans, %Transparent%, % "ahk_id" hwnd
+	; if Transparent
+		; winSet, Trans, %Transparent%, % "ahk_id" hwnd
 	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; winSet, Trans, 200, %W%
 	CoordMode, ToolTip, screen
