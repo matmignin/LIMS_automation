@@ -378,4 +378,47 @@ NumberMenubutton:
 Return
 		}
 
+MenuCodeSelect(FileName:="AllProducts"){
+	global
+	try Menu, CodeMenu, DeleteAll
+	FileRead, OutputText, %FileName%.txt
+	stringUpper, OutputText, OutputText
+	loop, parse, OutputText, " "
+		Menu, CodeMenu, Add, %a_LoopField%, CodeMenubutton
+			Menu, CodeMenu, Add, All, CodeMenubutton
 
+	Try Menu,CodeMenu,show
+	return
+CodeMenubutton:
+If A_ThisMenuItem contains All
+{
+	if winactive("NuGenesis LMS")
+		LMS.SearchBar(A_ThisMenuItem)
+	else
+		sendinput, %A_ThisMenuItem%
+	return
+}
+
+If FileName contains Product
+	{
+		product := A_ThisMenuItem
+		ControlsetText, Edit1,%product%,ClipBar
+	}
+else If FileName contains Batch
+	{
+		batch := A_ThisMenuItem
+		ControlsetText, Edit2,%Batch%,ClipBar
+	}
+else If FileName contains SampleID
+	SampleID := A_ThisMenuItem
+
+sleep 200
+if winactive("ahk_exe explorer.exe")
+	send, ^e{*}%A_ThisMenuItem%{*}{enter}
+else if winactive("NuGenesis LMS")
+		LMS.SearchBar(A_ThisMenuItem,"{enter}",0)
+else
+	sendinput, %A_ThisMenuItem%
+
+Return
+}

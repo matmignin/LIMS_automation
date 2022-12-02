@@ -11,16 +11,43 @@ Return
 clipChange(type){
   global
   sleep 75
-  if SimpleClip
+  ; if SimpleClip
+    ; return
+  if Instr(Clipboard, "<<i>>",true,1,1){
+    ProductTab.AddProductFromClipboard()
+    tt(Product "`n" ProductName "`n" Customer,7000,0,0)
     return
-  if InStr(Clipboard, "<^>", true,1,1) {
+  }
+  else if Instr(Clipboard, "<ScanLabelCopy>",true,1,1){
+    ProductTab.AddProductFromClipboard()
+    sleep 200
+    GoSub ShowScanLabelCopy
+    return
+  }
+  else if Instr(Clipboard, "<GlobalVision>",true,1,1){
+    ProductTab.AddProductFromClipboard()
+    sleep 200
+    GoSub ShowGlobalVision
+    return
+  }
+  else if Instr(Clipboard, "<FinalLabelCopy>",true,1,1){
+    ProductTab.AddProductFromClipboard()
+    sleep 200
+    GoSub ShowFinalLabelCopy
+    return
+  }
+  else if Instr(Clipboard, "<mfg>",true,1,1){
+    ProductTab.AddProductFromClipboard()
+    sleep 200
+    GoSub showmfg
+    return
+  }
+  else if InStr(Clipboard, "<^>", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
     LMS.AddDataFromClipboard()
     return
   }
-  else if Instr(Clipboard, "<<SheetInfo>>",true,1,1)
-    ProductTab.AddProductFromClipboard()
   else if InStr(Clipboard, "<<QuIT>>",true, 1,1)
     exitsub()
   else if Winactive("Test Definition Editior"){
@@ -28,7 +55,7 @@ clipChange(type){
     TT(Description,2000)
   }
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-  else if Winactive("Results Definition")
+  else if Winactive("Results Definition") || Winactive("Results")
     clip.ParseSpecsTable()
   else if Winactive("Composition")
     clip.ParseIngredientsTable()
@@ -126,7 +153,7 @@ Class Clip {
       Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_LabelName "`n" Clipped_IngredientGroup
       ; msgbox, %Clipped_Ingredients%
       ; Tooltip, %Clipped_Ingredients%, 200,0
-      tt(Clipped_ingredients 9000,1,1,2)
+      tt(Clipped_ingredients 10000,1,1,2)
       return
 		}
 		ParseSpecsTable(Save:=1){
@@ -158,7 +185,7 @@ Class Clip {
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
       Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Percision "`n Units: " Units
-      tt(Clipped_Specs,4000)
+      ; tt(Clipped_Specs,7000)
         ; tooltip, %Clipped_specs%, 200,0
       return
 		}
@@ -268,11 +295,11 @@ EditBox(Input:=""){
     sleep 200
 	Gui EditBox: +AlwaysOnTop +Toolwindow +Resize +owner +HwndGUIID
 		GUI, EditBox:Font, s12 cBlack, Consolas
-    gui, editbox:Margin,1,1
+    gui, EditBox:Margin,1,1
 		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
-		GUI, EditBox:add, button, default gEditBoxButtonOK, OK
 		GUI, EditBox:Show,Autosize, Result
-    winSet, Transparent, 100, EditBox
+		GUI, EditBox:add, button, default gEditBoxButtonOK, OK
+    ; winSet, Transparent, 100, EditBox
 		return
 		EditBoxGuiClose:
     try GUI, EditBox:Destroy
@@ -285,7 +312,7 @@ EditBox(Input:=""){
     if !Input
 			clipboard:=EditBox
     try GUI, EditBox:Destroy
-    sleep 50
+    ; sleep 50
   ; TT(Editbox,500,,,,200)
 		return
 
@@ -294,7 +321,7 @@ EditBox(Input:=""){
       return
     NewWidth := A_GuiWidth
     NewHeight := A_GuiHeight
-    sleep 200
+    ; sleep 200
     GuiControl, Move, EditBox, W%NewWidth% H%NewHeight%
     return
 

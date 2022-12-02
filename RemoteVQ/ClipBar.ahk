@@ -8,10 +8,10 @@ Class ClipBar{
 		MidScreen:=A_ScreenWidth//2
 		wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
 		wingetpos, Win_X, Win_y, Win_w, Win_h, A
-		ClipBar_H=29
+		ClipBar_H=33
 		ClipBar_H_max=56
 		ClipBar_T:=235
-		ClipBar_W=370
+		ClipBar_W=390
 		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		; ClipBar_Y:=-Nugenesis_h
 		ClipBar_Y:=Nugenesis_Y
@@ -20,14 +20,14 @@ Class ClipBar{
 		Gui, ClipBar:+Delimiter`n
 		winSet, Transparent, 100, %GUIID%
 		GUI, ClipBar:color,DC734F, 97BA7F
-		; this.AddEdit("Product",	 "left h29 x1 y0 w65",				"16 Bold")
-			GUI,ClipBar:Font,			 s16 Bold , consolas
-			GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h29 x1 y0 w65,	%Product%
-		this.AddEdit("Batch",	 "left h29 x+0 y0 w90", 			"12,Consolas")
-		this.AddEdit("Lot",		 "left h29 x+0 y0 w75", 			"9, Consolas")
-		this.AddEdit("Coated",	 "left h29 x+0 y0 wrap w70",		"8.5, Arial Narrow")
+		; this.AddEdit("Product",	 "left h32 x1 y0 w65",				"16 Bold")
+			GUI,ClipBar:Font,			 s17 Bold , consolas
+			GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x1 y0 w65,	%Product%
+		this.AddEdit("Batch",	 "left h33 x+0 y0 w92", 			"13,Consolas")
+		this.AddEdit("Lot",		 "left h33 x+0 y0 w77", 			"10, Consolas")
+		this.AddEdit("Coated",	 "left h33 x+0 y0 wrap w72",		"9, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
-		This.AddEdit("Iteration", "x+2 h29 left y0 w60",			 "16 Bold 107C41, Consolas")	; Text1
+		This.AddEdit("Iteration", "x+2 h33 left y0 w62",			 "16 Bold 107C41, Consolas")	; Text1
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
@@ -36,8 +36,8 @@ Class ClipBar{
 		CoordMode, mouse, window
 		; OnMessage(0x0201, "WM_LBUTTONDOWN")
 		this.loadSavedVariables()
-			; OnMessage(0x0201, "WM_LBUTTONDOWN")
-			; OnMessage(0x0203, "WM_LBUTTONDBLCLK")
+			OnMessage(0x0201, "WM_LBUTTONDOWN")
+			OnMessage(0x0203, "WM_LBUTTONDBLCLK")
 			; OnMessage(  WM_LBUTTONUP := 0x0202, "WM_LBUTTONUP")
 			;OnMessage(0x0200, "WM_MOUSEMOVE")
 			; OnMessage(0x203,  "VariableBar_Relocate")
@@ -91,6 +91,9 @@ Class ClipBar{
 
 	Menu(){
 		global
+		If Nsub
+				exit
+			Nsub:=1
 		MouseGetPos,,,,winControl
 		try Menu, ClipBarmenu, DeleteAll
 		Menu, ClipBarMenu, Add, All Products, AllProductsMsgbox
@@ -106,8 +109,18 @@ Class ClipBar{
 		Menu, ClipBarMenu, add, Paste Spec, +!^F10
 		Menu, ClipBarMenu, add, Add Data From Clipboard, #+!F10
 		Menu, ClipBarMenu, add, ParsespecsTable, #+^F10
+		Menu, ClipBarMenu, Add, Stop Timer, StopTimer
 		Menu, ClipbarMenu, add, Add Sample Log, !^+F3
+		Menu, ClipBarMenu, Add, Detect Clipboard, clipChange
+		if winactive("Results Definition") || winactive("Composition") || winactive("Results"){
+			Menu, ClipBarMenu, Add, USP Heavy Metal, Heavy_metals, +Break
+			Menu, ClipBarMenu, Add, Canada Heavy Metal, Heavy_metals
+			Menu, ClipBarMenu, Add, Prop65 Heavy Metal, Heavy_metals
+			Menu, ClipBarMenu, Add, Report Only Heavy Metal, Heavy_metals
+			Menu, ClipBarMenu, Add, Custom Heavy Metal, Heavy_metals
+		}
 		Try Menu,ClipBarmenu,show
+		Nsub:=
 	}
 	Reset(){
 		Global
@@ -174,6 +187,15 @@ Class ClipBar{
 		Nsub:=0
 		;CustomerPosition:=Iteration
 			; #maxthreadsperhotkey, 2
+		return
+	}
+
+		Relocate(){
+		global
+				PostMessage, 0xA1, 2
+				; if MouseIsOver("ClipBar")
+					; keywait, Lbutton, U T1
+					; Send, ^a
 		return
 	}
 	SaveVariables(){ ;;_________________SAVING VARIABLES_________________________
@@ -246,9 +268,9 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, ClipBar ahk_exe RemoteVQ
+#Ifwinactive, ClipBar ahk_exe RemoteVQ.exe
 	enter::
-		ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ
+		ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 			GUI, ClipBar:default
 			Gui, ClipBar:submit, nohide
@@ -257,7 +279,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 			else if (winControl="Edit4"){
 				Coated:=
 				GUI, ClipBar:default
-				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe RemoteVQ
+				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe RemoteVQ.exe
 				Gui, ClipBar:submit, nohide
 				iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			}
@@ -278,8 +300,21 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 				; iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			; }
 #ifwinactive
+	WM_LBUTTONDOWN(wParam, lParam){
+		If !MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+		return
+		PostMessage, 0xA1, 2
+				X := lParam & 0xFFFF
+				Y := lParam >> 16
+				if A_GuiControl
+					ctrl := "`n(in control " . A_GuiControl . ")"
+				PostMessage, 0xA1, 2
+				MouseGetPos,,,,winControl
+				return
+	}
+#If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
 
-#If MouseIsOver("ClipBar ahk_exe RemoteVQ")
+			;	setTimer, SaveVarBarLocaton, -1500
 ; Wheeldown::ClipBar.SubIteration(250)
 ; Wheelup::ClipBar.AddIteration(250)
 ; Wheelup::
@@ -298,13 +333,20 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; 	return
 ; ClipBar.AddIteration(450)
 ; ClipBar.SubIteration(450)
-wheelup::
+wheelright::
 worktab.CustomerMenu()
-sleep 800
+sleep 2000
+Nsub:=
+Return
+wheelup::
+ClipBar.Menu()
+sleep 2000
+Nsub:=
 return
 wheeldown::
 ClipBar.Menu()
-sleep 500
+sleep 2000
+Nsub:=
 return
 Mbutton::reloadSub()
 Rbutton::

@@ -7,6 +7,8 @@
 	~LWin::Send {Blind}{vkFF}
 	; F18::return
 	; $RWin::return
+		^F10::MenuCodeSelect()
+		+^F10::MenuCodeSelect("AllBatches")
 	; $LWin::return
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
@@ -197,6 +199,8 @@ AddToList(){
 					mbutton::ProductTab.AddNewProduct()
 				#Ifwinactive, Edit Formulation
 					mbutton::ProductTab.AddNewFormulation()
+			#Ifwinactive, Select samples for test:
+					Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
 			#Ifwinactive, Select tests for request: R
 					mbutton::WorkTab.SelectTestSample()
 			#IFwinexist, Release: Rotational Testing Schedule ;
@@ -214,7 +218,11 @@ AddToList(){
 				mbutton::Sendpassword()
 
 
-
+	#ifwinactive, ahk_exe explorer.exe
+			F6::send, ^{e}
+			F7::send, ^{e}{*}%Product%{*}{enter}
+			Mbutton::send, ^{e}{*}%Product%{*}{enter}
+			F10::MenuCodeSelect()
 
 
 	#ifwinactive, Edit test `(Field Configuration
@@ -253,7 +261,7 @@ AddToList(){
 			click 239, 246  ;results link
 			sleep 200
 			Breaking.Point()
-			winactivate, Results Definition
+			winactivate, Results
 			sleep 100
 			; clk(338,617)
 			; sleep 400
@@ -268,11 +276,11 @@ AddToList(){
 		Mbutton::WorkTab.CorrectTestResults("Toggle")
 		F7::WorkTab.CorrectTestResults("toggle", "Loop")
 		+F10::numbermenu(6)
-	#Ifwinactive, Results Definition ;;__Results_Definition:
+	#Ifwinactive, Results ;;__Results_Definition:
 		; Enter::
 		+mbutton::SpecTab.Autofill()
 		mbutton::
-			winactivate, Results Definition
+			winactivate, Results
 			tooltip,
 			Send,{click 80, 66} ;click edit
 			sleep 200
@@ -313,6 +321,17 @@ AddToList(){
 			sleep 300
 			Send, %Product%{enter}
 			return
+		+F10::
+			loop, 4
+			{
+				Breaking.Point()
+				WorkTab.registerNewSamples()
+				sleep 300
+				Breaking.Point()
+			}
+				Breaking.Point()
+				return
+		F10::
 		mbutton::WorkTab.registerNewSamples()
 	#ifwinactive, New Document
 		Enter::
@@ -328,13 +347,16 @@ AddToList(){
 	#ifwinactive, Edit request
 		F10::Worktab.EditRequest()
 		mbutton::WorkTab.EditRequest()
-	#ifwinactive, Edit sample
-		+F10::worktab.CustomerMenu()
+	; #ifwinactive, Edit sample
+	; 	+F10::worktab.CustomerMenu()
 	#ifwinactive, Select samples for test:
 ;+ ___Nugenesis
 	#Ifwinactive, NuGenesis LMS
+^1::sendinput % GetAllProducts(" ", 1)
+^2::sendinput % GetAllBatches(" ", 1)
 		Enter::LMS.SaveCode()
 		mbutton:: 3tap()
+		+F10::lms.Menu()
 		+^v::LMS.Searchbarpaste()
 		<^v::LMS.Searchbarpaste()
 ;+	___LMS app
@@ -449,12 +471,6 @@ AddToList(){
 
 	3Right(){
 		global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			return
-		}
-		keep_running = y
 		; FlashScreen("3-Right")
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
@@ -490,33 +506,14 @@ AddToList(){
 		}
 	3left(){
 		global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			return
-		}
-		keep_running = y
-		; FlashScreen("3-Left")
+		; if keep_running = y
+		; {
+		; 	keep_running = n ;signal other thread to stop
+		; 	return
+		; }
+		; keep_running = y
 		if winactive("NuGenesis LMS")
 				LMS.SearchBar(Product,"{enter}",0)
-		; else If winactive("Select methods tests")
-		; 	Send, {esc}
-		; else If winactive("Composition")
-		; 	Send, {esc}
-		; else If winactive("Test Definition Editor")
-		; 	Send, {esc}
-		; else If winactive("Results Definition")
-		; 	Send, {esc}
-		; else if winactive("Edit test (Field Configuration:")
-		; 	send, {esc}
-		; else if winactive("Edit sample template")
-		; 	Sendinput, {click 438, 84}{home}{delete 4}%Product%{enter}
-		; else if winactive("Register new samples")
-		; 	Send, {esc}
-		; else if winactive("Select samples for test:")
-		; 	Send, {esc}
-		; else If winactive("Result Entry")   ;Enter Test Results window"
-			; WorkTab.CorrectTestResults("toggle")
 		else if winactive("ahk_exe eln.exe")
 			Send, %Product%
 		else
@@ -525,14 +522,12 @@ AddToList(){
 	}
 	3down(){
 		global
-		;FlashScreen("3-Down")
 		if winactive("Select samples for test:")
 			Clk(853, 657) ; click okay.
 		return
 	}
 	3up(){
 		global
-		;FlashScreen("3-Up")
 		if winactive("Results Definition")
 			lms.menu()
 		else if winactive("Result Entry")
@@ -645,11 +640,11 @@ If winactive("NuGenesis LMS") {
 #ifwinactive
 
 
-GetAllBatches(Delimiter:=" ",File:=""){
+GetAllBatches(Delimiter:=" ",msg:=""){
   global
   regBatches:=[]
 		Haystack:=Clipboard
-		PreClip:=Clipboard
+		; PreClip:=Clipboard
 		sleep 100
   while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
       regBatches.insert(aBatch)
@@ -674,23 +669,25 @@ GetAllBatches(Delimiter:=" ",File:=""){
 
 
     ; SimpleClip:=1
-    sleep 20
+    ; sleep 20
 		; clipboard:=AllBatches
 		; LMS.Searchbar(AllBatches)
-		sleep 200
+		; sleep 200
 		; send, ^v
 		; TT(AllBatches)
-    sleep 400
+    ; sleep 400
     ; SimpleClip:=1
     ;clipboard:=PreClip
 	FileDelete, AllBatches.txt
 	sleep 200
 	FileAppend, %AllBatches%, AllBatches.txt
+	if !msg
 		clip.editbox(AllBatches)
+	else
 		return AllBatches
 }
 
-GetAllProducts(Delimiter:=" ",File:=""){
+GetAllProducts(Delimiter:=" ",msg:=""){
   global
   regProducts:=[]
   pos=0
@@ -716,18 +713,20 @@ GetAllProducts(Delimiter:=" ",File:=""){
     AllProducts:=Listarray(AllProducts,"")
     AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
     ; SimpleClip:=1
-    sleep 20
+    ; sleep 20
     ; clipboard:=AllProducts
-    sleep 200
+    ; sleep 200
 	; LMS.Searchbar(AllProducts)
     ;send, ^v
 	; TT(AllProducts)
-    sleep 400
+    ; sleep 400
     ; SimpleClip:=1
 	FileDelete, AllProducts.txt
 	sleep 200
 	FileAppend, %AllProducts%, AllProducts.txt
-	clip.editbox(AllProducts)
+	if !msg
+		clip.editbox(AllProducts)
+	Else
     ;clipboard:=Preclip
 		Return AllProducts
 }
