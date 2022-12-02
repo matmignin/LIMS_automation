@@ -388,9 +388,7 @@ AddToList(){
 ;;____________________TouchPad BINDINGS__________________________________________
 	3tap(){
 		Global
-		; FlashScreen("3-Tap")
 
-				; If winactive("ahk_exe eln.exe") {
 			if winactive("NuGenesis LMS"){ ; If Nugeneses
 				LMS.DetectTab()
 				if (Tab="Specs"){
@@ -402,7 +400,6 @@ AddToList(){
 				else if (Tab="Products")
 					clk(67, 754) ;edit results
 				else if (Tab="Samples"){
-					; blockinput, on
 
 					send, {click 124, 294} ;assign Requests
 					sleep 500
@@ -411,61 +408,10 @@ AddToList(){
 						; sleep 500
 					sleep 800
 					if winactive("Select tests for request: R")
-						; sleep 500
-					; winactivate, Select tests for request: R
 						send, {click, 31, 102}
-					; blockinput, off
 				return
 				}
 				}
-			; else if winexist("Delete Test") || winexist("Delete Tests") || winexist("Delete results") || winexist("Delete sample templates") || winExist("Delete specification") { ; Press Okay
-			; 		winactivate,
-			; 		send, y
-			; 		clk(229, 136)
-			; 		return
-			; 	}
-			; else if winactive("Result Editor") {
-			; 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-			; 	}
-			; else if winactive("Register new samples")
-			; 		WorkTab.registerNewSamples()
-			; else if winactive("Test Definition Editor")
-			; 		mouseclick, left, 333, 615
-			; else if winactive("Result Entry") {
-			; 		MouseGetPos, xpos, ypos
-			; 		; WorkTab.FixRotation(1,1)
-			; 		WorkTab.CorrectTestResults("toggle")
-			; 		mousemove, %xpos%, %yPos%+26,0
-			; 	}
-			; else if winactive("Edit specification")
-			; 		SpecTab.Edit_Analytical()
-			; else if winactive("Results Definition")
-			; 		lms.menu()
-			; else if winactive("Composition")
-			; 		ProductTab.Table()
-			; else if winactive("Select methods tests")
-			; 		clk(854, 658)
-			; ; else If winactive("Select methods tests")
-			; 		; SpecTab.Table()
-			; else if winactive("Edit Formulation")
-			; 		productTab.AddNewFormulation()
-			; else if winactive("Select Product ahk_exe eln.exe")
-			; 		send % clk(107, 66) Product "{enter}{enter}"
-			; else if winactive("Edit request")
-			; 	WorkTab.EditRequest()
-			; else if winactive("Edit Product")
-			; 		ProductTab.AddNewProduct()
-			; else If winactive("Select tests for request: R")
-			; 		WorkTab.SelectTestSample()
-			; else if winexist("Release: ") || winexist("Release: Rotational Testing Schedule") { ; Press Okay
-			; 		winactivate,
-			; 		clk(131, 144)
-			; 	}
-			; else if winexist("Sign :") || winexist("windows Security") || winexist("CredentialUIBroker.exe")
-			; 	Sendpassword()
-			; }
-			; else
-				; return
 	}
 
 
@@ -668,16 +614,6 @@ GetAllBatches(Delimiter:=" ",msg:=""){
     AllBatchesDDL:= StrReplace(AllBatches, A_space A_space, "`r`n")
 
 
-    ; SimpleClip:=1
-    ; sleep 20
-		; clipboard:=AllBatches
-		; LMS.Searchbar(AllBatches)
-		; sleep 200
-		; send, ^v
-		; TT(AllBatches)
-    ; sleep 400
-    ; SimpleClip:=1
-    ;clipboard:=PreClip
 	FileDelete, AllBatches.txt
 	sleep 200
 	FileAppend, %AllBatches%, AllBatches.txt
@@ -712,21 +648,11 @@ GetAllProducts(Delimiter:=" ",msg:=""){
         }
     AllProducts:=Listarray(AllProducts,"")
     AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
-    ; SimpleClip:=1
-    ; sleep 20
-    ; clipboard:=AllProducts
-    ; sleep 200
-	; LMS.Searchbar(AllProducts)
-    ;send, ^v
-	; TT(AllProducts)
-    ; sleep 400
-    ; SimpleClip:=1
 	FileDelete, AllProducts.txt
 	sleep 200
 	FileAppend, %AllProducts%, AllProducts.txt
 	if !msg
 		clip.editbox(AllProducts)
 	Else
-    ;clipboard:=Preclip
 		Return AllProducts
 }

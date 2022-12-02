@@ -59,18 +59,6 @@ clipChange(type){
     clip.ParseSpecsTable()
   else if Winactive("Composition")
     clip.ParseIngredientsTable()
-  ; else if Winactive("NuGenesis LMS") {
-  ;   LMS.DetectTab()
-  ;   Sleep 200
-  ;   ; if (Tab="Specs")
-  ;     ; clip.ParseMainSpecTable()
-  ;   ; if (Tab="Samples")
-  ;     ; clip.ParseMainSamplesTable()
-  ;   clip.codesRegex()
-  ; }
-  ; else if Instr(Clipboard, "Use the limits from the test",true,1,1)
-  ; else if Instr(Clipboard, "<<HeavyMetal>>",true,1,1)
-    ; clip.HeavyMetalSpecs()
   else
     clip.codesRegex()
     sleep 50
