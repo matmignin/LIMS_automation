@@ -40,6 +40,11 @@ if A_username != mmignin
 
 	ReadIniFiles()
 
+	WholeBatches:=[]
+	FileRead, WholeBatchestext, WholeBatches.txt
+		sleep 100
+		loop, parse, WholeBatchestext, "`n"
+      WholeBatches.insert(a_LoopField)
 
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
@@ -48,6 +53,7 @@ if A_username != mmignin
 	Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
 	Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
 	Menu, Tray, Add,
+	Menu, Tray, Add, Whole Batches, ShowWholeBatches
 	Menu, Tray, Add, All Products, AllProductsMsgbox
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, Show EditBox, ShowEditBox
@@ -145,6 +151,11 @@ ReadIniFiles(){
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CustomerListPath, Settings.ini, FilePaths, CustomerListPath
 	iniread, CodeFile, Settings.ini, FilePaths, CodeFile
+; wholebatches = []
+; 	FileRead, WholeBatches, WholeBatches.txt
+; 	sleep 300
+; 	loop, parse, WholeBatches, "`n"
+;   	WholeBatches.insert(a_LoopField)
 
 }
 
@@ -173,15 +184,18 @@ windowSpy(){
 
 AllBatchesMsgbox:
 	AllBatchesMsg:=GetAllBatches(" ")
-	sleep 400
+	sleep 600
 	tt(AllBatchesMsg)
 	; clip.EditBox(AllBatchesMsg)
 	return
 AllProductsMsgbox:
 	AllProductsMsg:=GetAllProducts(" ")
-	sleep 400
+	sleep 600
 	tt(AllProductsMsg)
 	; clip.EditBox(AllProductsMsg)
+	return
+ShowWholeBatches:
+	run, edit WholeBatches.txt
 	return
 ShowVariables:
 	listvars
@@ -385,10 +399,20 @@ MenuCodeSelect(FileName:="AllProducts"){
 	stringUpper, OutputText, OutputText
 	loop, parse, OutputText, " "
 		Menu, CodeMenu, Add, %a_LoopField%, CodeMenubutton
-			Menu, CodeMenu, Add, All, CodeMenubutton
+			; Menu, CodeMenu, Add, All, CodeMenubutton
+	; FileRead, WholeBatches, WholeBatches.txt
+	; 	Menu, CodeMenu, Add, , , +Break
+	; sleep 200
+	; Loop, parse, WholeBatches, "`n"
+	; 	Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
+	; 	; Menu, CodeMenu, Add, , WholeBatchMenubutton
+	; 	; Menu, CodeMenu, Add, %WholeBatches%[2], WholeBatchMenubutton
+	; Try Menu,CodeMenu,show
+; 	return
+; WholeBatchMenubutton:
+; 	clip.codesRegex(A_ThisMenuItem)
+return
 
-	Try Menu,CodeMenu,show
-	return
 CodeMenubutton:
 If A_ThisMenuItem contains All
 {
@@ -421,4 +445,20 @@ else
 	sendinput, %A_ThisMenuItem%
 
 Return
+}
+
+
+WholeBatchMenu(){
+	global
+	try Menu, CodeMenu, DeleteAll
+	FileRead, WholeBatches, WholeBatches.txt
+		; Menu, CodeMenu, Add, , , +Break
+	sleep 200
+	Loop, parse, WholeBatches, "`n"
+		Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
+	Try Menu,CodeMenu,show
+	return
+WholeBatchMenubutton:
+	clip.codesRegex(A_ThisMenuItem)
+return
 }

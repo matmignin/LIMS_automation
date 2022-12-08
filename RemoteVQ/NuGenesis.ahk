@@ -16,7 +16,7 @@ Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
 
 
 Class LMS { ;;__________Generl LMS__________________
-AddDataFromClipboard(Pointer:="<\^>",Source:=""){
+AddDataFromClipboard(Pointer:=">>|",Source:=""){
 	/*
 	[2] Name
 	[3] IngredientID
@@ -1239,10 +1239,11 @@ Edit_Analytical_Copy(){
 	winwaitactive, Edit sample template,,8
 	; if !errorlevel
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%
-	send, {enter}
+	Sendinput,{tab}{^a}
+		sendinput, % Product ",{space}{shift down}I{shift up}n{shift down}{space}P{shift up}rocess`,{space}{shift down}A{Shift up}nalytical"
 	sleep 400
 	Breaking.Point()
+	send, {enter}
 	return
 }
 Edit_Physical(){
@@ -1278,7 +1279,10 @@ Edit_Physical(){
 	winwaitactive, Edit sample template,,4
 	; if !errorlevel
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%{enter}
+	Send,{tab}^{a}
+	sendinput, % Product ",{space}{shift down}I{shift up}n{shift down}{space}P{shift up}rocess`,{space}{shift down}P{shift up}hysical"
+	; sendinput, {enter}
+	sleep 300
 	Breaking.Point()
 	send, {enter}
 	winwaitactive, NuGenesis LMS,,5
@@ -1307,7 +1311,8 @@ Edit_CoatedRetain(){
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
-	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain
+	Send,{tab}^{a}
+	sendinput, % Product ",{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain"
 	sleep 400
 	Breaking.Point()
 	send, {enter}
@@ -1338,7 +1343,8 @@ Edit_CoatedPhysical(){
 	if !errorlevel
 		LMSclick.EditSampleTemplate()
 	Breaking.Point()
-	Sendinput,{tab}^{a}%Product%`,{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical
+	Sendinput,{tab}^{a}
+	sendinput, % Product ",{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical"
 	sleep 300
 	Breaking.Point()
 	send, {enter}
@@ -1369,8 +1375,9 @@ Edit_Retain(){
 	Breaking.Point()
 	LMSclick.EditSampleTemplate()
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%
-	sleep 500
+	Sendinput,{tab}^{a}
+		sendinput, % Product ",{space}{shift down}I{shift up}n{space}{shift down}P{shift up}rocess`,{space}{shift down}R{shift up}etain"
+	sleep 400
 	Breaking.Point()
 	Send, {enter}
 	winwaitactive, NuGenesis LMS,,5
@@ -1410,8 +1417,9 @@ Edit_Micro(){
 	Breaking.Point()
 	LMSclick.EditSampleTemplate()
 	Breaking.Point()
-	Sendinput,{tab}{delete 4}%Product%
-	sleep 500
+	sendinput, {tab}^{a}
+		sendinput, % Product "`,{space}{shift down}F{shift up}inished`,{space}{shift down}M{shift up}icro"
+	sleep 400
 	Breaking.Point()
 	send, {enter}
 	winwaitactive, NuGenesis LMS,,5

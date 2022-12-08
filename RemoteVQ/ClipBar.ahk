@@ -99,6 +99,7 @@ Class ClipBar{
 		Menu, ClipBarMenu, Add, All Products, AllProductsMsgbox
 		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
 		Menu, ClipBarMenu, Add,
+		Menu, ClipbarMenu, add, Show WholeBatches, ShowWholeBatches
 		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
 		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
@@ -333,8 +334,14 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; 	return
 ; ClipBar.AddIteration(450)
 ; ClipBar.SubIteration(450)
+wheelleft::
+GoSub, AllProductsMsgbox
+sleep 2000
+Nsub:=
+return
 wheelright::
-worktab.CustomerMenu()
+GoSub, AllBatchesMsgbox
+; sleep 2000
 sleep 2000
 Nsub:=
 Return
@@ -344,7 +351,8 @@ sleep 2000
 Nsub:=
 return
 wheeldown::
-ClipBar.Menu()
+WholeBatchMenu()
+; ClipBar.Menu()
 sleep 2000
 Nsub:=
 return

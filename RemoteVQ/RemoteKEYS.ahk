@@ -357,6 +357,7 @@ AddToList(){
 		Enter::LMS.SaveCode()
 		mbutton:: 3tap()
 		+F10::lms.Menu()
+		F10::WholeBatchMenu()
 		+^v::LMS.Searchbarpaste()
 		<^v::LMS.Searchbarpaste()
 ;+	___LMS app
@@ -655,4 +656,55 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 		clip.editbox(AllProducts)
 	Else
 		Return AllProducts
+}
+
+      WholeBatchesSave(Input,Overwrite:=""){
+				Global
+				if Overwrite
+					FileDelete, WholeBatches.txt
+				sleep 200
+				FileAppend, %input%, WholeBatches.txt
+				sleep 200
+				FileRead, WholeBatches, WholeBatches.txt
+				sleep 200
+				tt(WholeBatches,10000,0,0,2)
+return
+                          }
+
+
+GetAllWholeBatches(Delimiter:="`n",msg:=""){
+  global
+  ; aWholeBatches:=[]
+  ; pos=0
+	Haystack:=Clipboard
+	; FileRead, WholeBatches, WholeBatches.txt
+		sleep 100
+		WholeBatches:=[]
+		loop, parse, WholeBatches, "`n"
+      WholeBatches.insert(a_LoopField)
+
+      AllWholeBatches:=[], oTemp := {} remove duplicates
+      for vKey, vValue in AllWholeBatches
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllWholeBatches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllWholeBatches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllWholeBatches:=Listarray(AllWholeBatches,"")
+    AllWholeBatches:= StrReplace(AllWholeBatches, A_space A_space, A_Space)
+    ; AllWholeBatches:= StrReplace(AllWholeBatches, "+")
+	FileDelete, WholeBatches.txt
+	sleep 200
+	FileAppend, %AllWholeBatches%, WholeBatches.txt
+	if !msg
+		clip.editbox(AllWholeBatches)
+	Else
+		Return AllWholeBatches
 }

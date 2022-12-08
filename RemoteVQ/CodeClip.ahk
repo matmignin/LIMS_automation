@@ -1,5 +1,4 @@
 ; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-
   ; if RegexMatch(Clipboard, "<<LabelCopy>>"){
   ; if RegexMatch(Clipboard, "<<[abcdefghijkl]\d{3}>>")
   ; if RegexMatch(Clipboard, "<<SheetInfo>>")
@@ -13,36 +12,28 @@ clipChange(type){
   sleep 75
   ; if SimpleClip
     ; return
-  if Instr(Clipboard, "<<i>>",true,1,1){
+  if Instr(Clipboard, "[P]+   ",true,1,1){
     ProductTab.AddProductFromClipboard()
+    if Instr(Clipboard, "ScanLabel >> [P]+   "|,true,1,1){
+      GoSub ShowScanLabelCopy
+      return
+    }
+    else if Instr(Clipboard, "GlobalVision >> [P]+   ",true,1,1){
+      GoSub ShowGlobalVision
+      return
+    }
+    else if Instr(Clipboard, "FinalLabel >> [P]+   ",true,1,1){
+      GoSub ShowFinalLabelCopy
+      return
+    }
+    else if Instr(Clipboard, "mfg >> [P]+   ",true,1,1){
+      GoSub showmfg
+      return
+    }
     tt(Product "`n" ProductName "`n" Customer,7000,0,0)
     return
   }
-  else if Instr(Clipboard, "<ScanLabelCopy>",true,1,1){
-    ProductTab.AddProductFromClipboard()
-    sleep 200
-    GoSub ShowScanLabelCopy
-    return
-  }
-  else if Instr(Clipboard, "<GlobalVision>",true,1,1){
-    ProductTab.AddProductFromClipboard()
-    sleep 200
-    GoSub ShowGlobalVision
-    return
-  }
-  else if Instr(Clipboard, "<FinalLabelCopy>",true,1,1){
-    ProductTab.AddProductFromClipboard()
-    sleep 200
-    GoSub ShowFinalLabelCopy
-    return
-  }
-  else if Instr(Clipboard, "<mfg>",true,1,1){
-    ProductTab.AddProductFromClipboard()
-    sleep 200
-    GoSub showmfg
-    return
-  }
-  else if InStr(Clipboard, "<^>", true,1,1) {
+  else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
     LMS.AddDataFromClipboard()
@@ -347,13 +338,15 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID,CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID,CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
     Gui ClipBar:Default
     PriorCodestring:=CodeString
     PriorSampleID:=SampleID
     PriorBatch:=Batch
     codestring:=
       Parse:= Input ? Input : Clipboard
+
+
       Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
       Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
       Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
@@ -367,19 +360,21 @@ CodesRegex(input:=""){
       if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
         Iteration:=Floor(rCustomerPosition)
         CustomerPosition:=rCustomerPosition
+
         sleep 40
     }
       Ct:=Coated ? " ct#" : ""
-      stringUpper, Product, Product
-      GuiControl,ClipBar:Text, Product, %Product%
-      GuiControl,ClipBar:Text, Batch, %Batch%
-      GuiControl,ClipBar:Text, lot, %lot%
-      GuiControl,ClipBar:Text, Coated, %Coated%
+      this.SetClipBar()
+      ; stringUpper, Product, Product
+      ; GuiControl,ClipBar:Text, Product, %Product%
+      ; GuiControl,ClipBar:Text, Batch, %Batch%
+      ; GuiControl,ClipBar:Text, lot, %lot%
+      ; GuiControl,ClipBar:Text, Coated, %Coated%
       if rCustomerPosition
         GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
       		    GUI, ClipBar:submit,NoHide
-      codeString:=trim(Product " " Batch " " Lot Ct Coated)
+      codeString:=trim(Product " " Batch " " Lot Ct Coated " [[" CustomerPosition "]]")
       ; if (SampleID!=PriorSampleID){
         ; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
         ; FileAppend, %SampleId%, %CodeFile%
@@ -388,6 +383,9 @@ CodesRegex(input:=""){
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
+
+
+
         ; if sampleID
           ; FileAppend, `n%SampleId%, %CodeFile%
 
@@ -406,7 +404,7 @@ CodesRegex(input:=""){
 
 
 SetClipBar(){
-  global Product, Batch, Lot, Coated
+  Global Product, Batch, Lot, Coated
     Gui ClipBar:Default
       stringUpper, Product, Product
       GuiControl,ClipBar:Text, Product, %Product%
