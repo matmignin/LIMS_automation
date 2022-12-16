@@ -34,7 +34,6 @@ if A_username != mmignin
 	#winactivateForce
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
-	Menu,Tray,NoStandard
 	Fileread, AllBatches, AllBatches.txt
 	Fileread, AllProducts, AllProducts.txt
 
@@ -46,6 +45,7 @@ if A_username != mmignin
 		loop, parse, WholeBatchestext, "`n"
       WholeBatches.insert(a_LoopField)
 
+	Menu,Tray,NoStandard
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
 	Menu, Tray, add, Manual &COAs folder, ShowManualCOA
@@ -184,7 +184,6 @@ windowSpy(){
 
 AllBatchesMsgbox:
 	AllBatchesMsg:=GetAllBatches(" ")
-	sleep 600
 	tt(AllBatchesMsg)
 	; clip.EditBox(AllBatchesMsg)
 	return
@@ -452,13 +451,16 @@ WholeBatchMenu(){
 	global
 	try Menu, CodeMenu, DeleteAll
 	FileRead, WholeBatches, WholeBatches.txt
-		; Menu, CodeMenu, Add, , , +Break
-	sleep 200
 	Loop, parse, WholeBatches, "`n"
 		Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
 	Try Menu,CodeMenu,show
 	return
+	
 WholeBatchMenubutton:
-	clip.codesRegex(A_ThisMenuItem)
+; if (Instr(Trim(A_ThisMenuItem),"|") = 1){
+		ProductTab.AddProductFromClipboard(A_ThisMenuItem)
+		; return
+	; }
+	; else clip.codesRegex(A_ThisMenuItem)
 return
 }

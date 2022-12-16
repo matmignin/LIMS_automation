@@ -170,7 +170,23 @@ AddToList(){
 
 
 
+			#ifWinExist, Select Product ahk_exe EXCEL.EXE
+					F10::
+					Mbutton::
+					WinActivate, Select Product ahk_exe EXCEL.EXE
+					sendinput, {Click 114, 61}%Product%{enter}{enter}
+					return
 
+
+			#ifWinExist, LMS Actions ahk_exe EXCEL.EXE
+				enter::
+				Mbutton::
+				WinActivate, LMS Actions ahk_exe EXCEL.EXE
+				sendinput, {click 44, 42}
+				winwaitactive, Select Product ahk_exe EXCEL.EXE,, 5
+				if !ErrorLevel
+					sendinput, {Click 114, 61}%Product%{enter}{enter}
+				return
 
 			#ifwinactive, Result Editor
 					mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
@@ -674,17 +690,17 @@ return
 
 GetAllWholeBatches(Delimiter:="`n",msg:=""){
   global
-  ; aWholeBatches:=[]
+  aWholeBatches:=[]
   ; pos=0
-	Haystack:=Clipboard
+	; Haystack:=Clipboard
 	; FileRead, WholeBatches, WholeBatches.txt
 		sleep 100
-		WholeBatches:=[]
+		; WholeBatchesArray:=[]
 		loop, parse, WholeBatches, "`n"
-      WholeBatches.insert(a_LoopField)
+      aWholeBatches.insert(a_LoopField)
 
       AllWholeBatches:=[], oTemp := {} remove duplicates
-      for vKey, vValue in AllWholeBatches
+      for vKey, vValue in aWholeBatches
       {
           if (ObjGetCapacity([vValue], 1) = "") ;is numeric
           {

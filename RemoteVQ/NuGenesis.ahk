@@ -475,14 +475,15 @@ Class ProductTab { ;;________ProductTab Class_______________
       [8] ServingSize
       [9] clip.codesRegex
  */
-AddProductFromClipboard(){
+AddProductFromClipboard(Input:=""){
 	Global
+		Haystack:= Input ? Input : Clipboard
     ; loop, parse, clipboard, "`n"
 		; {
 			SheetInfo:=[]
 			Coated:=
 			Lot:=
-			SheetInfo:=StrSplit(Clipboard,"|")
+			SheetInfo:=StrSplit(HayStack,"|")
       Product:=SheetInfo[2]
       ProductName:=SheetInfo[3]
       Customer:=SheetInfo[4]
@@ -490,16 +491,42 @@ AddProductFromClipboard(){
       ShapeAndSize:=SheetInfo[6]
       ; Color:=SheetInfo[7]
       ServingSize:=SheetInfo[8]
+		if Instr(HayStack, "ScanLabel >> [P]+   ",true,1,1){
+      GoSub ShowScanLabelCopy
+      return
+    }
+    else if Instr(HayStack, "GlobalVision >> [P]+   ",true,1,1){
+      GoSub ShowGlobalVision
+      return
+    }
+    else if Instr(HayStack, "FinalLabel >> [P]+   ",true,1,1){
+      GoSub ShowFinalLabelCopy
+      return
+    }
+    else if Instr(HayStack, "mfg >> [P]+   ",true,1,1){
+      GoSub showmfg
+      return
+    }
+    tt(Product "`n" ProductName "`n" Customer,7000,0,0)
+		else
       clip.codesRegex(SheetInfo[9])
       ; ControlsetText, Static1,%CustomerPosition%,ClipBar
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
     ; }
-			if CustomerPosition
+		if CustomerPosition
 			{
-				Iteration:=CustomerPosition
+				Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")CustomerPosition
 				ControlsetText, Edit5,%Iteration%,ClipBar
 				IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 			}
+			if Instr(Clipboard, "[P]++",true,1,1){
+				AddWholeBatch:=Trim(StrReplace(strReplace(Clipboard,"[P]++",""),"  "," "))
+				WholeBatches:= WholeBatches "`n"AddWholeBatch
+        sleep 200
+				GetAllWholeBatches()
+        ; FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
+			}
+
 
       return
   }

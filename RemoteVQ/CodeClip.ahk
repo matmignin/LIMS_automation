@@ -14,24 +14,6 @@ clipChange(type){
     ; return
   if Instr(Clipboard, "[P]+   ",true,1,1){
     ProductTab.AddProductFromClipboard()
-    if Instr(Clipboard, "ScanLabel >> [P]+   "|,true,1,1){
-      GoSub ShowScanLabelCopy
-      return
-    }
-    else if Instr(Clipboard, "GlobalVision >> [P]+   ",true,1,1){
-      GoSub ShowGlobalVision
-      return
-    }
-    else if Instr(Clipboard, "FinalLabel >> [P]+   ",true,1,1){
-      GoSub ShowFinalLabelCopy
-      return
-    }
-    else if Instr(Clipboard, "mfg >> [P]+   ",true,1,1){
-      GoSub showmfg
-      return
-    }
-    tt(Product "`n" ProductName "`n" Customer,7000,0,0)
-    return
   }
   else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
@@ -373,7 +355,7 @@ CodesRegex(input:=""){
       if rCustomerPosition
         GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
-      		    GUI, ClipBar:submit,NoHide
+        GUI, ClipBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated " [[" CustomerPosition "]]")
       ; if (SampleID!=PriorSampleID){
         ; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID

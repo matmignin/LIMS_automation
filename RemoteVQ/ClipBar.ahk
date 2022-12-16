@@ -334,11 +334,16 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; 	return
 ; ClipBar.AddIteration(450)
 ; ClipBar.SubIteration(450)
+
+
 wheelleft::
-GoSub, AllProductsMsgbox
-sleep 2000
-Nsub:=
-return
+	If N
+			return
+	GoSub, AllProductsMsgbox
+		N:=1
+	SetTimer, BlockTheInput, -1000
+	return
+
 wheelright::
 GoSub, AllBatchesMsgbox
 ; sleep 2000
@@ -346,16 +351,21 @@ sleep 2000
 Nsub:=
 Return
 wheelup::
+	If N
+			return
 ClipBar.Menu()
-sleep 2000
-Nsub:=
-return
+	N:=1
+	SetTimer, BlockTheInput, -1000
+	return
+
 wheeldown::
+	If N
+			return
 WholeBatchMenu()
-; ClipBar.Menu()
-sleep 2000
-Nsub:=
-return
+		N:=1
+	SetTimer, BlockTheInput, -1000
+	return
+
 Mbutton::reloadSub()
 Rbutton::
 		; ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ
@@ -384,4 +394,3 @@ Rbutton::
 ClipBar_ResetSub:
 	ClipBar.Reset()
 return
-
