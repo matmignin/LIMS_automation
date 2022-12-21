@@ -39,11 +39,12 @@ if A_username != mmignin
 
 	ReadIniFiles()
 
-	WholeBatches:=[]
+	WholeBatchesArray:=[]
 	FileRead, WholeBatchestext, WholeBatches.txt
+		Wholebatches:=Trim(Wholebatchestext,"`n")
 		sleep 100
-		loop, parse, WholeBatchestext, "`n"
-      WholeBatches.insert(a_LoopField)
+		loop, parse, WholeBatches, "`n"
+      WholeBatchesArray.insert(a_LoopField)
 
 	Menu,Tray,NoStandard
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
@@ -58,6 +59,13 @@ if A_username != mmignin
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, Show EditBox, ShowEditBox
 	Menu, Tray, add, Add Sample Log, !^+F3
+	Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
+	Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
+	Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
+	Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
+	Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
+	Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+Menu, Tray, Add, Ften, :FtenMenu
 
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
@@ -122,11 +130,13 @@ ReadIniFiles(){
 	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
+	iniread, Ften, Settings.ini, Config, Ften
+
 	; iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 	iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
 	iniRead, IngredientNoteDropDownCount, Settings.ini, Config, IngredientNoteDropDownCount
 
-	; iniRead, DescriptionTextInput, Settings.ini, SavedVariables, DescriptionTextInput
+	iniRead, NewSpecVersionDescriptionText, Settings.ini, SavedVariables, NewSpecVersionDescriptionText
 	;iniRead, Iteration, Settings.ini, SavedVariables, Iteration
 	; iniRead, Iteration, Settings.ini, SavedVariables, CustomerPosition
 
@@ -244,6 +254,28 @@ ShowEditBox:
 	clip.editbox()
 	return
 
+FtenMenuHandler:
+		Ften := A_ThisMenuItem
+			; 	Ften:= "RemoveAndApprove"
+			; Else if (A_ThisMenuItem = "RemoveTestSpec")
+			; 	Ften:= "RemoveTestSpec"
+			; Else if (A_ThisMenuItem = "NewSpecVersion")
+			; 	Ften:= "NewSpecVersion"
+			; Else if (A_ThisMenuItem = "ApproveTestSpec")
+			; 	Ften:= "ApproveTestSpec"
+			; Else if (A_ThisMenuItem = "AddOrganoleptic")
+			; 	Ften:= "AddOrganoleptic"
+			; Else if (A_ThisMenuItem = "WholeBatchMenu")
+			; 	Ften:= "WholeBatchMenu"
+			; Else
+			; 	Ften:=
+			IniWrite, %Ften%, Settings.ini, Config, Ften
+
+
+			return
+
+
+
 activeCheck:
 	If winexist("Delete Attribute"){
 		winactivate,
@@ -253,8 +285,16 @@ activeCheck:
 		sleep 1000
 	}
 	else if winexist("Delete specification"){
+			MsgBox, 4, , Do you want to continue? (Press YES or NO),5
+				IfMsgBox No
+					exit
+				IfMsgBox timeout
+				{
+					winactivate
+					sendinput, {n}
+					return
+				}
 		sleep 300
-		msgbox, you sure?
 		return
 	}
 	; else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
@@ -305,7 +345,7 @@ activeCheck:
 	}
 	else if winactive("Lock specification")
 	{
-		sendinput, !{n}
+		sendinput, {n}
 		sleep 1000
 		return
 	}
@@ -452,15 +492,15 @@ WholeBatchMenu(){
 	try Menu, CodeMenu, DeleteAll
 	FileRead, WholeBatches, WholeBatches.txt
 	Loop, parse, WholeBatches, "`n"
-		Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
+		Menu, CodeMenu, Add, [[%A_Index%]] %a_LoopField%, WholeBatchMenubutton,
 	Try Menu,CodeMenu,show
 	return
-	
+
 WholeBatchMenubutton:
-; if (Instr(Trim(A_ThisMenuItem),"|") = 1){
+if (Instr(Trim(A_ThisMenuItem),"|")=1){
 		ProductTab.AddProductFromClipboard(A_ThisMenuItem)
-		; return
-	; }
-	; else clip.codesRegex(A_ThisMenuItem)
+		return
+	}
+		else clip.codesRegex(A_ThisMenuItem)
 return
 }

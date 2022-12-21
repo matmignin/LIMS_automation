@@ -134,6 +134,13 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 			Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
 			Menu, Menu, add,
 			Menu, Menu, add, Add Sample Logs, !^+F3
+			Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
+			Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
+			Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
+			Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
+			Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
+			Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+			Menu, Menu, Add, Ften, :FtenMenu
 
 		if winactive("NuGenesis LMS"){
 			LMS.Orient()
@@ -152,6 +159,10 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 				; Menu,Menu, add, ApproveSpecVersion, +#F11
 				; Menu,Menu, add, NewSpecVersion, ^#F11
 				; Menu,Menu, add, RemoveTestSpec, !#F11
+
+
+
+
 			}
 			Try Menu,menu,show
 		}
@@ -260,15 +271,16 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 		Send, {enter}
 		return
 	}
-	SearchbarPaste(){
-		Clipboard := StrReplace(Clipboard, "`r`n", A_Space)
-		Clipboard := StrReplace(Clipboard, "`n", A_Space)
-		Clipboard := StrReplace(Clipboard, ", ", A_Space)
-		Clipboard := StrReplace(Clipboard, ",", A_Space)
+	SearchbarPaste(Delimiter){
+		Clipboard := StrReplace(Clipboard, "`r`n", Delimiter)
+		Clipboard := StrReplace(Clipboard, "`n", Delimiter)
+		Clipboard := StrReplace(Clipboard, ", ", Delimiter)
+		Clipboard := StrReplace(Clipboard, ",", Delimiter)
 		Clipboard := StrReplace(Clipboard, "|", "")
 		Clipboard := StrReplace(Clipboard, "/", "")
-		Clipboard := StrReplace(Clipboard, A_tab, A_Space)
-		Clipboard := StrReplace(Clipboard, A_space A_space, A_Space)
+		Clipboard := StrReplace(Clipboard, A_tab, Delimiter)
+		Clipboard := StrReplace(Clipboard, A_space, Delimiter)
+		Clipboard := StrReplace(Clipboard, Delimiter Delimiter, Delimiter)
 		sleep 200
 		send, ^v
 		sleep 100
@@ -276,89 +288,89 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 		return clipboard
 	}
 
-DetectTab(){
-	global
-	; winSet, Transparent, Off, ahk_exe eln.exe
-	tab:=
-	FoundSamples:=
-	FoundRequests:=
-	FoundDocuments:=
-	FoundResults:=
-	FoundTests:=
-	FoundSpecs:=
-	FoundReagents:=
-	Tab1:=
-	TAB2:=
-	TAB3:=
-	TAB4:=
-	TAB5:=
-	TAB6:=
-	TAB7:=
-	; ifwinnotactive, ahk_exe eln.exe
-		; winactivate, ahk_exe eln.exe
-	LMS.Orient()
-	; CoordMode, pixel, window
-	if winactive("NuGenesis LMS") {
-		PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-		if !Tab1 {
-			PixelSearch, FoundSamples, FoundY, SamplesTab, yMyWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
-			PixelSearch, FoundRequests, FoundY, RequestsTab, yMyWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
-			if FoundSamples {
-				Tab:="Samples"
-				return Tab
-			}
-			else
-			{
-				If FoundRequests {
-					Tab:="Requests"
+	DetectTab(){
+		global
+		; winSet, Transparent, Off, ahk_exe eln.exe
+		tab:=
+		FoundSamples:=
+		FoundRequests:=
+		FoundDocuments:=
+		FoundResults:=
+		FoundTests:=
+		FoundSpecs:=
+		FoundReagents:=
+		Tab1:=
+		TAB2:=
+		TAB3:=
+		TAB4:=
+		TAB5:=
+		TAB6:=
+		TAB7:=
+		; ifwinnotactive, ahk_exe eln.exe
+			; winactivate, ahk_exe eln.exe
+		LMS.Orient()
+		; CoordMode, pixel, window
+		if winactive("NuGenesis LMS") {
+			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+			if !Tab1 {
+				PixelSearch, FoundSamples, FoundY, SamplesTab, yMyWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
+				PixelSearch, FoundRequests, FoundY, RequestsTab, yMyWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
+				if FoundSamples {
+					Tab:="Samples"
 					return Tab
 				}
-				; PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				; If FoundDocuments {
-				; 	Tab=Documents
-				; 	return tab
-				; }
-				; PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				; If FoundResults {
-				; 	Tab:="Results"
-				; 	return tab
-				; }
-				; PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-				; If FoundTests {
-				; 	Tab:="Tests"
-				; 	return tab
-				; }
-				else if Errorlevel
+				else
 				{
-					; PIXELSEARCH, FoundReagents, FoundY, 600, 75, 610, 79, 0xF0F0F0, 10, Fast RGB ;icon on
-					; if FoundReagents {
-					; 	tab=Reagents
+					If FoundRequests {
+						Tab:="Requests"
+						return Tab
+					}
+					; PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					; If FoundDocuments {
+					; 	Tab=Documents
 					; 	return tab
 					; }
-					; else {
-						PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
-						; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
-						If FoundSpecs
-							Tab:="Products"
-						else
-							tab:="Specs"
-						return Tab
+					; PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					; If FoundResults {
+					; 	Tab:="Results"
+					; 	return tab
 					; }
+					; PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+					; If FoundTests {
+					; 	Tab:="Tests"
+					; 	return tab
+					; }
+					else if Errorlevel
+					{
+						; PIXELSEARCH, FoundReagents, FoundY, 600, 75, 610, 79, 0xF0F0F0, 10, Fast RGB ;icon on
+						; if FoundReagents {
+						; 	tab=Reagents
+						; 	return tab
+						; }
+						; else {
+							PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
+							; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
+							If FoundSpecs
+								Tab:="Products"
+							else
+								tab:="Specs"
+							return Tab
+						; }
+					}
+					; else
+						; return
 				}
-				; else
-					; return
 			}
 		}
+		return Tab
 	}
-	return Tab
-}
 
 
 
 
 Orient(){
 	global
-	winGetPos,Nux,NuY,NuW,NuH,NuGenesis LMS
+	winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
 	WbX:=WbX+400
 	Flovar_x:= NuX +900
 	Flovar_y:= NuH + NuY -28
@@ -491,41 +503,34 @@ AddProductFromClipboard(Input:=""){
       ShapeAndSize:=SheetInfo[6]
       ; Color:=SheetInfo[7]
       ServingSize:=SheetInfo[8]
-		if Instr(HayStack, "ScanLabel >> [P]+   ",true,1,1){
+		if Instr(HayStack, "ScanLabel >>",true,1,1){
       GoSub ShowScanLabelCopy
       return
     }
-    else if Instr(HayStack, "GlobalVision >> [P]+   ",true,1,1){
+    else if Instr(HayStack, "GlobalVision >>",true,1,1){
       GoSub ShowGlobalVision
       return
     }
-    else if Instr(HayStack, "FinalLabel >> [P]+   ",true,1,1){
+    else if Instr(HayStack, "FinalLabel >>",true,1,1){
       GoSub ShowFinalLabelCopy
       return
     }
-    else if Instr(HayStack, "mfg >> [P]+   ",true,1,1){
+    else if Instr(HayStack, "mfg >>",true,1,1){
       GoSub showmfg
       return
     }
-    tt(Product "`n" ProductName "`n" Customer,7000,0,0)
 		else
       clip.codesRegex(SheetInfo[9])
+		tt(Product "`n" ProductName "`n" Customer,7000,0,0)
       ; ControlsetText, Static1,%CustomerPosition%,ClipBar
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
     ; }
-		if CustomerPosition
-			{
-				Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")CustomerPosition
+		if CustomerPosition{
+				Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")
 				ControlsetText, Edit5,%Iteration%,ClipBar
 				IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 			}
-			if Instr(Clipboard, "[P]++",true,1,1){
-				AddWholeBatch:=Trim(StrReplace(strReplace(Clipboard,"[P]++",""),"  "," "))
-				WholeBatches:= WholeBatches "`n"AddWholeBatch
-        sleep 200
-				GetAllWholeBatches()
-        ; FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
-			}
+
 
 
       return
@@ -898,21 +903,24 @@ class SpecTab { 	;; _________SpecTab class_______
 			Menu,Menu, add, Copy &Specs, Autofill
 		return
 	}
-	CopySpecTemplate(){
+	CopySpecTemplate(DepartmentInput:=""){
 		global
 		; Critical, On
-		clipboard:=
-		if winactive("NuGenesis LMS"){
+		if winactive("NuGenesis LMS") && (DepartmentInput = "") {
+			clipboard:=
 			MouseGetPos, premx, premy
 			click
-			Sendinput, {ctrldown}{c}{ctrlup}
-			clipwait,2 ; Tooltip, %Clipboard%
-			; if !ErrorLevel
-				; Breaking.Point()
+			Send, ^{c}
+			clipwait, 4
+				If !errorlevel
+			clip.Department()
 		}
-		; If !errorlevel
-			click 102, 289
-		clip.Department()
+		else
+			Department:=DepartmentInput
+		click 102, 289 ;click copy into new spec link
+		winwaitactive, Edit specification,,3
+			if errorlevel
+				return
 		Breaking.Point()
 		If (Department = "Analytical")
 			SpecTab.Edit_Analytical_Copy()
@@ -1303,7 +1311,7 @@ Edit_Physical(){
 	sleep 300
 	Breaking.Point()
 	click, 70, 518 ;edit sample method
-	winwaitactive, Edit sample template,,4
+	winwaitactive, Edit sample template,,6
 	; if !errorlevel
 	Breaking.Point()
 	Send,{tab}^{a}
@@ -1654,106 +1662,184 @@ HM_Prop65(){
 	return
 }
 ;_____Remove tests from spec
-	NewSpecVersion(){
-		Global DescriptionTextInput
-			click, 69, 249 ; new version
-			sleep 200
-		if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification")
-			exit
-		if winactive("Delete specification")
-			exit
-		sleep 300
-		winactivate, Edit specification
-		if !winactive("Edit specification")
-			exit
-		click, 393, 177 ; click description
-		send, ^{a}
-		sleep 300
-		sendinput, %DescriptionTextInput%
+	NewSpecVersion(Prompt:=""){
+		Global
+		MouseGetPos, m_x, m_Y
+		SelectionStatus:=
+		VersionStatus:=
+		ifwinactive, NuGenesis LMS
+		Clip.ParseMainSpecsTopTable()
 		sleep 200
-		Breaking.Point()
-		if !winactive("Edit specification")
-			exit
-		click, 331, 617 ;click okay
-			sleep 600
+		{
+				while (VersionStatus="Done" || VersionType = "Modifiable" ) { ;|| VersionStatus = "Removed") {
+					sendinput,{down}
+					sleep 200
+					Clip.ParseMainSpecsTopTable()
+				}
+				winwaitactive, NuGenesis LMS,,2
+					if !errorlevel
+					click, 69, 249 ; new version
+				WinWait, Edit specification,, 2
+					if errorlevel
+					{
+						if winexist("Delete specification") || winexist("Lock specification") || winexist("Approve specification") || winactive("Delete specification"){
+								; MsgBox, 4, , Do you want exit? (Press YES or NO) `n [Error 1668],5
+									; ifmsgbox Timeout
+									; {
+										winactivate,
+										sendinput, {n}
+										sleep 200
+										M_y+=26
+										click %m_x% %m_Y% 1
+										; return
+									; }
+									; IfMsgBox No
+									; {
+										; winactivate,
+										; sendinput, {n}
+										; sleep 200
+										; return
+									; }
+									; IfMsgBox Yes
+										; exit
+									}
+								; msgbox,, IDK
+					}
 			Breaking.Point()
-		winwaitactive, NuGenesis LMS,,3
+		}
+		Ifwinexist, Edit specification
+		{
+			winactivate, Edit specification
+			click, 393, 177 ; click description
+			Breaking.Point()
+			send, ^{a}
+			sleep 100
+			Breaking.Point()
+			sendinput, %NewSpecVersionDescriptionText%
+			if Prompt
+				MsgBox, 4, , Do you want to continue? (Press YES or NO) `n [Error 1699], 5
+						IfMsgBox Timeout
+							winactivate, Edit specification
+						IfMsgBox No
+							exit
+						IfMsgBox Yes
+							winactivate, Edit specification
+			sleep 300
+			Breaking.Point()
+			click, 331, 617 ;click Save
+		if Product
+		{
+			iniwrite, New, FixedSpecs.ini, Status, %Product%
+			SelectionStatus:="New"
+		}
+		winwaitactive, NuGenesis LMS,,4
 			if errorlevel
 				return
+		; M_y+=26
+		; click %m_x% %m_Y% 1
+		}
 		return
 		}
 
 	RemoveTestSpec(){
+		global
 		if winactive("NuGenesis LMS")
 			click, 63, 754   ; edit results
-		else
-			sleep 600
-		sleep 450
-		; if winactive("NuGenesis LMS") && !winexist("Results Definition")
-			; msgbox, LMS window active, not Results window
-		; ifwinactive, Results Definition
-		mouseclick, left, 111, 95,1,0
-			; Sendinput, {click 111, 96} ; sort Seq
-			; exit
-		sleep 300
-		sendinput, {click 128, 65} ; Remove
-		Breaking.Point()
-		sleep 200
-		; winactivate, Delete results
-		if winexist("Delete results")
-			send, {enter}
-		else
-			sleep 400
-		if winexist("Delete results")
-			send, {enter}
-		sleep 400
+		winwaitactive, Results Definition,,3
+				if errorlevel
+					MsgBox, 4, , Do you want to continue?  (Press YES or NO) `n [Error 1718]
+						IfMsgBox No
+							exit
+			if (!OkayButton_X || !OkayButton_Y){
+				wingetpos, ResultsDefinition_X, ResultsDefinition_y, ResultsDefinition_w, ResultsDefinition_h, Results Definition
+				OkayButton_X:=ResultsDefinition_w - 175
+				OkayButton_Y:=ResultsDefinition_H - 40
+				}
+			click 111, 95 ;sort sequence to apply filter
+			sleep 200
+			Breaking.Point()
+			click 128, 65 ; Remove button
+		winwaitactive, Delete results,, 2
+			if errorlevel
+			{
+				sleep 200
+				winactivate, Results Definition
+					click 128, 65
+			}
+			sendinput, {enter}
 		Breaking.Point()
 		; if winactive("NuGenesis LMS")
 			; exit
 		; else
-		if winactive("Results Definition")
-			send, {enter}
-		Else
-			; {
-				; tt("ended cuz it was too long")
-				sleep 400
-				; if winactive("Results Definition")
-					; send, {enter}
-
-
-		winwaitactive, NuGenesis LMS,,6
-			if errorlevel
-				exit
-		sleep 300
+		winwaitactive, Results Definition,,3
+			if Errorlevel
+				return
+			click %OkayButton_X%,  %OkayButton_Y%
+		if Product
+			iniwrite, Removed, FixedSpecs.ini, Status, %Product%
+		; SelectionStatus:="Removed"
+		; winwaitactive, NuGenesis LMS,,6
+			; if errorlevel
+				; exit
 		return
 	}
 		ApproveSpecVersion(){
-			global NuGenesis_w, Nugenesis_Y
+			global
 			; wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
-			ScrollBarTop_X:=Nugenesis_W - 5
-			TopListItem_X:=Nugenesis_W - 50
-			ScrollBarTop_Y:=Nugenesis_y + 190
-			Click, 76,269 ;click Approve Specification
-			sleep 300
-			if winexist("Delete specification") || winexist("Lock specification") ; || winexist("Approve specification") ; || !winexist("Approve specification")
-				exit
-			if winexist("Approve specification")
-				sendinput, {enter}
-			; ifwinexist("Approve secification")
-			; Breaking.Point()
-			sleep 500
-			; if Winactive("NuGenesis LMS")
-			; {
-				; msgbox, 3 `n %ScrollBarTop_x% `n %TopListItem_X% `n %ScrollBarTop_Y%
-				; exit
-				; }
-			CoordMode, mouse, screen
-			; Click, %ScrollBarTop_X%, %ScrollBarTop_Y%
-			sleep 300
-			Click, %TopListItem_X%, %ScrollBarTop_Y%
-			CoordMode, mouse, Window
-
+			; ScrollBarTop_X:=Nugenesis_W - 5
+			; TopListItem_X:=Nugenesis_W - 50
+			; ScrollBarTop_Y:=Nugenesis_y + 190
+			winwaitactive, NuGenesis LMS,,3
+			if !errorlevel
+				Click, 76,269 ;click Approve Specification
+			winwaitactive, Approve specification,,3
+			 if errorlevel
+				if winexist("Delete specification") || winexist("Lock specification") { ; || winexist("Approve specification") ; || !winexist("Approve specification")
+					WinActivate
+					sendinput, {n}
+					return
+					}
+			if winactive("Approve specification")
+				sendinput, {y}
+			if Product
+			iniwrite, Done, FixedSpecs.ini, Status, %Product%
+			SelectionStatus:=
+				; sleep 2000
+			; CoordMode, mouse, screen
+			; Click, %TopListItem_X%, %ScrollBarTop_Y%
+			; CoordMode, mouse, Window
 		}
+
+
+	RemoveAndApproveTestSpec(){
+		global
+		SelectionStatus:=
+		MouseGetPos, m_x, m_Y
+		SelectionStatus:= Clip.ParseMainSpecsTopTable()
+		sleep 350
+		If (SelectionStatus="Removed"){
+			this.ApproveSpecVersion()
+					M_Y+=26
+					click %m_x% %m_Y% 1
+					return
+				}
+		else If (SelectionStatus="NotStarted") {
+				this.NewSpecVersion()
+				winwaitactive, NuGenesis LMS,,3
+				if !errorlevel
+					this.RemoveTestSpec()
+				return
+		}
+		else If (SelectionStatus="New")
+				this.RemoveTestSpec()
+		else If (SelectionStatus="Done"){
+			sendinput, {down}
+			Clip.ParseMainSpecsTopTable()
+		}
+		else
+			return
+		return
+	}
 
 	FullRemoveTest(){
 		global
@@ -1778,9 +1864,7 @@ HM_Prop65(){
 		if winactive("Delete specification")
 			exit
 		sleep 700
-		; winwaitactive, NuGenesis LMS,,3
-		; if errorlevel
-			; return
+
 		sleep 500
 		this.RemoveTestSpec()
 
@@ -1794,6 +1878,41 @@ HM_Prop65(){
 		; TT("Done")
 		return
 	}
+
+
+	AddOrganolepticSpec(LoopCount:=1){
+		global
+		Loop %LoopCount% {
+			VersionStatus:=
+			clipboard:=WholeBatchesArray[Iteration]
+			sleep 500
+			Breaking.Point()
+			iniread, VersionStatus, OrganoSpecs.ini, Organoleptic, %Product%
+			if (VersionStatus = "NotStarted")
+			{
+				Click 402, 161 ; click first row
+				Breaking.Point()
+				SpecTab.CopySpecTemplate("Physical")
+				iniwrite, New, OrganoSpecs.ini, Organoleptic, %Product%
+				Breaking.Point()
+			winwaitactive, NuGenesis LMS,,5
+				if errorlevel
+					MsgBox, 4, , Do you want to continue?  (Press YES or NO) `n [Error 412]
+						IfMsgBox No
+							exit
+				clipbar.AddIteration()
+				sleep 300
+			}
+			else
+			{
+				clipbar.AddIteration()
+				sleep 300
+				clipboard:=WholeBatchesArray[Iteration]
+			}
+		}
+				Breaking.Point()
+			return
+		}
 
 
 }
@@ -2526,7 +2645,7 @@ ListArray(The_Array,Option:="n"){
 	; global
 	if (option<>"n"){
 		for Each, Element in The_Array
-			ArrayList .=Element " " Option " "
+			ArrayList .=Element Option
 		return ArrayList
 	}
 	else {

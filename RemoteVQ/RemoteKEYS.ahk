@@ -7,8 +7,8 @@
 	~LWin::Send {Blind}{vkFF}
 	; F18::return
 	; $RWin::return
-		^F10::MenuCodeSelect()
-		+^F10::MenuCodeSelect("AllBatches")
+		; ^F10::MenuCodeSelect()
+		; +^F10::MenuCodeSelect("AllBatches")
 	; $LWin::return
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
@@ -59,8 +59,8 @@
 	 ; TT(CopiedText,2000,1,1,1)
 
 		return
-	+F4::4tap()
-	+F9::worktab.CustomerMenu()
+	; +F4::4tap()
+	; +F9::worktab.CustomerMenu()
 		; Sendinput, ^{c}
 		; sleep 100
 		; TT(Clipboard)
@@ -174,18 +174,18 @@ AddToList(){
 					F10::
 					Mbutton::
 					WinActivate, Select Product ahk_exe EXCEL.EXE
-					sendinput, {Click 114, 61}%Product%{enter}{enter}
+					sendinput, {Click 119, 68}%Product%{enter}{enter}
 					return
 
 
 			#ifWinExist, LMS Actions ahk_exe EXCEL.EXE
-				enter::
+				+enter::
 				Mbutton::
 				WinActivate, LMS Actions ahk_exe EXCEL.EXE
-				sendinput, {click 44, 42}
+				sendinput, {click 46, 44}
 				winwaitactive, Select Product ahk_exe EXCEL.EXE,, 5
 				if !ErrorLevel
-					sendinput, {Click 114, 61}%Product%{enter}{enter}
+					sendinput, {Click 119, 68}%Product%{enter}{enter}
 				return
 
 			#ifwinactive, Result Editor
@@ -266,7 +266,7 @@ AddToList(){
 	#Ifwinactive,Book
 		+F9::LMS.CopyProductRotation()
 	#Ifwinactive,Test Definition Editor
-		enter::clk(333,615)
+		+enter::clk(333,615)
 		mbutton::
 		sleep 200
 		if (Description)
@@ -283,7 +283,7 @@ AddToList(){
 			; sleep 400
 			; clk(910,668)
 			return
-		+enter::sendinput, {enter}
+		;enter::sendinput, {enter}
 
 
 	#Ifwinactive, Result Entry ;;___Result_Entry
@@ -293,7 +293,8 @@ AddToList(){
 		F7::WorkTab.CorrectTestResults("toggle", "Loop")
 		+F10::numbermenu(6)
 	#Ifwinactive, Results ;;__Results_Definition:
-		; Enter::
+		+Enter::
+		^enter::
 		+mbutton::SpecTab.Autofill()
 		mbutton::
 			winactivate, Results
@@ -329,7 +330,6 @@ AddToList(){
 
 				return
 		F10::lms.menu()
-		+enter::sendinput, {enter}
 ; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
 		F6::
@@ -350,11 +350,12 @@ AddToList(){
 		F10::
 		mbutton::WorkTab.registerNewSamples()
 	#ifwinactive, New Document
-		Enter::
+		^enter::
+		+Enter::
 			LMS.SaveCode()
 			LMSclick.okay()
 			return
-		+enter::sendinput, {enter}
+		; +enter::sendinput, {enter}
 	#ifwinactive, Reason for Change
 	#ifwinactive, Select tests for request:
 		; space::send, ^{click}
@@ -370,18 +371,63 @@ AddToList(){
 	#Ifwinactive, NuGenesis LMS
 ^1::sendinput % GetAllProducts(" ", 1)
 ^2::sendinput % GetAllBatches(" ", 1)
+!F10::SpecTab.CopySpecTemplate()
 		Enter::LMS.SaveCode()
 		mbutton:: 3tap()
-		+F10::lms.Menu()
-		F10::WholeBatchMenu()
-		+^v::LMS.Searchbarpaste()
-		<^v::LMS.Searchbarpaste()
+		; +F10::lms.Menu()
+		; F10::WholeBatchMenu()
+		OrganolepticFunct:
+
+		+F10::SpecTab.AddOrganolepticSpec(Lot)
+
+		F10::
+				MouseGetPos, Mx, My
+					Breaking.Point()
+				click
+	Loop %iteration%
+	{
+			If (Ften = "RemoveAndApprove")
+				Spectab.RemoveAndApproveTestSpec()
+			Else If (Ften = "RemoveTestSpec"){
+				if (Clip.ParseMainSpecsTopTable()="New"){
+					Sleep 250
+					Breaking.Point()
+					SpecTab.RemoveTestSpec()
+					}
+				}
+			Else if (Ften = "NewSpecVersion"){
+				if (Clip.ParseMainSpecsTopTable()="NotStarted"){
+						SpecTab.NewSpecVersion()
+						Sleep 250
+						Breaking.Point()
+					}
+				}
+		else if (Ften = "AddOrganoleptic")
+				SpecTab.AddOrganolepticSpec(5)
+	My+=26
+	WinActivate, NuGenesis LMS
+	click %Mx% %My% 1
+	Breaking.Point()
+	}
+
+			; Else if (Ften = "ApproveTestSpec")
+				; SpecTab.ApproveSpecVersion()
+			; Else if (Ften = "WholeBatchMenu")
+				; WholeBatchMenu()
+			; Else
+				; LMS.Menu()
+			return
+
+		; +F10::SpecTab.RemoveTestSpec()
+		; F10::Clip.ParseMainSpecsTopTable()
+		+#v::LMS.Searchbarpaste(";")
+		+^v::LMS.Searchbarpaste(";")
+		<^v::LMS.Searchbarpaste(A_space)
 ;+	___LMS app
 	#Ifwinactive, ahk_exe eln.exe
 		;;^`::						ClipBar.reset()
-		enter::						LMSclick.okay()
-		+enter::					sendinput, {enter}
-		^enter::					sendinput, {enter}
+		^enter::
+		+enter::						LMSclick.okay()
 		esc::						LMSclick.esc()
 		F8::						3down()
 		F7::						3Right()
@@ -405,31 +451,26 @@ AddToList(){
 ;;____________________TouchPad BINDINGS__________________________________________
 	3tap(){
 		Global
-
-			if winactive("NuGenesis LMS"){ ; If Nugeneses
-				LMS.DetectTab()
-				if (Tab="Specs"){
+			if winactive("NuGenesis LMS") ; If Nugeneses
 						SpecTab.CopySpecTemplate()
-						return
-				}
-				else if (Tab="Requests")
-					clk(61, 635) ;enter results
-				else if (Tab="Products")
-					clk(67, 754) ;edit results
-				else if (Tab="Samples"){
-
-					send, {click 124, 294} ;assign Requests
-					sleep 500
-					if winactive("Edit request")
-						send, {click, 258, 613}
+				; LMS.DetectTab()
+				; if (Tab="Specs"){
+						; return
+				; }
+				; else if (Tab="Requests")
+				; 	clk(61, 635) ;enter results
+				; else if (Tab="Products")
+				; 	clk(67, 754) ;edit results
+				; else if (Tab="Samples"){
+				; 	send, {click 124, 294} ;assign Requests
+				; 	sleep 500
+				else if winactive("Edit request")
+						sendinput, {click, 258, 613}
 						; sleep 500
-					sleep 800
-					if winactive("Select tests for request: R")
-						send, {click, 31, 102}
+				else if winactive("Select tests for request: R")
+					sendinput, {click, 31, 102}
 				return
-				}
-				}
-	}
+		}
 
 
 	3Right(){
@@ -609,7 +650,7 @@ GetAllBatches(Delimiter:=" ",msg:=""){
 		Haystack:=Clipboard
 		; PreClip:=Clipboard
 		sleep 100
-  while pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
+   pos := RegexMatch(Haystack, "i)(?<!Ct#)\b\d{3}-\d{4}\b", aBatch, pos+1) ; {
       regBatches.insert(aBatch)
   ; }
       AllBatches:=[], oTemp := {}
@@ -663,7 +704,7 @@ GetAllProducts(Delimiter:=" ",msg:=""){
                   AllProducts.Push("" vValue), oTemp["" vValue] := ""
           }
         }
-    AllProducts:=Listarray(AllProducts,"")
+    AllProducts:=Listarray(AllProducts," ")
     AllProducts:= StrReplace(AllProducts, A_space A_space, Delimiter)
 	FileDelete, AllProducts.txt
 	sleep 200
@@ -696,7 +737,7 @@ GetAllWholeBatches(Delimiter:="`n",msg:=""){
 	; FileRead, WholeBatches, WholeBatches.txt
 		sleep 100
 		; WholeBatchesArray:=[]
-		loop, parse, WholeBatches, "`n"
+		loop, parse, WholeBatches, "`r`n"
       aWholeBatches.insert(a_LoopField)
 
       AllWholeBatches:=[], oTemp := {} remove duplicates
@@ -713,13 +754,15 @@ GetAllWholeBatches(Delimiter:="`n",msg:=""){
                   AllWholeBatches.Push("" vValue), oTemp["" vValue] := ""
           }
         }
-    AllWholeBatches:=Listarray(AllWholeBatches,"")
-    AllWholeBatches:= StrReplace(AllWholeBatches, A_space A_space, A_Space)
+    AllWholeBatches:=Listarray(AllWholeBatches,"`r`n")
+    AllWholeBatches:=StrReplace(AllWholeBatches, "`r`n`r`n", "`r`n")
+    AllWholeBatches:=StrReplace(AllWholeBatches, A_space A_space, A_Space)
+		AllWholebatches:=Trim(AllWholeBatches,"`r`n")
     ; AllWholeBatches:= StrReplace(AllWholeBatches, "+")
 	FileDelete, WholeBatches.txt
 	sleep 200
 	FileAppend, %AllWholeBatches%, WholeBatches.txt
-	if !msg
+	if msg
 		clip.editbox(AllWholeBatches)
 	Else
 		Return AllWholeBatches

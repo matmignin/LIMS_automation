@@ -100,14 +100,21 @@ Class ClipBar{
 		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
 		Menu, ClipBarMenu, Add,
 		Menu, ClipbarMenu, add, Show WholeBatches, ShowWholeBatches
+		Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
+		Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
+		Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
+		Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
+		Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
+		Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+		Menu, ClipbarMenu, Add, Ften, :FtenMenu
 		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
 		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
 		Menu, ClipbarMenu, add, Manual &COAs folder, ShowManualCOA
 		Menu, ClipbarMenu, add, &mfg folder, Showmfg
 		Menu, ClipbarMenu, add, &GLOBAL VISION folder, ShowGlobalVision
-		Menu, ClipBarMenu, add, Show EditBox, ShowEditBox, +Break
-		Menu, ClipBarMenu, add, Paste Spec, +!^F10
+		; Menu, ClipBarMenu, add, Show EditBox, ShowEditBox, +Break
+		; Menu, ClipBarMenu, add, Paste Spec, +!^F10
 		Menu, ClipBarMenu, add, Add Data From Clipboard, #+!F10
 		Menu, ClipBarMenu, add, ParsespecsTable, #+^F10
 		Menu, ClipBarMenu, Add, Stop Timer, StopTimer
@@ -339,12 +346,17 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 wheelleft::
 	If N
 			return
+	#maxthreadsperhotkey, 1
 	GoSub, AllProductsMsgbox
 		N:=1
 	SetTimer, BlockTheInput, -1000
+		#maxthreadsperhotkey, 2
 	return
 
 wheelright::
+	If N
+			return
+#maxthreadsperhotkey, 1
 GoSub, AllBatchesMsgbox
 ; sleep 2000
 sleep 2000
@@ -353,17 +365,21 @@ Return
 wheelup::
 	If N
 			return
-ClipBar.Menu()
+	#maxthreadsperhotkey, 1
+	ClipBar.Menu()
 	N:=1
-	SetTimer, BlockTheInput, -1000
+	SetTimer, BlockTheInput, -3000
+		#maxthreadsperhotkey, 2
 	return
 
 wheeldown::
 	If N
 			return
-WholeBatchMenu()
+	#maxthreadsperhotkey, 1
+	WholeBatchMenu()
 		N:=1
-	SetTimer, BlockTheInput, -1000
+	SetTimer, BlockTheInput, -3000
+		#maxthreadsperhotkey, 2
 	return
 
 Mbutton::reloadSub()
@@ -394,3 +410,7 @@ Rbutton::
 ClipBar_ResetSub:
 	ClipBar.Reset()
 return
+
+
+
+

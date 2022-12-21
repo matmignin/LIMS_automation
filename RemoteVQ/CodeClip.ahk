@@ -10,9 +10,22 @@ Return
 clipChange(type){
   global
   sleep 75
-  ; if SimpleClip
-    ; return
-  if Instr(Clipboard, "[P]+   ",true,1,1){
+  if SimpleClip
+    return
+    if Instr(Clipboard, "++|",true,1,1){
+      AddWholeBatch:=strReplace(Clipboard,"++","")
+      if instr(WholeBatches, AddWholeBatch,false,1,1)
+        clip.codesRegex(AddWholeBatch)
+      else {
+        FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
+        WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
+        sleep 200
+        }
+      ; WholeBatches:=strReplace(WholeBatches,"`r`n`r`n","`r`n")
+      ; GetAllWholeBatches()
+      return
+  }
+  if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
   }
   else if InStr(Clipboard, ">>|", true,1,1) {
@@ -150,8 +163,61 @@ Class Clip {
         ; tooltip, %Clipped_specs%, 200,0
       return
 		}
+  ParseMainSpecsTopTable(){
+		global
+    SimpleClip:=1
+    Clipboard:=
+    WinActivate, NuGenesis LMS
+    send, ^{c}
+    ClipWait, 6
+    if ErrorLevel
+      {          ; sleep 800
+          ; MsgBox, The attempt to copy text onto the clipboard failed.
+          SimpleClip:=
+          Tt("Errorlevel", 100,100)
+          return
+          ; exit
+      }
+    Product:=
+    VersionType:=
+    VersionStatus:=
+    SelectionStatus:=
+		ParsedSpecs:=[]
+    ParseData:=Clipboard
+		Loop, parse, ParseData, `t
+			ParsedSpecs.insert(A_LoopField)
+			TotalColumns:=ParsedSpecs.maxindex()//2
+			Product:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Formulation ID") + TotalColumns],"`r`n")
+			VersionType:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Specification version type") + TotalColumns],"`r`n")
+			Description:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Description") + TotalColumns],"`r`n")
+      Clipped_SpecsTop:= Product  ": " VersionType
+      ControlsetText, Edit1,%Product%,ClipBar
+      sleep 200
+      iniRead, VersionStatus, FixedSpecs.ini, Status, %Product%
+      SimpleClip:=
+      sleep 350
+      ; tt(Clipped_SpecsTop,7000,200,200)
+        ; tooltip, %Clipped_specs%, 200,0
+      ; If (Description Contains "P. aeruginosa") && (VersionStatus != "New") ; && VersionType := "Modifiable" && VersionStatus != "New"
+          ; Return "Done"
+        ;;
+          ;IniWrite, Modifiable, FixedSpecs.ini, Status, %Product%
+          ; Return "Modifiable"
+        ; }
+      ; Else
+        ; msgbox, %Clipped_SpecsTop%
+      if VersionStatus
+        return VersionStatus
+      ; if VersionStatus := "Done"
+      ;   return "Done"
+      ; If VersionStatus := "New"
+      ;     Return "New"
+      else
+        return ""
+		}
 
-		ParseMainSpecTable(Save:=1){
+
+  ParseMainSpecTable(Save:=1){
 		global
     Clipped_Method:=
     Clipped_Requirements:=
@@ -461,7 +527,6 @@ Department(DepartmentInput:=""){
       DepartmentHaystack:=Clipboard
     else
       DepartmentHaystack:=DepartmentInput
-      sleep 150
       Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
       Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
       Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
