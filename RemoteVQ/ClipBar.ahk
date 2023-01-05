@@ -344,41 +344,41 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 
 
 wheelleft::
-	If N
+	If BlockingWheel
 			return
 	#maxthreadsperhotkey, 1
+		BlockingWheel:=1
 	GoSub, AllProductsMsgbox
-		N:=1
-	SetTimer, BlockTheInput, -1000
+	SetTimer, BlockTheWheel, -3000
 		#maxthreadsperhotkey, 2
 	return
 
 wheelright::
-	If N
+	If BlockingWheel
 			return
-#maxthreadsperhotkey, 1
+	BlockingWheel:=1
 GoSub, AllBatchesMsgbox
 ; sleep 2000
 sleep 2000
-Nsub:=
+	BlockingWheel:=
 Return
 wheelup::
-	If N
+	If BlockingWheel
 			return
 	#maxthreadsperhotkey, 1
+	BlockingWheel:=1
 	ClipBar.Menu()
-	N:=1
-	SetTimer, BlockTheInput, -3000
 		#maxthreadsperhotkey, 2
+	SetTimer, BlockTheWheel, -3000
 	return
 
 wheeldown::
-	If N
+	If BlockingWheel
 			return
 	#maxthreadsperhotkey, 1
+		BlockingWheel:=1
 	WholeBatchMenu()
-		N:=1
-	SetTimer, BlockTheInput, -3000
+	SetTimer, BlockTheWheel, -3000
 		#maxthreadsperhotkey, 2
 	return
 
@@ -411,6 +411,9 @@ ClipBar_ResetSub:
 	ClipBar.Reset()
 return
 
-
-
+BlockTheWheel:
+sleep 3000
+BlockingWheel:=
+#maxthreadsperhotkey, 2
+return
 

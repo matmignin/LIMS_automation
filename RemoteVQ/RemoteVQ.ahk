@@ -1,20 +1,15 @@
 if A_username != mmignin
 	exitapp
-	; #MenuMaskKey vkFF
-	; Critical, on
+
 	#SingleInstance,Force
 	#Persistent
 	Process, Priority, , High
 	#NoEnv
 	Thread, NoTimers
-	; Iteration=1
-	; #ErrorStdOut
-	; #KeyHistory 500
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
 	#HotkeyModifierTimeout
-	; SetKeyDelay,0,0
 	#maxthreadsperhotkey, 2
 	SetTitleMatchMode, 2
 	FormatTime, DayString,, MM/d/yy
@@ -256,22 +251,7 @@ ShowEditBox:
 
 FtenMenuHandler:
 		Ften := A_ThisMenuItem
-			; 	Ften:= "RemoveAndApprove"
-			; Else if (A_ThisMenuItem = "RemoveTestSpec")
-			; 	Ften:= "RemoveTestSpec"
-			; Else if (A_ThisMenuItem = "NewSpecVersion")
-			; 	Ften:= "NewSpecVersion"
-			; Else if (A_ThisMenuItem = "ApproveTestSpec")
-			; 	Ften:= "ApproveTestSpec"
-			; Else if (A_ThisMenuItem = "AddOrganoleptic")
-			; 	Ften:= "AddOrganoleptic"
-			; Else if (A_ThisMenuItem = "WholeBatchMenu")
-			; 	Ften:= "WholeBatchMenu"
-			; Else
-			; 	Ften:=
 			IniWrite, %Ften%, Settings.ini, Config, Ften
-
-
 			return
 
 
@@ -364,29 +344,9 @@ activeCheck:
 	}
 
 
-	; else if winactive("Settings - Notepad"){
-			; WinWaitNotActive, Settings - Notepad,,
-			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
-			; readInIFiles()
-			; LMS.Orient()
-			; ClipBar.Show()
-	; }
 	else
 		return
-	; else if winactive("NuGenesis LMS") && (A_TimeIdle > 8000){
-		; Reload
-	; 	; LMS.Orient()
-	; 	sleep 300
-	; 	; SetKeyDelay,0,0
-	; 	; ReadIniFiles()
-	; 	CoordMode, mouse, Window
-	; 	; CoordMode, Tooltip, relative
-	; 	; #maxthreadsperhotkey, 2
-	; 	; SetTitleMatchMode, 2
-	; 	; winMove, ClipBar ahk_class ClipBar ahk_exe RemoteVQ.exe, ,%ClipBar_nuX%, %ClipBar_nuY%
-	; 	SetWinDelay, %NormalWinDelay%
-		; }
-		; return
+
 return
 
 
