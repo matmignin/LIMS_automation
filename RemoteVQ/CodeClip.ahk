@@ -547,7 +547,7 @@ Department(DepartmentInput:=""){
       else If Analytical
         Department:="Analytical"
       else
-        msgbox % "`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical
+        TT("`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical,3000,100,100)
   return %Department%
 }
 

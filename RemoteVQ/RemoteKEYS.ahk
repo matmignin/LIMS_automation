@@ -174,8 +174,16 @@ AddToList(){
 					F10::
 					Mbutton::
 					WinActivate, Select Product ahk_exe EXCEL.EXE
-					sendinput, {Click 119, 68}%Product%{enter}{enter}
+					sendinput, {Click 115, 65}%Product%{enter}{enter}
+					; SelectProductToggle:=
+					WinWaitActive, Book ahk_class XLMAIN ahk_exe EXCEL.EXE, ,3
+						if !Errorlevel
+							WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
 					return
+					; Enter::
+					; sendinput, {enter}
+					; SelectProductToggle:=
+					; return
 
 
 			#ifWinExist, LMS Actions ahk_exe EXCEL.EXE
@@ -287,10 +295,12 @@ AddToList(){
 
 
 	#Ifwinactive, Result Entry ;;___Result_Entry
-		F6::WorkTab.CorrectTestResults(0,5)
-		F10::
-		Mbutton::WorkTab.CorrectTestResults("Toggle")
+
 		F7::WorkTab.CorrectTestResults("toggle", "Loop")
+		F6::WorkTab.CorrectTestResults(0,5)
+
+		F10::WorkTab.CorrectTestResults("Toggle")
+		Mbutton::WorkTab.CorrectTestResults("Toggle")
 		+F10::numbermenu(6)
 	#Ifwinactive, Results ;;__Results_Definition:
 		+Enter::
@@ -350,13 +360,14 @@ AddToList(){
 		F10::
 		mbutton::WorkTab.registerNewSamples()
 	#ifwinactive, New Document
-		^enter::
-		+Enter::
+		+enter::sendinput, {enter}
+		Enter::
 			LMS.SaveCode()
 			LMSclick.okay()
 			return
 		; +enter::sendinput, {enter}
 	#ifwinactive, Reason for Change
+		F10::Sendinput, {tab 2}Fixing Rotation{enter}
 	#ifwinactive, Select tests for request:
 		; space::send, ^{click}
 		; rbutton::send, ^{click}
@@ -475,11 +486,15 @@ AddToList(){
 
 	3Right(){
 		global
+		; if keep_running = y
+		; {
+		; 	keep_running = n ;signal other thread to stop
+		; 	return
+		; }
+		; keep_running = y
 		; FlashScreen("3-Right")
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
-		; else If winactive("Result Entry")
-		; 	WorkTab.CorrectTestResults()
 		else If winactive("Select methods tests")
 			SpecTab.Methods()
 		; else If winactive("Composition")

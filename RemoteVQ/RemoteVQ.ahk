@@ -248,7 +248,7 @@ ShowGlobalVision:
 	; winmaximize, Search Results
 	return
 ShowFINAL_C_O_A:
-	run, explorer "\\10.1.2.118\final_c_o_a\2022 CoAs"
+	run, explorer "\\10.1.2.118\final_c_o_a\2023 CoAs"
 	return
 ShowEditBox:
 	clip.editbox()
@@ -362,6 +362,8 @@ activeCheck:
 		winactivate,
 		send, {enter}
 	}
+
+
 	; else if winactive("Settings - Notepad"){
 			; WinWaitNotActive, Settings - Notepad,,
 			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,

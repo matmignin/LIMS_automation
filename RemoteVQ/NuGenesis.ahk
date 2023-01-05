@@ -911,7 +911,7 @@ class SpecTab { 	;; _________SpecTab class_______
 			MouseGetPos, premx, premy
 			click
 			Send, ^{c}
-			clipwait, 4
+			clipwait, 5
 				If !errorlevel
 			clip.Department()
 		}
@@ -2172,6 +2172,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
+			; keep_running = y
 				MouseGetPos, xpos, ypos
 			If (Iteration > 7) || (Iteration < 0){
 				Numbermenu(6)
@@ -2216,8 +2217,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 				click
 			; return
 		}
-		if keep_running = n ;another signal to stop
-			return
+		; if keep_running = n ;another signal to stop
+			; return
 		; MouseGetPos, xpos, ypos
 		click
 		click 843, 202, 2
@@ -2366,8 +2367,8 @@ Class WorkTab { 		;;______WorkTab Class______________
 				clk(277, 557)
 			else If winactive("Test Definition Editor ")
 				Click 341, 618
-			else if winactive("Reason for Change")
-			Return clk(170, 331)
+			; else if winactive("Reason for Change")
+			; Return clk(170, 331)
 		else if winexist("Error") {
 			winactivate
 			clk(148, 104)
