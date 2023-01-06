@@ -191,7 +191,10 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		sleep 300
+		; sleep 300
+		If NBlock
+			Return
+		NBlock:=y
 		if winactive("Select methods tests")
 			clk(246,77, 2)
 		else If winactive("Register new samples") {
@@ -261,6 +264,8 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 			}
 			else
 				sendinput, %Code%
+			sleep 300
+			Nblock:=
 		}
 
 	}
@@ -2222,8 +2227,10 @@ Class WorkTab { 		;;______WorkTab Class______________
 		; MouseGetPos, xpos, ypos
 		click
 		click 843, 202, 2
-		if Checkbox_Toggle ;Contains Toggle
+		if Checkbox_Toggle { ;Contains Toggle
 			Sendinput,{tab}{Space}{tab}{Space}
+			mousemove, xpos, ypos+26,0
+		}
 		else
 			Sendinput,{tab}{tab}
 		if keep_running = n ;another signal to stop

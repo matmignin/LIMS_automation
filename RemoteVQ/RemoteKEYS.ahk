@@ -301,6 +301,7 @@ AddToList(){
 
 		F10::WorkTab.CorrectTestResults("Toggle")
 		Mbutton::WorkTab.CorrectTestResults("Toggle")
+		F9::
 		+F10::numbermenu(6)
 	#Ifwinactive, Results ;;__Results_Definition:
 		+Enter::
@@ -388,7 +389,6 @@ AddToList(){
 		; +F10::lms.Menu()
 		; F10::WholeBatchMenu()
 		OrganolepticFunct:
-
 		+F10::SpecTab.AddOrganolepticSpec(Lot)
 
 		F10::
@@ -486,12 +486,12 @@ AddToList(){
 
 	3Right(){
 		global
-		; if keep_running = y
-		; {
-		; 	keep_running = n ;signal other thread to stop
-		; 	return
-		; }
-		; keep_running = y
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			return
+		}
+		keep_running = y
 		; FlashScreen("3-Right")
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
@@ -525,12 +525,12 @@ AddToList(){
 		}
 	3left(){
 		global
-		; if keep_running = y
-		; {
-		; 	keep_running = n ;signal other thread to stop
-		; 	return
-		; }
-		; keep_running = y
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			return
+		}
+		keep_running = y
 		if winactive("NuGenesis LMS")
 				LMS.SearchBar(Product,"{enter}",0)
 		else if winactive("ahk_exe eln.exe")
