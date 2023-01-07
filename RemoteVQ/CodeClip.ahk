@@ -1,10 +1,4 @@
-; #include *i C:\Users\mmignin\Documents\VQuest\lib\Functions.ahk
-  ; if RegexMatch(Clipboard, "<<LabelCopy>>"){
-  ; if RegexMatch(Clipboard, "<<[abcdefghijkl]\d{3}>>")
-  ; if RegexMatch(Clipboard, "<<SheetInfo>>")
-  ; if RegexMatch(Clipboard, "<<QuIT>>"){
-  ; if RegexMatch(Clipboard, "<<MsgBoXTesT>>")
-    ; Test_msgbox(clipboard)
+
 #ifwinactive,
 Return
 clipChange(type){
@@ -196,22 +190,9 @@ Class Clip {
       iniRead, VersionStatus, FixedSpecs.ini, Status, %Product%
       SimpleClip:=
       sleep 350
-      ; tt(Clipped_SpecsTop,7000,200,200)
-        ; tooltip, %Clipped_specs%, 200,0
-      ; If (Description Contains "P. aeruginosa") && (VersionStatus != "New") ; && VersionType := "Modifiable" && VersionStatus != "New"
-          ; Return "Done"
-        ;;
-          ;IniWrite, Modifiable, FixedSpecs.ini, Status, %Product%
-          ; Return "Modifiable"
-        ; }
-      ; Else
-        ; msgbox, %Clipped_SpecsTop%
       if VersionStatus
         return VersionStatus
-      ; if VersionStatus := "Done"
-      ;   return "Done"
-      ; If VersionStatus := "New"
-      ;     Return "New"
+
       else
         return ""
 		}
@@ -252,48 +233,48 @@ Class Clip {
       return
 		}
 
-		ParseMainSamplesTable(Save:=1){
-		global
-    ; SimpleClip:=
-		; ParsedMainSamplesTable:=[]
-    ; ParseData:=Clipboard
-		; Loop, parse, ParseData, `t
-			; ParsedMainSamplesTable.insert(A_LoopField)
-    ; TotalColumns:=ParsedMainSamplesTable.maxindex()//2
-    ; Batch:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Batch") + TotalColumns],"`r`n")
-    ; Coated:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Coated Lot #") + TotalColumns],"`r`n")
-    ; Lot:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Pkg Lot #") + TotalColumns],"`r`n")
-    ; if !lot
-    ; Lot:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Blister Lot #") + TotalColumns],"`r`n")
-    ; ShipTo:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Ship To") + TotalColumns],"`r`n")
-    ; Name:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Product Trade Name") + TotalColumns],"`r`n")
-    ; Department:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Department") + TotalColumns],"`r`n")
-      ; sleep 200
-				; InputVar:=A_ThisMenuItem
-				; IniRead,CustomerPosition, %CustomerListPath%, Customers, %ShipTo%
-				; sleep 30
-				; if CustomerPosition > 0
-					; customerPosition+=1
-				; if CustomerPosition < 0
-					; customerPosition-=1
-				; sleep 200
-				; Iteration:=CustomerPosition
-				; sleep 200
-				; GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
-      ; If Save
-      ; {
-        ; iniwrite, %Name%, Settings.ini, CopiedSpecs, Name
-        ; iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
-        ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-        ; iniwrite, %ShipTo%, Settings.ini, CopiedSpecs, ShipTo
-				; iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-				; iniwrite, %CustomerPosition%, Settings.ini, SavedVariables, CustomerPosition
-      ; }
-      ; SimpleClip:=
-      ; if !Simpleclip
-        ; tt(ShipTo "`t" CustomerPosition, 2000,1,1,2)
-      return
-		}
+		; ParseMainSamplesTable(Save:=1){
+		; global
+    ; ; SimpleClip:=
+		; ; ParsedMainSamplesTable:=[]
+    ; ; ParseData:=Clipboard
+		; ; Loop, parse, ParseData, `t
+		; 	; ParsedMainSamplesTable.insert(A_LoopField)
+    ; ; TotalColumns:=ParsedMainSamplesTable.maxindex()//2
+    ; ; Batch:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Batch") + TotalColumns],"`r`n")
+    ; ; Coated:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Coated Lot #") + TotalColumns],"`r`n")
+    ; ; Lot:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Pkg Lot #") + TotalColumns],"`r`n")
+    ; ; if !lot
+    ; ; Lot:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Blister Lot #") + TotalColumns],"`r`n")
+    ; ; ShipTo:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Ship To") + TotalColumns],"`r`n")
+    ; ; Name:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Product Trade Name") + TotalColumns],"`r`n")
+    ; ; Department:=Trim(ParsedMainSamplesTable[HasValue(ParsedMainSamplesTable, "Department") + TotalColumns],"`r`n")
+    ;   ; sleep 200
+		; 		; InputVar:=A_ThisMenuItem
+		; 		; IniRead,CustomerPosition, %CustomerListPath%, Customers, %ShipTo%
+		; 		; sleep 30
+		; 		; if CustomerPosition > 0
+		; 			; customerPosition+=1
+		; 		; if CustomerPosition < 0
+		; 			; customerPosition-=1
+		; 		; sleep 200
+		; 		; Iteration:=CustomerPosition
+		; 		; sleep 200
+		; 		; GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+    ;   ; If Save
+    ;   ; {
+    ;     ; iniwrite, %Name%, Settings.ini, CopiedSpecs, Name
+    ;     ; iniwrite, %Department%, Settings.ini, CopiedSpecs, Department
+    ;     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
+    ;     ; iniwrite, %ShipTo%, Settings.ini, CopiedSpecs, ShipTo
+		; 		; iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+		; 		; iniwrite, %CustomerPosition%, Settings.ini, SavedVariables, CustomerPosition
+    ;   ; }
+    ;   ; SimpleClip:=
+    ;   ; if !Simpleclip
+    ;     ; tt(ShipTo "`t" CustomerPosition, 2000,1,1,2)
+    ;   return
+		; }
 
 
   HeavyMetalSpecs(){
@@ -413,38 +394,17 @@ CodesRegex(input:=""){
     }
       Ct:=Coated ? " ct#" : ""
       this.SetClipBar()
-      ; stringUpper, Product, Product
-      ; GuiControl,ClipBar:Text, Product, %Product%
-      ; GuiControl,ClipBar:Text, Batch, %Batch%
-      ; GuiControl,ClipBar:Text, lot, %lot%
-      ; GuiControl,ClipBar:Text, Coated, %Coated%
       if rCustomerPosition
         GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
         GUI, ClipBar:submit,NoHide
       codeString:=trim(Product " " Batch " " Lot Ct Coated " [[" CustomerPosition "]]")
-      ; if (SampleID!=PriorSampleID){
-        ; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
-        ; FileAppend, %SampleId%, %CodeFile%
-      ; }
       if (PriorCodestring!=Codestring){
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
-
-
-
-        ; if sampleID
-          ; FileAppend, `n%SampleId%, %CodeFile%
-
-        ; iniwrite, %PriorCodeString%, Settings.ini, SavedVariables, PriorCodeString
-
-        ; iniwrite, %CodeString%, Settin06/21/22gs.ini, SavedVariables, CodeString
-        ; FileAppend, `n%PriorCodeString%, %PriorCodeFile%
       }
-      ;tt(CodeString)
-      ; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
-     Return ;CodeString
+     Return
 }
 
 
@@ -459,7 +419,6 @@ SetClipBar(){
       GuiControl,ClipBar:Text, Batch, %Batch%
       GuiControl,ClipBar:Text, lot, %lot%
       GuiControl,ClipBar:Text, Coated, %Coated%
-      ; Ct:=Coated ? " ct#" : ""
 }
 
 

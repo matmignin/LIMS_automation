@@ -322,26 +322,6 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 	}
 #If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
 
-			;	setTimer, SaveVarBarLocaton, -1500
-; Wheeldown::ClipBar.SubIteration(250)
-; Wheelup::ClipBar.AddIteration(250)
-; Wheelup::
-; 	iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
-; 	sleep 200
-; 	; clip.CodesRegex(PriorCodeString)
-; 	; sleep 400
-; 	return
-; Wheeldown::
-; 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
-; 	sleep 200
-; 	; Fileread, CodeString, %CodeFile%
-; 	; iniread, CodeString, Settings.ini, SavedVariables, CodeString
-; 	clip.CodesRegex(CodeString)
-; 	; sleep 400
-; 	return
-; ClipBar.AddIteration(450)
-; ClipBar.SubIteration(450)
-
 
 wheelleft::
 	If BlockingWheel

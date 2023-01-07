@@ -145,13 +145,6 @@ ReadIniFiles(){
 	iniRead, Cadmium_Requirement, Settings.ini, HeavyMetal_Variables, Cadmium_Requirement
 	iniRead, Mercury_Limit, Settings.ini, HeavyMetal_Variables, Mercury_Limit
 	iniRead, Mercury_Requirement, Settings.ini, HeavyMetal_Variables, Mercury_Requirement
-
-	; iniRead, ScansLabelCopyPath, Settings.ini, FilePaths, ScansLabelCopyPath
-	; iniread, FinalLabelCopyPath, Settings.ini, FilePaths, FinalLabelCopyPath
-	; iniread, 2022_Final_C_O_APath, Settings.ini, FilePaths, 2022_Final_C_O_APath
-	; iniread, FinishedLabelCopyPath, Settings.ini, FilePaths, FinishedLabelCopyPath
-	; iniread, ManualCOAPath, Settings.ini, FilePaths, ManualCOAPath
-	; iniread, mfgPath, Settings.ini, FilePaths, mfgPath
 	iniread, WindowSpyPath, Settings.ini, FilePaths, WindowSpyPath
 	iniread, AppIconPath, Settings.ini, FilePaths, AppIconPath
 	iniread, CustomerListPath, Settings.ini, FilePaths, CustomerListPath
@@ -172,10 +165,6 @@ Reloadsub(){
 StopTimer(){
 	SetTimer, activeCheck, Off
   }
-; Orientsub(){
-; 	global
-; 	LMS.Orient()
-;   }
 Exitsub(){
 	global
 	ifwinnotexist, RemoteVQ ahk_exe explorer.exe
@@ -349,33 +338,6 @@ activeCheck:
 
 return
 
-
-
-; AHK_NotifyIcon(wParam, lParam) {
-; 	Static lbutton_presses := 0, PosX := 0, PosY := 0
-; 	If (lParam = 0x202) {	; WM_LBUTTONUP
-; 		CoordMode, Mouse, Screen
-; 		MouseGetPos, PosX, PosY ; store co-ords in case mouse moves during the timed wait below
-; 		SetTimer, AHK_NotifyIcon_Continue, -300 ; Wait 300ms for a second left click, then Continue
-; 		; Set counter (lbutton_presses) to 1, unless already 1; then, set to 2
-; 		lbutton_presses := ((lbutton_presses != 1) ? (1) : (2))
-; 		CoordMode, Menu, Window
-; 		Return
-; 		AHK_NotifyIcon_Continue:
-; 		If (lbutton_presses = 1) { ; If only a single left click was registered
-; 			CoordMode, Menu, Screen
-; 			Menu, Tray, Show, %PosX%, %PosY% ; Show at stored mouse co-ords from WM_LBUTTONUP
-; 		}
-; 		lbutton_presses := 0 ; Reset the counter to 0
-; 		CoordMode, Mouse, Window
-; 		Return
-; 	} Else If (lParam = 0x203) { ; WM_LBUTTONDBLCLK
-; 		Return ; Do nothing besides the built-in double left click action (open the default menu item).
-; 	} Else If (lParam = 0x205) { ; WM_RBUTTONUP
-; 		Reloadsub()
-; 	}
-; 	Return true
-; }
 
 
 	NumberMenu(n){

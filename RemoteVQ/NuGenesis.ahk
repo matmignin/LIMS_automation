@@ -2496,16 +2496,6 @@ return
 Autofill:
 	if A_thismenuitem contains &Analytical
 		SpecTab.Edit_Analytical()
-	; else if A_thismenuitem contains &Coated_Retain
-	; 	SpecTab.Edit_CoatedRetain()
-	; else if A_thismenuitem contains &Coated_Physical
-	; 	SpecTab.Edit_CoatedPhysical()
-	; else if A_thismenuitem contains &Retain
-	; 	SpecTab.Edit_Retain()
-	; else if A_thismenuitem contains &Micro
-	; 	SpecTab.Edit_Micro() ; copyMicro spec tests
-	; else if A_thismenuitem contains &Physical
-	; 	SpecTab.Edit_Physical()
 	else if A_thismenuitem contains Copy &Specs
 		SpecTab.CopySpecs()
 	else if A_thismenuitem contains Paste &Specs
