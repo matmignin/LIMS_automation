@@ -140,6 +140,7 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 			Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
 			Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
 			Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+			Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
 			Menu, Menu, Add, Ften, :FtenMenu
 
 		if winactive("NuGenesis LMS"){

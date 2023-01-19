@@ -174,11 +174,12 @@ AddToList(){
 					F10::
 					Mbutton::
 					WinActivate, Select Product ahk_exe EXCEL.EXE
-					sendinput, {Click 115, 65}%Product%{enter}{enter}
+					sendinput, {Click 112, 63}%Product%{enter}{enter}
 					; SelectProductToggle:=
 					WinWaitActive, Book ahk_class XLMAIN ahk_exe EXCEL.EXE, ,3
 						if !Errorlevel
 							WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
+						WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
 					return
 					; Enter::
 					; sendinput, {enter}
@@ -190,10 +191,10 @@ AddToList(){
 				+enter::
 				Mbutton::
 				WinActivate, LMS Actions ahk_exe EXCEL.EXE
-				sendinput, {click 46, 44}
+				sendinput, {click 45, 43}
 				winwaitactive, Select Product ahk_exe EXCEL.EXE,, 5
 				if !ErrorLevel
-					sendinput, {Click 119, 68}%Product%{enter}{enter}
+					sendinput, {Click 112, 63}%Product%{enter}{enter}
 				return
 
 			#ifwinactive, Result Editor
@@ -230,12 +231,12 @@ AddToList(){
 			#IFwinexist, Release: Rotational Testing Schedule ;
 					mbutton::
 						winactivate,Release: Rotational Testing Schedule
-						clk(131, 144)
+						clk(128, 140)
 						return
 			#ifwinexist, Release:
 					mbutton::
 						winactivate, Release:
-						clk(131, 144)
+						clk(128, 140)
 						return
 
 			#ifwinexist, Sign :
@@ -246,7 +247,8 @@ AddToList(){
 			F6::send, ^{e}
 			F7::send, ^{e}{*}%Product%{*}{enter}
 			Mbutton::send, ^{e}{*}%Product%{*}{enter}
-			F10::MenuCodeSelect()
+			; F10::MenuCodeSelect()
+			F10::SelectPreviewPane()
 
 
 	#ifwinactive, Edit test `(Field Configuration
@@ -386,7 +388,8 @@ AddToList(){
 !F10::SpecTab.CopySpecTemplate()
 		Enter::LMS.SaveCode()
 		mbutton:: 3tap()
-		; +F10::lms.Menu()
+		F9::lms.Menu()
+		F8::LMS.SearchBar("",,"False")
 		; F10::WholeBatchMenu()
 		OrganolepticFunct:
 		+F10::SpecTab.AddOrganolepticSpec(Lot)
@@ -444,6 +447,7 @@ AddToList(){
 		F7::						3Right()
 		F6::						3Left()
 		+mbutton::lms.Menu()
+		F9::lms.Menu()
 		F19::lms.Menu()
 		mbutton::					3tap()
 		; +!F10::						3tap()
@@ -520,7 +524,8 @@ AddToList(){
 		else if winactive("ahk_exe eln.exe")
 			Send, %Batch%
 		else
-			keep_running = n
+			keep_running :=
+		keep_running :=
 		return
 		}
 	3left(){
@@ -536,7 +541,8 @@ AddToList(){
 		else if winactive("ahk_exe eln.exe")
 			Send, %Product%
 		else
-			keep_running = n
+			keep_running :=
+		keep_running :=
 		return
 	}
 	3down(){

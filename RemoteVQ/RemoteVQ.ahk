@@ -60,6 +60,7 @@
 	Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
 	Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
 	Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+	Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
 Menu, Tray, Add, Ften, :FtenMenu
 
 	Menu, Tray, Add,
@@ -427,4 +428,26 @@ if (Instr(Trim(A_ThisMenuItem),"|")=1){
 	}
 		else clip.codesRegex(A_ThisMenuItem)
 return
+}
+
+
+SelectPreviewPane(){
+	global
+	send, {tab 2}{right}
+	sleep 300
+	MouseGetPos, xm, Ym, mW,
+	wingetpos, xwin, ywin, Width, Height, ahk_exe explorer.exe
+CoordMode, Mouse, Window
+wx:=Width-100
+wy:=Height/2
+MouseClick, left, %wx%, %wy% , 2
+clipboard:=
+	sleep 200
+	Send, ^{a}
+	send, ^{c}
+	ClipWait, 3,
+	if !errorlevel
+		tt(Clipboard, 600, 100, 100)
+	mousemove, %xm%, %ym%
+	Return
 }
