@@ -2180,10 +2180,6 @@ Class WorkTab { 		;;______WorkTab Class______________
 			global
 			; keep_running = y
 				MouseGetPos, xpos, ypos
-			If (Iteration > 7) || (Iteration < 0){
-				Numbermenu(6)
-				mousemove, %xpos%, %yPos%,0
-			}
 			if LoopThrough
 			{
 				if keep_running = y
@@ -2196,36 +2192,26 @@ Class WorkTab { 		;;______WorkTab Class______________
 				loop 25,
 				{
 				;	blockinput on
-					if keep_running = n ;another signal to stop
-						return
+					Breaking.Point()
 					click
 					click 843, 202, 2
-					if keep_running = n ;another signal to stop
-						return
 					if Checkbox_Toggle ;Contains Toggle
 						Send,{tab}{Space}{tab}{Space}
 					else
 						Sendinput,{tab}{tab}
 					Send,{tab 10}^a
-					if keep_running = n ;another signal to stop
-						Return
 					if (Iteration != 0)
   					Send, %Iteration%
+					Breaking.Point()
 					ypos:=ypos+26
 					if keep_running = n ;another signal to stop
 						Return
 					mousemove, xpos, ypos,0
-				;	blockinput off
 				}
 				Breaking.Point()
-				if keep_running = n ;another signal to stop
-					return
 				click
 			; return
 		}
-		; if keep_running = n ;another signal to stop
-			; return
-		; MouseGetPos, xpos, ypos
 		click
 		click 843, 202, 2
 		if Checkbox_Toggle { ;Contains Toggle

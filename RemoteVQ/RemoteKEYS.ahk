@@ -19,6 +19,7 @@
 		; SpecTab.GetRowText()
 		; SpecTab.AutoFill()
 		; return
+	F13::breaking.point(1)
 	+!F5::LMS.Menu()
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
@@ -244,11 +245,12 @@ AddToList(){
 
 
 	#ifwinactive, ahk_exe explorer.exe
-			F6::send, ^{e}
+			F9::send, ^{e}
 			F7::send, ^{e}{*}%Product%{*}{enter}
 			Mbutton::send, ^{e}{*}%Product%{*}{enter}
 			; F10::MenuCodeSelect()
 			F10::SelectPreviewPane()
+			F8::SelectPreviewPane(Product)
 
 
 	#ifwinactive, Edit test `(Field Configuration
@@ -303,8 +305,7 @@ AddToList(){
 
 		F10::WorkTab.CorrectTestResults("Toggle")
 		Mbutton::WorkTab.CorrectTestResults("Toggle")
-		F9::
-		+F10::numbermenu(6)
+		F9::numbermenu(6)
 	#Ifwinactive, Results ;;__Results_Definition:
 		+Enter::
 		^enter::

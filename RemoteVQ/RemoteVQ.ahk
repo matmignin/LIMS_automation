@@ -431,23 +431,24 @@ return
 }
 
 
-SelectPreviewPane(){
-	global
+SelectPreviewPane(SearchProduct:=""){
+	winactivate, ahk_exe explorer.exe
+	if SearchProduct
+		send, ^{e}{*}%SearchProduct%{*}{enter}
 	send, {tab 2}{right}
 	sleep 300
-	MouseGetPos, xm, Ym, mW,
+	;MouseGetPos, xm, Ym, mW,
 	wingetpos, xwin, ywin, Width, Height, ahk_exe explorer.exe
-CoordMode, Mouse, Window
 wx:=Width-100
 wy:=Height/2
-MouseClick, left, %wx%, %wy% , 2
+MouseClick, left, %wx%, %wy% , 2,0
 clipboard:=
 	sleep 200
 	Send, ^{a}
 	send, ^{c}
 	ClipWait, 3,
 	if !errorlevel
-		tt(Clipboard, 600, 100, 100)
-	mousemove, %xm%, %ym%
+		tt(Clipboard, 400, 10, 10)
+	;mousemove, %xm%, %ym%
 	Return
 }
