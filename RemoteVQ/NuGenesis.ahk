@@ -507,7 +507,7 @@ AddProductFromClipboard(Input:=""){
       Customer:=SheetInfo[4]
       CustomerPosition:=SheetInfo[5]
       ShapeAndSize:=SheetInfo[6]
-      ; Color:=SheetInfo[7]
+      Color:=SheetInfo[7]
       ServingSize:=SheetInfo[8]
 		if Instr(HayStack, "ScanLabel >>",true,1,1){
       GoSub ShowScanLabelCopy
@@ -658,8 +658,9 @@ AddNewFormulation(){     ;then click on Edit Formulation, puts in code, then tab
 		; color:="Pending"
 	; else
 		; sendinput, {tab 2}^a%Color%{shiftdown}{tab 2}{shiftup}
-		sendinput, {tab 2}{shiftdown}{tab 2}{shiftup}
+		sendinput, {tab 2}^{a}%Color%{shiftdown}{tab 2}{shiftup}
 	sleep 900
+	Color:=
 	Breaking.Point()
 	clk(287, 578) ;click save
 	return
@@ -2178,21 +2179,15 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
-			; keep_running = y
-				MouseGetPos, xpos, ypos
+
+			Breaking.Preable()
+			MouseGetPos, xpos, ypos
 			if LoopThrough
-			{
-				if keep_running = y
 				{
-					keep_running = n ;signal other thread to stop
-					return
-				}
-				keep_running = y
-				MouseGetPos, xpos, ypos
-				loop 25,
-				{
-				;	blockinput on
-					Breaking.Point()
+					MouseGetPos, xpos, ypos
+					loop 20,
+						{
+					;	blockinput on
 					click
 					click 843, 202, 2
 					if Checkbox_Toggle ;Contains Toggle
@@ -2204,14 +2199,11 @@ Class WorkTab { 		;;______WorkTab Class______________
   					Send, %Iteration%
 					Breaking.Point()
 					ypos:=ypos+26
-					if keep_running = n ;another signal to stop
-						Return
 					mousemove, xpos, ypos,0
 				}
 				Breaking.Point()
 				click
-			; return
-		}
+			}
 		click
 		click 843, 202, 2
 		if Checkbox_Toggle { ;Contains Toggle
@@ -2220,8 +2212,9 @@ Class WorkTab { 		;;______WorkTab Class______________
 		}
 		else
 			Sendinput,{tab}{tab}
-		if keep_running = n ;another signal to stop
-			return
+		; if keep_running = n ;another signal to stop
+			; return
+		Breaking.Point()
 		Sendinput,{tab 10}^a
 		if (Iteration != 0)  ; Contains toggle
 		  Send, %iteration%
@@ -2576,11 +2569,6 @@ class Breaking {
 		Global
 		If GetKeyState("Lbutton", "P") || (break) {
 			TT("Broke",3000)
-
-			; SetKeyDelay, 0,0
-			; Critical, Off
-			CoordMode, mouse, window
-			CoordMode, Tooltip, window
 			blockinput, off
 			exit
 		}
@@ -2607,10 +2595,12 @@ SendPassword(){
 	if winExist("Login"){
 		winactivate
 		Sendinput, mmignin{tab}{-}{K}ilgore7744{enter}
+		return
 	}
 	Else If winexist("Sign :"){
 		winactivate,
 		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}{-}Kilgore7744{enter}
+		return
 	}
 	else if winexist("windows Security"){
 		winactivate,
@@ -2622,7 +2612,7 @@ SendPassword(){
 	}
 
 	else
-		Sendinput, -{K}ilgore7744{enter}
+		return
 return
 }
 

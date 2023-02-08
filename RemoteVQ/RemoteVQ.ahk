@@ -6,11 +6,14 @@
 	Process, Priority, , High
 	#NoEnv
 	Thread, NoTimers
+	#HotkeyInterval 1000
+	#MaxHotkeysPerInterval 210
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
-	#HotkeyModifierTimeout
+	#HotkeyModifierTimeout 100
 	#maxthreadsperhotkey, 2
+	; #MaxThreadsBuffer Off
 	SetTitleMatchMode, 2
 	FormatTime, DayString,, MM/d/yy
 	FormatTime, TimeString, R
@@ -208,13 +211,17 @@ ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
 	sleep 200
 	; winmaximize, Search Results
-	sendinput, {*}%Product%{*}{enter}
+	; sendinput, {*}%Product%{*}{enter}
+	; sleep 400
+	; SelectPreviewPane(Product)
 	return
 ShowScanLabelCopy:
 	run, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
 	sleep 200
 	; winmaximize, Search Results
 	sendinput, {*}%Product%{*}{enter}
+	sleep 300
+	send, ^{e}{tab 2}{right}
 	return
 ShowManualCOA:
 	run, explorer "\\10.1.2.118\coa-lot#"
@@ -225,12 +232,16 @@ Showmfg:
 	run, find "\\10.1.2.118\lms\Information\ECOPY\mfg"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
+	sleep 300
+	send, ^{e}{tab 2}{right}
 	return
 ShowGlobalVision:
 	run, find "\\10.1.2.118\Globalvision Master Copy Files"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
 	; winmaximize, Search Results
+	sleep 300
+	send, ^{e}{tab 2}{right}
 	return
 ShowFINAL_C_O_A:
 	run, explorer "\\10.1.2.118\final_c_o_a\2023 CoAs"
@@ -247,14 +258,14 @@ FtenMenuHandler:
 
 
 activeCheck:
-	If winexist("Delete Attribute"){
+	If winexist("Delete Attribute ahk_exe eln.exe"){
 		winactivate,
 		sleep 200
 		sendinput, {enter}
 		; mousemove, 245, 137
 		sleep 1000
 	}
-	else if winexist("Delete specification"){
+	else if winexist("Delete specification ahk_exe eln.exe"){
 			MsgBox, 4, , Do you want to continue? (Press YES or NO),5
 				IfMsgBox No
 					exit
@@ -289,7 +300,7 @@ activeCheck:
 		click 128,146
 		return
 	}
-	else If winactive("Delete Test"){
+	else If winactive("Delete Test ahk_exe eln.exe"){
 		winactivate,
 		sleep 100
 
@@ -297,29 +308,32 @@ activeCheck:
 		; mousemove, 222, 138
 		; click
 		; sleep 1000
+		return
 	}
-	else If winactive("Delete results"){
+	else If winactive("Delete results ahk_exe eln.exe"){
 		winactivate,
 		sleep 100
 		sendinput, {enter}
 		; mousemove, 222, 138
 		; click
 		sleep 1000
+		return
 	}
-	else If winactive("Delete ingredients"){
+	else If winactive("Delete ingredients ahk_exe eln.exe"){
 		winactivate,
 		sleep 200
 		sendinput, {enter}
 		; mousemove, 222, 138
 		sleep 1000
+		return
 	}
-	else if winactive("Lock specification")
+	else if winactive("Lock specification ahk_exe eln.exe")
 	{
 		sendinput, {n}
 		sleep 1000
 		return
 	}
-	else if winactive("Error") {
+	else if winactive("Error ahk_exe eln.exe") {
 		ControlSend,, {enter}, Error
 		sleep 200
 		if winExist("Register new samples") && Product{
@@ -327,8 +341,9 @@ activeCheck:
 			Sendinput, {click 185, 103,2}%Product%{enter}
 		}
 		sleep 1000
+		return
 	}
-	else if winActive("Information"){
+	else if winActive("Information ahk_exe eln.exe"){
 		winactivate,
 		send, {enter}
 	}
@@ -341,8 +356,9 @@ return
 
 
 
-	NumberMenu(n){
+	NumberMenu(n:=0, runCorrectTestResults:=""){
 	global
+	MouseGetPos, mx, my
 	try Menu, NumberMenu, DeleteAll
 	Menu, NumberMenu, Add, &0, NumberMenubutton
 	loop %n%,
@@ -350,9 +366,17 @@ return
 		Try Menu,NumberMenu,show
 		return
 NumberMenubutton:
-	Iteration:=A_ThisMenuItemPos - 1
+	if A_ThisMenuItemPos
+	{
+		Iteration:=A_ThisMenuItemPos - 1
 	sleep 100
 	ControlsetText, Edit5,%Iteration%,ClipBar
+	MouseMove, %mx%, %my%, 0
+	sleep 300
+	if runCorrectTestResults
+		WorkTab.CorrectTestResults("toggle", "Loop")
+		}
+
 Return
 		}
 
@@ -432,23 +456,44 @@ return
 
 
 SelectPreviewPane(SearchProduct:=""){
+	SetKeyDelay, 2, 1
 	winactivate, ahk_exe explorer.exe
-	if SearchProduct
-		send, ^{e}{*}%SearchProduct%{*}{enter}
-	send, {tab 2}{right}
-	sleep 300
-	;MouseGetPos, xm, Ym, mW,
-	wingetpos, xwin, ywin, Width, Height, ahk_exe explorer.exe
-wx:=Width-100
-wy:=Height/2
-MouseClick, left, %wx%, %wy% , 2,0
-clipboard:=
-	sleep 200
-	Send, ^{a}
-	send, ^{c}
-	ClipWait, 3,
-	if !errorlevel
-		tt(Clipboard, 400, 10, 10)
+	if SearchProduct {
+			run, find "\\10.1.2.118\Label Copy Final"
+			sleep 300
+			send, ^{e}{*}%SearchProduct%{*}{enter}
+			sleep 500
+		}
+		else
+			send, ^{e}
+		sleep 300
+		Send, {tab 2}{right}{pgup}
+		wingetpos, xwin, ywin, Width, Height, ahk_exe explorer.exe
+		; send, ^{e}{*}%SearchProduct%{*}{enter}
+		; sendinput,
+		; sleep 500
+		;MouseGetPos, xm, Ym, mW,
+		wx:=Width-100
+		wy:=Height/2
+		clipboard:=
+		sleep 600
+		MouseClick, left, %wx%, %wy% , 2, 2
+		Sleep 300
+		Send, ^{a}
+		send, ^{c}
+		ClipWait, 2,
+		if errorlevel
+			{
+				winactivate, ahk_exe explorer.exe
+				send, ^{e}{tab 2}{right}{pgup}
+				sleep 500
+				MouseClick, left, %wx%, %wy% , 1, 2
+				sleep 400
+				Send, ^{a}
+				send, ^{c}
+			}
+			SetKeyDelay, -1, -1
+		tt(Clipboard, 100, 10, 10)
 	;mousemove, %xm%, %ym%
 	Return
 }

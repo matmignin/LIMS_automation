@@ -5,70 +5,36 @@
 	; !#F11::SpecTab.RemoveTestSpec()
 	~RWin::Send {Blind}{vkFF}
 	~LWin::Send {Blind}{vkFF}
-	; F18::return
-	; $RWin::return
-		; ^F10::MenuCodeSelect()
-		; +^F10::MenuCodeSelect("AllBatches")
-	; $LWin::return
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
-	; F1::sendinput, %Product%
-	; F1::CountFiles()
 	; +F1::GetAllProducts()
 	; +F1::
-		; SpecTab.GetRowText()
-		; SpecTab.AutoFill()
-		; return
 	F13::breaking.point(1)
 	+!F5::LMS.Menu()
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
 	^+s::specTab.TestDefinitionEditor_Stability()
-	;_!F1::GetAllProducts("`n")
 	+F1::worktab.NewTestRequestLink()
 	F2::Reload
-	;F2::sendinput, %Batch%
 	^+F16::GetAllProducts()
 	^+F15::GetAllBatches()
-	;- !F2::GetAllBatches("`n")
-	; F3::sendinput, %Lot%
 	;!F1::ClipBar.Focus("Edit1")
 	;!F2::ClipBar.Focus("Edit2")
 	;!F3::ClipBar.Focus("Edit3")
 	;!F4::ClipBar.Focus("Edit4")
-	;!F5::ClipBar.Focus("Edit5")
-	;F4::sendinput, %Coated%
-	;+F3::3tap()
 +!^F1::GetAllProducts()
 +!^F2::GetAllBatches()
-;+!^F4::SwitchEnv("Test")
 +!^F5::
 			#+!F10::LMS.AddDataFromClipboard()
 			#+^F10::clip.ParseSpecsTable()
 	+!^F10::spectab.Autofill()
-	; if !(Requirement)
-	    ; iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
-        ; iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
-        ; iniread, Percision, Settings.ini, CopiedSpecs, Percision
-        ; iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
-        ; iniread, Units, Settings.ini, CopiedSpecs, Units
-        ; iniread, Description, Settings.ini, CopiedSpecs, Description
-        ; iniread, ResultID, Settings.ini, CopiedSpecs, ResultID
-        ; iniread, SeqNo, Settings.ini, CopiedSpecs, SeqNo
-        ; iniread, Method, Settings.ini, CopiedSpecs, Method
-	  ;copiedText:= ResultID "`t" Description "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Requirement "`n Percision: " Percision "`n Units: " Units
-	 ; TT(CopiedText,2000,1,1,1)
 
 		return
 	; +F4::4tap()
 	; +F9::worktab.CustomerMenu()
-		; Sendinput, ^{c}
-		; sleep 100
-		; TT(Clipboard)
-		; return
 	^F8::AddToList()
 	; +F15::AddToList()
-	; ^F9::send, ^v
+
 
 
 
@@ -90,33 +56,16 @@ showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
   Global Product
   Loop, Files, %FileDir%*%Product%*.%FieType%*,R
   {
-	; If (A_LoopFileTimeCreated=Rec)
-		; {
-		; if FPath2
-			; FPath3=%FPath2%
-		; FPath2=%A_LoopFileFullPath%
-		; Rec=%A_LoopFileTimeCreated%
-		; }
 	If (A_LoopFileTimeCreated>Rec)
 		{
-		; if FPath
-		; FPathB=%FPath%
+
 		FPath=%A_LoopFileLongPath%
 		Rec=%A_LoopFileTimeCreated%
 		}
 	}
 	sleep 300
 	Run, explore %Fpath%
-;   if !ShowMultiple
-    ; Return
-;   Else
-;   Sleep 500
-;   if FPath2
-    ; Run, explore %Fpath2%
-;   if FPath3
-    ; Run, explore %Fpath3%
-;   if FPathB
-    ; Run, explore %FpathB%
+
   return
   }
 
@@ -190,6 +139,7 @@ AddToList(){
 
 			#ifWinExist, LMS Actions ahk_exe EXCEL.EXE
 				+enter::
+				F10::
 				Mbutton::
 				WinActivate, LMS Actions ahk_exe EXCEL.EXE
 				sendinput, {click 45, 43}
@@ -199,6 +149,7 @@ AddToList(){
 				return
 
 			#ifwinactive, Result Editor
+					F10::
 					mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 
 
@@ -208,33 +159,43 @@ AddToList(){
 
 
 			#ifwinactive, Edit specification
+					F10::
 					mbutton::SpecTab.Edit_Analytical()
 
 
 			#ifwinactive, Composition
+					F10::
 					mbutton::ProductTab.Table()
 			#ifwinactive, Select methods tests
+					F10::
 					mbutton::clk(854, 658)
 
 
 			#ifwinactive, Select Product ahk_exe eln.exe
+					F10::
 					mbutton::send % clk(107, 66) Product "{enter}{enter}"
 
 
 			#ifwinactive, Edit Product
+					F10::
 					mbutton::ProductTab.AddNewProduct()
 				#Ifwinactive, Edit Formulation
+					F10::
 					mbutton::ProductTab.AddNewFormulation()
 			#Ifwinactive, Select samples for test:
+					F10::
 					Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
 			#Ifwinactive, Select tests for request: R
+					F10::
 					mbutton::WorkTab.SelectTestSample()
 			#IFwinexist, Release: Rotational Testing Schedule ;
+					F10::
 					mbutton::
 						winactivate,Release: Rotational Testing Schedule
 						clk(128, 140)
 						return
 			#ifwinexist, Release:
+					F10::
 					mbutton::
 						winactivate, Release:
 						clk(128, 140)
@@ -246,10 +207,17 @@ AddToList(){
 
 	#ifwinactive, ahk_exe explorer.exe
 			F9::send, ^{e}
-			F7::send, ^{e}{*}%Product%{*}{enter}
-			Mbutton::send, ^{e}{*}%Product%{*}{enter}
-			; F10::MenuCodeSelect()
-			F10::SelectPreviewPane()
+			F7::
+			SetKeyDelay, 2, 1
+			send, ^{e}{*}%Product%{*}
+			sleep 300
+			send, {tab 2}{right}{pgup 2}
+			SetKeyDelay, -1, -1
+			return
+			F10::
+			Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
+			+Mbutton::SelectPreviewPane()
+			F6::send, ^{e}{tab 2}{right}
 			F8::SelectPreviewPane(Product)
 
 
@@ -263,6 +231,7 @@ AddToList(){
 				return
 
 	#Ifwinactive,Edit Ingredient
+		F10::
 		Mbutton::
 		Paste_Clipped_Ingredient:
 		mouseclick, left, 244, 133,1,0
@@ -279,6 +248,7 @@ AddToList(){
 		+F9::LMS.CopyProductRotation()
 	#Ifwinactive,Test Definition Editor
 		+enter::clk(333,615)
+		F10::
 		mbutton::
 		sleep 200
 		if (Description)
@@ -300,16 +270,17 @@ AddToList(){
 
 	#Ifwinactive, Result Entry ;;___Result_Entry
 
-		F7::WorkTab.CorrectTestResults("toggle", "Loop")
+		F7::numbermenu(6,"ToggleResults") ;WorkTab.CorrectTestResults("toggle", "Loop")
 		F6::WorkTab.CorrectTestResults(0,5)
 
-		F10::WorkTab.CorrectTestResults("Toggle")
+		F10::
 		Mbutton::WorkTab.CorrectTestResults("Toggle")
 		F9::numbermenu(6)
 	#Ifwinactive, Results ;;__Results_Definition:
 		+Enter::
 		^enter::
 		+mbutton::SpecTab.Autofill()
+		F10::
 		mbutton::
 			winactivate, Results
 			tooltip,
@@ -343,7 +314,7 @@ AddToList(){
 
 
 				return
-		F10::lms.menu()
+		F9::lms.menu()
 ; space::sendinput,{ctrldown}{click}{ctrlup}
 	#ifwinactive, Register new samples ;;__Register_new_samples:
 		F6::
@@ -388,6 +359,7 @@ AddToList(){
 ^2::sendinput % GetAllBatches(" ", 1)
 !F10::SpecTab.CopySpecTemplate()
 		Enter::LMS.SaveCode()
+		F10::
 		mbutton:: 3tap()
 		F9::lms.Menu()
 		F8::LMS.SearchBar("",,"False")
@@ -395,7 +367,7 @@ AddToList(){
 		OrganolepticFunct:
 		+F10::SpecTab.AddOrganolepticSpec(Lot)
 
-		F10::
+		^Mbutton::
 				MouseGetPos, Mx, My
 					Breaking.Point()
 				click
@@ -450,6 +422,7 @@ AddToList(){
 		+mbutton::lms.Menu()
 		F9::lms.Menu()
 		F19::lms.Menu()
+		F10::
 		mbutton::					3tap()
 		; +!F10::						3tap()
 	#Ifwinactive,
@@ -491,12 +464,12 @@ AddToList(){
 
 	3Right(){
 		global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			return
-		}
-		keep_running = y
+		; if keep_running = y
+		; {
+		; 	keep_running = n ;signal other thread to stop
+		; 	return
+		; }
+		; keep_running = y
 		; FlashScreen("3-Right")
 		If winactive("NuGenesis LMS")
 			LMS.SearchBar(Batch,"{enter}")
@@ -525,25 +498,27 @@ AddToList(){
 		else if winactive("ahk_exe eln.exe")
 			Send, %Batch%
 		else
-			keep_running :=
-		keep_running :=
+			return
+		; 	keep_running :=
+		; keep_running :=
 		return
 		}
 	3left(){
 		global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			return
-		}
-		keep_running = y
+		; if keep_running = y
+		; {
+		; 	keep_running = n ;signal other thread to stop
+		; 	return
+		; }
+		; keep_running = y
 		if winactive("NuGenesis LMS")
 				LMS.SearchBar(Product,"{enter}",0)
 		else if winactive("ahk_exe eln.exe")
 			Send, %Product%
 		else
-			keep_running :=
-		keep_running :=
+			return
+		; 	keep_running :=
+		; keep_running :=
 		return
 	}
 	3down(){

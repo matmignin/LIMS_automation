@@ -43,7 +43,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 		winSet, Trans, %Transparent%, % "ahk_id" hwnd
 	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; winSet, Trans, 200, %W%
-	CoordMode, ToolTip, screen
+	; CoordMode, ToolTip, screen
 	; CoordMode, ToolTip, Relative
 	SetTimer, RemoveToolTip%N%, -%time%
 return
