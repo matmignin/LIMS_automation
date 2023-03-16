@@ -561,7 +561,7 @@ AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient
 	else
 		ProductTab.Dropdown_IngredientSelect(Ingredient_Id)
 	Send,{tab 6}^{a}
-	sendinput % TRIM(Ingredient_position,"`r`n")
+	sendinput % TRIM(Ingredient_position," `r`n")
 	Sendinput,{tab}^a%Ingredient_Name%
 	if Strlen(Ingredient_Name) > 250
 		sleep 500
