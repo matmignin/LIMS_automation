@@ -8,7 +8,7 @@
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
 	; +F1::GetAllProducts()
-	; +F1::
+	return
 	F13::breaking.point(1)
 	+!F5::LMS.Menu()
 	^Space::LMS.SearchBar("",,"False")
@@ -358,52 +358,23 @@ AddToList(){
 ^1::sendinput % GetAllProducts(" ", 1)
 ^2::sendinput % GetAllBatches(" ", 1)
 !F10::SpecTab.CopySpecTemplate()
-		Enter::LMS.SaveCode()
-		F10::
-		mbutton:: 3tap()
-		F9::lms.Menu()
-		F8::LMS.SearchBar("",,"False")
-		; F10::WholeBatchMenu()
-		OrganolepticFunct:
-		+F10::SpecTab.AddOrganolepticSpec(Lot)
+Enter::LMS.SaveCode()
+F10::
+Mbutton::
+		MouseGetPos, Mx, My
+		Try Menu,SpecMenu,show
+		return
 
-		^Mbutton::
-				MouseGetPos, Mx, My
-					Breaking.Point()
-				click
-	Loop %iteration%
-	{
-			If (Ften = "RemoveAndApprove")
-				Spectab.RemoveAndApproveTestSpec()
-			Else If (Ften = "RemoveTestSpec"){
-				if (Clip.ParseMainSpecsTopTable()="New"){
-					Sleep 250
-					Breaking.Point()
-					SpecTab.RemoveTestSpec()
-					}
-				}
-			Else if (Ften = "NewSpecVersion"){
-				if (Clip.ParseMainSpecsTopTable()="NotStarted"){
-						SpecTab.NewSpecVersion()
-						Sleep 250
-						Breaking.Point()
-					}
-				}
-		else if (Ften = "AddOrganoleptic")
-				SpecTab.AddOrganolepticSpec(5)
-	My+=26
-	WinActivate, NuGenesis LMS
-	click %Mx% %My% 1
-	Breaking.Point()
-	}
 
-			; Else if (Ften = "ApproveTestSpec")
-				; SpecTab.ApproveSpecVersion()
-			; Else if (Ften = "WholeBatchMenu")
-				; WholeBatchMenu()
-			; Else
-				; LMS.Menu()
-			return
+
+		
+		+F10::
+		+Mbutton::SpecTab.CopySpecTemplate()
+If SpecMode
+	SpecTab.CopySpecTemplate()
+F9::lms.Menu()
+F8::LMS.SearchBar("",,"False")
+
 
 		; +F10::SpecTab.RemoveTestSpec()
 		; F10::Clip.ParseMainSpecsTopTable()
@@ -440,8 +411,8 @@ AddToList(){
 ;;____________________TouchPad BINDINGS__________________________________________
 	3tap(){
 		Global
-			if winactive("NuGenesis LMS") ; If Nugeneses
-						SpecTab.CopySpecTemplate()
+			; if winactive("NuGenesis LMS") ; If Nugeneses
+						; SpecTab.CopySpecTemplate()
 				; LMS.DetectTab()
 				; if (Tab="Specs"){
 						; return
@@ -453,7 +424,7 @@ AddToList(){
 				; else if (Tab="Samples"){
 				; 	send, {click 124, 294} ;assign Requests
 				; 	sleep 500
-				else if winactive("Edit request")
+				if winactive("Edit request")
 						sendinput, {click, 258, 613}
 						; sleep 500
 				else if winactive("Select tests for request: R")

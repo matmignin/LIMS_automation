@@ -404,6 +404,7 @@ CodesRegex(input:=""){
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
       }
+      TT(trim(Product " " Batch " " Lot Ct Coated))
      Return
 }
 

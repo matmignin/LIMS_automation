@@ -71,9 +71,9 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 			Units[Line]:=ingredient[12]
 			Percision[Line]:=ingredient[13]
 			Requirement[Line]:=ingredient[14]
-    		  Table_height+=1
+    	Table_height+=1
 			}
-			  Lms.detectTab()
+			;  Lms.detectTab()
 			If winexist("Edit Ingredient"){
 				winactivate, Edit Ingredient
 				ProductTab.AddNewIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
@@ -92,7 +92,7 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 					sleep 175
 					}
 				}
-			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor"){
+			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") || (Line.maxindex() = 1) {
 				SpecData:=[]
 				SpecData:=StrSplit(clipboard,"|")
 				Name:=SpecData[2]
@@ -105,14 +105,14 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 				Percision:=SpecData[13]
 				Requirement:=SpecData[14]
 				SpecTab.AutoFill()
-
+				return
 			}
-			else if (Tab="Specs") {
+		else if (Line.maxindex() > 1){ ;(Tab="Specs") {
 				Try GUI, Spec_Table:destroy
 				SpecTab.Table()
 				return
-		  }
-		  }
+		}
+	}
 	else
 		msgbox, add data from clipboard failed
 		; clip.codesRegex()
@@ -772,9 +772,57 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 }
 
 }
-
-
 return
+
+
+; class SpecTab
+; {
+;     __New()
+;     {
+;         global
+;         this.Table_height := Table_height
+;         this.Name := Name
+;         this.Requirement := Requirement
+;         this.MinLimit := MinLimit
+;         this.MaxLimit := MaxLimit
+;         this.Units := Units
+;         this.Percision := Percision
+;         this.Description := Description
+;         this.Method := Method
+;         this.Product := Product
+;         this.LabelClaim := LabelClaim
+;     }
+
+;     Create()
+;     {
+;         GUI, Spec_Table:destroy
+;         GUI, Spec_Table:Default
+;         if (this.Table_height > 8)
+;             this.Table_height := 12
+;         if (!this.Table_height)
+;             this.Table_height := 8
+;         Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
+;         GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
+;         GUI, Spec_Table:Add, ListView, x0 y0 w360 r%this.Table_height% Grid checked altSubmit -hdr gSpec_Table, `t%this.Product%|`t%this.Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+;         OnMessage(0x0201, "WM_Lbuttondown")
+;         for index, val in this.Name
+;         {
+;             if (!this.Requirement[index])
+;                 continue
+;             this.LV_add(index)
+;             temp := this.LabelClaim[index] "|" this.MinLimit[index]"|" this.MaxLimit[index]"|" this.Units[index]"|" this.Percision[index] "|" this.Description[index] "|" this.Method[index]
+;             Test := this.Name[index]
+;         }
+;         ; CoordMode, mouse, screen
+;     }
+
+;     LV_add(index)
+;     {
+;         LV_add(,"" this.Name[index], this.Requirement[index], this.MinLimit[index], this.MaxLimit[index], this.Units[index], this.Percision[index], this.Description[index], this.Method[index])
+;     }
+; }
+; }
+
 class SpecTab { 	;; _________SpecTab class_______
 
 	Table(){
@@ -795,7 +843,10 @@ class SpecTab { 	;; _________SpecTab class_______
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		OnMessage(0x0201, "WM_Lbuttondown")
-		SpecTab.ShowGUI()
+		If WinExist("ahk_exe eln.exe")
+			SpecTab.ShowGUI()
+		else
+			MsgBox, %A_ThisMenuItemPos%, %SpecMsg%
 		CoordMode, mouse, window
 		return
 	}
@@ -815,8 +866,11 @@ class SpecTab { 	;; _________SpecTab class_______
 
 	CreateGUI(){
 		global
+		;SpecArray:=[]
 		Try GUI, Spec_Table:destroy
 		GUI, Spec_Table:Default
+		try Menu, SpecMenu, DeleteAll
+		i:=0
 		if Table_height > 8
 			Table_height =12
 		if !Table_height
@@ -825,13 +879,43 @@ class SpecTab { 	;; _________SpecTab class_______
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
 		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		OnMessage(0x0201, "WM_Lbuttondown")
+
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
 				continue
-			LV_add(,""Name[A_index], Requirement[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
-			temp:=LabelClaim[A_index] "|" MinLimit[A_index]"|" MaxLimit[A_index]"|" Units[A_index]"|" Percision[A_index] "|" Description[A_index] "|" Method[A_index]
-			Test:= Name[A_index]
+		LV_add(,""Name[A_index], Requirement[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
+		i++
+		if !(Requirement[i])
+			continue
+		Menu, SpecMenu, Add, % "&" Name[i] "`tt " Requirement[i], SpecMenuButton
+		Test:= Name[A_index]
+
 			}
+			SpecMenuButton:
+			if A_ThisMenuItemPos
+				{
+				Mousemove, %Mx%, %My%, 0
+				Menu, SpecMenu, Check, %A_ThisMenuItem%
+				SpecTab.GetRowText(A_ThisMenuItemPos)
+				winactivate, ahk_exe eln.exe
+
+				; SpecMsg:= Name[A_ThisMenuItemPos] " LabelClaim " LabelClaim[A_ThisMenuItemPos] " `t"  Requirement[A_ThisMenuItemPos] "`n MinLimit " MinLimit[A_ThisMenuItemPos] "`n MaxLimit " MaxLimit[A_ThisMenuItemPos] "`n Units " Units[A_ThisMenuItemPos] "`n Percision " Percision[A_ThisMenuItemPos] "`n Description " Description[A_ThisMenuItemPos] "`n Method " Method[A_ThisMenuItemPos]
+				; Name:= Name[A_ThisMenuItemPos]
+				; LabelClaim:= LabelClaim[A_ThisMenuItemPos]
+				; Requirement:= Requirement[A_ThisMenuItemPos]
+				; MinLimit:= MinLimit[A_ThisMenuItemPos]
+				; MaxLimit:= MaxLimit[A_ThisMenuItemPos]
+				; Units:= Units[A_ThisMenuItemPos]
+				; Percision:= Percision[A_ThisMenuItemPos]
+				; Description:= Description[A_ThisMenuItemPos]
+				; Method:= Method[A_ThisMenuItemPos]
+				; SpecMsgvar:=A_ThisMenuItemPos "`n menuitemname" A_ThisMenuItem  "`n" Name " LabelClaim " LabelClaim " `t"  Requirement "`n MinLimit " MinLimit "`n MaxLimit " MaxLimit "`n Units " Units "`n Percision " Percision "`n Description " Description "`n Method " Method
+				; ; Try GUI, Spec_Table:destroy
+				; TT(SpecMsgVar,2000, 0,0,3)
+
+				spectab.Autofill()
+				}
+return
 			; CoordMode, mouse, screen
 		}
 
@@ -850,17 +934,19 @@ class SpecTab { 	;; _________SpecTab class_______
 				; LV_Delete(Table_Height)
 			}
 
-			GetRowText(){
+			GetRowText(row:=""){
 				global
+				If !Row
+					row:=A_EventInfo
 				GUI, Spec_Table:Default
-				LV_GetText(Name, 			A_EventInfo,1)
-				LV_GetText(LabelClaim, 		A_EventInfo,2)
-				LV_GetText(MinLimit, 		A_EventInfo,3)
-				LV_GetText(MaxLimit, 		A_EventInfo,4)
-				LV_GetText(Units, 			A_EventInfo,5)
-				LV_GetText(Percision, 		A_EventInfo,6)
-				LV_GetText(Description, 	A_EventInfo,7)
-				LV_GetText(Method, 			A_EventInfo,8)
+				LV_GetText(Name, 			row,1)
+				LV_GetText(LabelClaim, 		row,2)
+				LV_GetText(MinLimit, 		row,3)
+				LV_GetText(MaxLimit, 		row,4)
+				LV_GetText(Units, 			row,5)
+				LV_GetText(Percision, 		row,6)
+				LV_GetText(Description, 	row,7)
+				LV_GetText(Method, 			row,8)
 				GUI, Spec_Table:submit,NoHide
 				winactivate, ahk_exe eln.exe
 			}
@@ -1051,27 +1137,19 @@ class SpecTab { 	;; _________SpecTab class_______
 ;; Run through all the menues to add
 	AutoFill(){
 		global
-		; CoordMode, mouse, window
-		; winactivate, ahk_exe eln.exe
 		If (Clipped_specs){
 				clipped_Specs:=
 					sleep 100
 			}
 		If winactive("NuGenesis LMS")
 		{
-			; Breaking.Point()
 			click, 57, 719 ;click Edit Test
-			; Breaking.Point()
-			; winwaitactive, Test Definition Editor,, 2
-			; winactivate, Test Definition Editor
 				winwaitactive, Test Definition Editor,, 2
 			sleep 200
 		}
 		If winactive("Test Definition Editor")
 		{
-			; Breaking.Point()
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
-			; Breaking.Point()
 			sleep 200
 			winactivate, Test Definition Editor
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
@@ -1085,21 +1163,17 @@ class SpecTab { 	;; _________SpecTab class_______
 		if winactive("Results") ;Selection window
 		{
 			winactivate, Results
-			;sleep 100
 			If Method contains ICP-MS 231
 				Sendinput,{click 217, 141}
 			Sendinput,{click 80, 66} ;click edit
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
-			; if errorlevel
-				; tt(broke after Timeout, 2300)
 			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			return
 		}
 		If winactive("Result Editor") ;the editing window
 		{
-			; winactivate, Result Editor
 			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
 		return
