@@ -83,8 +83,16 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 				winactivate, Composition
 				loop % Line
 				{
-					If !Position[A_index]
-						return
+					If !Position[A_index] && !(skipped_row)
+						{
+							Skipped_row:=1
+							Continue
+						}
+					If !Position[A_index] && (Skipped_row = 1)
+						{
+							Skipped_row:=
+							return
+						}
 					ProductTab.AddNewIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
 					sleep 150
 					ifwinnotactive, Composition
@@ -839,7 +847,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		; SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		; SpecTable_Y:=LMS_Y+ShiftTable_Y
 		SpecTable_Y:=LMS_Y+ShiftTable_Y+600
-		CoordMode, mouse, screen
+		CoordMode,= mouse, screen
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		OnMessage(0x0201, "WM_Lbuttondown")
