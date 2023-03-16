@@ -2262,7 +2262,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 					Breaking.Point()
 					loop 20,
 						{
-					blockinput on
+					blockinput, on
 					click
 					click 843, 202, 2
 					if Checkbox_Toggle ;Contains Toggle
@@ -2300,7 +2300,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 		;if !Checkbox_Toggle ; Not Contains toggle
 		Breaking.Point()
 		mousemove, xpos, ypos+26,0
-		blockinput off
+		blockinput, off
 		return
 	}
 
@@ -2649,12 +2649,15 @@ class Breaking {
 	Point(break:=""){
 		Global
 		If GetKeyState("Lbutton", "P") || (break) {
-			TT("Broke",3000)
+			TT("Broke",2000)
 			blockinput, off
 			exit
 		}
 		if keep_running = n ;another signal to stop
+		{
+		blockinput, off
 			Exit
+			}
 	}
 	Preamble(){
 		Global
@@ -2675,21 +2678,21 @@ Return winExist(winTitle . " ahk_id " . win)
 SendPassword(){
 	if winExist("Login"){
 		winactivate
-		Sendinput, mmignin{tab}{-}{K}ilgore7744{enter}
+		Sendinput, mmignin{tab}kilgore7744{enter}
 		return
 	}
 	Else If winexist("Sign :"){
 		winactivate,
-		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}{-}Kilgore7744{enter}
+		Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}kilgore7744{enter}
 		return
 	}
 	else if winexist("windows Security"){
 		winactivate,
-		Sendinput, {-}Kilgore7744{enter}
+		Sendinput, kilgore7744{enter}
 	}
 	else if winexist("CredentialUIBroker.exe"){
 		winactivate,
-		Sendinput, {-}Kilgore7744{enter}
+		Sendinput, kilgore7744{enter}
 	}
 
 	else
