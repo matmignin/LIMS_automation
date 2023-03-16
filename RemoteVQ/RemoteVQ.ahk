@@ -225,9 +225,11 @@ ShowScanLabelCopy:
 	send, ^{e}{tab 2}{right}
 	return
 ShowManualCOA:
-	run, explorer "\\10.1.2.118\coa-lot#"
+;	run, explorer "\\10.1.2.118\coa-lot#"
+run, edit RemoteKEYS.ahk
 	sleep 200
-	sendinput, {*}%Product%{*}{enter}
+	
+;	sendinput, {*}%Product%{*}{enter}
 	return
 Showmfg:
 	run, find "\\10.1.2.118\lms\Information\ECOPY\mfg"

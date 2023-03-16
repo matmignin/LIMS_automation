@@ -1,5 +1,6 @@
 
 		#ifwinactive,
+		return
 	; +#F11::SpecTab.ApproveSpecVersion()
 	; ^#F11::SpecTab.NewSpecVersion()
 	; !#F11::SpecTab.RemoveTestSpec()
@@ -8,7 +9,6 @@
 	<!left::GetAllProducts()
 	<!right::GetAllBatches()
 	; +F1::GetAllProducts()
-	return
 	F13::breaking.point(1)
 	+!F5::LMS.Menu()
 	^Space::LMS.SearchBar("",,"False")
