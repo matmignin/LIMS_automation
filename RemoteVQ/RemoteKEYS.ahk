@@ -15,7 +15,7 @@
 	!^Space::LMS.SearchBar("","{delete}","False")
 	^+s::specTab.TestDefinitionEditor_Stability()
 	+F1::worktab.NewTestRequestLink()
-	F2::Reload
+	F2::showLabelCopy(FileDir,doc*‚0)
 	^+F16::GetAllProducts()
 	^+F15::GetAllBatches()
 	;!F1::ClipBar.Focus("Edit1")

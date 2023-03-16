@@ -209,15 +209,16 @@ ShowVariables:
 	return
 ShowFinalLabelCopy:
 	run, find "\\10.1.2.118\Label Copy Final"
-	sleep 200
+	sleep 250
 	; winmaximize, Search Results
-	; sendinput, {*}%Product%{*}{enter}
-	; sleep 400
+	sendinput, {*}%Product%{*}{enter}
+	sleep 400
+	send, ^{e}{tab 2}{right}
 	; SelectPreviewPane(Product)
 	return
 ShowScanLabelCopy:
 	run, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
-	sleep 200
+	sleep 250
 	; winmaximize, Search Results
 	sendinput, {*}%Product%{*}{enter}
 	sleep 300
