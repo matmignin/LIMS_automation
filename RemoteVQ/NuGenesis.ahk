@@ -2259,25 +2259,29 @@ Class WorkTab { 		;;______WorkTab Class______________
 			if LoopThrough
 				{
 					MouseGetPos, xpos, ypos
+					Breaking.Point()
 					loop 20,
 						{
-					;	blockinput on
+					blockinput on
 					click
 					click 843, 202, 2
 					if Checkbox_Toggle ;Contains Toggle
 						Send,{tab}{Space}{tab}{Space}
 					else
 						Sendinput,{tab}{tab}
+						;Breaking.Point()
 					Send,{tab 10}^a
 					if (Iteration != 0)
   					Send, %Iteration%
-					Breaking.Point()
+				;	Breaking.Point()
 					ypos:=ypos+26
 					mousemove, xpos, ypos,0
+					Breaking.Point()
 				}
 				Breaking.Point()
 				click
 			}
+		Breaking.Point()
 		click
 		click 843, 202, 2
 		if Checkbox_Toggle { ;Contains Toggle
@@ -2288,12 +2292,15 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Sendinput,{tab}{tab}
 		; if keep_running = n ;another signal to stop
 			; return
-		Breaking.Point()
+		;Breaking.Point()
 		Sendinput,{tab 10}^a
+		;Breaking.Point()
 		if (Iteration != 0)  ; Contains toggle
 		  Send, %iteration%
 		;if !Checkbox_Toggle ; Not Contains toggle
+		Breaking.Point()
 		mousemove, xpos, ypos+26,0
+		blockinput off
 		return
 	}
 
