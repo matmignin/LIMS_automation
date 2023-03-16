@@ -2519,9 +2519,9 @@ Class WorkTab { 		;;______WorkTab Class______________
 	CopySpecTemplate(){
 		winactivate, NuGenesis LMS
 		click 102, 289 ;copy into new spec
-		winWaitactive, Edit specification - Remote, ,2
+		winWaitactive, Edit specification, ,2
 		if ErrorLevel
-			winactivate, Edit specification - Remote
+			winactivate, Edit specification
 		; click 317, 83
 		return
 	}
@@ -2617,7 +2617,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
   if Simpleclip
 		return
 	sleep 20
-		tooltip, %msg%, %X%, %Y%,%N%
+		tooltip, %msg%, %X%+100, %Y%+100,%N%
 	hwnd := winExist("ahk_class tooltips_class32")
 	; if Transparent
 		; winSet, Trans, %Transparent%, % "ahk_id" hwnd
