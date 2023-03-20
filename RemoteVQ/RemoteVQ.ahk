@@ -208,10 +208,11 @@ ShowVariables:
 		; ClipBar.Show()
 	return
 ShowFinalLabelCopy:
-	run, find "\\10.1.2.118\Label Copy Final"
-	sleep 250
+	; run, find "\\10.1.2.118\Label Copy Final"
+	run, find "\\netapp\Label Copy Final"
+	sleep 550
 	; winmaximize, Search Results
-	sendinput, {*}%Product%{*}{enter}
+	send, {*}%Product%{*}{enter}
 	sleep 400
 	send, ^{e}{tab 2}{right}
 	; SelectPreviewPane(Product)
@@ -228,7 +229,7 @@ ShowManualCOA:
 ;	run, explorer "\\10.1.2.118\coa-lot#"
 run, edit RemoteKEYS.ahk
 	sleep 200
-	
+
 ;	sendinput, {*}%Product%{*}{enter}
 	return
 Showmfg:

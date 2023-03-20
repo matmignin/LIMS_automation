@@ -107,7 +107,7 @@ Class ClipBar{
 		Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
 		Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
 		Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
-		Menu, ClipbarMenu, Add, Ften, :FtenMenu
+		; Menu, ClipbarMenu, Add, Ften, :FtenMenu
 		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
 		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A

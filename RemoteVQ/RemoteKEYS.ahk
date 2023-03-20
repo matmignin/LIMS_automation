@@ -1,6 +1,7 @@
 
-		#ifwinactive,
+	#ifwinactive,
 		return
+
 	; +#F11::SpecTab.ApproveSpecVersion()
 	; ^#F11::SpecTab.NewSpecVersion()
 	; !#F11::SpecTab.RemoveTestSpec()
@@ -22,14 +23,18 @@
 	;!F2::ClipBar.Focus("Edit2")
 	;!F3::ClipBar.Focus("Edit3")
 	;!F4::ClipBar.Focus("Edit4")
-+!^F1::GetAllProducts()
-+!^F2::GetAllBatches()
-+!^F5::
-			#+!F10::LMS.AddDataFromClipboard()
-			#+^F10::clip.ParseSpecsTable()
+	+!^F1::GetAllProducts()
+	+!^F2::GetAllBatches()
+	+!^F5::
+	#+!F10::LMS.AddDataFromClipboard()
+	#+^F10::clip.ParseSpecsTable()
 	+!^F10::spectab.Autofill()
-
-		return
+	esc::						esc
+	pause::						Suspend, Toggle
+	#h::return
+	#p::return
+	#k::return
+	>+Backspace::			Delete
 	; +F4::4tap()
 	; +F9::worktab.CustomerMenu()
 	^F8::AddToList()
@@ -120,94 +125,90 @@ AddToList(){
 
 
 
-			#ifWinExist, Select Product ahk_exe EXCEL.EXE
-					F10::
-					Mbutton::
-					WinActivate, Select Product ahk_exe EXCEL.EXE
-					sendinput, {Click 112, 63}%Product%{enter}{enter}
-					; SelectProductToggle:=
-					WinWaitActive, Book ahk_class XLMAIN ahk_exe EXCEL.EXE, ,3
-						if !Errorlevel
-							WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
-						WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
-					return
-					; Enter::
-					; sendinput, {enter}
-					; SelectProductToggle:=
-					; return
+	#ifWinExist, Select Product ahk_exe EXCEL.EXE
+			F10::
+			Mbutton::
+			WinActivate, Select Product ahk_exe EXCEL.EXE
+			sendinput, {Click 112, 63}%Product%{enter}{enter}
+			; SelectProductToggle:=
+			WinWaitActive, Book ahk_class XLMAIN ahk_exe EXCEL.EXE, ,3
+				if !Errorlevel
+					WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
+				WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
+			return
+
+	#ifWinExist, LMS Actions ahk_exe EXCEL.EXE
+		+enter::
+		F10::
+		Mbutton::
+		WinActivate, LMS Actions ahk_exe EXCEL.EXE
+		sendinput, {click 45, 43}
+		winwaitactive, Select Product ahk_exe EXCEL.EXE,, 5
+		if !ErrorLevel
+			sendinput, {Click 112, 63}%Product%{enter}{enter}
+		return
+
+	#ifwinactive, Result Editor
+			F10::
+			mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 
 
-			#ifWinExist, LMS Actions ahk_exe EXCEL.EXE
-				+enter::
-				F10::
-				Mbutton::
-				WinActivate, LMS Actions ahk_exe EXCEL.EXE
-				sendinput, {click 45, 43}
-				winwaitactive, Select Product ahk_exe EXCEL.EXE,, 5
-				if !ErrorLevel
-					sendinput, {Click 112, 63}%Product%{enter}{enter}
+
+	; #ifwinactive, Test Definition Editor
+	; 		mbutton::mouseclick, left, 333, 615
+
+
+	#ifwinactive, Edit specification
+			F10::
+			mbutton::SpecTab.Edit_Analytical()
+
+
+	#ifwinactive, Composition
+			F10::
+			mbutton::ProductTab.Table()
+	#ifwinactive, Select methods tests
+			F10::
+			mbutton::clk(854, 658)
+
+
+	#ifwinactive, Select Product ahk_exe eln.exe
+			F10::
+			mbutton::send % clk(107, 66) Product "{enter}{enter}"
+
+
+	#ifwinactive, Edit Product
+			F10::
+			mbutton::ProductTab.AddNewProduct()
+		#Ifwinactive, Edit Formulation
+			F10::
+			mbutton::ProductTab.AddNewFormulation()
+	#Ifwinactive, Select samples for test:
+			F10::
+			Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
+	#Ifwinactive, Select tests for request: R
+			F10::
+			mbutton::WorkTab.SelectTestSample()
+	#IFwinexist, Release: Rotational Testing Schedule ;
+			F10::
+			mbutton::
+				winactivate,Release: Rotational Testing Schedule
+				clk(128, 140)
+				return
+	#ifwinexist, Release:
+			F10::
+			mbutton::
+				winactivate, Release:
+				clk(128, 140)
 				return
 
-			#ifwinactive, Result Editor
-					F10::
-					mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-
-
-
-			; #ifwinactive, Test Definition Editor
-			; 		mbutton::mouseclick, left, 333, 615
-
-
-			#ifwinactive, Edit specification
-					F10::
-					mbutton::SpecTab.Edit_Analytical()
-
-
-			#ifwinactive, Composition
-					F10::
-					mbutton::ProductTab.Table()
-			#ifwinactive, Select methods tests
-					F10::
-					mbutton::clk(854, 658)
-
-
-			#ifwinactive, Select Product ahk_exe eln.exe
-					F10::
-					mbutton::send % clk(107, 66) Product "{enter}{enter}"
-
-
-			#ifwinactive, Edit Product
-					F10::
-					mbutton::ProductTab.AddNewProduct()
-				#Ifwinactive, Edit Formulation
-					F10::
-					mbutton::ProductTab.AddNewFormulation()
-			#Ifwinactive, Select samples for test:
-					F10::
-					Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
-			#Ifwinactive, Select tests for request: R
-					F10::
-					mbutton::WorkTab.SelectTestSample()
-			#IFwinexist, Release: Rotational Testing Schedule ;
-					F10::
-					mbutton::
-						winactivate,Release: Rotational Testing Schedule
-						clk(128, 140)
-						return
-			#ifwinexist, Release:
-					F10::
-					mbutton::
-						winactivate, Release:
-						clk(128, 140)
-						return
-
-			#ifwinexist, Sign :
-				mbutton::Sendpassword()
+	#ifwinexist, Sign :
+			mbutton::Sendpassword()
 
 
 	#ifwinactive, ahk_exe explorer.exe
 			F9::send, ^{e}
 			F7::
+			winactivate, ahk_exe explorer.exe
 			SetKeyDelay, 2, 1
 			send, ^{e}{*}%Product%{*}
 			sleep 300
@@ -272,7 +273,6 @@ AddToList(){
 
 		F7::numbermenu(6,"ToggleResults") ;WorkTab.CorrectTestResults("toggle", "Loop")
 		F6::WorkTab.CorrectTestResults(0,5)
-
 		F10::
 		Mbutton::WorkTab.CorrectTestResults("Toggle")
 		F9::numbermenu(6)
@@ -311,11 +311,8 @@ AddToList(){
 				}
 				else
 					return
-
-
-				return
 		F9::lms.menu()
-; space::sendinput,{ctrldown}{click}{ctrlup}
+
 	#ifwinactive, Register new samples ;;__Register_new_samples:
 		F6::
 			clk(181, 104,2,2)
@@ -334,6 +331,7 @@ AddToList(){
 				return
 		F10::
 		mbutton::WorkTab.registerNewSamples()
+
 	#ifwinactive, New Document
 		+enter::sendinput, {enter}
 		Enter::
@@ -341,46 +339,47 @@ AddToList(){
 			LMSclick.okay()
 			return
 		; +enter::sendinput, {enter}
+
 	#ifwinactive, Reason for Change
 		F10::Sendinput, {tab 2}Fixing Rotation{enter}
+
 	#ifwinactive, Select tests for request:
 		; space::send, ^{click}
 		; rbutton::send, ^{click}
 		; Numpaddot::send, {click 837, 656}{
+
 	#ifwinactive, Edit request
 		F10::Worktab.EditRequest()
 		mbutton::WorkTab.EditRequest()
-	; #ifwinactive, Edit sample
-	; 	+F10::worktab.CustomerMenu()
-	#ifwinactive, Select samples for test:
+
+	#ifwinactive, Edit sample
+		+F10::worktab.CustomerMenu()
+
+
+	; #ifwinactive, Select samples for test:
+
+
+
 ;+ ___Nugenesis
 	#Ifwinactive, NuGenesis LMS
-^1::sendinput % GetAllProducts(" ", 1)
-^2::sendinput % GetAllBatches(" ", 1)
-!F10::SpecTab.CopySpecTemplate()
-Enter::LMS.SaveCode()
-F10::
-Mbutton::
-		MouseGetPos, Mx, My
-		Try Menu,SpecMenu,show
-		return
-
-
-
-		
+		^1::sendinput % GetAllProducts(" ", 1)
+		^2::sendinput % GetAllBatches(" ", 1)
+		!F10::SpecTab.CopySpecTemplate()
+		Enter::LMS.SaveCode()
+		F10::
+		Mbutton::
+			MouseGetPos, Mx, My
+			Try Menu,SpecMenu,show
+			return
 		+F10::
 		+Mbutton::SpecTab.CopySpecTemplate()
-If SpecMode
-	SpecTab.CopySpecTemplate()
-F9::lms.Menu()
-F8::LMS.SearchBar("",,"False")
-
-
-		; +F10::SpecTab.RemoveTestSpec()
-		; F10::Clip.ParseMainSpecsTopTable()
+		F9::lms.Menu()
+		F8::LMS.SearchBar("",,"False")
 		+#v::LMS.Searchbarpaste(";")
 		+^v::LMS.Searchbarpaste(";")
 		<^v::LMS.Searchbarpaste(A_space)
+
+
 ;+	___LMS app
 	#Ifwinactive, ahk_exe eln.exe
 		;;^`::						ClipBar.reset()
@@ -397,13 +396,6 @@ F8::LMS.SearchBar("",,"False")
 		mbutton::					3tap()
 		; +!F10::						3tap()
 	#Ifwinactive,
-		esc::						esc
-		pause::						Suspend, Toggle
-		#h::return
-		#p::return
-		#k::return
-		>+Backspace::			Delete
-		return
 
 
 
@@ -612,7 +604,7 @@ If winactive("NuGenesis LMS") {
 #ifwinactive
 
 
-GetAllBatches(Delimiter:=" ",msg:=""){
+GetAllBatchesOld(Delimiter:=" ",msg:=""){
   global
   regBatches:=[]
 		Haystack:=Clipboard
@@ -683,6 +675,41 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 		Return AllProducts
 }
 
+
+GetAllBatches(Delimiter:=" ",msg:=""){
+  global
+  regBatches:=[]
+  pos=0
+		Haystack:=Clipboard
+		sleep 100
+	while pos := RegexMatch(Haystack, RegexBatch, aBatch, pos+1) ; {
+		regBatches.insert(aBatch)
+  ; }
+      AllBatches:=[], oTemp := {}
+      for vKey, vValue in regBatches
+      {
+          if (ObjGetCapacity([vValue], 1) = "") ;is numeric
+          {
+              if !ObjHasKey(oTemp, vValue+0)
+                  AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
+          }
+          else
+          {
+              if !ObjHasKey(oTemp, "" vValue)
+                  AllBatches.Push("" vValue), oTemp["" vValue] := ""
+          }
+        }
+    AllBatches:=Listarray(AllBatches," ")
+    AllBatches:= StrReplace(AllBatches, A_space A_space, Delimiter)
+	FileDelete, AllBatches.txt
+	sleep 400
+	FileAppend, %AllBatches%, AllBatches.txt
+	if !msg
+		clip.editbox(AllBatches)
+	Else
+		Return AllBatches
+}
+
       WholeBatchesSave(Input,Overwrite:=""){
 				Global
 				if Overwrite
@@ -694,7 +721,7 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 				sleep 200
 				tt(WholeBatches,10000,0,0,2)
 return
-                          }
+}
 
 
 GetAllWholeBatches(Delimiter:="`n",msg:=""){

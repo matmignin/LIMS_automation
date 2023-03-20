@@ -51,6 +51,7 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 		Requirement:=	[]
 		Method:= 		[]
       Table_height=0
+			Skipped_row:=
 		loop, parse, clipboard, "`n"
 		{
 			Line:=A_index
@@ -88,7 +89,7 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 							Skipped_row:=1
 							Continue
 						}
-					If !Position[A_index] && (Skipped_row = 1)
+					If !Position[A_index] && (skipped_row = 1)
 						{
 							Skipped_row:=
 							return
@@ -521,12 +522,12 @@ AddProductFromClipboard(Input:=""){
       GoSub ShowScanLabelCopy
       return
     }
+		else if Instr(HayStack, "FinalLabel >>",true,1,1){
+			GoSub ShowFinalLabelCopy
+			return
+		}
     else if Instr(HayStack, "GlobalVision >>",true,1,1){
       GoSub ShowGlobalVision
-      return
-    }
-    else if Instr(HayStack, "FinalLabel >>",true,1,1){
-      GoSub ShowFinalLabelCopy
       return
     }
     else if Instr(HayStack, "mfg >>",true,1,1){
@@ -2594,7 +2595,7 @@ LMS_Env:
 	IfwinExist, Login,
 		winactivate, Login
 	sleep 200
-	Send,mmignin{tab}Kilgore7744
+	Send,mmignin{tab}kilgore7744
 	if A_thismenuItem contains &Login
 		Send,{enter}
 	else if A_thismenuItem contains &Production Server
