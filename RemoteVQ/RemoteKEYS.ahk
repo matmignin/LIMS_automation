@@ -24,7 +24,8 @@
 	;!F3::ClipBar.Focus("Edit3")
 	;!F4::ClipBar.Focus("Edit4")
 	+!^F1::GetAllProducts()
-	+!^F2::GetAllBatches()
+	^1::GetAllProducts()
+	^2::GetAllBatches()
 	+!^F5::
 	#+!F10::LMS.AddDataFromClipboard()
 	#+^F10::clip.ParseSpecsTable()
@@ -158,6 +159,23 @@ AddToList(){
 	; 		mbutton::mouseclick, left, 333, 615
 
 
+	#ifwinactive, Edit sample template
+		F7::Sendinput, %Product%
+		F10::Sendinput, {Home}%Product%`,{space}
+		:*:fm`;::
+			Sendinput, `Finished, Micro{tab 3}{right 5}{tab}{right 2}
+			Return
+		:*:ia`;::
+			sendinput, `In Process, Analytical{tab 3}{right 6}{tab}{right}
+			Return
+		:*:iaa`;::
+			Sendinput, `In Process, Analytical (Annual){tab 3}{right 6}{tab}{right}
+			Return
+		:*:ip`;::
+			Sendinput, `In Process, Physical{tab 3}{right 7}{tab}{right}
+			Return
+
+
 	#ifwinactive, Edit specification
 			F10::
 			mbutton::SpecTab.Edit_Analytical()
@@ -208,13 +226,13 @@ AddToList(){
 	#ifwinactive, ahk_exe explorer.exe
 			F9::send, ^{e}
 			F7::
-			winactivate, ahk_exe explorer.exe
-			SetKeyDelay, 2, 1
-			send, ^{e}{*}%Product%{*}
-			sleep 300
-			send, {tab 2}{right}{pgup 2}
-			SetKeyDelay, -1, -1
-			return
+				winactivate, ahk_exe explorer.exe
+				SetKeyDelay, 2, 1
+				send, ^{e}{*}%Product%{*}
+				sleep 300
+				send, {tab 2}{right}{pgup 2}
+				SetKeyDelay, -1, -1
+				return
 			F10::
 			Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
 			+Mbutton::SelectPreviewPane()
@@ -251,9 +269,9 @@ AddToList(){
 		+enter::clk(333,615)
 		F10::
 		mbutton::
-		sleep 200
-		if (Description)
-			SpecTab.TestDefinitionEditor(Description) ; the pre window
+			sleep 200
+			if (Description)
+				SpecTab.TestDefinitionEditor(Description) ; the pre window
 			Breaking.Point()
 			sleep 200
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
@@ -366,13 +384,13 @@ AddToList(){
 		^2::sendinput % GetAllBatches(" ", 1)
 		!F10::SpecTab.CopySpecTemplate()
 		Enter::LMS.SaveCode()
-		F10::
-		Mbutton::
+		+F10::SpecTab.Table()
+		+Mbutton::
 			MouseGetPos, Mx, My
 			Try Menu,SpecMenu,show
 			return
-		+F10::
-		+Mbutton::SpecTab.CopySpecTemplate()
+		F10::
+		Mbutton::SpecTab.CopySpecTemplate()
 		F9::lms.Menu()
 		F8::LMS.SearchBar("",,"False")
 		+#v::LMS.Searchbarpaste(";")
@@ -535,7 +553,6 @@ If winactive("NuGenesis LMS") {
 }
 			return
 	}
-
 
 
 #ifwinactive, ahk_exe eln.exe

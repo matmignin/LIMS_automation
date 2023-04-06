@@ -6,19 +6,19 @@ clipChange(type){
   sleep 75
   if SimpleClip
     return
-  ;   if Instr(Clipboard, "++|",true,1,1){
-  ;     AddWholeBatch:=strReplace(Clipboard,"++","")
-  ;     if instr(WholeBatches, AddWholeBatch,false,1,1)
-  ;       clip.codesRegex(AddWholeBatch)
-  ;     else {
-  ;       FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
-  ;       WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
-  ;       sleep 200
-  ;       }
-  ;     ; WholeBatches:=strReplace(WholeBatches,"`r`n`r`n","`r`n")
-  ;     ; GetAllWholeBatches()
-  ;     return
-  ; }
+    if Instr(Clipboard, "++|",true,1,1){
+      AddWholeBatch:=strReplace(Clipboard,"++","")
+      if instr(WholeBatches, AddWholeBatch,false,1,1)
+        clip.codesRegex(AddWholeBatch)
+      else {
+        FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
+        WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
+        sleep 200
+        }
+      ; WholeBatches:=strReplace(WholeBatches,"`r`n`r`n","`r`n")
+      ; GetAllWholeBatches()
+      return
+  }
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
   }

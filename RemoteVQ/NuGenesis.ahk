@@ -79,21 +79,23 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 				winactivate, Edit Ingredient
 				ProductTab.AddNewIngredient(LabelName[1],LabelClaim[1],Position[1],IngredientID[1],1)
 				return
-				}
+			}
 			else if Winexist("Composition") || winactive("Edit Ingredient"){
 				winactivate, Composition
 				loop % Line
 				{
 					If !Position[A_index] && !(skipped_row)
 						{
-							Skipped_row:=1
 							Continue
+							Skipped_row:=1
 						}
-					If !Position[A_index] && (skipped_row = 1)
+					else If !Position[A_index] && (skipped_row = 1)
 						{
 							Skipped_row:=
-							return
+							Break
 						}
+					else
+							Skipped_row:=
 					ProductTab.AddNewIngredient(LabelName[a_index],LabelClaim[a_index],Position[a_index],IngredientID[a_index])
 					sleep 150
 					ifwinnotactive, Composition
@@ -101,8 +103,8 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 					sleep 175
 					}
 				}
-			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") || (Line.maxindex() = 1) {
-				SpecData:=[]
+				else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") || (winactive("NuGenesis LMS") && (Table_height = 1)) {
+					SpecData:=[]
 				SpecData:=StrSplit(clipboard,"|")
 				Name:=SpecData[2]
 				IngredientID:=SpecData[3]
@@ -116,15 +118,15 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 				SpecTab.AutoFill()
 				return
 			}
-		else if (Line.maxindex() > 1){ ;(Tab="Specs") {
+			else if winactive("NuGenesis LMS") && (Table_height > 1) {
 				Try GUI, Spec_Table:destroy
-				SpecTab.Table()
-				return
+					SpecTab.Table()
+					return
+			}
 		}
-	}
 	else
-		msgbox, add data from clipboard failed
-		; clip.codesRegex()
+		; msgbox, add data from clipboard failed
+		clip.codesRegex()
 	sleep 100
 	return
 
@@ -142,15 +144,17 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 			Menu, Menu, add, &mfg folder, Showmfg
 			Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
 			Menu, Menu, add,
+			Menu, Menu, add, Paste All &Products, ^1
+			Menu, Menu, add, Paste All &Batches, ^2
 			Menu, Menu, add, Add Sample Logs, !^+F3
-			Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
-			Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
-			Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
-			Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
-			Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
-			Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
-			Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
-			Menu, Menu, Add, Ften, :FtenMenu
+			; Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
+			; Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
+			; Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
+			; Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
+			; Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
+			; Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+			; Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
+			; Menu, Menu, Add, Ften, :FtenMenu
 
 		if winactive("NuGenesis LMS"){
 			LMS.Orient()
@@ -159,8 +163,6 @@ AddDataFromClipboard(Pointer:=">>|",Source:=""){
 			; If CopyPasteToggle=1
 			Menu,Menu, add, Copy &Specs, Autofill
 			Menu,Menu, add, Paste &Specs, Autofill
-			Menu, Menu, add, Paste All &Products, GetAllProducts
-			Menu, Menu, add, Paste All &Batches, GetAllBatches
 			if (Tab="Samples")
 				Menu, Menu, add, New &Request, AutoFill
 			else if (Tab="Specs"){
@@ -848,7 +850,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		; SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		; SpecTable_Y:=LMS_Y+ShiftTable_Y
 		SpecTable_Y:=LMS_Y+ShiftTable_Y+600
-		CoordMode,= mouse, screen
+		CoordMode, mouse, screen
 		SpecTab.CreateGUI()
 		SpecTab.ModifyColumns()
 		OnMessage(0x0201, "WM_Lbuttondown")
@@ -1535,7 +1537,7 @@ Edit_Micro(){
 	Sendinput,{enter 2}
 	Sendinput,{tab}
 	Breaking.Point()
-	Sendinput,{right}{tab}{left 2}
+	Sendinput,{right}{tab}  ; to select finish --> {left 2}
 	send, {enter}
 	winwaitactive, NuGenesis LMS,,5
 	; if !errorlevel
@@ -2272,6 +2274,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 					loop 20,
 						{
 					blockinput, on
+					Breaking.Point()
 					click
 					click 843, 202, 2
 					if Checkbox_Toggle ;Contains Toggle
@@ -2282,12 +2285,11 @@ Class WorkTab { 		;;______WorkTab Class______________
 					Send,{tab 10}^a
 					if (Iteration != 0)
   					Send, %Iteration%
-				;	Breaking.Point()
 					ypos:=ypos+26
 					mousemove, xpos, ypos,0
-					Breaking.Point()
+					; Breaking.Point()
 				}
-				Breaking.Point()
+				; Breaking.Point()
 				click
 			}
 		Breaking.Point()
@@ -2303,13 +2305,13 @@ Class WorkTab { 		;;______WorkTab Class______________
 			; return
 		;Breaking.Point()
 		Sendinput,{tab 10}^a
-		;Breaking.Point()
-		if (Iteration != 0)  ; Contains toggle
-		  Send, %iteration%
-		;if !Checkbox_Toggle ; Not Contains toggle
 		Breaking.Point()
+		if (Iteration != 0)  ; Contains toggle
+			Send, %iteration%
+		;if !Checkbox_Toggle ; Not Contains toggle
 		mousemove, xpos, ypos+26,0
 		blockinput, off
+		Breaking.Point()
 		return
 	}
 
