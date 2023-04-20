@@ -96,22 +96,23 @@ Class ClipBar{
 			Nsub:=1
 		MouseGetPos,,,,winControl
 		try Menu, ClipBarmenu, DeleteAll
-		Menu, ClipBarMenu, Add, All Products, AllProductsMsgbox
-		Menu, ClipBarMenu, Add, All Batches, AllBatchesMsgbox
+		Menu, ClipBarMenu, Add, All Products, AllProductsNoMsgbox
+		Menu, ClipBarMenu, Add, All Batches, AllBatchesNoMsgbox
 		Menu, ClipBarMenu, Add,
-		Menu, ClipbarMenu, add, Show WholeBatches, ShowWholeBatches
-		Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
-		Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
-		Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
-		Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
-		Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
-		Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
-		Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
+		; Menu, ClipbarMenu, add, Show WholeBatches, ShowWholeBatches
+		; Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
+		; Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
+		; Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
+		; Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
+		; Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+		; Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
 		; Menu, ClipbarMenu, Add, Ften, :FtenMenu
+		; Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
 		Menu, ClipBarMenu, add, Show Final Label Copy, ShowFinalLabelCopy
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
 		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
-		Menu, ClipbarMenu, add, Manual &COAs folder, ShowManualCOA
+		Menu, ClipBarMenu, add, &Total CoAs, ShowFINAL_C_O_A
+		; Menu, ClipbarMenu, add, Manual &COAs folder, ShowManualCOA
 		Menu, ClipbarMenu, add, &mfg folder, Showmfg
 		Menu, ClipbarMenu, add, &GLOBAL VISION folder, ShowGlobalVision
 		; Menu, ClipBarMenu, add, Show EditBox, ShowEditBox, +Break
@@ -119,13 +120,14 @@ Class ClipBar{
 		Menu, ClipBarMenu, add, Add Data From Clipboard, #+!F10
 		Menu, ClipBarMenu, add, ParsespecsTable, #+^F10
 		Menu, ClipBarMenu, Add, Stop Timer, StopTimer
-		Menu, ClipbarMenu, add, Add Sample Log, !^+F3
+		Menu, ClipbarMenu, add, Add Sample Log, Add15SampleLog
 		Menu, ClipBarMenu, Add, Detect Clipboard, clipChange
 		if winactive("Results Definition") || winactive("Composition") || winactive("Results"){
 			Menu, ClipBarMenu, Add, USP Heavy Metal, Heavy_metals, +Break
 			Menu, ClipBarMenu, Add, Canada Heavy Metal, Heavy_metals
 			Menu, ClipBarMenu, Add, Prop65 Heavy Metal, Heavy_metals
 			Menu, ClipBarMenu, Add, Report Only Heavy Metal, Heavy_metals
+			Menu, ClipBarMenu, Add, Bloom Nutrition Heavy Metal, Heavy_metals
 			Menu, ClipBarMenu, Add, Custom Heavy Metal, Heavy_metals
 		}
 		Try Menu,ClipBarmenu,show
@@ -235,7 +237,7 @@ Class ClipBar{
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
 		; if SampleID
-			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+		; 	iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		; else

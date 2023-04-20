@@ -45,26 +45,27 @@
       WholeBatchesArray.insert(a_LoopField)
 
 	Menu,Tray,NoStandard
+	Menu, Tray, Add, All Products, AllProductsMsgbox
+	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
+
 	Menu, Tray, add, Manual &COAs folder, ShowManualCOA
 	Menu, Tray, add, &mfg folder, Showmfg
 	Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
 	Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
 	Menu, Tray, Add,
 	Menu, Tray, Add, Whole Batches, ShowWholeBatches
-	Menu, Tray, Add, All Products, AllProductsMsgbox
-	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, Show EditBox, ShowEditBox
-	Menu, Tray, add, Add Sample Log, !^+F3
-	Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
-	Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
-	Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
-	Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
-	Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
-	Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
-	Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
-Menu, Tray, Add, Ften, :FtenMenu
+	Menu, Tray, add, Add Sample Log, Add15SampleLog
+	; Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
+	; Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
+	; Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
+	; Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
+	; Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
+	; Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
+	; Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
+	; Menu, Tray, Add, Ften, :FtenMenu
 
 	Menu, Tray, Add,
 	Menu, Tray, Add, Show Variables, ShowVariables
@@ -73,7 +74,6 @@ Menu, Tray, Add, Ften, :FtenMenu
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
-
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -83,9 +83,9 @@ Menu, Tray, Add, Ften, :FtenMenu
 	regexMaxLimit:="i)(<|NLT )?(?P<minLimit>(?<!NMT )[0-9.,]*)"
 	regexunit:="i)(?P<unit>\w*)"
 	; if SampleIDMode=GUID
-		; RegexSampleID:="i)(?P<SampleID>([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+	RegexSampleID:="i)(?P<SampleID>[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else if SampleIDMode=SampleID
-		RegexSampleID:="i)(?P<SampleID>22[0-1][0-9][09]{4}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+		; RegexSampleID:="i)(?P<SampleID>22[0-1][0-9][09]{4}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else
 		; sampleID:=
 
@@ -181,12 +181,23 @@ windowSpy(){
   }
 
 AllBatchesMsgbox:
-	AllBatchesMsg:=GetAllBatches(" ")
+	AllBatchesMsg:=Trim(GetAllBatches(" ",1))
+	tt(AllBatchesMsg)
+	; clip.EditBox(AllBatchesMsg)
+	return
+AllBatchesNoMsgbox:
+	AllBatchesMsg:=Trim(GetAllBatches(" "))
 	tt(AllBatchesMsg)
 	; clip.EditBox(AllBatchesMsg)
 	return
 AllProductsMsgbox:
-	AllProductsMsg:=GetAllProducts(" ")
+	AllProductsMsg:=Trim(GetAllProducts(" ",1))
+	sleep 600
+	tt(AllProductsMsg)
+	; clip.EditBox(AllProductsMsg)
+	return
+AllProductsNoMsgbox:
+	AllProductsMsg:=Trim(GetAllProducts(" "))
 	sleep 600
 	tt(AllProductsMsg)
 	; clip.EditBox(AllProductsMsg)
@@ -194,6 +205,9 @@ AllProductsMsgbox:
 ShowWholeBatches:
 	run, edit WholeBatches.txt
 	return
+Add15SampleLog:
+	LMS.AddsampleLog(15)
+	Return
 ShowVariables:
 	listvars
 	; run, edit Settings.ini
@@ -282,11 +296,11 @@ activeCheck:
 		sleep 300
 		return
 	}
-	; else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
-		; TT(CodeString "`n" SampleID,2000,,,2)
-		; TT(copiedText "`n",2000,,65,4)
-		; TT(clipboard,1000,2,450,3)
-		; }
+	else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
+		GetAllBatches()
+		GetAllProducts()
+
+		TT(AllProducts "`n" AllBatches,2000,,,2)
 	; else If winexist("Release: Rotational Testing Schedule"){
 	; 	winactivate,
 	; 	click 131, 141 ;click release
@@ -299,6 +313,8 @@ activeCheck:
 	; 	sendinput, {down}{enter}
 	; 	return
 	; }
+	return
+	}
 	else If winexist("Release: ahk_exe eln.exe"){
 		winactivate
 		click 128,146

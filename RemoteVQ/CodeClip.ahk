@@ -25,11 +25,18 @@ clipChange(type){
   else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
+    ClippedData:=Clipboard
+    FileDelete, ClippedExcelData.txt
+    sleep 400
+    FileAppend, %ClippedData%, ClippedExcelData.txt
     LMS.AddDataFromClipboard()
     return
   }
-  else if InStr(Clipboard, "<<QuIT>>",true, 1,1)
+  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    Clipboard:=
     exitsub()
+    Return
+  }
   else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
     TT(Description,2000)
@@ -183,6 +190,7 @@ Class Clip {
 			TotalColumns:=ParsedSpecs.maxindex()//2
 			Product:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Formulation ID") + TotalColumns],"`r`n")
 			VersionType:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Specification version type") + TotalColumns],"`r`n")
+			SampleID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Sample Guid") + TotalColumns],"`r`n")
 			Description:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Description") + TotalColumns],"`r`n")
       Clipped_SpecsTop:= Product  ": " VersionType
       ControlsetText, Edit1,%Product%,ClipBar
@@ -229,7 +237,7 @@ Class Clip {
       sleep 200
       Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
       TT(%Clippsed_Specs%,4000)
-      ; tooltip, %Clipped_specs%, 200,0
+        ; tooltip, %Clipped_specs%, 200,0
       return
 		}
 
@@ -367,22 +375,23 @@ Append(Delimiter:="`n"){
 }
 
 CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID,CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
+  global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
     Gui ClipBar:Default
     PriorCodestring:=CodeString
-    PriorSampleID:=SampleID
-    PriorBatch:=Batch
     codestring:=
-      Parse:= Input ? Input : Clipboard
+    PriorSampleID:=SampleID
+    ; SampleID:=
+    Parse:= Input ? Input : Clipboard
 
 
-      Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
-      Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
-      Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
+    Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
+    Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
+    Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
       ; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
       Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      ; SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+      SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
       if (Batch!=PriorBatch) && (!rlot && !rCoated){
+        PriorBatch:=Batch
         Lot:=
         Coated:=
       }
@@ -398,13 +407,21 @@ CodesRegex(input:=""){
         GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
         GUI, ClipBar:submit,NoHide
-      codeString:=trim(Product " " Batch " " Lot Ct Coated " [[" CustomerPosition "]]")
+      codeString:=trim(Product " " Batch " " Lot Ct Coated)
       if (PriorCodestring!=Codestring){
+
         FileDelete, %CodeFile%
         sleep 200
         FileAppend, %CodeString%, %CodeFile%
       }
-      TT(trim(Product " " Batch " " Lot Ct Coated))
+      if (priorSampleID!=SampleID){
+        FileDelete, SampleID.txt
+        sleep 200
+        FileAppend, %sampleID%, SampleID.txt
+        if WinActive("Nugenesis LMS")
+        FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
+      }
+      TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID))
      Return
 }
 
