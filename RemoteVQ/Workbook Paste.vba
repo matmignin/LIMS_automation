@@ -19,11 +19,11 @@ ActiveCell.Select
     Selection.PasteSpecial xlPasteValues
     Application.CutCopyMode = False
    ' Range("$K$8:$R$100").Style = "IngredientAmounts"
-    Range("$K$8:$N$100").UnMerge
+    Range("$K$8:$M$150").UnMerge
 
 
-Set rngAmount = ws.Range("K8:M200").Find("Amount per *") 'change A1:Z100 to the range you want to search in
-Set rngServingSize = ws.Range("K8:M50").Find("*Serving Size*")
+Set rngAmount = ws.Range("L8:M150").Find("Amount per *") 'change A1:Z100 to the range you want to search in
+Set rngServingSize = ws.Range("L8:M50").Find("*Serving Size*")
 If Not rngServingSize Is Nothing Then
 ServingSize = Replace(rngServingSize, "Serving Size: ", "")
 ws.Range("B4").Value = ServingSize
@@ -33,9 +33,9 @@ End If
 If Not rngAmount Is Nothing Then
 Dim rngDailyValue As Range
 
-Set rngDailyValue = ws.Range("K8:M150").Find("*Daily Value not* established*")   'change A1:Z100 to the range you want to search in
-Set rngPercentDaily = ws.Range("K8:M150").Find("*Percent Daily Values are*")
-'Set RngServingSize = ws.Range("K8:R50").Find("*Serving Size*")
+Set rngDailyValue = ws.Range("L8:M150").Find("*Daily Value not* established*")   'change A1:Z100 to the range you want to search in
+Set rngPercentDaily = ws.Range("L8:M150").Find("*Percent Daily Values are*")
+'Set RngServingSize = ws.Range("L8:R50").Find("*Serving Size*")
 
 'RngServingSize.Copy Range("B5")
     Dim rng As Range
@@ -49,7 +49,7 @@ Else
     'Application.ScreenUpdating = True
 'Columns("J:R").EntireColumn.Hidden = True
     Dim rngOtherIngredients As Range
-    Set rngOtherIngredients = ws.Range("K8:M150").Find("*Other Ingredients*")
+    Set rngOtherIngredients = ws.Range("L8:M150").Find("*Other Ingredients*")
     Set rng = ws.Range(ws.Cells(rngAmount.Row + 1, rngAmount.Column), ws.Cells(rngOtherIngredients.Row - 1, rngOtherIngredients.Column + 1))
     rng.Copy Range("B8")
     'MsgBox "Could not find the cell with the words '[*]*Daily Value'."
@@ -76,5 +76,60 @@ Application.ScreenUpdating = True
 End Sub
 
 
+'where to start the range column L12+
+"Supplement Facts" Or "Nutrition Facts"
+' next
+"Serving Size:" 1 Scoop (5.43 g)
+
+' list of rows to delete
+"Amount Per Serving,*Servings Per Container,% Daily Value,Calories,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Total Carbohydrate,Dietary Fiber,Total Sugars,*Added Sugars"
+
+*Percent Daily Values
+†Daily Value not established.
+* Daily value not established.
+*The % Daily Value tells
+"*Other Ingredients*"
+
+'gap to split
+Protein  20g
+Vitamin D  2.5mcg 
+Calcium  30mg
+Iron  6.2mg
+Potassium  290mg  
 
 
+
+
+
+
+
+
+'''''''''''''''''''''''''''''''''''delete rows
+
+Dim myCell As Range
+Dim myPhrases() As String
+Dim i As Integer
+
+' Define the range of cells to search
+Set myRange = Range("L12:L50") 'Change this to your desired range
+
+' Define the phrases to search for
+myPhrases = Split("Amount Per Serving,Servings per Container,Calories,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Total Carbohydrate,Dietary Fiber,Total Sugars,Added Sugars", ",")
+
+' Loop through each cell in the range
+For Each myCell In myRange
+
+    ' Loop through each phrase to search for
+    For i = LBound(myPhrases) To UBound(myPhrases)
+
+        ' If the cell contains the phrase, delete the cell and the two cells to the right
+        If InStr(myCell.Value, myPhrases(i)) > 0 Then
+            Range(Cells(myCell.Row, myCell.Column - 1), Cells(myCell.Row, myCell.Column + 5)).Delete xlShiftUp
+              Exit For 'Exit the loop once a match is found'
+        End If
+          Next i
+
+
+Next myCell
+
+End Sub
