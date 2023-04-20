@@ -113,6 +113,24 @@ Dim i As Integer
 ' Define the range of cells to search
 Set myRange = Range("L12:L50") 'Change this to your desired range
 
+
+    
+    ' Find the first occurrence of either "Supplement Facts" or "Nutrition Facts" in column L
+    Dim startCell As Range
+    Set startCell = Columns("L").Find(What:="Supplement Facts", LookIn:=xlValues, LookAt:=xlPart)
+    If startCell Is Nothing Then
+        Set startCell = Columns("L").Find(What:="Nutrition Facts", LookIn:=xlValues, LookAt:=xlPart)
+    End If
+    
+    ' If a startCell is found, determine the start row for myRange
+    If Not startCell Is Nothing Then
+        startRow = Application.Min(startCell.Row, myRange.Cells(1).Row)
+        Set myRange = Range("L" & startRow & ":L50")
+    End If
+
+
+
+
 ' Define the phrases to search for
 myPhrases = Split("Amount Per Serving,Servings per Container,Calories,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Total Carbohydrate,Dietary Fiber,Total Sugars,Added Sugars", ",")
 
@@ -123,8 +141,10 @@ For Each myCell In myRange
     For i = LBound(myPhrases) To UBound(myPhrases)
 
         ' If the cell contains the phrase, delete the cell and the two cells to the right
-        If InStr(myCell.Value, myPhrases(i)) > 0 Then
+       ` If InStr(myCell.Value, myPhrases(i)) > 0 Then
+        If InStr(1, myCell.Value, myPhrases(i), vbTextCompare) > 0 Then
             Range(Cells(myCell.Row, myCell.Column - 1), Cells(myCell.Row, myCell.Column + 5)).Delete xlShiftUp
+            i = LBound(myPhrases) 'Restart the loop from the
               Exit For 'Exit the loop once a match is found'
         End If
           Next i
