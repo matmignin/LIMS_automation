@@ -26,15 +26,17 @@ Class LMS { ;;[[ Generl LMS ]]
 		Global
 		try Menu,Menu, deleteAll
 		MouseGetPos, mX, mY, mWin
-		Menu, Menu, add, Paste All &Products, PasteAllProducts
-		Menu, Menu, add, Paste All &Batches, PasteAllBatches
+		Menu, Menu, add, Paste All Clipboard &Products, PasteAllProducts
+		Menu, Menu, add, Paste All Clipboard &Batches, PasteAllBatches
 		Menu, Menu, add,
-			Menu, Menu, add, &Final Label Copy, ShowFinalLabelCopy
-			Menu, Menu, add, &Scan Label Copy, ShowScanLabelCopy
-			Menu, Menu, add, Manual &COAs folder, ShowManualCOA
-			Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
-			Menu, Menu, add, &mfg folder, Showmfg
-			Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
+		Menu, Menu, add, &Final Label Copy`t[%Product%], ShowFinalLabelCopy
+		Menu, Menu, add, &Scan Label Copy, ShowScanLabelCopy
+		Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
+		Menu, Menu, add, &mfg folder, Showmfg
+		Menu, Menu, add, Manual &COAs folder, ShowManualCOA
+		Menu, Menu, add,
+		Menu, Menu, add, &Total CoAs, ShowFINAL_C_O_A
+		Menu, Menu, add,
 			Menu, Menu, add, Add Sample Logs, Add15SampleLog
 			; Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
 			; Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler

@@ -1,7 +1,7 @@
-try 
+try
 {
 RunWait "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
- /in "\\tsclient\RemoteVQ\RemoteVQ.ahk"
+/in "U:\RemoteVQ\RawFiles\RemoteVQ\RemoteVQ.ahk"
  /out "U:\RemoteVQ\RemoteVQ.exe"
  /icon "U:\RemoteVQ\icon.ico"
  /base "C:\Program Files\AutoHotkey\Compiler\AutoHotkeySC.bin"
@@ -12,8 +12,10 @@ RunWait "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
 Catch e
 {
    msgbox, Didnt Work `n `n %e%
+   clipboard:="<<QuIT>>"
 }
 ;tooltip
 ;sleep 5000
 ;traytip,,
 return
+

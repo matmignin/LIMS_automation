@@ -105,51 +105,56 @@ Potassium  290mg  
 
 
 '''''''''''''''''''''''''''''''''''delete rows
+Sub DeleteCellsContainingPhrases()
 
-Dim myCell As Range
-Dim myPhrases() As String
-Dim i As Integer
+    Dim myCell As Range
+    Dim myPhrases() As String
+    Dim i As Integer
 
-' Define the range of cells to search
-Set myRange = Range("L12:L50") 'Change this to your desired range
+    ' Define the range of cells to search
+    Dim myRange As Range
+    Set myRange = Range("L12:M100") 'Change this to your desired range
 
-
-    
     ' Find the first occurrence of either "Supplement Facts" or "Nutrition Facts" in column L
     Dim startCell As Range
     Set startCell = Columns("L").Find(What:="Supplement Facts", LookIn:=xlValues, LookAt:=xlPart)
     If startCell Is Nothing Then
         Set startCell = Columns("L").Find(What:="Nutrition Facts", LookIn:=xlValues, LookAt:=xlPart)
     End If
-    
-    ' If a startCell is found, determine the start row for myRange
+
+   ' If a startCell is found, determine the start row for myRange
     If Not startCell Is Nothing Then
         startRow = Application.Min(startCell.Row, myRange.Cells(1).Row)
-        Set myRange = Range("L" & startRow & ":L50")
+        Set myRange = Range("L" & startRow & ":M100")
+
+        ' Get the last row that has a non-blank cell in column K that follows the startCell
+        lastRow = startCell.Offset(1, -1).End(xlDown).Row
+        Set myRange = Range(myRange.Cells(1), Cells(lastRow, "M"))
     End If
 
 
 
+    ' Clear the cells in columns K-Q from lastRow+1 to the end of the worksheet
+    Range("K" & lastRow & ":Q" & Rows.Count).ClearContents
 
-' Define the phrases to search for
-myPhrases = Split("Amount Per Serving,Servings per Container,Calories,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Sodium,Total Carbohydrate,Dietary Fiber,Total Sugars,Added Sugars", ",")
+    ' Define the phrases to search for
+    myPhrases = Split("per serving,per Container,Calories,Total Fat,Saturated Fat,Trans Fat,Cholesterol,Carbohydrate,Dietary Fiber,Total Sugars,Added Sugars,Daily Value,ingredients", ",")
 
-' Loop through each cell in the range
-For Each myCell In myRange
+    ' Loop through each cell in the range
+    For Each myCell In myRange
 
-    ' Loop through each phrase to search for
-    For i = LBound(myPhrases) To UBound(myPhrases)
+        ' Loop through each phrase to search for
+        For i = LBound(myPhrases) To UBound(myPhrases)
 
-        ' If the cell contains the phrase, delete the cell and the two cells to the right
-       ` If InStr(myCell.Value, myPhrases(i)) > 0 Then
-        If InStr(1, myCell.Value, myPhrases(i), vbTextCompare) > 0 Then
-            Range(Cells(myCell.Row, myCell.Column - 1), Cells(myCell.Row, myCell.Column + 5)).Delete xlShiftUp
-            i = LBound(myPhrases) 'Restart the loop from the
-              Exit For 'Exit the loop once a match is found'
-        End If
-          Next i
+            ' If the cell contains the phrase, clear the cell and the two cells to the right
+            If InStr(1, myCell.Value, myPhrases(i), vbTextCompare) > 0 Then
+                Range(Cells(myCell.Row, myCell.Column), Cells(myCell.Row, myCell.Column + 5)).ClearContents
+                i = LBound(myPhrases) 'Restart the loop from the beginning
+                Exit For 'Exit the loop once a match is found
+            End If
 
+        Next i
 
-Next myCell
+    Next myCell
 
 End Sub
