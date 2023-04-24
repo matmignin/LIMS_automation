@@ -92,7 +92,7 @@
 	; Menu, Tray, Add, Test_1, test_1
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
-	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Code.txt"
+	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Code.txt"
 	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
 
@@ -171,8 +171,8 @@ StopTimer(){
   }
 Exitsub(){
 	global
-	ifwinnotexist, RemoteVQ ahk_exe explorer.exe
-		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ"
+	ifwinnotexist, VQ_Helper ahk_exe explorer.exe
+		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	exitApp
 	sleep 200
   }
@@ -296,7 +296,7 @@ activeCheck:
 		sleep 300
 		return
 	}
-	else if MouseIsOver("ClipBar ahk_exe RemoteVQ.exe"){
+	else if MouseIsOver("ClipBar ahk_exe VQ_Helper.exe"){
 		GetAllBatches()
 		GetAllProducts()
 

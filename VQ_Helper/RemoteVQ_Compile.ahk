@@ -1,9 +1,9 @@
 try
 {
 RunWait "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
-/in "U:\RemoteVQ\RawFiles\RemoteVQ\RemoteVQ.ahk"
- /out "U:\RemoteVQ\RemoteVQ.exe"
- /icon "U:\RemoteVQ\icon.ico"
+/in "U:\VQ_Helper\RawFiles\VQ_Helper\VQ_Helper.ahk"
+ /out "U:\VQ_Helper\VQ_Helper.exe"
+ /icon "U:\VQ_Helper\icon.ico"
  /base "C:\Program Files\AutoHotkey\Compiler\AutoHotkeySC.bin"
  /compress 0
  traytip, ,worked

@@ -66,7 +66,7 @@ Class ClipBar{
 					sleep 200
 					FileAppend, %CodeString%, %CodeFile%
 				}
-			; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\Settings.ini, SavedVariables, Code
+			; iniwrite, %CodeString%, \\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Settings.ini, SavedVariables, Code
 
 		return
 		ClipBarGuiClose:
@@ -146,11 +146,11 @@ Class ClipBar{
 	Focus(Control){
 		global
 		; winGetTitle, the_winTitle, A
-		winactivate, ClipBar ahk_exe RemoteVQ
+		winactivate, ClipBar ahk_exe VQ_Helper.exe
 		; caret_x:=A_CaretX
 		GuiControl ClipBar:Focus, %Control%
 		; caret_y:=A_Carety
-		; winactivate, ClipBar ahk_exe RemoteVQ
+		; winactivate, ClipBar ahk_exe VQ_Helper
 		; FlashScreen()
 		Sendinput, +{left}
 		return
@@ -267,7 +267,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 	}
 }
 ; WM_LBUTTONDOWN(wParam, lParam){
-; 		If !MouseIsOver("ClipBar ahk_exe RemoteVQ")
+; 		If !MouseIsOver("ClipBar ahk_exe VQ_Helper")
 ; 		return
 ; 		PostMessage, 0xA1, 2
 ; 				X := lParam & 0xFFFF
@@ -279,9 +279,9 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, ClipBar ahk_exe RemoteVQ.exe
+#Ifwinactive, ClipBar ahk_exe VQ_Helper.exe
 	enter::
-		ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ.exe
+		ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper.exe
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 			GUI, ClipBar:default
 			Gui, ClipBar:submit, nohide
@@ -290,14 +290,14 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 			else if (winControl="Edit4"){
 				Coated:=
 				GUI, ClipBar:default
-				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe RemoteVQ.exe
+				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper.exe
 				Gui, ClipBar:submit, nohide
 				iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			}
 
 	return
 	Mbutton::
-			; ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ
+			; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
 			; MouseGetPos, , , winid, wincontrol
 			; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 				ClipBar.Menu()
@@ -306,13 +306,13 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 			; else if (winControl="Edit4"){
 				; Coated:=
 				; GUI, ClipBar:default
-				; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe RemoteVQ
+				; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
 				; Gui, ClipBar:submit, nohide
 				; iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			; }
 #ifwinactive
 	WM_LBUTTONDOWN(wParam, lParam){
-		If !MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+		If !MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
 		return
 		PostMessage, 0xA1, 2
 				X := lParam & 0xFFFF
@@ -323,13 +323,13 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 				MouseGetPos,,,,winControl
 				return
 	}
-#If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
+#If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
 
 
 
 Mbutton::reloadSub()
 Rbutton::
-		; ControlGetFocus,winControl,ClipBar ahk_exe RemoteVQ
+		; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
 		MouseGetPos, , , winid, wincontrol
 		if (winControl="Edit1")
 			GetAllProducts()

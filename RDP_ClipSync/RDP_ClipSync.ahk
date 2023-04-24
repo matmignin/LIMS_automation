@@ -4,7 +4,7 @@ SetWorkingDir, %A_ScriptDir%
 #Persistent
 Process, Priority, , High
 #NoEnv
-ClipFile:="\\10.1.2.118\users\vitaquest\mmignin\RemoteVQ\clipboard.txt"
+ClipFile:="\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\clipboard.txt"
 ; #ClipboardTimeout 7500
 ; SetNumlockState, on
 	SetscrolllockState, off

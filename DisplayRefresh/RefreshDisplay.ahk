@@ -30,7 +30,7 @@ StopTimer(){
   }
 Exitsub(){
 	global
-	; ifwinnotexist, RemoteVQ ahk_exe explorer.exe
+	; ifwinnotexist, VQ_Helper ahk_exe explorer.exe
 	exitApp
 	sleep 200
   }
