@@ -823,53 +823,7 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 return
 
 
-; class SpecTab
-; {
-;     __New()
-;     {
-;         global
-;         this.Table_height := Table_height
-;         this.Name := Name
-;         this.Requirement := Requirement
-;         this.MinLimit := MinLimit
-;         this.MaxLimit := MaxLimit
-;         this.Units := Units
-;         this.Percision := Percision
-;         this.Description := Description
-;         this.Method := Method
-;         this.Product := Product
-;         this.LabelClaim := LabelClaim
-;     }
 
-;     Create()
-;     {
-;         GUI, Spec_Table:destroy
-;         GUI, Spec_Table:Default
-;         if (this.Table_height > 8)
-;             this.Table_height := 12
-;         if (!this.Table_height)
-;             this.Table_height := 8
-;         Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-;         GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
-;         GUI, Spec_Table:Add, ListView, x0 y0 w360 r%this.Table_height% Grid checked altSubmit -hdr gSpec_Table, `t%this.Product%|`t%this.Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-;         OnMessage(0x0201, "WM_Lbuttondown")
-;         for index, val in this.Name
-;         {
-;             if (!this.Requirement[index])
-;                 continue
-;             this.LV_add(index)
-;             temp := this.LabelClaim[index] "|" this.MinLimit[index]"|" this.MaxLimit[index]"|" this.Units[index]"|" this.Percision[index] "|" this.Description[index] "|" this.Method[index]
-;             Test := this.Name[index]
-;         }
-;         ; CoordMode, mouse, screen
-;     }
-
-;     LV_add(index)
-;     {
-;         LV_add(,"" this.Name[index], this.Requirement[index], this.MinLimit[index], this.MaxLimit[index], this.Units[index], this.Percision[index], this.Description[index], this.Method[index])
-;     }
-; }
-; }
 
 class SpecTab { 	;; _________SpecTab class_______
 
@@ -950,19 +904,7 @@ class SpecTab { 	;; _________SpecTab class_______
 				SpecTab.GetRowText(A_ThisMenuItemPos)
 				winactivate, ahk_exe eln.exe
 
-				; SpecMsg:= Name[A_ThisMenuItemPos] " LabelClaim " LabelClaim[A_ThisMenuItemPos] " `t"  Requirement[A_ThisMenuItemPos] "`n MinLimit " MinLimit[A_ThisMenuItemPos] "`n MaxLimit " MaxLimit[A_ThisMenuItemPos] "`n Units " Units[A_ThisMenuItemPos] "`n Percision " Percision[A_ThisMenuItemPos] "`n Description " Description[A_ThisMenuItemPos] "`n Method " Method[A_ThisMenuItemPos]
-				; Name:= Name[A_ThisMenuItemPos]
-				; LabelClaim:= LabelClaim[A_ThisMenuItemPos]
-				; Requirement:= Requirement[A_ThisMenuItemPos]
-				; MinLimit:= MinLimit[A_ThisMenuItemPos]
-				; MaxLimit:= MaxLimit[A_ThisMenuItemPos]
-				; Units:= Units[A_ThisMenuItemPos]
-				; Percision:= Percision[A_ThisMenuItemPos]
-				; Description:= Description[A_ThisMenuItemPos]
-				; Method:= Method[A_ThisMenuItemPos]
-				; SpecMsgvar:=A_ThisMenuItemPos "`n menuitemname" A_ThisMenuItem  "`n" Name " LabelClaim " LabelClaim " `t"  Requirement "`n MinLimit " MinLimit "`n MaxLimit " MaxLimit "`n Units " Units "`n Percision " Percision "`n Description " Description "`n Method " Method
-				; ; Try GUI, Spec_Table:destroy
-				; TT(SpecMsgVar,2000, 0,0,3)
+
 
 				SpecTab.Autofill()
 				}

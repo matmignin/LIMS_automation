@@ -23,27 +23,6 @@
 
 
 
-	; ;; OLD?;add a bunch of sample log tests
-	; 	Loop 20
-	; 	{
-	; 		Breaking.Point()
-	; 		MouseGetPos, xpos, ypos
-	; 		if winactive("NuGenesis LMS")
-	; 			Click, 2
-	; 		sleep 500
-	; 		Breaking.Point()
-	; 		if winactive("Edit test (Field Configuration: ")
-	; 			Sendinput,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
-	; 		Sleep 300
-	; 		winactivate, NuGenesis LMS
-	; 		sleep 400
-	; 		Breaking.Point()
-	; 		mousemove, xpos, ypos+26,0
-	; 		click
-	; 		sleep 300
-	; 		Breaking.Point()
-	; 	}
-		; return
 ;;[[ LMS KEYBINDINGS ]]
 
 #ifWinExist, Select Product ahk_exe EXCEL.EXE

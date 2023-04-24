@@ -326,45 +326,6 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 #If MouseIsOver("ClipBar ahk_exe RemoteVQ.exe")
 
 
-; $wheelleft::GoSub, AllProductsMsgbox
-; 	; If BlockingWheel
-; 	; 		return
-; 	; #maxthreadsperhotkey, 1
-; 	; 	BlockingWheel:=1
-; 	; GoSub, AllProductsMsgbox
-; 	; SetTimer, BlockTheWheel, -3000
-; 	; 	#maxthreadsperhotkey, 2
-; 	; return
-
-; $wheelright::NumberMenu(6)
-; ; 	If BlockingWheel
-; ; 			return
-; ; 	BlockingWheel:=1
-; ; 	NumberMenu(6)
-; ; 	sleep 2000
-; ; ; GoSub, AllBatchesMsgbox
-; ; ; sleep 2000
-; ; 	BlockingWheel:=
-; ; 	Return
-; $wheelup::ClipBar.Menu()
-; 	; If BlockingWheel
-; 	; 		return
-; 	; #maxthreadsperhotkey, 1
-; 	; BlockingWheel:=1
-; 	; ClipBar.Menu()
-; 	; 	#maxthreadsperhotkey, 2
-; 	; SetTimer, BlockTheWheel, -3000
-; 	; return
-
-; $wheeldown::WholeBatchMenu()
-; 	; If BlockingWheel
-; 	; 		return
-; 	; #maxthreadsperhotkey, 1
-; 	; 	BlockingWheel:=1
-; 	; WholeBatchMenu()
-; 	; SetTimer, BlockTheWheel, -3000
-; 	; 	#maxthreadsperhotkey, 2
-; 	; return
 
 Mbutton::reloadSub()
 Rbutton::
