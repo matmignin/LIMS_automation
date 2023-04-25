@@ -1,3 +1,5 @@
+clipboard:=
+FileRead, Clipboard, QuIT.txt
 try
 {
 RunWait "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
@@ -12,7 +14,6 @@ RunWait "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
 Catch e
 {
    msgbox, Didnt Work `n `n %e%
-   clipboard:="<<QuIT>>"
 }
 ;tooltip
 ;sleep 5000

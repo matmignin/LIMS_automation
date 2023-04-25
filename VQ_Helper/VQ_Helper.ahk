@@ -460,8 +460,9 @@ WholeBatchMenu(){
 	global
 	try Menu, CodeMenu, DeleteAll
 	FileRead, WholeBatches, WholeBatches.txt
-	Loop, parse, WholeBatches, "`n"
-		Menu, CodeMenu, Add, [[%A_Index%]] %a_LoopField%, WholeBatchMenubutton,
+	WholeBatches:=Trim(StrReplace(WholeBatches, "`n`n", ""))
+	Loop, parse, WholeBatches, "`r"
+		Menu, CodeMenu, Add, &%A_Index% `t %a_LoopField%, WholeBatchMenubutton,
 	Try Menu,CodeMenu,show
 	return
 

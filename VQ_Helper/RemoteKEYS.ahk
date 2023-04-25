@@ -278,6 +278,8 @@
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
 	F6::LMS.SearchBar(Product,"{enter}",0)
+
+	
 ;;[[ LMS APP ]]
 #Ifwinactive, ahk_exe eln.exe
 	enter::LMSclick.okay()
