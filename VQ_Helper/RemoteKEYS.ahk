@@ -21,7 +21,37 @@
 			return
 	}
 
+	#If MouseIsOver("ClipBar")
 
+	wheelup::Clipbar.AddIteration(500)
+	wheeldown::Clipbar.SubIteration(500)
+
+
+	Mbutton::reloadSub()
+	Rbutton::
+			; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
+			MouseGetPos, , , winid, wincontrol
+			if (winControl="Edit1")
+				GetAllProducts()
+			else if (winControl="Edit2")
+				GetAllBatches()
+			else if (winControl="Edit3"){
+				Lot:=
+				GUI, ClipBar:default
+				ControlsetText, Edit3,%Lot%,ClipBar
+				iniwrite, Lot, Settings.ini, SavedVariables, Lot
+			}
+			else if (winControl="Edit4"){
+				Coated:=
+				GUI, ClipBar:default
+				ControlsetText, Edit4,%Coated%,ClipBar
+				iniwrite, Coated, Settings.ini, SavedVariables, Coated
+			}
+			else if (winControl="Edit5")
+				worktab.CustomerMenu()
+			return
+
+	#if
 
 ;;[[ LMS KEYBINDINGS ]]
 
@@ -48,12 +78,9 @@
 			sendinput, {Click 112, 63}%Product%{enter}{enter}
 			return
 
-#ifwinactive, Result Editor ;;    Result Editor
-	F10::
-	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 
 ; #ifwinactive, Test Definition Editor ;;    Test Definition Editor
-	; 		mbutton::mouseclick, left, 333, 615
+; 		mbutton::mouseclick, left, 333, 615
 
 #ifwinactive, Edit sample template ;;    Edit sample template
 	F7::Sendinput, %Product%
@@ -77,9 +104,30 @@
 	Enter::LMS.Okay()
 	+Enter::Sendinput, {enter}
 
+
+
 #ifwinactive, Composition ;;    Composition
 	F10::
+	^v::
+		Clk(56, 66) ;click add
+		winwait, Edit Ingredient
+		gosub, Paste_Clipped_Ingredient
+		return
 	mbutton::ProductTab.Table()
+
+#Ifwinactive,Edit Ingredient
+	F10::
+	Mbutton::
+	Paste_Clipped_Ingredient:
+		mouseclick, left, 244, 133,1,0
+		sendinput, {tab 4}^{a}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim% ;click potencty box
+		if (clipped_IngredientGroup)
+			Sendinput, {Tab}%clipped_IngredientGroup%	;ingredientgroup
+		mousemove, 280, 558, 0
+		Tooltip
+		return
+
+
 #ifwinactive, Select methods tests ;;    Select methods tests
 	F10::
 	mbutton::clk(854, 658)
@@ -121,17 +169,19 @@
 	F9::send, ^{e}
 	F7::
 		winactivate, ahk_exe explorer.exe
-		; SetKeyDelay, 2, 1
 		sendinput, ^{e}{*}%Product%{*}
 		sleep 300
 		sendinput, {tab 2}{right}{pgup 2}
-	; SetKeyDelay, -1, -1
 		return
 	F8::send, ^{F4}
 	; F10::
 	Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
 	+Mbutton::SelectPreviewPane()
-	F6::send, ^{e}{tab 2}{right}
+	F6::
+	winactivate, ahk_exe explorer.exe
+		sendinput, ^{e}
+		send, {tab 2}{right}
+		return
 	F10::SelectPreviewPane(Product)
 
 #ifwinactive, Edit test `(Field Configuration ;;    Edit test (Field Configuration
@@ -143,17 +193,7 @@
 		sendinput, {Click 334, 618}
 		return
 
-#Ifwinactive,Edit Ingredient
-	F10::
-	Mbutton::
-	Paste_Clipped_Ingredient:
-		mouseclick, left, 244, 133,1,0
-		sendinput, {tab 4}^{a}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim% ;click potencty box
-		if (clipped_IngredientGroup)
-			Sendinput, {Tab}%clipped_IngredientGroup%	;ingredientgroup
-		mousemove, 280, 558, 0
-		Tooltip
-		return
+
 
 #Ifwinactive,Select Iterations
 	^F9::LMS.PasteProductRotation()
@@ -173,21 +213,27 @@
 		Breaking.Point()
 		winactivate, Results
 		sleep 100
-	; clk(338,617)
-	; sleep 400
-	; clk(910,668)
 		return
 	;enter::sendinput, {enter}
 
 #Ifwinactive, Result Entry ;;    Result_Entry
-
 	F7::numbermenu(6,"ToggleResults") ;WorkTab.CorrectTestResults("toggle", "Loop")
 	F6::WorkTab.CorrectTestResults(0,5)
-	F10::
+	F10::WorkTab.CorrectTestResults()
 	Mbutton::WorkTab.CorrectTestResults("Toggle")
 	F9::numbermenu(6)
-#Ifwinactive, Results ;;    Results_Definition:
+
+#Ifwinactive, Results Definition ;;    Results_Definition:
 	+mbutton::SpecTab.Autofill()
+	; ^v::
+	; If InStr(Clipboard, "Use the limits from the test", true,1,1){
+	; 	clip.ParseSpecsTable(1)
+	; msgbox, after the clipboard
+	; return
+	; }
+	; else
+	; 	sendinput, ^v
+	; return
 	F10::
 	mbutton::
 		winactivate, Results
@@ -201,25 +247,53 @@
 				clipped_Specs:=
 				sleep 100
 			}
-		If (MinLimit || MaxLimit) && !(FullRequirement)
-		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-		else If (MinLimit || MaxLimit) && (FullRequirement)
-			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirement)
+		If (MinLimit || MaxLimit) && !(FullRequirements)
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+		else If (MinLimit || MaxLimit) && (FullRequirements)
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 		else If (!MinLimit && !MaxLimit)
 		{
-			inputbox, MinLimit, MinLimit, MinLimit
-				inputbox, MaxLimit, MaxLimit, maxLimit
-			inputbox, Units, Units, Units
+			inputbox, InputBoxString, inputstring, Min Limit,Max Limit,Units,Requirement
+				ParsedString:=StrSplit(InputBoxString,",")
+				MinLimit:=ParsedString[1]
+				MaxLimit:=ParsedString[2]
+				If ParsedString[3]
+					FullRequirements:=ParsedString[3]
+				Else
+					FullRequirements:=1
+				If ParsedString[4]
+					Units:=ParsedString[4]
+				Else
+					Units:=""
+			; inputbox, Units, Units, Units
 			sleep 200
 			Breaking.Point()
-			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,"",1,1)
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,"",1,FullRequirements)
 			minlimit:=
 			maxlimit:=
 			units:=
 		}
 		else
 				return
+		return
 	F9::lms.menu()
+
+	#ifwinactive, Result Editor ;;    Result Editor
+	; ^v::
+	; 	If (Clipped_Specs){
+	; 		; TT(Clipped_Specs,1000,10,10)
+	; 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+	; 		return
+	; 		; WinWaitClose, Results Definition, , 20
+	; 		; Clipped_Specs:=
+	; 	}
+	; 	Else
+	; 		Sendinput, ^v
+	; 	return
+	F10::
+	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+
+
 
 #ifwinactive, Register new samples ;;    Register new samples
 	F6::
@@ -273,13 +347,27 @@
 		return
 	Mbutton::SpecTab.CopySpecTemplate()
 	F9::lms.Menu()
-	; F8::LMS.SearchBar("",,"False")
+	F8::LMS.SearchBar("",,"False")
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
+	^v::
+		If (Clipped_Specs){
+			TT(Clipped_Specs,1000,10,10)
+			spectab.Autofill()
+			return
+		}
+		else If InStr(Clipboard, "Use the limits from the test", true,1,1){
+			clip.ParseSpecsTable()
+			spectab.Autofill()
+			return
+		}
+		else
+			send, ^v
+		return
 	F6::LMS.SearchBar(Product,"{enter}",0)
 
-	
+
 ;;[[ LMS APP ]]
 #Ifwinactive, ahk_exe eln.exe
 	enter::LMSclick.okay()
@@ -331,6 +419,21 @@
 	:*:fm`;::`Finished, Micro
 	:*:ia`;::`In Process, Analytical
 	;:*:pia`;::%product%`, In Process, Analytical
+	:*:pm`;::
+		Sendinput, %product%`, Finished, Micro{tab 3}{right 5}{tab}{right 2}
+			Return
+	:*:pa`;::
+		sendinput, %product%`, In Process, Analytical{tab 3}{right 6}{tab}{right}
+			Return
+	:*:paa`;::
+		Sendinput, %product%`, In Process, Analytical (Annual){tab 3}{right 6}{tab}{right}
+			Return
+	:*:pp`;::
+		Sendinput, `In Process, Physical{tab 3}{right 7}{tab}{right}
+			return
+	:*:pr`;::
+		Sendinput, `In Process, Retain{tab 3}{right 7}{tab}{right}
+			return
 	:*:iaa`;::`In Process, Analytical (Annual)
 	;:*:piaa`;::%Product%`, In Process, Analytical (Annual)
 	:*:ip`;::`In Process, Physical
@@ -340,7 +443,7 @@
 	:*:ca`;::`Coated, Analytical
 	:*:cp`;::`Coated, Physical
 	:*:in`;::`ingredient
-	; :*:pa`;::`P. aeruginosa
+	; :*:Pa`;::`P. aeruginosa
 	:*:uc`;::`Update Total Coliforms Method
 
 

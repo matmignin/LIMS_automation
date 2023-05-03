@@ -6,8 +6,8 @@
 	Process, Priority, , High
 	#NoEnv
 	Thread, NoTimers
-	#HotkeyInterval 1000
-	#MaxHotkeysPerInterval 210
+	#HotkeyInterval 500
+	#MaxHotkeysPerInterval 200
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
@@ -105,6 +105,7 @@
 	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
+	traytip,VQ_Helper, Started
 	; SetWinDelay, %NormalWinDelay%
 
 
@@ -171,7 +172,7 @@ StopTimer(){
   }
 Exitsub(){
 	global
-	ifwinnotexist, VQ_Helper ahk_exe explorer.exe
+	ifwinnotexist, ahk_exe explorer.exe
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	exitApp
 	sleep 200
@@ -296,11 +297,11 @@ activeCheck:
 		sleep 300
 		return
 	}
-	else if MouseIsOver("ClipBar ahk_exe VQ_Helper.exe"){
+	else if MouseIsOver("ClipBar ahk_exe VQ_Helper"){
 		GetAllBatches()
 		GetAllProducts()
 
-		TT(AllProducts "`n" AllBatches,2000,,,2)
+		TT(AllProducts "`n" AllBatches,2000,100,100,2)
 	; else If winexist("Release: Rotational Testing Schedule"){
 	; 	winactivate,
 	; 	click 131, 141 ;click release
@@ -395,8 +396,9 @@ NumberMenubutton:
 	sleep 300
 	if runCorrectTestResults
 		WorkTab.CorrectTestResults("toggle", "Loop")
-		}
 
+		}
+		blockinput, off
 Return
 		}
 

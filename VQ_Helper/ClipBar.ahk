@@ -146,7 +146,7 @@ Class ClipBar{
 	Focus(Control){
 		global
 		; winGetTitle, the_winTitle, A
-		winactivate, ClipBar ahk_exe VQ_Helper.exe
+		winactivate, ClipBar ahk_exe VQ_Helper
 		; caret_x:=A_CaretX
 		GuiControl ClipBar:Focus, %Control%
 		; caret_y:=A_Carety
@@ -166,38 +166,47 @@ Class ClipBar{
 	AddIteration(speed:=300){
 		global Iteration, NAdd
 			If NAdd
-				exit
+				{
+					Sleep 500
+					return
+				}
 			; #maxthreadsperhotkey, 1
 			; #MaxHotkeysPerInterval, 500
-		; GuiControl, -redraw, ClipBar
-		NAdd:=1
-		sleep 55
-		Iteration+=1
-		sleep %Speed%
-		ControlsetText, Edit5,%Iteration%,ClipBar
-		; sleep 100
+			NAdd:=1
+			sleep 55
+			Iteration+=1
+			ControlsetText, Edit5,%Iteration%,ClipBar
+			; sleep 100
 			; #MaxHotkeysPerInterval, 70
-		NAdd:=0
-		;CustomerPosition:=Iteration
-		; #maxthreadsperhotkey, 2
+			tt(Iteration)
+			CustomerPosition:=Iteration
+			sleep %Speed%
+			; #maxthreadsperhotkey, 2
+			NAdd:=
+
+			; GuiControl, -redraw, ClipBar
 		return
 	}
 	SubIteration(speed:=300){
-		global Iteration, NSub
-			If Nsub
-				exit
-			; #maxthreadsperhotkey, 1
+		global Iteration, NAdd
+		If NAdd
+			{
+				sleep 500
+			return
+			}
+		; #maxthreadsperhotkey, 1
 		; #MaxHotkeysPerInterval, 500
-		Nsub:=1
+		NAdd:=1
 		; GuiControl, -redraw, ClipBar
 		sleep 55
 		Iteration-=1
-		sleep %speed%
 		ControlsetText, Edit5,%Iteration%,ClipBar
 		; sleep 100
-		Nsub:=0
-		;CustomerPosition:=Iteration
-			; #maxthreadsperhotkey, 2
+		tt(Iteration)
+		CustomerPosition:=Iteration
+		NAdd:=
+		; #maxthreadsperhotkey, 2
+		sleep %speed%
 		return
 	}
 
@@ -279,9 +288,9 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, ClipBar ahk_exe VQ_Helper.exe
+#Ifwinactive, ClipBar ahk_exe VQ_Helper
 	enter::
-		ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper.exe
+		ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
 		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 			GUI, ClipBar:default
 			Gui, ClipBar:submit, nohide
@@ -290,7 +299,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 			else if (winControl="Edit4"){
 				Coated:=
 				GUI, ClipBar:default
-				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper.exe
+				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
 				Gui, ClipBar:submit, nohide
 				iniwrite, Coated, Settings.ini, SavedVariables, Coated
 			}
@@ -312,7 +321,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 			; }
 #ifwinactive
 	WM_LBUTTONDOWN(wParam, lParam){
-		If !MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
+		If !MouseIsOver("ClipBar ahk_exe VQ_Helper")
 		return
 		PostMessage, 0xA1, 2
 				X := lParam & 0xFFFF
@@ -323,35 +332,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 				MouseGetPos,,,,winControl
 				return
 	}
-#If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
 
-
-
-Mbutton::reloadSub()
-Rbutton::
-		; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
-		MouseGetPos, , , winid, wincontrol
-		if (winControl="Edit1")
-			GetAllProducts()
-		else if (winControl="Edit2")
-			GetAllBatches()
-		else if (winControl="Edit3"){
-			Lot:=
-			GUI, ClipBar:default
-			ControlsetText, Edit3,%Lot%,ClipBar
-			iniwrite, Lot, Settings.ini, SavedVariables, Lot
-		}
-		else if (winControl="Edit4"){
-			Coated:=
-			GUI, ClipBar:default
-			ControlsetText, Edit4,%Coated%,ClipBar
-			iniwrite, Coated, Settings.ini, SavedVariables, Coated
-		}
-		else if (winControl="Edit5")
-			worktab.CustomerMenu()
-		return
-
-#if
 
 
 ClipBar_ResetSub:

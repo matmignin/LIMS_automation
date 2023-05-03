@@ -1,22 +1,30 @@
-clipboard:=
-FileRead, Clipboard, QuIT.txt
-try
+Try
 {
-RunWait "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe"
-/in "U:\VQ_Helper\RawFiles\VQ_Helper\VQ_Helper.ahk"
+RunWait "U:\VQ_Helper\RawFiles\AHK\Compiler\Ahk2Exe.exe"
+ /in "U:\VQ_Helper\RawFiles\VQ_Helper.ahk"
  /out "U:\VQ_Helper\VQ_Helper.exe"
  /icon "U:\VQ_Helper\icon.ico"
- /base "C:\Program Files\AutoHotkey\Compiler\AutoHotkeySC.bin"
+ /base "U:\VQ_Helper\RawFiles\AHK\Compiler\Unicode 64-bit.bin"
  /compress 0
- traytip, ,worked
-;sleep 500
 }
 Catch e
 {
-   msgbox, Didnt Work `n `n %e%
+	msgbox,, Compile didnt work `n %e%
+	exit
 }
-;tooltip
-;sleep 5000
-;traytip,,
-return
 
+
+sleep 3000
+
+try
+{
+   Run "U:\VQ_Helper\VQ_Helper.exe"
+}
+catch e
+{
+	clipboard:="<<QuIT>>"
+	msgbox, , didnt work `n %e%
+	sleep 3000
+	Run "U:\VQ_Helper\VQ_Helper.exe"
+}
+return

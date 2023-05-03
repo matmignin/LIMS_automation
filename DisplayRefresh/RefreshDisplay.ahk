@@ -30,7 +30,10 @@ StopTimer(){
   }
 Exitsub(){
 	global
-	; ifwinnotexist, VQ_Helper ahk_exe explorer.exe
+	ifwinnotexist, ahk_exe explorer.exe
+		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
+	; if Compile
+		; Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
 	exitApp
 	sleep 200
   }

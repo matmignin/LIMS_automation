@@ -37,13 +37,23 @@ clipChange(type){
     exitsub()
     Return
   }
+  else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
+    Clipboard:=
+    ; tooltip, RuningCompile
+    sleep 3000
+    ; exitsub("1")
+    Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
+    exitapp
+    ; tooltip,
+    Return
+  }
   else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
     TT(Description,2000)
   }
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
   else if Winactive("Results Definition") || Winactive("Results")
-    clip.ParseSpecsTable()
+    clip.ParseSpecsTable(1)
   else if Winactive("Composition")
     clip.ParseIngredientsTable()
   else
@@ -131,14 +141,15 @@ Class Clip {
       tt(Clipped_ingredients 10000,1,1,2)
       return
 		}
-		ParseSpecsTable(Save:=1){
+  ParseSpecsTable(EnterData:=""){
 		global
     MinLimit:=
     MaxLimit:=
     Percision:=
     Clipped_Requirement:=
     Clipped_ParsedSpecs:=
-    FullRequirement:=
+    FullRequirements:=
+    AllowPrefixes:=
     Units:=
     Clipped_SeqNo:=
     Clipped_Method:=
@@ -153,15 +164,20 @@ Class Clip {
 			Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
 			Clipped_Requirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns], "`r`n")
       Clipped_ParsedSpecs:=Trim([HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
-			FullRequirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
+			FullRequirements:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
 			Units:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Unit") + TotalColumns],"`r`n")
+			AllowPrefixes:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Allow Prefixes") + TotalColumns],"`r`n")
 			Clipped_SeqNo:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Seq No") + TotalColumns],"`r`n")
       Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
-      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement "`n Percision: " Percision "`n Units: " Units
-      ; tt(Clipped_Specs,7000)
+      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " (" FullRequirements ") `n Percision: " Percision "`n Units: " Units "`n Allow Prefix: " AllowPrefixes
+      tt(Clipped_Specs,3000,100,300)
         ; tooltip, %Clipped_specs%, 200,0
+      If (EnterData){
+        sleep 300
+        Spectab.Autofill()
+      }
       return
 		}
   ParseMainSpecsTopTable(){
@@ -418,7 +434,7 @@ CodesRegex(input:=""){
         FileDelete, SampleID.txt
         sleep 200
         FileAppend, %sampleID%, SampleID.txt
-        if WinActive("Nugenesis LMS")
+        if WinActive("NuGenesis LMS")
         FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
       }
       TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID))
