@@ -231,8 +231,11 @@ Class LMS { ;;[[ Generl LMS ]]
 		Global
 		; sleep 300
 		If NBlock
-			Return
-		NBlock:=y
+			{
+				sleep 300
+				Return
+			}
+		NBlock:=1
 		WinActivate, NuGenesis LMS
 		if winactive("Select methods tests")
 			clk(246,77, 2)
@@ -262,7 +265,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					; return
 				; }
 			}
-			if (Tab="Specs") {
+			else if (Tab="Specs") {
 				; If (Code=Product) {
 					clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
 					clk(x%Tab%Search+10,yProductsSearch,,1,,0)
@@ -278,7 +281,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					send % PostCmd
 				return
 			}
-			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
+			else If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
@@ -292,7 +295,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput % PostCmd
 				return
 			}
-			If (Tab="Requests") {
+			else If (Tab="Requests") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search-20,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search-40,yWorkTabSearch,,1,,0)
@@ -312,7 +315,7 @@ Class LMS { ;;[[ Generl LMS ]]
 			}
 			else
 				sendinput, %Code%
-			sleep 300
+			; sleep 300
 			Nblock:=
 		}
 
@@ -429,6 +432,7 @@ Orient(){
 	Flovar_y:= NuH + NuY -28
 	ClipBar_nuY:=NuY
 	ClipBar_nuX:=NuX+450
+	BelowClipBar_nuY:=NuY +40
 	TabSelect:=NuW-10
 	DocumentMenuSection_X:=NuW-200
 	DocumentMenuDocument_X:=NuW-140
@@ -2720,17 +2724,29 @@ SwitchEnv(ServerEnv){
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
+	my:=100
+	Mx:=100
   if Simpleclip
 		return
+	MouseGetPos, mX, mY
+	; CoordMode, Mouse, screen
+	; CoordMode, ToolTip, screen
+		; CoordMode, ToolTip, Relative
 	sleep 20
+	if Position = M
+		tooltip, %msg%, %X%+%mX%, %Y%+%mY%,%N%
+	else
 		tooltip, %msg%, %X%+100, %Y%+100,%N%
+		; X+=100
+
+	; else
 	hwnd := winExist("ahk_class tooltips_class32")
-	; if Transparent
-		; winSet, Trans, %Transparent%, % "ahk_id" hwnd
+	if Transparent
+		winSet, Trans, %Transparent%, % "ahk_id" hwnd
 	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
 	; winSet, Trans, 200, %W%
-	CoordMode, ToolTip, screen
-	; CoordMode, ToolTip, Relative
+	; if Position = "S"
+
 	SetTimer, RemoveToolTip%N%, -%time%
 return
 RemoveToolTip:
@@ -2779,7 +2795,7 @@ class Breaking {
 }
 MouseIsOver(winTitle){
 	Global
-	MouseGetPos,,, win
+	MouseGetPos,,, win, WinControl
 Return winExist(winTitle . " ahk_id " . win)
 }
 

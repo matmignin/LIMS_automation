@@ -11,14 +11,14 @@ Class ClipBar{
 		ClipBar_H=33
 		ClipBar_H_max=56
 		ClipBar_T:=235
-		ClipBar_W=390
-		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
+		ClipBar_W=600
+		ClipBar_x:=Nugenesis_X+(Nugenesis_W/5)
 		; ClipBar_Y:=-Nugenesis_h
 		ClipBar_Y:=Nugenesis_Y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui ClipBar:Default
 		Gui, ClipBar:+Delimiter`n
-		winSet, Transparent, 100, %GUIID%
+		winSet, Transparent, 80, %GUIID%
 		GUI, ClipBar:color,DC734F, 97BA7F
 		; this.AddEdit("Product",	 "left h32 x1 y0 w65",				"16 Bold")
 			GUI,ClipBar:Font,			 s17 Bold , consolas
@@ -28,6 +28,7 @@ Class ClipBar{
 		this.AddEdit("Coated",	 "left h33 x+0 y0 wrap w72",		"9, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
 		This.AddEdit("Iteration", "x+2 h33 left y0 w62",			 "16 Bold 107C41, Consolas")	; Text1
+		this.AddEdit("GeneralBox",	 "x+10 h33 left y0 w200",		"8, Arial Narrow")
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
@@ -227,6 +228,7 @@ Class ClipBar{
 		ControlGetText, Lot, Edit3, ClipBar
 		ControlGetText, Coated, Edit4, ClipBar
 		ControlGetText, Iteration, Edit5, ClipBar
+		ControlGetText, GeneralBox, Edit6, ClipBar
 		Null:=""
 		sleep 100
 		if Product
@@ -245,6 +247,10 @@ Class ClipBar{
 			iniwrite, %Coated%, Settings.ini, SavedVariables, Coated
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
+		if GeneralBox
+			iniwrite, %GeneralBox%, Settings.ini, SavedVariables, GeneralBox
+		else
+			iniwrite, %Null%, Settings.ini, SavedVariables, GeneralBox
 		; if SampleID
 		; 	iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
@@ -261,6 +267,7 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 		iniRead, Batch, Settings.ini, SavedVariables, Batch
 		iniRead, Lot, Settings.ini, SavedVariables, Lot
 		iniRead, Coated, Settings.ini, SavedVariables, Coated
+		iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 
 		; if !Iteration
 			; GuiControl,ClipBar:Text, Iteration, %Iteration%
@@ -288,40 +295,9 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; }
 		return
 ;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
-#Ifwinactive, ClipBar ahk_exe VQ_Helper
-	enter::
-		ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
-		if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
-			GUI, ClipBar:default
-			Gui, ClipBar:submit, nohide
-			LMS.Searchbar(clipboard,"{enter}")
-		}
-			else if (winControl="Edit4"){
-				Coated:=
-				GUI, ClipBar:default
-				ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
-				Gui, ClipBar:submit, nohide
-				iniwrite, Coated, Settings.ini, SavedVariables, Coated
-			}
 
-	return
-	Mbutton::
-			; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
-			; MouseGetPos, , , winid, wincontrol
-			; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
-				ClipBar.Menu()
-				return
-			; }
-			; else if (winControl="Edit4"){
-				; Coated:=
-				; GUI, ClipBar:default
-				; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
-				; Gui, ClipBar:submit, nohide
-				; iniwrite, Coated, Settings.ini, SavedVariables, Coated
-			; }
-#ifwinactive
 	WM_LBUTTONDOWN(wParam, lParam){
-		If !MouseIsOver("ClipBar ahk_exe VQ_Helper")
+		If !MouseIsOver("ClipBar")
 		return
 		PostMessage, 0xA1, 2
 				X := lParam & 0xFFFF

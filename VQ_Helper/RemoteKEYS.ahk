@@ -20,38 +20,112 @@
 
 			return
 	}
-
+;;[[ ClipBar ]]
 	#If MouseIsOver("ClipBar")
+	wheelup::
+	If NAdd
+		{
+		sleep 500
+		return
+		}
+		NAdd:=1
+	; ControlGetFocus,winControl,ClipBar
+	if (wincontrol="Edit5")
+		Clipbar.AddIteration(500)
+	else if (winControl="Edit1"){
+		GetAllProducts(" ")
+			; ControlsetText, Edit6,%GetAllProducts(" ")%,ClipBar
+		}
+	else if (winControl="Edit2"){
+		GetAllBatches(" ")
+			; ControlsetText, Edit6,%AllBatches%,ClipBar
+			; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+		}
+	else ;(winControl="Edit3")
+			NAdd:=
+	sleep 500
+		NAdd:=
+	return
 
-	wheelup::Clipbar.AddIteration(500)
-	wheeldown::Clipbar.SubIteration(500)
 
 
-	Mbutton::reloadSub()
-	Rbutton::
-			; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
-			MouseGetPos, , , winid, wincontrol
-			if (winControl="Edit1")
-				GetAllProducts()
-			else if (winControl="Edit2")
-				GetAllBatches()
-			else if (winControl="Edit3"){
-				Lot:=
-				GUI, ClipBar:default
-				ControlsetText, Edit3,%Lot%,ClipBar
-				iniwrite, Lot, Settings.ini, SavedVariables, Lot
-			}
-			else if (winControl="Edit4"){
-				Coated:=
-				GUI, ClipBar:default
-				ControlsetText, Edit4,%Coated%,ClipBar
-				iniwrite, Coated, Settings.ini, SavedVariables, Coated
-			}
-			else if (winControl="Edit5")
-				worktab.CustomerMenu()
-			return
+
+	wheeldown::
+	If NAdd
+		{
+		sleep 500
+		return
+		}
+		NAdd:=1
+	if (wincontrol="Edit5")
+		Clipbar.SubIteration(200)
+	else if (winControl="Edit1")
+		Return
+	else if (winControl="Edit2")
+		Return
+	else ;(winControl="Edit3")
+		NAdd:=
+		sleep 500
+	NAdd:=
+	return
+
+
+
+	Mbutton::
+	; ControlGetFocus,winControl,ClipBar
+	if (wincontrol="Edit5")
+		worktab.CustomerMenu()
+	else if (winControl="Edit1")
+		GetAllProducts(" ")
+	else if (winControl="Edit2")
+		GetAllBatches(" ")
+	else if (winControl="Edit3")
+		ControlsetText, Edit3,,ClipBar
+	else if (winControl="Edit4")
+		ControlsetText, Edit4,,ClipBar
+	else
+		MenuCodeSelect()
+	return
+
 
 	#if
+
+	#Ifwinactive, ClipBar
+	enter::
+		GUI, ClipBar:default
+		Send, ^a^c
+		LMS.Searchbar(clipboard,"{enter}")
+		return
+	+enter::
+		GUI, ClipBar:default
+		Send, ^a^c
+		LMS.Searchbar(clipboard,"{enter}","False")
+		return
+		; ControlGetFocus,winControl,ClipBar
+		; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
+		; 	Gui, ClipBar:submit, nohide
+		; }
+		; 	else if (winControl="Edit4"){
+		; 		Coated:=
+		; 		GUI, ClipBar:default
+		;
+		; 		Gui, ClipBar:submit, nohide
+		; 		iniwrite, Coated, Settings.ini, SavedVariables, Coated
+		; 	}
+	; Mbutton::
+	; 		; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
+	; 		; MouseGetPos, , , winid, wincontrol
+	; 		; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
+	; 			ClipBar.Menu()
+	; 			return
+			; }
+			; else if (winControl="Edit4"){
+				; Coated:=
+				; GUI, ClipBar:default
+				; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
+				; Gui, ClipBar:submit, nohide
+				; iniwrite, Coated, Settings.ini, SavedVariables, Coated
+			; }
 
 ;;[[ LMS KEYBINDINGS ]]
 
@@ -540,7 +614,8 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 	FileDelete, AllProducts.txt
 	sleep 200
 	FileAppend, %AllProducts%, AllProducts.txt
-	if msg
+	ControlsetText, Edit6,%AllProducts%,ClipBar
+	if (msg && AllProducts!="")
 		clip.editbox(AllProducts)
 	Else
 			Return AllProducts
@@ -578,7 +653,8 @@ GetAllBatches(Delimiter:=" ",msg:=""){
 	FileDelete, AllBatches.txt
 	sleep 400
 	FileAppend, %AllBatches%, AllBatches.txt
-	if msg
+	ControlsetText, Edit6,%AllBatches%,ClipBar
+	if (msg && trim(AllBatches)!="")
 		clip.editbox(AllBatches)
 	Else
 			Return AllBatches

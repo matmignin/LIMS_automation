@@ -40,8 +40,7 @@ clipChange(type){
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
     Clipboard:=
     ; tooltip, RuningCompile
-    sleep 3000
-    ; exitsub("1")
+    sleep 1000
     Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
     exitapp
     ; tooltip,
@@ -329,23 +328,31 @@ EditBox(Input:=""){
 		GUI, EditBox:Font, s12 cBlack, Consolas
     gui, EditBox:Margin,1,1
 		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
-		GUI, EditBox:Show,Autosize, Result
-		GUI, EditBox:add, button, default gEditBoxButtonOK, OK
+    GUI, EditBox:add, button,default gEditBoxButtonOK, OK
+    If !Input
+      try GUI, EditBox:Destroy
+    else
+      GUI, EditBox:Show,Autosize, Result
     ; winSet, Transparent, 100, EditBox
 		return
 		EditBoxGuiClose:
+    editbox:=
     try GUI, EditBox:Destroy
     Return
 		EditBoxGuiEscape:
+    editbox:=
     try GUI, EditBox:Destroy
     Return
 		EditBoxButtonOK:
 		GUI, EditBox:submit
     if !Input
 			clipboard:=EditBox
+    sleep 200
     try GUI, EditBox:Destroy
     ; sleep 50
-  ; TT(Editbox,500,,,,200)
+  TT(Editbox,1000,ClipBar_X,33,,200)
+  if Editbox
+    ControlsetText, Edit6,%EditBox%,ClipBar
 		return
 
     EditBoxGuiSize:

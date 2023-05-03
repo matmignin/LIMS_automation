@@ -6,11 +6,11 @@
 	Process, Priority, , High
 	#NoEnv
 	Thread, NoTimers
-	#HotkeyInterval 500
+	#HotkeyInterval 1000
 	#MaxHotkeysPerInterval 200
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 7500
+	#ClipboardTimeout 3500
 	#HotkeyModifierTimeout 100
 	#maxthreadsperhotkey, 2
 	; #MaxThreadsBuffer Off
@@ -27,7 +27,7 @@
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
 	CoordMode, mouse, Window
-	CoordMode, Tooltip, relative
+	; CoordMode, Tooltip, relative
 	SetWorkingDir, %A_ScriptDir%
 	#winactivateForce
 	SetscrolllockState, alwaysoff
@@ -105,7 +105,8 @@
 	#include ClipBar.ahk
 	#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
-	traytip,VQ_Helper, Started
+	GUI, ClipBar:default
+	; TT("VQ_Helper Started",2000,100,100)
 	; SetWinDelay, %NormalWinDelay%
 
 
@@ -124,6 +125,7 @@ ReadIniFiles(){
 	iniRead, Batch, Settings.ini, SavedVariables, Batch
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
+	iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 	iniRead, SampleID, Settings.ini, SavedVariables, SampleID
 	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
 	; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
@@ -175,7 +177,6 @@ Exitsub(){
 	ifwinnotexist, ahk_exe explorer.exe
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	exitApp
-	sleep 200
   }
 windowSpy(){
   Run, WS.exe
@@ -297,11 +298,35 @@ activeCheck:
 		sleep 300
 		return
 	}
-	else if MouseIsOver("ClipBar ahk_exe VQ_Helper"){
-		GetAllBatches()
-		GetAllProducts()
 
-		TT(AllProducts "`n" AllBatches,2000,100,100,2)
+	else if MouseIsOver("ClipBar"){
+		ClipBar_x1:=Clipbar_x-110
+		ClipBar_x2:=Clipbar_x-50
+		ClipBar_x6:=Clipbar_x+265
+			if (winControl="Edit1"){
+				; GetAllProducts(" ")
+				TT(AllProducts,2000,ClipBar_x1,35,2,250)
+				sleep 1000
+			}
+				else if (winControl="Edit2"){
+					; GetAllBatches(" ")
+					TT(AllBatches,2000,ClipBar_x2,35,2,250)
+					sleep 1000
+				}
+
+			else if (winControl="Edit3")
+				return
+			else if (winControl="Edit4")
+				return
+			else if (winControl="Edit5")
+				return
+			else if (winControl="Edit6"){
+				TT(GeneralBox,2000,ClipBar_x6,35,2,250)
+				sleep 1000
+				}
+		; GetAllBatches()
+		; GetAllProducts()
+
 	; else If winexist("Release: Rotational Testing Schedule"){
 	; 	winactivate,
 	; 	click 131, 141 ;click release
@@ -314,6 +339,8 @@ activeCheck:
 	; 	sendinput, {down}{enter}
 	; 	return
 	; }
+		; while, MouseIsOver("ClipBar")
+		; 	sleep 300
 	return
 	}
 	else If winexist("Release: ahk_exe eln.exe"){

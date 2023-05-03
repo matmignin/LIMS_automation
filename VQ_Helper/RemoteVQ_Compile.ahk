@@ -1,3 +1,5 @@
+Sleep 400
+
 Try
 {
 RunWait "U:\VQ_Helper\RawFiles\AHK\Compiler\Ahk2Exe.exe"
@@ -14,7 +16,7 @@ Catch e
 }
 
 
-sleep 3000
+sleep 1000
 
 try
 {
