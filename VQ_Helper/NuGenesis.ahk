@@ -206,11 +206,11 @@ Class LMS { ;;[[ Generl LMS ]]
 	AddSampleLog(count)
 	{
 		global
-		clk(mX,mY)
+		; clk(mX,mY)
 		;SetWinDelay, %NormalWinDelay%
 		loop, %count%
 		{
-			click 46, 877
+			click 46, 842
 			Breaking.Point()
 			if !winactive("Edit test (Field Configuration: ")
 				winactivate
@@ -230,13 +230,14 @@ Class LMS { ;;[[ Generl LMS ]]
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
 		; sleep 300
-		If NBlock
-			{
-				sleep 300
-				Return
-			}
-		NBlock:=1
-		WinActivate, NuGenesis LMS
+		; If NAdd
+			; {
+				; sleep 300
+				; Return
+			; }
+		; NAdd:=1
+		WinActivate, ahk_exe eln.exe
+		sleep 200
 		if winactive("Select methods tests")
 			clk(246,77, 2)
 		else If winactive("Register new samples") {
@@ -316,7 +317,7 @@ Class LMS { ;;[[ Generl LMS ]]
 			else
 				sendinput, %Code%
 			; sleep 300
-			Nblock:=
+			; NAdd:=
 		}
 
 	}
@@ -939,7 +940,7 @@ class SpecTab { 	;; _________SpecTab class_______
 		Try GUI, Spec_Table:destroy
 		GUI, Spec_Table:Default
 		try Menu, SpecMenu, DeleteAll
-		i:=0
+		i:=
 		if Table_height > 8
 			Table_height =12
 		if !Table_height
@@ -960,6 +961,8 @@ class SpecTab { 	;; _________SpecTab class_______
 		Test:= Name[A_index]
 
 	}
+	return
+
 	SpecMenuButton:
 	if A_ThisMenuItemPos
 		{

@@ -406,8 +406,8 @@
 ;;[[ Nugenesis MAIN ]]
 #Ifwinactive, NuGenesis LMS
 	!F10::SpecTab.CopySpecTemplate()
+	+F10::  ; Fileread, ClippedData, ClippedExcelData.txt
 	+Mbutton::SpecTab.Table()
-	+F10::Fileread, ClippedData, ClippedExcelData.txt
 	^F10::LMS.AddSampleLog(15)
 	F10::
 		send,{click}
@@ -415,6 +415,7 @@
 			try Menu, SpecMenu, DeleteAll
 			Fileread, ClippedData, ClippedExcelData.txt
 			Clipboard:=ClippedData
+			sleep 200
 		}
 		MouseGetPos, Mx, My
 		Try Menu,SpecMenu,show

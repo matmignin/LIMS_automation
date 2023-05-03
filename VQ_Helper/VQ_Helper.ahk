@@ -7,10 +7,10 @@
 	#NoEnv
 	Thread, NoTimers
 	#HotkeyInterval 1000
-	#MaxHotkeysPerInterval 200
+	#MaxHotkeysPerInterval 210
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 3500
+	#ClipboardTimeout 9500
 	#HotkeyModifierTimeout 100
 	#maxthreadsperhotkey, 2
 	; #MaxThreadsBuffer Off
@@ -324,24 +324,7 @@ activeCheck:
 				TT(GeneralBox,2000,ClipBar_x6,35,2,250)
 				sleep 1000
 				}
-		; GetAllBatches()
-		; GetAllProducts()
-
-	; else If winexist("Release: Rotational Testing Schedule"){
-	; 	winactivate,
-	; 	click 131, 141 ;click release
-	; 	sleep 800
-	; 	click %DocumentMenuSection_X%, %DocumentMenu_Y% ;click dropdown for Section menu
-	; 	sendinput, {down}{enter}
-	; 	winwaitactive, Sign:,,3
-	; 	Sendpassword()
-	; 	click %DocumentMenuDocument_X%, %DocumentMenu_Y% ;click dropdown for Document Menu
-	; 	sendinput, {down}{enter}
-	; 	return
-	; }
-		; while, MouseIsOver("ClipBar")
-		; 	sleep 300
-	return
+		return
 	}
 	else If winexist("Release: ahk_exe eln.exe"){
 		winactivate
@@ -395,8 +378,6 @@ activeCheck:
 		winactivate,
 		send, {enter}
 	}
-
-
 	else
 		return
 
