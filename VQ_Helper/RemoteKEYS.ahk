@@ -153,7 +153,8 @@
 			return
 
 
-; #ifwinactive, Test Definition Editor ;;    Test Definition Editor
+#ifwinactive, Test Definition Editor ;;    Test Definition Editor
+;;{{    wheeldown::clk(464, 532,,2) ;add scroll block
 ; 		mbutton::mouseclick, left, 333, 615
 
 #ifwinactive, Edit sample template ;;    Edit sample template
@@ -213,9 +214,10 @@
 #ifwinactive, Edit Product ;;    Edit Product
 	F10::
 	mbutton::ProductTab.AddNewProduct()
-#Ifwinactive, Edit Formulation
+#Ifwinactive, Edit Formulation ;;    Edit Formulation
 	F10::
 	mbutton::ProductTab.AddNewFormulation()
+;;{{	wheeldown::clk(452, 473,,2)  ;add scroll block
 #Ifwinactive, Select samples for test:
 	F10::
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
@@ -366,7 +368,7 @@
 	; 	return
 	F10::
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-
+	;;{{    wheelDown::clk(503, 574,1) ;add scroll block
 
 
 #ifwinactive, Register new samples ;;    Register new samples

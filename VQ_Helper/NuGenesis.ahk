@@ -319,8 +319,8 @@ Class LMS { ;;[[ Generl LMS ]]
 			; sleep 300
 			; NAdd:=
 		}
-
 	}
+
 	SaveCode(){
 		global
 		sendinput, ^{a}^{c}
@@ -428,108 +428,106 @@ Class LMS { ;;[[ Generl LMS ]]
 Orient(){
 	global
 	winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
-	WbX:=WbX+400
-	Flovar_x:= NuX +900
-	Flovar_y:= NuH + NuY -28
-	ClipBar_nuY:=NuY
-	ClipBar_nuX:=NuX+450
-	BelowClipBar_nuY:=NuY +40
-	TabSelect:=NuW-10
-	DocumentMenuSection_X:=NuW-200
-	DocumentMenuDocument_X:=NuW-140
-	DocumentMenu_Y:=110
-	yTabSelect:=45
-	yTabDropdown:=45
+	; WbX:=WbX+400
+	; Flovar_x:= NuX +900
+	; Flovar_y:= NuH + NuY -28
+	; ClipBar_nuY:=NuY
+	; ClipBar_nuX:=NuX+450
+	; BelowClipBar_nuY:=NuY +40
+	; TabSelect:=NuW-10
+	; DocumentMenuSection_X:=NuW-200
+	; DocumentMenuDocument_X:=NuW-140
+	; DocumentMenu_Y:=110
+	; yTabSelect:=45
+	; yTabDropdown:=45
 	SamplesTab:=(NuW/2)-80
 	RequestsTab:=(NuW/2)+20
 	DocumentsTab:=(NuW/3)+(NuW/3)-50
 	TestsTab:=(NuW/3)+(NuW/3)-220
 	ResultsTab:=(NuW/3)+(NuW/3)-150
-	HScrollBarRightX:=NuW-40
-	HScrollBarLeftX:=(NuW/5)+35
-	HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
-	yWorkTabs:=71
-	MyWorkTabs:=71
-	yMyWorkTabs:=71
-	yMyWorkTab:=71
-	xDivider:=(NuW/5)
-	xTab1=150
-	xTab2=350
-	MyWorkTab=350
-	xTab3=550
-	ProductsTab=550
-	xTab4=750
-	SpecsTab=750
-	xTab5=950
-	xTab6=1150
-	xTab7=1550
-	xTab8=358+1000
-	xTab9=358+1200
-	xTab10=358+1400
-	yTabs:=36
-	xWorkTab:=334, 47 ;1st
-	yWorkTabSearch:=128
-	XCoA:=(NuW-131)
-	xClearfilter:=xDivider+16
-	yClearfilter:=270
-	xFilterIcon:=NuW-22
-	yFilterIcon:=131
+	; HScrollBarRightX:=NuW-40
+	; HScrollBarLeftX:=(NuW/5)+35
+	; HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
+		yWorkTabs:=71
 
-	xProductsSearch:=xDivider+180
-	xSpecsSearch:=xDivider+183
-	yProductsSearch:=93
-	ySpecsSearch:=93
-	xRequestsSearch:=xDivider+190 ;175 ;103
-	xRequestsSearchDefault:=xDivider+170 ;155 ;103
-	xSamplesSearch:=xDivider+145
-	xResultsSearch:=xDivider+185
-	xResultsSearch:=xDivider+185
-	xTestsSearch:=xDivider+125
-	xDocumentsSearch:=xDivider+25
+	; xDivider:=(NuW/5)
+	; xTab1=150
+	; xTab2=350
+	; MyWorkTab=350
+	; xTab3=550
+	; ProductsTab=550
+	; xTab4=750
+	; SpecsTab=750
+	; xTab5=950
+	; xTab6=1150
+	; xTab7=1550
+	; xTab8=358+1000
+	; xTab9=358+1200
+	; xTab10=358+1400
+	; yTabs:=36
+	; xWorkTab:=334, 47 ;1st
+		yWorkTabSearch:=128
+	; XCoA:=(NuW-131)
+	; xClearfilter:=xDivider+16
+	; yClearfilter:=270
+	; xFilterIcon:=NuW-22
+	; yFilterIcon:=131
 
-	yProductsFilter:=181
-	ySpecsFilter:=181
+	; xProductsSearch:=xDivider+180
+	; xSpecsSearch:=xDivider+183
+		yProductsSearch:=93
+	; ySpecsSearch:=93
+	; xRequestsSearch:=xDivider+190 ;175 ;103
+	; xRequestsSearchDefault:=xDivider+170 ;155 ;103
+	; xSamplesSearch:=xDivider+145
+	; xResultsSearch:=xDivider+185
+	; xResultsSearch:=xDivider+185
+	; xTestsSearch:=xDivider+125
+	; xDocumentsSearch:=xDivider+25
 
-	xFormulationFilter:=xDivider+75
-	xProductFilter:=xDivider+75
-	xBatchFilter:=xDivider+168
-	xLotFilter:=xDivider+229
+	; yProductsFilter:=181
+	; ySpecsFilter:=181
 
-	yMyWorkTabFilter:=182
-	yMyWorkFilter:=182
-	yWorkTabFilter:=182
+	; xFormulationFilter:=xDivider+75
+	; xProductFilter:=xDivider+75
+	; xBatchFilter:=xDivider+168
+	; xLotFilter:=xDivider+229
 
-	xDocumentsFilter:=xDivider+68
+	; yMyWorkTabFilter:=182
+	; yMyWorkFilter:=182
+	; yWorkTabFilter:=182
 
-	xEdit_Composition:=76
-	yEdit_Composition:=443
-	xAdd_methods:=74
-	yAdd_methods:=565
-	xEnter_Results:=57
-	yEnter_Results:=630
+	; xDocumentsFilter:=xDivider+68
+
+	; xEdit_Composition:=76
+	; yEdit_Composition:=443
+	; xAdd_methods:=74
+	; yAdd_methods:=565
+	; xEnter_Results:=57
+	; yEnter_Results:=630
 	return
 }
 
-Scrolldown(){
-	Global
-	if winactive("Result Editor") {
-		clk(503, 574,1)
-		Sleep 800
-		return
-	}
-	if winactive("Test Definition Editor") {
-		clk(464, 532,,2)
-		Sleep 800
-		return
-	}
-	if winactive("Edit Formulation") {
-		clk(452, 473,,2)
-		Sleep 800
-		return
-	}
-	else
-		return
-}
+; Scrolldown(){
+; 	Global
+; 	if winactive("Result Editor") {
+; 		clk(503, 574,1)
+; 		Sleep 300
+; 		return
+; 	}
+; 	if winactive("Test Definition Editor") {
+; 		clk(464, 532,,2)
+; 		Sleep 300
+; 		return
+; 	}
+; 	if winactive("Edit Formulation") {
+; 		clk(452, 473,,2)
+; 		Sleep 300
+; 		return
+; 	}
+; 	else
+; 		return
+; }
 }
 
 Class ProductTab { ;;________ProductTab Class_______________
