@@ -1015,9 +1015,62 @@ return
 			}
 
 
+Methods() {
+    global
+    winactivate, Select methods tests
+    click, 235, 72
+    Send, ^a
+    Loop, Read, Methods.ini
+    {
+        If A_Index = 1
+            Continue
+        Methodmenu := StrSplit(A_LoopReadLine, "=")
+        Selection := MethodMenu[1]
+        Gui, Add, Checkbox, x10 y%A_Index% w20 h20 vCheck%A_Index% gCheckMethod, 
+        Gui, Add, Text, x35 y%A_Index% w150 h20, %Selection%
+    }
+    Gui, Add, Button, x10 y%A_Index% w100 h25 gRunChecked, Run Checked Methods
+    Gui, Show, w200 h%A_Index%+50
+    return
+
+    gCheckMethod:
+        GuiControl, Check, Check%A_Index%, % "On"
+        return
+
+    RunChecked:
+        Loop, %A_Index%
+        {
+            GuiControlGet, Checked, Check%A_Index%
+            if (Checked = "1")
+            {
+                GuiControlGet, InputVar,, Text%A_Index%
+                IniRead, vOutput, Methods.ini, Methods, %InputVar%
+                click, 235, 72
+                sleep 100
+                Sendinput, %vOutput%{enter}
+                sleep 300
+                click 506, 341
+            }
+        }
+        Gui, Destroy
+        SpecTab.Methods()
+    return
+}
+
+MethodsGuiEscape:
+    Gui, Destroy
+    return
+
+MethodsGuiClose:
+    Gui, Destroy
+    return
+
+MethodsGuiSize:
+    GuiControl, Move, Methods, W%A_GuiWidth% H%A_GuiHeight%
+    return
 
 
-	Methods() {
+	MethodsDropdown() {
 		global
 		winactivate, Select methods tests
 		click, 235, 72
