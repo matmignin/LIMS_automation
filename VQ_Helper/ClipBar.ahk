@@ -165,7 +165,7 @@ Class ClipBar{
 	}
 
 	AddIteration(speed:=300){
-		global Iteration, NAdd
+		global Iteration
 			If NAdd
 				{
 					Sleep 500
@@ -189,7 +189,7 @@ Class ClipBar{
 		return
 	}
 	SubIteration(speed:=300){
-		global Iteration, NAdd
+		global Iteration
 		If NAdd
 			{
 				sleep 500
@@ -649,7 +649,7 @@ Class Clip {
 
 	}
 
-EditBox(Input:=""){
+EditBoxOld(Input:=""){
   Global EditBox
 	try GUI, EditBox:Destroy
   if !Input
@@ -670,15 +670,15 @@ EditBox(Input:=""){
       GUI, EditBox:Show,Autosize, Result
     ; winSet, Transparent, 100, EditBox
 		return
-		EditBoxGuiClose:
+		OldEditBoxGuiClose:
     editbox:=
     try GUI, EditBox:Destroy
     Return
-		EditBoxGuiEscape:
+		OldEditBoxGuiEscape:
     editbox:=
     try GUI, EditBox:Destroy
     Return
-		EditBoxButtonOK:
+		OldEditBoxButtonOK:
 		GUI, EditBox:submit
     if !Input
 			clipboard:=EditBox
@@ -690,7 +690,7 @@ EditBox(Input:=""){
     ControlsetText, Edit6,%EditBox%,ClipBar
 		return
 
-    EditBoxGuiSize:
+    OldEditBoxGuiSize:
   if (ErrorLevel = 1)  ; The window has been minimized. No action needed.
       return
     NewWidth := A_GuiWidth
@@ -703,7 +703,7 @@ EditBox(Input:=""){
 
 
 
-EditBoxNew(Input:=""){
+EditBox(Input:=""){
   Global EditBox, Delimiter
 	try GUI, EditBox:Destroy
   if !Input
@@ -715,7 +715,7 @@ EditBoxNew(Input:=""){
 		GUI, EditBox:Font, s12 cBlack, Consolas
     gui, EditBox:Margin,1,1
 		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
-    GUI, EditBox:Add, Radio, x5 y+5 gSetDelimiter, {Space} {Tab} {Comma} {Semicolon} {Colon} {Pipe} {Other}
+    GUI, EditBox:Add, Radio, x5 y+5 vDelimiter gSetDelimiter, ||{Space}|{Tab}|{`,}|{`;}|{Other}
     GUI, EditBox:Add, Edit, x55 y+7 w50 vOtherDelimiter
     GuiControl, Disable, OtherDelimiter
     GUI, EditBox:Add, Button, Default x+30 y+30 gEditBoxButtonOK, OK
@@ -755,7 +755,7 @@ EditBoxNew(Input:=""){
     return
 
     SetDelimiter:
-      GuiControlGet, Delimiter, Radio
+      ; GuiControlGet, Delimiter, Radio, EditBox
       if (Delimiter = "Other")
         GuiControl, Enable, OtherDelimiter
       else
@@ -956,3 +956,107 @@ Department(DepartmentInput:=""){
 
 }
 
+
+
+
+
+
+NumberMenu(n:=0, runCorrectTestResults:=""){
+	global
+	MouseGetPos, mx, my
+	try Menu, NumberMenu, DeleteAll
+	Menu, NumberMenu, Add, &0, NumberMenubutton
+	loop %n%,
+		Menu, NumberMenu, Add, &%A_index%, NumberMenubutton
+		Try Menu,NumberMenu,show
+		return
+NumberMenubutton:
+	if A_ThisMenuItemPos
+	{
+		Iteration:=A_ThisMenuItemPos - 1
+	sleep 100
+	ControlsetText, Edit5,%Iteration%,ClipBar
+	MouseMove, %mx%, %my%, 0
+	sleep 300
+	if runCorrectTestResults
+		WorkTab.CorrectTestResults("toggle", "Loop")
+
+		}
+		blockinput, off
+Return
+		}
+
+MenuCodeSelect(FileName:="AllProducts"){
+	global
+	try Menu, CodeMenu, DeleteAll
+	FileRead, OutputText, %FileName%.txt
+	stringUpper, OutputText, OutputText
+	loop, parse, OutputText, " "
+		Menu, CodeMenu, Add, %a_LoopField%, CodeMenubutton
+			; Menu, CodeMenu, Add, All, CodeMenubutton
+	; FileRead, WholeBatches, WholeBatches.txt
+	; 	Menu, CodeMenu, Add, , , +Break
+	; sleep 200
+	; Loop, parse, WholeBatches, "`n"
+	; 	Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
+	; 	; Menu, CodeMenu, Add, , WholeBatchMenubutton
+	; 	; Menu, CodeMenu, Add, %WholeBatches%[2], WholeBatchMenubutton
+	; Try Menu,CodeMenu,show
+; 	return
+; WholeBatchMenubutton:
+; 	clip.codesRegex(A_ThisMenuItem)
+return
+
+CodeMenubutton:
+If A_ThisMenuItem contains All
+{
+	if winactive("NuGenesis LMS")
+		LMS.SearchBar(A_ThisMenuItem)
+	else
+		sendinput, %A_ThisMenuItem%
+	return
+}
+
+If FileName contains Product
+	{
+		product := A_ThisMenuItem
+		ControlsetText, Edit1,%product%,ClipBar
+	}
+else If FileName contains Batch
+	{
+		batch := A_ThisMenuItem
+		ControlsetText, Edit2,%Batch%,ClipBar
+	}
+else If FileName contains SampleID
+	SampleID := A_ThisMenuItem
+
+sleep 200
+if winactive("NuGenesis LMS")
+		LMS.SearchBar(A_ThisMenuItem,"{enter}",0)
+if winactive("ahk_exe explorer.exe")
+	send, ^e{*}%A_ThisMenuItem%{*}{enter}
+else
+	sendinput, %A_ThisMenuItem%
+
+Return
+}
+
+
+WholeBatchMenu(){
+	global
+	try Menu, CodeMenu, DeleteAll
+	FileRead, WholeBatches, WholeBatches.txt
+	WholeBatches:=Trim(StrReplace(WholeBatches, "`n`n", ""))
+	Loop, parse, WholeBatches, "`r"
+		Menu, CodeMenu, Add, &%A_Index% `t %a_LoopField%, WholeBatchMenubutton,
+	Try Menu,CodeMenu,show
+	return
+
+WholeBatchMenubutton:
+if (Instr(Trim(A_ThisMenuItem),"|")=1){
+		ProductTab.AddProductFromClipboard(A_ThisMenuItem)
+		return
+	}
+		else clip.codesRegex(A_ThisMenuItem)
+return
+}

@@ -229,22 +229,22 @@ Class LMS { ;;[[ Generl LMS ]]
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		; sleep 300
-		; If NAdd
-			; {
-				; sleep 300
-				; Return
-			; }
-		; NAdd:=1
-		;WinActivate, ahk_exe eln.exe
-		;sleep 200
+		sleep 200
+		If Nsb
+			{
+				sleep 300
+				Return
+			}
+		Nsb:=1
+		WinActivate, ahk_exe eln.exe
+		sleep 200
 		if winactive("Select methods tests")
 			clk(246,77, 2)
-		else If winactive("Register new samples") {
+		If winactive("Register new samples") {
 			Clk(180, 103, 2)
 			Sendinput, {click 180, 103,2}%Product%{enter}
 		}
-		else if winactive("NuGenesis LMS") {
+		if winactive("NuGenesis LMS") {
 			LMS.DetectTab()
 			if (Tab="Products") {
 				; If (Code=Product){
@@ -258,7 +258,7 @@ Class LMS { ;;[[ Generl LMS ]]
 						sendinput, {right}{space}^{v}^{a}^{c}
 					if PostCmd!=""
 						send % PostCmd
-					return
+					; return
 				; }
 				; If (Code=Batch) { ;click something edit comp
 					; clk(40, 384)
@@ -266,7 +266,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					; return
 				; }
 			}
-			else if (Tab="Specs") {
+			if (Tab="Specs") {
 				; If (Code=Product) {
 					clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
 					clk(x%Tab%Search+10,yProductsSearch,,1,,0)
@@ -280,9 +280,9 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				return
+				; return
 			}
-			else If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
+			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
@@ -294,15 +294,13 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					sendinput % PostCmd
-				return
+				; return
 			}
-			else If (Tab="Requests") {
-				clk(x%Tab%Search+10,yWorkTabSearch,,1,"NuGenesis LMS",0)
-				clk(x%Tab%Search-20,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search-40,yWorkTabSearch,,1,,0)
-				; clk(x%Tab%Search-30,yWorkTabSearch,,1,,0)
-				; clk(x%Tab%Search-10,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search,yWorkTabSearch,,2)
+			If (Tab="Requests") {
+				clk(x%Tab%Search-10,yWorkTabSearch,,1,"NuGenesis LMS",0)
+				clk(x%Tab%Search-30,yWorkTabSearch,,1,,0)
+				clk(x%Tab%Search,yWorkTabSearch,,1,,0)
+				clk(x%Tab%Search-20,yWorkTabSearch,,2)
 				sleep 20
 				Sendinput, ^{a}
 				If Overwrite=Add
@@ -312,15 +310,13 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				return
 			}
-			else
-				sendinput, %Code%
-			; sleep 300
-			; NAdd:=
-		}
-
+		else
+			sendinput, %Code%
 	}
+	Nsb:=
+}
+
 	SaveCode(){
 		global
 		sendinput, ^{a}^{c}
@@ -370,8 +366,8 @@ Class LMS { ;;[[ Generl LMS ]]
 		if winactive("NuGenesis LMS") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if !Tab1 {
-				PixelSearch, FoundSamples, FoundY, SamplesTab, yMyWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
-				PixelSearch, FoundRequests, FoundY, RequestsTab, yMyWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
+				PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
+				PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
 				if FoundSamples {
 					Tab:="Samples"
 					return Tab
@@ -448,10 +444,8 @@ Orient(){
 	HScrollBarRightX:=NuW-40
 	HScrollBarLeftX:=(NuW/5)+35
 	HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
-	yWorkTabs:=71
-	MyWorkTabs:=71
-	yMyWorkTabs:=71
-	yMyWorkTab:=71
+		yWorkTabs:=71
+
 	xDivider:=(NuW/5)
 	xTab1=150
 	xTab2=350
@@ -468,7 +462,7 @@ Orient(){
 	xTab10=358+1400
 	yTabs:=36
 	xWorkTab:=334, 47 ;1st
-	yWorkTabSearch:=128
+		yWorkTabSearch:=128
 	XCoA:=(NuW-131)
 	xClearfilter:=xDivider+16
 	yClearfilter:=270
@@ -487,49 +481,49 @@ Orient(){
 	xTestsSearch:=xDivider+125
 	xDocumentsSearch:=xDivider+25
 
-	yProductsFilter:=181
-	ySpecsFilter:=181
+	; yProductsFilter:=181
+	; ySpecsFilter:=181
 
-	xFormulationFilter:=xDivider+75
-	xProductFilter:=xDivider+75
-	xBatchFilter:=xDivider+168
-	xLotFilter:=xDivider+229
+	; xFormulationFilter:=xDivider+75
+	; xProductFilter:=xDivider+75
+	; xBatchFilter:=xDivider+168
+	; xLotFilter:=xDivider+229
 
-	yMyWorkTabFilter:=182
-	yMyWorkFilter:=182
-	yWorkTabFilter:=182
+	; yMyWorkTabFilter:=182
+	; yMyWorkFilter:=182
+	; yWorkTabFilter:=182
 
-	xDocumentsFilter:=xDivider+68
+	; xDocumentsFilter:=xDivider+68
 
-	xEdit_Composition:=76
-	yEdit_Composition:=443
-	xAdd_methods:=74
-	yAdd_methods:=565
-	xEnter_Results:=57
-	yEnter_Results:=630
+	; xEdit_Composition:=76
+	; yEdit_Composition:=443
+	; xAdd_methods:=74
+	; yAdd_methods:=565
+	; xEnter_Results:=57
+	; yEnter_Results:=630
 	return
 }
 
-Scrolldown(){
-	Global
-	if winactive("Result Editor") {
-		clk(503, 574,1)
-		Sleep 800
-		return
-	}
-	if winactive("Test Definition Editor") {
-		clk(464, 532,,2)
-		Sleep 800
-		return
-	}
-	if winactive("Edit Formulation") {
-		clk(452, 473,,2)
-		Sleep 800
-		return
-	}
-	else
-		return
-}
+; Scrolldown(){
+; 	Global
+; 	if winactive("Result Editor") {
+; 		clk(503, 574,1)
+; 		Sleep 300
+; 		return
+; 	}
+; 	if winactive("Test Definition Editor") {
+; 		clk(464, 532,,2)
+; 		Sleep 300
+; 		return
+; 	}
+; 	if winactive("Edit Formulation") {
+; 		clk(452, 473,,2)
+; 		Sleep 300
+; 		return
+; 	}
+; 	else
+; 		return
+; }
 }
 
 Class ProductTab { ;;________ProductTab Class_______________
