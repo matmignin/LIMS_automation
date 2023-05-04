@@ -32,11 +32,11 @@
 	; ControlGetFocus,winControl,ClipBar
 	if (wincontrol="Edit5")
 		Clipbar.AddIteration(500)
-	else if (winControl="Edit1"){
+	if (winControl="Edit1"){
 		GetAllProducts(" ")
 			; ControlsetText, Edit6,%GetAllProducts(" ")%,ClipBar
 		}
-	else if (winControl="Edit2"){
+	if (winControl="Edit2"){
 		GetAllBatches(" ")
 			; ControlsetText, Edit6,%AllBatches%,ClipBar
 			; TT(AllBatches,2000,ClipBar_x2,35,2,250)
@@ -59,9 +59,9 @@
 		NAdd:=1
 	if (wincontrol="Edit5")
 		Clipbar.SubIteration(200)
-	else if (winControl="Edit1")
+	 if (winControl="Edit1")
 		Return
-	else if (winControl="Edit2")
+	 if (winControl="Edit2")
 		Return
 	else ;(winControl="Edit3")
 		NAdd:=
@@ -90,7 +90,7 @@
 
 	#if
 
-	#Ifwinactive, ClipBar
+	#Ifwinactive, ClipBar ahk_exe VQ_Helper.exe
 	enter::
 		GUI, ClipBar:default
 		Send, ^a^c
@@ -241,10 +241,10 @@
 #ifwinexist, Sign :
 	mbutton::Sendpassword()
 
-#ifwinactive, ahk_exe explorer.exe ;;    ahk_exe explorer.exe
+#ifwinactive, Label * ahk_exe explorer.exe ;;    ahk_exe explorer.exe
 	F9::send, ^{e}
 	F7::
-		winactivate, ahk_exe explorer.exe
+		winactivate, Label * ahk_exe explorer.exe
 		sendinput, ^{e}{*}%Product%{*}
 		sleep 300
 		sendinput, {tab 2}{right}{pgup 2}
@@ -252,13 +252,13 @@
 	F8::send, ^{F4}
 	; F10::
 	Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
-	+Mbutton::SelectPreviewPane()
+	; +Mbutton::SelectPreviewPane()
 	F6::
-	winactivate, ahk_exe explorer.exe
+	winactivate, Label * ahk_exe explorer.exe
 		sendinput, ^{e}
 		send, {tab 2}{right}
 		return
-	F10::SelectPreviewPane(Product)
+	; F10::SelectPreviewPane(Product)
 
 #ifwinactive, Edit test `(Field Configuration ;;    Edit test (Field Configuration
 	+Mbutton::
@@ -355,17 +355,6 @@
 	F9::lms.menu()
 
 	#ifwinactive, Result Editor ;;    Result Editor
-	; ^v::
-	; 	If (Clipped_Specs){
-	; 		; TT(Clipped_Specs,1000,10,10)
-	; 		SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-	; 		return
-	; 		; WinWaitClose, Results Definition, , 20
-	; 		; Clipped_Specs:=
-	; 	}
-	; 	Else
-	; 		Sendinput, ^v
-	; 	return
 	F10::
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 	;;{{    wheelDown::clk(503, 574,1) ;add scroll block
@@ -424,6 +413,8 @@
 		return
 	Mbutton::SpecTab.CopySpecTemplate()
 	F9::lms.Menu()
+	F6::LMS.SearchBar(Product,"{enter}",0)
+	F7::LMS.SearchBar(Batch,"{enter}",0)
 	F8::LMS.SearchBar("",,"False")
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
@@ -442,7 +433,6 @@
 		else
 			send, ^v
 		return
-	F6::LMS.SearchBar(Product,"{enter}",0)
 
 
 ;;[[ LMS APP ]]

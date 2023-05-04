@@ -229,22 +229,22 @@ Class LMS { ;;[[ Generl LMS ]]
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		; sleep 300
-		; If NAdd
-			; {
-				; sleep 300
-				; Return
-			; }
-		; NAdd:=1
-		;WinActivate, ahk_exe eln.exe
-		;sleep 200
+		sleep 200
+		If Nsb
+			{
+				sleep 300
+				Return
+			}
+		Nsb:=1
+		WinActivate, ahk_exe eln.exe
+		sleep 200
 		if winactive("Select methods tests")
 			clk(246,77, 2)
-		else If winactive("Register new samples") {
+		If winactive("Register new samples") {
 			Clk(180, 103, 2)
 			Sendinput, {click 180, 103,2}%Product%{enter}
 		}
-		else if winactive("NuGenesis LMS") {
+		if winactive("NuGenesis LMS") {
 			LMS.DetectTab()
 			if (Tab="Products") {
 				; If (Code=Product){
@@ -258,7 +258,7 @@ Class LMS { ;;[[ Generl LMS ]]
 						sendinput, {right}{space}^{v}^{a}^{c}
 					if PostCmd!=""
 						send % PostCmd
-					return
+					; return
 				; }
 				; If (Code=Batch) { ;click something edit comp
 					; clk(40, 384)
@@ -266,7 +266,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					; return
 				; }
 			}
-			else if (Tab="Specs") {
+			if (Tab="Specs") {
 				; If (Code=Product) {
 					clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
 					clk(x%Tab%Search+10,yProductsSearch,,1,,0)
@@ -280,9 +280,9 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				return
+				; return
 			}
-			else If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
+			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
@@ -294,15 +294,13 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					sendinput % PostCmd
-				return
+				; return
 			}
-			else If (Tab="Requests") {
-				clk(x%Tab%Search+10,yWorkTabSearch,,1,"NuGenesis LMS",0)
-				clk(x%Tab%Search-20,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search-40,yWorkTabSearch,,1,,0)
-				; clk(x%Tab%Search-30,yWorkTabSearch,,1,,0)
-				; clk(x%Tab%Search-10,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search,yWorkTabSearch,,2)
+			If (Tab="Requests") {
+				clk(x%Tab%Search-10,yWorkTabSearch,,1,"NuGenesis LMS",0)
+				clk(x%Tab%Search-30,yWorkTabSearch,,1,,0)
+				clk(x%Tab%Search,yWorkTabSearch,,1,,0)
+				clk(x%Tab%Search-20,yWorkTabSearch,,2)
 				sleep 20
 				Sendinput, ^{a}
 				If Overwrite=Add
@@ -312,14 +310,12 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				return
 			}
-			else
-				sendinput, %Code%
-			; sleep 300
-			; NAdd:=
-		}
+		else
+			sendinput, %Code%
 	}
+	Nsb:=
+}
 
 	SaveCode(){
 		global
@@ -370,8 +366,8 @@ Class LMS { ;;[[ Generl LMS ]]
 		if winactive("NuGenesis LMS") {
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if !Tab1 {
-				PixelSearch, FoundSamples, FoundY, SamplesTab, yMyWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
-				PixelSearch, FoundRequests, FoundY, RequestsTab, yMyWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
+				PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yMyWorkTabs+2, 0xfffd353, 10, Fast RGB
+				PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yMyWorkTabs+2, 0xffd353, 10, Fast RGB
 				if FoundSamples {
 					Tab:="Samples"
 					return Tab
@@ -428,62 +424,62 @@ Class LMS { ;;[[ Generl LMS ]]
 Orient(){
 	global
 	winGetPos,Nux,NuY,NuW,NuH, NuGenesis LMS
-	; WbX:=WbX+400
-	; Flovar_x:= NuX +900
-	; Flovar_y:= NuH + NuY -28
-	; ClipBar_nuY:=NuY
-	; ClipBar_nuX:=NuX+450
-	; BelowClipBar_nuY:=NuY +40
-	; TabSelect:=NuW-10
-	; DocumentMenuSection_X:=NuW-200
-	; DocumentMenuDocument_X:=NuW-140
-	; DocumentMenu_Y:=110
-	; yTabSelect:=45
-	; yTabDropdown:=45
+	WbX:=WbX+400
+	Flovar_x:= NuX +900
+	Flovar_y:= NuH + NuY -28
+	ClipBar_nuY:=NuY
+	ClipBar_nuX:=NuX+450
+	BelowClipBar_nuY:=NuY +40
+	TabSelect:=NuW-10
+	DocumentMenuSection_X:=NuW-200
+	DocumentMenuDocument_X:=NuW-140
+	DocumentMenu_Y:=110
+	yTabSelect:=45
+	yTabDropdown:=45
 	SamplesTab:=(NuW/2)-80
 	RequestsTab:=(NuW/2)+20
 	DocumentsTab:=(NuW/3)+(NuW/3)-50
 	TestsTab:=(NuW/3)+(NuW/3)-220
 	ResultsTab:=(NuW/3)+(NuW/3)-150
-	; HScrollBarRightX:=NuW-40
-	; HScrollBarLeftX:=(NuW/5)+35
-	; HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
+	HScrollBarRightX:=NuW-40
+	HScrollBarLeftX:=(NuW/5)+35
+	HScrollBarRightY:=HScrollBarLeftY:=(Nuh/2)+38
 		yWorkTabs:=71
 
-	; xDivider:=(NuW/5)
-	; xTab1=150
-	; xTab2=350
-	; MyWorkTab=350
-	; xTab3=550
-	; ProductsTab=550
-	; xTab4=750
-	; SpecsTab=750
-	; xTab5=950
-	; xTab6=1150
-	; xTab7=1550
-	; xTab8=358+1000
-	; xTab9=358+1200
-	; xTab10=358+1400
-	; yTabs:=36
-	; xWorkTab:=334, 47 ;1st
+	xDivider:=(NuW/5)
+	xTab1=150
+	xTab2=350
+	MyWorkTab=350
+	xTab3=550
+	ProductsTab=550
+	xTab4=750
+	SpecsTab=750
+	xTab5=950
+	xTab6=1150
+	xTab7=1550
+	xTab8=358+1000
+	xTab9=358+1200
+	xTab10=358+1400
+	yTabs:=36
+	xWorkTab:=334, 47 ;1st
 		yWorkTabSearch:=128
-	; XCoA:=(NuW-131)
-	; xClearfilter:=xDivider+16
-	; yClearfilter:=270
-	; xFilterIcon:=NuW-22
-	; yFilterIcon:=131
+	XCoA:=(NuW-131)
+	xClearfilter:=xDivider+16
+	yClearfilter:=270
+	xFilterIcon:=NuW-22
+	yFilterIcon:=131
 
-	; xProductsSearch:=xDivider+180
-	; xSpecsSearch:=xDivider+183
-		yProductsSearch:=93
-	; ySpecsSearch:=93
-	; xRequestsSearch:=xDivider+190 ;175 ;103
-	; xRequestsSearchDefault:=xDivider+170 ;155 ;103
-	; xSamplesSearch:=xDivider+145
-	; xResultsSearch:=xDivider+185
-	; xResultsSearch:=xDivider+185
-	; xTestsSearch:=xDivider+125
-	; xDocumentsSearch:=xDivider+25
+	xProductsSearch:=xDivider+180
+	xSpecsSearch:=xDivider+183
+	yProductsSearch:=93
+	ySpecsSearch:=93
+	xRequestsSearch:=xDivider+190 ;175 ;103
+	xRequestsSearchDefault:=xDivider+170 ;155 ;103
+	xSamplesSearch:=xDivider+145
+	xResultsSearch:=xDivider+185
+	xResultsSearch:=xDivider+185
+	xTestsSearch:=xDivider+125
+	xDocumentsSearch:=xDivider+25
 
 	; yProductsFilter:=181
 	; ySpecsFilter:=181
