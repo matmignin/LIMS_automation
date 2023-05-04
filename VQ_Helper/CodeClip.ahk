@@ -328,7 +328,9 @@ EditBox(Input:=""){
 		GUI, EditBox:Font, s12 cBlack, Consolas
     gui, EditBox:Margin,1,1
 		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
+		Gui, Add, DropDownList, vDelimeter, {space}|{enter}|``r|,|`;|
     GUI, EditBox:add, button,default gEditBoxButtonOK, OK
+     ;GUI, EditBox:add, radio,default gEditBoxButtonOK, {space}|{enter}|RnCr|;|,|
     If !Input
       try GUI, EditBox:Destroy
     else
@@ -368,6 +370,65 @@ EditBox(Input:=""){
 
 
 
+EditBoxNew(Input:=""){
+  Global EditBox, Delimiter
+	try GUI, EditBox:Destroy
+  if !Input
+		Result := Clipboard
+  else
+    result := Input
+    sleep 200
+	Gui EditBox: +AlwaysOnTop +Toolwindow +Resize +owner +HwndGUIID
+		GUI, EditBox:Font, s12 cBlack, Consolas
+    gui, EditBox:Margin,1,1
+		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
+    GUI, EditBox:Add, Radio, x5 y+5 gSetDelimiter, {Space} {Tab} {Comma} {Semicolon} {Colon} {Pipe} {Other}
+    GUI, EditBox:Add, Edit, x55 y+7 w50 vOtherDelimiter
+    GuiControl, Disable, OtherDelimiter
+    GUI, EditBox:Add, Button, Default x+30 y+30 gEditBoxButtonOK, OK
+    If !Input
+      try GUI, EditBox:Destroy
+    else
+      GUI, EditBox:Show,Autosize, Result
+    ; winSet, Transparent, 100, EditBox
+		return
+		EditBoxGuiClose:
+    editbox:=
+    try GUI, EditBox:Destroy
+    Return
+		EditBoxGuiEscape:
+    editbox:=
+    try GUI, EditBox:Destroy
+    Return
+		EditBoxButtonOK:
+		GUI, EditBox:submit
+    if !Input
+			clipboard:=EditBox
+    sleep 200
+    try GUI, EditBox:Destroy
+    ; sleep 50
+  TT(Editbox,1000,ClipBar_X,33,,200)
+  if Editbox
+    ControlsetText, Edit6,%EditBox%,ClipBar
+		return
+
+    EditBoxGuiSize:
+  if (ErrorLevel = 1)  ; The window has been minimized. No action needed.
+      return
+    NewWidth := A_GuiWidth
+    NewHeight := A_GuiHeight
+    ; sleep 200
+    GuiControl, Move, EditBox, W%NewWidth% H%NewHeight%
+    return
+
+    SetDelimiter:
+      GuiControlGet, Delimiter, Radio
+      if (Delimiter = "Other")
+        GuiControl, Enable, OtherDelimiter
+      else
+        GuiControl, Disable, OtherDelimiter
+      return
+	}
 
 
 
