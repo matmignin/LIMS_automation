@@ -1015,62 +1015,66 @@ return
 			}
 
 
-Methods() {
+MethodsMethods() {
     global
+    MethodList:=
     winactivate, Select methods tests
     click, 235, 72
     Send, ^a
+    gui, new, Methods
     Loop, Read, Methods.ini
     {
         If A_Index = 1
             Continue
         Methodmenu := StrSplit(A_LoopReadLine, "=")
-        Selection := MethodMenu[1]
-        Gui, Add, Checkbox, x10 y%A_Index% w20 h20 vCheck%A_Index% gCheckMethod, 
-        Gui, Add, Text, x35 y%A_Index% w150 h20, %Selection%
+        ; if instrin
+        ()
+        MethodList .= MethodMenu[1] . "|"
     }
-    Gui, Add, Button, x10 y%A_Index% w100 h25 gRunChecked, Run Checked Methods
+    Gui, Add, ListBox, x10 y%A_Index% w150 h20 vListBox, %MethodList%
+    Gui, Add, Button, x10 y%A_Index% w100 h25 gRunSelected, Add Methods
     Gui, Show, w200 h%A_Index%+50
     return
 
-    gCheckMethod:
-        GuiControl, Check, Check%A_Index%, % "On"
-        return
+    
+        
 
-    RunChecked:
-        Loop, %A_Index%
+    RunSelected:
+    GUI,Submit, nohide
+        Loop, Parse, ListBox, `n
         {
-            GuiControlGet, Checked, Check%A_Index%
+            GuiControlGet, Checked, ListBox, %A_LoopField%
             if (Checked = "1")
             {
-                GuiControlGet, InputVar,, Text%A_Index%
-                IniRead, vOutput, Methods.ini, Methods, %InputVar%
-                click, 235, 72
+                IniRead, vOutput, Methods.ini, Methods, %A_LoopField%
+                click, 235, 72 ;click search bar
                 sleep 100
                 Sendinput, %vOutput%{enter}
                 sleep 300
-                click 506, 341
+                click 506, 341 ;move over
+                sleep 300
             }
         }
-        Gui, Destroy
-        SpecTab.Methods()
+        ;Gui, Destroy
+        ;SpecTab.Methods()
     return
 }
 
-MethodsGuiEscape:
-    Gui, Destroy
-    return
+	MethodsGuiEscape:
+	    Gui, Destroy
+	    return
+	
+	MethodsGuiClose:
+	    Gui, Destroy
+	    return
+	
+	MethodsGuiSize:
+	    GuiControl, Move, Methods, W%A_GuiWidth% H%A_GuiHeight%
+	    return
 
-MethodsGuiClose:
-    Gui, Destroy
-    return
-
-MethodsGuiSize:
-    GuiControl, Move, Methods, W%A_GuiWidth% H%A_GuiHeight%
-    return
 
 
-	MethodsDropdown() {
+MethodsDropdown() {
 		global
 		winactivate, Select methods tests
 		click, 235, 72
@@ -1090,11 +1094,11 @@ MethodsGuiSize:
 			sleep 200
 			InputVar:=A_ThisMenuItem
 			IniRead,vOutput, Methods.ini, Methods, %InputVar%
-			click, 235, 72
+			click, 235, 72 ;click search bar
 			sleep 100
-			Sendinput, %vOutput%{enter}
+			Sendinput, %vOutput%{enter} ; enter method to search
 			sleep 300
-			click 506, 341
+			click 506, 341 ;move over
 			menu, Methodmenu, deleteAll
 			SpecTab.Methods()
 
