@@ -236,8 +236,8 @@ Class LMS { ;;[[ Generl LMS ]]
 				; Return
 			; }
 		; NAdd:=1
-		WinActivate, ahk_exe eln.exe
-		sleep 200
+		;WinActivate, ahk_exe eln.exe
+		;sleep 200
 		if winactive("Select methods tests")
 			clk(246,77, 2)
 		else If winactive("Register new samples") {
@@ -297,12 +297,12 @@ Class LMS { ;;[[ Generl LMS ]]
 				return
 			}
 			else If (Tab="Requests") {
-				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
+				clk(x%Tab%Search+10,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search-20,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search-40,yWorkTabSearch,,1,,0)
 				; clk(x%Tab%Search-30,yWorkTabSearch,,1,,0)
 				; clk(x%Tab%Search-10,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search+20,yWorkTabSearch,,2)
+				clk(x%Tab%Search,yWorkTabSearch,,2)
 				sleep 20
 				Sendinput, ^{a}
 				If Overwrite=Add
