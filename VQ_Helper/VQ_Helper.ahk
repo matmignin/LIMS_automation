@@ -103,7 +103,7 @@
 	try Menu, Tray, Icon, %AppIconPath%
 	#include NuGenesis.ahk
 	#include ClipBar.ahk
-	#include CodeClip.ahk
+	;#include CodeClip.ahk
 	#Include RemoteKEYS.ahk
 	GUI, ClipBar:default
 	; TT("VQ_Helper Started",2000,100,100)
