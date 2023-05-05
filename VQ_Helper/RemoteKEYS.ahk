@@ -3,6 +3,7 @@
 	~RWin::Exit ;Send {Blind}{vkFF}
 	~LWin::Exit ;Send {Blind}{vkFF}
 	+F4::ExitApp
+^esc::ExitApp
 
 	showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
 		Global Product

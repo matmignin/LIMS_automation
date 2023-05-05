@@ -1009,63 +1009,97 @@ return
 			}
 
 
-MethodsMethods() {
+; set the name of your INI file here
+
+
+Methods() {
     global
     MethodList:=
     winactivate, Select methods tests
+		; ShiftTable_X:=-355
+		; ShiftTable_Y:=200
+		CoordMode, mouse, screen
+		; ScreenEdge_X:=A_ScreenWidth-15
+		; ScreenEdge_Y:=A_Screenheight-180
+		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+		MethodTableX:=LMS_X+10
+		MethodTableY:=LMS_Y+ShiftTable_Y+60
+		CoordMode, mouse, window
     click, 235, 72
     Send, ^a
-    gui, new, Methods
+    gui, new, +HwndhGui, Methods
     Loop, Read, Methods.ini
     {
         If A_Index = 1
             Continue
         Methodmenu := StrSplit(A_LoopReadLine, "=")
-        ; if instrin
-        ()
+				if !MethodMenu[1]
+					continue
         MethodList .= MethodMenu[1] . "|"
-    }
-    Gui, Add, ListBox, x10 y%A_Index% w150 h20 vListBox, %MethodList%
-    Gui, Add, Button, x10 y%A_Index% w100 h25 gRunSelected, Add Methods
-    Gui, Show, w200 h%A_Index%+50
+				MaxRows:=A_Index
+			}
+    Gui, Add, ListBox,  r%MaxRows% vListBox glistviewhdlr +Multi, %MethodList%
+    Gui, Add, Button, w300 gRunSelected, Add Methods
+		sleep 200
+	try GUI, Show  x%MethodTableX% y%MethodTableY% w352
     return
 
-    
-        
+		listviewhdlr:
+		return
+
 
     RunSelected:
-    GUI,Submit, nohide
-        Loop, Parse, ListBox, `n
-        {
-            GuiControlGet, Checked, ListBox, %A_LoopField%
-            if (Checked = "1")
-            {
-                IniRead, vOutput, Methods.ini, Methods, %A_LoopField%
-                click, 235, 72 ;click search bar
-                sleep 100
-                Sendinput, %vOutput%{enter}
-                sleep 300
-                click 506, 341 ;move over
-                sleep 300
-            }
-        }
-        ;Gui, Destroy
-        ;SpecTab.Methods()
-    return
-}
+		Gui, submit
+		sleep 300
+    Loop, Parse, listbox, | ; loop through each selected method
+    {
 
-	MethodsGuiEscape:
-	    Gui, Destroy
-	    return
-	
-	MethodsGuiClose:
-	    Gui, Destroy
-	    return
-	
-	MethodsGuiSize:
-	    GuiControl, Move, Methods, W%A_GuiWidth% H%A_GuiHeight%
-	    return
+				winactivate, Select methods tests
+				click, 235, 72
+				Send, ^a
+				IniRead,vOutput, Methods.ini, Methods, %A_LoopField%
+				click, 235, 72 ;click search bar
+				sleep 100
+				Sendinput, %vOutput%{enter} ; enter method to search
+				sleep 300
+				click 506, 341 ;move over
+				break.point()
+				sleep 500
+    }
+return
+;;;;;;
+    ; GUI,Submit, nohide
+		; ; {
+		; 	; GuiControlGet, Checked, ListBox, %A_LoopField%
+		; 	; if (Checked = "1")
+		; 	Loop, Parse, ListBox, "|""
+		; 	{
+    ;             IniRead, vOutput, Methods.ini, Methods, %A_LoopField%
+    ;             click, 235, 72 ;click search bar
+    ;             sleep 100
+    ;             Sendinput, %vOutput%{enter}
+    ;             sleep 300
+    ;             click 506, 341 ;move over
+    ;             sleep 300
+    ;         }
+    ;     ; }
+    ;     ;Gui, Destroy
+    ;     ;SpecTab.Methods()
+    ; return
+;;;;;;
+		GuiEscape:
+		Gui, Destroy
+		return
 
+		GuiClose:
+		Gui, Destroy
+		return
+
+		; GuiSize:
+		; GuiControl, Move, Methods, W%A_GuiWidth% H%A_GuiHeight%
+		; return
+
+	}
 
 
 MethodsDropdown() {
