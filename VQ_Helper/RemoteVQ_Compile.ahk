@@ -1,3 +1,6 @@
+DetectHiddenWindows On
+SetTitleMatchMode,2
+WinClose VQ_Helper.ahk - AutoHotkey
 Sleep 400
 
 Try

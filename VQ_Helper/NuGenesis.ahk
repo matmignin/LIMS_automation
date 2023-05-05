@@ -1038,10 +1038,10 @@ Methods() {
         MethodList .= MethodMenu[1] . "|"
 				MaxRows:=A_Index
 			}
-    Gui, Add, ListBox,  r%MaxRows% vListBox glistviewhdlr +Multi, %MethodList%
-    Gui, Add, Button, w300 gRunSelected, Add Methods
+    Gui, Add, ListBox,  r%MaxRows% vListBox w300 glistviewhdlr +Multi, %MethodList%
+    Gui, Add, Button, w100 gRunSelected, Add Methods
 		sleep 200
-	try GUI, Show  x%MethodTableX% y%MethodTableY% w352
+	try GUI, Show  ;x%MethodTableX% y%MethodTableY% w352
     return
 
 		listviewhdlr:
@@ -1067,26 +1067,6 @@ Methods() {
 				sleep 500
     }
 return
-;;;;;;
-    ; GUI,Submit, nohide
-		; ; {
-		; 	; GuiControlGet, Checked, ListBox, %A_LoopField%
-		; 	; if (Checked = "1")
-		; 	Loop, Parse, ListBox, "|""
-		; 	{
-    ;             IniRead, vOutput, Methods.ini, Methods, %A_LoopField%
-    ;             click, 235, 72 ;click search bar
-    ;             sleep 100
-    ;             Sendinput, %vOutput%{enter}
-    ;             sleep 300
-    ;             click 506, 341 ;move over
-    ;             sleep 300
-    ;         }
-    ;     ; }
-    ;     ;Gui, Destroy
-    ;     ;SpecTab.Methods()
-    ; return
-;;;;;;
 		GuiEscape:
 		Gui, Destroy
 		return
