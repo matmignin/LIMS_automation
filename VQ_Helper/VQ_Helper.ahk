@@ -10,7 +10,7 @@
 	#MaxHotkeysPerInterval 210
 	#InstallKeybdHook
 	#InstallMouseHook
-	#ClipboardTimeout 9500
+	#ClipboardTimeout 7500
 	#HotkeyModifierTimeout 100
 	#maxthreadsperhotkey, 2
 	; #MaxThreadsBuffer Off
@@ -37,12 +37,12 @@
 
 	ReadIniFiles()
 
-	WholeBatchesArray:=[]
-	FileRead, WholeBatchestext, WholeBatches.txt
-		Wholebatches:=Trim(Wholebatchestext,"`n")
-		sleep 100
-		loop, parse, WholeBatches, "`n"
-      WholeBatchesArray.insert(a_LoopField)
+	; WholeBatchesArray:=[]
+	; FileRead, WholeBatchestext, WholeBatches.txt
+		; Wholebatches:=Trim(Wholebatchestext,"`n")
+		; sleep 100
+		; loop, parse, WholeBatches, "`n"
+      ; WholeBatchesArray.insert(a_LoopField)
 
 	Menu,Tray,NoStandard
 	Menu, Tray, Add, All Products, AllProductsMsgbox

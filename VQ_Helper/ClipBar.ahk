@@ -259,67 +259,67 @@ Class ClipBar{
 			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
 		; if CustomerPosition
 	}
-loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
-	global
-		GUI, ClipBar:default
-		Iniread, Iteration, Settings.ini, SavedVariables, Iteration
-		iniRead, Product, Settings.ini, SavedVariables, Product
-		iniRead, Batch, Settings.ini, SavedVariables, Batch
-		iniRead, Lot, Settings.ini, SavedVariables, Lot
-		iniRead, Coated, Settings.ini, SavedVariables, Coated
-		iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
+	loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
+		global
+			GUI, ClipBar:default
+			Iniread, Iteration, Settings.ini, SavedVariables, Iteration
+			iniRead, Product, Settings.ini, SavedVariables, Product
+			iniRead, Batch, Settings.ini, SavedVariables, Batch
+			iniRead, Lot, Settings.ini, SavedVariables, Lot
+			iniRead, Coated, Settings.ini, SavedVariables, Coated
+			iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 
-		; if !Iteration
-			; GuiControl,ClipBar:Text, Iteration, %Iteration%
-		;  if !Product
-			; GuiControl,ClipBar:Text, Product, %Product%
-		; if Batch
-		; 	GuiControl,ClipBar:Text, Batch, %Batch%
-		; if lot
-		; 	GuiControl,ClipBar:Text, lot, %lot%
-		; if Coated
-		; 	GuiControl,ClipBar:Text, Coated, %Coated%
-		; GUI, ClipBar:Submit, Nohide
+			; if !Iteration
+				; GuiControl,ClipBar:Text, Iteration, %Iteration%
+			;  if !Product
+				; GuiControl,ClipBar:Text, Product, %Product%
+			; if Batch
+			; 	GuiControl,ClipBar:Text, Batch, %Batch%
+			; if lot
+			; 	GuiControl,ClipBar:Text, lot, %lot%
+			; if Coated
+			; 	GuiControl,ClipBar:Text, Coated, %Coated%
+			; GUI, ClipBar:Submit, Nohide
+		}
 	}
-}
-; WM_LBUTTONDOWN(wParam, lParam){
-; 		If !MouseIsOver("ClipBar ahk_exe VQ_Helper")
-; 		return
-; 		PostMessage, 0xA1, 2
-; 				X := lParam & 0xFFFF
-; 				Y := lParam >> 16
-; 				if A_GuiControl
-; 					ctrl := "`n(in control " . A_GuiControl . ")"
-; 				PostMessage, 0xA1, 2
-; 				MouseGetPos,,,,winControl
-; }
+	; WM_LBUTTONDOWN(wParam, lParam){
+	; 		If !MouseIsOver("ClipBar ahk_exe VQ_Helper")
+	; 		return
+	; 		PostMessage, 0xA1, 2
+	; 				X := lParam & 0xFFFF
+	; 				Y := lParam >> 16
+	; 				if A_GuiControl
+	; 					ctrl := "`n(in control " . A_GuiControl . ")"
+	; 				PostMessage, 0xA1, 2
+	; 				MouseGetPos,,,,winControl
+	; }
+			return
+
+		WM_LBUTTONDOWN(wParam, lParam){
+			If !MouseIsOver("ClipBar")
+			return
+			PostMessage, 0xA1, 2
+					X := lParam & 0xFFFF
+					Y := lParam >> 16
+					if A_GuiControl
+						ctrl := "`n(in control " . A_GuiControl . ")"
+					PostMessage, 0xA1, 2
+					MouseGetPos,,,,winControl
+					return
+		}
+
+
+
+	ClipBar_ResetSub:
+		ClipBar.Reset()
 		return
 
-	WM_LBUTTONDOWN(wParam, lParam){
-		If !MouseIsOver("ClipBar")
+	BlockTheWheel:
+		sleep 1000
+		breaking.point(1)
+		; BlockingWheel:=
+		; #maxthreadsperhotkey, 2
 		return
-		PostMessage, 0xA1, 2
-				X := lParam & 0xFFFF
-				Y := lParam >> 16
-				if A_GuiControl
-					ctrl := "`n(in control " . A_GuiControl . ")"
-				PostMessage, 0xA1, 2
-				MouseGetPos,,,,winControl
-				return
-	}
-
-
-
-ClipBar_ResetSub:
-	ClipBar.Reset()
-	return
-
-BlockTheWheel:
-	sleep 1000
-	breaking.point(1)
-	; BlockingWheel:=
-	; #maxthreadsperhotkey, 2
-	return
 
 
 
@@ -329,10 +329,8 @@ BlockTheWheel:
 
 
 ;;        [[[[[[[[[[ ClipCodes ]]]]]]]]]]]]
-
-
-#ifwinactive,
 Return
+
 clipChange(type){
   global
   sleep 75
@@ -347,8 +345,6 @@ clipChange(type){
         WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
         sleep 200
         }
-      ; WholeBatches:=strReplace(WholeBatches,"`r`n`r`n","`r`n")
-      ; GetAllWholeBatches()
       return
   }
   if Instr(Clipboard, "[P]",true,1,1){
@@ -371,11 +367,9 @@ clipChange(type){
   }
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
     Clipboard:=
-    ; tooltip, RuningCompile
-    sleep 1000
+    sleep 500
     Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
     exitapp
-    ; tooltip,
     Return
   }
   else if Winactive("Test Definition Editior"){
@@ -1059,3 +1053,5 @@ if (Instr(Trim(A_ThisMenuItem),"|")=1){
 		else clip.codesRegex(A_ThisMenuItem)
 return
 }
+
+

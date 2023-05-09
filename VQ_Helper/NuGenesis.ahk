@@ -1024,10 +1024,9 @@ Methods() {
 		FileRead, MethodList, MethodList.txt
     ; MethodList:=
 		MethodRow:=[]
-		Methodname:=[]
     winactivate, Select methods tests
 		; ShiftTable_X:=-355
-		msgbox % MethodList
+		; msgbox % MethodList
 		; ShiftTable_Y:=200
 		CoordMode, mouse, screen
 		; ScreenEdge_X:=A_ScreenWidth-15
@@ -1041,29 +1040,22 @@ Methods() {
     gui, new, +HwndhGui, Methods List
     Loop, Read, Methods.ini
     {
-        If A_Index = 1
-            Continue
-        MethodRow := StrSplit(A_LoopReadLine, "=")
+			If A_Index = 1
+				Continue
+			MethodRow := StrSplit(A_LoopReadLine, "=")
 				if !MethodRow[1]
 					continue
-
 				;MethodName:=StrSplit(MethodRow[1], "`t")
-				MethodNumber:=Methodrow[2]
-				if (instr(MethodList,MethodNumber))
+				; MethodNumber:=Methodrow[2]
+				if (instr(MethodList,Methodrow[2]))
 					TableMethodListSelect := "||"
 				else
 					TableMethodListSelect := "|"
-				sleep 200
         TableMethodList .=   MethodRow[1] . TableMethodListSelect
-				; msgbox % Methodnumber[2] "`n`n" MethodList "`n`n" Method
 				MaxRows:=A_Index-2
-
 			}
-			;msgbox, %TableMethodList%
-			sleep 200
 			Gui, Add, ListBox,  r%MaxRows% vListBox w300 glistviewhdlr multi, %TableMethodList%
 			Gui, Add, Button, w100 gRunSelected, Add Methods
-			sleep 200
 			try GUI, Show  ;x%MethodTableX% y%MethodTableY% w352
 			; OnMessage(0x0201, "WM_Lbuttondown")
     return
@@ -1088,10 +1080,11 @@ Methods() {
 				sleep 300
 				click 506, 341 ;move over
 				break.point()
-				sleep 500
+				; sleep 500
 			}
 		break.point()
 		return
+		
 		GuiEscape:
 		Gui, Destroy
 		return
