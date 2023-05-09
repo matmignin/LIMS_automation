@@ -136,7 +136,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					continue
 				Assay[Line]:=ingredient[7]
 				Method[Line]:=ingredient[8]
-				MethodList.="(" . ingredient[8] . ")"
+				MethodList.= ingredient[8] . " "
 				Description[Line]:=ingredient[9]
 				MinLimit[Line]:=ingredient[10]
 				MaxLimit[Line]:=ingredient[11]
@@ -146,6 +146,7 @@ Class LMS { ;;[[ Generl LMS ]]
 				Table_height+=1
 				}
 				FileDelete, MethodList.txt
+				methodlist:=trim(strreplace(methodlist, "  ", " "))
 				sleep 200
 				FileAppend, %MethodList%, MethodList.txt
 				;  Lms.detectTab()
@@ -1046,19 +1047,19 @@ Methods() {
 				if !MethodRow[1]
 					continue
 
-				MethodName:=StrSplit(MethodRow[1], "`t")
-				MethodNumber:=MethodName[2]
+				;MethodName:=StrSplit(MethodRow[1], "`t")
+				MethodNumber:=Methodrow[2]
 				if (instr(MethodList,MethodNumber))
-					TableMethodListSelect := "|"
+					TableMethodListSelect := "||"
 				else
-					TableMethodListSelect := ""
+					TableMethodListSelect := "|"
 				sleep 200
-        TableMethodList .= TableMethodListSelect  MethodName[1]  "`t"  MethodNumber  "|"
+        TableMethodList .=   MethodRow[1] . TableMethodListSelect
 				; msgbox % Methodnumber[2] "`n`n" MethodList "`n`n" Method
 				MaxRows:=A_Index-2
 
 			}
-			msgbox, %TableMethodList%
+			;msgbox, %TableMethodList%
 			sleep 200
 			Gui, Add, ListBox,  r%MaxRows% vListBox w300 glistviewhdlr multi, %TableMethodList%
 			Gui, Add, Button, w100 gRunSelected, Add Methods
