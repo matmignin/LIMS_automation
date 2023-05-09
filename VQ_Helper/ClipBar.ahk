@@ -8,7 +8,7 @@ Class ClipBar{
 		MidScreen:=A_ScreenWidth//2
 		wingetpos, Nugenesis_X, Nugenesis_y, Nugenesis_w, Nugenesis_h, NuGenesis LMS
 		wingetpos, Win_X, Win_y, Win_w, Win_h, A
-		ClipBar_H=33
+		ClipBar_H=31
 		ClipBar_H_max=56
 		ClipBar_T:=235
 		ClipBar_W=600
@@ -23,12 +23,12 @@ Class ClipBar{
 		; this.AddEdit("Product",	 "left h32 x1 y0 w65",				"16 Bold")
 			GUI,ClipBar:Font,			 s17 Bold , consolas
 			GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x1 y0 w65,	%Product%
-		this.AddEdit("Batch",	 "left h33 x+0 y0 w92", 			"13,Consolas")
-		this.AddEdit("Lot",		 "left h33 x+0 y0 w77", 			"10, Consolas")
-		this.AddEdit("Coated",	 "left h33 x+0 y0 wrap w72",		"9, Arial Narrow")
+		this.AddEdit("Batch",	 "left h31 x+0 y0 w92", 			"13,Consolas")
+		this.AddEdit("Lot",		 "left h31 x+0 y0 w77", 			"10, Consolas")
+		this.AddEdit("Coated",	 "left h31 x+0 y0 wrap w72",		"9, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
-		This.AddEdit("Iteration", "x+2 h33 left y0 w62",			 "16 Bold 107C41, Consolas")	; Text1
-		this.AddEdit("GeneralBox",	 "x+10 h33 left y0 w200",		"8, Arial Narrow")
+		This.AddEdit("Iteration", "x+2 h31 left y0 w62",			 "16 Bold 107C41, Consolas")	; Text1
+		this.AddEdit("GeneralBox",	 "x+10 h31 left y0 w200",		"8, Arial Narrow")
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
@@ -294,7 +294,6 @@ loadSavedVariables(){ ;;___________________________LOADING VARIABLES____________
 ; 				MouseGetPos,,,,winControl
 ; }
 		return
-;;||||||||||||||||||||||||||||||||||| KEYBINDINGS |||||||||||||||||||||||||||||||||||||
 
 	WM_LBUTTONDOWN(wParam, lParam){
 		If !MouseIsOver("ClipBar")
@@ -329,7 +328,7 @@ BlockTheWheel:
 
 
 
-;; [[ ClipCodes ]]
+;;        [[[[[[[[[[ ClipCodes ]]]]]]]]]]]]
 
 
 #ifwinactive,

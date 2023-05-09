@@ -106,6 +106,7 @@ Class LMS { ;;[[ Generl LMS ]]
 			Source:=Clipboard
 		sleep 100
 		if RegexMatch(Source, Pointer){
+			MethodList:=
 			Name:=			[]
 			IngredientID:=	[]
 			Position:=		[]
@@ -135,6 +136,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					continue
 				Assay[Line]:=ingredient[7]
 				Method[Line]:=ingredient[8]
+				MethodList.="(" . ingredient[8] . ")"
 				Description[Line]:=ingredient[9]
 				MinLimit[Line]:=ingredient[10]
 				MaxLimit[Line]:=ingredient[11]
@@ -143,6 +145,9 @@ Class LMS { ;;[[ Generl LMS ]]
 				Requirement[Line]:=ingredient[14]
 				Table_height+=1
 				}
+				FileDelete, MethodList.txt
+				sleep 200
+				FileAppend, %MethodList%, MethodList.txt
 				;  Lms.detectTab()
 				If winexist("Edit Ingredient"){
 					winactivate, Edit Ingredient
@@ -266,7 +271,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					; return
 				; }
 			}
-			if (Tab="Specs") {
+			else if (Tab="Specs") {
 				; If (Code=Product) {
 					clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
 					clk(x%Tab%Search+10,yProductsSearch,,1,,0)
@@ -282,7 +287,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					send % PostCmd
 				; return
 			}
-			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
+			else If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
@@ -296,11 +301,11 @@ Class LMS { ;;[[ Generl LMS ]]
 					sendinput % PostCmd
 				; return
 			}
-			If (Tab="Requests") {
-				clk(x%Tab%Search-10,yWorkTabSearch,,1,"NuGenesis LMS",0)
-				clk(x%Tab%Search-30,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search-20,yWorkTabSearch,,2)
+			else If (Tab="Requests") {
+				clk(x%Tab%Search-9,yWorkTabSearch,,2,"NuGenesis LMS",0)
+				; clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
+				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
+				; clk(x%Tab%Search-10,yWorkTabSearch,,2)
 				sleep 20
 				Sendinput, ^{a}
 				If Overwrite=Add
@@ -1011,12 +1016,17 @@ return
 
 ; set the name of your INI file here
 
-
+;;					{{ METHOD TABLE}}
 Methods() {
     global
-    MethodList:=
+    TableMethodList:=
+		FileRead, MethodList, MethodList.txt
+    ; MethodList:=
+		MethodRow:=[]
+		Methodname:=[]
     winactivate, Select methods tests
 		; ShiftTable_X:=-355
+		msgbox % MethodList
 		; ShiftTable_Y:=200
 		CoordMode, mouse, screen
 		; ScreenEdge_X:=A_ScreenWidth-15
@@ -1027,21 +1037,34 @@ Methods() {
 		CoordMode, mouse, window
     click, 235, 72
     Send, ^a
-    gui, new, +HwndhGui, Methods
+    gui, new, +HwndhGui, Methods List
     Loop, Read, Methods.ini
     {
         If A_Index = 1
             Continue
-        Methodmenu := StrSplit(A_LoopReadLine, "=")
-				if !MethodMenu[1]
+        MethodRow := StrSplit(A_LoopReadLine, "=")
+				if !MethodRow[1]
 					continue
-        MethodList .= MethodMenu[1] . "|"
-				MaxRows:=A_Index
+
+				MethodName:=StrSplit(MethodRow[1], "`t")
+				MethodNumber:=MethodName[2]
+				if (instr(MethodList,MethodNumber))
+					TableMethodListSelect := "|"
+				else
+					TableMethodListSelect := ""
+				sleep 200
+        TableMethodList .= TableMethodListSelect  MethodName[1]  "`t"  MethodNumber  "|"
+				; msgbox % Methodnumber[2] "`n`n" MethodList "`n`n" Method
+				MaxRows:=A_Index-2
+
 			}
-    Gui, Add, ListBox,  r%MaxRows% vListBox w300 glistviewhdlr +Multi, %MethodList%
-    Gui, Add, Button, w100 gRunSelected, Add Methods
-		sleep 200
-	try GUI, Show  ;x%MethodTableX% y%MethodTableY% w352
+			msgbox, %TableMethodList%
+			sleep 200
+			Gui, Add, ListBox,  r%MaxRows% vListBox w300 glistviewhdlr multi, %TableMethodList%
+			Gui, Add, Button, w100 gRunSelected, Add Methods
+			sleep 200
+			try GUI, Show  ;x%MethodTableX% y%MethodTableY% w352
+			; OnMessage(0x0201, "WM_Lbuttondown")
     return
 
 		listviewhdlr:
@@ -1053,7 +1076,7 @@ Methods() {
 		sleep 300
     Loop, Parse, listbox, | ; loop through each selected method
     {
-
+			Break.Point()
 				winactivate, Select methods tests
 				click, 235, 72
 				Send, ^a
@@ -1065,8 +1088,9 @@ Methods() {
 				click 506, 341 ;move over
 				break.point()
 				sleep 500
-    }
-return
+			}
+		break.point()
+		return
 		GuiEscape:
 		Gui, Destroy
 		return
@@ -2139,7 +2163,7 @@ HM_Prop65(){
 			Breaking.Point()
 			iniread, VersionStatus, OrganoSpecs.ini, Organoleptic, %Product%
 			if (VersionStatus = "NotStarted")
-			{
+				{
 				Click 402, 161 ; click first row
 				Breaking.Point()
 				SpecTab.CopySpecTemplate("Physical")
@@ -2940,7 +2964,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	MouseReturn:="{click " Mx ", " My ",0}"
 	if window
 		if !winactive(window)
-			sleep 500 ; winactivate, %window%
+			sleep 200 ; winactivate, %window%
 	mouseclick, %Button%, %x%,%y%,%n%,0
 	sleep 25
 	if (window!="")

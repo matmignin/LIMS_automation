@@ -4,6 +4,7 @@
 	~LWin::Exit ;Send {Blind}{vkFF}
 	+F4::ExitApp
 ^esc::ExitApp
+#esc::Reload
 
 	showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
 		Global Product
@@ -22,7 +23,10 @@
 			return
 	}
 ;;[[ ClipBar ]]
-	#If MouseIsOver("ClipBar")
+	#If MouseIsOver("Methods List ahk_exe VQ_Helper.exe")
+		Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
+
+	#If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
 	wheelup::
 	If NAdd
 		{
