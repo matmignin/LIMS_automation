@@ -5,9 +5,10 @@
 	#Persistent
 	Process, Priority, , High
 	#NoEnv
+	SetBatchLines, -1
 	Thread, NoTimers
-	#HotkeyInterval 1000
-	#MaxHotkeysPerInterval 210
+	; #HotkeyInterval 1000
+	; #MaxHotkeysPerInterval 210
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
@@ -15,12 +16,13 @@
 	#maxthreadsperhotkey, 2
 	; #MaxThreadsBuffer Off
 	SetTitleMatchMode, 2
-	FormatTime, DayString,, MM/d/yy
-	FormatTime, TimeString, R
-	FormatTime, CurrentDateTime,, MM/dd/yy
-	FormatTime, The_Day,, MMMM d
-	FormatTime, The_Hour,, htt
-	FormatTime, The_Time,, hh:mm
+	listLines On
+	; FormatTime, DayString,, MM/d/yy
+	; FormatTime, TimeString, R
+	; FormatTime, CurrentDateTime,, MM/dd/yy
+	; FormatTime, The_Day,, MMMM d
+	; FormatTime, The_Hour,, htt
+	; FormatTime, The_Time,, hh:mm
 	SetNumlockState, on
 	SetscrolllockState, off
 	CrLf=`r`n
@@ -50,7 +52,6 @@
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
 
-	Menu, Tray, add, Manual &COAs folder, ShowManualCOA
 	Menu, Tray, add, &mfg folder, Showmfg
 	Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
 	Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
@@ -58,24 +59,19 @@
 	Menu, Tray, Add, Whole Batches, ShowWholeBatches
 	Menu, Tray, add, Show EditBox, ShowEditBox
 	Menu, Tray, add, Add Sample Log, Add15SampleLog
-	; Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
-	; Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
-	; Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
-	; Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
-	; Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
-	; Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
-	; Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
-	; Menu, Tray, Add, Ften, :FtenMenu
+	Menu, Tray, add, Delete Prior Codes, DeletePriorCodes
+	Menu, Tray, add, Delete Whole Batches, DeleteWholeBatches
 
 	Menu, Tray, Add,
+	Menu, Tray, add, TestCode, ShowManualCOA
 	Menu, Tray, Add, Show Variables, ShowVariables
-	Menu, Tray, Add, Stop Timer, StopTimer
+	Menu, Tray, Add, ListLines, ListLines
 	; Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
 	copypasteToggle:=0
-	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3})"
+	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 	RegexLot:= "i)(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)"
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"

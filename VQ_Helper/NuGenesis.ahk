@@ -21,6 +21,10 @@ Class LMS { ;;[[ Generl LMS ]]
 		Global
 		try Menu,Menu, deleteAll
 		MouseGetPos, mX, mY, mWin
+		If WinExist("Spec Table ahk_exe VQ_Helper.exe"){
+			SpecTab.ShowSpecMenu()
+			return
+		}
 		Menu, Menu, add, &Products from clipboard, PasteAllProducts
 		Menu, Menu, add, &Batches from clipboard, PasteAllBatches
 		Menu, Menu, add,
@@ -70,7 +74,7 @@ Class LMS { ;;[[ Generl LMS ]]
 		; 	Menu, Menu, add, &Analytical, AutoFill
 		; 	Try Menu,menu,show
 		; }
-		if winactive("Results Definition") || winactive("Composition") || winactive("Results"){
+		if winactive("Results Definition") || winactive("Composition") || winactive("Results ahk_exe eln.exe"){
 			; This.add("&Spec Table","Tests")
 			Menu,Menu, add
 			Menu, Menu, Add, &USP Heavy Metal,Autofill
@@ -136,7 +140,8 @@ Class LMS { ;;[[ Generl LMS ]]
 					continue
 				Assay[Line]:=ingredient[7]
 				Method[Line]:=ingredient[8]
-				MethodList.= ingredient[8] . " "
+				If !instr(MethodList, ingredient[8] "`n")
+					MethodList.= ingredient[8]  "`n"
 				Description[Line]:=ingredient[9]
 				MinLimit[Line]:=ingredient[10]
 				MaxLimit[Line]:=ingredient[11]
@@ -146,7 +151,6 @@ Class LMS { ;;[[ Generl LMS ]]
 				Table_height+=1
 				}
 				FileDelete, MethodList.txt
-				methodlist:=trim(strreplace(methodlist, "  ", " "))
 				sleep 200
 				FileAppend, %MethodList%, MethodList.txt
 				;  Lms.detectTab()
@@ -532,7 +536,7 @@ Orient(){
 ; }
 }
 
-Class ProductTab { ;;________ProductTab Class_______________
+Class ProductTab { ;;{{______________________ProductTab Class________________________________}}
 
 
 /*
@@ -829,71 +833,73 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 	  sleep 505
 	  return
 	  }
-	if GeneralCount=1			; Generic ingredient A.1
+	if GeneralCount=1
 		Sendinput, {right 56}
-	else if GeneralCount=2
+			else if GeneralCount=2
 		Sendinput, {right 62}
-	else if GeneralCount=3
+			else if GeneralCount=3
 		Sendinput, {right 68}
-	else if GeneralCount=4
+			else if GeneralCount=4
 		Sendinput, {right 74}
-	else if GeneralCount=5
+			else if GeneralCount=5
 		Sendinput, {right 80}
-	else if GeneralCount=6
+			else if GeneralCount=6
 		Sendinput, {right 86}
-	else if GeneralCount=7
+			else if GeneralCount=7
 		Sendinput, {right 92}
-	else if GeneralCount=8
+			else if GeneralCount=8
 		Sendinput, {right 93}
-	else if GeneralCount=9
+			else if GeneralCount=9
 		Sendinput, {right 95}
-	else if GeneralCount=10
+			else if GeneralCount=10
 		Sendinput, {right 97}
-	else if GeneralCount=11
+			else if GeneralCount=11
 		Sendinput, {right 99}
-	else if GeneralCount=12
+			else if GeneralCount=12
 		Sendinput, {right 100}
-	else if GeneralCount=13
+			else if GeneralCount=13
 		Sendinput, {right 101}
-	else if GeneralCount=14
+			else if GeneralCount=14
 		Sendinput, {right 102}
-	else if GeneralCount=15
+			else if GeneralCount=15
 		Sendinput, {right 103}
-	else if GeneralCount=16
+			else if GeneralCount=16
 		Sendinput, {right 104}
-	else if GeneralCount=17
+			else if GeneralCount=17
 		Sendinput, {right 105}
-	else if GeneralCount=18
+			else if GeneralCount=18
 		Sendinput, {right 106}
-	else if GeneralCount=19
+			else if GeneralCount=19
 		Sendinput, {right 107}
-	else if GeneralCount=20
+			else if GeneralCount=20
 		Sendinput, {right 108}
-	else if GeneralCount=21
+			else if GeneralCount=21
 		Sendinput, {right 109}
-	else if GeneralCount=22
+			else if GeneralCount=22
 		Sendinput, {right 110}
-	else if GeneralCount=23
+			else if GeneralCount=23
 		Sendinput, {right 111}
-	else if GeneralCount=24
+			else if GeneralCount=24
 		Sendinput, {right 112}
-	else if GeneralCount=25
+			else if GeneralCount=25
 		Sendinput, {right 113}
-	else if GeneralCount=26
+			else if GeneralCount=26
 		Sendinput, {right 114}
-	else
-		exit
-	sleep 400
-	return
-}
+			else
+				exit
+			sleep 400
+			return
+		}
 
-}
-return
-
-
+		}
+		return
 
 
-class SpecTab { 	;; _________SpecTab class_______
+
+
+
+;;  {{_____________SpecTab class__________________________}}
+class SpecTab {
 
 	Table(){
 		Global
@@ -927,10 +933,25 @@ class SpecTab { 	;; _________SpecTab class_______
 		ScreenEdge_X:=A_ScreenWidth-15
 		ScreenEdge_Y:=A_Screenheight-180
 		sleep 200
-		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w352, %Product% Spec Table
-		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w352, %Product% Spec Table
+		If (Name.Maxindex() <=1)
+			return
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w375, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w375, %Product% Spec Table
 		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
+		return
+	}
+	ShowSpecMenu(){
+		global
+		send,{click}
+		if !ClippedData {
+			try Menu, SpecMenu, DeleteAll
+			Fileread, ClippedData, ClippedExcelData.txt
+			Clipboard:=ClippedData
+			sleep 200
+		}
+		MouseGetPos, Mx, My
+		Try Menu,SpecMenu,show
 		return
 	}
 
@@ -940,28 +961,49 @@ class SpecTab { 	;; _________SpecTab class_______
 		Try GUI, Spec_Table:destroy
 		GUI, Spec_Table:Default
 		try Menu, SpecMenu, DeleteAll
-		i:=
-		if Table_height > 8
-			Table_height =12
+		i:=1
+		if Table_height > 9
+			Table_height =13
 		if !Table_height
-			Table_height = 8
+			Table_height = 9
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
 		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		Gui, Spec_Table:Add, Button, y+0 h30 w50 gAddSpecTableMethods, Add Methods
 		OnMessage(0x0201, "WM_Lbuttondown")
-
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
 				continue
 		LV_add(,""Name[A_index], Requirement[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
-		i++
-		if !(Requirement[i])
-			continue
-		Menu, SpecMenu, Add, % "&" Name[i] "`t " Requirement[i], SpecMenuButton
+		Menu, SpecMenu, Add, % "&" Name[A_Index] "`t " Requirement[A_Index], SpecMenuButton
+		; Menu, SpecMenu, Add, % "&" Name[i] "`t " Requirement[i], SpecMenuButton
+		; if !(Requirement[i]){
+			; i++
+			; continue
 		Test:= Name[A_index]
-
-	}
+		}
 	return
+
+AddSpecTableMethods:  ;;--MUST REMOVE DUPLICATE METHODSMETHODS FROM
+
+		; clk(73,588,,1,"NuGenesis LMS")
+		winactivate, ahk_exe eln.exe
+
+    Loop, Parse, MethodList, `n ; loop through each selected method
+    {
+			Breaking.Point()
+				winactivate, Select methods tests
+				click, 235, 72
+				Send, ^a
+				click, 235, 72 ;click search bar
+				sleep 100
+				Sendinput, %A_LoopField%{enter} ; enter method to search
+				sleep 300
+				click 506, 341 ;move over
+				breaking.point()
+			}
+		return
+
 
 	SpecMenuButton:
 	if A_ThisMenuItemPos
@@ -992,7 +1034,7 @@ return
 				LV_ModifyCol(5,0)
 				LV_ModifyCol(6,0)
 				LV_ModifyCol(7,0)
-				LV_ModifyCol(8,0)
+				LV_ModifyCol(8,50)
 				LV_ModifyCol(9,0)
 				; LV_Delete(Table_Height)
 			}
@@ -1017,7 +1059,7 @@ return
 
 ; set the name of your INI file here
 
-;;					{{ METHOD TABLE}}
+;;                        {{ METHOD TABLE}}
 Methods() {
     global
     TableMethodList:=
@@ -1084,7 +1126,7 @@ Methods() {
 			}
 		break.point()
 		return
-		
+
 		GuiEscape:
 		Gui, Destroy
 		return
@@ -1208,6 +1250,7 @@ MethodsDropdown() {
 			winactivate, Results Definition
 		click 282, 141 ; click row
 		clipboard:=
+		; msgbox, HERERE!!!!
 		Send, ^c
 		clipwait, 3
 		Sendinput,{esc}
@@ -1337,9 +1380,9 @@ MethodsDropdown() {
 			sleep 100
 
 		}
-		if winactive("Results") ;Selection window
+		if winactive("Results Definition") ;Selection window
 		{
-			winactivate, Results
+			winactivate, Results Definition
 			; Tooltip % Name " `t " MinLimit " - " MaxLimit " " Units, 300, 0
 			If Method contains ICP-MS 231
 				Sendinput,{click 217, 141}
@@ -1411,14 +1454,14 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	Breaking.Point()
 	If Method contains ICP-MS 231
 		return
-	winwaitactive, Results,, 5
+	winwaitactive, Results Definition,, 5
 	wingetpos, Results_X, Results_y, Results_w, Results_h, Results
 	sleep 200
 	Okay_x:=Results_W - 170
 	Okay_y:=Results_H - 45
 	mousemove, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
 	; msgbox, %Results_w%  %Results_h%
-	WinWaitClose, Results,, 8
+	WinWaitClose, Results Definition,, 8
 	sleep 400
 	; winwaitactive, Test Definition Editor,, 7
 
@@ -2393,7 +2436,7 @@ Class WorkTab { 		;;______WorkTab Class______________
 			Clipboard:=
 			winactivate, NuGenesis LMS
 			click
-			Send, ^c
+			; Send, ^c
 			clip()
 			click 64, 300 ;click Assign To New rewuest link
 			Breaking.Point()
@@ -2805,86 +2848,6 @@ SwitchEnv(ServerEnv){
 
 
 
-
-;_______________________________________Other__________
-
-TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
-	global
-	my:=100
-	Mx:=100
-  if Simpleclip
-		return
-	MouseGetPos, mX, mY
-	; CoordMode, Mouse, screen
-	; CoordMode, ToolTip, screen
-		; CoordMode, ToolTip, Relative
-	sleep 20
-	if Position = M
-		tooltip, %msg%, %X%+%mX%, %Y%+%mY%,%N%
-	else
-		tooltip, %msg%, %X%+100, %Y%+100,%N%
-		; X+=100
-
-	; else
-	hwnd := winExist("ahk_class tooltips_class32")
-	if Transparent
-		winSet, Trans, %Transparent%, % "ahk_id" hwnd
-	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
-	; winSet, Trans, 200, %W%
-	; if Position = "S"
-
-	SetTimer, RemoveToolTip%N%, -%time%
-return
-RemoveToolTip:
-	ToolTip
-return
-RemoveToolTip1:
-	ToolTip,,,,1
-return
-RemoveToolTip2:
-	ToolTip,,,,2
-return
-RemoveToolTip3:
-	ToolTip,,,,3
-return
-RemoveToolTip4:
-	ToolTip,,,,4
-return
-}
-
-
-class Breaking {
-	Point(break:=""){
-		Global
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RControl", "P") || GetKeyState("LWin", "P") || GetKeyState("RWin", "P"){
-			TT("Broke",2000,100,100)
-			blockinput, off
-			tooltip,
-			exit
-		}
-		if keep_running = n ;another signal to stop
-		{
-			blockinput, off
-			tooltip,
-			Exit
-			}
-	}
-	Preamble(){
-		Global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			exit
-		}
-		keep_running = y
-	}
-}
-MouseIsOver(winTitle){
-	Global
-	MouseGetPos,,, win, WinControl
-Return winExist(winTitle . " ahk_id " . win)
-}
-
 SendPassword(){
 	if winExist("Login"){
 		winactivate
@@ -2908,67 +2871,6 @@ SendPassword(){
 	else
 		return
 return
-}
-
-ListArray(The_Array,Option:="n"){
-	; global
-	if (option<>"n"){
-		for Each, Element in The_Array
-			ArrayList .=Element Option
-		return ArrayList
-	}
-	else {
-  For Each, Element In The_Array {
-        ArrayList .= "`n" A_index ": "
-    ArrayList .= Element
-  }
-	return ArrayList
-  }
-}
-
-HasValue(haystack, needle) {
-	for index, value in haystack
-		if (value = needle)
-		return index
-	if !(IsObject(haystack))
-		throw Exception("Bad haystack!", -1, haystack)
-return 0
-}
-
-BlockRepeat(Time:=300, ToolTipMessage:=""){
-	Global N
-	sleep 25
-	If N
-		exit
-	If ToolTipMessage
-		TT(TooltipMessage)
-	N:=1
-	SetTimer, BlockTheInput, -%time%
-	sleep 50
-	return
-
-	BlockTheInput:
-		N:=
-		return
-}
-
-Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
-	global
-	MouseGetPos, mx, my, mw,
-	MouseReturn:="{click " Mx ", " My ",0}"
-	if window
-		if !winactive(window)
-			sleep 200 ; winactivate, %window%
-	mouseclick, %Button%, %x%,%y%,%n%,0
-	sleep 25
-	if (window!="")
-		winactivate, %mw%
-	If (ReturnMouse=x)
-		Return MouseReturn
-	If (ReturnMouse=0)
-		Return
-	else
-		mousemove,%mx%,%my%,0
 }
 
 

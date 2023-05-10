@@ -4,7 +4,174 @@
 	~LWin::Exit ;Send {Blind}{vkFF}
 	+F4::ExitApp
 ^esc::ExitApp
-#esc::Reload
+!esc::Reload
+
+
+
+
+;     [[_________________________Other_________________]]
+
+TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
+	global
+	my:=100
+	Mx:=100
+  if Simpleclip
+		return
+	MouseGetPos, mX, mY
+	; CoordMode, Mouse, screen
+	; CoordMode, ToolTip, screen
+		; CoordMode, ToolTip, Relative
+	sleep 20
+	if Position = M
+		tooltip, %msg%, %X%+%mX%, %Y%+%mY%,%N%
+	else
+		tooltip, %msg%, %X%+100, %Y%+100,%N%
+		; X+=100
+
+	; else
+	hwnd := winExist("ahk_class tooltips_class32")
+	if Transparent
+		winSet, Trans, %Transparent%, % "ahk_id" hwnd
+	; winSet, TransColor, FFFFFF 200, % "ahk_id" hwnd
+	; winSet, Trans, 200, %W%
+	; if Position = "S"
+
+	SetTimer, RemoveToolTip%N%, -%time%
+return
+RemoveToolTip:
+	ToolTip
+return
+RemoveToolTip1:
+	ToolTip,,,,1
+return
+RemoveToolTip2:
+	ToolTip,,,,2
+return
+RemoveToolTip3:
+	ToolTip,,,,3
+return
+RemoveToolTip4:
+	ToolTip,,,,4
+return
+}
+
+
+class Breaking {
+	Point(break:=""){
+		Global
+		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RControl", "P") || GetKeyState("LWin", "P") || GetKeyState("RWin", "P"){
+			TT("Broke",2000,100,100)
+			blockinput, off
+			tooltip,
+			exit
+		}
+		if keep_running = n ;another signal to stop
+		{
+			blockinput, off
+			tooltip,
+			Exit
+			}
+	}
+	Preamble(){
+		Global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			exit
+		}
+		keep_running = y
+	}
+}
+MouseIsOver(winTitle){
+	Global
+	MouseGetPos,,, win, WinControl
+Return winExist(winTitle . " ahk_id " . win)
+}
+
+RemoveDuplicates(InputString,Delimiter:="`n"){
+Loop, Parse, InputString, Delimiter
+			{
+			If Output not contains %A_LoopReadLine%%Delimiter%
+				Output .= A_LoopReadLine . Delimiter
+		}
+Return Output
+}
+
+ListArray(The_Array,Option:="n"){
+	; global
+	if (option<>"n"){
+		for Each, Element in The_Array
+			ArrayList .=Element Option
+		return ArrayList
+	}
+	else {
+  For Each, Element In The_Array {
+        ArrayList .= "`n" A_index ": "
+    ArrayList .= Element
+  }
+	return ArrayList
+  }
+}
+
+HasValue(haystack, needle) {
+	for index, value in haystack
+		if (value = needle)
+		return index
+	if !(IsObject(haystack))
+		throw Exception("Bad haystack!", -1, haystack)
+return 0
+}
+
+BlockRepeat(Time:=300, ToolTipMessage:=""){
+	Global N
+	sleep 25
+	If N
+		exit
+	If ToolTipMessage
+		TT(TooltipMessage)
+	N:=1
+	SetTimer, BlockTheInput, -%time%
+	sleep 50
+	return
+
+	BlockTheInput:
+		N:=
+		return
+}
+
+Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
+	global
+	MouseGetPos, mx, my, mw,
+	MouseReturn:="{click " Mx ", " My ",0}"
+	if window
+		if !winactive(window)
+			sleep 200 ; winactivate, %window%
+	mouseclick, %Button%, %x%,%y%,%n%,0
+	sleep 25
+	if (window!="")
+		winactivate, %mw%
+	If (ReturnMouse=x)
+		Return MouseReturn
+	If (ReturnMouse=0)
+		Return
+	else
+		mousemove,%mx%,%my%,0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
 		Global Product
@@ -38,17 +205,25 @@
 	if (wincontrol="Edit5")
 		Clipbar.AddIteration(500)
 	if (winControl="Edit1"){
-		GetAllProducts(" ")
+		GetAllProducts(" ", 1)
 			; ControlsetText, Edit6,%GetAllProducts(" ")%,ClipBar
 		}
 	if (winControl="Edit2"){
-		GetAllBatches(" ")
+		GetAllBatches(" ", 1)
+		; ControlsetText, Edit6,%AllBatches%,ClipBar
+		; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+	}
+	if (winControl="Edit3")
+		PriorCodesMenu()
+	if (winControl="Edit4")
+		PriorCodesMenu()
+	if (winControl="Edit6"){
+		WholeBatchMenu()
 			; ControlsetText, Edit6,%AllBatches%,ClipBar
 			; TT(AllBatches,2000,ClipBar_x2,35,2,250)
 		}
 	else ;(winControl="Edit3")
-			NAdd:=
-	sleep 500
+		sleep 500
 		NAdd:=
 	return
 
@@ -65,11 +240,17 @@
 	if (wincontrol="Edit5")
 		Clipbar.SubIteration(200)
 	 if (winControl="Edit1")
-		Return
-	 if (winControl="Edit2")
-		Return
+		PriorCodesMenu()
+	if (winControl="Edit3")
+		PriorCodesMenu()
+	if (winControl="Edit4")
+		PriorCodesMenu()
+	 if (winControl="Edit6"){
+		MsgBox, 4, Delete file, Do you want to delete WholeBatches.txt?
+		IfMsgBox, OK
+				FileDelete, WholeBatches.txt
+		}
 	else ;(winControl="Edit3")
-		NAdd:=
 		sleep 500
 	NAdd:=
 	return
@@ -227,9 +408,8 @@
 	F10::
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
 	F8::Clk(853, 657) ;click okay
-#Ifwinactive, Select tests for request: R
-	F10::
-	mbutton::WorkTab.SelectTestSample()
+	F9::send % Clk(250, 70) "{up}" ; click okay.
+
 #IFwinexist, Release: Rotational Testing Schedule ;
 	F10::
 	mbutton::
@@ -246,10 +426,10 @@
 #ifwinexist, Sign :
 	mbutton::Sendpassword()
 
-#ifwinactive, Label * ahk_exe explorer.exe ;;    ahk_exe explorer.exe
+#ifwinactive, Label Copy ahk_exe explorer.exe ;;    ahk_exe explorer.exe
 	F9::send, ^{e}
 	F7::
-		winactivate, Label * ahk_exe explorer.exe
+		winactivate, Label Copy ahk_exe explorer.exe
 		sendinput, ^{e}{*}%Product%{*}
 		sleep 300
 		sendinput, {tab 2}{right}{pgup 2}
@@ -259,7 +439,7 @@
 	Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
 	; +Mbutton::SelectPreviewPane()
 	F6::
-	winactivate, Label * ahk_exe explorer.exe
+	winactivate, Label Copy ahk_exe explorer.exe
 		sendinput, ^{e}
 		send, {tab 2}{right}
 		return
@@ -292,7 +472,7 @@
 		click 239, 246 ;results link
 		sleep 200
 		Breaking.Point()
-		winactivate, Results
+		winactivate, Results Definition
 		sleep 100
 		return
 	;enter::sendinput, {enter}
@@ -306,7 +486,6 @@
 
 #Ifwinactive, Results Definition ;;    Results_Definition:
 	+mbutton::SpecTab.Autofill()
-	; ^v::
 	; If InStr(Clipboard, "Use the limits from the test", true,1,1){
 	; 	clip.ParseSpecsTable(1)
 	; msgbox, after the clipboard
@@ -317,7 +496,7 @@
 	; return
 	F10::
 	mbutton::
-		winactivate, Results
+		winactivate, Results Definition
 		tooltip,
 		Send,{click 80, 66} ;click edit
 		sleep 200
@@ -388,8 +567,11 @@
 	F10::Sendinput, {tab 2}Fixing Rotation{enter}
 
 #ifwinactive, Select tests for request: ;;    Select tests for request:
-	Mbutton::sendinput, {click, 31, 102}
+	F10::sendinput, {click, 31, 102}
 	F6::SpecTab.Methods()
+	F7::SpecTab.MethodsDropdown()
+	mbutton::WorkTab.SelectTestSample()
+	F9::mouseclick, Left, 638, 70
 #ifwinactive, Edit request ;;    Edit request
 	F10::Worktab.EditRequest()
 	mbutton::WorkTab.EditRequest()
@@ -406,38 +588,31 @@
 	+Mbutton::SpecTab.Table()
 	^F10::LMS.AddSampleLog(15)
 	F10::
-		send,{click}
-		if !ClippedData {
-			try Menu, SpecMenu, DeleteAll
-			Fileread, ClippedData, ClippedExcelData.txt
-			Clipboard:=ClippedData
-			sleep 200
-		}
-		MouseGetPos, Mx, My
-		Try Menu,SpecMenu,show
-		return
+
 	Mbutton::SpecTab.CopySpecTemplate()
 	F9::lms.Menu()
 	F6::LMS.SearchBar(Product,"{enter}",0)
+	+F6::clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
 	F7::LMS.SearchBar(Batch,"{enter}",0)
+	+F7::clk(66,750,"",1,"NuGenesis LMS",2) ;:((Enter Result))
 	F8::LMS.SearchBar("",,"False")
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
-	^v::
-		If (Clipped_Specs){
-			TT(Clipped_Specs,1000,10,10)
-			spectab.Autofill()
-			return
-		}
-		else If InStr(Clipboard, "Use the limits from the test", true,1,1){
-			clip.ParseSpecsTable()
-			spectab.Autofill()
-			return
-		}
-		else
-			send, ^v
-		return
+	; ^v::
+	; 	If (Clipped_Specs){
+	; 		TT(Clipped_Specs,1000,10,10)
+	; 		spectab.Autofill()
+	; 		return
+	; 	}
+	; 	else If InStr(Clipboard, "Use the limits from the test", true,1,1){
+	; 		clip.ParseSpecsTable()
+	; 		spectab.Autofill()
+	; 		return
+	; 	}
+	; 	else
+	; 		send, ^v
+	; 	return
 
 
 ;;[[ LMS APP ]]
@@ -474,7 +649,7 @@
 	F3::WholeBatchMenu()
 	+!^F5::
 	#+!F10::LMS.AddDataFromClipboard()
-	#+^F10::clip.ParseSpecsTable()
+	;#+^F10::clip.ParseSpecsTable()
 	+!^F10::spectab.Autofill()
 	esc::						esc
 	pause::						Suspend, Toggle
@@ -584,163 +759,17 @@ Ctest_1:
 
 
 
-GetAllProducts(Delimiter:=" ",msg:=""){
-	global
-	regProducts:=[]
-	pos=0
-	Haystack:=Clipboard
-	sleep 100
-	while pos := RegexMatch(Haystack, RegexProduct, aProduct, pos+1) ; {
-		regProducts.insert(aProduct)
-	; }
-	AllProducts:=[], oTemp := {}
-	for vKey, vValue in regProducts
-	{
-		if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-		{
-			if !ObjHasKey(oTemp, vValue+0)
-				AllProducts.Push(vValue+0), oTemp[vValue+0] := ""
-		}
-		else
-		{
-			if !ObjHasKey(oTemp, "" vValue)
-				AllProducts.Push("" vValue), oTemp["" vValue] := ""
-		}
-	}
-	AllProducts:=Listarray(AllProducts,Delimiter)
-	AllProducts:= Trim(StrReplace(AllProducts, Delimiter Delimiter, Delimiter),Delimiter)
-	FileDelete, AllProducts.txt
-	sleep 200
-	FileAppend, %AllProducts%, AllProducts.txt
-	ControlsetText, Edit6,%AllProducts%,ClipBar
-	if (msg && AllProducts!="")
-		clip.editbox(AllProducts)
-	Else
-			Return AllProducts
-}
-
-GetAllBatches(Delimiter:=" ",msg:=""){
-	global
-	regBatches:=[]
-	pos=0
-	Haystack:=Clipboard
-	If Getkeystate("Lshift","P")
-		Delimiter:="`;"
-	else If Getkeystate("ROption","P")
-		Delimiter:="`;"
-	sleep 100
-	while pos := RegexMatch(Haystack, RegexBatch, aBatch, pos+1) ; {
-		regBatches.insert(aBatch)
-	; }
-	AllBatches:=[], oTemp := {}
-	for vKey, vValue in regBatches
-	{
-		if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-		{
-			if !ObjHasKey(oTemp, vValue+0)
-				AllBatches.Push(vValue+0), oTemp[vValue+0] := ""
-		}
-		else
-		{
-			if !ObjHasKey(oTemp, "" vValue)
-				AllBatches.Push("" vValue), oTemp["" vValue] := ""
-		}
-	}
-	AllBatches:=Listarray(AllBatches,Delimiter)
-	AllBatches:= Trim(StrReplace(AllBatches, Delimiter Delimiter, Delimiter),Delimiter)
-	FileDelete, AllBatches.txt
-	sleep 400
-	FileAppend, %AllBatches%, AllBatches.txt
-	ControlsetText, Edit6,%AllBatches%,ClipBar
-	if (msg && trim(AllBatches)!="")
-		clip.editbox(AllBatches)
-	Else
-			Return AllBatches
-}
-
-WholeBatchesSave(Input,Overwrite:=""){
-	Global
-	if Overwrite
-		FileDelete, WholeBatches.txt
-	sleep 200
-	FileAppend, %input%, WholeBatches.txt
-	sleep 200
-	FileRead, WholeBatches, WholeBatches.txt
-	sleep 200
-	tt(WholeBatches,10000,0,0,2)
-		return
-}
-
-GetAllWholeBatches(Delimiter:="`n",msg:=""){
-	global
-	aWholeBatches:=[]
-	; pos=0
-	; Haystack:=Clipboard
-	; FileRead, WholeBatches, WholeBatches.txt
-	sleep 100
-	; WholeBatchesArray:=[]
-	loop, parse, WholeBatches, "`r`n"
-		aWholeBatches.insert(a_LoopField)
-
-	AllWholeBatches:=[], oTemp := {} remove duplicates
-	for vKey, vValue in aWholeBatches
-	{
-		if (ObjGetCapacity([vValue], 1) = "") ;is numeric
-		{
-			if !ObjHasKey(oTemp, vValue+0)
-				AllWholeBatches.Push(vValue+0), oTemp[vValue+0] := ""
-		}
-		else
-		{
-			if !ObjHasKey(oTemp, "" vValue)
-				AllWholeBatches.Push("" vValue), oTemp["" vValue] := ""
-		}
-	}
-	AllWholeBatches:=Listarray(AllWholeBatches,"`r`n")
-	AllWholeBatches:=StrReplace(AllWholeBatches, "`r`n`r`n", "`r`n")
-	AllWholeBatches:=StrReplace(AllWholeBatches, A_space A_space, A_Space)
-	AllWholebatches:=Trim(AllWholeBatches,"`r`n")
-	; AllWholeBatches:= StrReplace(AllWholeBatches, "+")
-	FileDelete, WholeBatches.txt
-	sleep 200
-	FileAppend, %AllWholeBatches%, WholeBatches.txt
-	if msg
-		clip.editbox(AllWholeBatches)
-	Else
-			Return AllWholeBatches
-}
 
 
-
-	;;[[TouchPad BINDINGS]]
-	3tap(){
-		Global
-		; if winactive("NuGenesis LMS") ; If Nugeneses
-		; SpecTab.CopySpecTemplate()
-		; LMS.DetectTab()
-		; if (Tab="Specs"){
-			; return
-		; }
-		; else if (Tab="Requests")
-		; 	clk(61, 635) ;enter results
-		; else if (Tab="Products")
-		; 	clk(67, 754) ;edit results
-		; else if (Tab="Samples"){
-		; 	send, {click 124, 294} ;assign Requests
-		; 	sleep 500
-
-		return
-}
 
 3Right(){
 	global
-	; if keep_running = y
-	; {
-	; 	keep_running = n ;signal other thread to stop
-		; 	return
-	; }
-	; keep_running = y
-	; FlashScreen("3-Right")
+	if keep_running = y
+	{
+		keep_running = n ;signal other thread to stop
+			return
+	}
+	keep_running = y
 	If winactive("NuGenesis LMS")
 		LMS.SearchBar(Batch,"{enter}")
 	else If winactive("Select methods tests")
@@ -765,62 +794,9 @@ GetAllWholeBatches(Delimiter:="`n",msg:=""){
 		send, {click 504, 338}{click 846, 659} ; add test.
 		sleep 300
 	}
-	else if winactive("ahk_exe eln.exe")
-		Send, %Batch%
 	else
-			return
-	; 	keep_running :=
-	; keep_running :=
-		return
-}
-3down(){
-	global
-	if winactive("Select samples for test:")
-		Clk(853, 657) ; click okay.
-		return
-}
-3up(){
-	global
-	if winactive("Results Definition")
-		lms.menu()
-	else if winactive("Result Entry")
-			return
-	else if winactive("Register new samples")
-		LMS.SearchBar(Product,"{enter}")
-	else If winactive("Select tests for request: R")
-		mouseclick, Left, 638, 70
-	else if winactive("Select samples for test:")
-		send % Clk(250, 70) "{up}" ; click okay.
-	else If winactive("Composition")
-			return
-	else
-			return
-}
-4tap(){
-	global
-	If winactive("NuGenesis LMS") {
-		LMS.Detecttab()
-		if (Tab="Requests") {
-			MouseGetPos, mx, mY
-			send, {click 2}
-			sleep 500
-			if !winactive("Edit test")
-				winactivate
-			sleep 300
-			if winactive("NuGenesis LMS")
-				mousemove, %mx%, %My% ,0
-				return
-				return
-		}
-		else If (Tab:="Samples")
-			lms.menu()
-		else if (Tab:="Products")
-			mouseclick, left, 78, 443 ;edit compositi
-		else if (Tab="Specs")
-			lms.menu()
-		else
-				return
-	}
+		Sendinput, %Batch%
+	keep_running :=
 	return
 }
 
@@ -846,6 +822,10 @@ AddToList(){
 	; CoordMode, mouse, Screen
 }
 
+
+
+
+;;    [[[[[  MENU HANDLES ]]]]]
 Reloadsub(){
 	reload
   }
@@ -858,10 +838,6 @@ Exitsub(){
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	exitApp
   }
-
-
-
-
 windowSpy(){
   Run, WS.exe
   }
@@ -896,16 +872,9 @@ Add15SampleLog:
 	Return
 ShowVariables:
 	listvars
-	; run, edit Settings.ini
-	; sleep 200
-	; WinWaitNotActive, Settings - Notepad,, 10
-			; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
-	; winwaitclose, Settings - Notepad,,10
-		; if errorlevel
-		; ControlSend, Edit1, {ctrl down}s{ctrl up}, Settings - Notepad,
-		; readInIFiles()
-		; LMS.Orient()
-		; ClipBar.Show()
+	return
+ListLines:
+	ListLines
 	return
 ShowFinalLabelCopy:
 	; run, find "\\10.1.2.118\Label Copy Final"
@@ -926,18 +895,20 @@ ShowScanLabelCopy:
 	send, ^{e}{tab 2}{right}
 	return
 ShowManualCOA:
-;	run, explorer "\\10.1.2.118\coa-lot#"
-; Set the path to the AutoHotkey program
-autohotkeyPath := "U:\VQ_Helper\RawFiles\AHK\AutoHotkeyU64.exe"
-
-; Set the path to the script you want to run
-scriptPath := "U:\VQ_Helper\RawFiles\TestingCode.ahk"
-
-; Run the script using the AutoHotkey program
-RunWait, %autohotkeyPath% "%scriptPath%"
-
-
-;	sendinput, {*}%Product%{*}{enter}
+		run, explorer "\\10.1.2.118\coa-lot#"
+	return
+DeletePriorCodes:
+		FileDelete, PriorCodes.txt
+		tt("Deleted")
+		Return
+DeleteWholeBatches:
+		FileDelete, WholeBatches.txt
+		tt("Deleted")
+		Return
+TestCode:
+	autohotkeyPath := "U:\VQ_Helper\RawFiles\AHK\AutoHotkeyU64.exe"
+	scriptPath := "U:\VQ_Helper\RawFiles\TestingCode.ahk"
+	RunWait, %autohotkeyPath% "%scriptPath%"
 	return
 Showmfg:
 	run, find "\\10.1.2.118\lms\Information\ECOPY\mfg"
@@ -976,11 +947,13 @@ FtenMenuHandler:
 				iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 				iniRead, SampleID, Settings.ini, SavedVariables, SampleID
 				iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+				iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+				iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 				; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
 				; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 				iniread, CodeString, Settings.ini, SavedVariables, CodeString
 				iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment
-				iniread, Ften, Settings.ini, Config, Ften
+				; iniread, Ften, Settings.ini, Config, Ften
 
 				; iniread, NormalWinDelay, Settings.ini, Config, NormalWinDelay
 				iniread, ActiveTimerCheck, Settings.ini, Config, ActiveTimerCheck
@@ -1014,7 +987,7 @@ FtenMenuHandler:
 
 
 
-
+;; [[ Active Check ]]
 			activeCheck:
 				If winexist("Delete Attribute ahk_exe eln.exe"){
 					winactivate,
