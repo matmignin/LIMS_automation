@@ -38,7 +38,7 @@ Class LMS { ;;[[ Generl LMS ]]
 		Menu, Menu, add,
 
 
-			
+
 
 
 
@@ -174,7 +174,7 @@ Class LMS { ;;[[ Generl LMS ]]
 					SpecTab.AutoFill()
 					return
 				}
-				else if winactive("NuGenesis LMS") && (Table_height > 1) {
+				else if (winactive("NuGenesis LMS") || winactive("Select methods tests")) && (Table_height > 1) {
 					Try GUI, Spec_Table:destroy
 						SpecTab.Table()
 						return
@@ -964,24 +964,40 @@ class SpecTab {
 AddSpecTableMethods:
 
 		; clk(73,588,,1,"NuGenesis LMS")
-		winactivate, ahk_exe eln.exe
-		tt(MethodList)
+		winactivate, Select methods tests
+		; tt(MethodList)
 
     Loop, Parse, MethodList, `n ; loop through each selected method
-    {
-    MethodListItem:=A_loopfield
-    if inStr(MethodListItem,"/"){
-    	loop, parse, MethodListItem, /
-    		menu, minimenu, Add, %A_loopfield%
-    	menu, minimenu, show
-    	This.SelectMethod(A_thismenuitem)
-    	}
-    	Else
-    		This.SelectMethod(MethodListItem)
-			breaking.point()
+			{
+				MethodListItem:=A_loopfield
+				if inStr(MethodListItem,"/")
+					{
+					loop, parse, MethodListItem, /
+							menu, ChooseMethodMenu, Add, %A_loopField%, ChooseMethodHdr
+				menu, ChooseMethodMenu, show
+				; This.SelectMethod(A_thismenuitem
+				MethodListItem:=A_thismenuitem
+			}
+			
+				{
+					winactivate, Select methods tests
+					click, 235, 72
+					Send, ^a
+					click, 235, 72 ;click search bar
+					sleep 100
+					Sendinput, %MethodListItem%{enter} ; enter method to search
+					sleep 300
+					click 506, 341 ;move over
+				}
+				; This.SelectMethod(MethodList:Item)
+			; breaking.point()
 		}
 		return
 
+		ChooseMethodHdr:
+		Try Menu, ChooseMethodMenu, DeleteAll
+		; winactivate, Select methods tests
+	return
 
 	SpecMenuButton:
 	if A_ThisMenuItemPos
