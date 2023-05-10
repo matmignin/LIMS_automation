@@ -935,8 +935,8 @@ class SpecTab {
 		sleep 200
 		If (Name.Maxindex() <=1)
 			return
-		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w375, %Product% Spec Table
-		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w375, %Product% Spec Table
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w385, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w385, %Product% Spec Table
 		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
 		return
@@ -962,14 +962,14 @@ class SpecTab {
 		GUI, Spec_Table:Default
 		try Menu, SpecMenu, DeleteAll
 		i:=1
-		if Table_height > 9
-			Table_height =13
+		if Table_height > 8
+			Table_height =12
 		if !Table_height
-			Table_height = 9
+			Table_height = 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
 		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		Gui, Spec_Table:Add, Button, y+0 h30 w50 gAddSpecTableMethods, Add Methods
+		Gui, Spec_Table:Add, Button, y+0 h35 w75 gAddSpecTableMethods, Add Methods
 		OnMessage(0x0201, "WM_Lbuttondown")
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
@@ -988,6 +988,7 @@ AddSpecTableMethods:  ;;--MUST REMOVE DUPLICATE METHODSMETHODS FROM
 
 		; clk(73,588,,1,"NuGenesis LMS")
 		winactivate, ahk_exe eln.exe
+		tooltip, %MethodList%
 
     Loop, Parse, MethodList, `n ; loop through each selected method
     {
@@ -1002,6 +1003,7 @@ AddSpecTableMethods:  ;;--MUST REMOVE DUPLICATE METHODSMETHODS FROM
 				click 506, 341 ;move over
 				breaking.point()
 			}
+			tooltip,
 		return
 
 
@@ -1027,14 +1029,14 @@ return
 			ModifyColumns(){
 				Global
 				GUI, Spec_Table:Default
-				LV_ModifyCol(1,140)
-				LV_ModifyCol(2,200)
+				LV_ModifyCol(1,130)
+				LV_ModifyCol(2,190)
 				LV_ModifyCol(3,0)
 				LV_ModifyCol(4,0)
 				LV_ModifyCol(5,0)
 				LV_ModifyCol(6,0)
 				LV_ModifyCol(7,0)
-				LV_ModifyCol(8,50)
+				LV_ModifyCol(8,100)
 				LV_ModifyCol(9,0)
 				; LV_Delete(Table_Height)
 			}
