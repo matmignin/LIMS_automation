@@ -988,22 +988,21 @@ AddSpecTableMethods:  ;;--MUST REMOVE DUPLICATE METHODSMETHODS FROM
 
 		; clk(73,588,,1,"NuGenesis LMS")
 		winactivate, ahk_exe eln.exe
-		tooltip, %MethodList%
+		tt(MethodList)
 
     Loop, Parse, MethodList, `n ; loop through each selected method
     {
-			Breaking.Point()
-				winactivate, Select methods tests
-				click, 235, 72
-				Send, ^a
-				click, 235, 72 ;click search bar
-				sleep 100
-				Sendinput, %A_LoopField%{enter} ; enter method to search
-				sleep 300
-				click 506, 341 ;move over
-				breaking.point()
-			}
-			tooltip,
+    MethodListItem:=A_loopfield
+    if inStr(MethodListItem,"/"){
+    	loop, parse, MethodListItem, /
+    		menu, minimenu, Add, %A_loopfield%
+    	menu, minimenu, show
+    	This.SelectMethod(A_thismenuitem)
+    	}
+    	Else 
+    		This.SelectMethod(MethodListItem)
+			breaking.point()
+		}
 		return
 
 
@@ -1059,7 +1058,16 @@ return
 			}
 
 
-; set the name of your INI file here
+SelectMethod(InputMethod){
+				winactivate, Select methods tests
+				click, 235, 72
+				Send, ^a
+				click, 235, 72 ;click search bar
+				sleep 100
+				Sendinput, %InputMethod%{enter} ; enter method to search
+				sleep 300
+				click 506, 341 ;move over
+				}
 
 ;;                        {{ METHOD TABLE}}
 Methods() {
