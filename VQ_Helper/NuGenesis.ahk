@@ -36,32 +36,9 @@ Class LMS { ;;[[ Generl LMS ]]
 		Menu, Menu, add,
 		Menu, Menu, add, &Total CoAs, ShowFINAL_C_O_A
 		Menu, Menu, add,
-		; Menu, FtenMenu, Add, ApproveTestSpec, FtenMenuHandler
-		; Menu, FtenMenu, Add, NewSpecVersion, FtenMenuHandler
-		; Menu, FtenMenu, Add, RemoveAndApprove, FtenMenuHandler
-		; Menu, FtenMenu, Add, RemoveTestSpec, FtenMenuHandler
-		; Menu, FtenMenu, Add, WholeBatchMenu, FtenMenuHandler
-		; Menu, FtenMenu, Add, AddOrganoleptic, FtenMenuHandler
-		; Menu, FtenMenu, Add, SelectPreviewPane, FtenMenuHandler
-		; Menu, Menu, Add, Ften, :FtenMenu
 
-		; if winactive("NuGenesis LMS"){
-			; LMS.Orient()
-			; LMS.DetectTab()
-			;Menu,Menu, add, Copy &Template, autofill
-			; If CopyPasteToggle=1
-			; Menu,Menu, add, Copy &Specs, Autofill
-			; Menu,Menu, add, Paste &Specs, Autofill
-			; if (Tab="Samples")
-			; Menu, Menu, add, Add Sample Logs, Add15SampleLog
-				; Menu, Menu, add, New &Request, AutoFill
-			; else if (Tab="Specs"){
-				; this.CopyPasteSpec()
-				; Menu,Menu, add, &Delete Retain, Autofill
-				; Menu,Menu, add, ApproveSpecVersion, +#F11
-				; Menu,Menu, add, NewSpecVersion, ^#F11
-				; Menu,Menu, add, RemoveTestSpec, !#F11
-			; }
+
+			
 
 
 
@@ -984,7 +961,7 @@ class SpecTab {
 		}
 	return
 
-AddSpecTableMethods:  ;;--MUST REMOVE DUPLICATE METHODSMETHODS FROM
+AddSpecTableMethods:
 
 		; clk(73,588,,1,"NuGenesis LMS")
 		winactivate, ahk_exe eln.exe
@@ -999,7 +976,7 @@ AddSpecTableMethods:  ;;--MUST REMOVE DUPLICATE METHODSMETHODS FROM
     	menu, minimenu, show
     	This.SelectMethod(A_thismenuitem)
     	}
-    	Else 
+    	Else
     		This.SelectMethod(MethodListItem)
 			breaking.point()
 		}
