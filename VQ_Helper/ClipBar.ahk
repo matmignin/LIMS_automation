@@ -5,16 +5,16 @@ clipChange(type){
   sleep 75
   if SimpleClip
     return
-    if Instr(Clipboard, "++|",true,1,1){
-      AddWholeBatch:=strReplace(Clipboard,"++","")
-      if instr(WholeBatches, AddWholeBatch,false,1,1)
-        clip.codesRegex(AddWholeBatch)
-      else {
-        FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
-        WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
-        sleep 200
-        }
-      return
+	if Instr(Clipboard, "++|",true,1,1){
+		AddWholeBatch:=strReplace(Clipboard,"++","")
+		if instr(WholeBatches, AddWholeBatch,false,1,1)
+			clip.codesRegex(AddWholeBatch)
+		else {
+			FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
+			WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
+			sleep 200
+			}
+		return
   }
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
@@ -461,14 +461,14 @@ CodesRegex(input:=""){
         FileAppend, %CodeString%, %CodeFile%
         FileAppend, %CodeString%`n, PriorCodes.txt
       }
-      ; if (priorSampleID!=SampleID){
-      ;   FileDelete, SampleID.txt
-      ;   sleep 200
-      ;   FileAppend, %sampleID%, SampleID.txt
-      ;   if WinActive("NuGenesis LMS")
-      ;   FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
-      ; }
-      TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID))
+      if (priorSampleID!=SampleID){
+        ; FileDelete, SampleID.txt
+        ; sleep 200
+        FileAppend, `t%sampleID%, %CodeFile%
+        if WinActive("NuGenesis LMS")
+        FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
+      }
+      TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,100)
      Return
 }
 
@@ -571,7 +571,8 @@ Department(DepartmentInput:=""){
       else If Analytical
         Department:="Analytical"
       else
-        TT("`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical,3000,100,100)
+				return
+        ; TT("`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical,3000,100,100)
   return %Department%
 }
 
@@ -870,8 +871,8 @@ Class ClipBar{
 		this.AddEdit("Coated",	 "left h16 y+0 w77",		"8, Arial Narrow")
 		; this.AddEdit("Coated",	 "left h32 x+0 y0 wrap w72",		"9, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
-		This.AddEdit("Iteration", "x+2 h33 left y-1 w62",			 "16 Bold 107C41, Consolas")	; Text1
-		this.AddEdit("GeneralBox",	 "x+3 h33 left y-1 w85 wrap",		"8, Arial Narrow")
+		This.AddEdit("Iteration", "x+0 h33 left y-1 w62",			 "16 Bold 107C41, Consolas")	; Text1
+		this.AddEdit("GeneralBox",	 "x+0 h33 left y-1 w85 wrap",		"8, Arial Narrow")
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
@@ -1075,7 +1076,7 @@ Class ClipBar{
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, GeneralBox
 		; if SampleID
-		; 	iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 			iniwrite, %GeneralBox%, Settings.ini, SavedVariables, GeneralBox

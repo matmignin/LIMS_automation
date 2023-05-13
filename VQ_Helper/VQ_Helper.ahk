@@ -22,7 +22,7 @@
 	; FormatTime, CurrentDateTime,, MM/dd/yy
 	; FormatTime, The_Day,, MMMM d
 	; FormatTime, The_Hour,, htt
-	; FormatTime, The_Time,, hh:mm
+	FormatTime, The_Time,, hh:mm
 	SetNumlockState, on
 	SetscrolllockState, off
 	CrLf=`r`n
@@ -93,6 +93,7 @@
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	LMS.Orient()
 	ClipBar.Show()
+	traytip,Time, %The_Time%,
 	sleep 200
 	try Menu, Tray, Icon, %AppIconPath%
 	#include NuGenesis.ahk
@@ -103,10 +104,6 @@
 
 	; TT("VQ_Helper Started",2000,100,100)
 	; SetWinDelay, %NormalWinDelay%
-
-
-
-
 
 
 

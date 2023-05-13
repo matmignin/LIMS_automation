@@ -875,7 +875,7 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 
 
 
-;;  {{_____________SpecTab class__________________________}}
+;;  {{_____________________________SpecTab class__________________________}}
 class SpecTab {
 
 	Table(){
@@ -907,18 +907,26 @@ class SpecTab {
 	ShowGUI(){
 		global
 		CoordMode, mouse, screen
-		ScreenEdge_X:=A_ScreenWidth-15
-		ScreenEdge_Y:=A_Screenheight-180
+		if WinExist("Select methods test"){
+			ScreenEdge_X:=A_ScreenWidth-350
+			ScreenEdge_Y:=A_Screenheight-80
+			SpecTable_X:=LMS_X-350
+			SpecTable_Y:=LMS_Y+ShiftTable_Y
+		}
+			else if Winactive("NuGenesis LMS"){
+			ScreenEdge_X:=A_ScreenWidth-15
+			ScreenEdge_Y:=A_Screenheight-180
+			}
 		sleep 200
 		If (Name.Maxindex() <=1)
 			return
-		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w385, %Product% Spec Table
-		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w385, %Product% Spec Table
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w360, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w360, %Product% Spec Table
 		CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
 		return
 	}
-	ShowSpecMenu(){
+		ShowSpecMenu(){
 		global
 		send,{click}
 		if !ClippedData {
@@ -945,8 +953,8 @@ class SpecTab {
 			Table_height = 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
-		GUI, Spec_Table:Add, ListView, x0 y0 w360 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		Gui, Spec_Table:Add, Button, y+0 h35 w75 gAddSpecTableMethods, Add Methods
+		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		Gui, Spec_Table:Add, Button, X25 y+0 h18 w145 gAddSpecTableMethods, Add Methods
 		OnMessage(0x0201, "WM_Lbuttondown")
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
@@ -963,10 +971,10 @@ class SpecTab {
 
 AddSpecTableMethods:
 
-		; clk(73,588,,1,"NuGenesis LMS")
 		winactivate, Select methods tests
-		; tt(MethodList)
-
+		click, 235, 72
+		Send, ^a
+		sleep 200
     Loop, Parse, MethodList, `n ; loop through each selected method
 			{
 				MethodListItem:=A_loopfield
@@ -978,9 +986,10 @@ AddSpecTableMethods:
 				; This.SelectMethod(A_thismenuitem
 				MethodListItem:=A_thismenuitem
 			}
-			
+
 				{
 					winactivate, Select methods tests
+					sleep 200
 					click, 235, 72
 					Send, ^a
 					click, 235, 72 ;click search bar
@@ -996,7 +1005,8 @@ AddSpecTableMethods:
 
 		ChooseMethodHdr:
 		Try Menu, ChooseMethodMenu, DeleteAll
-		; winactivate, Select methods tests
+		winactivate, Select methods tests
+		sleep 200
 	return
 
 	SpecMenuButton:
@@ -1009,20 +1019,35 @@ AddSpecTableMethods:
 			Menu, SpecMenu, Check, %A_ThisMenuItem%
 				SpecTab.GetRowText(A_ThisMenuItemPos)
 				winactivate, ahk_exe eln.exe
-
-
-
 				SpecTab.Autofill()
 				}
 return
 			; CoordMode, mouse, screen
 		}
+		FindRowNumber(InputTestName:=""){
+			global
+			GUI, Spec_Table:Default
+				{
+						Loop, % LV_GetCount()
+						{
+								LV_GetText(rowText,A_Index,1)
+								if (rowText = InputTestName)
+								{
+									Try Menu, SpecMenu, Check, %A_ThisMenuItem%
+									LV_Modify(A_Index, "Check")
+									return A_Index
+								}
+						}
+				}
+				return 0
+		}
+
 
 			ModifyColumns(){
 				Global
 				GUI, Spec_Table:Default
 				LV_ModifyCol(1,130)
-				LV_ModifyCol(2,190)
+				LV_ModifyCol(2,120)
 				LV_ModifyCol(3,0)
 				LV_ModifyCol(4,0)
 				LV_ModifyCol(5,0)
@@ -1156,12 +1181,12 @@ MethodsDropdown() {
 				Continue
 			Methodmenu := StrSplit(A_LoopReadLine, "=")
 			Selection:= % MethodMenu[1]
-			Menu, Methodmenu, add, %Selection%, Methods
+			Menu, Methodmenu, add, %Selection%, MethodsDropdownhdr
 		}
 		Menu, MethodMenu, Show
 		return
 
-		Methods:
+		MethodsDropdownHdr:
 			sleep 200
 			InputVar:=A_ThisMenuItem
 			IniRead,vOutput, Methods.ini, Methods, %InputVar%
@@ -1171,7 +1196,7 @@ MethodsDropdown() {
 			sleep 300
 			click 506, 341 ;move over
 			menu, Methodmenu, deleteAll
-			SpecTab.Methods()
+			This.MethodsDropdown()
 
 		return
 	}
@@ -1189,10 +1214,10 @@ MethodsDropdown() {
 	}
 	CopySpecTemplate(DepartmentInput:=""){
 		global
+		MouseGetPos, premx, premy
 		; Critical, On
 		if winactive("NuGenesis LMS") && (DepartmentInput = "") {
 			clipboard:=
-			MouseGetPos, premx, premy
 			click
 			Send, ^{c}
 			clipwait, 5
@@ -1201,8 +1226,9 @@ MethodsDropdown() {
 		}
 		else
 			Department:=DepartmentInput
+
 		click 102, 289 ;click copy into new spec link
-		winwaitactive, Edit specification,,3
+		winwaitactive, Edit specification,,4
 			if errorlevel
 				return
 		Breaking.Point()
@@ -1220,6 +1246,10 @@ MethodsDropdown() {
 			SpecTab.Edit_Retain()
 		; WinActivate, NuGenesis LMS
 		Breaking.Point()
+		premy:=PremY + 26
+			WinActivate, NuGenesis LMS
+			MouseMove, %Premx%, %Premy%,1,R
+
 		; Critical, Off
 		return
 	}
@@ -1456,7 +1486,10 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 		Mouseclick, left, 378, 667,1,0 ; click okay
 	Breaking.Point()
 	If Method contains ICP-MS 231
+		{
+			MouseMove, %mX%, %mY%, 0
 		return
+		}
 	winwaitactive, Results Definition,, 5
 	wingetpos, Results_X, Results_y, Results_w, Results_h, Results
 	sleep 200
@@ -1478,6 +1511,9 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 
 TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 	Global
+
+	; TT(Selectedtestname,1000,1,-100,1)
+SimpleClip:=
 	if !(The_description) ; && !(Department)
 	{
 		MouseClick, left, 464, 532,2,0 	;click scrollbar
@@ -2236,7 +2272,8 @@ WM_Lbuttondown:
 Spec_Table:
 	if (A_GuiEvent = "NORMAL" ){
 		; if (A_GuiEvent := "I" ){
-		DESCRIPTION:=
+		DESCRIPTION:=""
+		MouseGetPos, mX, mY, mWin
 		Sendinput,{space}
 		SpecTab.GetRowText()
 		; tt(ShowVariables,1000)

@@ -340,7 +340,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 
 #ifwinactive, Test Definition Editor ;;    Test Definition Editor
-;;{{    wheeldown::clk(464, 532,,2) ;add scroll block
+ wheeldown::clk(464, 532,,2) ;add scroll block
 ; 		mbutton::mouseclick, left, 333, 615
 
 #ifwinactive, Edit sample template ;;    Edit sample template
@@ -389,9 +389,15 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		return
 
 
+
 #ifwinactive, Select methods tests ;;    Select methods tests
-	F10::
-	mbutton::clk(854, 658)
+	+enter::clk(854, 658,,2) ;select okay
+	#enter::clk(854, 658,,2) ;select okay
+	^enter::clk(854, 658,,2) ;select okay
+	F7::clk(511, 337,,,,2) ;move over test
+	F6::clk(511, 375,,,,2) ;move test back over
+	F9::
+	mbutton::Spectab.MethodsDropdown()
 
 #ifwinactive, Select Product ahk_exe eln.exe ;;    Select Product
 	F10::
@@ -403,12 +409,15 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 #Ifwinactive, Edit Formulation ;;    Edit Formulation
 	F10::
 	mbutton::ProductTab.AddNewFormulation()
-;;{{	wheeldown::clk(452, 473,,2)  ;add scroll block
+	wheeldown::clk(452, 473,,2)  ;add scroll block
 #Ifwinactive, Select samples for test:
 	F10::
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
 	F8::Clk(853, 657) ;click okay
 	F9::send % Clk(250, 70) "{up}" ; click okay.
+	F7::SpecTab.Methods()
+	F6::SpecTab.MethodsDropdown()
+
 
 #IFwinexist, Release: Rotational Testing Schedule ;
 	F10::
@@ -541,7 +550,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	#ifwinactive, Result Editor ;;    Result Editor
 	F10::
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-	;;{{    wheelDown::clk(503, 574,1) ;add scroll block
+	   wheelDown::clk(503, 574,1) ;add scroll block
 
 
 #ifwinactive, Register new samples ;;    Register new samples
@@ -583,12 +592,47 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 ;;[[ Nugenesis MAIN ]]
 #Ifwinactive, NuGenesis LMS
-	!F10::SpecTab.CopySpecTemplate()
-	+F10::  ; Fileread, ClippedData, ClippedExcelData.txt
+	!F10::SpecTab.()
 	+Mbutton::SpecTab.Table()
 	^F10::LMS.AddSampleLog(15)
-	F10::
+	F10:: ;;{{Testing out auto input test results}}
+	MouseGetPos, Prex, prey
+		click, 57, 719 ;click Edit Test
+		SelectedTestName:=
+		winwaitactive, Test Definition Editor,, 2
+		clipboard:=
+		SimpleClip:=1
+		send, {tab 1}^a^c
+		ClipWait, 1
+		SelectedTestName:=Clipboard
+		ControlsetText, Edit6,%SelectedTestName%,ClipBar
+		MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
+		SpecTab.GetRowText(MatchingRow)
+		if !MatchingRow
+			{
+			winactivate, Test Definition Editor
+			MouseClick, left, 464, 532,2,0
+			SpecTab.ShowSpecMenu()
+			winactivate, Test Definition Editor
+			}
+		spectab.Autofill()
+		preY+=26
+		WinWaitActive, NuGenesis LMS,, 10
+		if !errorlevel
+			MouseMove, %preX%, %preY%, 1,
+return
 
+	+F10::
+	MouseGetPos, premx, premy
+	loop 3 {
+		Breaking.Point()
+		SpecTab.CopySpecTemplate()
+		Breaking.Point()
+		Department:=
+		WinActivate, NuGenesis LMS
+			return
+	}
+	return
 	Mbutton::SpecTab.CopySpecTemplate()
 	F9::lms.Menu()
 	F6::LMS.SearchBar(Product,"{enter}",0)
@@ -772,8 +816,6 @@ Ctest_1:
 	keep_running = y
 	If winactive("NuGenesis LMS")
 		LMS.SearchBar(Batch,"{enter}")
-	else If winactive("Select methods tests")
-		SpecTab.Methods()
 	; else If winactive("Composition")
 	; 	Send, {enter}
 	else If winactive("Test Definition Editor")

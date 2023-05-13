@@ -2,6 +2,27 @@ DetectHiddenWindows On
 SetTitleMatchMode,2
 WinClose VQ_Helper.ahk - AutoHotkey
 Sleep 400
+VersionFile:="U:\VQ_Helper\RawFiles\version.txt"
+; Read the version number from the text file
+; FileReadLine, versionNumber, %VersionFile%, 1
+FormatTime, The_Time,, hh:mm
+; Display the current version number
+; MsgBox, Current Version: %versionNumber%
+
+; Increment the version number
+; StringSplit, versionParts, versionNumber, .
+; majorVersion := versionParts[1]
+; minorVersion := versionParts[2]
+; minorVersion := minorVersion + 1
+; newVersionNumber := majorVersion "." minorVersion
+
+; Update the version number in the text file
+FileDelete, %VersionFile%
+FileAppend, %The_Time%, %VersionFile%
+
+; Display the new version number
+; MsgBox, New Version: %newVersionNumber%
+
 
 Try
 {
@@ -19,7 +40,7 @@ Catch e
 }
 
 
-sleep 1000
+sleep 3000
 
 try
 {
@@ -33,3 +54,6 @@ catch e
 	Run "U:\VQ_Helper\VQ_Helper.exe"
 }
 return
+
+
+
