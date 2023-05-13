@@ -8,8 +8,9 @@
 
 
 
-
-;     [[_________________________Other_________________]]
+;;--------------------------------
+;;[[                    Utilities               ]]
+;;--------------------------------
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 	global
@@ -97,11 +98,11 @@ Loop, Parse, InputString, Delimiter
 Return Output
 }
 
-ListArray(The_Array,Option:="n"){
+ListArray(The_Array,The_Delimeter:="n"){
 	; global
-	if (option<>"n"){
+	if (The_Delimeter<>"n"){
 		for Each, Element in The_Array
-			ArrayList .=Element Option
+			ArrayList .=Element The_Delimeter
 		return ArrayList
 	}
 	else {
@@ -594,7 +595,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 #Ifwinactive, NuGenesis LMS
 	!F10::SpecTab.()
 	+Mbutton::SpecTab.Table()
-	^F10::LMS.AddSampleLog(15)
+	;^F10::LMS.AddSampleLog(15)
 	F10:: ;;{{Testing out auto input test results}}
 	MouseGetPos, Prex, prey
 		click, 57, 719 ;click Edit Test
@@ -947,7 +948,9 @@ DeleteWholeBatches:
 		FileDelete, WholeBatches.txt
 		tt("Deleted")
 		Return
+^F10::
 TestCode:
+sleep 500
 	autohotkeyPath := "U:\VQ_Helper\RawFiles\AHK\AutoHotkeyU64.exe"
 	scriptPath := "U:\VQ_Helper\RawFiles\TestingCode.ahk"
 	RunWait, %autohotkeyPath% "%scriptPath%"

@@ -118,6 +118,106 @@ Clip(input=50,Wait:="0.95"){
 
 Class Clip {
 
+
+CodesRegexNewButNotWorthIt(){
+Global Regexcombined
+
+	pos := 0
+while pos := RegExMatch(Clipboard, RegexCombined, aMatches, pos+1)
+{
+    if (amatches["Product"] != "") {
+    if (!ArrayContains(products, aMatches["Product"]))
+        products.Push(aMatches["Product"])
+        ; msgbox % aMatches["Product"]
+    }
+    else if (amatches["Batch"] != "") {
+    if (!ArrayContains(batches, aMatches["Batch"]))
+        Batches.Push(aMatches["Batch"])
+    }
+    else if (amatches["lot"] != "") {
+    if (!ArrayContains(lots, aMatches["lot"]))
+        lots.Push(aMatches["lot"])
+    }
+    else if (amatches["Coated"] != "") {
+    if (!ArrayContains(Coateds, aMatches["Coated"]))
+        Coateds.Push(aMatches["Coated"])
+    }
+
+		; Ct:=Coated ? " ct#" : ""
+				this.SetClipBar()
+				if rCustomerPosition
+					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+				; GuiControl,ClipBar:Text, Iteration, %Iteration%
+					GUI, ClipBar:submit,NoHide
+				codeString:=trim(Product[1] " " Batch[1] " " Lot[1] Ct Coated[1])
+
+
+				if (PriorCodestring!=Codestring){
+
+					FileDelete, %CodeFile%
+					sleep 200
+					FileAppend, %CodeString%, %CodeFile%
+					FileAppend, %CodeString%`n, PriorCodes.txt
+				}
+
+
+	}
+
+	CodesRegex(input:=""){
+		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
+			Gui ClipBar:Default
+			PriorCodestring:=CodeString
+			codestring:=
+			PriorSampleID:=SampleID
+			; SampleID:=
+			Parse:= Input ? Input : Clipboard
+
+
+			Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
+			Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
+			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
+				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+				Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+				SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+				if (Batch!=PriorBatch) && (!rlot && !rCoated){
+					PriorBatch:=Batch
+					Lot:=
+					Coated:=
+				}
+				if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
+					Iteration:=Floor(rCustomerPosition)
+					CustomerPosition:=rCustomerPosition
+
+					sleep 40
+			}
+				Ct:=Coated ? " ct#" : ""
+				this.SetClipBar()
+				if rCustomerPosition
+					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+				; GuiControl,ClipBar:Text, Iteration, %Iteration%
+					GUI, ClipBar:submit,NoHide
+				codeString:=trim(Product " " Batch " " Lot Ct Coated)
+				if (PriorCodestring!=Codestring){
+
+					FileDelete, %CodeFile%
+					sleep 200
+					FileAppend, %CodeString%, %CodeFile%
+					FileAppend, %CodeString%`n, PriorCodes.txt
+				}
+				if (priorSampleID!=SampleID){
+					; FileDelete, SampleID.txt
+					; sleep 200
+					FileAppend, `t%sampleID%, %CodeFile%
+					if WinActive("NuGenesis LMS")
+					FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
+				}
+				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,100)
+			 Return
+	}
+
+
+
+
 		ParseIngredientsTable(Save:=1){
 		global
     clipped_Position:=
@@ -420,57 +520,6 @@ Append(Delimiter:="`n"){
 		return
 }
 
-CodesRegex(input:=""){
-  global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
-    Gui ClipBar:Default
-    PriorCodestring:=CodeString
-    codestring:=
-    PriorSampleID:=SampleID
-    ; SampleID:=
-    Parse:= Input ? Input : Clipboard
-
-
-    Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
-    Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
-    Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
-      ; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-      SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
-      if (Batch!=PriorBatch) && (!rlot && !rCoated){
-        PriorBatch:=Batch
-        Lot:=
-        Coated:=
-      }
-      if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
-        Iteration:=Floor(rCustomerPosition)
-        CustomerPosition:=rCustomerPosition
-
-        sleep 40
-    }
-      Ct:=Coated ? " ct#" : ""
-      this.SetClipBar()
-      if rCustomerPosition
-        GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
-      ; GuiControl,ClipBar:Text, Iteration, %Iteration%
-        GUI, ClipBar:submit,NoHide
-      codeString:=trim(Product " " Batch " " Lot Ct Coated)
-      if (PriorCodestring!=Codestring){
-
-        FileDelete, %CodeFile%
-        sleep 200
-        FileAppend, %CodeString%, %CodeFile%
-        FileAppend, %CodeString%`n, PriorCodes.txt
-      }
-      if (priorSampleID!=SampleID){
-        ; FileDelete, SampleID.txt
-        ; sleep 200
-        FileAppend, `t%sampleID%, %CodeFile%
-        if WinActive("NuGenesis LMS")
-        FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
-      }
-      TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,100)
-     Return
-}
 
 
 

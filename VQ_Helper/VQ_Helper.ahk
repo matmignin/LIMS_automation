@@ -63,7 +63,7 @@
 	Menu, Tray, add, Delete Whole Batches, DeleteWholeBatches
 
 	Menu, Tray, Add,
-	Menu, Tray, add, TestCode, ShowManualCOA
+	Menu, Tray, add, TestCode, testCode
 	Menu, Tray, Add, Show Variables, ShowVariables
 	Menu, Tray, Add, ListLines, ListLines
 	; Menu, Tray, Add, windowSpy, windowSpy
@@ -80,6 +80,7 @@
 	regexunit:="i)(?P<unit>\w*)"
 	; if SampleIDMode=GUID
 	RegexSampleID:="i)(?P<SampleID>[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
+	RegexCombined := "iO)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)|(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)|(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)|(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 	; else if SampleIDMode=SampleID
 		; RegexSampleID:="i)(?P<SampleID>22[0-1][0-9][09]{4}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})"
 	; else
