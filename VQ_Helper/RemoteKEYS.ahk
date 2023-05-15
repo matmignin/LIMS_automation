@@ -123,6 +123,8 @@ HasValue(haystack, needle) {
 return 0
 }
 
+
+
 BlockRepeat(Time:=300, ToolTipMessage:=""){
 	Global N
 	sleep 25
@@ -215,9 +217,9 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		; TT(AllBatches,2000,ClipBar_x2,35,2,250)
 	}
 	if (winControl="Edit3")
-		PriorCodesMenu()
+		PriorCodesMenu(1)
 	if (winControl="Edit4")
-		PriorCodesMenu()
+		PriorCodesMenu(1)
 	if (winControl="Edit6"){
 		WholeBatchMenu()
 			; ControlsetText, Edit6,%AllBatches%,ClipBar
@@ -241,11 +243,11 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	if (wincontrol="Edit5")
 		Clipbar.SubIteration(200)
 	 if (winControl="Edit1")
-		PriorCodesMenu()
+		PriorCodesMenu(1)
 	if (winControl="Edit3")
-		PriorCodesMenu()
+		PriorCodesMenu(1)
 	if (winControl="Edit4")
-		PriorCodesMenu()
+		PriorCodesMenu(1)
 	 if (winControl="Edit6"){
 		MsgBox, 4, Delete file, Do you want to delete WholeBatches.txt?
 		IfMsgBox, OK
@@ -304,7 +306,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	; 		; MouseGetPos, , , winid, wincontrol
 	; 		; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 	; 			ClipBar.Menu()
-	; 			return
+		; 			return
 			; }
 			; else if (winControl="Edit4"){
 				; Coated:=
@@ -341,7 +343,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 
 #ifwinactive, Test Definition Editor ;;    Test Definition Editor
- wheeldown::clk(464, 532,,2) ;add scroll block
+ wheeldown::clk(464, 532,,1) ;add scroll block
 ; 		mbutton::mouseclick, left, 333, 615
 
 #ifwinactive, Edit sample template ;;    Edit sample template
@@ -410,7 +412,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 #Ifwinactive, Edit Formulation ;;    Edit Formulation
 	F10::
 	mbutton::ProductTab.AddNewFormulation()
-	wheeldown::clk(452, 473,,2)  ;add scroll block
+	wheeldown::clk(452, 473,,1)  ;add scroll block
 #Ifwinactive, Select samples for test:
 	F10::
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then

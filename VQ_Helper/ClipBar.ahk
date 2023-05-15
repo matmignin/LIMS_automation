@@ -119,56 +119,13 @@ Clip(input=50,Wait:="0.95"){
 Class Clip {
 
 
-CodesRegexNewButNotWorthIt(){
-Global Regexcombined
-
-	pos := 0
-while pos := RegExMatch(Clipboard, RegexCombined, aMatches, pos+1)
-{
-    if (amatches["Product"] != "") {
-    if (!ArrayContains(products, aMatches["Product"]))
-        products.Push(aMatches["Product"])
-        ; msgbox % aMatches["Product"]
-    }
-    else if (amatches["Batch"] != "") {
-    if (!ArrayContains(batches, aMatches["Batch"]))
-        Batches.Push(aMatches["Batch"])
-    }
-    else if (amatches["lot"] != "") {
-    if (!ArrayContains(lots, aMatches["lot"]))
-        lots.Push(aMatches["lot"])
-    }
-    else if (amatches["Coated"] != "") {
-    if (!ArrayContains(Coateds, aMatches["Coated"]))
-        Coateds.Push(aMatches["Coated"])
-    }
-
-		; Ct:=Coated ? " ct#" : ""
-				this.SetClipBar()
-				if rCustomerPosition
-					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
-				; GuiControl,ClipBar:Text, Iteration, %Iteration%
-					GUI, ClipBar:submit,NoHide
-				codeString:=trim(Product[1] " " Batch[1] " " Lot[1] Ct Coated[1])
-
-
-				if (PriorCodestring!=Codestring){
-
-					FileDelete, %CodeFile%
-					sleep 200
-					FileAppend, %CodeString%, %CodeFile%
-					FileAppend, %CodeString%`n, PriorCodes.txt
-				}
-
-
-	}
 
 	CodesRegex(input:=""){
 		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
 			Gui ClipBar:Default
 			PriorCodestring:=CodeString
 			codestring:=
-			PriorSampleID:=SampleID
+			; PriorSampleID:=SampleID
 			; SampleID:=
 			Parse:= Input ? Input : Clipboard
 
@@ -178,7 +135,7 @@ while pos := RegExMatch(Clipboard, RegexCombined, aMatches, pos+1)
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-				SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+				; SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
 					PriorBatch:=Batch
 					Lot:=
@@ -202,17 +159,20 @@ while pos := RegExMatch(Clipboard, RegexCombined, aMatches, pos+1)
 					FileDelete, %CodeFile%
 					sleep 200
 					FileAppend, %CodeString%, %CodeFile%
+					; if !ArrayContains(PreviousCodes,Products " " Batches) && (!ArrayContains(PreviousCodes,Products " " Batches " " Lot))
 					FileAppend, %CodeString%`n, PriorCodes.txt
+						;         PreviousCodes.Push(aMatches["Product"])
+						;     }
 				}
-				if (priorSampleID!=SampleID){
+				; if (priorSampleID!=SampleID){
 					; FileDelete, SampleID.txt
 					; sleep 200
-					FileAppend, `t%sampleID%, %CodeFile%
-					if WinActive("NuGenesis LMS")
-					FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
-				}
+					; FileAppend, `t%sampleID%, %CodeFile%
+					; if WinActive("NuGenesis LMS")
+					; FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
+				; }
 				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,100)
-			 Return
+			Return
 	}
 
 
@@ -501,26 +461,6 @@ EditBox(Input:=""){
 
 
 
-Append(Delimiter:="`n"){
-    global
-		PreClip:=Clipboard
-		Clipboard:=
-		Send, ^c
-    sleep 75
-		; clipwait, 0.75
-		if errorlevel
-      clipboard:=Preclip
-    else
-    {
-      tt(Preclip "`n `t __________________ `n" clipboard)
-      clipboard := Preclip Delimiter Clipboard
-      sleep 50
-      ; tt(clipboard,1000,A_ScreenWidth-500,,2,150)
-    }
-		return
-}
-
-
 
 
 
@@ -536,10 +476,6 @@ SetClipBar(){
 }
 
 
-SingleRegex(){
-    global
-      this.CodesRegex(Haystack)
-}
 
 Regex(Category:=""){
     global
@@ -740,14 +676,21 @@ if (Instr(Trim(A_ThisMenuItem),"|")=1){
 		else clip.codesRegex(A_ThisMenuItem)
 return
 }
-PriorCodesMenu(){
+
+PriorCodesMenu(ShowMenu:=""){
 	global
+	PreviousCodes:=[]
 	try Menu, CodeMenu, DeleteAll
 	FileRead, PriorCodes, PriorCodes.txt
 	PriorCodes:=Trim(StrReplace(PriorCodes, "`n`n", ""))
 	Loop, parse, PriorCodes, "`r"
+		{
 		Menu, CodeMenu, Add, &%A_Index% `t %a_LoopField%, PriorCodesMenubutton,
-	Try Menu,CodeMenu,show
+		PreviousCodes.Push(A_loopfield)
+		}
+		if ShowMenu
+			Try Menu,CodeMenu,show
+
 	return
 
 PriorCodesMenubutton:
@@ -902,26 +845,23 @@ Class ClipBar{
 		wingetpos, Win_X, Win_y, Win_w, Win_h, A
 		ClipBar_H=32
 		ClipBar_H_max=56
-		ClipBar_T:=235
+		ClipBar_T:=230
 		ClipBar_W=400
 		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
-		; ClipBar_Y:=-Nugenesis_h
 		ClipBar_Y:=Nugenesis_Y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui ClipBar:Default
 		Gui, ClipBar:+Delimiter`n
-		winSet, Transparent, 80, %GUIID%
+		; winSet, Transparent, 80, %GUIID%
 		GUI, ClipBar:color,DC734F, 97BA7F
-		; this.AddEdit("Product",	 "left h32 x1 y0 w65",				"16 Bold")
 			GUI,ClipBar:Font,			 s17 Bold , consolas
 			GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x7 y-1 w65,	%Product%
 		this.AddEdit("Batch",	 "left h33 x+0 y-1 w92 center", 			"13,Consolas")
 		this.AddEdit("Lot",		 "left h18 x+0 y-2 w77", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h16 y+0 w77",		"8, Arial Narrow")
-		; this.AddEdit("Coated",	 "left h32 x+0 y0 wrap w72",		"9, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
 		This.AddEdit("Iteration", "x+0 h33 left y-1 w62",			 "16 Bold 107C41, Consolas")	; Text1
-		this.AddEdit("GeneralBox",	 "x+0 h33 left y-1 w85 wrap",		"8, Arial Narrow")
+		this.AddEdit("GeneralBox",	 "x+0 h33 left y-1 w88 +wrap",		"7, Arial")
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
@@ -1176,3 +1116,12 @@ Class ClipBar{
 
 
 
+		ArrayContains(array, value)
+		{
+				for index, element in array
+				{
+						if (element = value)
+								return true
+				}
+				return false
+		}
