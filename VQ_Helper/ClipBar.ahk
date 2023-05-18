@@ -504,6 +504,7 @@ Regex(Category:=""){
         If rCoated {
           GuiControl,ClipBar:Text, Coated, %rCoated%
           Coated:=rCoated
+					Ct:=" Ct#"
         }
       RegExMatch(HayStack, RegexSampleID, r)
         If rSampleID {
@@ -522,12 +523,14 @@ Regex(Category:=""){
       If !rCoated {
         GuiControl,ClipBar:Text, Coated, %rCoated%
         Coated:=
+				Ct:=
       }
       ; GuiControl, ClipBar:MoveDraw, Coated
       gui ClipBar:submit, nohide
       ; tt(Product " " Batch " " lot " ct#" Coated)
       sleep 20
-  }
+Return Trim(rProduct " " rBatch " " rLot Ct rCoated)
+		}
 Department(DepartmentInput:=""){
   global Department
       Department:=
@@ -535,27 +538,41 @@ Department(DepartmentInput:=""){
       DepartmentHaystack:=Clipboard
     else
       DepartmentHaystack:=DepartmentInput
-      Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
-      Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
-      Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
-      Regexmatch(DepartmentHaystack, "CT,\sPhysical", ctPhysical)
-      Regexmatch(DepartmentHaystack, "CT,\sRetain", ctRetain)
-      Regexmatch(DepartmentHaystack, "I,\sAnalytical", Analytical)
-      Sleep      20
-      If Micro
+		; Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
+		; Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
+		; Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
+		; Regexmatch(DepartmentHaystack, "CT,\sPhysical", ctPhysical)
+		; Regexmatch(DepartmentHaystack, "CT,\sRetain", ctRetain)
+		; Regexmatch(DepartmentHaystack, "I,\sAnalytical", Analytical)
+		Sleep      20
+		; If Micro
+		;   Department:="Micro"
+		; else If Retain
+		;   Department:="Retain"
+		; else If ctRetain
+		;   Department:="ctRetain"
+		; else If Physical
+		;   Department:="Physical"
+		; else If ctPhysical
+		;   Department:="ctPhysical"
+		; else If Analytical
+		;   Department:="Analytical"
+		; else
+		If Micro
+			if instr(DepartmentHaystack, "F, Micro")
         Department:="Micro"
-      else If Retain
+      else If instr(DepartmentHaystack,"I, Retain")
         Department:="Retain"
-      else If ctRetain
+      else If instr(DepartmentHaystack,"CT, Retain")
         Department:="ctRetain"
-      else If Physical
+      else If instr(DepartmentHaystack,"I, Physical")
         Department:="Physical"
-      else If ctPhysical
+      else If instr(DepartmentHaystack,"CT, Physical")
         Department:="ctPhysical"
-      else If Analytical
+      else If instr(DepartmentHaystack,"I, Analytical")
         Department:="Analytical"
       else
-				return
+				msgbox, No Department found
         ; TT("`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical,3000,100,100)
   return %Department%
 }
