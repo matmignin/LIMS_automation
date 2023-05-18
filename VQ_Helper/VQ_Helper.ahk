@@ -47,15 +47,16 @@
       ; WholeBatchesArray.insert(a_LoopField)
 
 	Menu,Tray,NoStandard
+
 	Menu, Tray, Add, All Products, AllProductsMsgbox
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
 
-	Menu, Tray, add, &mfg folder, Showmfg
-	Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
-	Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
-	Menu, Tray, Add,
+	; Menu, Tray, add, &mfg folder, Showmfg
+	; Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
+	; Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
+	; Menu, Tray, Add,
 	Menu, Tray, Add, Whole Batches, ShowWholeBatches
 	Menu, Tray, add, Show EditBox, ShowEditBox
 	Menu, Tray, add, Add Sample Log, Add15SampleLog
@@ -66,8 +67,10 @@
 	Menu, Tray, add, TestCode, testCode
 	Menu, Tray, Add, Show Variables, ShowVariables
 	Menu, Tray, Add, ListLines, ListLines
-	; Menu, Tray, Add, windowSpy, windowSpy
+	Menu, Tray, Add, mmignin, mmigninFolder
+	Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, &Reload, ReloadSub
+	Menu, Tray, tip, %CompileTime%
 	Menu, Tray, Add, Exitsub, Exitsub
 	Menu, Tray, Default, &Reload
 	copypasteToggle:=0
@@ -94,7 +97,7 @@
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	LMS.Orient()
 	ClipBar.Show()
-	traytip,Time, %The_Time%,
+	; traytip,Time, %The_Time%,
 	sleep 200
 	try Menu, Tray, Icon, %AppIconPath%
 	#include NuGenesis.ahk

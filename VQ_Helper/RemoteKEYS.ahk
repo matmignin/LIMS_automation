@@ -361,12 +361,12 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 			Return
 	:*:ip`;::
 		Sendinput, `In Process, Physical{tab 3}{right 7}{tab}{right}
-			Return
+		Return
 
-#ifwinactive, Edit specification ;;    Edit specification
+		#ifwinactive, Edit specification ;;    Edit specification
 	F10::
 	mbutton::SpecTab.Edit_Analytical()
-	Enter::LMS.Okay()
+	Enter::LMSClick.Okay()
 	+Enter::Sendinput, {enter}
 
 
@@ -599,7 +599,20 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 ;;[[ Nugenesis MAIN ]]
 #Ifwinactive, NuGenesis LMS
-	!F10::SpecTab.()
+	!F10::SpecTab.CopySpecTemplate()
+	!F9::
+	If (LMS.DetectTab() != "Requests"){
+		send, {click 40 40}
+		sleep 50
+		send,{click 50 75 0}
+		sleep 50
+		send,{click 280 75 0}
+		sleep 100
+		send,{click 280 220}
+		}
+	else
+		return
+	return
 	+Mbutton::SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
 	F10:: ;;{{Testing out auto input test results}}
@@ -720,8 +733,6 @@ return
 	:*:pm`;::
 		Sendinput, %product%`, Finished, Micro{tab 3}{right 5}{tab}{right 2}
 			Return
-	:*:pa`;::
-		sendinput, %product%`, In Process, Analytical{tab 3}{right 6}{tab}{right}
 			Return
 	:*:paa`;::
 		Sendinput, %product%`, In Process, Analytical (Annual){tab 3}{right 6}{tab}{right}
@@ -887,6 +898,13 @@ Exitsub(){
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	exitApp
   }
+mmigninFolder(){
+	global
+	if !winexist("VQ_Helper ahk_exe explorer.exe")
+		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
+	else
+		winactivate, VQ_Helper ahk_exe explorer.exe
+  }
 windowSpy(){
   Run, WS.exe
   }
@@ -998,7 +1016,8 @@ FtenMenuHandler:
 				iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 				iniRead, SampleID, Settings.ini, SavedVariables, SampleID
 				iniRead, Iteration, Settings.ini, SavedVariables, Iteration
-				iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+				iniRead, CompileTime, Settings.ini, Config, CompileTime
+				iniRead, Version, Settings.ini, Config, Version
 				iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 				; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
 				; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString

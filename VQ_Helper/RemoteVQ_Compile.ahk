@@ -3,24 +3,25 @@ SetTitleMatchMode,2
 WinClose VQ_Helper.ahk - AutoHotkey
 Sleep 400
 VersionFile:="U:\VQ_Helper\RawFiles\version.txt"
+SettingsFile:="U:\VQ_Helper\Settings.ini"
 ; Read the version number from the text file
 ; FileReadLine, versionNumber, %VersionFile%, 1
-FormatTime, The_Time,, hh:mm
+FormatTime, The_Time,, h:mm:ss
 ; Display the current version number
 ; MsgBox, Current Version: %versionNumber%
-iniRead, Version, U:\VQ_Helper\Settings.ini, Config, Version
+iniRead, Version, %SettingsFile%, Config, Version
 ; Increment the version number
 StringSplit, versionParts, version, .
 majorVersion := versionParts[1]
 minorVersion := versionParts[2]
-minorVersion+=1
+minorVersion:=minorVersion + 1
 newVersionNumber := majorVersion "." minorVersion
 
 ; Update the version number in the text file
 FileDelete, %VersionFile%
 FileAppend, %The_Time%, %VersionFile%
-iniwrite, %The_Time%, U:\VQ_Helper\Settings.ini, Config, CompileTime
-iniwrite, %newVersionNumber%, U:\VQ_Helper\Settings.ini, Config, Version
+iniwrite, %The_Time%, %SettingsFile%, Config, CompileTime
+iniwrite, %newVersionNumber%, %SettingsFile%, Config, Version
 
 ; Display the new version number
 ; MsgBox, New Version: %newVersionNumber%

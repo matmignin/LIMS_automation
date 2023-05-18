@@ -43,6 +43,21 @@ clipChange(type){
     exitapp
     Return
   }
+  else if InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1){
+		NewIngredientsString:="[Ingredients]`r`n" Clipboard
+		filedelete, Ingredients.ini
+		fileappend, %NewIngredientsString%, Ingredients.ini
+    sleep 800
+
+    Return
+  }
+  else if InStr(Clipboard, "111Skin Limited=0`r`n1st Allergy Asthma and Pediatrics=1`r`n",true, 1,1){
+		NewCustomerString:="[Customers]`r`n" Clipboard
+		filedelete, Customers.ini
+		fileappend, %NewCustomerString%, Customers.ini
+    sleep 800
+    Return
+  }
   else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
     TT(Description,2000)
@@ -537,17 +552,19 @@ Regex(Category:=""){
         Coated:=
 				Ct:=
       }
-			if (rProduct) & (rBatch) & (rLot)
-				{
-					NewString:=Trim(Product " " Batch " " Lot Ct Coated)
-					ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ_Helper
-				}
+			; if (rProduct) & (rBatch) & (rLot)
+			; 	{
+			; 		NewString:=Trim(Product " " Batch " " Lot Ct Coated)
+			; 		ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ_Helper
+			; 	}
       ; GuiControl, ClipBar:MoveDraw, Coated
       gui ClipBar:submit, nohide
       ; tt(Product " " Batch " " lot " ct#" Coated)
       sleep 20
-Return Trim(Product " " Batch " " Lot Ct Coated)
+			Return ;Trim(Product " " Batch " " Lot Ct Coated)
 		}
+
+
 Department(DepartmentInput:=""){
   global Department
       Department:=
@@ -555,45 +572,30 @@ Department(DepartmentInput:=""){
       DepartmentHaystack:=Clipboard
     else
       DepartmentHaystack:=DepartmentInput
-		; Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
-		; Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
-		; Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
-		; Regexmatch(DepartmentHaystack, "CT,\sPhysical", ctPhysical)
-		; Regexmatch(DepartmentHaystack, "CT,\sRetain", ctRetain)
-		; Regexmatch(DepartmentHaystack, "I,\sAnalytical", Analytical)
-		Sleep      20
-		; If Micro
-		;   Department:="Micro"
-		; else If Retain
-		;   Department:="Retain"
-		; else If ctRetain
-		;   Department:="ctRetain"
-		; else If Physical
-		;   Department:="Physical"
-		; else If ctPhysical
-		;   Department:="ctPhysical"
-		; else If Analytical
-		;   Department:="Analytical"
-		; else
-		If Micro
-			if instr(DepartmentHaystack, "F, Micro")
+      Regexmatch(DepartmentHaystack, "F,\sMicro",Micro)
+      Regexmatch(DepartmentHaystack, "I,\sRetain", Retain)
+      Regexmatch(DepartmentHaystack, "I,\sPhysical", Physical)
+      Regexmatch(DepartmentHaystack, "CT,\sPhysical", ctPhysical)
+      Regexmatch(DepartmentHaystack, "CT,\sRetain", ctRetain)
+      Regexmatch(DepartmentHaystack, "I,\sAnalytical", Analytical)
+      Sleep      20
+      If Micro
         Department:="Micro"
-      else If instr(DepartmentHaystack,"I, Retain")
+      else If Retain
         Department:="Retain"
-      else If instr(DepartmentHaystack,"CT, Retain")
+      else If ctRetain
         Department:="ctRetain"
-      else If instr(DepartmentHaystack,"I, Physical")
+      else If Physical
         Department:="Physical"
-      else If instr(DepartmentHaystack,"CT, Physical")
+      else If ctPhysical
         Department:="ctPhysical"
-      else If instr(DepartmentHaystack,"I, Analytical")
+      else If Analytical
         Department:="Analytical"
       else
-				msgbox, No Department found
+				return
         ; TT("`nDepartment: " Department "`nmicro: " micro "`nretain: " retain "`nctretain: " ctretain "`nphysical: " physical "`nctphysical: " ctphysical "`nanalytical: " analytical,3000,100,100)
   return %Department%
 }
-
 
 
 
