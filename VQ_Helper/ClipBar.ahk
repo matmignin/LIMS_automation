@@ -475,15 +475,15 @@ SetClipBar(){
       GuiControl,ClipBar:Text, Coated, %Coated%
 }
 
-
+"
 
 Regex(Category:=""){
     global
     if !Category
       Haystack:=Clipboard
-    else
+		else
       Haystack:=Category
-    sleep      100
+    sleep 100
       Gui ClipBar:Default
       RegExMatch(HayStack, RegexProduct,r)  ;"i)[abdefghijkl]\d{3}", rProduct)
         If rProduct {
