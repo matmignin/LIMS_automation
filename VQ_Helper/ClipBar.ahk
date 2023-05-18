@@ -475,7 +475,6 @@ SetClipBar(){
       GuiControl,ClipBar:Text, Coated, %Coated%
 }
 
-"
 
 Regex(Category:=""){
     global
