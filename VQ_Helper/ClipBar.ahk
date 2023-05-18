@@ -980,9 +980,9 @@ Class ClipBar{
 		return
 	}
 
-	AddIteration(speed:=300){
+	AddIteration(speed:=300,showtooltip:="",PreventStall:=""){
 		global Iteration
-			If NAdd
+			If NAdd && !PreventStall
 				{
 					Sleep 500
 					return
@@ -995,7 +995,8 @@ Class ClipBar{
 			ControlsetText, Edit5,%Iteration%,ClipBar
 			; sleep 100
 			; #MaxHotkeysPerInterval, 70
-			tt(Iteration)
+			if showTooltip
+				tt(Iteration)
 			CustomerPosition:=Iteration
 			sleep %Speed%
 			; #maxthreadsperhotkey, 2

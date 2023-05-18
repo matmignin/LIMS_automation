@@ -641,7 +641,7 @@ Dropdown_IngredientSelect(A_DropdownCount){
 			Iteration:=1
 		this.Dropdown_GenericIngredient(Iteration)
 
-		ClipBar.AddIteration(0)
+		ClipBar.AddIteration(0,0,"True")
 	}
 	; SetKeyDelay,0,0
 	return
@@ -807,64 +807,64 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 	if IngredientNote
 	{
 	  Sendinput, {right %IngredientNoteDropDownCount%}{right %IterationCount%}
-	  sleep 505
+	  sleep 405
 	  return
 	  }
 	if GeneralCount=1
 		Sendinput, {right 56}
 			else if GeneralCount=2
-		Sendinput, {right 62}
+		Sendinput, {right 60}
 			else if GeneralCount=3
-		Sendinput, {right 68}
+		Sendinput, {right 64}
 			else if GeneralCount=4
-		Sendinput, {right 74}
+		Sendinput, {right 68}
 			else if GeneralCount=5
-		Sendinput, {right 80}
+		Sendinput, {right 72}
 			else if GeneralCount=6
-		Sendinput, {right 86}
+		Sendinput, {right 76}
 			else if GeneralCount=7
-		Sendinput, {right 92}
+		Sendinput, {right 80}
 			else if GeneralCount=8
-		Sendinput, {right 93}
+		Sendinput, {right 81}
 			else if GeneralCount=9
-		Sendinput, {right 95}
+		Sendinput, {right 82}
 			else if GeneralCount=10
-		Sendinput, {right 97}
+		Sendinput, {right 83}
 			else if GeneralCount=11
-		Sendinput, {right 99}
+		Sendinput, {right 84}
 			else if GeneralCount=12
-		Sendinput, {right 100}
+		Sendinput, {right 85}
 			else if GeneralCount=13
-		Sendinput, {right 101}
+		Sendinput, {right 86}
 			else if GeneralCount=14
-		Sendinput, {right 102}
+		Sendinput, {right 87}
 			else if GeneralCount=15
-		Sendinput, {right 103}
+		Sendinput, {right 88}
 			else if GeneralCount=16
-		Sendinput, {right 104}
+		Sendinput, {right 89}
 			else if GeneralCount=17
-		Sendinput, {right 105}
+		Sendinput, {right 90}
 			else if GeneralCount=18
-		Sendinput, {right 106}
+		Sendinput, {right 91}
 			else if GeneralCount=19
-		Sendinput, {right 107}
+		Sendinput, {right 92}
 			else if GeneralCount=20
-		Sendinput, {right 108}
+		Sendinput, {right 93}
 			else if GeneralCount=21
-		Sendinput, {right 109}
+		Sendinput, {right 94}
 			else if GeneralCount=22
-		Sendinput, {right 110}
+		Sendinput, {right 95}
 			else if GeneralCount=23
-		Sendinput, {right 111}
+		Sendinput, {right 96}
 			else if GeneralCount=24
-		Sendinput, {right 112}
+		Sendinput, {right 97}
 			else if GeneralCount=25
-		Sendinput, {right 113}
+		Sendinput, {right 98}
 			else if GeneralCount=26
-		Sendinput, {right 114}
+		Sendinput, {right 99}
 			else
 				exit
-			sleep 400
+			sleep 350
 			return
 		}
 
