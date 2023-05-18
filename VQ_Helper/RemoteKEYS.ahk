@@ -347,6 +347,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 ; 		mbutton::mouseclick, left, 333, 615
 
 #ifwinactive, Edit sample template ;;    Edit sample template
+	F6::Sendinput,{Click 256,85}%Product%, `In Process, Analytical{tab 3}{right 6}{tab}{right}
 	F7::Sendinput, %Product%
 	F10::Sendinput, {Home}%Product%`,{space}
 	:*:fm`;::
@@ -390,6 +391,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		mousemove, 280, 558, 0
 		Tooltip
 		return
+	F9::ProductTab.IngredientsMenu()
 
 
 
@@ -554,6 +556,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	F10::
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 	   wheelDown::clk(503, 574,1) ;add scroll block
+	F7::SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
 
 
 #ifwinactive, Register new samples ;;    Register new samples
@@ -588,8 +591,9 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	F10::Worktab.EditRequest()
 	mbutton::WorkTab.EditRequest()
 
-#ifwinactive, Edit sample ;;    Edit sample
-	+F10::worktab.CustomerMenu()
+#ifwinactive, Edit sample ( ;;    Edit sample
+	; +F10::worktab.CustomerMenu()
+	F9::worktab.CustomerMenu()
 
 ; #ifwinactive, Select samples for test: ;;    Select samples for test:
 

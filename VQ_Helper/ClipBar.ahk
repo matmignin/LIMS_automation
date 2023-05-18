@@ -23,6 +23,8 @@ clipChange(type){
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
       iteration:=1
     ClippedData:=Clipboard
+		UsedLimits:=
+		AllowPrefixes:=
     FileDelete, ClippedExcelData.txt
     sleep 400
     FileAppend, %ClippedData%, ClippedExcelData.txt
@@ -133,8 +135,8 @@ Class Clip {
 			Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
 			Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
+			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-				Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				; SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
 					PriorBatch:=Batch
@@ -144,7 +146,6 @@ Class Clip {
 				if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
 					Iteration:=Floor(rCustomerPosition)
 					CustomerPosition:=rCustomerPosition
-
 					sleep 40
 			}
 				Ct:=Coated ? " ct#" : ""
@@ -160,9 +161,12 @@ Class Clip {
 					sleep 200
 					FileAppend, %CodeString%, %CodeFile%
 					; if !ArrayContains(PreviousCodes,Products " " Batches) && (!ArrayContains(PreviousCodes,Products " " Batches " " Lot))
-					FileAppend, %CodeString%`n, PriorCodes.txt
-						;         PreviousCodes.Push(aMatches["Product"])
-						;     }
+					;         PreviousCodes.Push(aMatches["Product"])
+					;     }
+				}
+				if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
+				FileAppend, %CodeString%`n, PriorCodes.txt
+				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 				}
 				; if (priorSampleID!=SampleID){
 					; FileDelete, SampleID.txt
@@ -198,6 +202,8 @@ Class Clip {
       Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_LabelName "`n" Clipped_IngredientGroup
       ; msgbox, %Clipped_Ingredients%
       ; Tooltip, %Clipped_Ingredients%, 200,0
+			ControlsetText, Edit6,%Clipped_Ingredients%,ClipBar
+			gui, Clipbar:Submit,Nohide
       tt(Clipped_ingredients 10000,1,1,2)
       return
 		}
@@ -219,6 +225,7 @@ Class Clip {
 		Loop, parse, ParseData, `t
 			ParsedSpecs.insert(A_LoopField)
 			TotalColumns:=ParsedSpecs.maxindex()//2
+			UseLimits:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Use the limits from the test") + TotalColumns],"`r`n")
 			MinLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
 			MaxLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
 			Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
@@ -231,14 +238,18 @@ Class Clip {
       Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
-      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " (" FullRequirements ") `n Percision: " Percision "`n Units: " Units "`n Allow Prefix: " AllowPrefixes
+      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " (" FullRequirements ") `n Percision: " Percision "`n Units: " Units "`n Allow Prefix/limits: " AllowPrefixes "/" UseLimits
+			; if !UseLimits
+			; 	UsedLimits:=
+			; If !AllowPrefixes
+			; 	AllowPrefixes:=
       tt(Clipped_Specs,3000,100,300)
-
+			ControlsetText, Edit6,%Clipped_Specs%,ClipBar ahk_exe VQ_Helper
         ; tooltip, %Clipped_specs%, 200,0
       If (EnterData){
         sleep 300
 
-        Spectab.Autofill()
+        ; Spectab.Autofill()
       }
       return
 		}
@@ -273,14 +284,14 @@ Class Clip {
       Clipped_SpecsTop:= Product  ": " VersionType
       ControlsetText, Edit1,%Product%,ClipBar
       sleep 200
-      iniRead, VersionStatus, FixedSpecs.ini, Status, %Product%
+      ; iniRead, VersionStatus, FixedSpecs.ini, Status, %Product%
       SimpleClip:=
       sleep 350
-      if VersionStatus
-        return VersionStatus
+      ; if VersionStatus
+        ; return VersionStatus
 
-      else
-        return ""
+      ; else
+        return
 		}
 
 
@@ -315,6 +326,7 @@ Class Clip {
       sleep 200
       Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
       TT(%Clippsed_Specs%,4000)
+			ControlsetText, ,%Clipped_Specs%,ClipBar ahk_exe VQ_Helper
         ; tooltip, %Clipped_specs%, 200,0
       return
 		}
@@ -525,11 +537,16 @@ Regex(Category:=""){
         Coated:=
 				Ct:=
       }
+			if (rProduct) & (rBatch) & (rLot)
+				{
+					NewString:=Trim(Product " " Batch " " Lot Ct Coated)
+					ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ_Helper
+				}
       ; GuiControl, ClipBar:MoveDraw, Coated
       gui ClipBar:submit, nohide
       ; tt(Product " " Batch " " lot " ct#" Coated)
       sleep 20
-Return Trim(rProduct " " rBatch " " rLot Ct rCoated)
+Return Trim(Product " " Batch " " Lot Ct Coated)
 		}
 Department(DepartmentInput:=""){
   global Department
@@ -1085,7 +1102,8 @@ Class ClipBar{
 			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-			iniwrite, %GeneralBox%, Settings.ini, SavedVariables, GeneralBox
+			GeneralboxTrimmed:=Trim(strreplace(Generalbox,"`n"," | "))
+			iniwrite, %GeneralBoxTrimmed%, Settings.ini, SavedVariables, GeneralBox
 
 		; else
 			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleID

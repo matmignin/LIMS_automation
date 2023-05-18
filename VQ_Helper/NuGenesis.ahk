@@ -614,12 +614,14 @@ AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient
 	return
 }
 
-Dropdown_IngredientSelect(A_DropdownCount){
+Dropdown_IngredientSelect(A_DropdownCount,Hittab:=""){
 	global
 	; SetKeyDelay,-1,-1
 	ifWinNotActive, Edit Ingredient
 		winactivate, Edit Ingredient
-	click, 150, 73 ;click dropdown box
+		click, 150, 73 ;click dropdown box
+		; if HitTab
+		; 	Send, {tab}
 	sleep 110
 	AbsSelection:=Abs(A_DropdownCount)
 	if (A_DropdownCount > 0){
@@ -865,6 +867,47 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 			else
 				exit
 			sleep 350
+			return
+		}
+
+
+		IngredientsMenu() { ;; create a dropdown from CustomerMenu ini datafile
+			global
+			Ingredientfile:="U:\VQ_Helper\Ingredients.ini"
+			try menu, IngredientsMenu, DeleteAll
+
+			Loop, Read, %Ingredientfile%
+			{
+				If A_Index = 1
+					Continue
+				Ingredientslist := StrSplit(A_LoopReadLine, "=")
+				Selection:= % Ingredientslist[1]
+				; If A_Index = 60
+				; 	Addbreak:="+BarBreak"
+				If A_Index = 60
+					Addbreak:="+BarBreak"
+				; If A_Index = 180
+				; 	Addbreak:="+BarBreak"
+				Menu, IngredientsMenu, add, &%Selection%, IngredientsMenuhdr ;, %Addbreak%
+				; If A_Index = 240
+				; 	Addbreak:="+BarBreak"
+				AddBreak:=
+			}
+			Menu, IngredientsMenu, Show,
+			return
+
+			IngredientsMenuhdr:
+				sleep 200
+				menuselection:=strsplit(A_thismenuitem, "&")
+				InputVar:=MenuSelection[2]
+				IniRead,IngredientPosition, Ingredients.ini, Ingredients, %InputVar%
+			sleep 110
+
+
+				this.Dropdown_IngredientSelect(Ingredientposition)
+				menu, IngredientsMenu, DeleteAll
+				; Nsub:=
+
 			return
 		}
 
@@ -1443,7 +1486,7 @@ MethodsDropdown() {
 }
 
 ;;___Fill In Test Specs
-ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:="1"){ ; 3rd window
+ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1,AllowPrefixesBox:=""){ ; 3rd window
 	Global
 	If (Clipped_specs){
 		clipped_Specs:=
@@ -1452,41 +1495,45 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	winactivate, Result Editor
 	click, 250, 140 ; click id box to orient
 	Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
-	if (AllowPrefixes = True) {
-		send, {tab}{space}{tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a
-		AllowPrefixes = False
+	if (AllowPrefixesBox) || (AllowPrefixes=True)
+		TabAmount=3 ;{space}{tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a
+	else
+		TabAmount=2
+		; AllowPrefixes = False
+		; return
+
+		; Sendinput, {tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+	If (UseLimitsBox=1) || (UseLimits=True)
+		UseLimitBox:="{space}"
+	else
+		UseLimitBox:=
+		Sendinput,%UseLimitBox%{tab %TabAmount%}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+	if (Max_limit = "")&&(CreateRequirements=1){
+		Sendinput, NLT %Min_Limit% %The_Units%
 		return
 	}
-	if (Uselimitsbox := 0)
-		Sendinput, {tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-	If (UseLimitsBox:=1)
-		Send,{space}
-		Sendinput,{tab 2}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-	if (Max_limit = ""){
-		Sendinput, NLT %Min_Limit% %The_Units%
-		exit
-	}
-	else if (Min_limit = "<"){
+	else if (Min_limit = "<")&&(CreateRequirements=1){
 		Sendinput, %min_limit%%Max_Limit% %The_Units%
-		exit
+		return
 	}
-	else if (Min_limit = ""){
+	else if (Min_limit = "")&&(CreateRequirements=1){
 		Sendinput, NMT %Max_Limit% %The_Units%
-		Exit
+		return
 	}
-	Else
-	{
-		If CreateRequirements!=1
+	Else If (CreateRequirements!=1){
 			Sendinput, %CreateRequirements%
-		else
-			Sendinput, %Min_Limit% - %Max_Limit% %The_Units%
+			return
 	}
+	else
+			Sendinput, %Min_Limit% - %Max_Limit% %The_Units%
 	Breaking.Point()
 	if (The_Units)
 		Mouseclick, left, 378, 667,1,0 ; click okay
 	Breaking.Point()
 	If Method contains ICP-MS 231
 		{
+			; winactivate, Spec Table ahk_exe VQ_Helper.exe
+			; msgbox, yolo
 			MouseMove, %mX%, %mY%, 0
 		return
 		}
@@ -2358,28 +2405,9 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			global
-			; If NAdd
-				; exit
-			; NAdd:=1
 			try menu, CustomersMenu, DeleteAll
-			; send, {pgup 2}
-			; send, {click 250, 150}
-			; if winactive("Edit sample (Field Configuration: F, Micro)")
-				; send, {click 421, 504}
-			; else ;if winactive("Edit sample (Field Configuration")
-				; Send, {Click 425, 434}
 			Loop, Read, %CustomerListPath%
 			{
-				; If A_Index = 1
-				; 	Continue
-				; If A_Index = 60
-				; 	Addbreak:="+BarBreak"
-				; If A_Index = 120
-				; 	Addbreak:="+BarBreak"
-				; If A_Index = 180
-				; 	Addbreak:="+BarBreak"
-				; If A_Index = 240
-				; 	Addbreak:="+BarBreak"
 				MenuItems := StrSplit(A_LoopReadLine, "=")
 				Selection:= % MenuItems[1]
 				Count:= % MenuItems[2]
@@ -2413,8 +2441,13 @@ Class WorkTab { 		;;______WorkTab Class______________
 				GUI, ClipBar:submit,NoHide
 				iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 				; iniwrite, %Iteration%, Settings.ini, SavedVariables, CustomerPosition
-				; mouseclick, Left, 431, 541,1,0
-				; this.Dropdown_CustomerSelect(CustomerPosition)
+				winactivate, Edit sample
+					Ifwinactive, Edit sample (Field Configuration: F`, Micro)
+						send, {Click 253, 155}{tab 10}
+					else
+						send, {Click 253, 155}{tab 8}
+				sleep 200
+				this.Dropdown_CustomerSelect(CustomerPosition)
 				Nsub:=
 
 			return

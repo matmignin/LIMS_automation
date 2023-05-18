@@ -8,17 +8,19 @@ VersionFile:="U:\VQ_Helper\RawFiles\version.txt"
 FormatTime, The_Time,, hh:mm
 ; Display the current version number
 ; MsgBox, Current Version: %versionNumber%
-
+iniRead, Version, U:\VQ_Helper\Settings.ini, Config, Version
 ; Increment the version number
-; StringSplit, versionParts, versionNumber, .
-; majorVersion := versionParts[1]
-; minorVersion := versionParts[2]
-; minorVersion := minorVersion + 1
-; newVersionNumber := majorVersion "." minorVersion
+StringSplit, versionParts, version, .
+majorVersion := versionParts[1]
+minorVersion := versionParts[2]
+minorVersion+=1
+newVersionNumber := majorVersion "." minorVersion
 
 ; Update the version number in the text file
 FileDelete, %VersionFile%
 FileAppend, %The_Time%, %VersionFile%
+iniwrite, %The_Time%, U:\VQ_Helper\Settings.ini, Config, CompileTime
+iniwrite, %newVersionNumber%, U:\VQ_Helper\Settings.ini, Config, Version
 
 ; Display the new version number
 ; MsgBox, New Version: %newVersionNumber%
