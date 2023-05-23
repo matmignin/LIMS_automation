@@ -51,10 +51,19 @@ clipChange(type){
 
     Return
   }
-  else if InStr(Clipboard, "111Skin Limited=0`r`n1st Allergy Asthma and Pediatrics=1`r`n",true, 1,1){
-		NewCustomerString:="[Customers]`r`n" Clipboard
-		filedelete, Customers.ini
-		fileappend, %NewCustomerString%, Customers.ini
+  else if (InStr(Clipboard, "Value",true, 1,1) && Winactive("NuGenesis LMS")){
+		if instr(Clipboard, "111Skin Limited",true,1,1)
+			WorkTab.SaveCustomerList()
+		else if instr(Clipboard, "5-HTP",true,1,1)
+			ProductTab.SaveIngredientList()
+		else
+			return
+			; msgbox, Is ingredient list
+	; tt("SavingCustomerList")
+	; tt("SavingCustomerList")
+		; NewCustomerString:="[Customers]`r`n" Clipboard
+		; filedelete, Customers.ini
+		; fileappend, %NewCustomerString%, Customers.ini
     sleep 800
     Return
   }

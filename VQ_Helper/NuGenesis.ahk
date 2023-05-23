@@ -594,8 +594,41 @@ AddProductFromClipboard(Input:=""){
   }
 
 
+	SaveIngredientList(){
+		; if !(InputString)
+			; Inputstring:=Clipboard
+		Clipboard:=Trim(strReplace(StrReplace(Clipboard, "`r`n","`n"),"`t","")) ; Normalize line endings
+		lines := StrSplit(Clipboard, "`n") ; Split the string into lines
+		; CustomerString:=
+		totalLines := lines.Length()-1
+		half := FLOOR(totalLines/2)
+		halfAmount:=-(Half)
 
-
+		Try FileDelete, Ingredients.ini
+		IngredientsString:=
+		Loop, % totalLines
+		{
+			if (A_Index=1){
+				IngredientsString:="[Ingredients]"
+				continue
+			}
+				line := lines[A_Index]
+				if (A_Index <= half)
+						lineNumber := A_Index - 2
+				else
+					{
+						HalfAmount+=1
+						If (HalfAmount=0)
+							Linenumber:="-0"
+						else
+							Linenumber:=halfAmount
+					}
+				IngredientsString.="`n"Line "=" lineNumber
+			}
+			sleep 300
+			FileAppend,% Trim(IngredientsString), Ingredients.ini
+			return IngredientsString
+		}
 
 
 AddNewIngredient(Ingredient_Name,Ingredient_Claim,Ingredient_Position,Ingredient_Id,Dont_Hit_Okay:=""){
@@ -2340,7 +2373,8 @@ Spec_TableGuiClose:
 return
 
 
-Class WorkTab { 		;;______WorkTab Class______________
+;;{{________________________   WorkTab Class   _________________________}}
+Class WorkTab {
 	NewTestRequestLink(){
 		Global
 		winactivate, Register new samples
@@ -2406,6 +2440,39 @@ Class WorkTab { 		;;______WorkTab Class______________
 
 			return
 		}
+
+		SaveCustomerList(){
+			; if !(InputString)
+				; Inputstring:=Clipboard
+			Clipboard:=strReplace(StrReplace(Clipboard, "`r`n","`n"),"`t","") ; Normalize line endings
+			lines := StrSplit(Clipboard, "`n") ; Split the string into lines
+			; CustomerString:=
+			totalLines := lines.Length() -1
+			half := FLOOR(totalLines/2)
+			halfAmount:=-(Half)
+
+			Try FileDelete, Customers.ini
+			CustomersString:=
+			Loop, % totalLines
+			{
+				if (A_Index=1){
+					CustomersString:="[Customers]"
+					continue
+				}
+					line := lines[A_Index]
+					if (A_Index <= half)
+							lineNumber := A_Index - 2
+					else
+						{
+							Linenumber:= halfAmount
+							HalfAmount+=1
+						}
+					CustomersString.="`n"Line "=" lineNumber
+				}
+				sleep 300
+				FileAppend,% Trim(CustomersString), Customers.ini
+				return CustomersString
+			}
 
 		CustomerMenu() { ;; create a dropdown from CustomerMenu ini datafile
 			global
