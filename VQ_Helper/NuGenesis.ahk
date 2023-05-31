@@ -1267,7 +1267,7 @@ MethodsDropdown() {
 		Send, ^a
 		Loop, Read, Methods.ini
 		{
-			If A_Index = 1
+				If A_Index = 1
 				Continue
 			Methodmenu := StrSplit(A_LoopReadLine, "=")
 			Selection:= % MethodMenu[1]
