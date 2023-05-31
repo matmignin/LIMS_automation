@@ -393,7 +393,52 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		return
 	F9::ProductTab.IngredientsMenu()
 
-
+	#Ifwinactive, Edit Formulation
+	; mbutton::productTab.AddNewFormulation()
+	:*R:00`;::`#00 capsule / 0.917`" x 0.336`"
+	:*R:00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
+	:*R:3`;::`#3 capsule / 0.626`" x 0.229`"
+	:*R:2`;::`#2 capsule / 0.709`" x 0.250`"
+	:*R:1`;::`#1 capsule / 0.765`" x 0.272`"
+	:*R:0`;::`#0 capsule / 0.854`" x 0.300`"
+	:*R:USP`;::`Meets USP Requirements
+	:*R:fr`;::`Fixing Rotation
+	:*R:7/16`;::`Round / 0.4375`"
+	:*R:5.5o`;::`Oblong / 0.750`" x 0.313`"
+	:*R:5.5ov`;::`Oval / 0.625`" x 0.344`"
+	:*RR:5o`;::`Oblong / 0.750`" x 0.250`"
+	:*:1s`;::
+		sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		return
+	:*:2s`;::
+		sendinput, `Each two (2) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		return
+	:*:3s`;::
+		sendinput, `Each three (3) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		return
+	:*:1sp`;::
+		sendinput, `Each (1) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		return
+	:*:2sp`;::
+		sendinput, `Each two (2) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		return
+	:*:3sp`;::
+		sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		return
+	:*:1c`;::`Each (1) capsule contains
+	:*:2c`;::`Each two (2) capsules contains
+	:*:3c`;::`Each three (3) capsules contains
+	:*:4c`;::`Each four (4) capsules contains
+	:*:5c`;::`Each five (5) capsules contains
+	:*:6c`;::`Each six (6) capsules contains
+	:*:7c`;::`Each seven (7) capsules contains
+	:*:1t`;::`Each (1) tablet contains
+	:*:2t`;::`Each two (2) tablets contains
+	:*:3t`;::`Each three (3) tablets contains
+	:*:4t`;::`Each four (4) tablets contains
+	:*:5t`;::`Each five (5) tablets contains
+	:*:6t`;::`Each six (6) tablets contains
+	:*:7t`;::`Each seven (7) tablets contains
 
 #ifwinactive, Select methods tests ;;    Select methods tests
 	+enter::clk(854, 658,,2) ;select okay
@@ -440,10 +485,10 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 #ifwinexist, Sign :
 	mbutton::Sendpassword()
 
-#ifwinactive, Label Copy ahk_exe explorer.exe ;;    ahk_exe explorer.exe
+#ifwinactive, ahk_exe explorer.exe ;;    ahk_exe explorer.exe
 	F9::send, ^{e}
 	F7::
-		winactivate, Label Copy ahk_exe explorer.exe
+		winactivate, explorer.exe,,VQ_Helper
 		sendinput, ^{e}{*}%Product%{*}
 		sleep 300
 		sendinput, {tab 2}{right}{pgup 2}
@@ -453,7 +498,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
 	; +Mbutton::SelectPreviewPane()
 	F6::
-	winactivate, Label Copy ahk_exe explorer.exe
+	winactivate, ahk_exe explorer.exe,,VQ_Helper
 		sendinput, ^{e}
 		send, {tab 2}{right}
 		return
@@ -756,52 +801,7 @@ return
 	:*:uc`;::`Update Total Coliforms Method
 
 
-#Ifwinactive, Edit Formulation
-	; mbutton::productTab.AddNewFormulation()
-	:*R:00`;::`#00 capsule / 0.917`" x 0.336`"
-	:*R:00e`;::`#00 elongated capsule / 0.995`" x 0.336`"
-	:*R:3`;::`#3 capsule / 0.626`" x 0.229`"
-	:*R:2`;::`#2 capsule / 0.709`" x 0.250`"
-	:*R:1`;::`#1 capsule / 0.765`" x 0.272`"
-	:*R:0`;::`#0 capsule / 0.854`" x 0.300`"
-	:*R:USP`;::`Meets USP Requirements
-	:*R:fr`;::`Fixing Rotation
-	:*R:7/16`;::`Round / 0.4375`"
-	:*R:5.5o`;::`Oblong / 0.750`" x 0.313`"
-	:*R:5.5ov`;::`Oval / 0.625`" x 0.344`"
-	:*RR:5o`;::`Oblong / 0.750`" x 0.250`"
-	:*:1s`;::
-		sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-		return
-	:*:2s`;::
-		sendinput, `Each two (2) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-		return
-	:*:3s`;::
-		sendinput, `Each three (3) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-		return
-	:*:1sp`;::
-		sendinput, `Each (1) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-		return
-	:*:2sp`;::
-		sendinput, `Each two (2) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-		return
-	:*:3sp`;::
-		sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-		return
-	:*:1c`;::`Each (1) capsule contains
-	:*:2c`;::`Each two (2) capsules contains
-	:*:3c`;::`Each three (3) capsules contains
-	:*:4c`;::`Each four (4) capsules contains
-	:*:5c`;::`Each five (5) capsules contains
-	:*:6c`;::`Each six (6) capsules contains
-	:*:7c`;::`Each seven (7) capsules contains
-	:*:1t`;::`Each (1) tablet contains
-	:*:2t`;::`Each two (2) tablets contains
-	:*:3t`;::`Each three (3) tablets contains
-	:*:4t`;::`Each four (4) tablets contains
-	:*:5t`;::`Each five (5) tablets contains
-	:*:6t`;::`Each six (6) tablets contains
-	:*:7t`;::`Each seven (7) tablets contains
+
 
 #ifwinactive
 

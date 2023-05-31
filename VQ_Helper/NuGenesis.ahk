@@ -1116,6 +1116,8 @@ return
 				LV_ModifyCol(7,0)
 				LV_ModifyCol(8,100)
 				LV_ModifyCol(9,0)
+				LV_ModifyCol(2,"Sort")
+				LV_ModifyCol(8,"Sort")
 				; LV_Delete(Table_Height)
 			}
 
@@ -1153,15 +1155,11 @@ Methods() {
     global
     TableMethodList:=
 		FileRead, MethodList, MethodList.txt
-    ; MethodList:=
 		MethodRow:=[]
     winactivate, Select methods tests
-		; ShiftTable_X:=-355
-		; msgbox % MethodList
-		; ShiftTable_Y:=200
+
 		CoordMode, mouse, screen
-		; ScreenEdge_X:=A_ScreenWidth-15
-		; ScreenEdge_Y:=A_Screenheight-180
+
 		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
 		MethodTableX:=LMS_X+10
 		MethodTableY:=LMS_Y+ShiftTable_Y+60
@@ -1176,8 +1174,6 @@ Methods() {
 			MethodRow := StrSplit(A_LoopReadLine, "=")
 				if !MethodRow[1]
 					continue
-				;MethodName:=StrSplit(MethodRow[1], "`t")
-				; MethodNumber:=Methodrow[2]
 				if (instr(MethodList,Methodrow[2]))
 					TableMethodListSelect := "||"
 				else
@@ -1188,7 +1184,7 @@ Methods() {
 			Gui, Add, ListBox,  r%MaxRows% vListBox w300 glistviewhdlr multi, %TableMethodList%
 			Gui, Add, Button, w100 gRunSelected, Add Methods
 			try GUI, Show  ;x%MethodTableX% y%MethodTableY% w352
-			; OnMessage(0x0201, "WM_Lbuttondown")
+
     return
 
 		listviewhdlr:
@@ -1208,7 +1204,7 @@ Methods() {
 				click, 235, 72 ;click search bar
 				sleep 100
 				Sendinput, %vOutput%{enter} ; enter method to search
-				sleep 300
+				sleep 500
 				click 506, 341 ;move over
 				break.point()
 				; sleep 500
@@ -1500,7 +1496,7 @@ MethodsDropdown() {
 	return
 }
 
-;;___Fill In Test Specs
+;;-------Fill In Test Specs
 ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1,AllowPrefixesBox:=""){ ; 3rd window
 	Global
 	If (Clipped_specs){
@@ -1509,20 +1505,29 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	}
 	winactivate, Result Editor
 	click, 250, 140 ; click id box to orient
-	Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision%{tab 5}
-	if (AllowPrefixesBox) || (AllowPrefixes=True)
-		TabAmount=3 ;{space}{tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a
-	else
-		TabAmount=2
+	Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision% ;{tab 5}
+	; if (AllowPrefixesBox) || (AllowPrefixes=True)
+		; TabAmount=3 ;{space}{tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a
+	; else
+		; TabAmount=2
 		; AllowPrefixes = False
 		; return
 
 		; Sendinput, {tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 	If (UseLimitsBox=1) || (UseLimits=True)
-		UseLimitBox:="{space}"
-	else
-		UseLimitBox:=
-		Sendinput,%UseLimitBox%{tab %TabAmount%}^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
+		click 100,406 ; click box
+		; UseLimitBox:="{space}"
+	; else
+	; 	UseLimitBox:=
+		Send, {tab 2}{space}
+		sleep 200
+		if !winexist("Result Editor"){
+			Sendinput,{click 80, 66} ;click edit
+			winwaitactive, Result Editor,,4
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Clipped_Requirement)
+			return
+		}
+		Sendinput, ^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 	if (Max_limit = "")&&(CreateRequirements=1){
 		Sendinput, NLT %Min_Limit% %The_Units%
 		return
