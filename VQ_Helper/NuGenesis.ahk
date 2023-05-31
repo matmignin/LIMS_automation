@@ -531,7 +531,7 @@ Orient(){
 ; }
 }
 
-Class ProductTab { ;;{{______________________ProductTab Class________________________________}}
+Class ProductTab { ;;{{__________ProductTab Class_________________________}}
 
 
 /*
@@ -969,7 +969,7 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 
 
 
-;;  {{_____________________________SpecTab class__________________________}}
+;;  {{_____________SpecTab class__________________________}}
 class SpecTab {
 
 	Table(){
@@ -1183,7 +1183,7 @@ SelectMethod(InputMethod){
 				click 506, 341 ;move over
 				}
 
-;;                        {{ METHOD TABLE}}
+;;      {{ METHOD TABLE}}
 Methods() {
     global
     TableMethodList:=
