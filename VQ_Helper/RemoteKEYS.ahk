@@ -1055,7 +1055,21 @@ FtenMenuHandler:
 
 			}
 
-
+			GetIniValue(IniFile,IniKey){
+				Loop, Read, %IniFile%
+				{
+						If A_Index = 1
+						Continue
+					if instr(A_LoopReadLine, IniKey,false,1,1){
+						MatchedLine := StrSplit(A_LoopReadLine, "=")
+						tt(MatchedLine[2],2000,400,400,3)
+						return MatchedLine[2]
+					}
+					else
+						continue
+				}
+				return
+				}
 
 ;; [[ Active Check ]]
 			activeCheck:

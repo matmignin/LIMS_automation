@@ -100,9 +100,6 @@
 	; traytip,Time, %The_Time%,
 	sleep 200
 	try Menu, Tray, Icon, %AppIconPath%
-	#include NuGenesis.ahk
-	#include ClipBar.ahk
-	#Include RemoteKEYS.ahk
 	GUI, ClipBar:default
 
 
@@ -111,29 +108,15 @@
 
 
 
-return
+	return
 
 
 
 
+	#include NuGenesis.ahk
+	#include ClipBar.ahk
+	#Include RemoteKEYS.ahk
 
 
 
-matchShipToPositon(input){
-		Loop, Read, Customer.ini
-		{
-				If A_Index = 1
-				Continue
-				if instr(a_loopfield, input,false)
-					MatchedLine := StrSplit(A_LoopReadLine, "=")
-			else
-			{
-				msgbox, not found
-				return
-				}
-			ShipToPositon:=MatchedLine[2]
-			msgbox % MatchedLine[1] " is at " MatchedLine[2]
-			return ShipToPositon
-		}
-		}
-		
+

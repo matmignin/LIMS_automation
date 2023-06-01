@@ -1040,7 +1040,7 @@ Class ClipBar{
 			; sleep 100
 			; #MaxHotkeysPerInterval, 70
 			if showTooltip
-				tt(Iteration)
+				; tt(Iteration)
 			CustomerPosition:=Iteration
 			sleep %Speed%
 			; #maxthreadsperhotkey, 2
@@ -1064,7 +1064,7 @@ Class ClipBar{
 		Iteration-=1
 		ControlsetText, Edit5,%Iteration%,ClipBar
 		; sleep 100
-		tt(Iteration)
+		; tt(Iteration)
 		CustomerPosition:=Iteration
 		NAdd:=
 		; #maxthreadsperhotkey, 2

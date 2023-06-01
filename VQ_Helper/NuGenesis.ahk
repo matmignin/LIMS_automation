@@ -8,7 +8,11 @@ GetSampleInfo(){ ;on the lms main menu
 
 	Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + Toenter resultstalColumns]
 Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
-	IniRead,ShipToIndex, Data\customers.ini, Customers, %Customer%
+	; IniRead,ShipToIndex, Data\customers.ini, Customers, %Customer%
+
+	Iteration:=GetIniValue("Customers.ini",Customer)
+	GuiControl,ClipBar:Text, Iteration, %Iteration%
+	GUI, ClipBar:submit,NoHide
 	; if !ShipTo
 	; ShipTo:=ShipToIndex
 	return ShiptoIndex
@@ -556,7 +560,9 @@ AddProductFromClipboard(Input:=""){
       Product:=SheetInfo[2]
       ProductName:=SheetInfo[3]
       Customer:=SheetInfo[4]
-      CustomerPosition:=SheetInfo[5]
+      ; CustomerPosition:=SheetInfo[5]
+      CustomerPosition:=GetIniValue("Customer.ini",Customer)
+
       ShapeAndSize:=SheetInfo[6]
       Color:=SheetInfo[7]
       ServingSize:=SheetInfo[8]
@@ -582,7 +588,7 @@ AddProductFromClipboard(Input:=""){
       ; ControlsetText, Static1,%CustomerPosition%,ClipBar
       ; GuiControl,ClipBar:Text, Iteration, %Iteration%
     ; }
-		if CustomerPosition{
+		if CustomerPosition {
 				Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")
 				ControlsetText, Edit5,%Iteration%,ClipBar
 				IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
@@ -1585,8 +1591,6 @@ ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateR
 	Breaking.Point()
 	If Method contains ICP-MS 231
 		{
-			; winactivate, Spec Table ahk_exe VQ_Helper.exe
-			; msgbox, yolo
 			MouseMove, %mX%, %mY%, 0
 		return
 		}
@@ -2408,30 +2412,23 @@ Class WorkTab {
 		winwaitactive, Edit sample (Field Configuration,, 2
 			if errorlevel
 					breaking.point(1)
-			Sendinput, {tab 2}{right}{click 277, 139}{tab 7}
+			Sendinput, {tab 2}{right}{tab}^a%Batch%{tab} ; switch to Availible and enter batch
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
-				Send, {tab}^{a}
-			Sendinput, ^{a}%Batch%{tab}^{a}
-			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
-				{
-					Sendinput,^{a}%Lot%{tab 3}
+			{
+					Send, ^{a}%Lot%{tab}
 					if Coated
 						Sendinput, ^{a}%Coated%
-					Sendinput, +{tab 2}
+					Sendinput, {tab 2}
 				}
-			Ifwinactive, Edit sample (Field Configuration: CT`,
+				Ifwinactive, Edit sample (Field Configuration: CT`,
 				{
-					Sendinput, {tab}
-					Send, ^{a}%Coated%
-					Sendinput, +{tab}
+					Send, ^{a}%Coated%{tab}
 				}
 			; Iteration:=CustomerPosition
 			Breaking.Point()
-
 			WorkTab.Dropdown_CustomerSelect(Iteration)
-
 			Breaking.Point()
-			Send, {enter}
+			Send, {enter} ; hit okay
 
 				winwaitactive, Register new samples,,2
 				if errorlevel
