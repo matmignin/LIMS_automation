@@ -38,9 +38,10 @@ GetSampleInfo(){ ;on the lms main menu
 	; ShipTo:=ShipToIndex
 	; return ;ShiptoIndex
 }
-
-
-Class LMS { ;;[[ Generl LMS ]]
+;;----------------------------------------------------------
+;;[[                  General LMS                         ]]
+;;----------------------------------------------------------
+Class LMS {
 
 	Menu(){
 		Global
@@ -535,8 +536,10 @@ Orient(){
 ; 		return
 ; }
 }
-
-Class ProductTab { ;;{{__________ProductTab Class_________________________}}
+;;----------------------------------------------------------
+;;{{             ProductTab Class                         }}
+;;----------------------------------------------------------
+Class ProductTab {
 
 
 /*
@@ -976,7 +979,9 @@ Dropdown_GenericIngredient(IterationCount:="",IngredientNote:=""){ ;; Generic Li
 
 
 
-;;  {{_____________SpecTab class__________________________}}
+;;----------------------------------------------------------
+;;  {{              SpecTab class                         }}
+;;----------------------------------------------------------
 class SpecTab {
 
 	Table(){
@@ -2377,8 +2382,9 @@ Spec_TableGuiClose:
 	; coordmode, mouse, window
 return
 
-
-;;{{________________________   WorkTab Class   _________________________}}
+;;----------------------------------------------------------
+;;{{                   WorkTab Class                      }}
+;;----------------------------------------------------------
 Class WorkTab {
 	NewTestRequestLink(){
 		Global
@@ -2675,7 +2681,7 @@ Class WorkTab {
 		;Breaking.Point()
 		Sendinput,{tab 10}^a
 		Breaking.Point()
-		if (Iteration != 0)  ; Contains toggle
+		if ((Iteration != 0) && !(Iteration > 8) && !(Iteration < 0))
 			Send, %iteration%
 		;if !Checkbox_Toggle ; Not Contains toggle
 		mousemove, xpos, ypos+26,0
@@ -2764,7 +2770,7 @@ Class WorkTab {
 		}
 	}
 
-	;;edit
+
 
 	class LMSclick {
 		OKay(sleeptime:=""){
@@ -2825,6 +2831,7 @@ Class WorkTab {
 			click 342, 296
 		Else
 			Send,{esc}
+		sleep 500
 		return
 	}
 

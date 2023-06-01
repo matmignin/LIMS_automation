@@ -44,21 +44,21 @@ clipChange(type){
     Return
   }
 
-  else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
-		NewIngredientsString:="[Ingredients]`r`n" Clipboard
-		filedelete, Ingredients.ini
-		fileappend, %NewIngredientsString%, Ingredients.ini
-    sleep 800
-    Return
-  }
+  ; else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
+	; 	NewIngredientsString:="[Ingredients]`r`n" Clipboard
+	; 	filedelete, Ingredients.ini
+	; 	fileappend, %NewIngredientsString%, Ingredients.ini
+  ;   sleep 800
+  ;   Return
+  ; }
   else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
 		if instr(Clipboard, "111Skin Limited",true,1,1)
 			WorkTab.SaveCustomerList()
 		else if instr(Clipboard, "5-HTP",true,1,1)
 			ProductTab.SaveIngredientList()
 		else
-			return
-    sleep 800
+			clip.codesRegex()
+    ; sleep 800
     Return
   }
   else if Winactive("Test Definition Editior"){
@@ -173,9 +173,8 @@ Class Clip {
 				if rCustomerPosition
 					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
 
-				if Winactive("NuGenesis LMS") && (InStr(Parse, "Ship To",true, 1,1)){
+				if (Winactive("NuGenesis LMS") && InStr(Parse, "Ship To",true, 1,1) InStr(Parse, "Ship To",true, 1,1) )
 					GetSampleInfo()
-				}
 				; GuiControl,ClipBar:Text, Iteration, %Iteration%
 					GUI, ClipBar:submit,NoHide
 				codeString:=trim(Product " " Batch " " Lot Ct Coated)
@@ -184,21 +183,12 @@ Class Clip {
 					FileDelete, %CodeFile%
 					sleep 200
 					FileAppend, %CodeString%, %CodeFile%
-					; if !ArrayContains(PreviousCodes,Products " " Batches) && (!ArrayContains(PreviousCodes,Products " " Batches " " Lot))
-					;         PreviousCodes.Push(aMatches["Product"])
-					;     }
 				}
 				if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
 				FileAppend, %CodeString%`n, PriorCodes.txt
 				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 				}
-				; if (priorSampleID!=SampleID){
-					; FileDelete, SampleID.txt
-					; sleep 200
-					; FileAppend, `t%sampleID%, %CodeFile%
-					; if WinActive("NuGenesis LMS")
-					; FileAppend, `n%Product% %Batch% %Lot% %Ct% %Coated% %SampleID%, PreviousSampleIDs.txt
-				; }
+
 				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,100)
 			Return
 	}
@@ -228,7 +218,7 @@ Class Clip {
       ; Tooltip, %Clipped_Ingredients%, 200,0
 			ControlsetText, Edit6,%Clipped_Ingredients%,ClipBar
 			gui, Clipbar:Submit,Nohide
-      tt(Clipped_ingredients 10000,1,1,2)
+      tt(Clipped_ingredients 10000,10,20,2)
       return
 		}
   ParseSpecsTable(EnterData:=""){
@@ -288,7 +278,7 @@ Class Clip {
       {          ; sleep 800
           ; MsgBox, The attempt to copy text onto the clipboard failed.
           SimpleClip:=
-          Tt("Errorlevel", 100,100)
+          TT("Errorlevel", 100,100)
           return
           ; exit
       }
@@ -1006,13 +996,8 @@ Class ClipBar{
 
 	Focus(Control){
 		global
-		; winGetTitle, the_winTitle, A
 		winactivate, ClipBar ahk_exe VQ_Helper
-		; caret_x:=A_CaretX
 		GuiControl ClipBar:Focus, %Control%
-		; caret_y:=A_Carety
-		; winactivate, ClipBar ahk_exe VQ_Helper
-		; FlashScreen()
 		Sendinput, +{left}
 		return
 	}
@@ -1026,6 +1011,7 @@ Class ClipBar{
 
 	AddIteration(speed:=300,showtooltip:="",PreventStall:=""){
 		global Iteration
+		Thread, Interrupt, 0
 			If NAdd && !PreventStall
 				{
 					Sleep 500

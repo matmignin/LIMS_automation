@@ -3,10 +3,11 @@
 	#Persistent
 	Process, Priority, , High
 	#NoEnv
+
 	SetBatchLines, -1
 	Thread, NoTimers
 	; #HotkeyInterval 1000
-	; #MaxHotkeysPerInterval 210
+	#MaxHotkeysPerInterval 210
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
@@ -36,6 +37,7 @@
 	Fileread, AllProducts, AllProducts.txt
 
 	ReadIniFiles()
+	tooltipNumber=6
 
 	; WholeBatchesArray:=[]
 	; FileRead, WholeBatchestext, WholeBatches.txt
@@ -99,7 +101,6 @@
 	sleep 200
 	try Menu, Tray, Icon, %AppIconPath%
 	GUI, ClipBar:default
-
 
 	; TT("VQ_Helper Started",2000,100,100)
 	; SetWinDelay, %NormalWinDelay%
