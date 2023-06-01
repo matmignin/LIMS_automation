@@ -1,5 +1,3 @@
-; if A_username != mmignin
-	; exitapp
 
 	#SingleInstance,Force
 	#Persistent

@@ -60,6 +60,7 @@ return
 class Breaking {
 	Point(break:=""){
 		Global
+		critical
 		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RControl", "P") || GetKeyState("LWin", "P") || GetKeyState("RWin", "P"){
 			TT("Broke",2000,100,100)
 			blockinput, off
@@ -127,6 +128,7 @@ return 0
 
 BlockRepeat(Time:=300, ToolTipMessage:=""){
 	Global N
+	critical
 	sleep 25
 	If N
 		exit
@@ -198,6 +200,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 	#If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
 	wheelup::
+	critical
 	If NAdd
 		{
 		sleep 500
@@ -234,6 +237,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 
 
 	wheeldown::
+	critical
 	If NAdd
 		{
 		sleep 500
@@ -290,8 +294,17 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		Send, ^a^c
 		LMS.Searchbar(clipboard,"{enter}","False")
 		return
-		; ControlGetFocus,winControl,ClipBar
-		; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
+		Rbutton::
+		ControlGetFocus,winControl,ClipBar
+		if (winControl="Edit1")
+			sendinput, %product%
+			If (winControl="Edit2")
+				sendinput, %Batch%
+			If (winControl="Edit3")
+				sendinput, %lot%
+			If (winControl="Edit4")
+				sendinput, %coated%
+			return
 		; 	Gui, ClipBar:submit, nohide
 		; }
 		; 	else if (winControl="Edit4"){

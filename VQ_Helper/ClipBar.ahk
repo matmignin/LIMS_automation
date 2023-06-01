@@ -43,27 +43,21 @@ clipChange(type){
     exitapp
     Return
   }
-  else if InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1){
+
+  else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
 		NewIngredientsString:="[Ingredients]`r`n" Clipboard
 		filedelete, Ingredients.ini
 		fileappend, %NewIngredientsString%, Ingredients.ini
     sleep 800
-
     Return
   }
-  else if (InStr(Clipboard, "Value",true, 1,1) && Winactive("NuGenesis LMS")){
+  else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
 		if instr(Clipboard, "111Skin Limited",true,1,1)
 			WorkTab.SaveCustomerList()
 		else if instr(Clipboard, "5-HTP",true,1,1)
 			ProductTab.SaveIngredientList()
 		else
 			return
-			; msgbox, Is ingredient list
-	; tt("SavingCustomerList")
-	; tt("SavingCustomerList")
-		; NewCustomerString:="[Customers]`r`n" Clipboard
-		; filedelete, Customers.ini
-		; fileappend, %NewCustomerString%, Customers.ini
     sleep 800
     Return
   }
@@ -160,6 +154,7 @@ Class Clip {
 			Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				; SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
@@ -172,10 +167,15 @@ Class Clip {
 					CustomerPosition:=rCustomerPosition
 					sleep 40
 			}
+
 				Ct:=Coated ? " ct#" : ""
 				this.SetClipBar()
 				if rCustomerPosition
 					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+
+				if Winactive("NuGenesis LMS") && (InStr(Parse, "Ship To",true, 1,1)){
+					GetSampleInfo()
+				}
 				; GuiControl,ClipBar:Text, Iteration, %Iteration%
 					GUI, ClipBar:submit,NoHide
 				codeString:=trim(Product " " Batch " " Lot Ct Coated)
@@ -1153,6 +1153,7 @@ Class ClipBar{
 		return
 
 	BlockTheWheel:
+	Critical
 		sleep 1000
 		breaking.point(1)
 		; BlockingWheel:=

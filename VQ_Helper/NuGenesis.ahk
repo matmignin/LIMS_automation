@@ -1,21 +1,42 @@
 
 GetSampleInfo(){ ;on the lms main menu
-	global Customer, Name, ShipToIndex
+	global Coated, Customer
 	ParsedSample:=[]
+	clipped_coated:=
+	clipped_customer:=
 	Loop, parse, Clipboard, `t
 		ParsedSample.insert(A_LoopField)
 	TotalColumns:=Parsedsample.maxindex()//2
 
-	Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + Toenter resultstalColumns]
-Name:=ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns]
+	clipped_Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+	; Name:=Trim(ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns],"`r`n")
+	Clipped_Coated:=ParsedSample[HasValue(ParsedSample, "Coated Lot #") + TotalColumns]
+
 	; IniRead,ShipToIndex, Data\customers.ini, Customers, %Customer%
 
 	Iteration:=GetIniValue("Customers.ini",Customer)
 	GuiControl,ClipBar:Text, Iteration, %Iteration%
+	if clipped_Customer
+		{
+		customer:=Clipped_Customer
+		GuiControl,ClipBar:Text, GeneralBox, %Customer%
+		}
+	else
+		GuiControl,ClipBar:Text, GeneralBox,
+
+
+	if clipped_Coated
+		{
+			Coated:=Clipped_Coated
+		GuiControl,ClipBar:Text, Coated, %Coated%
+		}
+	else
+		GuiControl,ClipBar:Text, Coated,
+
 	GUI, ClipBar:submit,NoHide
 	; if !ShipTo
 	; ShipTo:=ShipToIndex
-	return ShiptoIndex
+	; return ;ShiptoIndex
 }
 
 
@@ -233,6 +254,7 @@ Class LMS { ;;[[ Generl LMS ]]
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
+		critical
 		sleep 200
 		If Nsb
 			{
@@ -247,23 +269,23 @@ Class LMS { ;;[[ Generl LMS ]]
 			clk(246,77, 2)
 		If winactive("Register new samples") {
 			Clk(180, 103, 2)
-			Sendinput, {click 180, 103,2}%Product%{enter}
+			Send, {click 180, 103,2}%Product%{enter}
 			; return
 		}
 		else ;iwinactive("NuGenesis LMS") {
 			{
-			LMS.DetectTab()
+			Tab:=LMS.DetectTab()
 			sleep 200
 			if (Tab="Products") {
 				; If (Code=Product){
 					clk(x%Tab%Search,yProductsSearch)
-					Sendinput, ^{a}
+					Send, ^{a}
 					If Overwrite=true
-						Sendinput, ^{x}
+						Send, ^{x}
 					If Code
-						Sendinput, %Product%^{a}
+						Send, %Product%^{a}
 					If Overwrite=true
-						sendinput, {right}{space}^{v}^{a}^{c}
+						send, {right}{space}^{v}^{a}^{c}
 					if PostCmd!=""
 						send % PostCmd
 					; return
@@ -277,31 +299,31 @@ Class LMS { ;;[[ Generl LMS ]]
 			if (Tab="Specs") {
 				; If (Code=Product) {
 					clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
-					clk(x%Tab%Search+10,yProductsSearch,,1,,0)
-					clk(x%Tab%Search+20,yProductsSearch,,2)
-				Sendinput, {ctrldown}{a}{ctrlup}
+					; clk(x%Tab%Search+10,yProductsSearch,,1,,0)
+					clk(x%Tab%Search+5,yProductsSearch,,2)
+				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					Sendinput, ^{x}
+					Send, ^{x}
 				if Code
-					Sendinput, %Product%^{a}
+					Send, %Product%^{a}
 				If Overwrite=Add
-					sendinput, {right}{space}^{v}^{a}^{c}
+					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				return
+
 			}
 			If (Tab="Requests") {
+				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search-9,yWorkTabSearch)
-				; clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
 				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
 				; clk(x%Tab%Search-10,yWorkTabSearch,,2)
-				sleep 20
-				Sendinput, ^{a}
+				; sleep 20
+				Send, ^{a}
 				If Overwrite=Add
-					Sendinput, ^{x}
-				Sendinput, %Code%{ctrldown}{a}{ctrlup}
+					Send, ^{x}
+				Send, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					sendinput, {right}{space}^{v}^{a}^{c}
+					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
 				; return
@@ -312,16 +334,16 @@ Class LMS { ;;[[ Generl LMS ]]
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					Sendinput, ^{x}
+					Send, ^{x}
 				Send, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
-					sendinput, {right}{space}^{v}^{a}^{c}
+					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
-					sendinput % PostCmd
+					send % PostCmd
 				; return
 			}
 		else
-			sendinput, %Code%
+			send, %Code%
 	}
 	Nsb:=
 }
@@ -489,27 +511,6 @@ Orient(){
 	xResultsSearch:=xDivider+185
 	xTestsSearch:=xDivider+125
 	xDocumentsSearch:=xDivider+25
-
-	; yProductsFilter:=181
-	; ySpecsFilter:=181
-
-	; xFormulationFilter:=xDivider+75
-	; xProductFilter:=xDivider+75
-	; xBatchFilter:=xDivider+168
-	; xLotFilter:=xDivider+229
-
-	; yMyWorkTabFilter:=182
-	; yMyWorkFilter:=182
-	; yWorkTabFilter:=182
-
-	; xDocumentsFilter:=xDivider+68
-
-	; xEdit_Composition:=76
-	; yEdit_Composition:=443
-	; xAdd_methods:=74
-	; yAdd_methods:=565
-	; xEnter_Results:=57
-	; yEnter_Results:=630
 	return
 }
 
@@ -2624,7 +2625,7 @@ Class WorkTab {
 
 		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
 			global
-
+			Thread, Interrupt, 0
 			Breaking.Preable()
 			MouseGetPos, xpos, ypos
 			if LoopThrough
@@ -2649,7 +2650,7 @@ Class WorkTab {
 						mousemove, xpos, ypos,0
 						; Breaking.Point()
 						if GetKeyState("Lbutton","P"){
-						sleep 500
+						; sleep 500
 							exit
 						}
 				}
@@ -2658,7 +2659,7 @@ Class WorkTab {
 			}
 		Breaking.Point()
 		if GetKeyState("Lbutton","P"){
-			sleep 500
+			; sleep 500
 			Exit
 		}
 		click
@@ -2684,8 +2685,7 @@ Class WorkTab {
 	}
 
 
-		Click_EditResults()
-		{
+		Click_EditResults(){
 			ifwinnotactive, NuGenesis LMS
 				winactivate
 			Sendinput,{click 63, 754} ;edit results
