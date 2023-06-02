@@ -1,4 +1,6 @@
-;;        [[[[[[[[[[ ClipCodes ]]]]]]]]]]]]
+;;------------------------------------------------------------
+;;[[                       CLIP CODES                          ]]
+;;------------------------------------------------------------
 
 clipChange(type){
   global
@@ -867,8 +869,9 @@ GetAllWholeBatches(Delimiter:="`n",msg:=""){
 
 
 
-
-;;  [[[[[[[[______ClipBar____]]]]]]]
+;;------------------------------------------------------------
+;;[[                       ClipBar                          ]]
+;;------------------------------------------------------------
 Class ClipBar{
 	Show(X:=1, Y:=1, Destroy:="Reset"){
 		Global
@@ -954,7 +957,6 @@ Class ClipBar{
 				exit
 			Nsub:=1
 		MouseGetPos,,,,winControl
-
 		try Menu, ClipBarmenu, DeleteAll
 		Menu, ClipBarMenu, Add, All Products, AllProductsNoMsgbox
 		Menu, ClipBarMenu, Add, All Batches, AllBatchesNoMsgbox
@@ -963,13 +965,11 @@ Class ClipBar{
 		Menu, ClipBarMenu, add, Show Scan Label Copy, ShowScanLabelCopy
 		Menu, ClipBarMenu, add, Show Total CoAs, ShowFINAL_C_O_A
 		Menu, ClipBarMenu, add, &Total CoAs, ShowFINAL_C_O_A
-		; Menu, ClipbarMenu, add, Manual &COAs folder, ShowManualCOA
+		Menu, ClipbarMenu, add, Manual &COAs folder, ShowManualCOA
 		Menu, ClipbarMenu, add, &mfg folder, Showmfg
 		Menu, ClipbarMenu, add, &GLOBAL VISION folder, ShowGlobalVision
-		; Menu, ClipBarMenu, add, Show EditBox, ShowEditBox, +Break
-		; Menu, ClipBarMenu, add, Paste Spec, +!^F10
+
 		Menu, ClipBarMenu, add, Add Data From Clipboard, #+!F10
-		; Menu, ClipBarMenu, add, ParsespecsTable, #+^F10
 		Menu, ClipBarMenu, Add, Stop Timer, StopTimer
 		Menu, ClipbarMenu, add, Add Sample Log, Add15SampleLog
 		Menu, ClipBarMenu, Add, Detect Clipboard, clipChange
