@@ -209,18 +209,33 @@ return
 	; mbutton::productTab.AddNewFormulation()
 
 #Ifwinactive, Edit Formulation
+
 	:*:00e`;::00 elongated capsule / 0.995`" x 0.336`"
 	:*:00`;::00 capsule / 0.917`" x 0.336`"
 	:*:3`;::3 capsule / 0.626`" x 0.229`"
 	:*:2`;::2 capsule / 0.709`" x 0.250`"
 	:*:1`;::1 capsule / 0.765`" x 0.272`"
 	:*:0`;::0 capsule / 0.854`" x 0.300`"
-	:*:USP`;::`Meets USP Requirements
-	:*:fr`;::`Fixing Rotation
+	:*:USP`;::Meets USP Requirements
+	:*:fr`;::Fixing Rotation
 	:*:7/16`;::`Round / 0.4375`"
 	:*:5.5o`;::`Oblong / 0.750`" x 0.313`"
 	:*:5.5ov`;::`Oval / 0.625`" x 0.344`"
-	:*:5o`;::`Oblong / 0.750`" x 0.250`"
+	:*:5o`;::Oblong / 0.750`" x 0.250`"
+	:*R:1c;::Each (1) capsule contains
+	:*R:2c`;::Each two (2) capsules contains
+	:*R:3c`;::Each three (3) capsules contains
+	:*R:4c`;::Each four (4) capsules contains
+	:*R:5c`;::Each five (5) capsules contains
+	:*R:6c`;::Each six (6) capsules contains
+	:*R:7c`;::Each seven (7) capsules contains
+	:*R:1t`;::Each (1) tablet contains
+	:*R:2t`;::Each two (2) tablets contains
+	:*R:3t`;::Each three (3) tablets contains
+	:*R:4t`;::Each four (4) tablets contains
+	:*R:5t`;::Each five (5) tablets contains
+	:*R:6t`;::Each six (6) tablets contains
+	:*R:7t`;::Each seven (7) tablets contains
 	:*:1s`;::
 		sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
@@ -239,20 +254,7 @@ return
 	:*:3sp`;::
 		sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
-	:*:1c`;::`Each (1) capsule contains
-	:*:2c`;::`Each two (2) capsules contains
-	:*:3c`;::`Each three (3) capsules contains
-	:*:4c`;::`Each four (4) capsules contains
-	:*:5c`;::`Each five (5) capsules contains
-	:*:6c`;::`Each six (6) capsules contains
-	:*:7c`;::`Each seven (7) capsules contains
-	:*:1t`;::`Each (1) tablet contains
-	:*:2t`;::`Each two (2) tablets contains
-	:*:3t`;::`Each three (3) tablets contains
-	:*:4t`;::`Each four (4) tablets contains
-	:*:5t`;::`Each five (5) tablets contains
-	:*:6t`;::`Each six (6) tablets contains
-	:*:7t`;::`Each seven (7) tablets contains
+
 
 
 #ifwinactive, Select methods tests ;;    Select methods tests
@@ -428,7 +430,7 @@ return
 	mbutton::WorkTab.registerNewSamples()
 
 #ifwinactive, Reason for Change ;;    Reason for Change
-	F9::Sendinput, {tab 2}Fixing Rotation{enter}
+	F9::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
 
 #ifwinactive, Select tests for request: ;;    Select tests for request:
 	; F10::sendinput, {click, 31, 102}
@@ -456,23 +458,6 @@ return
 
 #Ifwinactive, NuGenesis LMS
 
-
-	; ^+q::ClickSaved("q")
-	; ^+w::ClickSaved("w")
-	; ^+e::ClickSaved("e")
-	; ^+r::ClickSaved("r")
-	; ^+t::ClickSaved("t")
-	; ^+a::ClickSaved("a")
-	; ^+s::ClickSaved("s")
-	; ^+d::ClickSaved("d")
-	; ^+f::ClickSaved("f")
-	; ^+g::ClickSaved("g")
-
-
-
-	; ^+F1::ClickSaved("b")
-	; ^+b::ClickSaved("b")
-	; ^+a::ClickSaved("a")
 	!F10::SpecTab.CopySpecTemplate()
 	!F9::
 		If (LMS.DetectTab() != "Requests"){
@@ -528,25 +513,11 @@ return
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
-	; ^v::
-	; 	If (Clipped_Specs){
-	; 		TT(Clipped_Specs,1000,10,10)
-	; 		spectab.Autofill()
-	; 		return
-	; 	}
-	; 	else If InStr(Clipboard, "Use the limits from the test", true,1,1){
-	; 		clip.ParseSpecsTable()
-	; 		spectab.Autofill()
-	; 		return
-	; 	}
-	; 	else
-	; 		send, ^v
-	; 	return
+
+
 ;;-------------------------------------------------------------------
 ;;[[                           LMS                                 ]]
 ;;-------------------------------------------------------------------
-
-
 
 		SaveClick(ClickKey:=""){
 		global
@@ -570,7 +541,7 @@ return
 		global
 		If !(%input%WinMemory)
 		{
-			send, %input%
+			send, {%input%}
 			return
 	}
 	else
