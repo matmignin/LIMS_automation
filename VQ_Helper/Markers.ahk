@@ -9,12 +9,29 @@ Menu, Tray, Default, &Reload
 Key:= {}
 return
 
+
++F10::
+iteration:=Key.length()+1
+MouseGetPos, mX, mY,mWin
+inputbox,vPaste, What do you want to paste
+Key[iteration]:= New Marker(Iteration,mX,mY,vPaste)
+  Return
+
+F10::
+iteration:=Key.length()+1
+MouseGetPos, mX, mY,mWin
+;Tooltip,Press Key, mX-10,my-10,4
+;input,vinput, L1
+  ;Tooltip,,,,4
+Key[iteration]:= New Marker(Iteration,mY,mY)
+  Return
+
 `::
 MouseGetPos, mX, mY,mWin
 Tooltip,Press Key, mX-10,my-10,4
 input,vinput, L1
   Tooltip,,,,4
-Key[vInput]:= New Marker(vInput,mY,mY)
+Key[vInput]:= New Marker(vInput,mX,mY)
   Return
 
 1::
@@ -48,21 +65,25 @@ return
 Class Marker {
   Static Msgboxes:=0 
 
-  __New(input,varX,varY)
+  __New(input,varX,varY,varPaste:="")
   {
   	Marker.Msgboxes++
     this.inputKey:=input
     this.X:=varX
     This.Y:=varY
+    this.Paste:=varPaste
     WinGet IDVar,ID,A ; Get ID from Active window.
     This.ID:=IDVar ; Set IDVar to This.ID
     This.msgbox:= Marker.Msgboxes +4
-    TT(" " this.inputKey " " ,0,this.X-10,This.Y-10,†his.msgbox,200)
-		This.Get()
+    This.ShowMarker()
   }
 
-	Get()
+	ShowMarker()
   {
+  	if this.paste
+      	this.pasteindicator:="*"
+      TT(" " this.pasteindicator this.inputKey " " ,0,this.X-10,This.Y-10,†his.msgbox,200)
+  		
     ; WingetTitle TitleVar, A ; Get title from Active window.
 		; This.Title:=TitleVar ; Set TitleVar to This.Title
     ;MouseGetPos, varX, varY, varWin
@@ -72,8 +93,10 @@ Class Marker {
 	Activate() ;Activates window with Title - This.ID
   {
    if !winactive("ahk_id " This.ID)
-    WinActivate % "ahk_id "This.ID ;Use word "This" when you reffer to variable of this Class.
+    WinActivate % "ahk_id "This.ID
     MouseClick,, % this.X, % this.Y, 1
+    If this.Paste
+    	sendinput % this.paste
 		Return This.ID
 	}
 
