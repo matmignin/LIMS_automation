@@ -519,64 +519,12 @@ return
 ;;[[                           LMS                                 ]]
 ;;-------------------------------------------------------------------
 
-		save_marker(ClickKey:=""){
-		global
-		if !ClickKey
-		{
-			MouseGetPos, mx, my
-			Tooltip,Press Key, mX-10,my-10,4
-			; TT(" Press Key ",4000,mX-10,mY-10,,250)
-			input,ClickKey, L1
-			Tooltip,,,,4
-			; TT("",1,mX,mY)
-	}
 
-	WinGetTitle, %ClickKey%WinMemory, A
-	MouseGetPos, %ClickKey%MouseMemoryX, %ClickKey%MouseMemoryY, %ClickKey%MouseMemoryWin, %ClickKey%MouseMemoryControl
-		; Tooltipnumber+=ClickKey + 5
-		TT(" " ClickKey " " ,0,%ClickKey%MouseMemoryX-10,%ClickKey%MouseMemoryY-10,5 + ClickKey,260)
-		%ClickKey%stored=1
-		return
-	}
-	
-	
-	click_marker(input, Paste:=""){
-		global
-		If !(%input%WinMemory)
-		{
-			send, {%input%}
-			return
-	}
-	else
-		{
-	ifwinactive % %input%WinMemory
-		winactivate % %input%WinMemory
-	ifwinactive % %input%WinMemory
-			MouseClick,, % %input%MouseMemoryX, % %input%MouseMemoryY, 1
-		if Paste
-		{
-				sleep 200
-			send, ^v
-		}
-		}
-	}
+
+
+
 #Ifwinactive, ahk_exe eln.exe
-	F10::save_marker()
-	+1::click_marker("1")
-	^+2::click_marker("2")
-	^+3::click_marker("3")
-	^+4::click_marker("4")
-	^+5::click_marker("5")
-	1::click_marker("1")
-	2::click_marker("2")
-	3::click_marker("3")
-	4::click_marker("4")
-	5::click_marker("5")
-	^1::click_marker("1",1)
-	^2::click_marker("2",1)
-	^3::click_marker("3",1)
-	^4::click_marker("4",1)
-	^5::click_marker("5",1)
+
 
 	enter::LMSclick.okay()
 	esc::LMSclick.esc()

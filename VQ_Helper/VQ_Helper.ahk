@@ -1,8 +1,8 @@
 
 	#SingleInstance,Force
 	#Persistent
-	Process, Priority, , High
 	#NoEnv
+	Process, Priority, , High
 
 	SetBatchLines, -1
 	Thread, NoTimers
@@ -113,6 +113,7 @@
 
 
 	#include NuGenesis.ahk
+	#include Markers.ahk
 	#include ClipBar.ahk
 	#Include RemoteKEYS.ahk
 

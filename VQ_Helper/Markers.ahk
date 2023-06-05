@@ -1,0 +1,245 @@
+#SingleInstance,Force
+#Persistent
+#NoEnv
+CoordMode, mouse, Window
+Menu, Tray, Add, &Reload, !esc
+Menu, Tray, Default, &Reload
+
+/*
+Class Window{
+
+  __New()
+	{
+		This.get()
+  }
+
+	Get()
+	{
+		WingetTitle TitleVar, A ; Get title from Active window.
+		This.Title:=TitleVar ; Set TitleVar to This.Title
+
+		WinGet IDVar,ID,A ; Get ID from Active window.
+		This.ID:=IDVar ; Set IDVar to This.ID
+	}
+	Activate() ;Activates window with Title - This.Title
+	{
+		;MsgBox % This.ID
+		WinActivate % "ahk_id "This.ID ;Use word "This" when you reffer to variable of this Class.
+		Return This.ID
+	}
+	AnnounceWinProps() ;Create message box with title and ID
+	{
+		MsgBox % "Title is: " This.Title "`n ID is: " This.ID
+	}
+}
+;Create Instance
+; SomeWin:= New Window
+*/
+Key:= {}
+return
+
+`::
+MouseGetPos, mx, my
+Tooltip,Press Key, mX-10,my-10,4
+input,vinput, L1
+  Tooltip,,,,4
+Key[vInput]:= New Marker(vInput)
+  Return
+
+1::
+If Key[A_ThisHotkey]
+    Key[A_ThisHotkey].Activate()
+  else
+  msgbox, no dice
+return
+
+
+2::
+If Key[A_ThisHotkey]
+  Key[A_ThisHotkey].Activate()
+  else
+  msgbox, nope
+return
+
+3::
+If Key[A_ThisHotkey]
+  Key[A_ThisHotkey].Activate()
+  else
+  msgbox, nope
+return
+
+4::key[index]
+
+
+!esc::reload
+
+
+Class Marker {
+  Static 
+
+  __New(input)
+  {
+    this.inputKey:=input
+		This.Get()
+  }
+
+	Get()
+  {
+    ; WingetTitle TitleVar, A ; Get title from Active window.
+		; This.Title:=TitleVar ; Set TitleVar to This.Title
+		WinGet IDVar,ID,A ; Get ID from Active window.
+    This.ID:=IDVar ; Set IDVar to This.ID
+
+    MouseGetPos, varX, varY, varWin
+    this.X:=varX
+    This.Y:=varY
+    this.Win:=varwin
+
+    TT(" " this.inputKey " " ,0,this.X-10,This.Y-10,5 + this.inputKey,260)
+	}
+
+	Activate() ;Activates window with Title - This.Title
+  {
+    WinActivate % "ahk_id "This.ID ;Use word "This" when you reffer to variable of this Class.
+    MouseClick,, % this.X, % this.Y, 1
+    msgbox
+		Return This.ID
+	}
+
+
+}
+
+/*
+save_marker(marker:=""){
+  global
+  if !marker
+  {
+    MouseGetPos, mx, my
+    Tooltip,Press Key, mX-10,my-10,4
+    input,marker, L1
+    Tooltip,,,,4
+  }
+  WinGetTitle, %marker%WinMemory, A
+  MouseGetPos, %marker%MouseMemoryX, %marker%MouseMemoryY, %marker%MouseMemoryWin, %marker%MouseMemoryControl
+  TT(" " marker " " ,0,%marker%MouseMemoryX-10,%marker%MouseMemoryY-10,5 + marker,260)
+
+  return marker
+}
+
+click_marker(marker, pasteValue:=""){
+  global
+  If !(%marker%WinMemory)
+  {
+    send, {%marker%}
+    return
+  }
+  else
+  {
+    ifwinactive % %marker%WinMemory
+      winactivate % %marker%WinMemory
+    ifwinactive % %marker%WinMemory
+      MouseClick,, % %marker%MouseMemoryX, % %marker%MouseMemoryY, 1
+    if pasteValue
+    {
+      sleep 200
+      sendinput, %pasteValue%
+    }
+  }
+}
+
+ */
+
+
+ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
+	global
+	my:=100
+	Mx:=100
+	MouseGetPos, mX, mY
+	; CoordMode, Mouse, screen
+	; CoordMode, ToolTip, screen
+	; CoordMode, ToolTip, Relative
+	sleep 20
+	if Position = M
+		tooltip, %msg%, %X%+%mX%, %Y%+%mY%,%N%
+	else
+		tooltip, %msg%, %X%+100, %Y%+100,%N%
+	; X+=100
+
+	; else
+	hwnd := winExist("ahk_class tooltips_class32")
+	if Transparent
+		WinSet, Exstyle, 0x20, % "ahk_id" hwnd
+	WinSet, AlwaysOnTop, On, % "ahk_id" hwnd
+	winSet, Trans, %Transparent%, % "ahk_id" hwnd
+	; WinSet, Transparent, 128, % "ahk_id" hwnd
+	; winSet, TransColor, 0xE5513C 200, % "ahk_id" hwnd
+	; winSet, Trans, 200, %W%
+	; if Position = "S"
+	if !(time=0)
+		SetTimer, RemoveToolTip%N%, -%time%
+	return
+	RemoveToolTip:
+	ToolTip
+	return
+	RemoveToolTip1:
+	ToolTip,,,,1
+	return
+	RemoveToolTip2:
+	ToolTip,,,,2
+	return
+	RemoveToolTip3:
+	ToolTip,,,,3
+	return
+	RemoveToolTip4:
+	ToolTip,,,,4
+	return
+	RemoveToolTip5:
+	ToolTip,,,,5
+	return
+	RemoveToolTip6:
+	ToolTip,,,,6
+	return
+	RemoveToolTip7:
+	ToolTip,,,,7
+	return
+	RemoveToolTip8:
+	ToolTip,,,,8
+	return
+	RemoveToolTip9:
+	ToolTip,,,,9
+	return
+	RemoveToolTip10:
+	ToolTip,,,,10
+	return
+	RemoveToolTip11:
+	ToolTip,,,,11
+	return
+	RemoveToolTip12:
+	ToolTip,,,,12
+	return
+	RemoveToolTip13:
+	ToolTip,,,,13
+	return
+	RemoveToolTip14:
+	ToolTip,,,,14
+	return
+	RemoveToolTip15:
+	ToolTip,,,,15
+	return
+	RemoveToolTip16:
+	ToolTip,,,,16
+	return
+	RemoveToolTip17:
+	ToolTip,,,,17
+	return
+	RemoveToolTip18:
+	ToolTip,,,,18
+	return
+	RemoveToolTip19:
+	ToolTip,,,,19
+	return
+	RemoveToolTip20:
+	ToolTip,,,,20
+	return
+	return
+}

@@ -670,14 +670,14 @@ Class ProductTab {
 		return
 	}
 
-	Dropdown_IngredientSelect(A_DropdownCount,Hittab:=""){
+	Dropdown_IngredientSelect(A_DropdownCount){
 		global
 		; SetKeyDelay,-1,-1
 		ifWinNotActive, Edit Ingredient
 			winactivate, Edit Ingredient
 		click, 150, 73 ;click dropdown box
 		; if HitTab
-		; 	Send, {tab}
+		; 	Send, {tab}««
 		sleep 110
 		AbsSelection:=Abs(A_DropdownCount)
 		if (A_DropdownCount > 0){
