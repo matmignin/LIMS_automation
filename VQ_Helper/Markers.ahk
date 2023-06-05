@@ -5,45 +5,16 @@ CoordMode, mouse, Window
 Menu, Tray, Add, &Reload, !esc
 Menu, Tray, Default, &Reload
 
-/*
-Class Window{
 
-  __New()
-	{
-		This.get()
-  }
-
-	Get()
-	{
-		WingetTitle TitleVar, A ; Get title from Active window.
-		This.Title:=TitleVar ; Set TitleVar to This.Title
-
-		WinGet IDVar,ID,A ; Get ID from Active window.
-		This.ID:=IDVar ; Set IDVar to This.ID
-	}
-	Activate() ;Activates window with Title - This.Title
-	{
-		;MsgBox % This.ID
-		WinActivate % "ahk_id "This.ID ;Use word "This" when you reffer to variable of this Class.
-		Return This.ID
-	}
-	AnnounceWinProps() ;Create message box with title and ID
-	{
-		MsgBox % "Title is: " This.Title "`n ID is: " This.ID
-	}
-}
-;Create Instance
-; SomeWin:= New Window
-*/
 Key:= {}
 return
 
 `::
-MouseGetPos, mx, my
+MouseGetPos, mX, mY,mWin
 Tooltip,Press Key, mX-10,my-10,4
 input,vinput, L1
   Tooltip,,,,4
-Key[vInput]:= New Marker(vInput)
+Key[vInput]:= New Marker(vInput,mY,mY)
   Return
 
 1::
@@ -75,11 +46,18 @@ return
 
 
 Class Marker {
-  Static 
+  Static Msgboxes:=0 
 
-  __New(input)
+  __New(input,varX,varY)
   {
+  	Marker.Msgboxes++
     this.inputKey:=input
+    this.X:=varX
+    This.Y:=varY
+    WinGet IDVar,ID,A ; Get ID from Active window.
+    This.ID:=IDVar ; Set IDVar to This.ID
+    This.msgbox:= Marker.Msgboxes +4
+    TT(" " this.inputKey " " ,0,this.X-10,This.Y-10,†his.msgbox,200)
 		This.Get()
   }
 
@@ -87,22 +65,15 @@ Class Marker {
   {
     ; WingetTitle TitleVar, A ; Get title from Active window.
 		; This.Title:=TitleVar ; Set TitleVar to This.Title
-		WinGet IDVar,ID,A ; Get ID from Active window.
-    This.ID:=IDVar ; Set IDVar to This.ID
-
-    MouseGetPos, varX, varY, varWin
-    this.X:=varX
-    This.Y:=varY
-    this.Win:=varwin
-
-    TT(" " this.inputKey " " ,0,this.X-10,This.Y-10,5 + this.inputKey,260)
+    ;MouseGetPos, varX, varY, varWin
+    ;this.Win:=varwin
 	}
 
-	Activate() ;Activates window with Title - This.Title
+	Activate() ;Activates window with Title - This.ID
   {
+   if !winactive("ahk_id " This.ID)
     WinActivate % "ahk_id "This.ID ;Use word "This" when you reffer to variable of this Class.
     MouseClick,, % this.X, % this.Y, 1
-    msgbox
 		Return This.ID
 	}
 
