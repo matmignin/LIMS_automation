@@ -51,6 +51,11 @@ F4::Key[4].Activate()
 !5::Key[5].Activate()
 !q::Key["q"].Activate()
 !i::Key["i"].Activate()
+F10::
+ControlGetText, Iteration, Edit5, ClipBar
+Key[iteration].Activate()
+clipbar.additeration()
+return
 
 
 Class Marker {
@@ -98,10 +103,8 @@ Class Marker {
           SendLevel 1
 
           MouseClick,middle, % this.X, % this.Y, 1
-        ; send, {mbutton}
-
-        ; MouseClick,middle, % this.X, % this.Y, 1
-        Return
+        ; 
+        ;Return
       }
 		else {
 			simpleclip:=1
@@ -115,7 +118,6 @@ Class Marker {
 			; simpleclip:=
 			}
     }
-			; sendinput % this.inputkey
 		Return This.ID
 	}
 }

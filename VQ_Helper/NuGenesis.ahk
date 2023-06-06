@@ -351,7 +351,7 @@ Class LMS {
 
 	SaveCode(){
 		global
-		send, ^{a}^{c}
+		sendinput, ^{a}^{c}
 		sleep 200
 		Send, {enter}
 		return
@@ -1324,11 +1324,11 @@ class SpecTab {
 		}
 		else
 			Department:=DepartmentInput
-breaking.Point()
+
 		click 102, 289 ;click copy into new spec link
 		winwaitactive, Edit specification,,4
 		if errorlevel
-			exit
+			return
 		Breaking.Point()
 		If (Department = "Analytical")
 			SpecTab.Edit_Analytical_Copy()
@@ -1346,7 +1346,6 @@ breaking.Point()
 		Breaking.Point()
 		premy:=PremY + 26
 		WinActivate, NuGenesis LMS
-		breaking.Point()
 		MouseMove, %Premx%, %Premy%,1,R
 
 		; Critical, Off
@@ -1686,7 +1685,7 @@ breaking.Point()
 		Breaking.Point()
 		send, {enter}
 		; click, 340, 622 ;click Save
-		ifwinactive, Warning
+		ifwinactive, Warning,
 			exit
 		winwaitactive, NuGenesis LMS, ,8
 		if errorlevel
@@ -1694,8 +1693,8 @@ breaking.Point()
 		Breaking.Point()
 		click, 70, 518 ;edit sample method
 		winwaitactive, Edit sample template,,8
-		if errorlevel
-			exit
+		; if !errorlevel
+		Breaking.Point()
 		Sendinput,{tab}{^a}
 		sendinput, % Product ",{space}{shift down}I{shift up}n{shift down}{space}P{shift up}rocess`,{space}{shift down}A{Shift up}nalytical"
 		sleep 400
@@ -1743,7 +1742,6 @@ breaking.Point()
 		Breaking.Point()
 		send, {enter}
 		winwaitactive, NuGenesis LMS,,5
-		Breaking.Point()
 		; If !ErrorLevel
 		; MouseMove, %premx%, %premy%, 0
 		; click
@@ -1763,7 +1761,7 @@ breaking.Point()
 		send, {enter}
 		Breaking.Point()
 		; click, 340, 622 ;click okay
-		ifwinactive, Warning
+		ifwinactive, Warning,
 			exit
 		winwaitactive, NuGenesis LMS, ,4
 		if !errorlevel
@@ -1795,7 +1793,7 @@ breaking.Point()
 		send, {enter}
 		Breaking.Point()
 		; click, 340, 622 ;click okay
-		ifwinactive, Warning
+		ifwinactive, Warning,
 			exit
 		winwaitactive, NuGenesis LMS,,4
 		if !errorlevel
@@ -1828,11 +1826,8 @@ breaking.Point()
 		; if !errorlevel
 		; click, 340, 622 ;click okay
 		Breaking.Point()
-		ifwinexist, Warning
-			exit
 		winwaitactive, NuGenesis LMS, ,5
-		if errorlevel
-			exit
+		; if !errorlevel
 		Breaking.Point()
 		LMSclick.EditSampleTemplate()
 		Breaking.Point()
@@ -1873,11 +1868,8 @@ breaking.Point()
 		Breaking.Point()
 		Sendinput,{right}{tab}  ; to select finish --> {left 2}
 		send, {enter}
-		ifwinexist, Warning
-			exit
 		winwaitactive, NuGenesis LMS,,5
-		if errorlevel
-			exit
+		; if !errorlevel
 		Breaking.Point()
 		LMSclick.EditSampleTemplate()
 		Breaking.Point()
