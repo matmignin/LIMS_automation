@@ -3,8 +3,8 @@ return
 ~RWin::Send {Blind}{vkFF}
 ~LWin::Send {Blind}{vkFF}
 ; +F4::ExitApp
-^esc::ExitApp
-!esc::Reload
+^+esc::ExitApp
+^esc::Reload
 
 
 
@@ -502,8 +502,11 @@ return
 				MouseMove, %preX%, %preY%, 1,
 			return
 		}
-	return
-	Mbutton::SpecTab.CopySpecTemplate()
+return
+#include Markers.ahk
+pretendmbutton:
+
+	mbutton::SpecTab.CopySpecTemplate()
 	F9::lms.Menu()
 	F6::LMS.SearchBar(Product,"{enter}",0)
 	+F6::clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
@@ -513,6 +516,7 @@ return
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
+	Enter::LMSClick.Okay()
 
 
 ;;-------------------------------------------------------------------
@@ -625,7 +629,7 @@ return
 
 3Right(){
 	global
-	Critical
+	; Critical
 	if keep_running = y
 	{
 		keep_running = n ;signal other thread to stop
@@ -1111,9 +1115,9 @@ class Breaking {
 	Point(break:=""){
 		Global
 		critical
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RControl", "P") || GetKeyState("F13", "P")  || GetKeyState("LShift", "P")  || GetKeyState("RShift", "P") || GetKeyState("RWin", "P") || GetKeyState("Rbutton", "P") {
-			TT("Broke",2000,-100,-100)
-			blockinput, off
+		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("F13", "P") || GetKeyState("RShift", "P") {
+			TT("Broke",2000,200,200)
+			; blockinput, off
 			; tooltip,
 			exit
 		}
@@ -1178,7 +1182,7 @@ HasValue(haystack, needle) {
 
 BlockRepeat(Time:=300, ToolTipMessage:=""){
 	Global N
-	critical
+	; critical
 	sleep 25
 	If N
 		exit

@@ -764,6 +764,8 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 	AllProducts:= Trim(StrReplace(AllProducts, Delimiter Delimiter, Delimiter),Delimiter)
 	FileDelete, AllProducts.txt
 	sleep 200
+	if (StrLen(AllProducts) < 5)
+		return
 	FileAppend, %AllProducts%, AllProducts.txt
 	ControlsetText, Edit6,%AllProducts%,ClipBar
 	if (msg && AllProducts!="")
@@ -801,10 +803,12 @@ GetAllBatches(Delimiter:=" ",msg:=""){
 	}
 	AllBatches:=Listarray(AllBatches,Delimiter)
 	AllBatches:= Trim(StrReplace(AllBatches, Delimiter Delimiter, Delimiter),Delimiter)
+	if (StrLen(AllBatches) < 10)
+		return
 	FileDelete, AllBatches.txt
 	sleep 400
-	FileAppend, %AllBatches%, AllBatches.txt
-	ControlsetText, Edit6,%AllBatches%,ClipBar
+		FileAppend, %AllBatches%, AllBatches.txt
+		ControlsetText, Edit6,%AllBatches%,ClipBar
 	if (msg && trim(AllBatches)!="")
 		clip.editbox(AllBatches)
 	Else
@@ -883,7 +887,7 @@ Class ClipBar{
 		ClipBar_H=32
 		ClipBar_H_max=56
 		ClipBar_T:=230
-		ClipBar_W=400
+		ClipBar_W=410
 		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		ClipBar_Y:=Nugenesis_Y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
@@ -898,7 +902,7 @@ Class ClipBar{
 		this.AddEdit("Coated",	 "left h16 y+0 w77",		"8, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
 		This.AddEdit("Iteration", "x+0 h33 left y-1 w62",			 "16 Bold 107C41, Consolas")	; Text1
-		this.AddEdit("GeneralBox",	 "x+0 h33 left y-1 w88 +wrap",		"7, Arial")
+		this.AddEdit("GeneralBox",	 "x+0 h33 left y-1 w98 wrap",		"7, Arial")
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
@@ -1139,7 +1143,7 @@ Class ClipBar{
 		return
 
 	BlockTheWheel:
-	Critical
+	; Critical
 		sleep 1000
 		breaking.point(1)
 		; BlockingWheel:=

@@ -7,20 +7,17 @@
 	SetBatchLines, -1
 	Thread, NoTimers
 	; #HotkeyInterval 1000
-	#MaxHotkeysPerInterval 210
+	; #MaxHotkeysPerInterval 210
 	#InstallKeybdHook
 	#InstallMouseHook
 	#ClipboardTimeout 7500
-	#HotkeyModifierTimeout 100
+	#HotkeyModifierTimeout
 	#maxthreadsperhotkey, 2
-	; #MaxThreadsBuffer Off
+
 	SetTitleMatchMode, 2
+	#winactivateForce
 	listLines On
-	; FormatTime, DayString,, MM/d/yy
-	; FormatTime, TimeString, R
-	; FormatTime, CurrentDateTime,, MM/dd/yy
-	; FormatTime, The_Day,, MMMM d
-	; FormatTime, The_Hour,, htt
+
 	FormatTime, The_Time,, hh:mm
 	SetNumlockState, on
 	SetscrolllockState, off
@@ -30,7 +27,6 @@
 	CoordMode, mouse, Window
 	; CoordMode, Tooltip, relative
 	SetWorkingDir, %A_ScriptDir%
-	#winactivateForce
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
 	Fileread, AllBatches, AllBatches.txt
@@ -39,13 +35,7 @@
 	ReadIniFiles()
 	tooltipNumber=6
 
-	; WholeBatchesArray:=[]
-	; FileRead, WholeBatchestext, WholeBatches.txt
-		; Wholebatches:=Trim(Wholebatchestext,"`n")
-		; sleep 100
-		; loop, parse, WholeBatches, "`n"
-      ; WholeBatchesArray.insert(a_LoopField)
-
+Key:= {}
 	Menu,Tray,NoStandard
 
 	Menu, Tray, Add, All Products, AllProductsMsgbox
@@ -53,10 +43,7 @@
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
 
-	; Menu, Tray, add, &mfg folder, Showmfg
-	; Menu, Tray, add, &GLOBAL VISION folder, ShowGlobalVision
-	; Menu, Tray, add, &Total CoAs, ShowFINAL_C_O_A
-	; Menu, Tray, Add,
+
 	Menu, Tray, Add, Whole Batches, ShowWholeBatches
 	Menu, Tray, add, Show EditBox, ShowEditBox
 	Menu, Tray, add, Add Sample Log, Add15SampleLog
@@ -72,7 +59,8 @@
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, tip, %CompileTime%
 	Menu, Tray, Add, Exitsub, Exitsub
-	Menu, Tray, Default, &Reload
+Menu, Tray, Default, &Reload
+
 	copypasteToggle:=0
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>\b[abcdefghijkl]\d{3}\b)"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -110,10 +98,8 @@
 	return
 
 
-
-
 	#include NuGenesis.ahk
-	#include Markers.ahk
+
 	#include ClipBar.ahk
 	#Include RemoteKEYS.ahk
 
