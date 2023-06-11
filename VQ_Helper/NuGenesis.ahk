@@ -45,7 +45,7 @@ Class LMS {
 		try Menu,Menu, deleteAll
 		MouseGetPos, getX, getY, getWin
 		WingetTitle getTitle, A
-		If WinExist("Spec Table ahk_exe VQ_Helper.exe"){
+		If WinExist("Spec Table ahk_exe VQ_Helper.exe") && !GetKeyState("Shift","P"){
 			SpecTab.ShowSpecMenu()
 			return
 		}
@@ -64,12 +64,16 @@ Class LMS {
 
 		Menu, Menu, add, Window Info `t%getTitle%, get_window_info
 		Menu, Menu, add, Mouse Info `t%getX%`, %GetY%, get_Mouse_info
+		if GetKeyState("Shift","P"){
+			Try Menu,menu,show
+			return
+		}
 		; Try Menu,menu,show
 		if winactive("Edit ingredient")
 			productTab.IngredientMenu()
 		if winactive("Edit sample")
 			worktab.CustomerMenu()
-		if winactive("Results Definition") || winactive("Results ahk_exe eln.exe") {
+		if winactive("Results Definition") || winactive("Results ahk_exe eln.exe"){
 
 			; This.add("&Spec Table","Tests")
 			try menu, menu, deleteAll
@@ -323,6 +327,10 @@ Class LMS {
 
 	SaveCode(){
 		global
+		If GetKeyState("Shift","P"){
+				Send, {enter}
+				return
+			}
 		sendinput, ^{a}^{c}
 		sleep 200
 		Send, {enter}
@@ -1153,22 +1161,26 @@ class SpecTab {
 	}
 ClickEmptyRequirements(){
 	winactivate, NuGenesis LMS
-		ImageFile := "U:\VQ_Helper\images\empty.JPG"
+		ImageFile := "U:\VQ_Helper\images\dash.PNG"
+		ImageFile2 := "U:\VQ_Helper\images\emptyrdpnores.JPG"
 		WinGetPos, WinX, WinY, WinWidth, WinHeight, NuGenesis LMS
 		thirdwinwidth:=winwidth/3
 		thirdwinHeight:=winHeight/3
-		ImageSearch, FoundX, FoundY, %thirdwinwidth%, %thirdwinHeight%, %WinWidth%, %WinHeight%, *130 %ImageFile%
-		If ErrorLevel = 0
+		ImageSearch, FoundX, FoundY, %thirdwinwidth%, %thirdwinHeight%, %WinWidth%, %WinHeight%, *Trans96B4CE *140 %ImageFile%
+		If ErrorLevel
+			ImageSearch, FoundX, FoundY, %thirdwinwidth%, %thirdwinHeight%, %WinWidth%, %WinHeight%,  *190 %ImageFile2%
+		if !FoundX
 		{
+			msgbox, No image found
+			return
+		}
 			SendLevel 1
 			cX:=foundX +10
 			cY:=foundy +10
 			Click, %cX%, %cY%
 			MouseClick,middle, % cX, % cY, 1
-			}
-		else
-			msgbox, not found
-
+		sendlevel 0
+		return
 	}
 
 
@@ -1551,6 +1563,7 @@ ClickEmptyRequirements(){
 			click, 57, 719 ;click Edit Test
 			winwaitactive, Test Definition Editor,, 2
 			sleep 200
+			Breaking.Point()
 		}
 		If winactive("Test Definition Editor")
 		{
@@ -1573,7 +1586,6 @@ ClickEmptyRequirements(){
 			Sendinput,{click 80, 66} ;click edit
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
-			Breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; tooltip
 			return
@@ -1641,6 +1653,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		}
 		winactivate, Result Editor
 		click, 250, 140 ; click id box to orient
+		Breaking.Point()
 		Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision% ;{tab 5}
 		; if (AllowPrefixesBox) || (AllowPrefixes=True)
 		; TabAmount=3 ;{space}{tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a
@@ -1648,7 +1661,6 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		; TabAmount=2
 		; AllowPrefixes = False
 		; return
-
 		; Sendinput, {tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 		If (UseLimitsBox=1) || (UseLimits=True)
 			click 100,406 ; click box
@@ -1682,7 +1694,6 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		}
 		else
 			Sendinput, %Min_Limit% - %Max_Limit% %The_Units%
-		Breaking.Point()
 		if (The_Units)
 			Mouseclick, left, 378, 667,1,0 ; click okay
 		Breaking.Point()
@@ -1697,6 +1708,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		Okay_x:=Results_W - 170
 		Okay_y:=Results_H - 45
 		mousemove, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
+		Breaking.Point()
 		; msgbox, %Results_w%  %Results_h%
 		if ContinueToRun
 			click
@@ -1709,6 +1721,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		wingetpos, Test_X, Test_y, Test_w, Test_h, A
 		Save_x:=test_W - 170
 		Save_y:=test_H - 45
+		Breaking.Point()
 		mousemove, %Save_x%, %Save_y% ;Move mouse to Save/Okay
 		sleep 300
 		if ContinueToRun
@@ -1717,7 +1730,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		return
 	}
 
-	TestDefinitionEditr(The_Description){ ;,Department:=""){ ; 2nd window
+	TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
 		Global
 
 		; TT(Selectedtestname,1000,1,-100,1)
@@ -1744,6 +1757,23 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 				sleep 300
 		}
 	}
+	toggleUseLimitsFromTheTest(){
+		global
+		ifwinactive, Results Definition
+		{
+			sendinput, {click 85, 69} ;click edit
+		sleep 400
+			; winwaitactive, Result Editor,,3
+			; if errorlevel
+				; sendinput, {click 85, 69} ;click edit
+		}
+	winactivate, Result Editor
+		Send, {Click 511, 72}{Click 38, 409}{click 373, 657} ;Toggle Sse limits from test
+		sleep 400
+		lmsclick.OK() ;click okay
+	return
+	}
+
 	TestDefinitionEditor_Stability(){ ;,Department:=""){ ; 2nd window
 		Global
 		if Winactive("NuGenesis LMS")
@@ -2870,8 +2900,10 @@ Class WorkTab {
 
 
 	class LMSclick {
-		OKay(sleeptime:=""){
+		OK(sleeptime:="1"){
 			global
+			MouseGetPos, LMSmX, LMSmy, mWin
+			; WinGetPos, LMSWinX, LMSWinY, LMSWinWidth, LMSWinHeight, A
 			sleep %Sleeptime%
 			If GetKeyState("Shift","P"){
 				Send, {enter}
@@ -2881,8 +2913,15 @@ Class WorkTab {
 				LMS.SaveCode()
 				return
 				}
-			else if winactive("Results Definition")
-			clk(1336,592)
+			else if winactive("Results Definition"){
+					wingetpos, Results_X, Results_y, Results_w, Results_h, Results
+					sleep 200
+					Okay_x:=Results_W - 170
+					Okay_y:=Results_H - 45
+					click, %Okay_x%, %Okay_y%
+				; send, {Click 971, 473}
+				return
+			}
 			else If winactive("Result Editor")
 			clk(370,660)
 			else if winactive("Edit Ingredient")

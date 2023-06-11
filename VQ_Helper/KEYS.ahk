@@ -193,7 +193,7 @@ wheeldown::
 
 #ifwinactive, Edit specification ;;    Edit specification
 	mbutton::SpecTab.Edit_Analytical()
-	Enter::LMSClick.Okay()
+	Enter::LMSClick.OK()
 	+Enter::Sendinput, {enter}
 
 
@@ -371,6 +371,7 @@ lctrl::
 #Ifwinactive, Results Definition
 	+mbutton::SpecTab.Autofill()
 mbutton::Spectab.PasteClipboardIntoSpec()
+F6::spectab.toggleUseLimitsFromTheTest()
 
 	F9::lms.menu()
 
@@ -378,7 +379,9 @@ mbutton::Spectab.PasteClipboardIntoSpec()
 #ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 	wheelDown::clk(503, 574,1) ;add scroll block
-	F7::SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
+F7::SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
+F6::spectab.toggleUseLimitsFromTheTest()
+
 
 
 ;;\\ 	             Register new samples
@@ -442,14 +445,9 @@ mbutton::Spectab.PasteClipboardIntoSpec()
 		else
 			return
 	return
-	!Mbutton::SpecTab.Table()
+^Mbutton::FileRead, Clipboard, U:\VQ_Helper\ClippedExcelData.txt
+	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
-
-		;;\\ ///\\\//\\\///\\//\//\\ MARKERS \\\\\/\///\\\/\\\/\//\/\/\\\//\\/\\/\\///\\/\
-
-		#include Markers.ahk
-		pretendmbutton:
-
 	mbutton::
 	if winexist("Spec Table ahk_class AutoHotkeyGUI")
 		SpecTab.AutoInputTestResults()
@@ -466,7 +464,7 @@ return
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
-	Enter::LMSClick.Okay()
+	Enter::LMS.SaveCode()
 
 
 ;;-------------------------------------------------------------------
@@ -477,13 +475,16 @@ return
 
 
 #Ifwinactive, ahk_exe eln.exe
-		^F10::goto, TestCode
-	^w::goto, get_window_info
-	enter::LMSclick.okay()
+		^F10::gosub, TestCode
+	^F8::gosub, get_window_info
+	^F9::gosub, get_mouse_info
+	^w::gosub, get_window_info
+	enter::LMSclick.OK()
 	esc::LMSclick.esc()
 	; F7::3Right()
 	; F6::Send, %Product%
 	+mbutton::lms.Menu()
+	+F9::lms.Menu()
 	F9::lms.Menu()
 
 	<!left::GetAllProducts()
@@ -665,20 +666,21 @@ get_window_info:
 	if !getTitle
 		WingetTitle getTitle, A
 	simpleclip:=1
-	; MouseGetPos, getX, getY, getWin
 	Clipboard:=getTitle
 	Clipwait,1
-	sleep 300
-	tt(getTitle,1000,100,100)
+	sleep 500
 	simpleclip:=
+	tt(getTitle,1000,100,100)
 return
 
 get_mouse_info:
+	MouseGetPos, getX, getY, getWin
 	simpleclip:=1
 	Clipboard:=getX ", " GetY
 	clipwait,1
 	sleep 300
 	simpleclip:=
+	tt(getX ", " GetY,2000,100,50,,,"M")
 	return
 
 return
@@ -1012,7 +1014,7 @@ return
 
 
 
-TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
+TT(msg:="yo", time=1500, X:="",Y:="",N:=1, Transparent:=240,Position:="S") {
 	global simpleclip
 	my:=100
 	Mx:=100
@@ -1020,13 +1022,12 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 		return
 	MouseGetPos, mX, mY
 	; CoordMode, Mouse, screen
-	; CoordMode, ToolTip, screen
-	; CoordMode, ToolTip, Relative
+	CoordMode, ToolTip, Window
 	sleep 20
 	if Position = M
-		tooltip, %msg%, %X%+%mX%, %Y%+%mY%,%N%
+		tooltip, %msg%, %MX%, %mY%,%N%
 	else
-		tooltip, %msg%, %X%+100, %Y%+100,%N%
+		tooltip, %msg%, %X%+50, %Y%+50,%N%
 	; X+=100
 
 	; else
@@ -1113,16 +1114,17 @@ class Breaking {
 	Point(break:=""){
 		Global
 		; critical
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("F13", "P") || GetKeyState("RShift", "P") {
-			; TT("Broke",2000,200,200)
+		; MouseGetPos,bx,by
+		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") {
+			TT("Broke",3000,400,400)
+			; ContinueToRun:=
 			blockinput, off
-			; tooltip,
 			exit
 		}
 		if keep_running = n ;another signal to stop
 		{
 			blockinput, off
-			; tooltip,
+			; ContinueToRun:=
 			Exit
 		}
 	}
@@ -1198,7 +1200,7 @@ BlockRepeat(Time:=300, ToolTipMessage:=""){
 
 Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	global
-	MouseGetPos, mx, my, mw,
+	mouseGetPos, mx, my, mw,
 	MouseReturn:="{click " Mx ", " My ",0}"
 	if window
 		if !winactive(window)

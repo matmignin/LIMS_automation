@@ -70,14 +70,18 @@
 	ClipBar.Show()
 	sleep 200
 	try Menu, Tray, Icon, %AppIconPath%
-	GUI, ClipBar:default
+GUI, ClipBar:default
+
+
+
+
 	return
 
 #include NuGenesis.ahk
 
 	#Include KEYS.ahk
 	#include CLIPBAR.ahk
-
+		#include Markers.ahk
 
 
 

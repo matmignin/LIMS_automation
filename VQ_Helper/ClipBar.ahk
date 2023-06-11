@@ -191,7 +191,7 @@ Class Clip {
 				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 				}
 
-				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,100)
+				TT(trim(Product " " Batch " " Lot Ct Coated ),1000,1,1)
 			Return
 	}
 

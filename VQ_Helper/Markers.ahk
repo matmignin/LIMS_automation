@@ -7,11 +7,8 @@
 
 return
 
+#Ifwinactive, NuGenesis LMS
 
-; #ifwinactive, What do you want to paste
-; 	Enter::click, 107, 180
-; #ifwinactive,
-; #Ifwinactive, NuGenesis LMS
 +F10::
 Marker_iteration:=Key.length()+1
 MouseGetPos, mX, mY,mWin
@@ -31,26 +28,30 @@ Key[Marker_iteration]:= New Marker(Marker_Iteration,mmX,mmY,"M")
 
 
 F10::
-; iteration:=1
   ContinueToRun:=1
-
-		; return 0
-	; }
-  ;Tooltip,,,,4
-  ; Loopcount:=
-  ; msgbox, %loopcount%
-  loop % spectab.CountUncheckedRows(){ 
-  if Key[A_index]
-  	Key[A_index].Activate()
-  else if Key[1]
+  loop % spectab.CountUncheckedRows(){
+  if !(Key[1])
+      spectab.ClickEmptyRequirements()
+    if Key[A_index]
+      {
+      Key[A_index].Activate()
+      }
+    else if Key[1]
+      {
     Key[1].Activate()
-  else
-   spectab.ClickEmptyRequirements()
-  }
+      return
+      }
+    }
 ; clipbar.AddIteration()
 ContinueToRun:=
   Return
 
+
+
+; #ifwinactive, What do you want to paste
+; 	Enter::click, 107, 180
+; #ifwinactive,
+; #Ifwinactive, NuGenesis LMS
 
 
 
@@ -63,13 +64,6 @@ ContinueToRun:=
 ; Key[Marker_iteration]:= New Marker(Marker_Iteration,mX,mY)
 ;   Return
 
-^+f10::
-MouseGetPos, mX, mY,mWin
-Tooltip,Press Key, mX-10,my-10,4
-input,vinput, L1
-  Tooltip,,,,4
-Key[vInput]:= New Marker(vInput,mX,mY)
-  Return
 
 F1::Key[1].Activate()
 F2::Key[2].Activate()
@@ -124,7 +118,7 @@ Class Marker {
         If (this.option = "M"){
           SendLevel 1
           MouseClick,middle, % this.X, % this.Y, 1
-          ;sendlevel 0
+          sendlevel 0
       }
 		else {
 			simpleclip:=1
@@ -143,7 +137,7 @@ Class Marker {
     	Return 0
 		Return This.ID
     }
-    
+
 
 
 
