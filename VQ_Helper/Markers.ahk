@@ -39,11 +39,16 @@ F10::
   ;Tooltip,,,,4
   ; Loopcount:=
   ; msgbox, %loopcount%
-  loop % spectab.CountUncheckedRows()
+  loop % spectab.CountUncheckedRows(){ 
+  if Key[A_index]
+  	Key[A_index].Activate()
+  else if Key[1]
     Key[1].Activate()
-  ; spectab.ClickEmptyRequirements()
-
+  else
+   spectab.ClickEmptyRequirements()
+  }
 ; clipbar.AddIteration()
+ContinueToRun:=
   Return
 
 
@@ -70,18 +75,6 @@ F1::Key[1].Activate()
 F2::Key[2].Activate()
 F3::Key[3].Activate()
 F4::Key[4].Activate()
-<<<<<<< HEAD
-
-=======
-!5::Key[5].Activate()
-!q::Key["q"].Activate()
-!i::Key["i"].Activate()
-F10::
-ControlGetText, Iteration, Edit5, ClipBar
-Key[iteration].Activate()
-clipbar.additeration()
-return
->>>>>>> 1bfdf74c01cf46785e343ba34e9261afb021e3b1
 
 
 Class Marker {
@@ -130,10 +123,8 @@ Class Marker {
     {
         If (this.option = "M"){
           SendLevel 1
-
           MouseClick,middle, % this.X, % this.Y, 1
-        ; 
-        ;Return
+          ;sendlevel 0
       }
 		else {
 			simpleclip:=1
@@ -146,18 +137,13 @@ Class Marker {
 				Clipboard:=The_Preclipboard
 			; simpleclip:=
 			}
-<<<<<<< HEAD
       }
-      tooltip,,,,4
-			; sendinput % this.inputkey
-=======
-    }
->>>>>>> 1bfdf74c01cf46785e343ba34e9261afb021e3b1
-		Return This.ID
     }
     else
-    spectab.ClickEmptyRequirements()
-}
+    	Return 0
+		Return This.ID
+    }
+    
 
 
 
