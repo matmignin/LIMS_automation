@@ -12,8 +12,6 @@ GetSampleInfo(){ ;on the lms main menu
 	; Name:=Trim(ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns],"`r`n")
 	Clipped_Coated:=ParsedSample[HasValue(ParsedSample, "Coated Lot #") + TotalColumns]
 
-	; IniRead,ShipToIndex, Data\customers.ini, Customers, %Customer%
-
 	Iteration:=GetIniValue("Customers.ini",Customer)
 	GuiControl,ClipBar:Text, Iteration, %Iteration%
 	if clipped_Customer
@@ -40,13 +38,13 @@ GetSampleInfo(){ ;on the lms main menu
 }
 ;;----------------------------------------------------------
 ;;[[                  General LMS                         ]]
-;;----------------------------------------------------------
 Class LMS {
 
 	Menu(){
 		Global
 		try Menu,Menu, deleteAll
-		MouseGetPos, mX, mY, mWin
+		MouseGetPos, getX, getY, getWin
+		WingetTitle getTitle, A
 		If WinExist("Spec Table ahk_exe VQ_Helper.exe"){
 			SpecTab.ShowSpecMenu()
 			return
@@ -58,27 +56,19 @@ Class LMS {
 		Menu, Menu, add, &Scan Label Copy, ShowScanLabelCopy
 		Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
 		Menu, Menu, add, &mfg folder, Showmfg
+		Menu, Menu, add, &Total CoAs, ShowFINAL_C_O_A
 		; Menu, Menu, add, Manual &COAs folder, ShowManualCOA
 		Menu, Menu, add,
-		Menu, Menu, add, &Total CoAs, ShowFINAL_C_O_A
+		Menu, Menu, add, mmignin, mmigninFolder
 		Menu, Menu, add,
 
-
-
-
-
-
-
+		Menu, Menu, add, Window Info `t%getTitle%, get_window_info
+		Menu, Menu, add, Mouse Info `t%getX%`, %GetY%, get_Mouse_info
 		; Try Menu,menu,show
 		if winactive("Edit ingredient")
 			productTab.IngredientMenu()
-		; }
 		if winactive("Edit sample")
 			worktab.CustomerMenu()
-		; if winactive("Edit specification"){
-		; 	Menu, Menu, add, &Analytical, AutoFill
-		; 	Try Menu,menu,show
-		; }
 		if winactive("Results Definition") || winactive("Results ahk_exe eln.exe") {
 
 			; This.add("&Spec Table","Tests")
@@ -87,11 +77,11 @@ Class LMS {
 			Menu, Menu, Add, 3k TPC, Autofill
 			Menu, Menu, Add, P. aeruginosa, Autofill
 			Menu,Menu, add
-			Menu, Menu, Add, &USP Heavy Metal,Autofill
-			Menu, Menu, Add, &Canada Heavy Metal,Autofill
-			Menu, Menu, Add, &Prop65 Heavy Metal,Autofill
-			Menu, Menu, Add, &Report Only Heavy Metal,Autofill
-			Menu, Menu, Add, &Bloom Nutrition Heavy Metal,Autofill
+			Menu, Menu, Add, USP Heavy Metal,Autofill
+			Menu, Menu, Add, Canada Heavy Metal,Autofill
+			Menu, Menu, Add, Prop65 Heavy Metal,Autofill
+			Menu, Menu, Add, Report Only Heavy Metal,Autofill
+			Menu, Menu, Add, Bloom Nutrition Heavy Metal,Autofill
 			Menu, Menu, Add, Custom Heavy Metal,Autofill
 			; return
 		}
@@ -107,19 +97,7 @@ Class LMS {
 	}
 	AddDataFromClipboard(Pointer:=">>|",Source:=""){
 		/*
-		[2] Name
-		[3] IngredientID
-		[4] Position
-		[5] LabelName
-		[6] labelClaim
-		[7] Assay
-		[8] Method
-		[9] Description
-		[10] MinLimit
-		[11] MaxLimit
-		[12] Units
-		[13] Percision
-		[14] Requirement
+		[2] Name 	[3] IngredientID 	[4] Position 	[5] LabelName 	[6] labelClaim 	[7] Assay 	[8] Method 	[9] Description 	[10] MinLimit 	[11] MaxLimit 	[12] Units 	[13] Percision 	[14] Requirement
 		*/
 		global
 		if !Source
@@ -256,29 +234,29 @@ Class LMS {
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
 		critical
-		sleep 200
+		; sleep 200
 		If Nsb
 		{
-			sleep 300
-			Return
+			exit
 		}
 		Nsb:=1
-		; if !(WinActive("ahk_exe eln.exe"))
-		; winactivate
-		sleep 200
-		if winactive("Select methods tests")
+			Tab:=LMS.DetectTab()
+
+			sleep 200
+
+		ifwinactive, Select methods tests
+		{
 			clk(246,77, 2)
-		If winactive("Register new samples") {
+		}
+		Ifwinactive, Register new samples
+			{
 			Clk(180, 103, 2)
 			Send, {click 180, 103,2}%Product%{enter}
-			; return
-		}
-		else ;iwinactive("NuGenesis LMS") {
+			}
+		ifwinactive, NuGenesis LMS
 		{
-			Tab:=LMS.DetectTab()
-			sleep 200
 			if (Tab="Products") {
-				; If (Code=Product){
+				; If (Code=Product)
 				clk(x%Tab%Search,yProductsSearch)
 				Send, ^{a}
 				If Overwrite=true
@@ -289,18 +267,13 @@ Class LMS {
 					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
 					send % PostCmd
-				; return
-				; }
-				; If (Code=Batch) { ;click something edit comp
-				; clk(40, 384)
-				; clk(455, 472,,2)
-				; return
-				; }
+
+
 			}
 			if (Tab="Specs") {
 				; If (Code=Product) {
 				clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
-				; clk(x%Tab%Search+10,yProductsSearch,,1,,0)
+
 				clk(x%Tab%Search+5,yProductsSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -316,9 +289,7 @@ Class LMS {
 			If (Tab="Requests") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
 				clk(x%Tab%Search-9,yWorkTabSearch)
-				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
-				; clk(x%Tab%Search-10,yWorkTabSearch,,2)
-				; sleep 20
+
 				Send, ^{a}
 				If Overwrite=Add
 					Send, ^{x}
@@ -346,6 +317,7 @@ Class LMS {
 			else
 				send, %Code%
 		}
+		sleep 900
 		Nsb:=
 	}
 
@@ -369,13 +341,12 @@ Class LMS {
 		sleep 200
 		send, ^v
 		sleep 100
-		;send, {enter}
 		return clipboard
 	}
 
 	DetectTab(){
 		global
-		; winSet, Transparent, Off, ahk_exe eln.exe
+
 		tab:=
 		FoundSamples:=
 		FoundRequests:=
@@ -391,8 +362,7 @@ Class LMS {
 		TAB5:=
 		TAB6:=
 		TAB7:=
-		; ifwinnotactive, ahk_exe eln.exe
-		; winactivate, ahk_exe eln.exe
+
 		LMS.Orient()
 		; CoordMode, pixel, window
 		if winactive("NuGenesis LMS") {
@@ -410,29 +380,10 @@ Class LMS {
 						Tab:="Requests"
 						return Tab
 					}
-					; PixelSearch, FoundDocuments, FoundY, DocumentsTab, yWorkTabs, DocumentsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-					; If FoundDocuments {
-					; 	Tab=Documents
-					; 	return tab
-					; }
-					; PixelSearch, FoundResults, FoundY, ResultsTab, yWorkTabs, ResultsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-					; If FoundResults {
-					; 	Tab:="Results"
-					; 	return tab
-					; }
-					; PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, TestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
-					; If FoundTests {
-					; 	Tab:="Tests"
-					; 	return tab
-					; }
+
 					else if Errorlevel
 					{
-						; PIXELSEARCH, FoundReagents, FoundY, 600, 75, 610, 79, 0xF0F0F0, 10, Fast RGB ;icon on
-						; if FoundReagents {
-						; 	tab=Reagents
-						; 	return tab
-						; }
-						; else {
+
 						PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
 						; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
@@ -442,8 +393,7 @@ Class LMS {
 						return Tab
 						; }
 					}
-					; else
-					; return
+
 				}
 			}
 		}
@@ -510,30 +460,101 @@ Class LMS {
 		return
 	}
 
-	; Scrolldown(){
-	; 	Global
-	; 	if winactive("Result Editor") {
-	; 		clk(503, 574,1)
-	; 		Sleep 300
-	; 		return
-	; 	}
-	; 	if winactive("Test Definition Editor") {
-	; 		clk(464, 532,,2)
-	; 		Sleep 300
-	; 		return
-	; 	}
-	; 	if winactive("Edit Formulation") {
-	; 		clk(452, 473,,2)
-	; 		Sleep 300
-	; 		return
-	; 	}
-	; 	else
-	; 		return
-	; }
 }
+
+	Heavy_metals:
+		if (A_ThisMenuItem = "USP Heavy Metal")
+		SpecTab.HM_USP()
+		else if (A_ThisMenuItem = "Canada Heavy Metal")
+		SpecTab.HM_Canada()
+		else if (A_ThisMenuItem = "Prop65 Heavy Metal")
+		SpecTab.HM_Prop65()
+		else if (A_ThisMenuItem = "Report Only Heavy Metal")
+		SpecTab.HM_ReportOnly()
+		else if (A_ThisMenuItem = "Bloom Nutrition Heavy Metal")
+		SpecTab.HM_Bloom()
+		else if (A_ThisMenuItem = "Custom Heavy Metal")
+		SpecTab.HM_Custom()
+		else
+			Menu,Menu, deleteAll
+	return
+	PasteAllBatches:
+		Clk(mx,mY)
+		sendinput % Trim(GetAllBatches())
+	return
+	PasteAllProducts:
+		Clk(mx,mY)
+		sendinput % Trim(GetAllProducts())
+	return
+	Autofill:
+		winactivate, ahk_exe eln.exe
+		sleep 200
+		if A_thismenuitem contains &Analytical
+		SpecTab.Edit_Analytical()
+		else if A_thismenuitem contains Copy &Specs
+		SpecTab.CopySpecs()
+		else if A_thismenuitem contains Paste &Specs
+		SpecTab.PasteSpecs()
+		else if A_thismenuitem contains Copy &Template
+		SpecTab.CopySpecTemplate()
+		else if A_thismenuitem contains New &Request
+		WorkTab.NewRequest()
+		else if (A_ThisMenuItem = "100k TPC"){
+			if winactive("Results Definition") ;Selection window
+			{
+				winactivate, Results Definition
+				Send,{click 80, 66} ;click edit
+				Breaking.Point()
+			}
+			Breaking.Point()
+			winwaitactive, Result Editor,,4
+			SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
+		return
+	}
+	else if (A_ThisMenuItem = "3k TPC"){
+		if winactive("Results Definition") ;Selection window
+		{
+			winactivate, Results Definition
+			Send,{click 80, 66} ;click edit
+			Breaking.Point()
+		}
+		Breaking.Point()
+		winwaitactive, Result Editor,,4
+		SpecTab.ResultEditor("","3,000","CFU/g",0,0,,1)
+		Mouseclick, left, 378, 667,1,0  ;click okay in result editor
+		winwaitactive, Results Definition,,4
+		My+=26
+		click, %mx%, %my%
+		Send,{click 80, 66} ;click edit
+		winwaitactive, Result Editor,,4
+		SpecTab.ResultEditor("","300","CFU/g",0,0,,1)
+		Mouseclick, left, 378, 667,1,0  ;click okay in result editor
+		return
+	}
+	else if (A_ThisMenuItem = "P. aeruginosa")
+	SpecTab.AddPaeruginosa()
+	else if (A_ThisMenuItem = "&USP Heavy Metal")
+	SpecTab.HM_USP()
+	else if (A_ThisMenuItem = "&Canada Heavy Metal")
+	SpecTab.HM_Canada()
+	else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
+	SpecTab.HM_Prop65()
+	else if (A_ThisMenuItem = "&Report Only Heavy Metal")
+	SpecTab.HM_ReportOnly()
+	else if (A_ThisMenuItem = "Bloom Nutrition Heavy Metal")
+	SpecTab.HM_Bloom()
+	else if (A_ThisMenuItem = "Custom Heavy Metal")
+	SpecTab.HM_Custom()
+	else if (A_ThisMenuItem = "&Delete Retain")
+	WorkTab.DeleteRetain()
+	Menu,Menu, deleteAll
+	return
+
+
+
+
 ;;----------------------------------------------------------
-;;{{             ProductTab Class                         }}
-;;----------------------------------------------------------
+;;{{                ProductTab Class                         }}
 Class ProductTab {
 
 
@@ -583,7 +604,7 @@ Class ProductTab {
 		}
 		else
 			clip.codesRegex(SheetInfo[9])
-		tt(Product "`n" ProductName "`n" Customer,7000,0,0)
+		tt(Product "`n" ProductName "`n" Customer,7000,100,100)
 		; ControlsetText, Static1,%CustomerPosition%,ClipBar
 		; GuiControl,ClipBar:Text, Iteration, %Iteration%
 		; }
@@ -600,15 +621,11 @@ Class ProductTab {
 
 
 	SaveIngredientList(){
-		; if !(InputString)
-		; Inputstring:=Clipboard
 		Clipboard:=Trim(strReplace(StrReplace(Clipboard, "`r`n","`n"),"`t","")) ; Normalize line endings
 		lines := StrSplit(Clipboard, "`n") ; Split the string into lines
-		; CustomerString:=
 		totalLines := lines.Length()-1
 		half := FLOOR(totalLines/2)
 		halfAmount:=-(Half)
-
 		Try FileDelete, Ingredients.ini
 		IngredientsString:=
 		Loop, % totalLines
@@ -629,9 +646,10 @@ Class ProductTab {
 					Linenumber:=halfAmount
 			}
 			IngredientsString.="`n"Line "=" lineNumber
+			; IngredientName:= StrReplace(Line, "Allergen","")
 		}
 		sleep 300
-		FileAppend,% Trim(IngredientsString), Ingredients.ini
+		FileAppend, % Trim(strReplace(IngredientsString," Allergen","")), Ingredients.ini
 		return IngredientsString
 	}
 
@@ -701,7 +719,6 @@ Class ProductTab {
 
 			ClipBar.AddIteration(0,0,"True")
 		}
-		; SetKeyDelay,0,0
 		return
 	}
 
@@ -715,7 +732,6 @@ Class ProductTab {
 		Sendinput,%Product%`,{space}
 		sendraw, %ProductName%
 		sleep 20
-		; old code ; sendinput, {tab 2}%Customer%{tab 2}{right 2}{tab}{right 3}{tab}%Product%{tab 2}
 		sendinput, {tab 2}%Customer%{tab 2}{End}{tab}{right 3}{tab}%Product%{tab 2} ; new vitaquest selection
 		sleep 200
 		Sendraw,%ProductName%
@@ -812,7 +828,6 @@ Class ProductTab {
 			sendinput, ^{a}%Color%
 		sendinput, {shiftdown}{tab 2}{shiftup}
 		; else
-		; sendinput, {tab 2}^a%Color%{shiftdown}{tab 2}{shiftup}
 		Color:=
 		ShapeSize:=
 		Breaking.Point()
@@ -938,15 +953,9 @@ Class ProductTab {
 				Continue
 			Ingredientslist := StrSplit(A_LoopReadLine, "=")
 			Selection:= % Ingredientslist[1]
-			; If A_Index = 60
-			; 	Addbreak:="+BarBreak"
 			If A_Index = 60
 				Addbreak:="+BarBreak"
-			; If A_Index = 180
-			; 	Addbreak:="+BarBreak"
 			Menu, IngredientsMenu, add, &%Selection%, IngredientsMenuhdr ;, %Addbreak%
-			; If A_Index = 240
-			; 	Addbreak:="+BarBreak"
 			AddBreak:=
 		}
 		Menu, IngredientsMenu, Show,
@@ -975,8 +984,7 @@ return
 
 
 ;;----------------------------------------------------------
-;;  {{              SpecTab class                         }}
-;;----------------------------------------------------------
+;;{{                 SpecTab class                         }}
 class SpecTab {
 
 	Table(){
@@ -1021,8 +1029,8 @@ class SpecTab {
 		sleep 200
 		If (Name.Maxindex() <=1)
 			return
-		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w360, %Product% Spec Table
-		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w360, %Product% Spec Table
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
 			CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
 		return
@@ -1056,22 +1064,25 @@ class SpecTab {
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
 		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		Gui, Spec_Table:Add, Button, X25 y+0 h18 w145 gAddSpecTableMethods, Add Methods
+		Gui, Spec_Table:Add, Button, X+3 h18 w145 gAutoAddSpecs, Auto Specs
 		OnMessage(0x0201, "WM_Lbuttondown")
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
 				continue
 			LV_add(,""Name[A_index], Requirement[A_index], MinLimit[A_index],MaxLimit[A_index],Units[A_index],Percision[A_index],Description[A_index],Method[A_index])
 			Menu, SpecMenu, Add, % "&" Name[A_Index] "`t " Requirement[A_Index], SpecMenuButton
-			; Menu, SpecMenu, Add, % "&" Name[i] "`t " Requirement[i], SpecMenuButton
-			; if !(Requirement[i]){
-			; i++
-			; continue
 			Test:= Name[A_index]
 		}
 		return
 
+		AutoAddSpecs:
+		ContinueToRun:=1
+			winactivate, NuGenesis LMS
+			loop % spectab.CountUncheckedRows()
+				Key[1].Activate()
+			continueToRun:=
+			return
 		AddSpecTableMethods:
-
 		winactivate, Select methods tests
 		click, 235, 72
 		Send, ^a
@@ -1099,8 +1110,6 @@ class SpecTab {
 				sleep 300
 				click 506, 341 ;move over
 			}
-			; This.SelectMethod(MethodList:Item)
-			; breaking.point()
 		}
 		return
 
@@ -1142,6 +1151,40 @@ class SpecTab {
 		}
 		return 0
 	}
+ClickEmptyRequirements(){
+	winactivate, NuGenesis LMS
+		ImageFile := "U:\VQ_Helper\images\empty.JPG"
+		WinGetPos, WinX, WinY, WinWidth, WinHeight, NuGenesis LMS
+		thirdwinwidth:=winwidth/3
+		thirdwinHeight:=winHeight/3
+		ImageSearch, FoundX, FoundY, %thirdwinwidth%, %thirdwinHeight%, %WinWidth%, %WinHeight%, *130 %ImageFile%
+		If ErrorLevel = 0
+		{
+			SendLevel 1
+			cX:=foundX +10
+			cY:=foundy +10
+			Click, %cX%, %cY%
+			MouseClick,middle, % cX, % cY, 1
+			}
+		else
+			msgbox, not found
+
+	}
+
+
+	CountUncheckedRows(){
+		GUI, Spec_Table:Default
+			; Loop, % LV_GetCount() {
+				CheckedCount:=i:=0
+        while i:=LV_GetNext(i, "Checked"){
+					CheckedCount++
+				}
+			; }
+			Total_Unchecked:=LV_GetCount() - CheckedCount
+			GuiControl, ClipBar:Text, Iteration, %Total_Unchecked%
+			return Total_Unchecked
+		}
+
 
 
 	ModifyColumns(){
@@ -1154,7 +1197,7 @@ class SpecTab {
 		LV_ModifyCol(5,0)
 		LV_ModifyCol(6,0)
 		LV_ModifyCol(7,0)
-		LV_ModifyCol(8,100)
+		LV_ModifyCol(8,90)
 		LV_ModifyCol(9,0)
 		LV_ModifyCol(2,"Sort")
 		LV_ModifyCol(8,"Sort")
@@ -1260,9 +1303,6 @@ class SpecTab {
 		Gui, Destroy
 		return
 
-		; GuiSize:
-		; GuiControl, Move, Methods, W%A_GuiWidth% H%A_GuiHeight%
-		; return
 
 	}
 
@@ -1303,9 +1343,7 @@ class SpecTab {
 		click
 		try Menu,Menu, deleteAll
 		Menu,Menu, add, Copy &Template, autofill
-		; If CopyPasteToggle=1
 		Menu,Menu, add, Paste &Specs, Autofill
-		; If CopyPasteToggle=0
 		Menu,Menu, add, Copy &Specs, Autofill
 		return
 	}
@@ -1401,12 +1439,6 @@ breaking.Point()
 	PasteSpecs(){
 		global
 		tooltip,
-		; Critical, On
-		; iniread, MinLimit, Settings.ini, CopiedSpecs, MinLimit
-		; iniread, MaxLimit, Settings.ini, CopiedSpecs, MaxLimit
-		; iniread, Percision, Settings.ini, CopiedSpecs, Percision
-		; iniread, Requirement, Settings.ini, CopiedSpecs, Requirement
-		; iniread, Units, Settings.ini, CopiedSpecs, Units
 		if winactive("NuGenesis LMS"){
 			winactivate, NuGenesis LMS
 			click 57, 715 ; edit Test
@@ -1436,9 +1468,6 @@ breaking.Point()
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Requirement)
 			Breaking.Point()
 		}
-		CopyPasteToggle=0
-		; Critical, Off
-		; exit
 		return
 	}
 
@@ -1484,7 +1513,33 @@ breaking.Point()
 			SpecTab.EditSampleTemplate_A()
 		return
 	}
-
+	AutoInputTestResults(){
+			click
+			click, 57, 719 ;click Edit Test
+			SelectedTestName:=
+			winwaitactive, Test Definition Editor,, 2
+			clipboard:=
+			SimpleClip:=1
+			send, {tab 1}^a^c
+			ClipWait, 1
+			SelectedTestName:=strreplace(Clipboard, " UPLC")
+			ControlsetText, Edit6,%SelectedTestName%,ClipBar
+			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
+			SpecTab.GetRowText(MatchingRow)
+			if !MatchingRow
+			{
+				winactivate, Test Definition Editor
+				MouseClick, left, 464, 532,2,0
+				SpecTab.ShowSpecMenu()
+				winactivate, Test Definition Editor
+			}
+			spectab.Autofill()
+			preY+=26
+			WinWaitActive, NuGenesis LMS,, 10
+			if !errorlevel
+				MouseMove, %preX%, %preY%, 1,
+			return
+		}
 	;; Run through all the menues to add
 	AutoFill(){
 		global
@@ -1532,10 +1587,51 @@ breaking.Point()
 		}
 		else
 			return
-		; msgbox, got returned
-		; Blockinput,off
 		return
 	}
+PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
+					winactivate, Results Definition
+					tooltip,
+					Send,{click 80, 66} ;click edit
+					sleep 200
+					Breaking.Point()
+					winwaitactive, Result Editor,,2
+					if !errorlevel
+						If (Clipped_specs){
+							clipped_Specs:=
+							sleep 100
+						}
+					If (MinLimit || MaxLimit) && !(FullRequirements)
+						SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+					else If (MinLimit || MaxLimit) && (FullRequirements)
+						SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+					else If (!MinLimit && !MaxLimit)
+					{
+						inputbox, InputBoxString, inputstring, Min Limit,Max Limit,Units,Requirement
+						ParsedString:=StrSplit(InputBoxString,",")
+						MinLimit:=ParsedString[1]
+						MaxLimit:=ParsedString[2]
+						If ParsedString[3]
+							FullRequirements:=ParsedString[3]
+						Else
+							FullRequirements:=1
+						If ParsedString[4]
+							Units:=ParsedString[4]
+						Else
+							Units:=""
+						; inputbox, Units, Units, Units
+						sleep 200
+						Breaking.Point()
+						SpecTab.ResultEditor(MinLimit,MaxLimit,Units,"",1,FullRequirements)
+						minlimit:=
+						maxlimit:=
+						units:=
+					}
+					else
+						return
+				return
+				}
+
 
 	;;-------Fill In Test Specs
 	ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1,AllowPrefixesBox:=""){ ; 3rd window
@@ -1603,19 +1699,26 @@ breaking.Point()
 		Okay_y:=Results_H - 45
 		mousemove, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
 		; msgbox, %Results_w%  %Results_h%
+		if ContinueToRun
+			click
 		WinWaitClose, Results Definition,, 8
 		sleep 400
 		; winwaitactive, Test Definition Editor,, 7
-
+		if ContinueToRun
+			click 342, 614
+			; WinWaitActive, Test Definition Editor
 		wingetpos, Test_X, Test_y, Test_w, Test_h, A
 		Save_x:=test_W - 170
 		Save_y:=test_H - 45
 		mousemove, %Save_x%, %Save_y% ;Move mouse to Save/Okay
-
+		sleep 300
+		if ContinueToRun
+			winwaitactive, NuGenesis LMS,,10
+		sleep 300
 		return
 	}
 
-	TestDefinitionEditor(The_Description){ ;,Department:=""){ ; 2nd window
+	TestDefinitionEditr(The_Description){ ;,Department:=""){ ; 2nd window
 		Global
 
 		; TT(Selectedtestname,1000,1,-100,1)
@@ -2387,7 +2490,6 @@ return
 
 ;;----------------------------------------------------------
 ;;{{                   WorkTab Class                      }}
-;;----------------------------------------------------------
 Class WorkTab {
 	NewTestRequestLink(){
 		Global
@@ -2783,8 +2885,10 @@ Class WorkTab {
 				Send, {enter}
 				return
 			}
-			else if winactive("NuGenesis LMS")
-			LMS.SaveCode()
+			else if winactive("NuGenesis LMS"){
+				LMS.SaveCode()
+				return
+				}
 			else if winactive("Results Definition")
 			clk(1336,592)
 			else If winactive("Result Editor")
@@ -2825,7 +2929,7 @@ Class WorkTab {
 			else if winexist("Change Configuration")
 			clk(131, 296,"Change Configuration")
 			Else
-				Sendinput, {enter}
+				Send, {enter}
 			return
 		}
 
@@ -2916,149 +3020,35 @@ Class WorkTab {
 			winwaitactive, Edit sample template,, 3
 			return
 		}
-	}
 
-	Heavy_metals:
-		if (A_ThisMenuItem = "USP Heavy Metal")
-		SpecTab.HM_USP()
-		else if (A_ThisMenuItem = "Canada Heavy Metal")
-		SpecTab.HM_Canada()
-		else if (A_ThisMenuItem = "Prop65 Heavy Metal")
-		SpecTab.HM_Prop65()
-		else if (A_ThisMenuItem = "Report Only Heavy Metal")
-		SpecTab.HM_ReportOnly()
-		else if (A_ThisMenuItem = "Bloom Nutrition Heavy Metal")
-		SpecTab.HM_Bloom()
-		else if (A_ThisMenuItem = "Custom Heavy Metal")
-		SpecTab.HM_Custom()
-		else
-			Menu,Menu, deleteAll
-	return
-	PasteAllBatches:
-		Clk(mx,mY)
-		sendinput % Trim(GetAllBatches())
-	return
-	PasteAllProducts:
-		Clk(mx,mY)
-		sendinput % Trim(GetAllProducts())
-	return
-	Autofill:
-		winactivate, ahk_exe eln.exe
-		sleep 200
-		if A_thismenuitem contains &Analytical
-		SpecTab.Edit_Analytical()
-		else if A_thismenuitem contains Copy &Specs
-		SpecTab.CopySpecs()
-		else if A_thismenuitem contains Paste &Specs
-		SpecTab.PasteSpecs()
-		else if A_thismenuitem contains Copy &Template
-		SpecTab.CopySpecTemplate()
-		else if A_thismenuitem contains New &Request
-		WorkTab.NewRequest()
-		else if (A_ThisMenuItem = "100k TPC"){
-			if winactive("Results Definition") ;Selection window
-			{
-				winactivate, Results Definition
-				Send,{click 80, 66} ;click edit
-				Breaking.Point()
+		SendPassword(){
+			if winExist("Login"){
+				winactivate
+				Sendinput, mmignin{tab}kilgore7744{enter}
+				return
 			}
-			Breaking.Point()
-			winwaitactive, Result Editor,,4
-			SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
-		return
-	}
-	else if (A_ThisMenuItem = "3k TPC"){
-		if winactive("Results Definition") ;Selection window
-		{
-			winactivate, Results Definition
-			Send,{click 80, 66} ;click edit
-			Breaking.Point()
-		}
-		Breaking.Point()
-		winwaitactive, Result Editor,,4
-		SpecTab.ResultEditor("","3,000","CFU/g",0,0,,1)
-		Mouseclick, left, 378, 667,1,0  ;click okay in result editor
-		winwaitactive, Results Definition,,4
-		My+=26
-		click, %mx%, %my%
-		Send,{click 80, 66} ;click edit
-		winwaitactive, Result Editor,,4
-		SpecTab.ResultEditor("","300","CFU/g",0,0,,1)
-		Mouseclick, left, 378, 667,1,0  ;click okay in result editor
-		return
-	}
-	else if (A_ThisMenuItem = "P. aeruginosa")
-	SpecTab.AddPaeruginosa()
-	else if (A_ThisMenuItem = "&USP Heavy Metal")
-	SpecTab.HM_USP()
-	else if (A_ThisMenuItem = "&Canada Heavy Metal")
-	SpecTab.HM_Canada()
-	else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
-	SpecTab.HM_Prop65()
-	else if (A_ThisMenuItem = "&Report Only Heavy Metal")
-	SpecTab.HM_ReportOnly()
-	else if (A_ThisMenuItem = "Bloom Nutrition Heavy Metal")
-	SpecTab.HM_Bloom()
-	else if (A_ThisMenuItem = "Custom Heavy Metal")
-	SpecTab.HM_Custom()
-	else if (A_ThisMenuItem = "&Delete Retain")
-	WorkTab.DeleteRetain()
-	Menu,Menu, deleteAll
-	return
+			Else If winexist("Sign :"){
+				winactivate,
+				Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}kilgore7744{enter}
+				return
+			}
+			else if winexist("windows Security"){
+				winactivate,
+				Sendinput, kilgore7744{enter}
+			}
+			else if winexist("CredentialUIBroker.exe"){
+				winactivate,
+				Sendinput, kilgore7744{enter}
+			}
 
-
-
-	LMS_Env:
-		IfwinExist, Login,
-			winactivate, Login
-		sleep 200
-		Send,mmignin{tab}kilgore7744
-		if A_thismenuItem contains &Login
-		Send,{enter}
-		else if A_thismenuItem contains &Production Server
-		SwitchEnv("Prd")
-		else if A_thismenuItem contains &Test Server
-		SwitchEnv("Test")
-		else
-			Menu,Menu, deleteall
-	return
-
-
-	SwitchEnv(ServerEnv){
-		sleep 200
-		Send,{Tab}{Tab}{down} ; winwaitactive, Change Configuration ahk_class Transparent windows Client
-		sleep 200
-		Send,{Home}{Right}{Right}{Right}{Right}{LShift down}{End}{End}{LShift up}%ServerEnv%{Tab}{Tab}{Tab}{Tab}{Enter}
-		sleep 200 ; winwaitactive, Login ahk_class Transparent windows Client
-		Send,{Enter}
-	}
-
-
-
-	SendPassword(){
-		if winExist("Login"){
-			winactivate
-			Sendinput, mmignin{tab}kilgore7744{enter}
+			else
+				return
 			return
 		}
-		Else If winexist("Sign :"){
-			winactivate,
-			Sendinput,{tab 2}{right 2}{tab 2}mmignin{tab}kilgore7744{enter}
-			return
-		}
-		else if winexist("windows Security"){
-			winactivate,
-			Sendinput, kilgore7744{enter}
-		}
-		else if winexist("CredentialUIBroker.exe"){
-			winactivate,
-			Sendinput, kilgore7744{enter}
-		}
-
-		else
-			return
-		return
 	}
+
+
+
 
 
 

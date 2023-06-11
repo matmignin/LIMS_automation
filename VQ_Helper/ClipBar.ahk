@@ -7,17 +7,17 @@ clipChange(type){
   sleep 75
   if SimpleClip
     return
-	if Instr(Clipboard, "++|",true,1,1){
-		AddWholeBatch:=strReplace(Clipboard,"++","")
-		if instr(WholeBatches, AddWholeBatch,false,1,1)
-			clip.codesRegex(AddWholeBatch)
-		else {
-			FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
-			WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
-			sleep 200
-			}
-		return
-  }
+	; if Instr(Clipboard, "++|",true,1,1){
+	; 	AddWholeBatch:=strReplace(Clipboard,"++","")
+	; 	if instr(WholeBatches, AddWholeBatch,false,1,1)
+	; 		clip.codesRegex(AddWholeBatch)
+	; 	else {
+	; 		FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
+	; 		WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
+	; 		sleep 200
+	; 		}
+	; 	return
+  ; }
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
   }
@@ -1096,15 +1096,16 @@ Class ClipBar{
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, Coated
 		if GeneralBox
-			iniwrite, %GeneralBox%, Settings.ini, SavedVariables, GeneralBox
+		{
+			GeneralboxTrimmed:=Trim(strreplace(Generalbox,"`n","||"))
+			iniwrite, %GeneralBoxTrimmed%, Settings.ini, SavedVariables, GeneralBox
+		}
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, GeneralBox
 		; if SampleID
 			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
 		; if Iteration
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
-			GeneralboxTrimmed:=Trim(strreplace(Generalbox,"`n"," | "))
-			iniwrite, %GeneralBoxTrimmed%, Settings.ini, SavedVariables, GeneralBox
 
 		; else
 			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleID

@@ -5,6 +5,11 @@ return
 ; +F4::ExitApp
 ^+esc::ExitApp
 ^esc::Reload
+^+`::
+	sleep 800
+	Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
+	exitapp
+	Return
 
 
 
@@ -14,68 +19,70 @@ return
 	Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
-	; wheelup::
-	; critical
-	; If NAdd
-	;   {
-	;   sleep 500
-	;   return
-	;   }
-	;   NAdd:=1
-	; ; ControlGetFocus,winControl,ClipBar
-	; if (wincontrol="Edit5")
-	;   Clipbar.AddIteration(500)
-	; if (winControl="Edit1"){
-	;   GetAllProducts(" ", 1)
-	;     ; ControlsetText, Edit6,%GetAllProducts(" ")%,ClipBar
-	;   }
-	; if (winControl="Edit2"){
-	;   GetAllBatches(" ", 1)
-	;   ; ControlsetText, Edit6,%AllBatches%,ClipBar
-	;   ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
-	; }
-	; if (winControl="Edit3")
-	;   PriorCodesMenu(1)
-	; if (winControl="Edit4")
-	;   PriorCodesMenu(1)
-	; if (winControl="Edit6"){
-	;   WholeBatchMenu()
-	;     ; ControlsetText, Edit6,%AllBatches%,ClipBar
-	;     ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
-	;   }
-	; else ;(winControl="Edit3")
-	;   sleep 500
-	;   NAdd:=
-	; return
+; 	wheelup::
+; 	If NAdd
+; 	  {
+; 	  sleep 500
+; 	  return
+; 	  }
+; 	  NAdd:=1
+; 	; ControlGetFocus,winControl,ClipBar
+; if (wincontrol="Edit5")
+; 	return
+; 	  ; Clipbar.AddIteration(500)
+; 	if (winControl="Edit1"){
+; 	; GetAllProducts(" ", 1)
+; 		return
+; 	    ; ControlsetText, Edit6,%GetAllProducts(" ")%,ClipBar
+; 	  }
+; if (winControl="Edit2"){
+; 		return
+; 	  ; GetAllBatches(" ", 1)
+; 	  ; ControlsetText, Edit6,%AllBatches%,ClipBar
+; 	  ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+; 	}
+; 	if (winControl="Edit3")
+; 	  PriorCodesMenu(1)
+; 	if (winControl="Edit4")
+; 	  PriorCodesMenu(1)
+; 	if (winControl="Edit6"){
+; 	  WholeBatchMenu()
+; 	    ; ControlsetText, Edit6,%AllBatches%,ClipBar
+; 	    ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+; 	  }
+; 	else ;(winControl="Edit3")
+; 	  sleep 500
+; 	  NAdd:=
+; 	return
 
 
 
 
-	; wheeldown::
-	; critical
-	; If NAdd
-	;   {
-	;   sleep 500
-	;   return
-	;   }
-	;   NAdd:=1
-	; if (wincontrol="Edit5")
-	;   Clipbar.SubIteration(200)
-	;  if (winControl="Edit1")
-	;   PriorCodesMenu(1)
-	; if (winControl="Edit3")
-	;   PriorCodesMenu(1)
-	; if (winControl="Edit4")
-	;   PriorCodesMenu(1)
-	;  if (winControl="Edit6"){
-	;   MsgBox, 4, Delete file, Do you want to delete WholeBatches.txt?
-	;   IfMsgBox, OK
-	;       FileDelete, WholeBatches.txt
-	;   }
-	; else ;(winControl="Edit3")
-	;   sleep 500
-	; NAdd:=
-
+; 	wheeldown::
+; 	If NAdd
+; 	  {
+; 	  sleep 500
+; 	  return
+; 	  }
+; 	  NAdd:=1
+; if (wincontrol="Edit5")
+; 	return
+; 	  ; Clipbar.SubIteration(200)
+; 	 if (winControl="Edit1")
+; 	  PriorCodesMenu(1)
+; 	if (winControl="Edit3")
+; 	  PriorCodesMenu(1)
+; 	if (winControl="Edit4")
+; 	  PriorCodesMenu(1)
+; 	 if (winControl="Edit6"){
+; 	  MsgBox, 4, Delete file, Do you want to delete WholeBatches.txt?
+; 	  IfMsgBox, OK
+; 	      FileDelete, WholeBatches.txt
+; 	  }
+; 	else ;(winControl="Edit3")
+; 	  sleep 500
+; 	NAdd:=
+; return
 
 
 	Mbutton::
@@ -161,7 +168,11 @@ return
 
 
 #ifwinactive, Test Definition Editor ;;    Test Definition Editor
-	wheeldown::clk(464, 532,,1) ;add scroll block
+wheeldown::
+	clk(464, 532,,1)
+	clk(245, 246,,0)
+	sleep 500 ;add scroll block
+	return
 	; 		mbutton::mouseclick, left, 333, 615
 
 #ifwinactive, Edit sample template ;;    Edit sample template
@@ -257,7 +268,8 @@ return
 
 
 
-#ifwinactive, Select methods tests ;;    Select methods tests
+;;\\ 	             Select methods tests
+#ifwinactive, Select methods tests
 	+enter::clk(854, 658,,2) ;select okay
 	#enter::clk(854, 658,,2) ;select okay
 	^enter::clk(854, 658,,2) ;select okay
@@ -266,14 +278,18 @@ return
 	F9::
 	mbutton::Spectab.MethodsDropdown()
 
-#ifwinactive, Select Product ahk_exe eln.exe ;;    Select Product
+;;\\ 	             Select Product
+#ifwinactive, Select Product ahk_exe eln.exe
 	mbutton::send % clk(107, 66) Product "{enter}{enter}"
 
-#ifwinactive, Edit Product ;;    Edit Product
+;;\\ 	             Edit Product
+#ifwinactive, Edit Product
 	mbutton::ProductTab.AddNewProduct()
-#Ifwinactive, Edit Formulation ;;    Edit Formulation
+;;\\ 	             Edit Formulation
+#Ifwinactive, Edit Formulation
 	mbutton::ProductTab.AddNewFormulation()
 	wheeldown::clk(452, 473,,1)  ;add scroll block
+;;\\ 		     Select samples for test
 #Ifwinactive, Select samples for test:
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
 	F8::Clk(853, 657) ;click okay
@@ -294,40 +310,39 @@ return
 	return
 
 #ifwinexist, Sign :
-	mbutton::Sendpassword()
+	mbutton::LMSClick.Sendpassword()
 
-#ifwinactive, ahk_exe explorer.exe ;;    ahk_exe explorer.exe
-	F9::send, ^{e}
+;;\\ 		            explorer.exe
+#ifwinactive, Label ahk_class CabinetWClass ahk_exe explorer.exe
+	F9::send, ^e
 	F7::
-		winactivate, explorer.exe,,VQ_Helper
-		sendinput, ^{e}{*}%Product%{*}
-		sleep 300
-		sendinput, {tab 2}{right}{pgup 2}
+		winactivate, label,,VQ_Helper
+		send ^e
+		sleep 200
+		sendinput, {*}%Product%{*}
+		sleep 200
+		send, {tab 2}{right}{pgup 2}
 	return
 	F8::send, ^{F4}
 	Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
 	; +Mbutton::SelectPreviewPane()
 	F6::
-		winactivate, ahk_exe explorer.exe,,VQ_Helper
+		winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe,,VQ_Helper
 		sendinput, ^{e}
 		send, {tab 2}{right}
 	return
 
-#ifwinactive, Edit test `(Field Configuration ;;    Edit test (Field Configuration
-	+Mbutton::
-	; F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
+;;\\ 	            Edit test (Field Configuration
+#ifwinactive, Edit test `(Field Configuration
+lctrl::
+	F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
 	; +F10::
 	; 	sendinput, {click 384, 222}{tab 2}{end 2}
 	; 	sendinput, {shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}
 	; 	sendinput, {Click 334, 618}
 	; 	return
 
-
-
-#Ifwinactive,Select Iterations
-	^F9::LMS.PasteProductRotation()
-#Ifwinactive,Book
-	+F9::LMS.CopyProductRotation()
+;;\\       	    Test Definition Editor
 #Ifwinactive,Test Definition Editor
 	mbutton::
 		sleep 200
@@ -342,76 +357,32 @@ return
 		winactivate, Results Definition
 		sleep 100
 	return
-	;enter::sendinput, {enter}
 
-#Ifwinactive, Result Entry ;;    Result_Entry
+
+;;\\ 	             Result_Entry
+#Ifwinactive, Result Entry
 	F7::numbermenu(6,"ToggleResults") ;WorkTab.CorrectTestResults("toggle", "Loop")
 	F6::WorkTab.CorrectTestResults(0,5)
 	F10::WorkTab.CorrectTestResults()
 	Mbutton::WorkTab.CorrectTestResults("Toggle")
 	F9::numbermenu(6)
 
-#Ifwinactive, Results Definition ;;    Results_Definition:
+;;\\ 	             Results_Definition:
+#Ifwinactive, Results Definition
 	+mbutton::SpecTab.Autofill()
-	; If InStr(Clipboard, "Use the limits from the test", true,1,1){
-	; 	clip.ParseSpecsTable(1)
-	; msgbox, after the clipboard
-	; return
+mbutton::Spectab.PasteClipboardIntoSpec()
 
-	; }
-	; else
-	; 	sendinput, ^v
-	; return
-	mbutton::                     ;ifor pasting clipboards into specs}}
-		winactivate, Results Definition
-		tooltip,
-		Send,{click 80, 66} ;click edit
-		sleep 200
-		Breaking.Point()
-		winwaitactive, Result Editor,,2
-		if !errorlevel
-			If (Clipped_specs){
-				clipped_Specs:=
-				sleep 100
-			}
-		If (MinLimit || MaxLimit) && !(FullRequirements)
-			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
-		else If (MinLimit || MaxLimit) && (FullRequirements)
-			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-		else If (!MinLimit && !MaxLimit)
-		{
-			inputbox, InputBoxString, inputstring, Min Limit,Max Limit,Units,Requirement
-			ParsedString:=StrSplit(InputBoxString,",")
-			MinLimit:=ParsedString[1]
-			MaxLimit:=ParsedString[2]
-			If ParsedString[3]
-				FullRequirements:=ParsedString[3]
-			Else
-				FullRequirements:=1
-			If ParsedString[4]
-				Units:=ParsedString[4]
-			Else
-				Units:=""
-			; inputbox, Units, Units, Units
-			sleep 200
-			Breaking.Point()
-			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,"",1,FullRequirements)
-			minlimit:=
-			maxlimit:=
-			units:=
-		}
-		else
-			return
-	return
 	F9::lms.menu()
 
-#ifwinactive, Result Editor ;;    Result Editor
+;;\\ 	             Result Editor
+#ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 	wheelDown::clk(503, 574,1) ;add scroll block
 	F7::SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
 
 
-#ifwinactive, Register new samples ;;    Register new samples
+;;\\ 	             Register new samples
+#ifwinactive, Register new samples
 	F6::
 		clk(181, 104,2,2)
 		sleep 300
@@ -429,30 +400,29 @@ return
 	return
 	mbutton::WorkTab.registerNewSamples()
 
-#ifwinactive, Reason for Change ;;    Reason for Change
-	F9::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
+;;\\  		    Reason for Change
+#ifwinactive, Reason For Change
+	F6::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
 
-#ifwinactive, Select tests for request: ;;    Select tests for request:
+;;\\     	    Select tests for request:
+#ifwinactive, Select tests for request:
 	; F10::sendinput, {click, 31, 102}
 	F6::SpecTab.Methods()
 	F7::SpecTab.MethodsDropdown()
 	mbutton::WorkTab.SelectTestSample()
 	F9::mouseclick, Left, 638, 70
-#ifwinactive, Edit request ;;    Edit request
+;;\\                Edit request
+#ifwinactive, Edit request
 	mbutton::WorkTab.EditRequest()
 
-#ifwinactive, Edit sample ( ;;    Edit sample
+	;;\\ 	            Edit sample
+#ifwinactive, Edit sample (
 	F9::worktab.CustomerMenu()
 
-; #ifwinactive, Select samples for test: ;;    Select samples for test:
+
 
 	;;------------------------------------------------
 	;;[[              Nugenesis MAIN                ]]
-	;;------------------------------------------------
-
-
-
-; #ifwinExist, ahk_class tooltips_class32
 
 
 
@@ -474,39 +444,19 @@ return
 	return
 	!Mbutton::SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
-	+Mbutton::
-		AutoInputTestResults(){ ;;{{Testing out auto input test results}}
-			MouseGetPos, Prex, prey
-			click, 57, 719 ;click Edit Test
-			SelectedTestName:=
-			winwaitactive, Test Definition Editor,, 2
-			clipboard:=
-			SimpleClip:=1
-			send, {tab 1}^a^c
-			ClipWait, 1
-			SelectedTestName:=Clipboard
-			ControlsetText, Edit6,%SelectedTestName%,ClipBar
-			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
-			SpecTab.GetRowText(MatchingRow)
-			if !MatchingRow
-			{
-				winactivate, Test Definition Editor
-				MouseClick, left, 464, 532,2,0
-				SpecTab.ShowSpecMenu()
-				winactivate, Test Definition Editor
-			}
-			spectab.Autofill()
-			preY+=26
-			WinWaitActive, NuGenesis LMS,, 10
-			if !errorlevel
-				MouseMove, %preX%, %preY%, 1,
-			return
-		}
-return
-#include Markers.ahk
-pretendmbutton:
 
-	mbutton::SpecTab.CopySpecTemplate()
+		;;\\ ///\\\//\\\///\\//\//\\ MARKERS \\\\\/\///\\\/\\\/\//\/\/\\\//\\/\\/\\///\\/\
+
+		#include Markers.ahk
+		pretendmbutton:
+
+	mbutton::
+	if winexist("Spec Table ahk_class AutoHotkeyGUI")
+		SpecTab.AutoInputTestResults()
+	else
+		SpecTab.CopySpecTemplate()
+return
+
 	F9::lms.Menu()
 	F6::LMS.SearchBar(Product,"{enter}",0)
 	+F6::clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
@@ -520,20 +470,19 @@ pretendmbutton:
 
 
 ;;-------------------------------------------------------------------
-;;[[                           LMS                                 ]]
-;;-------------------------------------------------------------------
+;;[[                          eln.exe                             ]]
 
 
 
 
 
 #Ifwinactive, ahk_exe eln.exe
-
-
+		^F10::goto, TestCode
+	^w::goto, get_window_info
 	enter::LMSclick.okay()
 	esc::LMSclick.esc()
-	F7::3Right()
-	F6::Send, %Product%
+	; F7::3Right()
+	; F6::Send, %Product%
 	+mbutton::lms.Menu()
 	F9::lms.Menu()
 
@@ -690,7 +639,6 @@ AddToList(){
 
 ;;------------------------------------------------------
 ;;[[                  MENU HANDLES                    ]]
-;;------------------------------------------------------
 Reloadsub(){
 	reload
 }
@@ -713,7 +661,27 @@ mmigninFolder(){
 windowSpy(){
 	Run, WS.exe
 }
+get_window_info:
+	if !getTitle
+		WingetTitle getTitle, A
+	simpleclip:=1
+	; MouseGetPos, getX, getY, getWin
+	Clipboard:=getTitle
+	Clipwait,1
+	sleep 300
+	tt(getTitle,1000,100,100)
+	simpleclip:=
+return
 
+get_mouse_info:
+	simpleclip:=1
+	Clipboard:=getX ", " GetY
+	clipwait,1
+	sleep 300
+	simpleclip:=
+	return
+
+return
 AllBatchesMsgbox:
 	AllBatchesMsg:=Trim(GetAllBatches(" ",1))
 	tt(AllBatchesMsg)
@@ -750,21 +718,23 @@ ListLines:
 return
 ShowFinalLabelCopy:
 	; run, find "\\10.1.2.118\Label Copy Final"
-	run, find "\\netapp\Label Copy Final"
+	runwait, find "\\netapp\Label Copy Final"
 	sleep 550
 	; winmaximize, Search Results
+	winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe
 	send, {*}%Product%{*}{enter}
 	sleep 400
 	send, ^{e}{tab 2}{right}
 	; SelectPreviewPane(Product)
 return
 ShowScanLabelCopy:
-	run, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
-	sleep 250
+	runwait, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
+	; sleep 250
 	; winmaximize, Search Results
+	winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe
 	sendinput, {*}%Product%{*}{enter}
 	sleep 300
-	send, ^{e}{tab 2}{right}
+	sendinput, ^e{tab 2}{down}{up}
 return
 ShowManualCOA:
 	run, explorer "\\10.1.2.118\coa-lot#"
@@ -778,7 +748,6 @@ DeleteWholeBatches:
 	tt("Deleted")
 Return
 ^F10::
-F10 & Lbutton::
 TestCode:
 	sleep 500
 	autohotkeyPath := "U:\VQ_Helper\RawFiles\AHK\AutoHotkeyU64.exe"
@@ -793,7 +762,7 @@ Showmfg:
 	send, ^{e}{tab 2}{right}
 return
 ShowGlobalVision:
-	run, find "\\10.1.2.118\Globalvision Master Copy Files"
+	runwait, find "\\10.1.2.118\Globalvision Master Copy Files"
 	sleep 200
 	sendinput, {*}%Product%{*}{enter}
 	; winmaximize, Search Results
@@ -827,7 +796,6 @@ return
 
 ;;-------------------------------------------------------------
 ;;[[                         Utilities                        ]]
-;;------------------------------------------------------------
 
 
 ReadIniFiles(){
@@ -836,12 +804,12 @@ ReadIniFiles(){
 	iniRead, Batch, Settings.ini, SavedVariables, Batch
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
-	iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
+	; iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 	iniRead, SampleID, Settings.ini, SavedVariables, SampleID
 	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
 	iniRead, CompileTime, Settings.ini, Config, CompileTime
-	iniRead, Version, Settings.ini, Config, Version
-	iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
+	; iniRead, Version, Settings.ini, Config, Version
+	; iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 	; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
 	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
@@ -895,7 +863,6 @@ GetIniValue(IniFile,IniKey){
 }
 ;;-----------------------------------------------------------
 ;; [[                    Active Check                    ]]
-;;-----------------------------------------------------------
 activeCheck:
 	If winexist("Delete Attribute ahk_exe eln.exe"){
 		winactivate,
@@ -940,14 +907,45 @@ else if MouseIsOver("ClipBar"){
 	else if (winControl="Edit5")
 		return
 	else if (winControl="Edit6"){
-		TT(GeneralBox,2000,ClipBar_x6,35,2,250)
+		simpleclip:=1
+		Preclip:=ClipboardAll
+		Clipboard:=
+		Clipboard:=GeneralBox
+		clipwait,1
+		clipboard:=PreClip
 		sleep 1000
+		simpleclip:=
 	}
 	return
 }
 else If winexist("Release: ahk_exe eln.exe"){
 	winactivate
 	click 128,146
+	return
+}
+else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
+	clk(458,477,,2)
+	sleep 400
+	WindowMoved:=1
+	WinWaitClose
+	WindowMoved:=
+	return
+}
+else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
+	clk(469,533,,2)
+	clk(259,246,0,0)
+	sleep 400
+	WindowMoved:=1
+	WinWaitClose
+	WindowMoved:=
+	return
+}
+else If winactive("Edit test (Field") && !WindowMoved{
+	clk(471, 536,,2)
+	; clk(238, 535,0,0)
+	WindowMoved:=1
+	WinWaitClose
+	WindowMoved:=
 	return
 }
 else If winactive("Delete Test ahk_exe eln.exe"){
@@ -980,7 +978,7 @@ else If winactive("Delete ingredients ahk_exe eln.exe"){
 else if winactive("Lock specification ahk_exe eln.exe")
 {
 	sendinput, {n}
-	sleep 1000
+	sleep 9000
 	return
 }
 else if winactive("Error ahk_exe eln.exe") {
@@ -1015,7 +1013,7 @@ return
 
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
-	global
+	global simpleclip
 	my:=100
 	Mx:=100
 	if Simpleclip
@@ -1114,10 +1112,10 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:="",Position:="S") {
 class Breaking {
 	Point(break:=""){
 		Global
-		critical
+		; critical
 		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("F13", "P") || GetKeyState("RShift", "P") {
-			TT("Broke",2000,200,200)
-			; blockinput, off
+			; TT("Broke",2000,200,200)
+			blockinput, off
 			; tooltip,
 			exit
 		}

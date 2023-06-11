@@ -23,9 +23,31 @@ Return
 `::
 Marker_iteration:=Key.length()+1
 MouseGetPos, mmX, mmY,mmWin
-; inputbox,vPaste, What do you want to paste
+  ; inputbox,vPaste, What do you want to paste
+
 Key[Marker_iteration]:= New Marker(Marker_Iteration,mmX,mmY,"M")
+; Key[Marker_iteration]:= New Marker(Marker_Iteration,mmX,mmY)
   Return
+
+
+F10::
+; iteration:=1
+  ContinueToRun:=1
+
+		; return 0
+	; }
+  ;Tooltip,,,,4
+  ; Loopcount:=
+  ; msgbox, %loopcount%
+  loop % spectab.CountUncheckedRows()
+    Key[1].Activate()
+  ; spectab.ClickEmptyRequirements()
+
+; clipbar.AddIteration()
+  Return
+
+
+
 
 ; F10::
 ;   Marker_iteration:=Key.length()+1
@@ -48,9 +70,7 @@ F1::Key[1].Activate()
 F2::Key[2].Activate()
 F3::Key[3].Activate()
 F4::Key[4].Activate()
-!5::Key[5].Activate()
-!q::Key["q"].Activate()
-!i::Key["i"].Activate()
+
 
 
 Class Marker {
@@ -71,9 +91,11 @@ Class Marker {
 
   ShowMarker()
   {
-  if this.option = "M"
+  if !this.option
+      this.optionindicator:=""
+  else if this.option = "M"
       this.optionindicator:="*"
-    else
+  else
       this.optionindicator:="^"
     TT(" " this.optionindicator this.inputKey " " ,0,this.X-10,This.Y-10,this.msgbox,200)
 
@@ -86,7 +108,8 @@ Class Marker {
 
 	Activate() ;Activates window with Title - This.ID
 	{
-		Global ;SimpleClip
+    Global ;SimpleClip
+    tooltip, % this.inputkey,10,10,4
 		if (this.inputKey){
    if !winactive("ahk_id " This.ID)
         WinActivate % "ahk_id "This.ID
@@ -114,11 +137,15 @@ Class Marker {
 				Clipboard:=The_Preclipboard
 			; simpleclip:=
 			}
-    }
+      }
+      tooltip,,,,4
 			; sendinput % this.inputkey
 		Return This.ID
-	}
+    }
+    else
+    spectab.ClickEmptyRequirements()
 }
+
 
 
 
