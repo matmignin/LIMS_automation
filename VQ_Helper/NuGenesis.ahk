@@ -39,11 +39,29 @@ GetSampleInfo(){ ;on the lms main menu
 
 copyLabelCopyDoc(){
 	Global
+	RegexIngredients:="i)%.Daily Value.?(?P<Ingredients>[\w.].?)\n(\*\w|\*Daily Value|Other ingredients)"
+	RegexIngredient:="i)^(?P<Ingredient>[\w.].*)(?P<claim>\d*)\s?(?P<unit>mc?g|g|IU|Billion \w+)"
+	listofIngredients:=
+	regingredient:=[]
 FilePattern := "\\netapp\Label Copy Final\L000-L999\*" product "*.docx"
 Loop, %FilePattern%, 1, 0
 		ComObjGet(A_LoopFileLongPath).Range.FormattedText.Copy
-		; sleep 1000
+		sleep 1000
 		; tt(clipboard)
+		try FileDelete, LabelCopyText.txt
+			sleep 400
+				FileAppend, %Clipboard%, LabelCopyText.txt
+		LabelCopyText:=ClipboardAll
+		Ingredients:= regexRegexMatch(LabelCopyText, RegexIngredients,r) ? rIngredients : ingredients
+		while pos := RegexMatch(Ingredients, RegexIngredient, ri, pos+1) ; {
+		 if (riIngredient ~= "i)Total carbohydrate|Cholesterol|Sodium| Fat|Dietary Fiber|")
+			continue
+			riRow:=riingredient "`t" riclaim " " riUnit
+		 regingredient.insert(riRow)
+	 	 listofIngredients.=a_index ": " riRow "`r`n"
+		}
+		MsgBox % ingredients "`n`n`n" listofIngredients
+		
 	Return
 		}
 

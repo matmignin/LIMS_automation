@@ -79,7 +79,7 @@ clipChange(type){
 	}
   else
     clip.codesRegex()
-    sleep 50
+    sleep 50a
 		return
 	}
 
