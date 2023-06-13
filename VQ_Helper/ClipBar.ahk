@@ -1014,49 +1014,49 @@ Class ClipBar{
 	}
 
 	AddIteration(speed:=300,showtooltip:="",PreventStall:=""){
-		global Iteration
+		global Iteration, NAdd
 		Thread, Interrupt, 0
-			If NAdd && !PreventStall
-				{
-					Sleep 500
-					return
-				}
+			; If NAdd && !PreventStall
+			; 	{
+			; 		Sleep 500
+			; 		return
+			; 	}
 			; #maxthreadsperhotkey, 1
 			; #MaxHotkeysPerInterval, 500
-			NAdd:=1
+			; NAdd:=1
 			sleep 55
 			Iteration+=1
 			ControlsetText, Edit5,%Iteration%,ClipBar
 			; sleep 100
 			; #MaxHotkeysPerInterval, 70
 			if showTooltip
-				; tt(Iteration)
+				tt(Iteration)
 			CustomerPosition:=Iteration
 			sleep %Speed%
 			; #maxthreadsperhotkey, 2
-			NAdd:=
+			; NAdd:=
 
 			; GuiControl, -redraw, ClipBar
 		return
 	}
 	SubIteration(speed:=300){
-		global Iteration
-		If NAdd
-			{
-				sleep 500
-			return
-			}
+		global Iteration, NSub
+		; If NSub
+			; {
+				; sleep 500
+			; return
+			; }
 		; #maxthreadsperhotkey, 1
 		; #MaxHotkeysPerInterval, 500
-		NAdd:=1
+		; NSub:=1
 		; GuiControl, -redraw, ClipBar
 		sleep 55
 		Iteration-=1
 		ControlsetText, Edit5,%Iteration%,ClipBar
 		; sleep 100
-		; tt(Iteration)
+		tt(Iteration)
 		CustomerPosition:=Iteration
-		NAdd:=
+		; Nsub:=
 		; #maxthreadsperhotkey, 2
 		sleep %speed%
 		return
@@ -1142,6 +1142,9 @@ Class ClipBar{
 	ClipBar_ResetSub:
 		ClipBar.Reset()
 		return
+
+
+
 
 	BlockTheWheel:
 	; Critical

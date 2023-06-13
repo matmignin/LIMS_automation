@@ -36,6 +36,18 @@ GetSampleInfo(){ ;on the lms main menu
 	; ShipTo:=ShipToIndex
 	; return ;ShiptoIndex
 }
+
+copyLabelCopyDoc(){
+	Global
+FilePattern := "\\netapp\Label Copy Final\L000-L999\*" product "*.docx"
+Loop, %FilePattern%, 1, 0
+		ComObjGet(A_LoopFileLongPath).Range.FormattedText.Copy
+		; sleep 1000
+		; tt(clipboard)
+	Return
+		}
+
+
 ;;----------------------------------------------------------
 ;;[[                  General LMS                         ]]
 Class LMS {
@@ -241,9 +253,12 @@ Class LMS {
 		; sleep 200
 		If Nsb
 		{
+			sleep 400
 			exit
+			return
 		}
 		Nsb:=1
+		SetTimer, Block_Input, -2000
 			Tab:=LMS.DetectTab()
 
 			sleep 200
@@ -260,7 +275,10 @@ Class LMS {
 		ifwinactive, NuGenesis LMS
 		{
 			if (Tab="Products") {
-				; If (Code=Product)
+				If (Code=Product){
+					lmsclick.Edit_Composition()
+					return
+				}
 				clk(x%Tab%Search,yProductsSearch)
 				Send, ^{a}
 				If Overwrite=true
@@ -272,12 +290,13 @@ Class LMS {
 				if PostCmd!=""
 					send % PostCmd
 
-
 			}
 			if (Tab="Specs") {
-				; If (Code=Product) {
+				If (Code=Batch) {
+					lmsclick.Edit_Test()
+					return
+				}
 				clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
-
 				clk(x%Tab%Search+5,yProductsSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -321,7 +340,7 @@ Class LMS {
 			else
 				send, %Code%
 		}
-		sleep 900
+		sleep 2000
 		Nsb:=
 	}
 
@@ -1424,7 +1443,6 @@ ClickEmptyRequirements(){
 		; MouseClick, left, 464, 532,2,0
 		MouseClick, left, 464, 533,1,0
 		MouseClick, left, 245, 489,1,0
-		;  LMSclick.TestDefinitionEditor_Results()
 		winactivate, Results Definition
 		winWaitactive, Results Definition,,1
 		if errorlevel
@@ -1493,7 +1511,7 @@ ClickEmptyRequirements(){
 		click 397, 591 ; click attrobutes
 		return
 	}
-	EditSampleTemplate_A(){
+	Edit_Sample_Template_A(){
 		global
 		winactivate, Edit sample template
 		Breaking.Point()
@@ -1521,7 +1539,7 @@ ClickEmptyRequirements(){
 		Breaking.Point()
 		winwaitactive, Edit sample template,, 8
 		if !errorlevel
-			SpecTab.EditSampleTemplate_A()
+			SpecTab.Edit_Sample_Template_A()
 		return
 	}
 	AutoInputTestResults(){
@@ -1898,7 +1916,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 			exit
 		winwaitactive, NuGenesis LMS, ,4
 		if !errorlevel
-			LMSclick.EditSampleTemplate()
+			LMSclick.Edit_Sample_Template()
 		Breaking.Point()
 		Send,{tab}^{a}
 		sendinput, % Product ",{space}{Shift down}C{shift up}oated`,{space}{shift down}R{shift up}etain"
@@ -1930,7 +1948,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 			exit
 		winwaitactive, NuGenesis LMS,,4
 		if !errorlevel
-			LMSclick.EditSampleTemplate()
+			LMSclick.Edit_Sample_Template()
 		Breaking.Point()
 		Sendinput,{tab}^{a}
 		sendinput, % Product ",{space}{Shift down}C{shift up}oated`,{space}{shift down}P{shift up}hysical"
@@ -1962,7 +1980,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		winwaitactive, NuGenesis LMS, ,5
 		; if !errorlevel
 		Breaking.Point()
-		LMSclick.EditSampleTemplate()
+		LMSclick.Edit_Sample_Template()
 		Breaking.Point()
 		Sendinput,{tab}^{a}
 		sendinput, % Product ",{space}{shift down}I{shift up}n{space}{shift down}P{shift up}rocess`,{space}{shift down}R{shift up}etain"
@@ -1979,7 +1997,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		Global
 		Breaking.Point()
 		If winactive("Edit sample template")
-			SpecTab.EditSampleTemplate_A()
+			SpecTab.Edit_Sample_Template_A()
 		else If winexist("Edit specification")
 		{
 			winactivate,
@@ -2004,7 +2022,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		winwaitactive, NuGenesis LMS,,5
 		; if !errorlevel
 		Breaking.Point()
-		LMSclick.EditSampleTemplate()
+		LMSclick.Edit_Sample_Template()
 		Breaking.Point()
 		sendinput, {tab}^{a}
 		sendinput, % Product "`,{space}{shift down}F{shift up}inished`,{space}{shift down}M{shift up}icro"
@@ -2645,9 +2663,9 @@ Class WorkTab {
 			; iniwrite, %Iteration%, Settings.ini, SavedVariables, CustomerPosition
 			winactivate, Edit sample
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
-				send, {Click 253, 155}{tab 10}
+				send, {Click 253, 138}{tab 4}
 			else
-				send, {Click 253, 155}{tab 8}
+				send, {Click 253, 138}{tab}
 			sleep 200
 			this.Dropdown_CustomerSelect(CustomerPosition)
 			Nsub:=
@@ -2695,18 +2713,26 @@ Class WorkTab {
 		}
 		EditRequest(){
 			Global
-			mouseclick, left, 369, 139,1,0
 			winactivate, Edit request
-			sendinput, {tab 2}%Product%{tab 2}{space}{enter 2}{tab}{down}{tab 2}%batch%
+			mouseclick, left, 369, 139,1,0
+			sendinput, {tab 2}%Product%{tab 2}{space}
+			WinWaitActive, Products List, ,1
+			if ErrorLevel
+				Return
+			sendinput, {enter 2}
+			winwaitclose, Products List,,1
+			if ErrorLevel
+				Return
+			Send, {tab}{down}{tab 2}
 			if !Batch
-			return
-			MouseClick, Left, 356, 619
+				return
+			sendinput, %batch%
+			Mousemove, 356, 619,1
 			return
 		}
 
 		NewRequest(){
 			global
-
 			department:= ; Clip()
 			Clipboard:=
 			winactivate, NuGenesis LMS
@@ -2736,7 +2762,7 @@ Class WorkTab {
 			click, right, 264, 590 ; click to clear filter
 			Sendinput,{up}{enter}
 			winactivate, Select tests for request
-			winactivate, Select tests for request
+			; winactivate, Select tests for request
 			Breaking.Point()
 			click 854, 657 ; click okay
 			winwaitclose, Select tests for request,,3
@@ -2899,6 +2925,10 @@ Class WorkTab {
 
 
 
+; ----------------------------------------------------
+;;{{                  LMS Click                     }}
+
+
 	class LMSclick {
 		OK(sleeptime:="1"){
 			global
@@ -2984,8 +3014,16 @@ Class WorkTab {
 				return
 		}
 		edit(){
-			if winactive("Results Definition")
-			click 78,63
+			if winactive("Results Definition"){
+				click 78,63
+				winwait, Result Editor,,1
+				if errorlevel
+					return
+					clk(90, 409,,1,,0)
+					sleep 300
+					clk(510, 579,2,,0)
+					clk(283, 321,,2,,0)
+			}
 			else
 				click 84, 65
 			return
@@ -3009,15 +3047,27 @@ Class WorkTab {
 			click 500,127, 2
 			return
 		}
-		EditTest_1(){
-			ifwinnotactive, NuGenesis LMS
-				winactivate, NuGenesis LMS
-			Send,{click, 56, 784 }
+		Edit_Composition(){
+			clk(90, 440,,,"NuGenesis LMS")
 			return
 		}
-		EnterResults(){
+		Edit_Test(){
+			ifwinnotactive, NuGenesis LMS
+				winactivate, NuGenesis LMS
+			if (Tab = Specs)
+				clk(68, 718)
+			return
+		}
+		Edit_Results(){
+			ifwinnotactive, NuGenesis LMS
+				winactivate, NuGenesis LMS
+			if (Tab = Specs)
+				clk(68, 718)
+			return
+		}
+		Enter_Results(){
 			winactivate, NuGenesis LMS
-			click 74, 900
+			clk(64, 755)
 			return
 		}
 
@@ -3030,7 +3080,7 @@ Class WorkTab {
 			Else
 				return
 		}
-		CopySpecTemplate(){
+		Copy_Spec_Template(){
 			winactivate, NuGenesis LMS
 			click 102, 289 ;copy into new spec
 			winWaitactive, Edit specification, ,2
@@ -3039,20 +3089,20 @@ Class WorkTab {
 			; click 317, 83
 			return
 		}
-		NewSampleTemplate(){
+		New_Sample_Template(){
 			winactivate, NuGenesis LMS
 			click 103, 325
 			return
 		}
 
-		EditSampleTemplate(){
+		Edit_Sample_Template(){
 			winactivate, NuGenesis LMS
 			click 70, 518
 			winwaitactive, Edit sample template,, 3
 			return
 		}
 
-		SendPassword(){
+		Password(){
 			if winExist("Login"){
 				winactivate
 				Sendinput, mmignin{tab}kilgore7744{enter}

@@ -1,32 +1,23 @@
 DetectHiddenWindows On
 SetTitleMatchMode,2
+;SetBatchLines, -1
+Process, Priority, , High
 WinClose VQ_Helper.ahk - AutoHotkey
-Sleep 400
-VersionFile:="U:\VQ_Helper\RawFiles\version.txt"
+Sleep 600
 SettingsFile:="U:\VQ_Helper\Settings.ini"
 ; Read the version number from the text file
 ; FileReadLine, versionNumber, %VersionFile%, 1
 FormatTime, The_Time,, h:mm:ss
-; Display the current version number
-; MsgBox, Current Version: %versionNumber%
-iniRead, Version, %SettingsFile%, Config, Version
-; Increment the version number
-StringSplit, versionParts, version, .
-majorVersion := versionParts[1]
-minorVersion := versionParts[2]
-minorVersion:=minorVersion + 1
-newVersionNumber := majorVersion "." minorVersion
+
 
 ; Update the version number in the text file
-FileDelete, %VersionFile%
-FileAppend, %The_Time%, %VersionFile%
 iniwrite, %The_Time%, %SettingsFile%, Config, CompileTime
-iniwrite, %newVersionNumber%, %SettingsFile%, Config, Version
+
 
 ; Display the new version number
 ; MsgBox, New Version: %newVersionNumber%
 
-
+compileagain:
 Try
 {
 RunWait "U:\VQ_Helper\RawFiles\AHK\Compiler\Ahk2Exe.exe"
@@ -39,7 +30,10 @@ RunWait "U:\VQ_Helper\RawFiles\AHK\Compiler\Ahk2Exe.exe"
 Catch e
 {
 	msgbox,, Compile didnt work `n %e%
-	exit
+	WinClose VQ_Helper.ahk
+clipboard:="<<QuIT>>"
+sleep 500
+	goto, compileagain
 }
 
 
@@ -47,13 +41,13 @@ sleep 3000
 
 try
 {
-   Run "U:\VQ_Helper\VQ_Helper.exe"
+   run "U:\VQ_Helper\VQ_Helper.exe"
 }
 catch e
 {
 	clipboard:="<<QuIT>>"
-	msgbox, , didnt work `n %e%
-	sleep 3000
+	;msgbox, , didnt work `n %e%
+	sleep 4000
 	Run "U:\VQ_Helper\VQ_Helper.exe"
 }
 return

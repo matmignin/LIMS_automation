@@ -47,8 +47,8 @@
 	Menu, Tray, Add, mmignin, mmigninFolder
 	Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, &Reload, ReloadSub
-	Menu, Tray, tip, %CompileTime%
 	Menu, Tray, Add, Exitsub, Exitsub
+	Menu, Tray, tip, `n`n%CompileTime%`n`n
 	Menu, Tray, Default, &Reload
 	Key:= {}
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>\b[abcdefghijkl]\d{3}\b)"
@@ -69,19 +69,207 @@
 	LMS.Orient()
 	ClipBar.Show()
 	sleep 200
-	try Menu, Tray, Icon, %AppIconPath%
+try Menu, Tray, Icon, %AppIconPath%
 GUI, ClipBar:default
-
-
-
 
 	return
 
-#include NuGenesis.ahk
 
+;;-----------------------------------------------------------
+;; [[                    Active Check                    ]]
+activeCheck:
+	If winexist("Delete Attribute ahk_exe eln.exe"){
+		winactivate,
+		sleep 200
+		sendinput, {enter}
+		; mousemove, 245, 137
+		sleep 1000
+	}
+	else if winexist("Delete specification ahk_exe eln.exe"){
+		MsgBox, 4, , Do you want to continue? (Press YES or NO),5
+		IfMsgBox No
+			exit
+		IfMsgBox timeout
+		{
+			winactivate
+			sendinput, {n}
+		return
+	}
+	sleep 300
+	return
+}
+
+else if MouseIsOver("ClipBar"){
+	ClipBar_x1:=Clipbar_x-310
+	ClipBar_x2:=Clipbar_x-150
+	ClipBar_x6:=Clipbar_x+265
+	if (winControl="Edit1"){
+		GetAllProducts(" ")
+		TT(AllProducts,4000,ClipBar_x1,35,2,250)
+		sleep 1000
+	}
+	else if (winControl="Edit2"){
+		GetAllBatches(" ")
+		TT(AllBatches,4000,ClipBar_x2,35,2,250)
+		sleep 1000
+	}
+
+	else if (winControl="Edit3")
+		return
+	else if (winControl="Edit4")
+		tt(Tab)
+	else if (winControl="Edit5")
+		return
+	else if (winControl="Edit6"){
+		simpleclip:=1
+		Preclip:=ClipboardAll
+		Clipboard:=
+		Clipboard:=GeneralBox
+		clipwait,1
+		clipboard:=PreClip
+		sleep 1000
+		simpleclip:=
+	}
+	return
+}
+else if winactive("Register new samples"){
+	if RNSW
+		return
+	WinGetPos, RNSX, RNSY, RNSW, RNSH, Register new samples
+	if (RNSW < 900){
+		clk(231,133,,,,0)
+		winwaitclose,,,10
+		return
+	}
+	else if (RNSW > 900){
+		return
+	}
+	else
+		return
+	return
+}
+else If winexist("Release: ahk_exe eln.exe"){
+	winactivate
+	click 128,146
+	return
+}
+else if (winexist("ahk_class XLMAIN ahk_exe EXCEL.EXE") && !ExcelConnected){
+	try XL := ComObjActive("Excel.Application") ;handle to running application
+Catch {
+					MsgBox % "no existing Excl ojbect:  Need to create one"
+			XL := ComObjCreate("Excel.Application")
+			XL.Visible := 1 ;1=Visible/Default 0=hidden
+			}
+			; XL.Visible := 1 ;1=Visible/Default 0=hidden
+			ExcelConnected:=1
+	Return
+}
+
+
+
+
+else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
+	clk(458,477,,2)
+	sleep 400
+	WindowMoved:=1
+	WinWaitClose
+	WindowMoved:=
+	return
+}
+else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
+	clk(469,533,,2)
+	clk(259,246,0,0)
+	sleep 400
+	WindowMoved:=1
+	WinWaitClose
+	WindowMoved:=
+	return
+}
+else If winactive("Edit test (Field") && !WindowMoved{
+	clk(471, 536,,2)
+	; clk(238, 535,0,0)
+	WindowMoved:=1
+	WinWaitClose
+	WindowMoved:=
+	return
+}
+else If winactive("Delete Test ahk_exe eln.exe"){
+	winactivate,
+	sleep 100
+
+	sendinput, {enter}
+	; mousemove, 222, 138
+	; click
+	; sleep 1000
+	return
+}
+else If winactive("Delete results ahk_exe eln.exe"){
+	winactivate,
+	sleep 100
+	sendinput, {enter}
+	; mousemove, 222, 138
+	; click
+	sleep 1000
+	return
+}
+else If winactive("Delete ingredients ahk_exe eln.exe"){
+	winactivate,
+	sleep 200
+	sendinput, {enter}
+	; mousemove, 222, 138
+	sleep 1000
+	return
+}
+else if winactive("Lock specification ahk_exe eln.exe")
+{
+	sendinput, {n}
+	sleep 9000
+	return
+}
+else if winactive("Error ahk_exe eln.exe") {
+	ControlSend,, {enter}, Error
+	sleep 200
+	if winExist("Register new samples") && Product{
+		winactivate,
+		Sendinput, {click 185, 103,2}%Product%{enter}
+	}
+	sleep 1000
+	RNSW:=
+	return
+}
+else if winActive("Information ahk_exe eln.exe"){
+	winactivate,
+	send, {enter}
+}
+else if Winactive("NuGenesis LMS"){
+	LMS.DetectTab()
+	sleep 1000
+}
+else
+	Return
+return
+
+
+
+
+Block_Input:
+	if NAdd
+		NAdd:=
+	if Nsub
+		nsub:=
+	if Mousemoved
+		Mosemoved:=
+	BlockInput, off
+	sleep 50
+	settimer, Block_Input, Off
+Return
+
+
+
+
+
+#include NuGenesis.ahk
 	#Include KEYS.ahk
 	#include CLIPBAR.ahk
 		#include Markers.ahk
-
-
 

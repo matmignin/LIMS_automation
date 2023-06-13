@@ -19,17 +19,22 @@ return
 	Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
-; 	wheelup::
-; 	If NAdd
-; 	  {
-; 	  sleep 500
-; 	  return
-; 	  }
-; 	  NAdd:=1
-; 	; ControlGetFocus,winControl,ClipBar
-; if (wincontrol="Edit5")
+	F7::copyLabelCopyDoc()
+	wheelup::
+	If NAdd
+	  {
+		; sleep 500
+	  return
+	  }
+	  NAdd:=1
+	; ControlGetFocus,winControl,ClipBar
+	settimer, Block_Input,-500
+; if (wincontrol="Edit5"){
+; 	; return
+	Clipbar.AddIteration(100)
 ; 	return
-; 	  ; Clipbar.AddIteration(500)
+; 	}
+
 ; 	if (winControl="Edit1"){
 ; 	; GetAllProducts(" ", 1)
 ; 		return
@@ -50,24 +55,28 @@ return
 ; 	    ; ControlsetText, Edit6,%AllBatches%,ClipBar
 ; 	    ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
 ; 	  }
-; 	else ;(winControl="Edit3")
+; else ;(winControl="Edit3")
+; 	wincontrol:=
 ; 	  sleep 500
-; 	  NAdd:=
+; 	  ; NAdd:=
+	return
+
+
+
+
+	wheeldown::
+	If Nsub
+	  {
+		; sleep 500
+	  Return
+	  }
+	; ControlGetFocus,winControl,ClipBar
+Nsub:=1
+		settimer, Block_Input,-500
+; if (wincontrol="Edit5"){
+	Clipbar.SubIteration(100)
 ; 	return
-
-
-
-
-; 	wheeldown::
-; 	If NAdd
-; 	  {
-; 	  sleep 500
-; 	  return
-; 	  }
-; 	  NAdd:=1
-; if (wincontrol="Edit5")
-; 	return
-; 	  ; Clipbar.SubIteration(200)
+; }
 ; 	 if (winControl="Edit1")
 ; 	  PriorCodesMenu(1)
 ; 	if (winControl="Edit3")
@@ -79,14 +88,13 @@ return
 ; 	  IfMsgBox, OK
 ; 	      FileDelete, WholeBatches.txt
 ; 	  }
-; 	else ;(winControl="Edit3")
+; else ;(winControl="Edit3")
+; 	wincontrol:=
 ; 	  sleep 500
-; 	NAdd:=
-; return
+return
 
 
 	Mbutton::
-		; ControlGetFocus,winControl,ClipBar
 		if (wincontrol="Edit5")
 			worktab.CustomerMenu()
 		else if (winControl="Edit1")
@@ -149,11 +157,19 @@ return
 		WinActivate, Select Product ahk_exe EXCEL.EXE
 		sendinput, {Click 112, 63}%Product%{enter}{enter}
 		; SelectProductToggle:=
-		WinWaitActive, Book ahk_class XLMAIN ahk_exe EXCEL.EXE, ,3
-		if !Errorlevel
+	WinWaitActive, ahk_class XLMAIN ahk_exe EXCEL.EXE, ,3
+		; if !Errorlevel
+		WinRestore, ahk_class XLMAIN ahk_exe EXCEL.EXE
 			WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
-		WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
+		; WinMove, Book ahk_class XLMAIN ahk_exe EXCEL.EXE,, 4, 1, 1150, 1200
 	return
+#ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
+F6::
+	XL.Range("G28").Select
+	send, ^{v}
+		return
+F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
+		; MouseGetPos, mx, mY
 
 #ifWinExist, LMS Actions ahk_exe EXCEL.EXE
 	+enter::
@@ -167,13 +183,7 @@ return
 	return
 
 
-#ifwinactive, Test Definition Editor ;;    Test Definition Editor
-wheeldown::
-	clk(464, 532,,1)
-	clk(245, 246,,0)
-	sleep 500 ;add scroll block
-	return
-	; 		mbutton::mouseclick, left, 333, 615
+
 
 #ifwinactive, Edit sample template ;;    Edit sample template
 	F6::Sendinput,{Click 256,85}%Product%, `In Process, Analytical{tab 3}{right 6}{tab}{right}
@@ -195,7 +205,6 @@ wheeldown::
 	mbutton::SpecTab.Edit_Analytical()
 	Enter::LMSClick.OK()
 	+Enter::Sendinput, {enter}
-
 
 
 #ifwinactive, Composition ;;    Composition
@@ -272,7 +281,7 @@ wheeldown::
 #ifwinactive, Select methods tests
 	+enter::clk(854, 658,,2) ;select okay
 	#enter::clk(854, 658,,2) ;select okay
-	^enter::clk(854, 658,,2) ;select okay
+^enter::clk(854, 658,,2) ;select okay
 	F7::clk(511, 337,,,,2) ;move over test
 	F6::clk(511, 375,,,,2) ;move test back over
 	F9::
@@ -310,11 +319,12 @@ wheeldown::
 	return
 
 #ifwinexist, Sign :
-	mbutton::LMSClick.Sendpassword()
+	mbutton::LMSClick.password()
 
 ;;\\ 		            explorer.exe
-#ifwinactive, Label ahk_class CabinetWClass ahk_exe explorer.exe
+#ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
 	F9::send, ^e
+
 	F7::
 		winactivate, label,,VQ_Helper
 		send ^e
@@ -356,10 +366,25 @@ lctrl::
 		Breaking.Point()
 		winactivate, Results Definition
 		sleep 100
+return
+wheeldown::
+	if !Mousemoved
+		clk(464, 532,,2,"Test Definition Editor",0)
+	mousemove, 245, 246, 0
+	mousemoved:=1
+	SetTimer, Block_Input, -2000
+	sleep 500
+	; sleep 2000 ;add scroll block
+return
+F7::
+	clk(464, 532,,2,"Test Definition Editor",0)
+	click, 245, 246
+	sleep 500 ;add scroll block
 	return
+	; 		mbutton::mouseclick, left, 333, 615
 
 
-;;\\ 	             Result_Entry
+;;\\ 	             Result Entry
 #Ifwinactive, Result Entry
 	F7::numbermenu(6,"ToggleResults") ;WorkTab.CorrectTestResults("toggle", "Loop")
 	F6::WorkTab.CorrectTestResults(0,5)
@@ -367,35 +392,50 @@ lctrl::
 	Mbutton::WorkTab.CorrectTestResults("Toggle")
 	F9::numbermenu(6)
 
-;;\\ 	             Results_Definition:
+;;\\ 	             Results Definition:
 #Ifwinactive, Results Definition
 	+mbutton::SpecTab.Autofill()
 mbutton::Spectab.PasteClipboardIntoSpec()
-F6::spectab.toggleUseLimitsFromTheTest()
-
++F6::spectab.toggleUseLimitsFromTheTest()
+F7::lmsclick.edit()
 	F9::lms.menu()
 
 ;;\\ 	             Result Editor
 #ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-	wheelDown::clk(503, 574,1) ;add scroll block
-F7::SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
-F6::spectab.toggleUseLimitsFromTheTest()
+wheelDown::
+	if !Mousemoved
+		{
+		clk(503, 574,1,,,0)
+		clk(288, 318,1,2,,0)
+		}
+		mousemoved:=1
+	SetTimer, Block_Input, -2000
+	sleep 500
+return
+	`;::clk(405, 534,,2)
+	+`;::sendraw, :
++F6::spectab.toggleUseLimitsFromTheTest()
 
 
 
 ;;\\ 	             Register new samples
 #ifwinactive, Register new samples
-	F6::
+F7::sendinput,{Click 505, 356}{Click 860, 661}
+F6::
 		clk(181, 104,2,2)
 		sleep 300
 		Send, %Product%{enter}
 	return
-	+Mbutton::
-		loop, 4
++Mbutton::
+	if Lot
+		loopingCount:=4
+	else
+		LoopingCount:=3
+		loop, %LoopingCount%
 		{
 			Breaking.Point()
-			WorkTab.regiwSamples()
+			WorkTab.registerNewSamples()
 			sleep 300
 			Breaking.Point()
 		}
@@ -413,7 +453,9 @@ F6::spectab.toggleUseLimitsFromTheTest()
 	F6::SpecTab.Methods()
 	F7::SpecTab.MethodsDropdown()
 	mbutton::WorkTab.SelectTestSample()
-	F9::mouseclick, Left, 638, 70
+F9::mouseclick, Left, 638, 70
+
+
 ;;\\                Edit request
 #ifwinactive, Edit request
 	mbutton::WorkTab.EditRequest()
@@ -425,7 +467,7 @@ F6::spectab.toggleUseLimitsFromTheTest()
 
 
 	;;------------------------------------------------
-	;;[[              Nugenesis MAIN                ]]
+	;;[[_____________ Nugenesis MAIN _______________]]
 
 
 
@@ -456,9 +498,26 @@ F6::spectab.toggleUseLimitsFromTheTest()
 return
 
 	F9::lms.Menu()
-	F6::LMS.SearchBar(Product,"{enter}",0)
-	+F6::clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
 	F7::LMS.SearchBar(Batch,"{enter}",0)
+	F6::LMS.SearchBar(Product,"{enter}",0)
+	+F6::
+	lms.DetectTab()
+	sleep 300
+	if (Tab ~= "Product")
+		LMSClick.Edit_Composition()
+	 else if (Tab ~= "Samples")
+		clk(61, 863)
+	 else if (Tab ~= "Requests")
+		clk(56, 632)
+	 else if (tab ~= "Specs")
+		clk(59, 754)
+	else
+		clk(71, 196)
+	if winactive("Reason For Change")
+		sendinput, {esc}
+return
+
+		; clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
 	+F7::clk(66,750,"",1,"NuGenesis LMS",2) ;:((Enter Result))
 	F8::LMS.SearchBar("",,"False")
 	+#v::LMS.Searchbarpaste(";")
@@ -467,15 +526,9 @@ return
 	Enter::LMS.SaveCode()
 
 
-;;-------------------------------------------------------------------
-;;[[                          eln.exe                             ]]
-
-
-
-
-
+;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
-		^F10::gosub, TestCode
+	^F10::gosub, TestCode
 	^F8::gosub, get_window_info
 	^F9::gosub, get_mouse_info
 	^w::gosub, get_window_info
@@ -723,10 +776,10 @@ ShowFinalLabelCopy:
 	runwait, find "\\netapp\Label Copy Final"
 	sleep 550
 	; winmaximize, Search Results
-	winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe
+	winactivate, ahk_class CabinetWClass ahk_exe explorer.exe
 	send, {*}%Product%{*}{enter}
 	sleep 400
-	send, ^{e}{tab 2}{right}
+	send, ^e{tab 2}{right}
 	; SelectPreviewPane(Product)
 return
 ShowScanLabelCopy:
@@ -863,146 +916,6 @@ GetIniValue(IniFile,IniKey){
 	}
 	return
 }
-;;-----------------------------------------------------------
-;; [[                    Active Check                    ]]
-activeCheck:
-	If winexist("Delete Attribute ahk_exe eln.exe"){
-		winactivate,
-		sleep 200
-		sendinput, {enter}
-		; mousemove, 245, 137
-		sleep 1000
-	}
-	else if winexist("Delete specification ahk_exe eln.exe"){
-		MsgBox, 4, , Do you want to continue? (Press YES or NO),5
-		IfMsgBox No
-			exit
-		IfMsgBox timeout
-		{
-			winactivate
-			sendinput, {n}
-		return
-	}
-	sleep 300
-	return
-}
-
-else if MouseIsOver("ClipBar"){
-	ClipBar_x1:=Clipbar_x-310
-	ClipBar_x2:=Clipbar_x-150
-	ClipBar_x6:=Clipbar_x+265
-	if (winControl="Edit1"){
-		GetAllProducts(" ")
-		TT(AllProducts,4000,ClipBar_x1,35,2,250)
-		sleep 1000
-	}
-	else if (winControl="Edit2"){
-		GetAllBatches(" ")
-		TT(AllBatches,4000,ClipBar_x2,35,2,250)
-		sleep 1000
-	}
-
-	else if (winControl="Edit3")
-		return
-	else if (winControl="Edit4")
-		return
-	else if (winControl="Edit5")
-		return
-	else if (winControl="Edit6"){
-		simpleclip:=1
-		Preclip:=ClipboardAll
-		Clipboard:=
-		Clipboard:=GeneralBox
-		clipwait,1
-		clipboard:=PreClip
-		sleep 1000
-		simpleclip:=
-	}
-	return
-}
-else If winexist("Release: ahk_exe eln.exe"){
-	winactivate
-	click 128,146
-	return
-}
-else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
-	clk(458,477,,2)
-	sleep 400
-	WindowMoved:=1
-	WinWaitClose
-	WindowMoved:=
-	return
-}
-else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
-	clk(469,533,,2)
-	clk(259,246,0,0)
-	sleep 400
-	WindowMoved:=1
-	WinWaitClose
-	WindowMoved:=
-	return
-}
-else If winactive("Edit test (Field") && !WindowMoved{
-	clk(471, 536,,2)
-	; clk(238, 535,0,0)
-	WindowMoved:=1
-	WinWaitClose
-	WindowMoved:=
-	return
-}
-else If winactive("Delete Test ahk_exe eln.exe"){
-	winactivate,
-	sleep 100
-
-	sendinput, {enter}
-	; mousemove, 222, 138
-	; click
-	; sleep 1000
-	return
-}
-else If winactive("Delete results ahk_exe eln.exe"){
-	winactivate,
-	sleep 100
-	sendinput, {enter}
-	; mousemove, 222, 138
-	; click
-	sleep 1000
-	return
-}
-else If winactive("Delete ingredients ahk_exe eln.exe"){
-	winactivate,
-	sleep 200
-	sendinput, {enter}
-	; mousemove, 222, 138
-	sleep 1000
-	return
-}
-else if winactive("Lock specification ahk_exe eln.exe")
-{
-	sendinput, {n}
-	sleep 9000
-	return
-}
-else if winactive("Error ahk_exe eln.exe") {
-	ControlSend,, {enter}, Error
-	sleep 200
-	if winExist("Register new samples") && Product{
-		winactivate,
-		Sendinput, {click 185, 103,2}%Product%{enter}
-	}
-	sleep 1000
-	return
-}
-else if winActive("Information ahk_exe eln.exe"){
-	winactivate,
-	send, {enter}
-}
-else
-	return
-
-return
-
-
 
 
 
