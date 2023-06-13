@@ -19,46 +19,49 @@ return
 	Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
-	F7::copyLabelCopyDoc()
+	; F7::copyLabelCopyDoc()
 	wheelup::
 	If NAdd
 	  {
 		; sleep 500
 	  return
 	  }
-	  NAdd:=1
-	; ControlGetFocus,winControl,ClipBar
+		NAdd:=1
+		blockinput, On
+	ControlGetFocus,winControl,ClipBar
 	settimer, Block_Input,-500
-; if (wincontrol="Edit5"){
-; 	; return
+if (wincontrol="Edit5"){
 	Clipbar.AddIteration(100)
-; 	return
-; 	}
+	return
+	}
 
-; 	if (winControl="Edit1"){
-; 	; GetAllProducts(" ", 1)
-; 		return
-; 	    ; ControlsetText, Edit6,%GetAllProducts(" ")%,ClipBar
-; 	  }
-; if (winControl="Edit2"){
-; 		return
-; 	  ; GetAllBatches(" ", 1)
-; 	  ; ControlsetText, Edit6,%AllBatches%,ClipBar
-; 	  ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
-; 	}
-; 	if (winControl="Edit3")
-; 	  PriorCodesMenu(1)
-; 	if (winControl="Edit4")
-; 	  PriorCodesMenu(1)
-; 	if (winControl="Edit6"){
-; 	  WholeBatchMenu()
-; 	    ; ControlsetText, Edit6,%AllBatches%,ClipBar
-; 	    ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
-; 	  }
-; else ;(winControl="Edit3")
-; 	wincontrol:=
-; 	  sleep 500
-; 	  ; NAdd:=
+	if (winControl="Edit1"){
+		sleep 400
+	  GetAllProducts(" ", 1)
+		clipboard:=AllProducts
+	TT(AllProducts,2000,ClipBar_x2,35,2,250)
+		return
+	  }
+if (winControl="Edit2"){
+	GetAllBatches(" ", 1)
+		sleep 400
+		clipboard:=AllBatches
+	TT(AllBatches,2000,ClipBar_x2,35,2,250)
+		return
+	}
+	if (winControl="Edit3")
+	  PriorCodesMenu(1)
+	if (winControl="Edit4")
+	  PriorCodesMenu(1)
+	if (winControl="Edit6"){
+	  WholeBatchMenu()
+	    ; ControlsetText, Edit6,%AllBatches%,ClipBar
+	    ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+	  }
+else ;(winControl="Edit3")
+	wincontrol:=
+	  sleep 500
+	  ; NAdd:=
 	return
 
 
@@ -70,17 +73,29 @@ return
 		; sleep 500
 	  Return
 	  }
-	; ControlGetFocus,winControl,ClipBar
+	ControlGetFocus,winControl,ClipBar
 Nsub:=1
 		settimer, Block_Input,-500
-; if (wincontrol="Edit5"){
+if (wincontrol="Edit5"){
 	Clipbar.SubIteration(100)
-; 	return
-; }
-; 	 if (winControl="Edit1")
-; 	  PriorCodesMenu(1)
-; 	if (winControl="Edit3")
-; 	  PriorCodesMenu(1)
+	return
+}
+	if (winControl="Edit1"){
+		sleep 400
+	  GetAllProducts("`r`n")
+		clipboard:=AllProducts
+	; TT(AllProducts,2000,ClipBar_x2,35,2,250)
+		return
+	  }
+if (winControl="Edit2"){
+	GetAllBatches("`r`n")
+		sleep 400
+		clipboard:=AllBatches
+	; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+	return
+}
+	if (winControl="Edit3")
+	  PriorCodesMenu(1)
 ; 	if (winControl="Edit4")
 ; 	  PriorCodesMenu(1)
 ; 	 if (winControl="Edit6"){
@@ -955,102 +970,74 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:=1, Transparent:=240,Position:="S") {
 	; if Position = "S"
 	if !(time=0)
 		SetTimer, RemoveToolTip%N%, -%time%
-	return
-	RemoveToolTip:
-	ToolTip
-	return
-	RemoveToolTip1:
-	ToolTip,,,,1
-	return
-	RemoveToolTip2:
-	ToolTip,,,,2
-	return
-	RemoveToolTip3:
-	ToolTip,,,,3
-	return
-	RemoveToolTip4:
-	ToolTip,,,,4
-	return
-	RemoveToolTip5:
-	ToolTip,,,,5
-	return
-	RemoveToolTip6:
-	ToolTip,,,,6
-	return
-	RemoveToolTip7:
-	ToolTip,,,,7
-	return
-	RemoveToolTip8:
-	ToolTip,,,,8
-	return
-	RemoveToolTip9:
-	ToolTip,,,,9
-	return
-	RemoveToolTip10:
-	ToolTip,,,,10
-	return
-	RemoveToolTip11:
-	ToolTip,,,,11
-	return
-	RemoveToolTip12:
-	ToolTip,,,,12
-	return
-	RemoveToolTip13:
-	ToolTip,,,,13
-	return
-	RemoveToolTip14:
-	ToolTip,,,,14
-	return
-	RemoveToolTip15:
-	ToolTip,,,,15
-	return
-	RemoveToolTip16:
-	ToolTip,,,,16
-	return
-	RemoveToolTip17:
-	ToolTip,,,,17
-	return
-	RemoveToolTip18:
-	ToolTip,,,,18
-	return
-	RemoveToolTip19:
-	ToolTip,,,,19
-	return
-	RemoveToolTip20:
-	ToolTip,,,,20
-	return
-	return
-}
+		return
+		RemoveToolTip:
+		ToolTip
+		return
+		RemoveToolTip1:
+		ToolTip,,,,1
+		return
+		RemoveToolTip2:
+		ToolTip,,,,2
+		return
+		RemoveToolTip3:
+		ToolTip,,,,3
+		return
+		RemoveToolTip4:
+		ToolTip,,,,4
+		return
+		RemoveToolTip5:
+		ToolTip,,,,5
+		return
+		RemoveToolTip6:
+		ToolTip,,,,6
+		return
+		RemoveToolTip7:
+		ToolTip,,,,7
+		return
+		RemoveToolTip8:
+		ToolTip,,,,8
+		return
+		RemoveToolTip9:
+		ToolTip,,,,9
+		return
+		RemoveToolTip10:
+		ToolTip,,,,10
+		return
+		RemoveToolTip11:
+		ToolTip,,,,11
+		return
+		RemoveToolTip12:
+		ToolTip,,,,12
+		return
+		RemoveToolTip13:
+		ToolTip,,,,13
+		return
+		RemoveToolTip14:
+		ToolTip,,,,14
+		return
+		RemoveToolTip15:
+		ToolTip,,,,15
+		return
+		RemoveToolTip16:
+		ToolTip,,,,16
+		return
+		RemoveToolTip17:
+		ToolTip,,,,17
+		return
+		RemoveToolTip18:
+		ToolTip,,,,18
+		return
+		RemoveToolTip19:
+		ToolTip,,,,19
+		return
+		RemoveToolTip20:
+		ToolTip,,,,20
+		return
+		return
+	}
 
 
-class Breaking {
-	Point(break:=""){
-		Global
-		; critical
-		; MouseGetPos,bx,by
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") {
-			TT("Broke",3000,400,400)
-			; ContinueToRun:=
-			blockinput, off
-			exit
-		}
-		if keep_running = n ;another signal to stop
-		{
-			blockinput, off
-			; ContinueToRun:=
-			Exit
-		}
-	}
-	Preamble(){
-		Global
-		if keep_running = y
-		{
-			keep_running = n ;signal other thread to stop
-			exit
-		}
-		keep_running = y
-	}
-}
 MouseIsOver(winTitle){
 	Global
 	MouseGetPos,,, win, WinControl
@@ -1130,21 +1117,32 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		mousemove,%mx%,%my%,0
 }
 
-
-showLabelCopy(FileDir,FileType‚ShowMultiple:=0){
-	Global Product
-	Loop, Files, %FileDir%*%Product%*.%FieType%*,R
-	{
-		If (A_LoopFileTimeCreated>Rec)
+class Breaking {
+	Point(break:=""){
+		Global
+		; critical
+		; MouseGetPos,bx,by
+		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") {
+			TT("Broke",3000,400,400)
+			; ContinueToRun:=
+			blockinput, off
+			exit
+		}
+		if keep_running = n ;another signal to stop
 		{
-
-			FPath=%A_LoopFileLongPath%
-			Rec=%A_LoopFileTimeCreated%
+			blockinput, off
+			; ContinueToRun:=
+			Exit
 		}
 	}
-	sleep 300
-	Run, explore %Fpath%
-
-	return
+	Preamble(){
+		Global
+		if keep_running = y
+		{
+			keep_running = n ;signal other thread to stop
+			exit
+		}
+		keep_running = y
+	}
 }
 

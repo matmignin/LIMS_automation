@@ -1,69 +1,51 @@
 
-GetSampleInfo(){ ;on the lms main menu
-	global Coated, Customer
-	ParsedSample:=[]
-	clipped_coated:=
-	clipped_customer:=
-	Loop, parse, Clipboard, `t
-		ParsedSample.insert(A_LoopField)
-	TotalColumns:=Parsedsample.maxindex()//2
 
-	clipped_Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
-	; Name:=Trim(ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns],"`r`n")
-	Clipped_Coated:=ParsedSample[HasValue(ParsedSample, "Coated Lot #") + TotalColumns]
-
-	Iteration:=GetIniValue("Customers.ini",Customer)
-	GuiControl,ClipBar:Text, Iteration, %Iteration%
-	if clipped_Customer
-	{
-		customer:=Clipped_Customer
-		GuiControl,ClipBar:Text, GeneralBox, %Customer%
-	}
-	else
-		GuiControl,ClipBar:Text, GeneralBox,
-
-
-	if clipped_Coated
-	{
-		Coated:=Clipped_Coated
-		GuiControl,ClipBar:Text, Coated, %Coated%
-	}
-	else
-		GuiControl,ClipBar:Text, Coated,
-
-	GUI, ClipBar:submit,NoHide
-	; if !ShipTo
-	; ShipTo:=ShipToIndex
-	; return ;ShiptoIndex
-}
 
 copyLabelCopyDoc(){
 	Global
-	RegexIngredients:="i)%.Daily Value.?(?P<Ingredients>[\w.].?)\n(\*\w|\*Daily Value|Other ingredients)"
-	RegexIngredient:="i)^(?P<Ingredient>[\w.].*)(?P<claim>\d*)\s?(?P<unit>mc?g|g|IU|Billion \w+)"
+	; RegexIngredients:="i)%.Daily Value.?(?P<Ingredients>[\w.].?)\n(\*\w|\*Daily Value|Other ingredients)"
+	RegexIngredients:="is)(%.Daily Value|Amount per serving)(\s+\n?)(?P<Ingredients>[\w.].*?)([\*\s]*?\n\s)(\*? ?)?(Daily Value|Percent|Other ingredients)"
+	RegexIngredient:="i)^\s?(?P<Ingredient>.*)\s+(?P<claim>[0-9:,.]+)\s?(?P<unit>mc?g|g|IU)"
 	listofIngredients:=
 	regingredient:=[]
 FilePattern := "\\netapp\Label Copy Final\L000-L999\*" product "*.docx"
 Loop, %FilePattern%, 1, 0
-		ComObjGet(A_LoopFileLongPath).Range.FormattedText.Copy
-		sleep 1000
+		oW:=ComObjGet(A_LoopFileLongPath)
+	sleep 1000
+		; oW.Visible :=0
+		oW.Range.FormattedText.Copy
+		; oW.Close()
 		; tt(clipboard)
-		try FileDelete, LabelCopyText.txt
+		LabelCopyText:=Clipboard
+	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
+
+	Loop, Parse, riIngredients,"`n"
+	{
+		if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
+			Continue
+		RegexMatch(A_LoopField, RegexIngredient, ing)
+			aRow:=Trim(ingingredient) "`t" Trim(ingclaim) " " Trim(ingUnit)
+		 regingredient.insert(aRow)
+	 	 listofIngredients.=aRow "`n"
+	}
+		; while pos := RegexMatch(riIngredients, RegexIngredient, ingIngredient, pos+1)  {
+		;  if (riIngredient ~= "i)Total carbohydrate|Cholesterol|Sodium| Fat|Dietary Fiber")
+			; continue
+			; aRow:=ingingredient "`t" ingclaim " " ingUnit
+		;  regingredient.insert(aRow)
+	 	;  listofIngredients.=a_index ": " aRow "n"
+		; }
+		FileDelete, U:\VQ_Helper\LabelCopyText.txt
 			sleep 400
-				FileAppend, %Clipboard%, LabelCopyText.txt
-		LabelCopyText:=ClipboardAll
-		Ingredients:= regexRegexMatch(LabelCopyText, RegexIngredients,r) ? rIngredients : ingredients
-		while pos := RegexMatch(Ingredients, RegexIngredient, ri, pos+1) ; {
-		 if (riIngredient ~= "i)Total carbohydrate|Cholesterol|Sodium| Fat|Dietary Fiber|")
-			continue
-			riRow:=riingredient "`t" riclaim " " riUnit
-		 regingredient.insert(riRow)
-	 	 listofIngredients.=a_index ": " riRow "`r`n"
-		}
-		MsgBox % ingredients "`n`n`n" listofIngredients
-		
+	FileAppend, %listofIngredients% `n-----`n`n %riIngredients%, U:\VQ_Helper\LabelCopyText.txt
+		; Clipboard:=listofIngredients
+		; MsgBox % riIngredients
+
 	Return
 		}
+
+
+
 
 
 ;;----------------------------------------------------------

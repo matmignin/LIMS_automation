@@ -176,7 +176,7 @@ Class Clip {
 					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
 
 				if (Winactive("NuGenesis LMS") && InStr(Parse, "Ship To",true, 1,1) InStr(Parse, "Ship To",true, 1,1) )
-					GetSampleInfo()
+					clip.GetSampleInfo()
 				; GuiControl,ClipBar:Text, Iteration, %Iteration%
 					GUI, ClipBar:submit,NoHide
 				codeString:=trim(Product " " Batch " " Lot Ct Coated)
@@ -196,7 +196,43 @@ Class Clip {
 	}
 
 
+GetSampleInfo(){ ;on the lms main menu
+	global Coated, Customer
+	ParsedSample:=[]
+	clipped_coated:=
+	clipped_customer:=
+	Loop, parse, Clipboard, `t
+		ParsedSample.insert(A_LoopField)
+	TotalColumns:=Parsedsample.maxindex()//2
 
+	clipped_Customer:=ParsedSample[HasValue(ParsedSample, "Ship To") + TotalColumns]
+	; Name:=Trim(ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns],"`r`n")
+	Clipped_Coated:=ParsedSample[HasValue(ParsedSample, "Coated Lot #") + TotalColumns]
+
+	Iteration:=GetIniValue("Customers.ini",Customer)
+	GuiControl,ClipBar:Text, Iteration, %Iteration%
+	if clipped_Customer
+	{
+		customer:=Clipped_Customer
+		GuiControl,ClipBar:Text, GeneralBox, %Customer%
+	}
+	else
+		GuiControl,ClipBar:Text, GeneralBox,
+
+
+	if clipped_Coated
+	{
+		Coated:=Clipped_Coated
+		GuiControl,ClipBar:Text, Coated, %Coated%
+	}
+	else
+		GuiControl,ClipBar:Text, Coated,
+
+	GUI, ClipBar:submit,NoHide
+	; if !ShipTo
+	; ShipTo:=ShipToIndex
+	; return ;ShiptoIndex
+}
 
 		ParseIngredientsTable(Save:=1){
 		global

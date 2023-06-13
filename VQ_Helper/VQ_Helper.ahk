@@ -1,7 +1,7 @@
 	#SingleInstance,Force
 	#Persistent
 	#NoEnv
-	Process, Priority, , High
+	Process, Priority,, High
 	; SetBatchLines, -1
 	Thread, NoTimers
 	#HotkeyInterval 1000
@@ -256,14 +256,12 @@ return
 
 
 Block_Input:
-	if NAdd
+Thread, Priority, 1
+	sleep 100
 		NAdd:=
-	if Nsub
 		nsub:=
-	if Mousemoved
 		Mosemoved:=
 	BlockInput, off
-	sleep 50
 	settimer, Block_Input, Off
 Return
 

@@ -1,7 +1,7 @@
 DetectHiddenWindows On
 SetTitleMatchMode,2
 ;SetBatchLines, -1
-Process, Priority, , High
+Process, Priority,, High
 WinClose VQ_Helper.ahk - AutoHotkey
 Sleep 600
 SettingsFile:="U:\VQ_Helper\Settings.ini"
