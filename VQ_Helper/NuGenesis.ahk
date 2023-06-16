@@ -1,50 +1,58 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 copyLabelCopyDoc(){
 	Global
-	; RegexIngredients:="i)%.Daily Value.?(?P<Ingredients>[\w.].?)\n(\*\w|\*Daily Value|Other ingredients)"
-	RegexIngredients:="is)(%.Daily Value|Amount per serving)(\s+\n?)(?P<Ingredients>[\w.].*?)([\*\s]*?\n\s)(\*? ?)?(Daily Value|Percent|Other ingredients)"
-	RegexIngredient:="i)^\s?(?P<Ingredient>.*)\s+(?P<claim>[0-9:,.]+)\s?(?P<unit>mc?g|g|IU)"
+	RegexIngredients:="is)(%.Daily Value|Amount per serving)(\s+\n?)(?P<Ingredients>\s?[\w.].*?)([\*\s]*?\n\s)?(\*? ?)?(Daily Value|Percent|Other ingredients)"
+	RegexIngredient:="Usm)(?P<Ingredient>(.*\n)|(.*))\s+?(?P<claim>[0-9.,]*) ?(?P<unit>m?c?g RAE|m?c?g\b|IU\b|Billions)+?.*$"
 	listofIngredients:=
+	RegexServingSize:= "im)^\s?Serving size:?\s+(?P<ServingSize>\d+)\s?(?P<ServingType>[\w ]+)?\s?(?P<ServingWeigth>\(.*\))?"
+	ServingSize:=
+	RegexPillSize:="i)(?P<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)"
+	PillSize:=
 	regingredient:=[]
+
 FilePattern := "\\netapp\Label Copy Final\L000-L999\*" product "*.docx"
 Loop, %FilePattern%, 1, 0
 		oW:=ComObjGet(A_LoopFileLongPath)
-	sleep 1000
+		sleep 2000
 		; oW.Visible :=0
 		oW.Range.FormattedText.Copy
 		; oW.Close()
-		; tt(clipboard)
 		LabelCopyText:=Clipboard
 	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
-
-	Loop, Parse, riIngredients,"`n"
+	RegexMatch(LabelCopyText, RegexServingSize, ss)
+	RegexMatch(LabelCopyText, RegexPillSize, ps)
+	ServingSize:=Trim(ssServingSize " " ssServingType " " SsservingWeight)
+	PillSize:=Trim(psPillSize)
+	Loop, Parse, riIngredients,`n
 	{
 		if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
 			Continue
-		RegexMatch(A_LoopField, RegexIngredient, ing)
-			aRow:=Trim(ingingredient) "`t" Trim(ingclaim) " " Trim(ingUnit)
-		 regingredient.insert(aRow)
-	 	 listofIngredients.=aRow "`n"
-	}
-		; while pos := RegexMatch(riIngredients, RegexIngredient, ingIngredient, pos+1)  {
-		;  if (riIngredient ~= "i)Total carbohydrate|Cholesterol|Sodium| Fat|Dietary Fiber")
-			; continue
-			; aRow:=ingingredient "`t" ingclaim " " ingUnit
-		;  regingredient.insert(aRow)
-	 	;  listofIngredients.=a_index ": " aRow "n"
-		; }
+		NewString:=RegexReplace(A_LoopField, RegexIngredient, "${Ingredient}`t${claim} ${unit}`n")
+	 	 listofIngredientsPreTrim:=trim(NewString) "`r`n||"
+	listofIngredientsPretrim2:=Trim(strreplace(strReplace(listofIngredientsPreTrim, "`r`n||",""),"†",""))
+	 	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
+		;  regingredient.insert(listofIngredientsPreTrim2)
+			}
 		FileDelete, U:\VQ_Helper\LabelCopyText.txt
 			sleep 400
-	FileAppend, %listofIngredients% `n-----`n`n %riIngredients%, U:\VQ_Helper\LabelCopyText.txt
-		; Clipboard:=listofIngredients
-		; MsgBox % riIngredients
-
+	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
+	sleep 500
+		Clipboard:=listofIngredients
+		tt(listofIngredients,2000,10,10,3,190)
 	Return
-		}
-
-
+}
 
 
 
@@ -275,7 +283,7 @@ Class LMS {
 		ifwinactive, NuGenesis LMS
 		{
 			if (Tab="Products") {
-				If (Code=Product){
+				If (Code=Batch){
 					lmsclick.Edit_Composition()
 					return
 				}
@@ -351,8 +359,8 @@ Class LMS {
 				return
 			}
 		sendinput, ^{a}^{c}
-		sleep 200
-		Send, {enter}
+		sleep 300
+		Sendinput, {enter}
 		return
 	}
 	SearchbarPaste(Delimiter){
@@ -607,8 +615,12 @@ Class ProductTab {
 		Product:=SheetInfo[2]
 		ProductName:=SheetInfo[3]
 		Customer:=SheetInfo[4]
+		sleep 200
 		; CustomerPosition:=SheetInfo[5]
-		CustomerPosition:=GetIniValue("Customer.ini",Customer)
+		if !GetIniValue("Customer.ini",Customer)
+			CustomerPosition:=SheetInfo[5]
+		else
+			CustomerPosition:=GetIniValue("Customer.ini",Customer)
 
 		ShapeAndSize:=SheetInfo[6]
 		Color:=SheetInfo[7]

@@ -79,7 +79,7 @@ clipChange(type){
 	}
   else
     clip.codesRegex()
-    sleep 50a
+    sleep 50
 		return
 	}
 
@@ -156,9 +156,9 @@ Class Clip {
 			Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
+			SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
 
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-				; SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
 					PriorBatch:=Batch
 					Lot:=
@@ -191,7 +191,7 @@ Class Clip {
 				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 				}
 
-				TT(trim(Product " " Batch " " Lot Ct Coated ),1000,1,1)
+				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,50,5,200)
 			Return
 	}
 
@@ -209,11 +209,11 @@ GetSampleInfo(){ ;on the lms main menu
 	; Name:=Trim(ParsedSample[HasValue(ParsedSample, "Product Trade Name") + TotalColumns],"`r`n")
 	Clipped_Coated:=ParsedSample[HasValue(ParsedSample, "Coated Lot #") + TotalColumns]
 
-	Iteration:=GetIniValue("Customers.ini",Customer)
 	GuiControl,ClipBar:Text, Iteration, %Iteration%
 	if clipped_Customer
 	{
 		customer:=Clipped_Customer
+		Iteration:=GetIniValue("Customers.ini",Customer)
 		GuiControl,ClipBar:Text, GeneralBox, %Customer%
 	}
 	else

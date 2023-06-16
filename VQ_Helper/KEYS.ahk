@@ -16,9 +16,12 @@ return
 	;;--------------------------------------------------
 	;;[[              ClipBar keybindings                    ]]
 #If MouseIsOver("Methods List ahk_exe VQ_Helper.exe")
-	Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
+Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
+
+
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
+F7::copyLabelCopyDoc()
 	; F7::copyLabelCopyDoc()
 	wheelup::
 	If NAdd
@@ -109,13 +112,14 @@ if (winControl="Edit2"){
 return
 
 
-	Mbutton::
+Mbutton::
+	ControlGetFocus,winControl,ClipBar
 		if (wincontrol="Edit5")
 			worktab.CustomerMenu()
 		else if (winControl="Edit1")
-			GetAllProducts(" ")
+			LMS.SearchBar(Product,"{enter}",0)
 		else if (winControl="Edit2")
-			GetAllBatches(" ")
+			LMS.SearchBar(Batch,"{enter}",0)
 		else if (winControl="Edit3")
 			ControlsetText, Edit3,,ClipBar
 		else if (winControl="Edit4")
@@ -138,7 +142,7 @@ return
 		Send, ^a^c
 		LMS.Searchbar(clipboard,"{enter}","False")
 	return
-
+F7::copyLabelCopyDoc()
 	; 	Gui, ClipBar:submit, nohide
 	; }
 	; 	else if (winControl="Edit4"){
@@ -487,7 +491,10 @@ F9::mouseclick, Left, 638, 70
 
 
 #Ifwinactive, NuGenesis LMS
-
+^F9::
+clipboard:=sampleid
+TT(Sampleid)
+return
 	!F10::SpecTab.CopySpecTemplate()
 	!F9::
 		If (LMS.DetectTab() != "Requests"){
@@ -533,7 +540,7 @@ return
 return
 
 		; clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
-	+F7::clk(66,750,"",1,"NuGenesis LMS",2) ;:((Enter Result))
+	+F7::copyLabelCopyDoc()
 	F8::LMS.SearchBar("",,"False")
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
@@ -923,7 +930,7 @@ GetIniValue(IniFile,IniKey){
 			Continue
 		if instr(A_LoopReadLine, IniKey,false,1,1){
 			MatchedLine := StrSplit(A_LoopReadLine, "=")
-			tt(MatchedLine[2],2000,400,400,3)
+			; tt(MatchedLine[2],2000,400,400,3)
 			return MatchedLine[2]
 		}
 		else
@@ -942,25 +949,31 @@ GetIniValue(IniFile,IniKey){
 
 
 
-TT(msg:="yo", time=1500, X:="",Y:="",N:=1, Transparent:=240,Position:="S") {
+TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	global simpleclip
-	my:=100
-	Mx:=100
+	; ttmy:=100
+	; ttMx:=100
+	winGetPos, ttwinx,ttwiny, ttwinw, ttwinh, A
+	ttx:=Floor(ttwinx+X)
+	tty:=Floor(ttwiny+y)
+	; CoordMode, Mouse, screen
 	if Simpleclip
 		return
 	MouseGetPos, mX, mY
-	; CoordMode, Mouse, screen
-	CoordMode, ToolTip, Window
+	ttx:=Floor(mx+X)
+	tty:=Floor(my+y)
+	; CoordMode, ToolTip, Window
 	sleep 20
+	; CoordMode, mouse, window
 	if Position = M
-		tooltip, %msg%, %MX%, %mY%,%N%
+		tooltip, %msg%, %ttMX%, %ttmY%,%N%
 	else
-		tooltip, %msg%, %X%+50, %Y%+50,%N%
+		tooltip, %msg%, %ttx%, %tty%,%N%
 	; X+=100
 
 	; else
 	hwnd := winExist("ahk_class tooltips_class32")
-	if Transparent
+	; if Transparent
 		WinSet, Exstyle, 0x20, % "ahk_id" hwnd
 	WinSet, AlwaysOnTop, On, % "ahk_id" hwnd
 	winSet, Trans, %Transparent%, % "ahk_id" hwnd

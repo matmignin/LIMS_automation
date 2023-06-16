@@ -21,7 +21,7 @@
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
 	CoordMode, mouse, Window
-	; CoordMode, Tooltip, relative
+	CoordMode, Tooltip, Screen
 	SetWorkingDir, %A_ScriptDir%
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
