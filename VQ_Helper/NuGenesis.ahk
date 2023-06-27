@@ -354,13 +354,15 @@ Class LMS {
 
 	SaveCode(){
 		global
-		If GetKeyState("Shift","P"){
-				Send, {enter}
-				return
-			}
+		; If GetKeyState("Shift","P"){
+		; 		Send, {enter}
+		; 		return
+		; 	}
+		Simpleclip:=1
 		sendinput, ^{a}^{c}
 		sleep 300
-		Sendinput, {enter}
+		Send, {enter}
+		simpleclip:=
 		return
 	}
 	SearchbarPaste(Delimiter){

@@ -19,7 +19,6 @@ return
 Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 
-
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
 F7::copyLabelCopyDoc()
 	; F7::copyLabelCopyDoc()
@@ -491,8 +490,21 @@ F9::mouseclick, Left, 638, 70
 
 
 #Ifwinactive, NuGenesis LMS
+
 ^F9::
-clipboard:=sampleid
+	send, ^c
+	sleep 500
+		If (SampleID){
+				FileRead, PreviousSampleIDs, % PreviousSampleIDsFile
+				  {
+				NewPreviousSampleIDs:=Trim(RemoveDuplicates(PreviousSampleIDs)"`n"SampleID)
+					FileDelete, %PreviousSampleIDsFile%
+					sleep 200
+					FileAppend, %NewPreviousSampleIDs%, %PreviousSampleIDsFile%
+						return
+			}
+		}
+		clipboard:=sampleid
 TT(Sampleid)
 return
 	!F10::SpecTab.CopySpecTemplate()
@@ -550,9 +562,11 @@ return
 
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
+;
+
 	^F10::gosub, TestCode
 	^F8::gosub, get_window_info
-	^F9::gosub, get_mouse_info
+	; ^F9::gosub, get_mouse_info
 	^w::gosub, get_window_info
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
@@ -805,8 +819,9 @@ ShowFinalLabelCopy:
 	; SelectPreviewPane(Product)
 return
 ShowScanLabelCopy:
-	runwait, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
-	; sleep 250
+	; runwait, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
+	runwait, find "\\netapp\share\QC LAB\Label Copy Scans"
+	sleep 250
 	; winmaximize, Search Results
 	winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe
 	sendinput, {*}%Product%{*}{enter}

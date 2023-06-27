@@ -21,7 +21,8 @@
 	SetNumlockState Alwayson
 	setcapslockstate alwaysoff
 	CoordMode, mouse, Window
-	CoordMode, Tooltip, Screen
+	CoordMode, Tooltip, screen
+	; CoordMode, Tooltip, Screen
 	SetWorkingDir, %A_ScriptDir%
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
@@ -58,7 +59,8 @@
 	regexMaxLimit:="i)(<| - |NMT )(?P<maxLimit>[0-9,.]*)\s\w*"
 	regexMaxLimit:="i)(<|NLT )?(?P<minLimit>(?<!NMT )[0-9.,]*)"
 	regexunit:="i)(?P<unit>\w*)"
-	RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
+RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
+	PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
 	; RegexCombined := "iO)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)|(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)|(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)|(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 
 
@@ -188,14 +190,22 @@ else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
 	WindowMoved:=
 	return
 }
-else If winactive("Edit test (Field") && !WindowMoved{
-	clk(471, 536,,2)
-	; clk(238, 535,0,0)
+else If winactive("Reason For Change") && !WindowMoved{
+	send, {tab 2}
+	sleep 400
 	WindowMoved:=1
 	WinWaitClose
 	WindowMoved:=
 	return
 }
+; else If winactive("Edit test (Field") && !WindowMoved{
+; 	clk(471, 536,,2)
+; 	; clk(238, 535,0,0)
+; 	WindowMoved:=1
+; 	WinWaitClose
+; 	WindowMoved:=
+; 	return
+; }
 else If winactive("Delete Test ahk_exe eln.exe"){
 	winactivate,
 	sleep 100

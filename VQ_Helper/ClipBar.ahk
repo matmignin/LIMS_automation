@@ -65,7 +65,7 @@ clipChange(type){
   }
   else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
-    TT(Description,2000)
+    ; TT(Description,2000)
 		return
   }
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
@@ -144,11 +144,13 @@ Class Clip {
 
 	CodesRegex(input:=""){
 		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
-			Gui ClipBar:Default
+		Gui ClipBar:Default
+			PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
 			PriorCodestring:=CodeString
-			codestring:=
-			; PriorSampleID:=SampleID
-			; SampleID:=
+			PriorSampleID:=SampleID
+		codestring:=
+			sleep 200
+			SampleID:=
 			Parse:= Input ? Input : Clipboard
 
 
@@ -189,9 +191,19 @@ Class Clip {
 				if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
 				FileAppend, %CodeString%`n, PriorCodes.txt
 				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
-				}
+		}
+		; If (SampleID) && (SampleID!=PriorSampleID){
+		; 		FileRead, oPreviousSampleIDs, % PreviousSampleIDsFile
+		; 		  {
+		; 		NewPreviousSampleIDs:=RemoveDuplicates(PreviousSampleIDs)
+		; 			FileDelete, %PreviousSampleIDsFile%
+		; 			sleep 200
+		; 			FileAppend, %NewPreviousSampleIDs%, %PreviousSampleIDsFile%
+		; 				return
+		; 	}
+		; }
 
-				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),1000,100,50,5,200)
+				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),800,10,100,5,180,"M")
 			Return
 	}
 

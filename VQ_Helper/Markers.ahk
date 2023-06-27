@@ -7,9 +7,8 @@
 
 return
 
-#Ifwinactive, NuGenesis LMS
 
-+F10::
+ +F10:: ;;{{MARKER
 Marker_iteration:=Key.length()+1
 MouseGetPos, mX, mY,mWin
 inputbox,vPaste, What do you want to paste
@@ -17,18 +16,24 @@ Key[Marker_iteration]:= New Marker(Marker_Iteration,mX,mY,vPaste)
 Return
 
 
-`::
+`:: ;;{{MARKER
 Marker_iteration:=Key.length()+1
 MouseGetPos, mmX, mmY,mmWin
-  ; inputbox,vPaste, What do you want to paste
-
+  ; inputbox,vPaste, What do you want to past`
 Key[Marker_iteration]:= New Marker(Marker_Iteration,mmX,mmY,"M")
 ; Key[Marker_iteration]:= New Marker(Marker_Iteration,mmX,mmY)
   Return
 
 
-F10::
-  ContinueToRun:=1
+
+F10:: ;;{{{Marker
+	ContinueToRun:=1
+	If spectab.CountUncheckedRows() <1
+	{
+		Key[A_index].Activate()
+	return
+}
+	else
   loop % spectab.CountUncheckedRows(){
   if !(Key[1])
       spectab.ClickEmptyRequirements()
@@ -41,11 +46,11 @@ F10::
     Key[1].Activate()
       return
       }
-    }
+}
+
 ; clipbar.AddIteration()
 ContinueToRun:=
   Return
-
 
 
 ; #ifwinactive, What do you want to paste
@@ -65,10 +70,6 @@ ContinueToRun:=
 ;   Return
 
 
-F1::Key[1].Activate()
-F2::Key[2].Activate()
-F3::Key[3].Activate()
-F4::Key[4].Activate()
 
 
 Class Marker {
@@ -95,7 +96,7 @@ Class Marker {
       this.optionindicator:="*"
   else
       this.optionindicator:="^"
-    TT(" " this.optionindicator this.inputKey " " ,0,this.X-10,This.Y-10,this.msgbox,200)
+    TT(" " this.optionindicator this.inputKey " " ,0,this.X,This.Y,this.msgbox,200,"M")
 
     ; WingetTitle TitleVar, A ; Get title from Active window.
 		; This.Title:=TitleVar ; Set TitleVar to This.Title
