@@ -268,7 +268,7 @@ GetSampleInfo(){ ;on the lms main menu
       ; Tooltip, %Clipped_Ingredients%, 200,0
 			ControlsetText, Edit6,%Clipped_Ingredients%,ClipBar
 			gui, Clipbar:Submit,Nohide
-      tt(Clipped_ingredients 10000,10,20,2)
+      tt(Clipped_ingredients 1000,10,20,2)
       return
 		}
   ParseSpecsTable(EnterData:=""){
@@ -872,7 +872,7 @@ WholeBatchesSave(Input,Overwrite:=""){
 	sleep 200
 	FileRead, WholeBatches, WholeBatches.txt
 	sleep 200
-	tt(WholeBatches,10000,0,0,2)
+	tt(WholeBatches,1000,0,0,2)
 		return
 }
 

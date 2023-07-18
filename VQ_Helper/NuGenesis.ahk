@@ -100,7 +100,7 @@ Class LMS {
 			Menu, Menu, Add, 100k TPC, Autofill
 			Menu, Menu, Add, 3k TPC, Autofill
 			Menu, Menu, Add, P. aeruginosa, Autofill
-			Menu,Menu, add
+			Menu, Menu, add
 			Menu, Menu, Add, USP Heavy Metal,Autofill
 			Menu, Menu, Add, Canada Heavy Metal,Autofill
 			Menu, Menu, Add, Prop65 Heavy Metal,Autofill
@@ -360,8 +360,8 @@ Class LMS {
 		; 	}
 		Simpleclip:=1
 		sendinput, ^{a}^{c}
-		sleep 300
-		Send, {enter}
+		sleep 400
+		Sendinput, {enter}
 		simpleclip:=
 		return
 	}
@@ -546,43 +546,43 @@ Class LMS {
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
 			SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
-		return
-	}
-	else if (A_ThisMenuItem = "3k TPC"){
-		if winactive("Results Definition") ;Selection window
-		{
-			winactivate, Results Definition
-			Send,{click 80, 66} ;click edit
-			Breaking.Point()
+			return
 		}
-		Breaking.Point()
-		winwaitactive, Result Editor,,4
-		SpecTab.ResultEditor("","3,000","CFU/g",0,0,,1)
-		Mouseclick, left, 378, 667,1,0  ;click okay in result editor
-		winwaitactive, Results Definition,,4
-		My+=26
-		click, %mx%, %my%
-		Send,{click 80, 66} ;click edit
-		winwaitactive, Result Editor,,4
-		SpecTab.ResultEditor("","300","CFU/g",0,0,,1)
-		Mouseclick, left, 378, 667,1,0  ;click okay in result editor
-		return
-	}
+		else if (A_ThisMenuItem = "3k TPC"){
+			if winactive("Results Definition") ;Selection window
+			{
+				winactivate, Results Definition
+				Send,{click 80, 66} ;click edit
+				Breaking.Point()
+			}
+			Breaking.Point()
+			winwaitactive, Result Editor,,4
+			SpecTab.ResultEditor("","3,000","CFU/g",0,0,,1)
+			Mouseclick, left, 378, 667,1,0  ;click okay in result editor
+			winwaitactive, Results Definition,,4
+			My+=26
+			click, %mx%, %my%
+			Send,{click 80, 66} ;click edit
+			winwaitactive, Result Editor,,4
+			SpecTab.ResultEditor("","300","CFU/g",0,0,,1)
+			Mouseclick, left, 378, 667,1,0  ;click okay in result editor
+			return
+		}
 	else if (A_ThisMenuItem = "P. aeruginosa")
 	SpecTab.AddPaeruginosa()
-	else if (A_ThisMenuItem = "&USP Heavy Metal")
+	else if (A_ThisMenuItem = "USP Heavy Metal")
 	SpecTab.HM_USP()
-	else if (A_ThisMenuItem = "&Canada Heavy Metal")
+	else if (A_ThisMenuItem = "Canada Heavy Metal")
 	SpecTab.HM_Canada()
-	else if (A_ThisMenuItem = "&Prop65 Heavy Metal")
+	else if (A_ThisMenuItem = "Prop65 Heavy Metal")
 	SpecTab.HM_Prop65()
-	else if (A_ThisMenuItem = "&Report Only Heavy Metal")
+	else if (A_ThisMenuItem = "Report Only Heavy Metal")
 	SpecTab.HM_ReportOnly()
 	else if (A_ThisMenuItem = "Bloom Nutrition Heavy Metal")
 	SpecTab.HM_Bloom()
 	else if (A_ThisMenuItem = "Custom Heavy Metal")
 	SpecTab.HM_Custom()
-	else if (A_ThisMenuItem = "&Delete Retain")
+	else if (A_ThisMenuItem = "Delete Retain")
 	WorkTab.DeleteRetain()
 	Menu,Menu, deleteAll
 	return
@@ -645,7 +645,7 @@ Class ProductTab {
 		}
 		else
 			clip.codesRegex(SheetInfo[9])
-		tt(Product "`n" ProductName "`n" Customer,7000,100,100)
+		tt(Product "`n" ProductName "`n" Customer,1000,100,100)
 		; ControlsetText, Static1,%CustomerPosition%,ClipBar
 		; GuiControl,ClipBar:Text, Iteration, %Iteration%
 		; }
@@ -1395,6 +1395,7 @@ ClickEmptyRequirements(){
 	CopySpecTemplate(DepartmentInput:=""){
 		global
 		MouseGetPos, premx, premy
+		simpleclip:=1
 		; Critical, On
 		if winactive("NuGenesis LMS") && (DepartmentInput = "") {
 			clipboard:=
@@ -1429,8 +1430,10 @@ ClickEmptyRequirements(){
 		Breaking.Point()
 		premy:=PremY + 26
 		WinActivate, NuGenesis LMS
-		MouseMove, %Premx%, %Premy%,1,R
-
+		winwaitactive, NuGenesis LMS,,3
+		if !errorlevel
+			MouseMove, %Premx%, %Premy%,1
+simpleclip:=
 		; Critical, Off
 		return
 	}
@@ -1586,6 +1589,8 @@ ClickEmptyRequirements(){
 	;; Run through all the menues to add
 	AutoFill(){
 		global
+		; MouseGetPos, SaveX2, saveY2
+		SimpleClip:=1
 		If (Clipped_specs){
 			clipped_Specs:=
 			sleep 100
@@ -1628,8 +1633,10 @@ ClickEmptyRequirements(){
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,,1)
 			return
 		}
-		else
-			return
+		; else
+		simpleClip:=
+			; mousemove, %saveX2%, %SaveY2%
+			; return
 		return
 	}
 PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
@@ -1683,6 +1690,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 			clipped_Specs:=
 			sleep 100
 		}
+		simpleclip:=1
 		winactivate, Result Editor
 		click, 250, 140 ; click id box to orient
 		Breaking.Point()
@@ -1766,7 +1774,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		Global
 
 		; TT(Selectedtestname,1000,1,-100,1)
-		SimpleClip:=
+		; SimpleClip:=
 		if !(The_description) ; && !(Department)
 		{
 			MouseClick, left, 464, 532,2,0 	;click scrollbar

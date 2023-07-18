@@ -10,6 +10,7 @@ return
 	Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
 	exitapp
 	Return
+$enter::sendinput, {enter}
 
 
 
@@ -255,7 +256,6 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	:*:1`;::1 capsule / 0.765`" x 0.272`"
 	:*:0`;::0 capsule / 0.854`" x 0.300`"
 	:*:USP`;::Meets USP Requirements
-	:*:fr`;::Fixing Rotation
 	:*:7/16`;::`Round / 0.4375`"
 	:*:5.5o`;::`Oblong / 0.750`" x 0.313`"
 	:*:5.5ov`;::`Oval / 0.625`" x 0.344`"
@@ -278,13 +278,22 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 		sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
 	:*:2s`;::
-		sendinput, `Each two (2) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		sendinput, `Each two (2) scoops (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
 	:*:3s`;::
-		sendinput, `Each three (3) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+		sendinput, `Each three (3) scoops (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:1p`;::
+		sendinput, `Each (1) pouch (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:1j`;::
+		sendinput, `Each (1) jar (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
 	:*:1sp`;::
 		sendinput, `Each (1) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+	return
+	:*:1ps`;::
+		sendinput, `Each (1) packet or scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
 	:*:2sp`;::
 		sendinput, `Each two (2) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
@@ -344,22 +353,39 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	F9::send, ^e
 
 	F7::
-		winactivate, label,,VQ_Helper
-		send ^e
+		winactivate, ahk_exe explorer.exe
 		sleep 200
+		send ^{e}
+		sleep 300
 		sendinput, {*}%Product%{*}
-		sleep 200
-		send, {tab 2}{right}{pgup 2}
+		sleep 700
+		send, ^{e}{enter}{down 2}{up}
+		; sendinput, {tab 2}{right}{pgup 2}
 	return
 	F8::send, ^{F4}
-	Mbutton::send, ^{e}{*}%Product%{*}{enter}{down 2}{up}
+Mbutton::
+	send, ^{e}{*}%Product%{*}
+	sleep 800
+	send, ^{e}{enter}{down 2}{up}^a
+	return
 	; +Mbutton::SelectPreviewPane()
 	F6::
-		winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe,,VQ_Helper
-		sendinput, ^{e}
-		send, {tab 2}{right}
+		winactivate, ahk_class CabinetWClass ahk_exe explorer.exe,,VQ_Helper
+		send, ^{e}
+		sleep 700
+	send, {enter}{down 2}{up}
+	sleep 700
+		send ^{a}^{c}
 	return
 
+#ifwinexist, Search Results ahk_exe explorer.exe
+F6::
+	winactivate, ahk_exe explorer.exe
+	sleep 400
+	send, ^{e}{*}%Product%{*}
+	sleep 900
+	send, ^{e}{enter}{down 2}{up}
+return
 ;;\\ 	            Edit test (Field Configuration
 #ifwinactive, Edit test `(Field Configuration
 lctrl::
@@ -484,11 +510,10 @@ F9::mouseclick, Left, 638, 70
 
 
 
-	;;------------------------------------------------
-	;;[[_____________ Nugenesis MAIN _______________]]
 
 
 
+;;[[_____________ Nugenesis MAIN _______________]]
 #Ifwinactive, NuGenesis LMS
 
 ^F9::
@@ -557,7 +582,7 @@ return
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
-	Enter::LMS.SaveCode()
+	$Enter::LMS.SaveCode()
 
 
 ;;[[_________________ELN.EXE___________________________]]
@@ -1150,6 +1175,7 @@ class Breaking {
 		Global
 		; critical
 		; MouseGetPos,bx,by
+		SimpleClip:=
 		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") {
 			TT("Broke",3000,400,400)
 			; ContinueToRun:=
