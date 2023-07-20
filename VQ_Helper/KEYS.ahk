@@ -11,6 +11,10 @@ return
 	exitapp
 	Return
 $enter::sendinput, {enter}
++F5::KeyHistory
+^F5::ListLines
+
+
 
 
 
@@ -246,7 +250,34 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	return
 	F9::ProductTab.IngredientsMenu()
 	; mbutton::productTab.AddNewFormulation()
-
+#Ifwinactive, Edit Ingredient
+	:*:1s`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) scoop (%ShapeAndSize% g){left 2}
+	return
+	:*:2s`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of two (2) scoops (%ShapeAndSize% g){left 2}
+	return
+	:*:3s`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of three (3) scoops (%ShapeAndSize% g){left 2}
+	return
+	:*:1p`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) pouch (%ShapeAndSize% g){left 2}
+	return
+	:*:1j`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) jar (%ShapeAndSize% g){left 2}
+	return
+	:*:1sp`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) stick packet (%ShapeAndSize% g){left 2}
+	return
+	:*:1ps`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) packet or scoop (%ShapeAndSize% g){left 2}
+	return
+	:*:2sp`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of two (2) stick packet (%ShapeAndSize% g){left 2}
+	return
+	:*:3sp`;::
+		sendinput, ^{a}* Heavy Metals results are based on a daily dose of three (3) stick packet (%ShapeAndSize% g){left 2}
+	return
 #Ifwinactive, Edit Formulation
 
 	:*:00e`;::00 elongated capsule / 0.995`" x 0.336`"
@@ -588,7 +619,10 @@ return
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
 ;
-
+F6::Sendinput, %Product%
+F7::Sendinput, %Batch%
+F3::Sendinput, %lot%
+F4::Sendinput, %Coated%
 	^F10::gosub, TestCode
 	^F8::gosub, get_window_info
 	; ^F9::gosub, get_mouse_info
@@ -624,7 +658,7 @@ return
 
 	; ^3::WholeBatchMenu()
 	!F3::WholeBatchMenu()
-	F5::WholeBatchMenu()
+	; F5::WholeBatchMenu()
 	#+!F10::LMS.AddDataFromClipboard()
 	;#+^F10::clip.ParseSpecsTable()
 
@@ -1158,7 +1192,8 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	if window
 		if !winactive(window)
 			sleep 200 ; winactivate, %window%
-	mouseclick, %Button%, %x%,%y%,%n%,0
+	click, %x% %y% %n%
+	; mouseclick, %Button%, %x%,%y%,%n%,0
 	sleep 25
 	if (window!="")
 		winactivate, %mw%
@@ -1168,6 +1203,7 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 		Return
 	else
 		mousemove,%mx%,%my%,0
+		return
 }
 
 class Breaking {

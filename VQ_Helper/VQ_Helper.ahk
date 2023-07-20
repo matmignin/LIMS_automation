@@ -83,6 +83,7 @@ GUI, ClipBar:default
 ;;-----------------------------------------------------------
 ;; [[                    Active Check                    ]]
 activeCheck:
+ListLines, OFF
 	If winexist("Delete Attribute ahk_exe eln.exe"){
 		winactivate,
 		sleep 200
@@ -254,19 +255,19 @@ else if winActive("Information ahk_exe eln.exe"){
 	winactivate,
 	send, {enter}
 }
-else if Winactive("NuGenesis LMS"){
-	LMS.DetectTab()
-	sleep 1000
-}
-else
-	Return
+; else if Winactive("NuGenesis LMS"){
+	; LMS.DetectTab()
+	; sleep 1000
+; }
+listlines, On
+	; #maxthreadsperhotkey, 2
 return
 
 
 
 
 Block_Input:
-Thread, Priority, 1
+; Thread, Priority, 1
 	sleep 100
 		NAdd:=
 		nsub:=

@@ -73,7 +73,7 @@ Class LMS {
 		Menu, Menu, add, &Batches from clipboard, PasteAllBatches
 		Menu, Menu, add,
 		Menu, Menu, add, &Final Label Copy`t[%Product%], ShowFinalLabelCopy
-		Menu, Menu, add, &Scan Label Copy, ShowScanLabelCopy
+		Menu, Menu, add, &Scan Label Copy,  ShowScanLabelCopy
 		Menu, Menu, add, &GLOBAL VISION folder, ShowGlobalVision
 		Menu, Menu, add, &mfg folder, Showmfg
 		Menu, Menu, add, &Total CoAs, ShowFINAL_C_O_A
@@ -120,9 +120,6 @@ Class LMS {
 		return
 	}
 	AddDataFromClipboard(Pointer:=">>|",Source:=""){
-		/*
-		[2] Name 	[3] IngredientID 	[4] Position 	[5] LabelName 	[6] labelClaim 	[7] Assay 	[8] Method 	[9] Description 	[10] MinLimit 	[11] MaxLimit 	[12] Units 	[13] Percision 	[14] Requirement
-		*/
 		global
 		if !Source
 			Source:=Clipboard
@@ -257,17 +254,18 @@ Class LMS {
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		critical
 		; sleep 200
-		If Nsb
+		If Nsub
 		{
 			sleep 400
-			exit
+			; exit
 			return
 		}
-		Nsb:=1
+		Nsub:=1
+		; #maxthreadsperhotkey, 1
+		Tab:=LMS.DetectTab()
+		GuiControl,ClipBar:Text, GeneralBox, %Tab%
 		SetTimer, Block_Input, -2000
-			Tab:=LMS.DetectTab()
 
 			sleep 200
 
@@ -287,51 +285,87 @@ Class LMS {
 					lmsclick.Edit_Composition()
 					return
 				}
-				clk(x%Tab%Search,yProductsSearch)
+				clk(x%Tab%Search+45 ,yProductsSearch, "Left")
+				clk(x%Tab%Search ,yProductsSearch, "Left", 2)
+				; sleep 30
+				; clk(x%Tab%Search,yProductsSearch, "Left", 2)
+				; clk(x%Tab%Search+35,yProductsSearch, "Left")
+				; clk(x%Tab%Search,yProductsSearch)
 				Send, ^{a}
 				If Overwrite=true
 					Send, ^{x}
 				If Code
-					Send, %Product%^{a}
+					Sendinput, %Product%^{a}
 				If Overwrite=true
 					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
+					{
+					sleep 300
 					send % PostCmd
-
+				}
+					return
 			}
-			if (Tab="Specs") {
+			else if (Tab="Specs") {
 				If (Code=Batch) {
 					lmsclick.Edit_Test()
 					return
 				}
-				clk(x%Tab%Search,yProductsSearch,,1,"NuGenesis LMS",0)
-				clk(x%Tab%Search+5,yProductsSearch,,2)
+				; xtabsLocation:=x%Tab%Search
+				xtabsLocation2:=x%Tab%Search+10
+				xtabsLocation3:=x%Tab%Search+25
+				xtabsLocation4:=x%Tab%Search+35
+				xtabsLocation5:=x%Tab%Search+40
+				; xtabsLocation6:=x%Tab%Search+50
+				; ytabsLocation:=%yWorkTabSearch%
+				mouseclick,, %xtabslocation5%, %yProductsSearch%
+				mouseclick,, %xtabslocation4%, %yProductsSearch%
+				mouseclick,, %xtabslocation3%, %yProductsSearch%
+				mouseclick,, %xtabslocation2%, %yProductsSearch%
+				; mouseclick,, %xtabslocation%, %yProductsSearch%
+				; mouseclick,, %xtabslocation5%, %yProductsSearch%
+				; mouseclick,, %xtabslocation6%, %yProductsSearch%
+				; clk(x%Tab%Search+20,yProductsSearch,,2,"NuGenesis LMS",0)
+				; clk(x%Tab%Search+5,yProductsSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
 				if Code
-					Send, %Product%^{a}
+					Sendinput, %Product%^{a}
 				If Overwrite=Add
 					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
+					{
+					sleep 300
 					send % PostCmd
-
+				}
+				sleep 500
+					return
 			}
-			If (Tab="Requests") {
-				clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
-				clk(x%Tab%Search-9,yWorkTabSearch)
-
-				Send, ^{a}
+			else If (Tab="Requests") {
+				; clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
+				; clk(x%Tab%Search-9,yWorkTabSearch)
+				xtabsLocation:=x%Tab%Search
+				xtabsLocation2:=x%Tab%Search-9
+				xtabsLocation3:=x%Tab%Search-20
+				; ytabsLocation:=%yWorkTabSearch%
+				mouseclick,, %xtabslocation%, %yWorkTabSearch%
+				mouseclick,, %xtabslocation2%, %yWorkTabSearch%
+				mouseclick,, %xtabslocation3%, %yWorkTabSearch%
+				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
 				Send, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
+					{
+					sleep 300
 					send % PostCmd
-				; return
+				}
+				sleep 500
+					 return
 			}
-			If (Tab="Tests"|| Tab="Samples" || Tab="Results" || Tab="Documents") {
+			else If (Tab="Tests"|| Tab="Samples" || Tab="Results") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
@@ -342,14 +376,20 @@ Class LMS {
 				If Overwrite=Add
 					send, {right}{space}^{v}^{a}^{c}
 				if PostCmd!=""
+					{
+					sleep 300
 					send % PostCmd
-				; return
+				}
+				sleep 500
+					return
 			}
 			else
 				send, %Code%
 		}
-		sleep 2000
-		Nsb:=
+		; sleep 4000
+		; #maxthreadsperhotkey, 2
+		Nsub:=
+		return
 	}
 
 	SaveCode(){
@@ -383,7 +423,6 @@ Class LMS {
 
 	DetectTab(){
 		global
-
 		tab:=
 		FoundSamples:=
 		FoundRequests:=
@@ -399,7 +438,7 @@ Class LMS {
 		TAB5:=
 		TAB6:=
 		TAB7:=
-
+sleep 20
 		LMS.Orient()
 		; CoordMode, pixel, window
 		if winactive("NuGenesis LMS") {
@@ -545,7 +584,7 @@ Class LMS {
 			}
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
-			SpecTab.ResultEditor("","100,000","CFU/g",0,0,,1)
+			SpecTab.ChangeMicroLimit("100,000")
 			return
 		}
 		else if (A_ThisMenuItem = "3k TPC"){
@@ -557,15 +596,15 @@ Class LMS {
 			}
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
-			SpecTab.ResultEditor("","3,000","CFU/g",0,0,,1)
-			Mouseclick, left, 378, 667,1,0  ;click okay in result editor
+			SpecTab.ChangeMicroLimit("3,000", 1)
+			; Mouseclick, left, 378, 667,1,0  ;click okay in result editor
 			winwaitactive, Results Definition,,4
 			My+=26
-			click, %mx%, %my%
+			click, 445, 164
 			Send,{click 80, 66} ;click edit
 			winwaitactive, Result Editor,,4
-			SpecTab.ResultEditor("","300","CFU/g",0,0,,1)
-			Mouseclick, left, 378, 667,1,0  ;click okay in result editor
+			SpecTab.ChangeMicroLimit("300")
+			; Mouseclick, left, 378, 667,1,0  ;click okay in result editor
 			return
 		}
 	else if (A_ThisMenuItem = "P. aeruginosa")
@@ -802,11 +841,11 @@ Class ProductTab {
 		; sendinput, {tab}^a
 
 
-		if InStr(ServingSize,"1 c",False)
+		if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
 			Sendinput % "Each (1) capsule contains{Tab}"
-		else if InStr(ServingSize,"2 c",False)
+		else if InStr(ServingSize,"2 c",False) || InStr(ServingSize,"2c",False)
 			Sendinput % "Each two (2) capsules contains{Tab}"
-		else if InStr(ServingSize,"3 c",False)
+		else if InStr(ServingSize,"3 c",False) || InStr(ServingSize,"3c",False)
 			Sendinput % "Each three (3) capsules contains{Tab}"
 		else if InStr(ServingSize,"4 c",False)
 			Sendinput % "Each four (4) capsules contains{Tab}"
@@ -816,11 +855,11 @@ Class ProductTab {
 			Sendinput % "Each six (6) capsules contains{Tab}"
 		else if InStr(ServingSize,"7 c",False)
 			Sendinput % "Each seven (7) capsules contains{Tab}"
-		else if InStr(ServingSize,"1 t",False)
+		else if InStr(ServingSize,"1 t",False) || InStr(ServingSize,"1t",False)
 			Sendinput % "Each (1) tablet contains{Tab}"
-		else if InStr(ServingSize,"2 t",False)
+		else if InStr(ServingSize,"2 t",False) || InStr(ServingSize,"2t",False)
 			Sendinput % "Each two (2) tablets contains{Tab}"
-		else if InStr(ServingSize,"3 t",False)
+		else if InStr(ServingSize,"3 t",False) || InStr(ServingSize,"3t",False)
 			Sendinput % "Each three (3) tablets contains{Tab}"
 		else if InStr(ServingSize,"4 t",False)
 			Sendinput % "Each four (4) tablets contains{Tab}"
@@ -831,16 +870,16 @@ Class ProductTab {
 		else if InStr(ServingSize,"7 t",False)
 			Sendinput % "Each seven (7) tablets contains{Tab}"
 		else if InStr(ServingSize,"1 sp",False)
-			Sendinput % "Each (1) stick packet (" ShapeAndSize ") contains{Tab}Blend"
+			Sendinput % "Each (1) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"2 sp",False)
-			Sendinput % "Each two (2) stick packet (" ShapeAndSize ") contains{Tab}Blend"
-		else if InStr(ServingSize,"1 stick",False)
+			Sendinput % "Each two (2) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
+		else if InStr(ServingSize,"1 stick",False) || InStr(ServingSize,"1st",False)
 			Sendinput % "Each (1)" SubStr(ServingSize, 2) " contains{Tab}Blend"
 		else if InStr(ServingSize,"2 stick",False)
 			Sendinput % "Each two (2)" SubStr(ServingSize, 2) " contains{Tab}Blend"
-		else if InStr(ServingSize,"1 scoop",False)
+		else if InStr(ServingSize,"1 scoop",False) || InStr(ServingSize,"1s",False)
 			Sendinput % "Each (1)" SubStr(ServingSize, 2) " contains{Tab}Blend"
-		else if InStr(ServingSize,"2 scoop",False)
+		else if InStr(ServingSize,"2 scoop",False)  || InStr(ServingSize,"2s",False)
 			Sendinput % "Each two (2)" SubStr(ServingSize, 2) " contains{Tab}Blend"
 		else if InStr(ServingSize,"3 scoop",False)
 			Sendinput % "Each three (3)" SubStr(ServingSize, 2) " contains{Tab}Blend"
@@ -849,19 +888,19 @@ Class ProductTab {
 		else if InStr(ServingSize,"5 scoop",False)
 			Sendinput % "Each five (5)" SubStr(ServingSize, 2) "  contains{Tab}Blend"
 		else if InStr(ServingSize,"1 s",False)
-			Sendinput % "Each (1) scoop (" ShapeAndSize ") contains{Tab}Blend"
+			Sendinput % "Each (1) scoop (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"2 s",False)
-			Sendinput % "Each two (2) scoops (" ShapeAndSize ") contains{Tab}Blend"
+			Sendinput % "Each two (2) scoops (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"3 s",False)
-			Sendinput % "Each three (3) scoops (" ShapeAndSize ") contains{Tab}Blend"
+			Sendinput % "Each three (3) scoops (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"4 s",False)
-			Sendinput % "Each four (4) scoosp ("  ShapeAndSize ")  contains{Tab}Blend"
+			Sendinput % "Each four (4) scoosp ("  ShapeAndSize " g)  contains{Tab}Blend"
 		else if InStr(ServingSize,"5 s",False)
-			Sendinput % "Each five (5) scoops (" ShapeAndSize ")  contains{Tab}Blend"
+			Sendinput % "Each five (5) scoops (" ShapeAndSize " g)  contains{Tab}Blend"
 		else if InStr(ServingSize,"",False)
 			Sendinput {tab}
 
-		If ShapeAndSize
+		If ShapeAndSize && !ServingSize
 			sendraw, %ShapeAndSize%
 		sendinput {Tab}
 		; sendinput, {shiftdown}{tab}{shiftup}
@@ -1103,6 +1142,8 @@ class SpecTab {
 			Table_height := 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
+		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		Gui, Spec_Table:Add, Button, X25 y+0 h18 w145 gAddSpecTableMethods, Add Methods
 		Gui, Spec_Table:Add, Button, X+3 h18 w145 gAutoAddSpecs, Auto Specs
@@ -1767,6 +1808,30 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		if ContinueToRun
 			winwaitactive, NuGenesis LMS,,10
 		sleep 300
+		return
+	}
+
+	ChangeMicroLimit(NewLimit, ContinueToRun:=""){ ; 3rd window
+		; Global
+		winactivate, Result Editor
+		click, 250, 140 ; click id box to orient
+		Breaking.Point()
+		Sendinput,{tab 12}
+		send, ^{a}
+		sendinput, %NewLimit%
+		send, {tab 5}^{a}
+		sendinput, NMT %NewLimit% CFU/g
+		sleep 400
+			Mouseclick, left, 378, 667,1,0 ; click okay
+		Breaking.Point()
+		if ContinueToRun
+			Return
+	winwaitactive, Results Definition,, 5
+		wingetpos, Results_X, Results_y, Results_w, Results_h, Results
+		sleep 200
+		Okay_x:=Results_W - 170
+		Okay_y:=Results_H - 45
+		mousemove, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
 		return
 	}
 

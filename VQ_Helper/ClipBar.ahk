@@ -1,7 +1,41 @@
-;;------------------------------------------------------------
+
 ;;[[                       CLIP CODES                          ]]
 ;;------------------------------------------------------------
 
+	;<LC>|
+	;  IngredientId|
+	; [1] IngredientLoacation|
+	; [2] Sequene|
+	; [3] IngredientText|
+	; [4] LabelClaim|
+	; [5] AssayRange%|
+	; [6] MethodID|
+	; [7] IngredientDescription|
+	; [8] MinLimit|
+	; [9] MaxLimit|
+	; [10] Units|
+	; [11] Percision|
+	; [12] Requirement|
+	;<<LC>>|
+	; [1] Formulation|
+	; [2] ProductName|
+	; [3] Customer|
+	; [4] CustomerDropdown|
+	; [5] pillSize|
+
+	/*
+
+	IngredientText=
+	LabelClaim=
+	AssayRange=
+	IngredientDescription=
+	MinLimit=
+	MaxLimit=
+	Units=
+	Percision=
+	Requirement=
+
+	*/
 clipChange(type){
   global
   sleep 75
@@ -84,40 +118,6 @@ clipChange(type){
 	}
 
 
-	;<LC>|
-	;  IngredientId|
-	; [1] IngredientLoacation|
-	; [2] Sequene|
-	; [3] IngredientText|
-	; [4] LabelClaim|
-	; [5] AssayRange%|
-	; [6] MethodID|
-	; [7] IngredientDescription|
-	; [8] MinLimit|
-	; [9] MaxLimit|
-	; [10 ]Units|
-	; [11] Percision|
-	; [12] Requirement|
-	;<<LC>>|
-	; [1] Formulation|
-	; [2] ProductName|
-	; [3] Customer|
-	; [4] CustomerDropdown|
-	; [5] pillSize|
-
-	/*
-
-	IngredientText=
-	LabelClaim=
-	AssayRange=
-	IngredientDescription=
-	MinLimit=
-	MaxLimit=
-	Units=
-	Percision=
-	Requirement=
-
-	*/
 
 Clip(input=50,Wait:="0.95"){
   global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct, regexBatch,regexlot,regexSampleID, regexCoated
