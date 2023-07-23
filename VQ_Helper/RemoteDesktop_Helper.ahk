@@ -1,7 +1,7 @@
 	#SingleInstance,Force
 	#Persistent
 	#NoEnv
-	; SetBatchLines, -1
+; SetBatchLines, -1
 	#HotkeyInterval 1000
 	#MaxHotkeysPerInterval 210
 	#ClipboardTimeout 7500
@@ -9,7 +9,8 @@
 	#maxthreadsperhotkey, 1
 	SetTitleMatchMode, 2
 #winactivateForce
-	; SetControlDelay -1
+; SetControlDelay -1
+	CoordMode, ToolTip, Window
 	SetNumlockState, on
 	SetscrolllockState, off
 	CrLf=`r`n
@@ -17,9 +18,11 @@
 	setcapslockstate alwaysoff
 	SetWorkingDir, %A_ScriptDir%
 	SetscrolllockState, alwaysoff
-	AutoTrim, On
-
-	RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
+AutoTrim, On
+	SetKeyDelay, -1 , 0
+	RegexSampleGUID:="i)(?P<SampleGUID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
+	RegexSampleID:="i)(?P<SampleID>\b23[0-1][0-9]{5}|S[0-9]{8}-[0-9]{3}\b)"
+RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 
 full_command_line := DllCall("GetCommandLine", "str")
 
@@ -35,30 +38,60 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
     ExitApp
 }
 
-; OnClipboardChange("clipChange")
+
+
+OnClipboardChange("clipChange")
 
 	return
-; clipChange(type){
-;   global
-; 	sleep 75
-; 	PreviousSampleID:=SampleID
+clipChange(type){
+	global
+	rSampleGUID:=
+	rSampleID:=
+	rbatch:=
+	if SampleID
+	PreviousSampleID:=SampleID
+	if SampleGUID
+	PreviousSampleGUID:=SampleGUID
+	SampleID:=
+	SampleGUID:=
+	sleep 75
+	If winactive("NuGenesis LMS"){
+	clipboardParse:=Clipboard
+		Sampleid:=Trim(RegExMatch(ClipboardParse, RegexSampleID, r))? rSampleID : SampleID
+		SampleGUID:=TRIM(RegExMatch(ClipboardParse, RegexSampleGUID, r))? rSampleGUID : SampleGUID
+		Batch:=TRIM(RegExMatch(ClipboardParse, RegexBatch, r))? rBatch : Batch
+		tooltip, %rbatch% `t %rSampleID% `t %rSampleGUID%, 600,0
+		sleep 900
+		tooltip,
+	}
+	if (SampleID!=PreviousSampleID) && (SampleID)
+  {
+    Loop, Read, U:\VQ_Helper\PriorSampleIDs.txt
+    {
+      if SampleID:=Trim(A_LoopReadLine)
+        exit
+    }
+    FileAppend, %SampleID%`n, U:\VQ_Helper\PriorSampleIDs.txt
+    }
+	if (SampleGUID=PreviousSampleGUID) && (SampleGUID)
+  {
+    Loop, Read, U:\VQ_Helper\PriorSampleGUIDs.txt
+    {
+      if SampleGUID:=Trim(A_LoopReadLine)
+        exit
+    }
+    FileAppend, %SampleGUID%`n, U:\VQ_Helper\PriorSampleGUIDs.txt
+	}
+	if !SampleID
+		SampleID:=PreviousSampleID
+	if !SampleGUID
+		SampleGUID:=PreviousSampleGUID
+	else
+	return
+}
 
-; 	clipboardParse:=Clipboard
-; 	Sampleid:=RegExMatch(ClipboardParse, RegexSampleID, r)
-; sleep 400
-; 	if (SampleID=PreviousSampleID) || !(SampleID)
-; 		return
-; 	else
-;   {
-;     Loop, Read, U:\VQ_Helper\PriorSampleIDs.txt
-;     {
-;       if SampleID:=Trim(A_LoopReadLine)
-;         exit
-;     }
-;     FileAppend, %SampleID%`n, U:\VQ_Helper\PriorSampleIDs.txt
-;     }
-;     return
-; 	}
+
+
 ~RWin::Send {Blind}{vkFF}
 ~LWin::Send {Blind}{vkFF}
 
@@ -71,14 +104,13 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 	return
 ; +enter::ControlClick ,Button47, TIBCO Jaspersoft
 	; +Enter::click 648, 241
-	mbutton::
 F8::click 648, 241
 F9::controlclick, Button47, TIBCO Jaspersoft
-
+F7::PriorSampleIDsMenu(1)
 
 #ifwinactive, Parameter: SAMPLEGUID
 F9::
-+v::
++^v::
 	controlclick, Button1, Parameter: SAMPLEGUID
 	; click 372,79
 	sleep 500
@@ -105,13 +137,35 @@ F9::
 	; click 253, 472
 return
 
+#Ifwinactive, ahk_exe eln.exe
+	F1::sendinput, %batch%
+	F2::Sendinput, %SampleID%
+	F3::Sendinput, %SampleGUID%
+
+
+#ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
+	F2::Sendinput, %SampleID%{enter}
+	+F7::Sendinput, %SampleID%{enter}
+F3::Sendinput, %SampleGUID%{enter}
+F8::
+CoordMode, Mouse, Screen
+	MouseGetPos, rmx, rmY,
+	if rmx < 400
+		rmx:= 400
+	if rmy< 600
+		rmy:=600
+	WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, 0, 0, %rMx%, %rmy%
+	sleep 400
+CoordMode, Mouse, Window
+return
 
 #ifwinactive
-	F7::PriorSampleIDsMenu(1)
-Mbutton::PriorSampleIDsMenu(1)
-return
+
 #v::Send, ^{v}
 !v::Send, ^v
+F1::Sendinput, %Batch%
+F2::Sendinput, %SampleID%
+F3::Sendinput, %SampleGUID%
 
 
 

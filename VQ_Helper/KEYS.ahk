@@ -639,6 +639,7 @@ F4::Sendinput, %Coated%
 	<!right::GetAllBatches()
 	F13::breaking.point(1)
 	+!F5::LMS.Menu()
+	numpaddot::LMS.SearchBar("",,"False")
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
 	^+F16::GetAllProducts()

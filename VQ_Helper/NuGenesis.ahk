@@ -2751,6 +2751,8 @@ Class WorkTab {
 			winactivate, Edit sample
 			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
 				send, {Click 253, 138}{tab 4}
+			Ifwinactive, Edit sample (Field Configuration: CT
+				send, {Click 253, 138}{tab 2}
 			else
 				send, {Click 253, 138}{tab}
 			sleep 200
@@ -2773,10 +2775,12 @@ Class WorkTab {
 			Sendinput,{home}
 			else if (a_ShipTo > 1)
 			; msgbox %A_shipto% >1
-			Sendinput,{home}{right}{right %A_ShipTo%}
+			Sendinput,{home}{right %A_ShipTo%}
+			; Sendinput,{home}{right}{right %A_ShipTo%}  previously used one
 			else if (a_ShipTo < 1)
 			; msgbox %A_shipto% <1
-			Sendinput,{end}{left}{left %Absselection%}
+			Sendinput,{end}{left %Absselection%}
+			; Sendinput,{end}{left}{left %Absselection%}   previously used one
 			else if (a_ShipTo = "")
 			; msgbox %A_shipto% blank
 			worktab.CustomerMenu()
