@@ -142,6 +142,22 @@ return
 	F2::Sendinput, %SampleID%
 	F3::Sendinput, %SampleGUID%
 
+#IfWinactive, Dataset and Query Dialog
+^c::
+	Send, ^c
+			Ifwinnotexist, Untitled - Notepad
+				Run, notepad.exe
+			else
+				Winactivate, Untitled - Notepad
+			WinWaitActive, Untitled - Notepad
+        SendInput, ^a^v
+        Sleep, 100
+        SendInput, ^a^c
+				Winminimize, Untitled - Notepad
+        Sleep, 100
+				return
+    Return
+
 
 #ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
 	F2::Sendinput, %SampleID%{enter}
