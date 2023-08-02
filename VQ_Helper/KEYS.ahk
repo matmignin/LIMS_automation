@@ -608,7 +608,8 @@ return
 return
 
 		; clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
-	+F7::copyLabelCopyDoc()
++F7::copyLabelCopyDoc()
+	+F8::LMS.SearchBar("",,"False")
 	F8::LMS.SearchBar("",,"False")
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
@@ -883,10 +884,10 @@ ShowScanLabelCopy:
 	runwait, find "\\netapp\share\QC LAB\Label Copy Scans"
 	sleep 250
 	; winmaximize, Search Results
-	winactivate, Label ahk_class CabinetWClass ahk_exe explorer.exe
-	sendinput, {*}%Product%{*}{enter}
+	winactivate, ahk_class CabinetWClass ahk_exe explorer.exe
+	send, {*}%Product%{*}{enter}
 	sleep 300
-	sendinput, ^e{tab 2}{down}{up}
+	send, ^e{tab 2}{down}{up}
 return
 ShowManualCOA:
 	run, explorer "\\10.1.2.118\coa-lot#"

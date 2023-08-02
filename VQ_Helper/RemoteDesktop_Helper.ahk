@@ -23,6 +23,7 @@ AutoTrim, On
 	RegexSampleGUID:="i)(?P<SampleGUID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
 	RegexSampleID:="i)(?P<SampleID>\b23[0-1][0-9]{5}|S[0-9]{8}-[0-9]{3}\b)"
 RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
+QuickPaste:="20230801000000000"
 
 full_command_line := DllCall("GetCommandLine", "str")
 
@@ -143,6 +144,7 @@ return
 	F3::Sendinput, %SampleGUID%
 
 #IfWinactive, Dataset and Query Dialog
+^x::
 ^c::
 	Send, ^c
 			Ifwinnotexist, Untitled - Notepad
@@ -182,6 +184,30 @@ return
 F1::Sendinput, %Batch%
 F2::Sendinput, %SampleID%
 F3::Sendinput, %SampleGUID%
++F1::
+Send, ^c
+sleep 300
+Batch:=Clipboard
+tooltip,%Clipboard%
+sleep 500
+Tooltip
+return
++F2::
+Send, ^c
+sleep 300
+SampleID:=Clipboard
+tooltip,%Clipboard%
+sleep 500
+Tooltip
+return
++F3::
+Send, ^c
+sleep 300
+SampleGUID:=Clipboard
+tooltip,%Clipboard%
+sleep 500
+Tooltip
+return
 
 
 
