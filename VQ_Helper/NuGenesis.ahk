@@ -841,34 +841,34 @@ Class ProductTab {
 		; sendinput, {tab}^a
 
 
-		if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
-			Sendinput % "Each (1) capsule contains{Tab}"
+		 If InStr(ServingSize,"1 t",False) || InStr(ServingSize,"1t",False) || InStr(ServingSize,"1 Chewable",False)
+			Sendinput % "Each (1) tablet contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
+		else if InStr(ServingSize,"2 t",False) || InStr(ServingSize,"2t",False)  InStr(ServingSize,"2 Chewable",False)
+			Sendinput % "Each two (2) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
+		else if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
+			Sendinput % "Each (1) capsule contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"2 c",False) || InStr(ServingSize,"2c",False)
-			Sendinput % "Each two (2) capsules contains{Tab}"
+			Sendinput % "Each two (2) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"3 c",False) || InStr(ServingSize,"3c",False)
-			Sendinput % "Each three (3) capsules contains{Tab}"
+			Sendinput % "Each three (3) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"4 c",False)
-			Sendinput % "Each four (4) capsules contains{Tab}"
+			Sendinput % "Each four (4) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"5 c",False)
-			Sendinput % "Each five (5) capsules contains{Tab}"
+			Sendinput % "Each five (5) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"6 c",False)
-			Sendinput % "Each six (6) capsules contains{Tab}"
+			Sendinput % "Each six (6) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"7 c",False)
-			Sendinput % "Each seven (7) capsules contains{Tab}"
-		else if InStr(ServingSize,"1 t",False) || InStr(ServingSize,"1t",False)
-			Sendinput % "Each (1) tablet contains{Tab}"
-		else if InStr(ServingSize,"2 t",False) || InStr(ServingSize,"2t",False)
-			Sendinput % "Each two (2) tablets contains{Tab}"
+			Sendinput % "Each seven (7) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"3 t",False) || InStr(ServingSize,"3t",False)
-			Sendinput % "Each three (3) tablets contains{Tab}"
+			Sendinput % "Each three (3) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"4 t",False)
-			Sendinput % "Each four (4) tablets contains{Tab}"
+			Sendinput % "Each four (4) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"5 t",False)
-			Sendinput % "Each five (5) tablets contains{Tab}"
+			Sendinput % "Each five (5) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"6 t",False)
-			Sendinput % "Each six (6) tablets contains{Tab}"
+			Sendinput % "Each six (6) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"7 t",False)
-			Sendinput % "Each seven (7) tablets contains{Tab}"
+			Sendinput % "Each seven (7) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
 		else if InStr(ServingSize,"1 sp",False)
 			Sendinput % "Each (1) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"2 sp",False)
@@ -1142,8 +1142,8 @@ class SpecTab {
 			Table_height := 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
-		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		; GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		; GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		Gui, Spec_Table:Add, Button, X25 y+0 h18 w145 gAddSpecTableMethods, Add Methods
 		Gui, Spec_Table:Add, Button, X+3 h18 w145 gAutoAddSpecs, Auto Specs
@@ -1660,7 +1660,9 @@ simpleclip:=
 		{
 			winactivate, Results Definition
 			If Method contains ICP-MS 231
-				Sendinput,{click 217, 141}
+			{
+				Sendinput,{click 217, 141} ;click first line
+			}
 			Sendinput,{click 80, 66} ;click edit
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
@@ -1780,6 +1782,8 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		Breaking.Point()
 		If Method contains ICP-MS 231
 		{
+			; WinActivate, Spec Table ahk_exe VQ_Helper.exe
+			; sleep 200
 			MouseMove, %mX%, %mY%, 0
 			return
 		}

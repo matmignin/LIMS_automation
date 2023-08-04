@@ -442,10 +442,15 @@ lctrl::
 		winactivate, Results Definition
 		sleep 100
 return
+Enter::Clk(343, 616)
++Enter::sendinput, {Enter}
+
 wheeldown::
 	if !Mousemoved
+	{
 		clk(464, 532,,2,"Test Definition Editor",0)
-	mousemove, 245, 246, 0
+		mousemove, 245, 246, 0
+	}
 	mousemoved:=1
 	SetTimer, Block_Input, -2000
 	sleep 500
@@ -624,9 +629,19 @@ F6::Sendinput, %Product%
 F7::Sendinput, %Batch%
 F3::Sendinput, %lot%
 F4::Sendinput, %Coated%
-	^F10::gosub, TestCode
-	^F8::gosub, get_window_info
-	; ^F9::gosub, get_mouse_info
+F1::Sendinput, %Product%
+!F1::Sendinput, %Product%
+F2::Sendinput, %Batch%
+!F2::Sendinput, %Batch%
+!F3::Sendinput, %lot%
+
+!F4::Sendinput, %Coated%
+
+	; ^`::gosub, TestCode
+	+^`::gosub, get_window_info
+	; ^F8::gosub, get_window_info
+	^`::gosub, get_mouse_info
+	^+Mbutton::gosub, get_mouse_info
 	^w::gosub, get_window_info
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
@@ -647,19 +662,19 @@ F4::Sendinput, %Coated%
 	^+F15::GetAllBatches()
 	; ^1::sendinput % GetAllProducts(" ")
 	; ^2::sendinput % GetAllBatches(" ")
-	!F1::sendinput % GetAllProducts(" ")
-	!F2::sendinput % GetAllBatches(" ")
+	+!F1::sendinput % GetAllProducts(" ")
+	+!F2::sendinput % GetAllBatches(" ")
 
 
-		^`;::sendinput % GetAllProducts("`;")
-		+^`;::sendinput % GetAllBatches("`;")
-	^,::sendinput % GetAllProducts(", ")
-	+^.::sendinput % GetAllBatches(", ")
-	+^,::sendinput % GetAllBatches(", ")
-	^.::sendinput % GetAllBatches(", ")
+		; ^`;::sendinput % GetAllProducts("`;")
+		; +^`;::sendinput % GetAllBatches("`;")
+	; ^,::sendinput % GetAllProducts(", ")
+	; +^.::sendinput % GetAllBatches(", ")
+	; +^,::sendinput % GetAllBatches(", ")
+	; ^.::sendinput % GetAllBatches(", ")
 
 	; ^3::WholeBatchMenu()
-	!F3::WholeBatchMenu()
+	; !F3::WholeBatchMenu()
 	; F5::WholeBatchMenu()
 	#+!F10::LMS.AddDataFromClipboard()
 	;#+^F10::clip.ParseSpecsTable()

@@ -271,7 +271,7 @@ Block_Input:
 	sleep 100
 		NAdd:=
 		nsub:=
-		Mosemoved:=
+		Mousemoved:=
 	BlockInput, off
 	settimer, Block_Input, Off
 Return
