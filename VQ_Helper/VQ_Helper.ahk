@@ -285,3 +285,29 @@ Return
 	#include CLIPBAR.ahk
 		#include Markers.ahk
 
+
+
+
+copyDocText(){
+myPath := "Testing.docx" 
+tmpFolder := RegExReplace( myPath, ".*\K\\.*") "\_Word_UnZip\"
+tmpName := myPath ".zip"
+FileCopy, % myPath , % tmpName
+FileCreateDir, % tmpFolder
+tmpObject := ComObjCreate("Shell.Application")
+tmpObject.Namespace(tmpFolder).CopyHere(tmpObject.Namespace(tmpName).items,4|16)
+FileDelete, % tmpName
+FileEncoding, UTF-8
+FileRead, wordContents, % tmpFolder "\" "word\document.xml"
+FileRemoveDir, % tmpFolder, 1
+paraPattern := "<w:p(?: [^>]*)?>(.*?)</w:p>"
+textPattern := "<w:t(?: [^>]*)?>(.*?)</w:t>"
+While singlePara := RegExMatch( wordContents, paraPattern, myPara, singlePara ? StrLen(myPara)+singlePara:1)
+{
+	While singleText := RegExMatch( myPara1, textPattern, myText, singleText ? StrLen(myText)+singleText:1)
+		finalContents .= myText1
+	finalContents .= "`n"
+}
+MsgBox % finalContents
+
+}
