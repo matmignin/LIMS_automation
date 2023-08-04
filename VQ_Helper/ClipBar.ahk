@@ -72,6 +72,16 @@ clipChange(type){
     exitsub()
     Return
   }
+	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
+		clip.codesRegex()
+		Clipboard:=
+		GoSub ShowScanLabelCopy
+		sleep 200
+		copyLabelCopyDoc()
+		; Clipwait,5,0
+		; tt(clipboard)
+    Return
+  }
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
 		Clipboard:=
     sleep 800

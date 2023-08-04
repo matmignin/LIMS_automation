@@ -13,6 +13,21 @@ return
 $enter::sendinput, {enter}
 +F5::KeyHistory
 ^F5::ListLines
+^+F11::
+Clipboard:=
+	sleep 200
+	copyLabelCopyDoc()
+clipwait, 3
+	TT("Okay")
+	GoSub ShowScanLabelCopy
+		return
+^!+F11::
+Clipboard:=
+		sleep 200
+		copyLabelCopyDocRegex()
+		clipwait, 3
+	tt("Label Copy Regexed")
+		return
 
 
 
@@ -637,11 +652,11 @@ F2::Sendinput, %Batch%
 
 !F4::Sendinput, %Coated%
 
-	; ^`::gosub, TestCode
+	^F10::gosub, TestCode
 	+^`::gosub, get_window_info
 	; ^F8::gosub, get_window_info
 	^`::gosub, get_mouse_info
-	^+Mbutton::gosub, get_mouse_info
+	; ^+Mbutton::gosub, get_mouse_info
 	^w::gosub, get_window_info
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
@@ -891,7 +906,7 @@ ShowFinalLabelCopy:
 	winactivate, ahk_class CabinetWClass ahk_exe explorer.exe
 	send, {*}%Product%{*}{enter}
 	sleep 400
-	send, ^e{tab 2}{right}
+	send, ^{e}{tab 2}{right}
 	; SelectPreviewPane(Product)
 return
 ShowScanLabelCopy:
@@ -899,10 +914,10 @@ ShowScanLabelCopy:
 	runwait, find "\\netapp\share\QC LAB\Label Copy Scans"
 	sleep 250
 	; winmaximize, Search Results
-	winactivate, ahk_class CabinetWClass ahk_exe explorer.exe
+	winactivate, ahk_exe explorer.exe
 	send, {*}%Product%{*}{enter}
-	sleep 300
-	send, ^e{tab 2}{down}{up}
+	sleep 700
+	send, ^{e}{tab 2}{down}{up}
 return
 ShowManualCOA:
 	run, explorer "\\10.1.2.118\coa-lot#"

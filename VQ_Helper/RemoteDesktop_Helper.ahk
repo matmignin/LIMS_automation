@@ -39,7 +39,7 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
     ExitApp
 }
 
-
+sd
 
 OnClipboardChange("clipChange")
 
