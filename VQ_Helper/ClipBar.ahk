@@ -238,10 +238,10 @@ GetSampleInfo(){ ;on the lms main menu
 	{
 		customer:=Clipped_Customer
 		Iteration:=GetIniValue("Customers.ini",Customer)
-		GuiControl,ClipBar:Text, GeneralBox, %Customer%
+		ControlsetText, Edit6,%Customer%,ClipBar
 	}
-	else
-		GuiControl,ClipBar:Text, GeneralBox,
+	; else
+		; GuiControl,ClipBar:Text, GeneralBox,
 
 
 	if clipped_Coated
@@ -275,10 +275,11 @@ GetSampleInfo(){ ;on the lms main menu
 			clipped_LabelClaim:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Generic 1") + TotalColumns],"`r`n")
 			clipped_IngredientGroup:=Trim(ParsedIngredients[HasValue(ParsedIngredients, "Generic 2") + TotalColumns],"`r`n")
       sleep 200
-      Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_LabelName "`n" Clipped_IngredientGroup
+      Clipped_Ingredients:= Clipped_position ": " Clipped_IngredientId "`t"  Clipped_LabelClaim "`n" Clipped_IngredientGroup
       ; msgbox, %Clipped_Ingredients%
       ; Tooltip, %Clipped_Ingredients%, 200,0
 			ControlsetText, Edit6,%Clipped_Ingredients%,ClipBar
+			ControlsetText, Edit7,%Clipped_LabelName%,ClipBar
 			gui, Clipbar:Submit,Nohide
       tt(Clipped_ingredients 1000,10,20,2)
       return
@@ -314,13 +315,14 @@ GetSampleInfo(){ ;on the lms main menu
       Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
       sleep 200
-      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " (" FullRequirements ") `n Percision: " Percision "`n Units: " Units "`n Allow Prefix/limits: " AllowPrefixes "/" UseLimits
+      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " `n Percision: " Percision "`n Units: " Units "`n Allow Prefix/limits: " AllowPrefixes "/" UseLimits
 			; if !UseLimits
 			; 	UsedLimits:=
 			; If !AllowPrefixes
 			; 	AllowPrefixes:=
       tt(Clipped_Specs,3000,100,300)
-			ControlsetText, Edit6,%Clipped_Specs%,ClipBar ahk_exe VQ_Helper
+			ControlsetText, Edit6,%Clipped_Specs%,ClipBar
+			ControlsetText, Edit7,%FullRequirements%,ClipBar
         ; tooltip, %Clipped_specs%, 200,0
       If (EnterData){
         sleep 300
@@ -402,7 +404,8 @@ GetSampleInfo(){ ;on the lms main menu
       sleep 200
       Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
       TT(%Clippsed_Specs%,4000)
-			ControlsetText, ,%Clipped_Specs%,ClipBar ahk_exe VQ_Helper
+			ControlsetText, Edit6,%Clipped_Specs%,ClipBar
+			ControlsetText, Edit7,%FullRequirement%,ClipBar
         ; tooltip, %Clipped_specs%, 200,0
       return
 		}
@@ -700,14 +703,13 @@ Return
 
 ServingSizeMenu(Preselect:=""){
 	global
-	MouseGetPos, mx, my
+	; MouseGetPos, mx, my
 	if Preselect
 	{
 		Preselect:=Trim(preselect)
 		gosub, ServingSizeMenuButton
 		return
 	}
-	else
 	try Menu, ServingSizeMenu, DeleteAll
 	Menu, ServingSizeMenu, Add, (1) capsule,ServingSizeMenuButton
 	Menu, ServingSizeMenu, Add, (2) capsules,ServingSizeMenuButton
@@ -727,11 +729,14 @@ ServingSizeMenu(Preselect:=""){
 		Try Menu,ServingSizeMenu,show
 	return
 
-ServingSizeMenuButton:
+	ServingSizeMenuButton:
+	Winactivate, Edit Ingredient
 	if A_ThisMenuItem
 	{
-		click 317, 306
-		sleep 200
+		; send, {Click 325, 337}
+		; click 317, 306
+		; click 325, 337
+		sleep 300
 		if instr(A_ThisMenuItem,"(2)")
 			Send, two %A_ThisMenuItem%
 		else if instr(A_ThisMenuItem,"(3)")
@@ -748,27 +753,26 @@ ServingSizeMenuButton:
 			send, {space}( g){left 3}
 		else
 			return
-	MouseMove, %mx%, %my%, 0
+	; MouseMove, %mx%, %my%, 0
 	}
 	if Preselect
 	{
-		winactivate, Edit Ingredient
+		winactivate,
 		sleep 300
 		if instr(Preselect,"2 ")
-			Sendinput, two "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+			Sendinput % "two (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		else if instr(Preselect,"3 ")
-			Sendinput, three "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+			Sendinput % "three (" SubStr(Preselect, 1,1 )")" substr(Preselect,2)
 		else if instr(Preselect,"4 ")
-			Sendinput, four "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+			Sendinput % "four (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		else if instr(Preselect,"5 ")
-			Sendinput, five "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+			Sendinput % "five (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		else
-			Sendinput, "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+			Sendinput % "(" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		preselect:=
 		return
 		}
 	sleep 300
-		; blockinput, off
 Return
 		}
 
@@ -1021,22 +1025,24 @@ Class ClipBar{
 		ClipBar_H=32
 		ClipBar_H_max=56
 		ClipBar_T:=230
-		ClipBar_W=410
+		ClipBar_W=500
 		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		ClipBar_Y:=Nugenesis_Y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui ClipBar:Default
-		Gui, ClipBar:+Delimiter`n
+		; Gui, ClipBar:+Delimiter`n
 		; winSet, Transparent, 80, %GUIID%
 		GUI, ClipBar:color,DC734F, 97BA7F
 			GUI,ClipBar:Font,			 s17 Bold , consolas
-			GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x7 y-1 w65,	%Product%
+			; GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x7 y-1 w65,	%Product%
+			GUI,ClipBar:Add,edit,		vProduct +wrap	gClipBarHandler left h33 x7 y-1 w65,	%Product%
 		this.AddEdit("Batch",	 "left h33 x+0 y-1 w92 center", 			"13,Consolas")
 		this.AddEdit("Lot",		 "left h18 x+0 y-2 w77", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h16 y+0 w77",		"8, Arial Narrow")
 		GUI, ClipBar:font, cBlack s9 Norm w500 , Consolas
 		This.AddEdit("Iteration", "x+0 h33 left y-1 w62",			 "16 Bold 107C41, Consolas")	; Text1
-		this.AddEdit("GeneralBox",	 "x+0 h33 left y-1 w98 wrap",		"7, Arial")
+		this.AddEdit("GeneralBox",	 "x+0 h17 left y-1 w188",		"7, Arial")
+		this.AddEdit("GeneralBox2",	 "h17 left y+0 w188",		"7, Arial")
 		this.AddBoxes()
 		CoordMode, mouse, screen
 		try GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y% w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar

@@ -10,8 +10,9 @@ return
 	Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
 	exitapp
 	Return
-enter::sendinput, {enter}
-+F5::KeyHistory
+; enter::sendinput, {enter}
++F5::ServingSizeMenu()
+; +F5::KeyHistory
 ^F5::ListLines
 ^+F11::
 Clipboard:=
@@ -490,9 +491,11 @@ F7::
 	F9::numbermenu(6)
 
 ;;\\ 	             Results Definition:
+; #If winactive("Results Definition") && winexist("Spec Table ahk_class AutoHotkeyGUI")
 #Ifwinactive, Results Definition
 	+mbutton::SpecTab.Autofill()
-mbutton::Spectab.PasteClipboardIntoSpec()
+Mbutton::SpecTab.AutoInputResultEditor()
+; mbutton::Spectab.PasteClipboardIntoSpec()
 +F6::spectab.toggleUseLimitsFromTheTest()
 F7::lmsclick.edit()
 	F9::lms.menu()
@@ -504,7 +507,7 @@ wheelDown::
 	if !Mousemoved
 		{
 		clk(503, 574,1,,,0)
-		clk(288, 318,1,2,,0)
+		; clk(288, 318,1,2,,0)
 		}
 		mousemoved:=1
 	SetTimer, Block_Input, -2000
@@ -603,8 +606,10 @@ return
 	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
 	mbutton::
-	if winexist("Spec Table ahk_class AutoHotkeyGUI")
-		SpecTab.AutoInputTestResults()
+	if winexist("Spec Table ahk_class AutoHotkeyGUI") && winactive("Test Definition Editor")
+		SpecTab.AutoInputTestDefinitionEditor()
+	else if winexist("Spec Table ahk_class AutoHotkeyGUI") && (winactive("Result Editor") || winactive("Results Definition"))
+		SpecTab.AutoInputResultEditor()
 	else
 		SpecTab.CopySpecTemplate()
 return
@@ -1058,24 +1063,33 @@ GetIniValue(IniFile,IniKey){
 
 TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	global simpleclip
-	; ttmy:=100
-	; ttMx:=100
+	ttMx:=100
+	ttmy:=1
 	winGetPos, ttwinx,ttwiny, ttwinw, ttwinh, A
 	ttx:=Floor(ttwinx+X)
 	tty:=Floor(ttwiny+y)
-	; CoordMode, Mouse, screen
+	if Position=S || Position=M
+	{
+		CoordMode, tooltip, screen
+		CoordMode, screen, screen
+	}
+	if Position=W
+	{
+		CoordMode, tooltip, window
+		CoordMode, mouse, window
+	}
+	MouseGetPos, mX, mY
 	if Simpleclip
 		return
-	MouseGetPos, mX, mY
 	ttx:=Floor(mx+X)
 	tty:=Floor(my+y)
 	; CoordMode, ToolTip, Window
 	sleep 20
 	; CoordMode, mouse, window
 	if Position = M
-		tooltip, %msg%, %ttMX%, %ttmY%,%N%
-	else
 		tooltip, %msg%, %ttx%, %tty%,%N%
+	else
+		tooltip, %msg%, %ttMX%, %ttmY%,%N%
 	; X+=100
 
 	; else
@@ -1088,6 +1102,8 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	; winSet, TransColor, 0xE5513C 200, % "ahk_id" hwnd
 	; winSet, Trans, 200, %W%
 	; if Position = "S"
+		CoordMode, tooltip, screen
+		CoordMode, Mouse, screen
 	if !(time=0)
 		SetTimer, RemoveToolTip%N%, -%time%
 		return

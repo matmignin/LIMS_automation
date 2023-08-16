@@ -197,6 +197,11 @@ Class LMS {
 					sleep 175
 				}
 			}
+			else if (winactive("NuGenesis LMS") || winactive("Results Definition") || winactive("Select methods tests")) && (Table_height > 1) {
+				Try GUI, Spec_Table:destroy
+				SpecTab.Table()
+				return
+			}
 			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") || (winactive("NuGenesis LMS") && (Table_height = 1)) {
 				SpecData:=[]
 				SpecData:=StrSplit(Source,"|")
@@ -210,11 +215,6 @@ Class LMS {
 				Percision:=SpecData[13]
 				Requirement:=SpecData[14]
 				SpecTab.AutoFill()
-				return
-			}
-			else if (winactive("NuGenesis LMS") || winactive("Select methods tests")) && (Table_height > 1) {
-				Try GUI, Spec_Table:destroy
-				SpecTab.Table()
 				return
 			}
 		}
@@ -395,7 +395,7 @@ Class LMS {
 	SaveCode(){
 		global
 		clipboard:=
-		Simpleclip:=1
+		; Simpleclip:=1
 		send, ^{a}^{c}
 		sleep 50
 		clipwait,2
@@ -405,7 +405,7 @@ Class LMS {
 		}
 		else
 		Send, {enter}
-		simpleclip:=
+		; simpleclip:=
 		return
 	}
 	SearchbarPaste(Delimiter){
@@ -687,7 +687,10 @@ Class ProductTab {
 		}
 		else
 			clip.codesRegex(SheetInfo[9])
-		tt(Product "`n" ProductName "`n" Customer,1000,100,100)
+		ProductInfo:=ProductName " : " Customer
+		ServingInfo:=ServingSize " " Color
+		ControlsetText, Edit6,%ProductInfo% ,ClipBar
+		ControlsetText, Edit7,%ServingInfo% ,ClipBar
 		; ControlsetText, Static1,%CustomerPosition%,ClipBar
 		; GuiControl,ClipBar:Text, Iteration, %Iteration%
 		; }
@@ -760,13 +763,12 @@ Class ProductTab {
 		Send,{tab 2}^a
 		Send,%Ingredient_Claim%
 		If InStr(Ingredient_Name, "* Heavy Metals results are based on a daily dose of "){
-			Send, +{tab 3}
-			if %ServingSize%
+			 Send, +{tab 3}
+			if ServingSize
 			ServingSizeMenu(ServingSize)
-				; sendinput % "(" SubStr(Servingsize, 1,1)")"substr(Servingsize,2)
 			else
 				ServingSizeMenu()
-			exit
+			Return
 		}
 		Breaking.Point()
 		If !Dont_Hit_Okay
@@ -1612,17 +1614,18 @@ simpleclip:=
 			SpecTab.Edit_Sample_Template_A()
 		return
 	}
-	AutoInputTestResults(){
+	AutoInputTestDefinitionEditor(){
+		Global
 			click
 			click, 57, 719 ;click Edit Test
 			SelectedTestName:=
 			winwaitactive, Test Definition Editor,, 2
 			clipboard:=
 			SimpleClip:=1
-			send, {tab 1}^a^c
+			send, {tab 1}^a^c ;copies the Test ID from test definition Editor
 			ClipWait, 1
 			SelectedTestName:=strreplace(Clipboard, " UPLC")
-			ControlsetText, Edit6,%SelectedTestName%,ClipBar
+			ControlsetText, Edit4,%SelectedTestName%,ClipBar
 			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
 			SpecTab.GetRowText(MatchingRow)
 			if !MatchingRow
@@ -1637,6 +1640,43 @@ simpleclip:=
 			WinWaitActive, NuGenesis LMS,, 10
 			if !errorlevel
 				MouseMove, %preX%, %preY%, 1,
+			return
+		}
+	AutoInputResultEditor(){
+		Global
+		click
+			Ifwinactive, Results Definition
+				click, 84, 67 ;click Edit Test
+			SelectedTestName:=
+		winwaitactive, Result Editor,, 2
+		if Errorlevel
+			return
+			clipboard:=
+			SimpleClip:=1
+			send, {tab 3}^a^c ;copies the Test ID from Result Editor
+			ClipWait, 1
+			SelectedTestName:=Clipboard
+		ControlsetText, Edit4,%SelectedTestName%,ClipBar
+			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
+		SpecTab.GetRowText(MatchingRow)
+			; sleep 300
+				winactivate, Result Editor
+			; Send +{tab 3}
+			if !MatchingRow
+			{
+				winactivate, Result Editor
+				MouseClick, left, 464, 532,2,0
+				; Spectab.PasteClipboardIntoSpec()
+			; SpecTab.ShowSpecMenu()
+			msgbox, yolo
+				winactivate, Result Editor
+		}
+			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
+			; spectab.Autofill()
+			; preY+=26
+			WinWaitActive, Results Definition,, 5
+			if !errorlevel
+				MouseMove, %SpecTableMousePosX%, %SpecTableMousePosY%, 1,
 			return
 		}
 	;; Run through all the menues to add
@@ -1673,13 +1713,20 @@ simpleclip:=
 			winactivate, Results Definition
 			If Method contains ICP-MS 231
 			{
+				MouseGetPos, SpecTableMouseX, SpecTableMouseY
 				Sendinput,{click 217, 141} ;click first line
+
 			}
 			Sendinput,{click 80, 66} ;click edit
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; tooltip
+			if SpecTableMouseX
+			{
+				mousemove, %SpecTableMouseX%, %SpecTableMouseY%
+				SpecTableMouseX:=
+			}
 			return
 		}
 		If winactive("Result Editor") ;the editing window
@@ -1711,7 +1758,8 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 					else If (MinLimit || MaxLimit) && (FullRequirements)
 						SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 					else If (!MinLimit && !MaxLimit)
-					{
+		{
+						; SpecTab.AutoInputResultEditor()
 						inputbox, InputBoxString, inputstring, Min Limit,Max Limit,Units,Requirement
 						ParsedString:=StrSplit(InputBoxString,",")
 						MinLimit:=ParsedString[1]

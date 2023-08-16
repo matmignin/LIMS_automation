@@ -109,6 +109,9 @@ else if MouseIsOver("ClipBar"){
 	ClipBar_x1:=Clipbar_x-310
 	ClipBar_x2:=Clipbar_x-150
 	ClipBar_x6:=Clipbar_x+265
+	; CoordMode, mouse, Screen
+	mousegetpos,MouseClipbarx, MouseClipbarY
+	; CoordMode, mouse, Window
 	if (winControl="Edit1"){
 		GetAllProducts(" ")
 		TT(AllProducts,4000,ClipBar_x1,35,2,250)
@@ -126,16 +129,13 @@ else if MouseIsOver("ClipBar"){
 		tt(Tab)
 	else if (winControl="Edit5")
 		return
-	else if (winControl="Edit6"){
-		simpleclip:=1
-		Preclip:=ClipboardAll
-		Clipboard:=
-		Clipboard:=GeneralBox
-		clipwait,1
-		clipboard:=PreClip
-		sleep 1000
-		simpleclip:=
+	else if (winControl="Edit6") || (winControl="Edit7"){
+		BothGeneralBoxes:=GeneralBox "`n" GeneralBox2
+		tt(BothGeneralBoxes,7000,100,2,6,220,"M")
 	}
+	; else if (winControl="Edit7"){
+		; tt(GeneralBox2,7000,100,20,7,220,"M")
+	; }
 	return
 }
 else if winactive("Register new samples"){
@@ -286,10 +286,63 @@ Return
 		#include Markers.ahk
 
 
+copyLabelCopyDoc(){
+	Global Product
+	; RegexIngredients:="is)(%.Daily Value|Amount per serving)(\s+\n?)(?P<Ingredients>\s?[\w.].*?)([\*\s]*?\n\s)?(\*? ?)?(Daily Value|Percent|Other ingredients)"
+	; RegexIngredients:="is)^(?<Customer>[\w ]*)(?:\s)(?!(\s|# ?)?(?:\d{6}))?.*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?: size: )(?<PillSize>.*)(?: @| ~).*\s\s(?<Name>[\w ]+).(?:Dietary Supplement)(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*|.Other ingredients.*)"
+	; RegexIngredient:="Us)(?P<Ingredient>(.*\n)|(.*))\s+?(?P<claim>[0-9.,]*) ?(?P<unit>m?c?g RAE|m?c?g\b|IU\b|Billions)+?.*$"
+	; listofIngredients:=
+	; RegexServingSize:= "im)^\s?Serving size:?\s+(?P<ServingSize>\d+)\s?(?P<ServingType>[\w ]+)?\s?(?P<ServingWeigth>\(.*\))?"
+	; ServingSize:=
+	; RegexPillSize:="i)(?P<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)"
+	; PillSize:=
+	; regingredient:=[]
 
+	firstLetter:=SubStr(Product,1,1)
+FilePattern := "\\netapp\Label Copy Final\" firstLetter "000-" firstLetter "999\*" product "*.docx"
+Loop, %FilePattern%, 1, 0
+		oW:=ComObjGet(A_LoopFileLongPath)
+		; sleep 1000
+		sleep 300
+		; oW.Visible :=0
+		oW.Range.FormattedText.Copy
+		; oW.Close()
+		; tt(clipboard)
+		clipwait,5,0
+	LabelCopyText:=Clipboard
+	; sleep 300
+	; TT(LabelCopyText)
+	; msgbox, %LabelCopyText%
+		/*
+	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
+	; RegexMatch(LabelCopyText, RegexServingSize, ss)
+	; RegexMatch(LabelCopyText, RegexPillSize, ps)
+	; ServingSize:=Trim(ssServingSize " " ssServingType " " SsservingWeight)
+	; PillSize:=Trim(psPillSize)
+	Loop, Parse, riIngredients,`n
+	{
+		if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
+			Continue
+		NewString:=RegexReplace(A_LoopField, RegexIngredient, "${Ingredient}`t${claim} ${unit}`n")
+	 	 listofIngredientsPreTrim:=trim(NewString) "`r`n||"
+	 	 listofIngredientsPretrim2:=Trim(strreplace(strReplace(listofIngredientsPreTrim, "`r`n||",""),"†",""))
+	 	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
+		 regingredient.insert(listofIngredientsPreTrim2)
+	}
+ */
+		FileDelete, U:\VQ_Helper\LabelCopyText.txt
+			sleep 400
+	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
+	FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopyText.txt
+	sleep 400
+	; Clipboard:=listofIngredients
+		Clipboard:=LabelCopyText
+		; MsgBox % riIngredients
+	Return LabelCopyText
+		}
 
 copyDocText(){
-myPath := "Testing.docx" 
+myPath := "Testing.docx"
 tmpFolder := RegExReplace( myPath, ".*\K\\.*") "\_Word_UnZip\"
 tmpName := myPath ".zip"
 FileCopy, % myPath , % tmpName
