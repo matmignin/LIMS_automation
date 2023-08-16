@@ -202,16 +202,17 @@ Class Clip {
 				FileAppend, %CodeString%`n, PriorCodes.txt
 				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 		}
-		; If (SampleID) && (SampleID!=PriorSampleID){
-		; 		FileRead, oPreviousSampleIDs, % PreviousSampleIDsFile
-		; 		  {
-		; 		NewPreviousSampleIDs:=RemoveDuplicates(PreviousSampleIDs)
-		; 			FileDelete, %PreviousSampleIDsFile%
-		; 			sleep 200
-		; 			FileAppend, %NewPreviousSampleIDs%, %PreviousSampleIDsFile%
-		; 				return
-		; 	}
-		; }
+		If (SampleID){
+				ControlsetText, Edit6,%SampleID%,ClipBar ahk_exe VQ_Helper
+				FileRead, oPreviousSampleIDs, % PreviousSampleIDsFile
+				  {
+				NewPreviousSampleIDs:=RemoveDuplicates(PreviousSampleIDs)
+					FileDelete, %PreviousSampleIDsFile%
+					sleep 200
+					FileAppend, %NewPreviousSampleIDs%`n%SampleID%, %PreviousSampleIDsFile%
+						return
+			}
+		}
 
 				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),800,10,100,5,180,"M")
 			Return
@@ -693,6 +694,80 @@ NumberMenubutton:
 
 		}
 		blockinput, off
+Return
+}
+
+ServingSizeMenu(Preselect:=""){
+	global
+	MouseGetPos, mx, my
+	if Preselect
+	{
+		Preselect:=Trim(preselect)
+		gosub, ServingSizeMenuButton
+		return
+	}
+	else
+	try Menu, ServingSizeMenu, DeleteAll
+	Menu, ServingSizeMenu, Add, (1) capsule,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (2) capsules,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (3) capsules,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (4) capsules,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add,
+	Menu, ServingSizeMenu, Add, (1) tablet,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (2) tablets,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (3) tablets,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (4) tablets,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add,
+	Menu, ServingSizeMenu, Add, (1) scoop,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (2) scoops,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add,
+	Menu, ServingSizeMenu, Add, (1) stick packet,ServingSizeMenuButton
+	Menu, ServingSizeMenu, Add, (1) packet,ServingSizeMenuButton
+		Try Menu,ServingSizeMenu,show
+	return
+
+ServingSizeMenuButton:
+	if A_ThisMenuItem
+	{
+		click 317, 306
+		sleep 100
+		if instr(A_ThisMenuItem,"(2)")
+			Send, two %A_ThisMenuItem%
+		else if instr(A_ThisMenuItem,"(3)")
+			Send, three %A_ThisMenuItem%
+		else if instr(A_ThisMenuItem,"(4)")
+			Send, four %A_ThisMenuItem%
+		; else if instr(A_ThisMenuItem,"(5)")
+		; 	Send, five %A_ThisMenuItem%
+		else
+			Send, %A_ThisMenuItem%
+
+		if instr(A_ThisMenuItem,"scoop")
+			send, {space}(){left}
+		else if instr(A_ThisMenuItem,"packet")
+			send, {space}(){left}
+		else
+			return
+	MouseMove, %mx%, %my%, 0
+	}
+	else if Preselect
+	{
+		winactivate, Edit Ingredient
+		sleep 300
+		if instr(Preselect,"2 ")
+			Sendinput, two "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+		else if instr(Preselect,"3 ")
+			Sendinput, three "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+		else if instr(Preselect,"4 ")
+			Sendinput, four "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+		else if instr(Preselect,"5 ")
+			Sendinput, five "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+		else
+			Sendinput, "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
+		; return
+		}
+	sleep 300
+		; blockinput, off
 Return
 		}
 

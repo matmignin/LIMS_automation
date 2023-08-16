@@ -281,10 +281,10 @@ Class LMS {
 		ifwinactive, NuGenesis LMS
 		{
 			if (Tab="Products") {
-				If (Code=Batch){
-					lmsclick.Edit_Composition()
-					return
-				}
+				; If (Code=Batch){
+					; lmsclick.Edit_Composition()
+					; return
+				; }
 				clk(x%Tab%Search+45 ,yProductsSearch, "Left")
 				clk(x%Tab%Search ,yProductsSearch, "Left", 2)
 				; sleep 30
@@ -306,10 +306,10 @@ Class LMS {
 					return
 			}
 			else if (Tab="Specs") {
-				If (Code=Batch) {
-					lmsclick.Edit_Test()
-					return
-				}
+				; If (Code=Batch) {
+				; 	lmsclick.Edit_Test()
+				; 	return
+				; }
 				; xtabsLocation:=x%Tab%Search
 				xtabsLocation2:=x%Tab%Search+10
 				xtabsLocation3:=x%Tab%Search+25
@@ -394,14 +394,17 @@ Class LMS {
 
 	SaveCode(){
 		global
-		; If GetKeyState("Shift","P"){
-		; 		Send, {enter}
-		; 		return
-		; 	}
+		clipboard:=
 		Simpleclip:=1
-		sendinput, ^{a}^{c}
-		sleep 400
-		Sendinput, {enter}
+		send, ^{a}^{c}
+		sleep 50
+		clipwait,2
+		if errorlevel {
+			sendinput, ^{a}^{c}
+			sleep 500
+		}
+		else
+		Send, {enter}
 		simpleclip:=
 		return
 	}
@@ -756,6 +759,15 @@ Class ProductTab {
 			Send,{tab}
 		Send,{tab 2}^a
 		Send,%Ingredient_Claim%
+		If InStr(Ingredient_Name, "* Heavy Metals results are based on a daily dose of "){
+			Send, +{tab 3}
+			if %ServingSize%
+			ServingSizeMenu(ServingSize)
+				; sendinput % "(" SubStr(Servingsize, 1,1)")"substr(Servingsize,2)
+			else
+				ServingSizeMenu()
+			exit
+		}
 		Breaking.Point()
 		If !Dont_Hit_Okay
 			Sendinput,{enter}
@@ -904,7 +916,7 @@ Class ProductTab {
 			sendraw, %ShapeAndSize%
 		sendinput {Tab}
 		; sendinput, {shiftdown}{tab}{shiftup}
-		If Color
+		If Color && !!ServingSize
 			sendinput, ^{a}%Color%
 		sendinput, {shiftdown}{tab 2}{shiftup}
 		; else
@@ -2779,11 +2791,11 @@ Class WorkTab {
 			Sendinput,{home}
 			else if (a_ShipTo > 1)
 			; msgbox %A_shipto% >1
-			Sendinput,{home}{right %A_ShipTo%}
+			Sendinput,{home}{right %A_ShipTo%}{right}
 			; Sendinput,{home}{right}{right %A_ShipTo%}  previously used one
 			else if (a_ShipTo < 1)
 			; msgbox %A_shipto% <1
-			Sendinput,{end}{left %Absselection%}
+			Sendinput,{end}{left %Absselection%}{left}
 			; Sendinput,{end}{left}{left %Absselection%}   previously used one
 			else if (a_ShipTo = "")
 			; msgbox %A_shipto% blank

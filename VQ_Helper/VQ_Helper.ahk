@@ -303,7 +303,7 @@ FilePattern := "\\netapp\Label Copy Final\" firstLetter "000-" firstLetter "999\
 Loop, %FilePattern%, 1, 0
 		oW:=ComObjGet(A_LoopFileLongPath)
 		; sleep 1000
-		sleep 500
+		sleep 300
 		; oW.Visible :=0
 		oW.Range.FormattedText.Copy
 		; oW.Close()
@@ -334,7 +334,7 @@ Loop, %FilePattern%, 1, 0
 			sleep 400
 	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
 	FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopyText.txt
-	sleep 500
+	sleep 400
 	; Clipboard:=listofIngredients
 		Clipboard:=LabelCopyText
 		; MsgBox % riIngredients

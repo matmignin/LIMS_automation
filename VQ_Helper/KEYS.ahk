@@ -10,7 +10,7 @@ return
 	Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
 	exitapp
 	Return
-$enter::sendinput, {enter}
+enter::sendinput, {enter}
 +F5::KeyHistory
 ^F5::ListLines
 ^+F11::
@@ -153,15 +153,17 @@ Mbutton::
 #Ifwinactive, ClipBar ahk_exe VQ_Helper.exe
 	enter::
 		GUI, ClipBar:default
-		Send, ^a^c
+	Send, ^{a}^{c}
+		sleep 100
 		LMS.Searchbar(clipboard,"{enter}")
 	return
 	+enter::
 		GUI, ClipBar:default
+		sleep 100
 		Send, ^a^c
 		LMS.Searchbar(clipboard,"{enter}","False")
 	return
-F7::copyLabelCopyDoc()
+; F7::copyLabelCopyDoc()
 	; 	Gui, ClipBar:submit, nohide
 	; }
 	; 	else if (winControl="Edit4"){
@@ -634,7 +636,7 @@ return
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
-	$Enter::LMS.SaveCode()
+	Enter::LMS.SaveCode()
 
 
 ;;[[_________________ELN.EXE___________________________]]
@@ -670,7 +672,6 @@ F2::Sendinput, %Batch%
 	<!right::GetAllBatches()
 	F13::breaking.point(1)
 	+!F5::LMS.Menu()
-	numpaddot::LMS.SearchBar("",,"False")
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
 	^+F16::GetAllProducts()
