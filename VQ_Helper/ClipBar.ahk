@@ -730,7 +730,7 @@ ServingSizeMenuButton:
 	if A_ThisMenuItem
 	{
 		click 317, 306
-		sleep 100
+		sleep 200
 		if instr(A_ThisMenuItem,"(2)")
 			Send, two %A_ThisMenuItem%
 		else if instr(A_ThisMenuItem,"(3)")
@@ -741,16 +741,15 @@ ServingSizeMenuButton:
 		; 	Send, five %A_ThisMenuItem%
 		else
 			Send, %A_ThisMenuItem%
-
 		if instr(A_ThisMenuItem,"scoop")
-			send, {space}(){left}
+			send, {space}( g){left 3}
 		else if instr(A_ThisMenuItem,"packet")
-			send, {space}(){left}
+			send, {space}( g){left 3}
 		else
 			return
 	MouseMove, %mx%, %my%, 0
 	}
-	else if Preselect
+	if Preselect
 	{
 		winactivate, Edit Ingredient
 		sleep 300
@@ -764,7 +763,8 @@ ServingSizeMenuButton:
 			Sendinput, five "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
 		else
 			Sendinput, "(" SubStr(Preselect, 1,1)")"substr(Preselect,2)
-		; return
+		preselect:=
+		return
 		}
 	sleep 300
 		; blockinput, off
