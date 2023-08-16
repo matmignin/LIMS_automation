@@ -1644,18 +1644,32 @@ simpleclip:=
 		}
 	AutoInputResultEditor(){
 		Global
-		click
-			Ifwinactive, Results Definition
+		SimpleClip:=1
+		clipboard:=
+		SelectedTestName
+			If winactive("Results Definition"){
+			click
+			send, ^c
+			clipwait,1
+			ParseData:=Clipboard
+					Loop, parse, ParseData, `t
+						ParsedSpecs.insert(A_LoopField)
+						TotalColumns:=ParsedSpecs.maxindex()//2
+						AllowPrefixes:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Allow Prefixes") + TotalColumns],"`r`n")
+						Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
+						SelectedTestName:=Clipped_ResultID
 				click, 84, 67 ;click Edit Test
-			SelectedTestName:=
-		winwaitactive, Result Editor,, 2
-		if Errorlevel
-			return
-			clipboard:=
-			SimpleClip:=1
-			send, {tab 3}^a^c ;copies the Test ID from Result Editor
+				winwaitactive, Result Editor,, 2
+				if Errorlevel
+							return
+			}	
+			else ;copies the Test ID from Result Editor
+			{
+			winactivate, Result Editor
+			send, {tab 3}^a^c 
 			ClipWait, 1
 			SelectedTestName:=Clipboard
+			}
 		ControlsetText, Edit4,%SelectedTestName%,ClipBar
 			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
 		SpecTab.GetRowText(MatchingRow)
@@ -1668,7 +1682,6 @@ simpleclip:=
 				MouseClick, left, 464, 532,2,0
 				; Spectab.PasteClipboardIntoSpec()
 			; SpecTab.ShowSpecMenu()
-			msgbox, yolo
 				winactivate, Result Editor
 		}
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
@@ -1676,9 +1689,10 @@ simpleclip:=
 			; preY+=26
 			WinWaitActive, Results Definition,, 5
 			if !errorlevel
-				MouseMove, %SpecTableMousePosX%, %SpecTableMousePosY%, 1,
+				;MouseMove, %SpecTableMousePosX%, %SpecTableMousePosY%, 1,
 			return
 		}
+		
 	;; Run through all the menues to add
 	AutoFill(){
 		global
