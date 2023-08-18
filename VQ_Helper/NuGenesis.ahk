@@ -1646,7 +1646,7 @@ simpleclip:=
 		Global
 		SimpleClip:=1
 		clipboard:=
-		SelectedTestName
+		SelectedTestName:=
 			If winactive("Results Definition"){
 			click
 			send, ^c
@@ -1662,11 +1662,11 @@ simpleclip:=
 				winwaitactive, Result Editor,, 2
 				if Errorlevel
 							return
-			}	
+			}
 			else ;copies the Test ID from Result Editor
 			{
 			winactivate, Result Editor
-			send, {tab 3}^a^c 
+			send, {tab 3}^a^c
 			ClipWait, 1
 			SelectedTestName:=Clipboard
 			}
@@ -1692,7 +1692,7 @@ simpleclip:=
 				;MouseMove, %SpecTableMousePosX%, %SpecTableMousePosY%, 1,
 			return
 		}
-		
+
 	;; Run through all the menues to add
 	AutoFill(){
 		global
@@ -2726,24 +2726,25 @@ Class WorkTab {
 		ifwinactive, Register new samples
 			MouseGetPos, mx, my
 		click 2
+		sleep 200
 		winwaitactive, Edit sample (Field Configuration,, 2
 		if errorlevel
 			breaking.point(1)
-		Sendinput, {tab 2}{right}{tab}^a%Batch%{tab} ; switch to Availible and enter batch
-		Ifwinactive, Edit sample (Field Configuration: F`, Micro)
-		{
-			Send, ^{a}%Lot%{tab}
-			if Coated
-				Sendinput, ^{a}%Coated%
-			Sendinput, {tab 2}
-		}
-		Ifwinactive, Edit sample (Field Configuration: CT`,
-			{
-				Send, ^{a}%Coated%{tab}
-			}
+		Sendinput, {tab 2}{right}{tab}^{a}%Batch%{tab} ; switch to Availible and enter batch
 			; Iteration:=CustomerPosition
 			Breaking.Point()
 			WorkTab.Dropdown_CustomerSelect(Iteration)
+		Ifwinactive, Edit sample (Field Configuration: F`, Micro)
+		{
+			Send, ^{a}%Lot%
+			if Coated
+				Send, {tab}^{a}%Coated%
+			; Sendinput, {tab 2}
+		}
+		Ifwinactive, Edit sample (Field Configuration: CT`,
+			{
+				Send, {tab}^{a}%Coated%
+			}
 			Breaking.Point()
 			Send, {enter} ; hit okay
 
