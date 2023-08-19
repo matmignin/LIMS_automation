@@ -297,13 +297,13 @@ copyLabelCopyDoc(){
 	; RegexPillSize:="i)(?P<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)"
 	; PillSize:=
 	; regingredient:=[]
-
+clipboard:=
 	firstLetter:=SubStr(Product,1,1)
 FilePattern := "\\netapp\Label Copy Final\" firstLetter "000-" firstLetter "999\*" product "*.docx"
 Loop, %FilePattern%, 1, 0
 		oW:=ComObjGet(A_LoopFileLongPath)
 		; sleep 1000
-		sleep 300
+		sleep 400
 		; oW.Visible :=0
 		oW.Range.FormattedText.Copy
 		; oW.Close()
@@ -313,7 +313,6 @@ Loop, %FilePattern%, 1, 0
 	; sleep 300
 	; TT(LabelCopyText)
 	; msgbox, %LabelCopyText%
-		/*
 	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
 	; RegexMatch(LabelCopyText, RegexServingSize, ss)
 	; RegexMatch(LabelCopyText, RegexPillSize, ps)
@@ -329,14 +328,12 @@ Loop, %FilePattern%, 1, 0
 	 	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
 		 regingredient.insert(listofIngredientsPreTrim2)
 	}
- */
+		Clipboard:=LabelCopyText
 		FileDelete, U:\VQ_Helper\LabelCopyText.txt
 			sleep 400
 	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
 	FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopyText.txt
-	sleep 400
-	; Clipboard:=listofIngredients
-		Clipboard:=LabelCopyText
+	Clipboard:=listofIngredients
 		; MsgBox % riIngredients
 	Return LabelCopyText
 		}

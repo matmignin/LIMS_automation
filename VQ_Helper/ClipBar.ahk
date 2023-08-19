@@ -74,6 +74,8 @@ clipChange(type){
   }
 	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
 		clip.codesRegex()
+		; Product:= TRIM(SubStr(Clipboard, 19,4))
+		; ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
 		SLEEP 300
 		Clipboard:=
 		GoSub ShowScanLabelCopy
