@@ -64,8 +64,6 @@ RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}
 	; RegexCombined := "iO)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)|(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)|(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)|(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 
 
-
-
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Code.txt"
@@ -286,17 +284,8 @@ Return
 		#include Markers.ahk
 
 
-copyLabelCopyDoc(){
+copyLabelCopyDoc(SaveText:="",showtooltip:=""){
 	Global Product
-	; RegexIngredients:="is)(%.Daily Value|Amount per serving)(\s+\n?)(?P<Ingredients>\s?[\w.].*?)([\*\s]*?\n\s)?(\*? ?)?(Daily Value|Percent|Other ingredients)"
-	; RegexIngredients:="is)^(?<Customer>[\w ]*)(?:\s)(?!(\s|# ?)?(?:\d{6}))?.*(?<=\w{3})(?<Product>[abdefghijkl]\d{3})(?=\w{4}).*(?: size: )(?<PillSize>.*)(?: @| ~).*\s\s(?<Name>[\w ]+).(?:Dietary Supplement)(?:.*)(?<ServingSize>\d+) (?<ServingType>[\w ]+)(?:.+)(?:%.Daily Value)(?:\s+)(?<Ingredients>[\w.].*)(?:Daily Value.*|.Other ingredients.*)"
-	; RegexIngredient:="Us)(?P<Ingredient>(.*\n)|(.*))\s+?(?P<claim>[0-9.,]*) ?(?P<unit>m?c?g RAE|m?c?g\b|IU\b|Billions)+?.*$"
-	; listofIngredients:=
-	; RegexServingSize:= "im)^\s?Serving size:?\s+(?P<ServingSize>\d+)\s?(?P<ServingType>[\w ]+)?\s?(?P<ServingWeigth>\(.*\))?"
-	; ServingSize:=
-	; RegexPillSize:="i)(?P<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)"
-	; PillSize:=
-	; regingredient:=[]
 clipboard:=
 	firstLetter:=SubStr(Product,1,1)
 FilePattern := "\\netapp\Label Copy Final\" firstLetter "000-" firstLetter "999\*" product "*.docx"
@@ -318,46 +307,30 @@ Loop, %FilePattern%, 1, 0
 	; RegexMatch(LabelCopyText, RegexPillSize, ps)
 	; ServingSize:=Trim(ssServingSize " " ssServingType " " SsservingWeight)
 	; PillSize:=Trim(psPillSize)
-	Loop, Parse, riIngredients,`n
-	{
-		if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
-			Continue
-		NewString:=RegexReplace(A_LoopField, RegexIngredient, "${Ingredient}`t${claim} ${unit}`n")
-	 	 listofIngredientsPreTrim:=trim(NewString) "`r`n||"
-	 	 listofIngredientsPretrim2:=Trim(strreplace(strReplace(listofIngredientsPreTrim, "`r`n||",""),"†",""))
-	 	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
-		 regingredient.insert(listofIngredientsPreTrim2)
-	}
+	; Loop, Parse, riIngredients,`n
+	; {
+	; 	if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
+	; 		Continue
+	; 	NewString:=RegexReplace(A_LoopField, RegexIngredient, "${Ingredient}`t${claim} ${unit}`n")
+	;  	 listofIngredientsPreTrim:=trim(NewString) "`r`n||"
+	;  	 listofIngredientsPretrim2:=Trim(strreplace(strReplace(listofIngredientsPreTrim, "`r`n||",""),"†",""))
+	;  	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
+	; 	 regingredient.insert(listofIngredientsPreTrim2)
+	; }
 		Clipboard:=LabelCopyText
-		FileDelete, U:\VQ_Helper\LabelCopyText.txt
-			sleep 400
-	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
-	FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopyText.txt
-	Clipboard:=listofIngredients
+		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
+	; FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
+	; FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopyText.txt
+	; sleep 400
+	; msgbox, %LabelCopyText%
+	If showTooltip
+		tt(LabelCopyText,1000)
+	If SaveText
+		{
+		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
+		FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
+		}
+	; Clipboard:=listofIngredients
 		; MsgBox % riIngredients
 	Return LabelCopyText
 		}
-
-copyDocText(){
-myPath := "Testing.docx"
-tmpFolder := RegExReplace( myPath, ".*\K\\.*") "\_Word_UnZip\"
-tmpName := myPath ".zip"
-FileCopy, % myPath , % tmpName
-FileCreateDir, % tmpFolder
-tmpObject := ComObjCreate("Shell.Application")
-tmpObject.Namespace(tmpFolder).CopyHere(tmpObject.Namespace(tmpName).items,4|16)
-FileDelete, % tmpName
-FileEncoding, UTF-8
-FileRead, wordContents, % tmpFolder "\" "word\document.xml"
-FileRemoveDir, % tmpFolder, 1
-paraPattern := "<w:p(?: [^>]*)?>(.*?)</w:p>"
-textPattern := "<w:t(?: [^>]*)?>(.*?)</w:t>"
-While singlePara := RegExMatch( wordContents, paraPattern, myPara, singlePara ? StrLen(myPara)+singlePara:1)
-{
-	While singleText := RegExMatch( myPara1, textPattern, myText, singleText ? StrLen(myText)+singleText:1)
-		finalContents .= myText1
-	finalContents .= "`n"
-}
-MsgBox % finalContents
-
-}

@@ -11,7 +11,7 @@
 
 
 
-copyLabelCopyDocRegex(){
+copyLabelCopyDocRegex(SaveText:="",showToolTip:=""){
 	Global
 	RegexIngredients:="is)(%.Daily Value|Amount per serving)(\s+\n?)(?P<Ingredients>\s?[\w.].*?)([\*\s]*?\n\s)?(\*? ?)?(Daily Value|Percent|Other ingredients)"
 	RegexIngredient:="Usm)(?P<Ingredient>(.*\n)|(.*))\s+?(?P<claim>[0-9.,]*) ?(?P<unit>m?c?g RAE|m?c?g\b|IU\b|Billions)+?.*$"
@@ -49,9 +49,19 @@ Loop, %FilePattern%, 1, 0
 			sleep 400
 	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
 	sleep 500
-		Clipboard:=listofIngredients
-		tt(listofIngredients,2000,10,10,3,190)
-	Return
+	Clipboard:=listofIngredients
+	If showTooltip
+		tt(listofIngredients,1000)
+	If SaveText
+		{
+		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
+		FileAppend,  %ServingSize%`n, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
+		FileAppend,  %PillSize%`n`n, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
+		FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
+		}
+	tt(listofIngredients,2000,10,10,3,190)
+
+	Return listofIngredients
 }
 
 
@@ -856,47 +866,45 @@ Class ProductTab {
 
 
 		 If InStr(ServingSize,"1 t",False) || InStr(ServingSize,"1t",False) || InStr(ServingSize,"1 Chewable",False)
-			Sendinput % "Each (1) tablet contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
+			Sendinput % "Each (1) tablet contains{Tab}" ShapeAndSize "{tab}" color
 		else if InStr(ServingSize,"2 t",False) || InStr(ServingSize,"2t",False)  InStr(ServingSize,"2 Chewable",False)
-			Sendinput % "Each two (2) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
-			Sendinput % "Each (1) capsule contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"2 c",False) || InStr(ServingSize,"2c",False)
-			Sendinput % "Each two (2) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"3 c",False) || InStr(ServingSize,"3c",False)
-			Sendinput % "Each three (3) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"4 c",False)
-			Sendinput % "Each four (4) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"5 c",False)
-			Sendinput % "Each five (5) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"6 c",False)
-			Sendinput % "Each six (6) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"7 c",False)
-			Sendinput % "Each seven (7) capsules contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
+			Sendinput % "Each two (2) tablets contains{Tab}" ShapeAndSize "{tab}" color
 		else if InStr(ServingSize,"3 t",False) || InStr(ServingSize,"3t",False)
-			Sendinput % "Each three (3) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"4 t",False)
-			Sendinput % "Each four (4) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"5 t",False)
-			Sendinput % "Each five (5) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"6 t",False)
-			Sendinput % "Each six (6) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
-		else if InStr(ServingSize,"7 t",False)
-			Sendinput % "Each seven (7) tablets contains{Tab}" ShapeAndSize "{tab}" color "+{tab 2}"
+			Sendinput % "Each three (3) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"4 t",False)  || InStr(ServingSize,"4t",False)
+			Sendinput % "Each four (4) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"5 t",False) || InStr(ServingSize,"5t",False)
+			Sendinput % "Each five (5) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"6 t",False) || InStr(ServingSize,"6t",False)
+			Sendinput % "Each six (6) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
+			Sendinput % "Each (1) capsule contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"2 c",False) || InStr(ServingSize,"2c",False)
+			Sendinput % "Each two (2) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"3 c",False) || InStr(ServingSize,"3c",False)
+			Sendinput % "Each three (3) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"4 c",False)
+			Sendinput % "Each four (4) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"5 c",False)
+			Sendinput % "Each five (5) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"6 c",False)
+			Sendinput % "Each six (6) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		else if InStr(ServingSize,"7 c",False)
+			Sendinput % "Each seven (7) capsules contains{Tab}" ShapeAndSize "{tab}" color
 		else if InStr(ServingSize,"1 sp",False)
 			Sendinput % "Each (1) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"2 sp",False)
 			Sendinput % "Each two (2) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
 		else if InStr(ServingSize,"1 stick",False) || InStr(ServingSize,"1st",False)
-			Sendinput % "Each (1)" SubStr(ServingSize, 2) " contains{Tab}Blend"
+			Sendinput % "Each (1) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
 		else if InStr(ServingSize,"2 stick",False)
-			Sendinput % "Each two (2)" SubStr(ServingSize, 2) " contains{Tab}Blend"
+			Sendinput % "Each two (2) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
 		else if InStr(ServingSize,"1 scoop",False) || InStr(ServingSize,"1s",False)
-			Sendinput % "Each (1)" SubStr(ServingSize, 2) " contains{Tab}Blend"
+			Sendinput % "Each (1) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
 		else if InStr(ServingSize,"2 scoop",False)  || InStr(ServingSize,"2s",False)
-			Sendinput % "Each two (2)" SubStr(ServingSize, 2) " contains{Tab}Blend"
+			Sendinput % "Each two (2) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
 		else if InStr(ServingSize,"3 scoop",False)
-			Sendinput % "Each three (3)" SubStr(ServingSize, 2) " contains{Tab}Blend"
+			Sendinput % "Each three (3) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
 		else if InStr(ServingSize,"4 scoop",False)
 			Sendinput % "Each four (4)" SubStr(ServingSize, 2) "  contains{Tab}Blend"
 		else if InStr(ServingSize,"5 scoop",False)
@@ -918,7 +926,7 @@ Class ProductTab {
 			sendraw, %ShapeAndSize%
 		sendinput {Tab}
 		; sendinput, {shiftdown}{tab}{shiftup}
-		If Color && !!ServingSize
+		If Color && !ServingSize
 			sendinput, ^{a}%Color%
 		sendinput, {shiftdown}{tab 2}{shiftup}
 		; else
@@ -1225,6 +1233,7 @@ class SpecTab {
 			Menu, SpecMenu, Check, %A_ThisMenuItem%
 			SpecTab.GetRowText(A_ThisMenuItemPos)
 			winactivate, ahk_exe eln.exe
+			sleep 200
 			SpecTab.Autofill()
 		}
 		return
@@ -1614,12 +1623,43 @@ simpleclip:=
 			SpecTab.Edit_Sample_Template_A()
 		return
 	}
+	AutoInputSpecResults(){
+
+			click
+			click, 57, 719 ;click Edit Test on main screen
+			SelectedTestName:=
+			winwaitactive, Test Definition Editor,, 2
+			clipboard:=
+			SimpleClip:=1
+			send, {tab 1}^a^c
+			ClipWait, 1
+			SelectedTestName:=strreplace(Clipboard, " UPLC")
+			ControlsetText, Edit6,%SelectedTestName%,ClipBar
+			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
+			SpecTab.GetRowText(MatchingRow)
+			if !MatchingRow
+			{
+				winactivate, Test Definition Editor
+				MouseClick, left, 464, 532,2,0
+				SpecTab.ShowSpecMenu()
+				winactivate, Test Definition Editor
+		}
+			spectab.Autofill()
+			preY+=26
+			WinWaitActive, NuGenesis LMS,, 10
+			if !errorlevel
+				MouseMove, %preX%, %preY%, 1,
+			return
+		}
 	AutoInputTestDefinitionEditor(){
 		Global
+			if !winactive("Test Definition Editor"){
 			click
 			click, 57, 719 ;click Edit Test
 			SelectedTestName:=
 			winwaitactive, Test Definition Editor,, 2
+		}
+
 			clipboard:=
 			SimpleClip:=1
 			send, {tab 1}^a^c ;copies the Test ID from test definition Editor
@@ -1647,6 +1687,7 @@ simpleclip:=
 		SimpleClip:=1
 		clipboard:=
 		SelectedTestName:=
+		ParsedSpecs:=[]
 			If winactive("Results Definition"){
 			click
 			send, ^c
@@ -1656,8 +1697,10 @@ simpleclip:=
 						ParsedSpecs.insert(A_LoopField)
 						TotalColumns:=ParsedSpecs.maxindex()//2
 						AllowPrefixes:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Allow Prefixes") + TotalColumns],"`r`n")
+						UseTheLimits:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Use the limits from the test") + TotalColumns],"`r`n")
 						Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
 						SelectedTestName:=Clipped_ResultID
+						; msgbox, allowPrefixes
 				click, 84, 67 ;click Edit Test
 				winwaitactive, Result Editor,, 2
 				if Errorlevel
@@ -1711,7 +1754,9 @@ simpleclip:=
 		}
 		If winactive("Test Definition Editor")
 		{
+			; if (Description != "Description")
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
+				; msgbox, %Name% `n %MinLimit% `n %MaxLimit% `n %Units% `n %PercisioN%
 			sleep 200
 			winactivate, Test Definition Editor
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
@@ -1801,7 +1846,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 
 
 	;;-------Fill In Test Specs
-	ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=0,CreateRequirements:=1,AllowPrefixesBox:=""){ ; 3rd window
+	ResultEditor(Min_Limit,Max_Limit,The_Units,The_Percision,UseLimitsBox:=1,CreateRequirements:=1){ ; 3rd window
 		Global
 		If (Clipped_specs){
 			clipped_Specs:=
@@ -1811,6 +1856,8 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		winactivate, Result Editor
 		click, 250, 140 ; click id box to orient
 		Breaking.Point()
+		; Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision% ;{tab 5}
+
 		Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision% ;{tab 5}
 		; if (AllowPrefixesBox) || (AllowPrefixes=True)
 		; TabAmount=3 ;{space}{tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a
@@ -1819,8 +1866,10 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		; AllowPrefixes = False
 		; return
 		; Sendinput, {tab 2}^{a}%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
-		If (UseLimitsBox=1) || (UseLimits=True)
+		If (UseLimitsBox=1) || (UseLimitsBox=True)
 			click 100,406 ; click box
+		; else if (CheckUseLimitsBox=0) || (CheckUseLimitsBox=False)
+			; click 252,464 ; click min limit boxbox
 		; UseLimitBox:="{space}"
 		; else
 		; 	UseLimitBox:=
@@ -1829,9 +1878,17 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		if !winexist("Result Editor"){
 			Sendinput,{click 80, 66} ;click edit
 			winwaitactive, Result Editor,,4
-			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Clipped_Requirement)
+			if Clipped_Requirement
+				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Clipped_Requirement)
+			else
+				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			return
 		}
+		; IF ((Max_limit = "") && (Min_limit = "")){
+		; 	TT("No Limits stored")
+		; 	return
+		; }
+; else
 		Sendinput, ^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 		if (Max_limit = "")&&(CreateRequirements=1){
 			Sendinput, NLT %Min_Limit% %The_Units%
@@ -3172,7 +3229,12 @@ Class WorkTab {
 			sleep 500
 			return
 		}
+			Remove(){
+				if winactive("Results Definition") ||
+					Click 128, 65
 
+				return
+			}
 		Save(){
 			if winactive("Edit Product")
 			click 275, 578

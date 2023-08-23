@@ -11,24 +11,25 @@ return
 	exitapp
 	Return
 ; enter::sendinput, {enter}
-+F5::ServingSizeMenu()
+^F2::ServingSizeMenu()
 ; +F5::KeyHistory
-^F5::ListLines
-^+F11::
-Clipboard:=
-	sleep 200
-	copyLabelCopyDoc()
-clipwait, 3
-	TT("Okay")
-	GoSub ShowScanLabelCopy
-		return
-^!+F11::
-Clipboard:=
-		sleep 200
-		copyLabelCopyDocRegex()
-		clipwait, 3
-	tt("Label Copy Regexed")
-		return
+^`::ListLines
+
+
+^F1::msgbox, % copyLabelCopyDoc(1)
+; Clipboard:=
+	; sleep 200
+	; copyLabelCopyDoc()
+; clipwait, 3
+; return
+
+
++^F1::Msgbox % copyLabelCopyDocRegex(1)
+; Clipboard:=
+		; sleep 200
+			; copyLabelCopyDocRegex()
+		; clipwait, 3
+		; return
 
 
 
@@ -41,7 +42,6 @@ Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
-F7::copyLabelCopyDoc()
 	; F7::copyLabelCopyDoc()
 	wheelup::
 	If NAdd
@@ -428,7 +428,7 @@ Mbutton::
 	return
 
 #ifwinexist, Search Results ahk_exe explorer.exe
-F6::
++F6::
 	winactivate, ahk_exe explorer.exe
 	sleep 400
 	send, ^{e}{*}%Product%{*}
@@ -499,6 +499,8 @@ Mbutton::SpecTab.AutoInputResultEditor()
 +F6::spectab.toggleUseLimitsFromTheTest()
 F7::lmsclick.edit()
 	F9::lms.menu()
+Backspace::LMSClick.Remove()
+; Backspace::sendinput, {Click %RemoveButton%}
 
 ;;\\ 	             Result Editor
 #ifwinactive, Result Editor
@@ -586,9 +588,9 @@ F9::mouseclick, Left, 638, 70
 			}
 		}
 		clipboard:=sampleid
-TT(Sampleid)
-return
-	!F10::SpecTab.CopySpecTemplate()
+		TT(Sampleid)
+	return
+	!F10::LMS.AddsampleLog(5)
 	!F9::
 		If (LMS.DetectTab() != "Requests"){
 			send, {click 40 40}
@@ -606,12 +608,19 @@ return
 	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
 	mbutton::
-	if winexist("Spec Table ahk_class AutoHotkeyGUI") && winactive("Test Definition Editor")
-		SpecTab.AutoInputTestDefinitionEditor()
-	else if winexist("Spec Table ahk_class AutoHotkeyGUI") && (winactive("Result Editor") || winactive("Results Definition"))
+	if winexist("Spec Table ahk_class AutoHotkeyGUI") {
+	If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
+			SpecTab.AutoInputTestDefinitionEditor()
+	else if winactive("Result Editor") || winactive("Results Definition")
 		SpecTab.AutoInputResultEditor()
+	; else winactive("NuGenesis LMS")
+			; SpecTab.AutoInputSpecResults()
+		return
+	}
 	else
 		SpecTab.CopySpecTemplate()
+	; Else
+		; Send, ^{mbutton}
 return
 
 	F9::lms.Menu()
@@ -647,24 +656,17 @@ return
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
 ;
-F6::Sendinput, %Product%
-F7::Sendinput, %Batch%
 F3::Sendinput, %lot%
 F4::Sendinput, %Coated%
 F1::Sendinput, %Product%
-!F1::Sendinput, %Product%
 F2::Sendinput, %Batch%
-!F2::Sendinput, %Batch%
-!F3::Sendinput, %lot%
-
-!F4::Sendinput, %Coated%
+F5::WholeBatchMenu()
++F5::Sendinput, %SampleID%
+^F5::Sendinput, %SampleGUID%
 
 	^F10::gosub, TestCode
-	+^`::gosub, get_window_info
-	; ^F8::gosub, get_window_info
-	^`::gosub, get_mouse_info
-	; ^+Mbutton::gosub, get_mouse_info
-	^w::gosub, get_window_info
+	^+w::gosub, get_window_info
+	^+e::gosub, get_mouse_info
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
 	; F7::3Right()
@@ -679,26 +681,10 @@ F2::Sendinput, %Batch%
 	+!F5::LMS.Menu()
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
-	^+F16::GetAllProducts()
-	^+F15::GetAllBatches()
-	; ^1::sendinput % GetAllProducts(" ")
-	; ^2::sendinput % GetAllBatches(" ")
 	+!F1::sendinput % GetAllProducts(" ")
 	+!F2::sendinput % GetAllBatches(" ")
 
-
-		; ^`;::sendinput % GetAllProducts("`;")
-		; +^`;::sendinput % GetAllBatches("`;")
-	; ^,::sendinput % GetAllProducts(", ")
-	; +^.::sendinput % GetAllBatches(", ")
-	; +^,::sendinput % GetAllBatches(", ")
-	; ^.::sendinput % GetAllBatches(", ")
-
-	; ^3::WholeBatchMenu()
-	; !F3::WholeBatchMenu()
-	; F5::WholeBatchMenu()
 	#+!F10::LMS.AddDataFromClipboard()
-	;#+^F10::clip.ParseSpecsTable()
 
 	pause::						Suspend, Toggle
 	#h::return
@@ -923,7 +909,7 @@ ShowScanLabelCopy:
 	winactivate, ahk_exe explorer.exe
 	send, {*}%Product%{*}{enter}
 	sleep 700
-	send, ^{e}{tab 2}{down}{up}
+	send, ^{e}{tab 2}{Right}
 return
 ShowManualCOA:
 	run, explorer "\\10.1.2.118\coa-lot#"

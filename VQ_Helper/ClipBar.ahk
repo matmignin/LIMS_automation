@@ -2,41 +2,7 @@
 ;;[[                       CLIP CODES                          ]]
 ;;------------------------------------------------------------
 
-	;<LC>|
-	;  IngredientId|
-	; [1] IngredientLoacation|
-	; [2] Sequene|
-	; [3] IngredientText|
-	; [4] LabelClaim|
-	; [5] AssayRange%|
-	; [6] MethodID|
-	; [7] IngredientDescription|
-	; [8] MinLimit|
-	; [9] MaxLimit|
-	; [10] Units|
-	; [11] Percision|
-	; [12] Requirement|
-	;<<LC>>|
-	; [1] Formulation|
-	; [2] ProductName|
-	; [3] Customer|
-	; [4] CustomerDropdown|
-	; [5] pillSize|
-
-	/*
-
-	IngredientText=
-	LabelClaim=
-	AssayRange=
-	IngredientDescription=
-	MinLimit=
-	MaxLimit=
-	Units=
-	Percision=
-	Requirement=
-
-	*/
-clipChange(type){
+clipChange(){
   global
   sleep 75
   if SimpleClip
@@ -73,16 +39,21 @@ clipChange(type){
     Return
   }
 	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
-		clip.codesRegex()
-		; Product:= TRIM(SubStr(Clipboard, 19,4))
-		; ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
-		SLEEP 300
+		; clip.codesRegex()
+		Product:=TRIM(SubStr(Clipboard, 19,4))
+		ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
+		SLEEP 200
 		Clipboard:=
-		GoSub ShowScanLabelCopy
-		sleep 200
+		sleep 100
 		copyLabelCopyDoc()
 		; Clipwait,5,0
 		; tt(clipboard)
+		sleep 2000
+		; Clipboard:=
+		GoSub ShowScanLabelCopy
+		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
+		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
+		FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
 		return
   }
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
@@ -260,7 +231,7 @@ GetSampleInfo(){ ;on the lms main menu
 	; return ;ShiptoIndex
 }
 
-		ParseIngredientsTable(Save:=1){
+		ParseIngredientsTable(){
 		global
     clipped_Position:=
     clipped_IngredientId:=
@@ -294,7 +265,8 @@ GetSampleInfo(){ ;on the lms main menu
     Clipped_Requirement:=
     Clipped_ParsedSpecs:=
     FullRequirements:=
-    AllowPrefixes:=
+		AllowPrefixes:=
+		UseLimitsBox:=
     Units:=
     Clipped_SeqNo:=
     Clipped_Method:=
@@ -304,7 +276,7 @@ GetSampleInfo(){ ;on the lms main menu
 		Loop, parse, ParseData, `t
 			ParsedSpecs.insert(A_LoopField)
 			TotalColumns:=ParsedSpecs.maxindex()//2
-			UseLimits:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Use the limits from the test") + TotalColumns],"`r`n")
+			UseLimitsBox:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Use the limits from the test") + TotalColumns],"`r`n")
 			MinLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
 			MaxLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
 			Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
@@ -377,16 +349,16 @@ GetSampleInfo(){ ;on the lms main menu
 
   ParseMainSpecTable(Save:=1){
 		global
-    Clipped_Method:=
-    Clipped_Requirements:=
-    Clipped_minmax:=
-    MinLimit:=
-    MaxLimit:=
-    Clipped_TestID:=
-    Clipped_Department:=
-    Clipped_SeqNo:=
-    Clipped_SampleTemplate:=
-    DESCRIPTION:=
+    ; Clipped_Method:=
+    ; Clipped_Requirements:=
+    ; Clipped_minmax:=
+    ; MinLimit:=
+    ; MaxLimit:=
+    ; Clipped_TestID:=
+    ; Clipped_Department:=
+    ; Clipped_SeqNo:=
+    ; Clipped_SampleTemplate:=
+    ; DESCRIPTION:=
 		ParsedMainSpecTable:=[]
     ParseData:=Clipboard
 		Loop, parse, ParseData, `t  //`t
@@ -443,7 +415,7 @@ EditBoxOld(Input:=""){
 		GUI, EditBox:Font, s12 cBlack, Consolas
     gui, EditBox:Margin,1,1
 		GUI, EditBox:Add, Edit, x0 y0 +Resize vEditBox , % Result
-		Gui, Add, DropDownList, vDelimeter, {space}|{enter}|``r|,|`;|
+		; Gui, Add, DropDownList, vDelimeter, {space}|{enter}|``r|,|`;|
     GUI, EditBox:add, button,default gEditBoxButtonOK, OK
      ;GUI, EditBox:add, radio,default gEditBoxButtonOK, {space}|{enter}|RnCr|;|,|
     If !Input
