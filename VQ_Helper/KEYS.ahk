@@ -831,6 +831,9 @@ mmigninFolder(){
 	else
 		winactivate, VQ_Helper ahk_exe explorer.exe
 }
+EditMethodList(){
+		Run , Edit "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Methods.ini"
+}
 windowSpy(){
 	Run, WS.exe
 }

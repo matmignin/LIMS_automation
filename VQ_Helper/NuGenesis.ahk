@@ -1429,6 +1429,9 @@ ClickEmptyRequirements(){
 			Selection:= % MethodMenu[1]
 			Menu, Methodmenu, add, %Selection%, MethodsDropdownhdr
 		}
+			Menu, Methodmenu, add,
+			Menu, Methodmenu, add, `t...Configure, EditMethodList
+
 		Menu, MethodMenu, Show
 		return
 
