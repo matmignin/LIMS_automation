@@ -13,7 +13,7 @@ return
 ; enter::sendinput, {enter}
 ^F2::ServingSizeMenu()
 ; +F5::KeyHistory
-^`::ListLines
+^!`::ListLines
 
 
 ^F1::msgbox, % copyLabelCopyDoc(1)
