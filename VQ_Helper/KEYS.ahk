@@ -11,9 +11,15 @@ return
 	exitapp
 	Return
 ; enter::sendinput, {enter}
+
+	^+w::gosub, get_window_info
+	^+e::gosub, get_mouse_info
+
 ^F2::ServingSizeMenu()
-; +F5::KeyHistory
-^!`::ListLines
+; +F5::GetRequirements()
+
+
+; ^!`::ListLines
 
 
 ^F1::msgbox, % copyLabelCopyDoc(1)
@@ -31,7 +37,18 @@ return
 		; clipwait, 3
 		; return
 
-
+F7::
+	Winactivate, NuGenesis LMS
+	LMS.SearchBar(Batch,"{enter}",0)
+	Return
+F6::
+	Winactivate, NuGenesis LMS
+	LMS.SearchBar(Product,"{enter}",0)
+	Return
+F8::
+	Winactivate, NuGenesis LMS
+	LMS.SearchBar("",,"False")
+	Return
 
 
 
@@ -399,9 +416,9 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 
 ;;\\ 		            explorer.exe
 #ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
-	F9::send, ^e
+	+F9::send, ^e
 
-	F7::
+	+F7::
 		winactivate, ahk_exe explorer.exe
 		sleep 200
 		send ^{e}
@@ -418,7 +435,7 @@ Mbutton::
 	send, ^{e}{enter}{down 2}{up}^a
 	return
 	; +Mbutton::SelectPreviewPane()
-	F6::
+	+F6::
 		winactivate, ahk_class CabinetWClass ahk_exe explorer.exe,,VQ_Helper
 		send, ^{e}
 		sleep 700
@@ -625,7 +642,8 @@ return
 
 	F9::lms.Menu()
 	F7::LMS.SearchBar(Batch,"{enter}",0)
-	F6::LMS.SearchBar(Product,"{enter}",0)
+F6::LMS.SearchBar(Product,"{enter}",0)
+		F8::LMS.SearchBar("",,"False")
 	+F6::
 	lms.DetectTab()
 	sleep 300
@@ -646,7 +664,7 @@ return
 		; clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
 +F7::copyLabelCopyDoc()
 	+F8::LMS.SearchBar("",,"False")
-	F8::LMS.SearchBar("",,"False")
+
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	<^v::LMS.Searchbarpaste(A_space)
@@ -656,6 +674,18 @@ return
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
 ;
+; F7::
+; 	Winactivate, NuGenesis LMS
+; 	LMS.SearchBar(Batch,"{enter}",0)
+; 	Return
+; F6::
+; 	Winactivate, NuGenesis LMS
+; 	LMS.SearchBar(Product,"{enter}",0)
+; 	Return
+; F8::
+; 	Winactivate, NuGenesis LMS
+; 	LMS.SearchBar("",,"False")
+; 	Return
 F3::Sendinput, %lot%
 F4::Sendinput, %Coated%
 F1::Sendinput, %Product%
@@ -664,9 +694,10 @@ F5::WholeBatchMenu()
 +F5::Sendinput, %SampleID%
 ^F5::Sendinput, %SampleGUID%
 
-	^F10::gosub, TestCode
-	^+w::gosub, get_window_info
-	^+e::gosub, get_mouse_info
+	^+F10::ChangePercision(3)
+	+F10::ChangePercision(2)
+	^F10::ChangePercision(1)
+
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
 	; F7::3Right()
@@ -691,7 +722,7 @@ F5::WholeBatchMenu()
 	#p::return
 	#k::return
 	>+Backspace::			Delete
-	F8::esc
+	;F8::esc
 
 
 
@@ -1250,7 +1281,7 @@ class Breaking {
 		; critical
 		; MouseGetPos,bx,by
 		SimpleClip:=
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") {
+		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") || (A_PriorKey="RShift") || (A_PriorKey="Space") {
 			TT("Broke",3000,400,400)
 			; ContinueToRun:=
 			blockinput, off

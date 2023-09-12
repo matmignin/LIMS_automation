@@ -30,7 +30,7 @@
 	Fileread, AllProducts, AllProducts.txt
 	ReadIniFiles()
 	tooltipNumber=6
-
+prefix:=
 	Menu,Tray,NoStandard
 	Menu, Tray, Add, All Products, AllProductsMsgbox
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
@@ -58,9 +58,10 @@
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 	regexMaxLimit:="i)(<| - |NMT )(?P<maxLimit>[0-9,.]*)\s\w*"
 	regexMaxLimit:="i)(<|NLT )?(?P<minLimit>(?<!NMT )[0-9.,]*)"
-	regexunit:="i)(?P<unit>\w*)"
+regexunit:="i)(?P<unit>\w*)"
+	RegexRequirements:="iO)(?<Prefix>(NLT |NMT |<))?(?<LowerLimit>([,|\d]*.?[\d]*))( - (?<UpperLimit>[,|\d]*.?[\d]*))? (?<Unit>(mg RAE|mcg RAE|mcg DFE|mg|mcg|g|IU|CFU\\g|ppm|ppb))"
 RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
-	PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
+PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
 	; RegexCombined := "iO)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)|(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)|(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)|(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 
 
@@ -333,4 +334,75 @@ Loop, %FilePattern%, 1, 0
 	; Clipboard:=listofIngredients
 		; MsgBox % riIngredients
 	Return LabelCopyText
+}
+
+
+
+
+
+
+ChangePercision(The_Percision:=1){
+	global
+	; click
+	MouseGetPos, Saved_x, Saved_y
+		If winactive("NuGenesis LMS")
+		{
+			click, 53, 178 ;Click Edit Test on Test Tab
+			winwaitactive, Edit test,, 1
+		if ErrorLevel
+		{
+			click, 47, 843 ;click Edit Test on Samples Tab
+			sendinput, {esc}
 		}
+			sleep 200
+			Breaking.Point()
+		}
+		If winactive("Edit test")
+		{
+			sleep 200
+			winactivate, Edit test
+			click 238, 527  ;results link
+			Breaking.Point()
+			winwaitactive, Results,, 2
+			sleep 100
+
+		}
+		if winactive("Results") ;Selection window
+		{
+		winactivate, Results
+			sleep 100
+			Sendinput,{click 80, 66} ;click edit
+			Breaking.Point()
+			winwaitactive, Result Editor,,4
+							winactivate, Result Editor
+							click, 250, 140 ; click id box to orient
+							Breaking.Point()
+								Sendinput,{tab 3}^{a}%The_Percision% ;{tab 5}
+							Sleep 400
+							Breaking.Point()
+								Mouseclick, left, 378, 667,1,0 ; click okay
+							winwaitactive, Results,, 5
+							wingetpos, Results_X, Results_y, Results_w, Results_h, Results
+							sleep 200
+							Okay_x:=Results_W - 170
+							Okay_y:=Results_H - 45
+							; mousemove, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
+							click, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
+							Breaking.Point()
+						;		click
+							WinWaitClose, Results,, 8
+							; sleep 400
+								click 342, 614
+
+							wingetpos, Test_X, Test_y, Test_w, Test_h, A
+							Save_x:=test_W - 170
+							Save_y:=test_H - 45
+							Breaking.Point()
+		winwaitactive, NuGenesis LMS,,3
+							sleep 500
+							Saved_y:=Saved_Y + 26
+							click, %Saved_x% %Saved_y% 0
+		}
+		return
+	}
+

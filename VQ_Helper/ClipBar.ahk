@@ -42,7 +42,7 @@ clipChange(){
 		; clip.codesRegex()
 		Product:=TRIM(SubStr(Clipboard, 19,4))
 		ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
-		SLEEP 200
+		SLEEP 100
 		Clipboard:=
 		sleep 100
 		copyLabelCopyDoc()
@@ -71,16 +71,16 @@ clipChange(){
   ;   sleep 800
   ;   Return
   ; }
-  else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
-		if instr(Clipboard, "111Skin Limited",true,1,1)
-			WorkTab.SaveCustomerList()
-		else if instr(Clipboard, "5-HTP",true,1,1)
-			ProductTab.SaveIngredientList()
-		else
-			clip.codesRegex()
-    ; sleep 800
-    Return
-  }
+							; else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
+							; 	if instr(Clipboard, "111Skin Limited",true,1,1)
+							; 		WorkTab.SaveCustomerList()
+							; 	else if instr(Clipboard, "5-HTP",true,1,1)
+							; 		ProductTab.SaveIngredientList()
+							; 	else
+							; 		clip.codesRegex()
+							;   ; sleep 800
+							;   Return
+							; }
   else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
     ; TT(Description,2000)
@@ -95,6 +95,28 @@ clipChange(){
     clip.ParseIngredientsTable()
 		return
 	}
+						; 	ELSE if (RegexMatch(Clipboard, RegexRequirements, subpat)){  ;THis clips requirments
+						; 		; if (RegexMatch(Parse, RegexRequirements, r)){
+						; 		Prefix:=
+						; 		MinLimit:=
+						; 		MaxLimit:=
+						; 		Units:=
+						; 		Prefix:=Subpat["Prefix"]
+						; 						MinLimit:=Subpat["LowerLimit"]
+						; 					MaxLimit:=Subpat["UpperLimit"]
+						; 		Units:=Subpat["Unit"]
+						; if (Prefix="<") && !(Minlimit)
+						; 				Minlimit:=Prefix
+						; 					; LowerLimit:=rLowerLimit
+						; 					; UpperLimit:=rUpperLimit
+						; 			ClippedRequirements:=Prefix   "  min:" Minlimit "  max:" maxlimit "  unit:" Units
+						; 		; Unit:=rUnit
+						; 			; Prefix:=
+						; 					sleep 300
+						; 		; msgbox, prefix: %Prefix% `nlowerlimit: %MinLimit% `nupperlimit: %Maxlimit% `nunit: %Units%
+						; 					ControlsetText, Edit6,%ClippedRequirements%,ClipBar ahk_exe VQ_Helper
+						; 		; return
+						; }
   else
     clip.codesRegex()
     sleep 50
@@ -999,9 +1021,11 @@ Class ClipBar{
 		ClipBar_H=32
 		ClipBar_H_max=56
 		ClipBar_T:=230
-		ClipBar_W=500
-		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
-		ClipBar_Y:=Nugenesis_Y
+		ClipBar_W=505
+		ClipBar_x:=Nugenesis_X+(Nugenesis_W/2)
+		; ClipBar_x:=1
+		ClipBar_Y:=Nugenesis_h + Nugenesis_y - 39
+		ClipBar_Y:=Nugenesis_y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui ClipBar:Default
 		; Gui, ClipBar:+Delimiter`n
@@ -1009,7 +1033,7 @@ Class ClipBar{
 		GUI, ClipBar:color,DC734F, 97BA7F
 			GUI,ClipBar:Font,			 s17 Bold , consolas
 			; GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x7 y-1 w65,	%Product%
-			GUI,ClipBar:Add,edit,		vProduct +wrap	gClipBarHandler left h33 x7 y-1 w65,	%Product%
+		GUI,ClipBar:Add,edit,		vProduct +wrap	gClipBarHandler left h33 x0 y-1 w65,	%Product%
 		this.AddEdit("Batch",	 "left h33 x+0 y-1 w92 center", 			"13,Consolas")
 		this.AddEdit("Lot",		 "left h18 x+0 y-2 w77", 			"9, Consolas")
 		this.AddEdit("Coated",	 "left h16 y+0 w77",		"8, Arial Narrow")

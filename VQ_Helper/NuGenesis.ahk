@@ -643,7 +643,7 @@ sleep 20
 
 
 ;;----------------------------------------------------------
-;;{{                ProductTab Class                         }}
+;;{{                      PRODUCT                          }}
 Class ProductTab {
 
 
@@ -892,33 +892,33 @@ Class ProductTab {
 		else if InStr(ServingSize,"7 c",False)
 			Sendinput % "Each seven (7) capsules contains{Tab}" ShapeAndSize "{tab}" color
 		else if InStr(ServingSize,"1 sp",False)
-			Sendinput % "Each (1) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
+			Sendinput % "Each (1) stick packet (" ShapeAndSize " g) contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"2 sp",False)
-			Sendinput % "Each two (2) stick packet (" ShapeAndSize " g) contains{Tab}Blend"
+			Sendinput % "Each two (2) stick packet (" ShapeAndSize " g) contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"1 stick",False) || InStr(ServingSize,"1st",False)
-			Sendinput % "Each (1) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
+			Sendinput % "Each (1) " FORMAT("{:L}",TRIM(SubStr(ServingSize, 2))) " contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"2 stick",False)
-			Sendinput % "Each two (2) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
+			Sendinput % "Each two (2) " FORMAT("{:L}",TRIM(SubStr(ServingSize, 2)))" contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"1 scoop",False) || InStr(ServingSize,"1s",False)
-			Sendinput % "Each (1) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
+			Sendinput % "Each (1) " FORMAT("{:L}",TRIM(SubStr(ServingSize, 2))) " contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"2 scoop",False)  || InStr(ServingSize,"2s",False)
-			Sendinput % "Each two (2) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
+			Sendinput % "Each two (2) " FORMAT("{:L}",TRIM(SubStr(ServingSize, 2))) " contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"3 scoop",False)
-			Sendinput % "Each three (3) s" SubStr(ServingSize, 3) " contains{Tab}Blend"
+			Sendinput % "Each three (3) " FORMAT("{:L}",TRIM(SubStr(ServingSize, 2))) " contains{Tab}Blend"
 		else if InStr(ServingSize,"4 scoop",False)
-			Sendinput % "Each four (4)" SubStr(ServingSize, 2) "  contains{Tab}Blend"
+			Sendinput % "Each four (4)"FORMAT("{:L}",TRIM(SubStr(ServingSize, 2))) "  contains{Tab}Blend"
 		else if InStr(ServingSize,"5 scoop",False)
-			Sendinput % "Each five (5)" SubStr(ServingSize, 2) "  contains{Tab}Blend"
+			Sendinput % "Each five (5)" FORMAT("{:L}",TRIM(SubStr(ServingSize, 2))) "  contains{Tab}Blend"
 		else if InStr(ServingSize,"1 s",False)
-			Sendinput % "Each (1) scoop (" ShapeAndSize " g) contains{Tab}Blend"
+			Sendinput % "Each (1) scoop (" ShapeAndSize " g) contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"2 s",False)
-			Sendinput % "Each two (2) scoops (" ShapeAndSize " g) contains{Tab}Blend"
+			Sendinput % "Each two (2) scoops (" ShapeAndSize " g) contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"3 s",False)
-			Sendinput % "Each three (3) scoops (" ShapeAndSize " g) contains{Tab}Blend"
+			Sendinput % "Each three (3) scoops (" ShapeAndSize " g) contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"4 s",False)
-			Sendinput % "Each four (4) scoosp ("  ShapeAndSize " g)  contains{Tab}Blend"
+			Sendinput % "Each four (4) scoosp ("  ShapeAndSize " g)  contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"5 s",False)
-			Sendinput % "Each five (5) scoops (" ShapeAndSize " g)  contains{Tab}Blend"
+			Sendinput % "Each five (5) scoops (" ShapeAndSize " g)  contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"",False)
 			Sendinput {tab}
 
@@ -1086,7 +1086,7 @@ return
 
 
 ;;----------------------------------------------------------
-;;{{                 SpecTab class                         }}
+;;{{                 SPECIFICATION                        }}
 class SpecTab {
 
 	Table(){
@@ -1120,7 +1120,7 @@ class SpecTab {
 		CoordMode, mouse, screen
 		if WinExist("Select methods test"){
 			ScreenEdge_X:=A_ScreenWidth-450
-			ScreenEdge_Y:=A_Screenheight-180
+			ScreenEdge_Y:=A_Screenheight-380
 			SpecTable_X:=LMS_X-450
 			SpecTable_Y:=LMS_Y+ShiftTable_Y
 		}
@@ -2742,6 +2742,7 @@ Spec_Table:
 		Sendinput,{space}
 		SpecTab.GetRowText()
 		; tt(ShowVariables,1000)
+		sleep 300
 		winactivate, ahk_exe eln.exe
 		SpecTab.AutoFill()
 	}
@@ -2754,7 +2755,7 @@ Spec_TableGuiClose:
 return
 
 ;;----------------------------------------------------------
-;;{{                   WorkTab Class                      }}
+;;{{                        MY WORK                       }}
 Class WorkTab {
 	NewTestRequestLink(){
 		Global
@@ -2790,18 +2791,19 @@ Class WorkTab {
 		winwaitactive, Edit sample (Field Configuration,, 2
 		if errorlevel
 			breaking.point(1)
-		Sendinput, {tab 2}{right}{tab}^{a}%Batch%{tab} ; switch to Availible and enter batch
+		Sendinput, {tab 2}{right}{Click 305, 138}^{a}%Batch%{tab} ; switch to Availible and enter batch
 			; Iteration:=CustomerPosition
 			Breaking.Point()
 			WorkTab.Dropdown_CustomerSelect(Iteration)
-		Ifwinactive, Edit sample (Field Configuration: F`, Micro)
+		Ifwinactive, Edit sample (Field Configuration: F
 		{
-			Send, ^{a}%Lot%
+			Send, {tab}^{a}%Lot%
 			if Coated
-				Send, {tab}^{a}%Coated%
+				Send, {tab}^{a}%Coated%{tab}
+			; Send, {tab 2}
 			; Sendinput, {tab 2}
 		}
-		Ifwinactive, Edit sample (Field Configuration: CT`,
+		Ifwinactive, Edit sample (Field Configuration: CT
 			{
 				Send, {tab}^{a}%Coated%
 			}
@@ -3031,15 +3033,18 @@ Class WorkTab {
 					Send,{tab}{Space}{tab}{Space}
 					else
 						Sendinput,{tab}{tab}
+					Breaking.Point()
 					;Breaking.Point()
+					Breaking.Point()
 					Send,{tab 10}^a
-					if (Iteration != 0)
-					Send, %Iteration%
+					if ((Iteration != 0) && !(A_Priorkey="Rshift") && !(A_ThisHotkey="Space") && !(A_Priorkey="Space"))
+						Send, %Iteration%
 					ypos:=ypos+26
 					mousemove, xpos, ypos,0
+					Breaking.Point()
 					; Breaking.Point()
 					if GetKeyState("Lbutton","P"){
-						; sleep 500
+						blockinput, off
 						exit
 					}
 				}
@@ -3064,7 +3069,7 @@ Class WorkTab {
 			;Breaking.Point()
 			Sendinput,{tab 10}^a
 			Breaking.Point()
-			if ((Iteration != 0) && !(Iteration > 8) && !(Iteration < 0))
+			if ((Iteration != 0) && !(Iteration > 8) && !(Iteration < 0) && !(A_Priorkey="Rshift") && !(A_ThisHotkey="Space") && !(A_Priorkey="Space") && !GetKeyState("Lbutton","P"))
 			Send, %iteration%
 			;if !Checkbox_Toggle ; Not Contains toggle
 			mousemove, xpos, ypos+26,0
