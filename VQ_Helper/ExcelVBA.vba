@@ -95,3 +95,42 @@ Sub GetLabelCopyText()
     If servingsResult <> "" Then ActiveSheet.Range("B4") = servingsResult
 
 End Sub
+
+
+Sub MergeSheets()
+    
+    Dim oldWb As Workbook
+    Dim newWb As Workbook
+    Dim newWs As Worksheet
+    Dim sheet As Worksheet
+    Dim lastRow As Long
+    Dim i As Integer
+
+    ' Open the workbooks
+    Set oldWb = Workbooks.Open("path/to/OldRotations.xlsx")
+    Set newWb = Workbooks.Open("path/to/NewRotations.xlsx")
+
+    ' Add a new worksheet to the new workbook
+    Set newWs = newWb.Sheets.Add(After:=newWb.Sheets(newWb.Sheets.Count))
+    newWs.Name = "Merged Data"
+
+    ' Loop through each sheet in the old workbook, but only for the first 10 sheets
+    For i = 1 To 10
+        Set sheet = oldWb.Sheets(i)
+        
+        ' Find the last row with data in column C of the new worksheet
+        lastRow = newWs.Cells(newWs.Rows.Count, "C").End(xlUp).Row
+        
+        ' Copy the data (from column A to DA and down to the last filled row) from the old worksheet to the new worksheet
+        sheet.Range("A1:DA" & sheet.Cells(sheet.Rows.Count, "A").End(xlUp).Row).Copy
+        newWs.Cells(lastRow + 1, 1).Value = sheet.Name
+        newWs.Cells(lastRow + 1, 3).PasteSpecial Paste:=xlPasteValues
+    Next i
+
+    ' Close the old workbook without saving
+    oldWb.Close SaveChanges:=False
+
+    ' Inform the user
+    MsgBox "Data merged successfully!", vbInformation
+
+End Sub
