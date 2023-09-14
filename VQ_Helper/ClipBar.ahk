@@ -64,23 +64,23 @@ clipChange(){
     Return
   }
 
-  ; else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
-	; 	NewIngredientsString:="[Ingredients]`r`n" Clipboard
-	; 	filedelete, Ingredients.ini
-	; 	fileappend, %NewIngredientsString%, Ingredients.ini
-  ;   sleep 800
-  ;   Return
-  ; }
-							; else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
-							; 	if instr(Clipboard, "111Skin Limited",true,1,1)
-							; 		WorkTab.SaveCustomerList()
-							; 	else if instr(Clipboard, "5-HTP",true,1,1)
-							; 		ProductTab.SaveIngredientList()
-							; 	else
-							; 		clip.codesRegex()
-							;   ; sleep 800
-							;   Return
-							; }
+  else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
+		NewIngredientsString:="[Ingredients]`r`n" Clipboard
+		filedelete, Ingredients.ini
+		fileappend, %NewIngredientsString%, Ingredients.ini
+    sleep 800
+    Return
+  }
+							else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
+								if instr(Clipboard, "111Skin Limited",true,1,1)
+									WorkTab.SaveCustomerList()
+								else if instr(Clipboard, "5-HTP",true,1,1)
+									ProductTab.SaveIngredientList()
+								else
+									clip.codesRegex()
+							  ; sleep 800
+							  Return
+							}
   else if Winactive("Test Definition Editior"){
     DESCRIPTION:=Trim(Clipboard,"`r`n")
     ; TT(Description,2000)

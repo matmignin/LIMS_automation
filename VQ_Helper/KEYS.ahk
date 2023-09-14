@@ -581,8 +581,21 @@ F9::mouseclick, Left, 638, 70
 
 	;;\\ 	            Edit sample
 #ifwinactive, Edit sample (
-	F9::worktab.CustomerMenu()
-
+F9::worktab.CustomerMenu()
+Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
+		; 	winactivate, Edit sample
+		; 	Ifwinactive, Edit sample (Field Configuration: F`, Micro)
+		; 		send, {Click 253, 138}{tab}
+		; 	Ifwinactive, Edit sample (Field Configuration: CT
+		; 		send, {Click 253, 138}{tab}
+		; 	else
+		; 		send, {Click 253, 138}{tab}
+		; 	sleep 200
+		; WorkTab.Dropdown_CustomerSelect(Iteration)
+		; breaking.point()
+		; sleep 300
+		; 	send, {enter}
+return
 
 
 

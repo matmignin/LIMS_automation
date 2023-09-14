@@ -2858,9 +2858,8 @@ Class WorkTab {
 			{
 				MenuItems := StrSplit(A_LoopReadLine, "=")
 				Selection:= % MenuItems[1]
-				Count:= % MenuItems[2]
-				Menu, CustomersMenu, add, %Count% `t &%Selection%, CustomerMenu ;%Addbreak%
-				; AddBreak:=
+					Count:= % MenuItems[2]
+					Menu, CustomersMenu, add, %Count% `t &%Selection%, CustomerMenu
 			}
 			Menu, CustomersMenu, Show,
 			return
@@ -2880,30 +2879,32 @@ Class WorkTab {
 			; send, {tab 7}
 			sleep 20
 			menu, CustomersMenu, DeleteAll
-			if CustomerPosition > 0
-			customerPosition+=1
-			if CustomerPosition < 0
-			customerPosition-=1
+			; if CustomerPosition > 0
+			; customerPosition+=1
+			; if CustomerPosition < 0
+			; customerPosition-=1
 			Iteration:=CustomerPosition
 			GuiControl,ClipBar:Text, Iteration, %Iteration%
+			ControlsetText, Edit6,%inputVar%,ClipBar
 			GUI, ClipBar:submit,NoHide
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 			; iniwrite, %Iteration%, Settings.ini, SavedVariables, CustomerPosition
 			winactivate, Edit sample
-			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
-				send, {Click 253, 138}{tab 4}
-			Ifwinactive, Edit sample (Field Configuration: CT
-				send, {Click 253, 138}{tab 2}
-			else
-				send, {Click 253, 138}{tab}
-			sleep 200
-			this.Dropdown_CustomerSelect(CustomerPosition)
-			Nsub:=
+			;this.Dropdown_CustomerSelect(CustomerPosition)
+			; Nsub:=
 
 			return
 		}
 
-		Dropdown_CustomerSelect(A_ShipTo){
+			Dropdown_CustomerSelect(A_ShipTo){
+		winactivate, Edit sample
+			Ifwinactive, Edit sample (Field Configuration: F`, Micro)
+				send, {Click 253, 138}{tab}
+			Ifwinactive, Edit sample (Field Configuration: CT
+				send, {Click 253, 138}{tab}
+			else
+				send, {Click 253, 138}{tab}
+			sleep 200
 			; Critical, on
 			; msgbox, shipto %A_shipto% `niteration: %iteration% `nAbsselection: %Absselection% `n customerPosition:  %CustomerPosition%
 			; setkeydelay, -1,-1
@@ -2929,18 +2930,6 @@ Class WorkTab {
 			; msgbox %A_shipto% 0
 			worktab.CustomerMenu()
 			else
-			{
-				; setkeydelay, 0, 0
-				; critical, off
-				msgbox, This is before the exit
-				; exit
-			}
-			; else
-			; if (a_shipto > 175) || (absselection > 175)
-			; 	sleep 500
-			; if winactive("Edit sample `(Field Configuration:")
-			; critical, off
-			; setkeydelay, 0, 0
 			return
 		}
 		EditRequest(){
