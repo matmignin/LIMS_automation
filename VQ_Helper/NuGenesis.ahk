@@ -697,6 +697,7 @@ Class ProductTab {
 		if CustomerPosition {
 			Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")
 			ControlsetText, Edit5,%Iteration%,ClipBar
+			Clipbar.FlashIteration()
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		}
 
@@ -842,6 +843,7 @@ Class ProductTab {
 		This.AddNewFormulation()
 		; clk(287, 578) ;click save
 		Iteration:=1
+		Clipbar.FlashIteration()
 		return
 
 	}
@@ -2876,6 +2878,7 @@ Class WorkTab {
 			Iteration:=CustomerPosition
 			GuiControl,ClipBar:Text, Iteration, %Iteration%
 			ControlsetText, Edit6,%inputVar%,ClipBar
+			Clipbar.FlashIteration()
 			GUI, ClipBar:submit,NoHide
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 			; iniwrite, %Iteration%, Settings.ini, SavedVariables, CustomerPosition

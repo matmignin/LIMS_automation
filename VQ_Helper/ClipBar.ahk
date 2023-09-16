@@ -25,7 +25,10 @@ clipChange(){
   }
   else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
+		{
       iteration:=1
+			Clipbar.FlashIteration()
+		}
     ClippedData:=Clipboard
 		UsedLimits:=
 		AllowPrefixes:=
@@ -167,6 +170,31 @@ Class Clip {
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 			SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+			If rProduct {
+				Gui, Font, cYellow s17
+				GuiControl, Font, Edit1
+			}
+			If rBatch {
+				Gui, Font, cYellow s13
+			GuiControl, Font, Edit2
+			}
+			If rLot {
+				Gui, Font, cYellow s9
+			GuiControl, Font, Edit3
+			}
+			If rCoated {
+				Gui, Font, cYellow s8
+			GuiControl, Font, Edit4
+			}
+			sleep 200
+			Gui, Font, cBlack s17
+			GuiControl, Font, Edit1
+			Gui, Font, cBlack s13
+			GuiControl, Font, Edit2
+			Gui, Font, cBlack s9
+			GuiControl, Font, Edit4
+			Gui, Font, cBlack s8
+			GuiControl, Font, Edit3
 
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
@@ -175,9 +203,10 @@ Class Clip {
 					Coated:=
 				}
 				if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
+					Clipbar.FlashIteration()
 					Iteration:=Floor(rCustomerPosition)
 					CustomerPosition:=rCustomerPosition
-					sleep 40
+
 			}
 
 				Ct:=Coated ? " ct#" : ""
@@ -236,6 +265,7 @@ GetSampleInfo(){ ;on the lms main menu
 		customer:=Clipped_Customer
 		Iteration:=GetIniValue("Customers.ini",Customer)
 		ControlsetText, Edit6,%Customer%,ClipBar
+		Clipbar.FlashIteration()
 	}
 	; else
 		; GuiControl,ClipBar:Text, GeneralBox,
@@ -563,7 +593,7 @@ SetClipBar(){
       GuiControl,ClipBar:Text, Batch, %Batch%
       GuiControl,ClipBar:Text, lot, %lot%
       GuiControl,ClipBar:Text, Coated, %Coated%
-Clipbar.Flash()
+; Clipbar.Flash()
 }
 
 
@@ -691,6 +721,7 @@ NumberMenubutton:
 		Iteration:=A_ThisMenuItemPos - 1
 	sleep 100
 	ControlsetText, Edit5,%Iteration%,ClipBar
+	Clipbar.FlashIteration()
 	MouseMove, %mx%, %my%, 0
 	sleep 300
 	if runCorrectTestResults = toggle
@@ -1092,16 +1123,24 @@ Class ClipBar{
 	Flash(){
 		global
 		Gui ClipBar:Default
-		Loop 2
+		Loop 1
 		{
-			GUI, ClipBar:color,ffffff,FFFFFF
+			GUI, ClipBar:color,FFFFFF,FFFFFF
 			winSet, Transparent, 255, AHK_id %GUIID%
 			sleep 100
 			GUI, ClipBar:color,DC734F,97BA7F
-			; GUI, ClipBar:color,000000,000000
-			winSet, Transparent, 255, AHK_id %GUIID%
+			winSet, Transparent, 230, AHK_id %GUIID%
 			sleep 50
 		}
+	}
+		FlashIteration(){
+			Global
+		Gui ClipBar:Default
+			Gui, Font, cYellow s16  ; This just tells what color to change to
+			GuiControl, Font, Edit5
+			sleep 200
+			Gui, Font, cBlack s16  ; This just tells what color to change to
+			GuiControl, Font, Edit5
 			; GUI, ClipBar:color,DC734F,97BA7F
 			; winSet, Transparent, 230, AHK_id %GUIID%
 			; GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y+30 w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
