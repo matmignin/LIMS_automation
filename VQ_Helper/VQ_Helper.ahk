@@ -294,36 +294,14 @@ Loop, %FilePattern%, 1, 0
 		oW:=ComObjGet(A_LoopFileLongPath)
 		; sleep 1000
 		sleep 400
-		; oW.Visible :=0
 		oW.Range.FormattedText.Copy
-		; oW.Close()
-		; tt(clipboard)
 		clipwait,5,0
 	LabelCopyText:=Clipboard
-	; sleep 300
-	; TT(LabelCopyText)
-	; msgbox, %LabelCopyText%
+
 	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
-	; RegexMatch(LabelCopyText, RegexServingSize, ss)
-	; RegexMatch(LabelCopyText, RegexPillSize, ps)
-	; ServingSize:=Trim(ssServingSize " " ssServingType " " SsservingWeight)
-	; PillSize:=Trim(psPillSize)
-	; Loop, Parse, riIngredients,`n
-	; {
-	; 	if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
-	; 		Continue
-	; 	NewString:=RegexReplace(A_LoopField, RegexIngredient, "${Ingredient}`t${claim} ${unit}`n")
-	;  	 listofIngredientsPreTrim:=trim(NewString) "`r`n||"
-	;  	 listofIngredientsPretrim2:=Trim(strreplace(strReplace(listofIngredientsPreTrim, "`r`n||",""),"†",""))
-	;  	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
-	; 	 regingredient.insert(listofIngredientsPreTrim2)
-	; }
+
 		Clipboard:=LabelCopyText
-		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
-	; FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
-	; FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopyText.txt
-	; sleep 400
-	; msgbox, %LabelCopyText%
+
 	If showTooltip
 		tt(LabelCopyText,1000)
 	If SaveText
@@ -402,7 +380,10 @@ ChangePercision(The_Percision:=1){
 							sleep 500
 							Saved_y:=Saved_Y + 26
 							click, %Saved_x% %Saved_y% 0
-		}
+							sleep 300
+							click
+	}
+
 		return
 	}
 

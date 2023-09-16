@@ -501,8 +501,9 @@ F7::
 
 ;;\\ 	             Result Entry
 #Ifwinactive, Result Entry
-	F7::numbermenu(6,"ToggleResults") ;WorkTab.CorrectTestResults("toggle", "Loop")
-	F6::WorkTab.CorrectTestResults(0,5)
+	F7::numbermenu(6,"toggle") ;WorkTab.CorrectTestResults("toggle", "Loop")
+	F6::numbermenu(6,0) ;WorkTab.CorrectTestResults("toggle", "Loop")
+	; F6::WorkTab.CorrectTestResults(0,5)
 	F10::WorkTab.CorrectTestResults()
 	Mbutton::WorkTab.CorrectTestResults("Toggle")
 	F9::numbermenu(6)
@@ -603,7 +604,7 @@ return
 
 ;;[[_____________ Nugenesis MAIN _______________]]
 #Ifwinactive, NuGenesis LMS
-
+!F4::Return
 ^F9::
 	send, ^c
 	sleep 500
@@ -1101,15 +1102,16 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	winGetPos, ttwinx,ttwiny, ttwinw, ttwinh, A
 	ttx:=Floor(ttwinx+X)
 	tty:=Floor(ttwiny+y)
-	if Position=S || Position=M
+	if Position="S" || Position="M"
 	{
-		CoordMode, tooltip, screen
-		CoordMode, screen, screen
+		; CoordMode, tooltip, screen
+		CoordMode, tooltip, Window
+		; CoordMode, Mouse, screen
 	}
-	if Position=W
+	if Position="W"
 	{
 		CoordMode, tooltip, window
-		CoordMode, mouse, window
+		; CoordMode, Mouse, window
 	}
 	MouseGetPos, mX, mY
 	if Simpleclip
@@ -1119,7 +1121,7 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	; CoordMode, ToolTip, Window
 	sleep 20
 	; CoordMode, mouse, window
-	if Position = M
+	if Position = "M"
 		tooltip, %msg%, %ttx%, %tty%,%N%
 	else
 		tooltip, %msg%, %ttMX%, %ttmY%,%N%
@@ -1135,8 +1137,8 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	; winSet, TransColor, 0xE5513C 200, % "ahk_id" hwnd
 	; winSet, Trans, 200, %W%
 	; if Position = "S"
-		CoordMode, tooltip, screen
-		CoordMode, Mouse, screen
+		; CoordMode, tooltip, screen
+		; CoordMode, Mouse, screen
 	if !(time=0)
 		SetTimer, RemoveToolTip%N%, -%time%
 		return

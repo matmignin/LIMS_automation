@@ -20,6 +20,8 @@ clipChange(){
   ; }
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
+		clipBar.Flash()
+
   }
   else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
@@ -48,7 +50,7 @@ clipChange(){
 		copyLabelCopyDoc()
 		; Clipwait,5,0
 		; tt(clipboard)
-		sleep 2000
+		sleep 2500
 		; Clipboard:=
 		GoSub ShowScanLabelCopy
 		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
@@ -295,6 +297,7 @@ GetSampleInfo(){ ;on the lms main menu
     Clipped_ResultID:=
 		ParsedSpecs:=[]
     ParseData:=Clipboard
+		Clipboard.Flash()
 		Loop, parse, ParseData, `t
 			ParsedSpecs.insert(A_LoopField)
 			TotalColumns:=ParsedSpecs.maxindex()//2
@@ -560,6 +563,7 @@ SetClipBar(){
       GuiControl,ClipBar:Text, Batch, %Batch%
       GuiControl,ClipBar:Text, lot, %lot%
       GuiControl,ClipBar:Text, Coated, %Coated%
+Clipbar.Flash()
 }
 
 
@@ -689,8 +693,12 @@ NumberMenubutton:
 	ControlsetText, Edit5,%Iteration%,ClipBar
 	MouseMove, %mx%, %my%, 0
 	sleep 300
-	if runCorrectTestResults
+	if runCorrectTestResults = toggle
 		WorkTab.CorrectTestResults("toggle", "Loop")
+	else if runCorrectTestResults = 0
+
+
+		WorkTab.CorrectTestResults(0,5)
 
 		}
 		blockinput, off
@@ -1030,7 +1038,7 @@ Class ClipBar{
 		Gui ClipBar:Default
 		; Gui, ClipBar:+Delimiter`n
 		; winSet, Transparent, 80, %GUIID%
-		GUI, ClipBar:color,DC734F, 97BA7F
+		GUI, ClipBar:color,DC734F,97BA7F
 			GUI,ClipBar:Font,			 s17 Bold , consolas
 			; GUI,ClipBar:Add,edit,		vProduct +wrap -multi	gClipBarHandler left h33 x7 y-1 w65,	%Product%
 		GUI,ClipBar:Add,edit,		vProduct +wrap	gClipBarHandler left h33 x0 y-1 w65,	%Product%
@@ -1081,7 +1089,23 @@ Class ClipBar{
 			ClipBar.SaveVariables()
 		return
 	}
-
+	Flash(){
+		global
+		Gui ClipBar:Default
+		Loop 2
+		{
+			GUI, ClipBar:color,ffffff,FFFFFF
+			winSet, Transparent, 255, AHK_id %GUIID%
+			sleep 100
+			GUI, ClipBar:color,DC734F,97BA7F
+			; GUI, ClipBar:color,000000,000000
+			winSet, Transparent, 255, AHK_id %GUIID%
+			sleep 50
+		}
+			; GUI, ClipBar:color,DC734F,97BA7F
+			; winSet, Transparent, 230, AHK_id %GUIID%
+			; GUI, ClipBar:Show, x%ClipBar_X% y%ClipBar_y+30 w%ClipBar_w% h%ClipBar_H% Noactivate, ClipBar
+	}
 	AddEdit(Variable,Dimensions:="",Font:=""){
 		global
 		GUI,ClipBar:Font,			 s%Font% , consolas ;cBlack Bold, %Font%

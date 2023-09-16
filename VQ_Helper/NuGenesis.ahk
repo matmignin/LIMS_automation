@@ -264,11 +264,9 @@ Class LMS {
 
 	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
 		Global
-		; sleep 200
 		If Nsub
 		{
 			sleep 400
-			; exit
 			return
 		}
 		Nsub:=1
@@ -291,16 +289,10 @@ Class LMS {
 		ifwinactive, NuGenesis LMS
 		{
 			if (Tab="Products") {
-				; If (Code=Batch){
-					; lmsclick.Edit_Composition()
-					; return
-				; }
+
 				clk(x%Tab%Search+45 ,yProductsSearch, "Left")
 				clk(x%Tab%Search ,yProductsSearch, "Left", 2)
-				; sleep 30
-				; clk(x%Tab%Search,yProductsSearch, "Left", 2)
-				; clk(x%Tab%Search+35,yProductsSearch, "Left")
-				; clk(x%Tab%Search,yProductsSearch)
+
 				Send, ^{a}
 				If Overwrite=true
 					Send, ^{x}
@@ -316,26 +308,15 @@ Class LMS {
 					return
 			}
 			else if (Tab="Specs") {
-				; If (Code=Batch) {
-				; 	lmsclick.Edit_Test()
-				; 	return
-				; }
-				; xtabsLocation:=x%Tab%Search
+
 				xtabsLocation2:=x%Tab%Search+10
 				xtabsLocation3:=x%Tab%Search+25
 				xtabsLocation4:=x%Tab%Search+35
-				xtabsLocation5:=x%Tab%Search+40
-				; xtabsLocation6:=x%Tab%Search+50
-				; ytabsLocation:=%yWorkTabSearch%
+				xtabsLocation5:=x%Tab%Search+4
+				mouseclick,, 634,91
 				mouseclick,, %xtabslocation5%, %yProductsSearch%
-				mouseclick,, %xtabslocation4%, %yProductsSearch%
-				mouseclick,, %xtabslocation3%, %yProductsSearch%
+				; mouseclick,, %xtabslocation4%, %yProductsSearch%
 				mouseclick,, %xtabslocation2%, %yProductsSearch%
-				; mouseclick,, %xtabslocation%, %yProductsSearch%
-				; mouseclick,, %xtabslocation5%, %yProductsSearch%
-				; mouseclick,, %xtabslocation6%, %yProductsSearch%
-				; clk(x%Tab%Search+20,yProductsSearch,,2,"NuGenesis LMS",0)
-				; clk(x%Tab%Search+5,yProductsSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
@@ -352,14 +333,11 @@ Class LMS {
 					return
 			}
 			else If (Tab="Requests") {
-				; clk(x%Tab%Search,yWorkTabSearch,,1,"NuGenesis LMS",0)
-				; clk(x%Tab%Search-9,yWorkTabSearch)
 				xtabsLocation:=x%Tab%Search
 				xtabsLocation2:=x%Tab%Search-9
-				xtabsLocation3:=x%Tab%Search-20
-				; ytabsLocation:=%yWorkTabSearch%
+				Click 476, 128
 				mouseclick,, %xtabslocation%, %yWorkTabSearch%
-				mouseclick,, %xtabslocation2%, %yWorkTabSearch%
+				mouseclick,, 593,130  --for pending tests
 				mouseclick,, %xtabslocation3%, %yWorkTabSearch%
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -377,7 +355,7 @@ Class LMS {
 			}
 			else If (Tab="Tests"|| Tab="Samples" || Tab="Results") {
 				clk(x%Tab%Search,yWorkTabSearch,,1,,0)
-				clk(x%Tab%Search+10,yWorkTabSearch,,1,,0)
+				Click 472, 129
 				clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -396,8 +374,6 @@ Class LMS {
 			else
 				send, %Code%
 		}
-		; sleep 4000
-		; #maxthreadsperhotkey, 2
 		Nsub:=
 		return
 	}
@@ -568,11 +544,25 @@ sleep 20
 			Menu,Menu, deleteAll
 	return
 	PasteAllBatches:
-		Clk(mx,mY)
+		; Clk(getx,getY)
+		if GetKeyState("shift","P")
+			sendinput % Trim(GetAllBatches("`;"))
+		else if GetKeyState("ctrl","P")		{
+			Clipboard:=Trim(GetAllBatches("`r`n"))
+			tt(Clipboard)
+			}
+		else
 		sendinput % Trim(GetAllBatches())
 	return
 	PasteAllProducts:
-		Clk(mx,mY)
+		; Clk(getX,getY)
+		if GetKeyState("shift","P")
+			sendinput % Trim(GetAllProducts("`;"))
+		else if GetKeyState("ctrl","P")		{
+			Clipboard:=Trim(GetAllProducts("`r`n"))
+			tt(Clipboard)
+		}
+			Else
 		sendinput % Trim(GetAllProducts())
 	return
 	Autofill:
