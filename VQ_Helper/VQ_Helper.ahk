@@ -30,6 +30,21 @@
 	Fileread, AllProducts, AllProducts.txt
 	ReadIniFiles()
 	tooltipNumber=6
+	HotkeysTip := "
+	(
+F5    :: copyLabelCopy
+!F<n> :: ChangePercision( n )
++!F10 :: AddsampleLog x5
+!F10  :: AddDataFromClipboard
+
++F5   :: copyLabelCopyIng
+^+w   :: get_window_info
+^+e   :: get_mouse_info
++^F1  :: GetAllProducts( ; )
++!F1  :: GetAllProducts( n )
++^F2  :: GetAllBatches( ; )
+	)"
+
 prefix:=
 	Menu,Tray,NoStandard
 	Menu, Tray, Add, All Products, AllProductsMsgbox
@@ -47,10 +62,13 @@ prefix:=
 	Menu, Tray, Add, ListLines, ListLines
 	Menu, Tray, Add, mmignin, mmigninFolder
 	Menu, Tray, Add, windowSpy, windowSpy
+	Menu, Tray, Add, Hotkeys, ShowHotkeys
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
-	Menu, Tray, tip, `n`n%CompileTime%`n`n
+	Menu, Tray, tip, %HotkeysTip% %HotkeysTip2%
 	Menu, Tray, Default, &Reload
+
+
 	Key:= {}
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>\b[abcdefghijkl]\d{3}\b)"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
@@ -58,11 +76,12 @@ prefix:=
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 	regexMaxLimit:="i)(<| - |NMT )(?P<maxLimit>[0-9,.]*)\s\w*"
 	regexMaxLimit:="i)(<|NLT )?(?P<minLimit>(?<!NMT )[0-9.,]*)"
-regexunit:="i)(?P<unit>\w*)"
+	regexunit:="i)(?P<unit>\w*)"
 	RegexRequirements:="iO)(?<Prefix>(NLT |NMT |<))?(?<LowerLimit>([,|\d]*.?[\d]*))( - (?<UpperLimit>[,|\d]*.?[\d]*))? (?<Unit>(mg RAE|mcg RAE|mcg DFE|mg|mcg|g|IU|CFU\\g|ppm|ppb))"
-RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
-PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
+	RegexSampleID:="i)(?P<SampleID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
+	PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
 	; RegexCombined := "iO)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)|(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)|(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)|(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
+
 
 
 	OnClipboardChange("clipChange")

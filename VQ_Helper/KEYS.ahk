@@ -14,15 +14,8 @@ return
 
 	^+w::gosub, get_window_info
 	^+e::gosub, get_mouse_info
-
-^F2::ServingSizeMenu()
-; +F5::GetRequirements()
-
-
-; ^!`::ListLines
-
-
-^F1::msgbox, % copyLabelCopyDoc(1)
+F5::msgbox, % copyLabelCopyDoc(1)
++F5::Msgbox % copyLabelCopyDocRegex(1)
 ; Clipboard:=
 	; sleep 200
 	; copyLabelCopyDoc()
@@ -30,7 +23,14 @@ return
 ; return
 
 
-+^F1::Msgbox % copyLabelCopyDocRegex(1)
+; ^F2::ServingSizeMenu()
+; +F5::GetRequirements()
+
+
+; ^!`::ListLines
+
+
+
 ; Clipboard:=
 		; sleep 200
 			; copyLabelCopyDocRegex()
@@ -390,7 +390,20 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 ;;\\ 	             Edit Formulation
 #Ifwinactive, Edit Formulation
 	mbutton::ProductTab.AddNewFormulation()
-	wheeldown::clk(452, 473,,1)  ;add scroll block
+	wheeldown::
+			if MouseMoved=1
+			{
+				sendinput, {wheeldown}
+				Return
+			}
+			else
+			clk(452, 473,,1)  ;add scroll block
+			MouseMoved:=1
+			winwaitclose,
+			MouseMoved:=
+
+			return
+
 ;;\\ 		     Select samples for test
 #Ifwinactive, Select samples for test:
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
@@ -481,15 +494,19 @@ Enter::Clk(343, 616)
 +Enter::sendinput, {Enter}
 
 wheeldown::
-	if !Mousemoved
+	if Mousemoved
+	{
+			sendinput, {wheeldown}
+			return
+	}
+	else
 	{
 		clk(464, 532,,2,"Test Definition Editor",0)
 		mousemove, 245, 246, 0
-	}
 	mousemoved:=1
-	SetTimer, Block_Input, -2000
-	sleep 500
-	; sleep 2000 ;add scroll block
+	winwaitclose,
+	mousemoved:=
+	}
 return
 F7::
 	clk(464, 532,,2,"Test Definition Editor",0)
@@ -524,14 +541,13 @@ Backspace::LMSClick.Remove()
 #ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 wheelDown::
-	if !Mousemoved
-		{
+	if Mousemoved=1
+		return
+	Else
 		clk(503, 574,1,,,0)
 		; clk(288, 318,1,2,,0)
-		}
 		mousemoved:=1
-	SetTimer, Block_Input, -2000
-	sleep 500
+	SetTimer, Block_Input, -5000
 return
 	`;::clk(405, 534,,2)
 	+`;::sendraw, :
@@ -621,7 +637,7 @@ return
 		clipboard:=sampleid
 		TT(Sampleid)
 	return
-	!F10::LMS.AddsampleLog(5)
+	+!F10::LMS.AddsampleLog(5)
 	!F9::
 		If (LMS.DetectTab() != "Requests"){
 			send, {click 40 40}
@@ -687,26 +703,19 @@ return
 
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
-;
-; F7::
-; 	Winactivate, NuGenesis LMS
-; 	LMS.SearchBar(Batch,"{enter}",0)
-; 	Return
-; F6::
-; 	Winactivate, NuGenesis LMS
-; 	LMS.SearchBar(Product,"{enter}",0)
-; 	Return
-; F8::
-; 	Winactivate, NuGenesis LMS
-; 	LMS.SearchBar("",,"False")
-; 	Return
-F3::Sendinput, %lot%
-F4::Sendinput, %Coated%
-F1::Sendinput, %Product%
-F2::Sendinput, %Batch%
-F5::WholeBatchMenu()
-+F5::Sendinput, %SampleID%
-^F5::Sendinput, %SampleGUID%
+
+	!F1::ChangePercision(1)
+	!F2::ChangePercision(2)
+	!F3::ChangePercision(3)
+	F1::Sendinput, %Product%
+	F2::Sendinput, %Batch%
+	F3::Sendinput, %lot%
+	F4::Sendinput, %Coated%
+	+F1::sendinput % GetAllProducts(" ")
+	+^F1::sendinput % GetAllProducts("`;")
+	+!F1::sendinput % GetAllProducts("`n")
+	+F2::sendinput % GetAllBatches(" ")
+	+^F2::sendinput % GetAllBatches("`;")
 
 	^+F10::ChangePercision(3)
 	+F10::ChangePercision(2)
@@ -716,6 +725,8 @@ F5::WholeBatchMenu()
 	esc::LMSclick.esc()
 	; F7::3Right()
 	; F6::Send, %Product%
+; +F5::Sendinput, %SampleID%
+; ^F5::Sendinput, %SampleGUID%
 	+mbutton::lms.Menu()
 	+F9::lms.Menu()
 	F9::lms.Menu()
@@ -726,10 +737,7 @@ F5::WholeBatchMenu()
 	+!F5::LMS.Menu()
 	^Space::LMS.SearchBar("",,"False")
 	!^Space::LMS.SearchBar("","{delete}","False")
-	+!F1::sendinput % GetAllProducts(" ")
-	+!F2::sendinput % GetAllBatches(" ")
-
-	#+!F10::LMS.AddDataFromClipboard()
+	!F10::LMS.AddDataFromClipboard()
 
 	pause::						Suspend, Toggle
 	#h::return
@@ -938,6 +946,8 @@ return
 ListLines:
 	ListLines
 return
+ShowHotkeys:
+msgbox, %HotkeysTip%
 ShowFinalLabelCopy:
 	; run, find "\\10.1.2.118\Label Copy Final"
 	runwait, find "\\netapp\Label Copy Final"
