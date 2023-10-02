@@ -217,6 +217,15 @@ else If winactive("Reason For Change") && !WindowMoved{
 	WindowMoved:=
 	return
 }
+else If winactive("Select methods tests") && !WindowMoved{
+	sleep 600
+	; clk2(233, 67,1,2)
+	Click, 233, 67, 2
+	WindowMoved:=1
+	; WinWaitClose
+	; WindowMoved:=
+	return
+}
 ; else If winactive("Edit test (Field") && !WindowMoved{
 ; 	clk(471, 536,,2)
 ; 	; clk(238, 535,0,0)
@@ -273,10 +282,10 @@ else if winActive("Information ahk_exe eln.exe"){
 	winactivate,
 	send, {enter}
 }
-; else if Winactive("NuGenesis LMS"){
+else if Winactive("NuGenesis LMS"){
 	; LMS.DetectTab()
-	; sleep 1000
-; }
+	windowmoved:=
+}
 listlines, On
 	; #maxthreadsperhotkey, 2
 return
@@ -358,7 +367,8 @@ ChangePercision(The_Percision:=1){
 		{
 			sleep 200
 			winactivate, Edit test
-			click 238, 527  ;results link
+			click 467, 537  ;results window scroll bar
+			click 239, 539  ;results link
 			Breaking.Point()
 			winwaitactive, Results,, 2
 			sleep 100
@@ -375,7 +385,7 @@ ChangePercision(The_Percision:=1){
 							click, 250, 140 ; click id box to orient
 							Breaking.Point()
 								Sendinput,{tab 3}^{a}%The_Percision% ;{tab 5}
-							Sleep 400
+							Sleep 200
 							Breaking.Point()
 								Mouseclick, left, 378, 667,1,0 ; click okay
 							winwaitactive, Results,, 5
@@ -397,10 +407,10 @@ ChangePercision(The_Percision:=1){
 							Breaking.Point()
 		winwaitactive, NuGenesis LMS,,3
 							sleep 500
-							Saved_y:=Saved_Y + 26
-							click, %Saved_x% %Saved_y% 0
-							sleep 300
-							click
+							; Saved_y:=Saved_Y + 26
+							sleep 500
+							click, %Saved_x% %Saved_y%
+							; click
 	}
 
 		return

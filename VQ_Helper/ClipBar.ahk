@@ -27,7 +27,7 @@ clipChange(){
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
 		{
       iteration:=1
-			Clipbar.FlashIteration()
+			; Clipbar.FlashIteration()
 		}
     ClippedData:=Clipboard
 		UsedLimits:=
@@ -45,11 +45,11 @@ clipChange(){
   }
 	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
 		; clip.codesRegex()
-		Product:=TRIM(SubStr(Clipboard, 19,4))
-		ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
-		SLEEP 100
+		; Product:=TRIM(SubStr(Clipboard, 19,4))
+		; ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
+		; SLEEP 100
 		Clipboard:=
-		sleep 100
+		; sleep 100
 		copyLabelCopyDoc()
 		; Clipwait,5,0
 		; tt(clipboard)
@@ -86,13 +86,13 @@ clipChange(){
 							  ; sleep 800
 							  Return
 							}
-  else if Winactive("Test Definition Editior"){
-    DESCRIPTION:=Trim(Clipboard,"`r`n")
-    ; TT(Description,2000)
-		return
-  }
+  ; else if Winactive("Test Definition Editior"){
+  ;   DESCRIPTION:=Trim(Clipboard,"`r`n")
+  ;   ; TT(Description,2000)
+	; 	return
+  ; }
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
-  else if Winactive("Results Definition") || Winactive("Results * ahk_exe eln.exe") {
+  else if Winactive("Results Definition") || Winactive("Results ahk_exe eln.exe") {
     clip.ParseSpecsTable(1)
 		return
 	}
@@ -170,31 +170,31 @@ Class Clip {
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 			SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
-			If rProduct {
-				Gui, Font, cYellow s17
-				GuiControl, Font, Edit1
-			}
-			If rBatch {
-				Gui, Font, cYellow s13
-			GuiControl, Font, Edit2
-			}
-			If rLot {
-				Gui, Font, cYellow s9
-			GuiControl, Font, Edit3
-			}
-			If rCoated {
-				Gui, Font, cYellow s8
-			GuiControl, Font, Edit4
-			}
-			sleep 200
-			Gui, Font, cBlack s17
-			GuiControl, Font, Edit1
-			Gui, Font, cBlack s13
-			GuiControl, Font, Edit2
-			Gui, Font, cBlack s9
-			GuiControl, Font, Edit4
-			Gui, Font, cBlack s8
-			GuiControl, Font, Edit3
+			; If rProduct {
+			; 	Gui, Font, cYellow s17
+			; 	GuiControl, Font, Edit1
+			; }
+			; If rBatch {
+			; 	Gui, Font, cYellow s13
+			; GuiControl, Font, Edit2
+			; }
+			; If rLot {
+			; 	Gui, Font, cYellow s9
+			; GuiControl, Font, Edit3
+			; }
+			; If rCoated {
+			; 	Gui, Font, cYellow s8
+			; GuiControl, Font, Edit4
+			; }
+			; sleep 200
+			; Gui, Font, cBlack s17
+			; GuiControl, Font, Edit1
+			; Gui, Font, cBlack s13
+			; GuiControl, Font, Edit2
+			; Gui, Font, cBlack s9
+			; GuiControl, Font, Edit4
+			; Gui, Font, cBlack s8
+			; GuiControl, Font, Edit3
 
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
@@ -203,7 +203,7 @@ Class Clip {
 					Coated:=
 				}
 				if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
-					Clipbar.FlashIteration()
+					; Clipbar.FlashIteration()
 					Iteration:=Floor(rCustomerPosition)
 					CustomerPosition:=rCustomerPosition
 
@@ -229,17 +229,17 @@ Class Clip {
 				FileAppend, %CodeString%`n, PriorCodes.txt
 				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 		}
-		If (SampleID){
-				ControlsetText, Edit6,%SampleID%,ClipBar ahk_exe VQ_Helper
-				FileRead, oPreviousSampleIDs, % PreviousSampleIDsFile
-				  {
-				NewPreviousSampleIDs:=RemoveDuplicates(PreviousSampleIDs)
-					FileDelete, %PreviousSampleIDsFile%
-					sleep 200
-					FileAppend, %NewPreviousSampleIDs%`n%SampleID%, %PreviousSampleIDsFile%
-						return
-			}
-		}
+		; If (SampleID){
+		; 		ControlsetText, Edit6,%SampleID%,ClipBar ahk_exe VQ_Helper
+		; 		FileRead, oPreviousSampleIDs, % PreviousSampleIDsFile
+		; 		  {
+		; 		NewPreviousSampleIDs:=RemoveDuplicates(PreviousSampleIDs)
+		; 			FileDelete, %PreviousSampleIDsFile%
+		; 			sleep 200
+		; 			FileAppend, %NewPreviousSampleIDs%`n%SampleID%, %PreviousSampleIDsFile%
+		; 				return
+		; 	}
+		; }
 
 				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),800,10,100,5,180,"M")
 			Return
@@ -265,7 +265,7 @@ GetSampleInfo(){ ;on the lms main menu
 		customer:=Clipped_Customer
 		Iteration:=GetIniValue("Customers.ini",Customer)
 		ControlsetText, Edit6,%Customer%,ClipBar
-		Clipbar.FlashIteration()
+		; Clipbar.FlashIteration()
 	}
 	; else
 		; GuiControl,ClipBar:Text, GeneralBox,
@@ -332,8 +332,8 @@ GetSampleInfo(){ ;on the lms main menu
 			ParsedSpecs.insert(A_LoopField)
 			TotalColumns:=ParsedSpecs.maxindex()//2
 			UseLimitsBox:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Use the limits from the test") + TotalColumns],"`r`n")
-			MinLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
-			MaxLimit:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
+			MinLimit_Units:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Lower Limit") + TotalColumns],"`r`n")
+			MaxLimit_Units:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Upper Limit") + TotalColumns],"`r`n")
 			Percision:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Precision") + TotalColumns],"`r`n")
 			Clipped_Requirement:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Requirement") + TotalColumns], "`r`n")
       Clipped_ParsedSpecs:=Trim([HasValue(ParsedSpecs, "Requirement") + TotalColumns],"`r`n")
@@ -343,6 +343,8 @@ GetSampleInfo(){ ;on the lms main menu
 			Clipped_SeqNo:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Seq No") + TotalColumns],"`r`n")
       Clipped_Method:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Method Id") + TotalColumns],"`r`n")
 			Clipped_ResultID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Result Id") + TotalColumns],"`r`n")
+			MinLimit:=SubStr(MinLimit_Units,1, InStr(MinLimit_Units," "))
+			MaxLimit:=SubStr(MaxLimit_Units,1, InStr(MaxLimit_Units," "))
       sleep 200
       Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " `n Percision: " Percision "`n Units: " Units "`n Allow Prefix/limits: " AllowPrefixes "/" UseLimits
 			; if !UseLimits
@@ -721,7 +723,7 @@ NumberMenubutton:
 		Iteration:=A_ThisMenuItemPos - 1
 	sleep 100
 	ControlsetText, Edit5,%Iteration%,ClipBar
-	Clipbar.FlashIteration()
+	; Clipbar.FlashIteration()
 	MouseMove, %mx%, %my%, 0
 	sleep 300
 	if runCorrectTestResults = toggle
@@ -772,16 +774,18 @@ ServingSizeMenu(Preselect:=""){
 		; click 317, 306
 		; click 325, 337
 		sleep 300
+		winactivate, Edit Ingredient
+		click 352, 327 ; click description
 		if instr(A_ThisMenuItem,"(2)")
-			Send, two %A_ThisMenuItem%
+			Send, {end}two %A_ThisMenuItem%
 		else if instr(A_ThisMenuItem,"(3)")
-			Send, three %A_ThisMenuItem%
+			Send, {end}three %A_ThisMenuItem%
 		else if instr(A_ThisMenuItem,"(4)")
-			Send, four %A_ThisMenuItem%
+			Send, {end}four %A_ThisMenuItem%
 		; else if instr(A_ThisMenuItem,"(5)")
 		; 	Send, five %A_ThisMenuItem%
 		else
-			Send, %A_ThisMenuItem%
+			Send, {end}%A_ThisMenuItem%
 		if instr(A_ThisMenuItem,"scoop")
 			send, {space}( g){left 3}
 		else if instr(A_ThisMenuItem,"packet")
@@ -795,15 +799,15 @@ ServingSizeMenu(Preselect:=""){
 		winactivate,
 		sleep 300
 		if instr(Preselect,"2 ")
-			Sendinput % "two (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
+			Sendinput % "{end}two (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		else if instr(Preselect,"3 ")
-			Sendinput % "three (" SubStr(Preselect, 1,1 )")" substr(Preselect,2)
+			Sendinput % "{end}three (" SubStr(Preselect, 1,1 )")" substr(Preselect,2)
 		else if instr(Preselect,"4 ")
-			Sendinput % "four (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
+			Sendinput % "{end}four (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		else if instr(Preselect,"5 ")
-			Sendinput % "five (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
+			Sendinput % "{end}five (" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		else
-			Sendinput % "(" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
+			Sendinput % "{end}(" SubStr(Preselect, 1,1) ")" substr(Preselect,2)
 		preselect:=
 		return
 		}
@@ -1061,7 +1065,7 @@ Class ClipBar{
 		ClipBar_H_max=56
 		ClipBar_T:=230
 		ClipBar_W=505
-		ClipBar_x:=Nugenesis_X+(Nugenesis_W/2)
+		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
 		; ClipBar_x:=1
 		ClipBar_Y:=Nugenesis_h + Nugenesis_y - 39
 		ClipBar_Y:=Nugenesis_y

@@ -207,12 +207,12 @@ Class LMS {
 					sleep 175
 				}
 			}
-			else if (winactive("NuGenesis LMS") || winactive("Results Definition") || winactive("Select methods tests")) && (Table_height > 1) {
+			else if (winactive("NuGenesis LMS") || winactive("Results Definition") || winactive("Results") || winactive("Select methods tests")) && (Table_height > 1) {
 				Try GUI, Spec_Table:destroy
 				SpecTab.Table()
 				return
 			}
-			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Test Definition Editor") || (winactive("NuGenesis LMS") && (Table_height = 1)) {
+			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Results") || winactive("Test Definition Editor") || (winactive("NuGenesis LMS") && (Table_height = 1)) {
 				SpecData:=[]
 				SpecData:=StrSplit(Source,"|")
 				Name:=SpecData[2]
@@ -289,10 +289,8 @@ Class LMS {
 		ifwinactive, NuGenesis LMS
 		{
 			if (Tab="Products") {
-
 				clk(x%Tab%Search+45 ,yProductsSearch, "Left")
 				clk(x%Tab%Search ,yProductsSearch, "Left", 2)
-
 				Send, ^{a}
 				If Overwrite=true
 					Send, ^{x}
@@ -308,14 +306,9 @@ Class LMS {
 					return
 			}
 			else if (Tab="Specs") {
-
-				xtabsLocation2:=x%Tab%Search+10
-				xtabsLocation3:=x%Tab%Search+25
-				xtabsLocation4:=x%Tab%Search+35
-				xtabsLocation5:=x%Tab%Search+4
+				click 534, 88 ;--Templates
 				mouseclick,, 634,91
 				mouseclick,, %xtabslocation5%, %yProductsSearch%
-				; mouseclick,, %xtabslocation4%, %yProductsSearch%
 				mouseclick,, %xtabslocation2%, %yProductsSearch%
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -334,11 +327,13 @@ Class LMS {
 			}
 			else If (Tab="Requests") {
 				xtabsLocation:=x%Tab%Search
-				xtabsLocation2:=x%Tab%Search-9
-				Click 476, 128
-				mouseclick,, %xtabslocation%, %yWorkTabSearch%
-				mouseclick,, 593,130  --for pending tests
-				mouseclick,, %xtabslocation3%, %yWorkTabSearch%
+				; xtabsLocation2:=x%Tab%Search-9
+				click 601, 128  ;--For Pending Test
+				click 475, 128  ;--Hamburger
+				; Click 476, 128
+				; mouseclick,, %xtabslocation%, %yWorkTabSearch%
+				; mouseclick,, 593,130  ;--for pending tests
+				; mouseclick,, %xtabslocation3%, %yWorkTabSearch%
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
@@ -354,9 +349,10 @@ Class LMS {
 					 return
 			}
 			else If (Tab="Tests"|| Tab="Samples" || Tab="Results") {
-				clk(x%Tab%Search,yWorkTabSearch,,1,,0)
-				Click 472, 129
-				clk(x%Tab%Search+20,yWorkTabSearch,,2)
+				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
+				Click 596, 127 ;--Pending test
+				Click 472, 129  ;--Hamburger
+				; clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
@@ -387,9 +383,7 @@ Class LMS {
 		clipwait,2
 		if errorlevel {
 			sendinput, ^{a}^{c}
-			sleep 500
 		}
-		else
 		Send, {enter}
 		; simpleclip:=
 		return
@@ -579,9 +573,9 @@ sleep 20
 		else if A_thismenuitem contains New &Request
 		WorkTab.NewRequest()
 		else if (A_ThisMenuItem = "100k TPC"){
-			if winactive("Results Definition") ;Selection window
+			if winactive("Results Definition") || winactive("Results")  ;Selection window
 			{
-				winactivate, Results Definition
+				winactivate, Results
 				Send,{click 80, 66} ;click edit
 				Breaking.Point()
 			}
@@ -697,7 +691,7 @@ Class ProductTab {
 		if CustomerPosition {
 			Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")
 			ControlsetText, Edit5,%Iteration%,ClipBar
-			Clipbar.FlashIteration()
+			; Clipbar.FlashIteration()
 			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		}
 
@@ -763,14 +757,14 @@ Class ProductTab {
 			Send,{tab}
 		Send,{tab 2}^a
 		Send,%Ingredient_Claim%
-		If InStr(Ingredient_Name, "* Heavy Metals results are based on a daily dose of "){
-			 Send, +{tab 3}
-			if ServingSize
-			ServingSizeMenu(ServingSize)
-			else
-				ServingSizeMenu()
-			Return
-		}
+		; If InStr(Ingredient_Name, "Heavy Metals results are based on a daily dose of"){
+			;  Send, +{tab 3}
+			; if ServingSize
+			;  ServingSizeMenu(ServingSize)
+			; else
+				; ServingSizeMenu()
+			; Return
+		; }
 		Breaking.Point()
 		If !Dont_Hit_Okay
 			Sendinput,{enter}
@@ -843,7 +837,7 @@ Class ProductTab {
 		This.AddNewFormulation()
 		; clk(287, 578) ;click save
 		Iteration:=1
-		Clipbar.FlashIteration()
+		; Clipbar.FlashIteration()
 		return
 
 	}
@@ -978,58 +972,58 @@ Class ProductTab {
 			return
 		}
 		if GeneralCount=1
-			Sendinput, {right 56}
+			Sendinput, {right 55}
 		else if GeneralCount=2
-			Sendinput, {right 60}
+			Sendinput, {right 59}
 		else if GeneralCount=3
-			Sendinput, {right 64}
+			Sendinput, {right 63}
 		else if GeneralCount=4
-			Sendinput, {right 68}
+			Sendinput, {right 67}
 		else if GeneralCount=5
-			Sendinput, {right 72}
+			Sendinput, {right 71}
 		else if GeneralCount=6
-			Sendinput, {right 76}
+			Sendinput, {right 75}
 		else if GeneralCount=7
-			Sendinput, {right 80}
+			Sendinput, {right 79}
 		else if GeneralCount=8
-			Sendinput, {right 81}
+			Sendinput, {right 80}
 		else if GeneralCount=9
-			Sendinput, {right 82}
+			Sendinput, {right 81}
 		else if GeneralCount=10
-			Sendinput, {right 83}
+			Sendinput, {right 82}
 		else if GeneralCount=11
-			Sendinput, {right 84}
+			Sendinput, {right 83}
 		else if GeneralCount=12
-			Sendinput, {right 85}
+			Sendinput, {right 84}
 		else if GeneralCount=13
-			Sendinput, {right 86}
+			Sendinput, {right 85}
 		else if GeneralCount=14
-			Sendinput, {right 87}
+			Sendinput, {right 86}
 		else if GeneralCount=15
-			Sendinput, {right 88}
+			Sendinput, {right 87}
 		else if GeneralCount=16
-			Sendinput, {right 89}
+			Sendinput, {right 88}
 		else if GeneralCount=17
-			Sendinput, {right 90}
+			Sendinput, {right 89}
 		else if GeneralCount=18
-			Sendinput, {right 91}
+			Sendinput, {right 90}
 		else if GeneralCount=19
-			Sendinput, {right 92}
+			Sendinput, {right 91}
 		else if GeneralCount=20
-			Sendinput, {right 93}
+			Sendinput, {right 92}
 		else if GeneralCount=21
-			Sendinput, {right 94}
+			Sendinput, {right 93}
 		else if GeneralCount=22
-			Sendinput, {right 95}
+			Sendinput, {right 94}
 		else if GeneralCount=23
-			Sendinput, {right 96}
+			Sendinput, {right 95}
 		else if GeneralCount=24
-			Sendinput, {right 97}
+			Sendinput, {right 96}
 		else if GeneralCount=25
-			Sendinput, {right 98}
+			Sendinput, {right 97}
 		else if GeneralCount=26
-			Sendinput, {right 99}
-		else
+			Sendinput, {right 98}
+				else
 			exit
 		sleep 350
 		return
@@ -1519,10 +1513,10 @@ simpleclip:=
 		; MouseClick, left, 464, 532,2,0
 		MouseClick, left, 464, 533,1,0
 		MouseClick, left, 245, 489,1,0
-		winactivate, Results Definition
-		winWaitactive, Results Definition,,1
+		winactivate, Results
+		winWaitactive, Results,,1
 		if errorlevel
-			winactivate, Results Definition
+			winactivate, Results
 		click 282, 141 ; click row
 		clipboard:=
 		; msgbox, HERERE!!!!
@@ -1560,8 +1554,8 @@ simpleclip:=
 			sleep 300
 			Breaking.Point()
 		}
-		if winactive("Results Definition"){
-			winactivate, Results Definition
+		if winactive("Results Definition") || winactive("Results"){
+			winactivate, Results
 			; winWaitactive, Results Definition,,0.75
 			; if errorlevel
 			click 84, 65  ;click Edit
@@ -1683,7 +1677,7 @@ simpleclip:=
 		clipboard:=
 		SelectedTestName:=
 		ParsedSpecs:=[]
-			If winactive("Results Definition"){
+			If winactive("Results"){
 			click
 			send, ^c
 			clipwait,1
@@ -1725,7 +1719,7 @@ simpleclip:=
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; spectab.Autofill()
 			; preY+=26
-			WinWaitActive, Results Definition,, 5
+			WinWaitActive, Results,, 5
 			if !errorlevel
 				;MouseMove, %SpecTableMousePosX%, %SpecTableMousePosY%, 1,
 			return
@@ -1762,9 +1756,9 @@ simpleclip:=
 			sleep 100
 
 		}
-		if winactive("Results Definition") ;Selection window
+		if winactive("Results Definition") || winactive("Results") ;Selection window
 		{
-			winactivate, Results Definition
+			winactivate, Results
 			If Method contains ICP-MS 231
 			{
 				MouseGetPos, SpecTableMouseX, SpecTableMouseY
@@ -1796,7 +1790,7 @@ simpleclip:=
 		return
 	}
 PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
-					winactivate, Results Definition
+					winactivate, Results
 					tooltip,
 					Send,{click 80, 66} ;click edit
 					sleep 200
@@ -1913,7 +1907,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 			MouseMove, %mX%, %mY%, 0
 			return
 		}
-		winwaitactive, Results Definition,, 5
+		winwaitactive, Results,, 5
 		wingetpos, Results_X, Results_y, Results_w, Results_h, Results
 		sleep 200
 		Okay_x:=Results_W - 170
@@ -1923,7 +1917,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		; msgbox, %Results_w%  %Results_h%
 		if ContinueToRun
 			click
-		WinWaitClose, Results Definition,, 8
+		WinWaitClose, Results,, 8
 		sleep 400
 		; winwaitactive, Test Definition Editor,, 7
 		if ContinueToRun
@@ -2878,7 +2872,7 @@ Class WorkTab {
 			Iteration:=CustomerPosition
 			GuiControl,ClipBar:Text, Iteration, %Iteration%
 			ControlsetText, Edit6,%inputVar%,ClipBar
-			Clipbar.FlashIteration()
+			; Clipbar.FlashIteration()
 			GUI, ClipBar:submit,NoHide
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 			; iniwrite, %Iteration%, Settings.ini, SavedVariables, CustomerPosition
@@ -3165,43 +3159,48 @@ Class WorkTab {
 					sleep 200
 					Okay_x:=Results_W - 170
 					Okay_y:=Results_H - 45
-					click, %Okay_x%, %Okay_y%
+					clk2(Okay_x, Okay_y)
 				; send, {Click 971, 473}
 				return
 			}
 			else If winactive("Result Editor")
-			clk(370,660)
+			clk2(370,660)
 			else if winactive("Edit Ingredient")
-			clk(265, 561)
+			clk2(265, 561)
+			else if winactive("View specification")
+			clk2(154, 15)
 			else if winactive("Result Entry")
-			clk(1028, 860)
+			clk2(1028, 860)
 			else if winexist("Delete Test") {
 				winactivate, Delete Test
-				clk(229, 136)
+				clk2(229, 136)
 			}
 			else if winactive("Results Definition")
-			clk(951, 751)
+			clk2(951, 751)
 			else if winactive("Microsoft Excel Security Notice")
 			Send, !y
 			else if winactive("Reason For Change")
-			clk(241, 236)
+			clk2(241, 236)
 			else if winactive("New Document"){
 				LMS.Savecode()
-				clk(415, 360)
+				clk2(415, 360)
 			}
 			else if winactive("Edit specification")
-			clk(323, 621)
+			clk2(323, 621)
 			else if winactive("Edit Ingredient")
-			clk(277, 557)
+			clk2(277, 557)
+			else If winactive("Edit Product")
+			Clk2(283, 582)
 			else If winactive("Test Definition Editor ")
-			Click 341, 618
+			Clk2(341, 618)
 			else if winactive("Reason for Change")
-			clk(170, 331)
+			clk2(170, 331)
 			else if winexist("Error") {
 				winactivate
 				clk(148, 104)
 				winactivate, Register new samples
-				clk(181, 104, 2)
+				clk(181, 104)
+				clk(181, 104)
 				Send, %product%{enter}
 			}
 			else if winexist("Change Configuration")
@@ -3221,17 +3220,16 @@ Class WorkTab {
 		}
 			Remove(){
 				if winactive("Results Definition") ||
-					Click 128, 65
-
+					Clk2(128, 65)
 				return
 			}
 		Save(){
 			if winactive("Edit Product")
-			click 275, 578
+			clk2(275, 578)
 			else If winactive("Composition")
-			click 1236, 888
+			clk2(1236, 888)
 			else If winactive("Test Definition Editor ")
-			Click 341, 618
+			Clk2(341, 618)
 			Else
 				return
 		}
@@ -3247,14 +3245,14 @@ Class WorkTab {
 					clk(283, 321,,2,,0)
 			}
 			else
-				click 84, 65
+				clk2(84, 65)
 			return
 		}
 		Add(){
 			if winactive("Formulation")
-			click, 73, 280
+			clk2(73, 280)
 			else
-				click 50, 65
+				clk2(50, 65)
 			return
 		}
 		Requests_tab(){

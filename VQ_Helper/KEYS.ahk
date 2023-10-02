@@ -39,15 +39,21 @@ F5::msgbox, % copyLabelCopyDoc(1)
 
 F7::
 	Winactivate, NuGenesis LMS
+	preclk()
 	LMS.SearchBar(Batch,"{enter}",0)
+	postclk()
 	Return
 F6::
 	Winactivate, NuGenesis LMS
+	preclk()
 	LMS.SearchBar(Product,"{enter}",0)
+	postclk()
 	Return
 F8::
 	Winactivate, NuGenesis LMS
+	preclk()
 	LMS.SearchBar("",,"False")
+	postclk()
 	Return
 
 
@@ -368,26 +374,54 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 		sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 	return
 
+#IFwinexist, Release: Rotational Testing Schedule ;
+	mbutton::
+		winactivate,Release: Rotational Testing Schedule
+		clk(128, 140)
+	return
+#ifwinexist, Release:
+	mbutton::
+		winactivate, Release:
+		clk(128, 140)
+	return
+#ifwinexist, Sign :
+	mbutton::LMSClick.password()
 
-
-;;\\ 	             Select methods tests
+;;\\ 	              Select methods tests
 #ifwinactive, Select methods tests
-	+enter::clk(854, 658,,2) ;select okay
-	#enter::clk(854, 658,,2) ;select okay
-^enter::clk(854, 658,,2) ;select okay
-	F7::clk(511, 337,,,,2) ;move over test
-	F6::clk(511, 375,,,,2) ;move test back over
+	+enter::clk2(854, 658) ;select okay
+	#enter::clk2(854, 658) ;select okay
+^enter::clk2(854, 658) ;select okay
+	F7::clk2(511, 337) ;move over test
+	F6::clk2(511, 375) ;move test back over
 	F9::
+	F8::
 	mbutton::Spectab.MethodsDropdown()
-
-;;\\ 	             Select Product
+;;\\ 		      Select samples for test
+#Ifwinactive, Select samples for test:
+	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
+	F8::Clk(853, 657) ;click okay
+	F9::send % Clk(250, 70) "{up}" ; click okay.
+	F7::SpecTab.Methods()
+	F6::SpecTab.MethodsDropdown()
+;;\\       	      Select tests for request:
+#ifwinactive, Select tests for request:
+	; F10::sendinput, {click, 31, 102}
+	F6::SpecTab.Methods()
+	F7::SpecTab.MethodsDropdown()
+	mbutton::WorkTab.SelectTestSample()
+F9::mouseclick, Left, 638, 70
+;;\\ 	              Select Product
 #ifwinactive, Select Product ahk_exe eln.exe
 	mbutton::send % clk(107, 66) Product "{enter}{enter}"
 
-;;\\ 	             Edit Product
+
+;;\\ 	           Edit Product
 #ifwinactive, Edit Product
 	mbutton::ProductTab.AddNewProduct()
-;;\\ 	             Edit Formulation
+	Enter::clk2(285, 574, 1)
+	+Enter::sendinput, {enter}
+;;\\ 	           Edit Formulation
 #Ifwinactive, Edit Formulation
 	mbutton::ProductTab.AddNewFormulation()
 	wheeldown::
@@ -401,81 +435,90 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 			MouseMoved:=1
 			winwaitclose,
 			MouseMoved:=
-
 			return
-
-;;\\ 		     Select samples for test
-#Ifwinactive, Select samples for test:
-	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
-	F8::Clk(853, 657) ;click okay
-	F9::send % Clk(250, 70) "{up}" ; click okay.
-	F7::SpecTab.Methods()
-	F6::SpecTab.MethodsDropdown()
-
-
-#IFwinexist, Release: Rotational Testing Schedule ;
-	mbutton::
-		winactivate,Release: Rotational Testing Schedule
-		clk(128, 140)
-	return
-#ifwinexist, Release:
-	mbutton::
-		winactivate, Release:
-		clk(128, 140)
-	return
-
-#ifwinexist, Sign :
-	mbutton::LMSClick.password()
-
-;;\\ 		            explorer.exe
-#ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
-	+F9::send, ^e
-
-	+F7::
-		winactivate, ahk_exe explorer.exe
-		sleep 200
-		send ^{e}
-		sleep 300
-		sendinput, {*}%Product%{*}
-		sleep 700
-		send, ^{e}{enter}{down 2}{up}
-		; sendinput, {tab 2}{right}{pgup 2}
-	return
-	F8::send, ^{F4}
-Mbutton::
-	send, ^{e}{*}%Product%{*}
-	sleep 800
-	send, ^{e}{enter}{down 2}{up}^a
-	return
-	; +Mbutton::SelectPreviewPane()
-	+F6::
-		winactivate, ahk_class CabinetWClass ahk_exe explorer.exe,,VQ_Helper
-		send, ^{e}
-		sleep 700
-	send, {enter}{down 2}{up}
-	sleep 700
-		send ^{a}^{c}
-	return
-
-#ifwinexist, Search Results ahk_exe explorer.exe
-+F6::
-	winactivate, ahk_exe explorer.exe
-	sleep 400
-	send, ^{e}{*}%Product%{*}
-	sleep 900
-	send, ^{e}{enter}{down 2}{up}
+;;\\               Edit request
+#ifwinactive, Edit request
+	mbutton::WorkTab.EditRequest()
+;;\\ 	           Edit sample
+#ifwinactive, Edit sample (
+F9::worktab.CustomerMenu()
+Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
+		; 	winactivate, Edit sample
+		; 	Ifwinactive, Edit sample (Field Configuration: F`, Micro)
+		; 		send, {Click 253, 138}{tab}
+		; 	Ifwinactive, Edit sample (Field Configuration: CT
+		; 		send, {Click 253, 138}{tab}
+		; 	else
+		; 		send, {Click 253, 138}{tab}
+		; 	sleep 200
+		; WorkTab.Dropdown_CustomerSelect(Iteration)
+		; breaking.point()
+		; sleep 300
+		; 	send, {enter}
 return
-;;\\ 	            Edit test (Field Configuration
-#ifwinactive, Edit test `(Field Configuration
-lctrl::
+;;\\ 	           Edit test (Field Configuration
+#ifwinactive, Edit test (Field Configuration
+; lctrl::
+printscreen::
 	F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
 	; +F10::
 	; 	sendinput, {click 384, 222}{tab 2}{end 2}
 	; 	sendinput, {shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}
 	; 	sendinput, {Click 334, 618}
 	; 	return
+	; wheelright::
+	F7::
+	winactivate, Edit Test
+	mbutton::
+			preclk()
+			MouseClick, left, 464, 533,1,0 ; Click scrollbar
+			; MouseClick, left, 245, 485,1,0  ; click results
+			sleep 20
+			click 239, 538 ; click results
+			postclk()
+return
 
-;;\\       	    Test Definition Editor
+
+;;\\ 	              Result Entry
+#Ifwinactive, Result Entry
+	F7::numbermenu(6,"toggle") ;WorkTab.CorrectTestResults("toggle", "Loop")
+	F6::numbermenu(6,0) ;WorkTab.CorrectTestResults("toggle", "Loop")
+	; F6::WorkTab.CorrectTestResults(0,5)
+	F10::WorkTab.CorrectTestResults()
+	Mbutton::WorkTab.CorrectTestResults("Toggle")
+	F9::numbermenu(6)
+;;\\ 	              Results Definition:
+#Ifwinactive, Results Definition
+	+mbutton::SpecTab.Autofill()
+	Mbutton::SpecTab.AutoInputResultEditor()
+ ;mbutton::Spectab.PasteClipboardIntoSpec()
+	+F6::spectab.toggleUseLimitsFromTheTest()
+	F7::lmsclick.edit()
+	F9::lms.menu()
+	Backspace::LMSClick.Remove()
+ ;Backspace::sendinput, {Click %RemoveButton%}
+#ifwinactive, Results
+	F7::lmsclick.edit()
+	F9::lms.menu()
+	Mbutton::SpecTab.AutoInputResultEditor()
+	+mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+;;\\ 	              Result Editor
+#ifwinactive, Result Editor
+	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+wheelDown::
+	if Mousemoved=1
+		return
+	Else
+		clk(503, 574,1,,,0)
+		; clk(288, 318,1,2,,0)
+		mousemoved:=1
+	SetTimer, Block_Input, -5000
+return
+	`;::clk(405, 534,,2)
+	+`;::sendraw, :
++F6::spectab.toggleUseLimitsFromTheTest()
+
+;;\\              Test Definition Editor
 #Ifwinactive,Test Definition Editor
 	mbutton::
 		sleep 200
@@ -490,7 +533,7 @@ lctrl::
 		winactivate, Results Definition
 		sleep 100
 return
-Enter::Clk(343, 616)
+Enter::Clk2(343, 616)
 +Enter::sendinput, {Enter}
 
 wheeldown::
@@ -514,44 +557,6 @@ F7::
 	sleep 500 ;add scroll block
 	return
 	; 		mbutton::mouseclick, left, 333, 615
-
-
-;;\\ 	             Result Entry
-#Ifwinactive, Result Entry
-	F7::numbermenu(6,"toggle") ;WorkTab.CorrectTestResults("toggle", "Loop")
-	F6::numbermenu(6,0) ;WorkTab.CorrectTestResults("toggle", "Loop")
-	; F6::WorkTab.CorrectTestResults(0,5)
-	F10::WorkTab.CorrectTestResults()
-	Mbutton::WorkTab.CorrectTestResults("Toggle")
-	F9::numbermenu(6)
-
-;;\\ 	             Results Definition:
-; #If winactive("Results Definition") && winexist("Spec Table ahk_class AutoHotkeyGUI")
-#Ifwinactive, Results Definition
-	+mbutton::SpecTab.Autofill()
-Mbutton::SpecTab.AutoInputResultEditor()
-; mbutton::Spectab.PasteClipboardIntoSpec()
-+F6::spectab.toggleUseLimitsFromTheTest()
-F7::lmsclick.edit()
-	F9::lms.menu()
-Backspace::LMSClick.Remove()
-; Backspace::sendinput, {Click %RemoveButton%}
-
-;;\\ 	             Result Editor
-#ifwinactive, Result Editor
-	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
-wheelDown::
-	if Mousemoved=1
-		return
-	Else
-		clk(503, 574,1,,,0)
-		; clk(288, 318,1,2,,0)
-		mousemoved:=1
-	SetTimer, Block_Input, -5000
-return
-	`;::clk(405, 534,,2)
-	+`;::sendraw, :
-+F6::spectab.toggleUseLimitsFromTheTest()
 
 
 
@@ -579,40 +584,9 @@ F6::
 	return
 	mbutton::WorkTab.registerNewSamples()
 
-;;\\  		    Reason for Change
+;;\\  		     Reason for Change
 #ifwinactive, Reason For Change
 	F6::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
-
-;;\\     	    Select tests for request:
-#ifwinactive, Select tests for request:
-	; F10::sendinput, {click, 31, 102}
-	F6::SpecTab.Methods()
-	F7::SpecTab.MethodsDropdown()
-	mbutton::WorkTab.SelectTestSample()
-F9::mouseclick, Left, 638, 70
-
-
-;;\\                Edit request
-#ifwinactive, Edit request
-	mbutton::WorkTab.EditRequest()
-
-	;;\\ 	            Edit sample
-#ifwinactive, Edit sample (
-F9::worktab.CustomerMenu()
-Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
-		; 	winactivate, Edit sample
-		; 	Ifwinactive, Edit sample (Field Configuration: F`, Micro)
-		; 		send, {Click 253, 138}{tab}
-		; 	Ifwinactive, Edit sample (Field Configuration: CT
-		; 		send, {Click 253, 138}{tab}
-		; 	else
-		; 		send, {Click 253, 138}{tab}
-		; 	sleep 200
-		; WorkTab.Dropdown_CustomerSelect(Iteration)
-		; breaking.point()
-		; sleep 300
-		; 	send, {enter}
-return
 
 
 
@@ -718,6 +692,7 @@ return
 	+^F2::sendinput % GetAllBatches("`;")
 
 	^+F10::ChangePercision(3)
+	printscreen::ChangePercision(2)
 	+F10::ChangePercision(2)
 	^F10::ChangePercision(1)
 
@@ -778,7 +753,44 @@ return
 	; :*:Pa`;::`P. aeruginosa
 	:*:uc`;::`Update Total Coliforms Method
 
+;;\\________________explorer.exe______________
+#ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
+	+F9::send, ^e
 
+	+F7::
+		winactivate, ahk_exe explorer.exe
+		sleep 200
+		send ^{e}
+		sleep 300
+		sendinput, {*}%Product%{*}
+		sleep 700
+		send, ^{e}{enter}{down 2}{up}
+		; sendinput, {tab 2}{right}{pgup 2}
+	return
+	F8::send, ^{F4}
+Mbutton::
+	send, ^{e}{*}%Product%{*}
+	sleep 800
+	send, ^{e}{enter}{down 2}{up}^a
+	return
+	; +Mbutton::SelectPreviewPane()
+	+F6::
+		winactivate, ahk_class CabinetWClass ahk_exe explorer.exe,,VQ_Helper
+		send, ^{e}
+		sleep 700
+	send, {enter}{down 2}{up}
+	sleep 700
+		send ^{a}^{c}
+	return
+
+#ifwinexist, Search Results ahk_exe explorer.exe
++F6::
+	winactivate, ahk_exe explorer.exe
+	sleep 400
+	send, ^{e}{*}%Product%{*}
+	sleep 900
+	send, ^{e}{enter}{down 2}{up}
+return
 
 
 #ifwinactive
@@ -1296,26 +1308,59 @@ Clk(x,y,Button:="Left",n=1,window:="",returnMouse:=1){
 	If (ReturnMouse=0)
 		Return
 	else
-		mousemove,%mx%,%my%,0
+		mousemove,%mx%,%my%,0,
+		return
+}
+
+preClk(){
+	Global Premx, premy
+		CoordMode, Mouse, Screen
+		mouseGetPos, PREmx, PREmy, PREmw
+		CoordMode, Mouse, window
+		return
+}
+PostClk(){
+	Global Premx, premy
+	sleep 100
+		CoordMode, Mouse, Screen
+		mousemove,%PreMx%,%PreMy%,0
+		CoordMode, Mouse, window
+		PreMX:=
+		PreMy:=
+		return
+}
+
+
+Clk2(x,y,returnMouse:=1, n:=1){
+	if (ReturnMouse!=0){
+		CoordMode, Mouse, Screen
+		mouseGetPos, clkmx, clkmy, clkmw
+		CoordMode, Mouse, window
+	}
+	click, %x% %y% %n%
+	sleep 2
+	If (ReturnMouse!=0){
+	winactivate, %clkmw%
+	CoordMode, Mouse, Screen
+	mousemove,%clkmx%,%clkmy%,0
+	CoordMode, Mouse, window
+		}
+	else
 		return
 }
 
 class Breaking {
 	Point(break:=""){
 		Global
-		; critical
-		; MouseGetPos,bx,by
+		critical
 		SimpleClip:=
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") || (A_PriorKey="RShift") || (A_PriorKey="Space") {
-			TT("Broke",3000,400,400)
-			; ContinueToRun:=
+		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") || (A_PriorKey="RShift") {
 			blockinput, off
 			exit
 		}
 		if keep_running = n ;another signal to stop
 		{
 			blockinput, off
-			; ContinueToRun:=
 			Exit
 		}
 	}
