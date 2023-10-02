@@ -1186,6 +1186,7 @@ class SpecTab {
 					menu, ChooseMethodMenu, Add, %A_loopField%, ChooseMethodHdr
 				menu, ChooseMethodMenu, show
 				; This.SelectMethod(A_thismenuitem
+				SpecTab.ChangeSpecTableMethod(MethodListItem, A_thismenuitem)
 				MethodListItem:=A_thismenuitem
 			}
 
@@ -1236,6 +1237,23 @@ class SpecTab {
 				{
 					Try Menu, SpecMenu, Check, %A_ThisMenuItem%
 					LV_Modify(A_Index, "Check")
+					return A_Index
+				}
+			}
+		}
+		return 0
+	}
+		ChangeSpecTableMethod(InputMethodName:="", ReplacedMethod:=""){
+		global
+		GUI, Spec_Table:Default
+		{
+			Loop, % LV_GetCount()
+			{
+				LV_GetText(rowText,A_Index,8)
+				if (rowText = InputMethodName)
+				{
+					; Try Menu, SpecMenu, Check, %A_ThisMenuItem%
+					LV_Modify(A_Index, "Col8", ReplacedMethod)
 					return A_Index
 				}
 			}

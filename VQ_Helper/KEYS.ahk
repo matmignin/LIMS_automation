@@ -756,12 +756,12 @@ return
 ;;\\________________explorer.exe______________
 #ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
 	+F9::send, ^e
-
+	^w::Sendinput, {esc}^{w}
 	+F7::
-		winactivate, ahk_exe explorer.exe
+		winactivate, *%Product%* ahk_exe explorer.exe
 		sleep 200
 		send ^{e}
-		sleep 300
+		sleep 340
 		sendinput, {*}%Product%{*}
 		sleep 700
 		send, ^{e}{enter}{down 2}{up}
@@ -782,7 +782,7 @@ Mbutton::
 	sleep 700
 		send ^{a}^{c}
 	return
-
+	F6::WinMove, ahk_exe explorer.exe,, 5, 10, 1250, 1200
 #ifwinexist, Search Results ahk_exe explorer.exe
 +F6::
 	winactivate, ahk_exe explorer.exe
@@ -894,7 +894,7 @@ mmigninFolder(){
 	if !winexist("VQ_Helper ahk_exe explorer.exe")
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	else
-		winactivate, VQ_Helper ahk_exe explorer.exe
+		winactivate, VQ_Help   er ahk_exe explorer.exe
 }
 EditMethodList(){
 		Run , Edit "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Methods.ini"
@@ -972,11 +972,12 @@ ShowFinalLabelCopy:
 	; SelectPreviewPane(Product)
 return
 ShowScanLabelCopy:
-	; runwait, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
-	runwait, find "\\netapp\share\QC LAB\Label Copy Scans"
+	runwait, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
+	; runwait, find "\\netapp\share\QC LAB\Label Copy Scans"
 	sleep 250
 	; winmaximize, Search Results
-	winactivate, ahk_exe explorer.exe
+	WinMove, *%Product%* ahk_exe explorer.exe,, 5, 10, 1250, 1200
+	winactivate, *%Product%* ahk_exe explorer.exe
 	send, {*}%Product%{*}{enter}
 	sleep 700
 	send, ^{e}{tab 2}{Right}
