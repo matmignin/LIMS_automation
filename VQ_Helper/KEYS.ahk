@@ -16,26 +16,24 @@ return
 	^+e::gosub, get_mouse_info
 F5::msgbox, % copyLabelCopyDoc(1)
 +F5::Msgbox % copyLabelCopyDocRegex(1)
-; Clipboard:=
-	; sleep 200
-	; copyLabelCopyDoc()
-; clipwait, 3
-; return
 
 
-; ^F2::ServingSizeMenu()
+
++F7:: ;Set Searchbar Marker
+winactivate, Nugenesis LMS
+tooltip, Click where the divider is
+Keywait, Lbutton, D
+MouseGetPos, SearchBarMarker, SearchBarMarkerY
+iniwrite, SearchBarMarker, Settings.ini, SavedVariables, SearchBarMarker
+tooltip,
+; iniwrite, SearchBarMarkerY, Settings.ini, SavedVariables, SearchBarMarkerY
+return
+
+
+
 ; +F5::GetRequirements()
 
 
-; ^!`::ListLines
-
-
-
-; Clipboard:=
-		; sleep 200
-			; copyLabelCopyDocRegex()
-		; clipwait, 3
-		; return
 
 F7::
 	Winactivate, NuGenesis LMS
@@ -492,7 +490,6 @@ return
 	+mbutton::SpecTab.Autofill()
 	Mbutton::SpecTab.AutoInputResultEditor()
  ;mbutton::Spectab.PasteClipboardIntoSpec()
-	+F6::spectab.toggleUseLimitsFromTheTest()
 	F7::lmsclick.edit()
 	F9::lms.menu()
 	Backspace::LMSClick.Remove()
@@ -594,6 +591,7 @@ F6::
 
 ;;[[_____________ Nugenesis MAIN _______________]]
 #Ifwinactive, NuGenesis LMS
++^F11::LMS.OrientSearchbar()
 !F4::Return
 ^F9::
 	send, ^c
@@ -648,25 +646,11 @@ return
 	F7::LMS.SearchBar(Batch,"{enter}",0)
 F6::LMS.SearchBar(Product,"{enter}",0)
 		F8::LMS.SearchBar("",,"False")
-	+F6::
-	lms.DetectTab()
-	sleep 300
-	if (Tab ~= "Product")
-		LMSClick.Edit_Composition()
-	 else if (Tab ~= "Samples")
-		clk(61, 863)
-	 else if (Tab ~= "Requests")
-		clk(56, 632)
-	 else if (tab ~= "Specs")
-		clk(59, 754)
-	else
-		clk(71, 196)
-	if winactive("Reason For Change")
-		sendinput, {esc}
-return
+	+F6::LMSClick.EnterResults()
+
 
 		; clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
-+F7::copyLabelCopyDoc()
+
 	+F8::LMS.SearchBar("",,"False")
 
 	+#v::LMS.Searchbarpaste(";")
@@ -757,7 +741,7 @@ return
 #ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
 	+F9::send, ^e
 	^w::Sendinput, {esc}^{w}
-	+F7::
+	F7::
 		winactivate, *%Product%* ahk_exe explorer.exe
 		sleep 200
 		send ^{e}
@@ -1156,12 +1140,6 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 		WinSet, Exstyle, 0x20, % "ahk_id" hwnd
 	WinSet, AlwaysOnTop, On, % "ahk_id" hwnd
 	winSet, Trans, %Transparent%, % "ahk_id" hwnd
-	; WinSet, Transparent, 128, % "ahk_id" hwnd
-	; winSet, TransColor, 0xE5513C 200, % "ahk_id" hwnd
-	; winSet, Trans, 200, %W%
-	; if Position = "S"
-		; CoordMode, tooltip, screen
-		; CoordMode, Mouse, screen
 	if !(time=0)
 		SetTimer, RemoveToolTip%N%, -%time%
 		return
@@ -1227,7 +1205,6 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 		return
 		RemoveToolTip20:
 		ToolTip,,,,20
-		return
 		return
 	}
 
@@ -1332,15 +1309,24 @@ PostClk(){
 }
 
 
+
+
 Clk2(x,y,returnMouse:=1, n:=1){
-	if (ReturnMouse!=0){
+		Global ClkMx, ClkMy, clkMw
+	If (ReturnMouse=1){
 		CoordMode, Mouse, Screen
 		mouseGetPos, clkmx, clkmy, clkmw
 		CoordMode, Mouse, window
 	}
 	click, %x% %y% %n%
 	sleep 2
-	If (ReturnMouse!=0){
+	if (ReturnMouse=1){
+	winactivate, %clkmw%
+	CoordMode, Mouse, Screen
+	mousemove,%clkmx%,%clkmy%,0
+	CoordMode, Mouse, window
+		}
+	if (ReturnMouse=2){
 	winactivate, %clkmw%
 	CoordMode, Mouse, Screen
 	mousemove,%clkmx%,%clkmy%,0

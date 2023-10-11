@@ -91,7 +91,7 @@ Class LMS {
 		Menu, Menu, add,
 		Menu, Menu, add, mmignin, mmigninFolder
 		Menu, Menu, add,
-
+		Menu, Menu, add, TestCode, :TestSubMenu
 		Menu, Menu, add, Window Info `t%getTitle%, get_window_info
 		Menu, Menu, add, Mouse Info `t%getX%`, %GetY%, get_Mouse_info
 		if GetKeyState("Shift","P"){
@@ -117,6 +117,8 @@ Class LMS {
 			Menu, Menu, Add, Report Only Heavy Metal,Autofill
 			Menu, Menu, Add, Bloom Nutrition Heavy Metal,Autofill
 			Menu, Menu, Add, Custom Heavy Metal,Autofill
+			Menu, Menu, Add, Toggle Spec Limits,Autofill
+
 			; return
 		}
 		If winactive("Result Editor"){
@@ -260,9 +262,17 @@ Class LMS {
 		return
 	}
 
-
-
-	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){
+OrientSearchbar(){
+	winactivate, NuGenesis LMS
+	; sleep 300
+	mouseGetPos, OSBmx, OSBmy, OSBmw
+	sleep 100
+	MouseClickDrag, Left, OSBmx, OSBmy, 269, OSBmy, 1
+	; clk2(311, 88,1,2) ; click for Specficications/Products
+	; clk2(304, 130,1,2)  ; click for My Work
+	return
+}
+	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){ ; //testing
 		Global
 		If Nsub
 		{
@@ -289,9 +299,12 @@ Class LMS {
 		ifwinactive, NuGenesis LMS
 		{
 			if (Tab="Products") {
-				clk(x%Tab%Search+45 ,yProductsSearch, "Left")
-				clk(x%Tab%Search ,yProductsSearch, "Left", 2)
-				Send, ^{a}
+				clk2(445, 90,0,2) ; click for Last Modified Specs
+				clk2(483, 90,2,2) ; click for Full Bar
+				; clk(x%Tab%Search+45 ,yProductsSearch, "Left")
+				; clk(x%Tab%Search ,yProductsSearch, "Left", 2)
+				; Send, ^{a}
+				Send, {backspace}
 				If Overwrite=true
 					Send, ^{x}
 				If Code
@@ -306,11 +319,14 @@ Class LMS {
 					return
 			}
 			else if (Tab="Specs") {
-				click 534, 88 ;--Templates
-				mouseclick,, 634,91
-				mouseclick,, %xtabslocation5%, %yProductsSearch%
-				mouseclick,, %xtabslocation2%, %yProductsSearch%
-				Send, {ctrldown}{a}{ctrlup}
+				clk2(452, 91,0,2) ; click for Approved Tests and normal bar
+				clk2(483, 89,2,2) ; click for filled bar
+				; click 534, 88 ;--Templates
+				; mouseclick,, 634,91
+				; mouseclick,, %xtabslocation5%, %yProductsSearch%
+				; mouseclick,, %xtabslocation2%, %yProductsSearch%
+				Send, {backspace}
+				; Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
 				if Code
@@ -326,14 +342,19 @@ Class LMS {
 					return
 			}
 			else If (Tab="Requests") {
-				xtabsLocation:=x%Tab%Search
+				; clk2(304, 130,1,2)  ; click for My Work
+				; xtabsLocation:=x%Tab%Search
 				; xtabsLocation2:=x%Tab%Search-9
-				click 601, 128  ;--For Pending Test
-				click 475, 128  ;--Hamburger
+								clk2(420, 129,0,2)  ;--For Pending Test Requests
+								clk2(445, 130,2,2)  ;--For Showing Requests
+							; click 420, 129  ;--For Pending Test Requests
+							; click 445, 130  ;--For Showing Requests
+								; click 275, 128  ;--Hamburger
 				; Click 476, 128
 				; mouseclick,, %xtabslocation%, %yWorkTabSearch%
 				; mouseclick,, 593,130  ;--for pending tests
 				; mouseclick,, %xtabslocation3%, %yWorkTabSearch%
+				; Send, {backspace}
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
@@ -349,9 +370,10 @@ Class LMS {
 					 return
 			}
 			else If (Tab="Tests"|| Tab="Samples" || Tab="Results") {
+				; clk2(304, 130,1,2)  ; click for My Work
 				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
-				Click 596, 127 ;--Pending test
-				Click 472, 129  ;--Hamburger
+								clk2(415, 127)  ;--For Pending Test Samples
+							; Click 472, 129  ;--Hamburger
 				; clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -377,15 +399,16 @@ Class LMS {
 	SaveCode(){
 		global
 		clipboard:=
-		; Simpleclip:=1
+		Simpleclip:=1
 		send, ^{a}^{c}
 		sleep 50
 		clipwait,2
 		if errorlevel {
-			sendinput, ^{a}^{c}
+			send, ^{a}^{c}
 		}
+		sleep 200
 		Send, {enter}
-		; simpleclip:=
+		simpleclip:=
 		return
 	}
 	SearchbarPaste(Delimiter){
@@ -398,7 +421,7 @@ Class LMS {
 		Clipboard := StrReplace(Clipboard, A_tab, Delimiter)
 		Clipboard := StrReplace(Clipboard, A_space, Delimiter)
 		Clipboard := StrReplace(Clipboard, Delimiter Delimiter, Delimiter)
-		sleep 200
+		sleep 300
 		send, ^v
 		sleep 100
 		return clipboard
@@ -425,6 +448,13 @@ sleep 20
 		LMS.Orient()
 		; CoordMode, pixel, window
 		if winactive("NuGenesis LMS") {
+			Pixelsearch, FoundMyWork, FoundY, 200, 97, 201, 98,0xFFD353,10,FAST RGB
+			; -----edit here
+			If FoundMyWork {
+				msgbox, myworkTab
+				return
+				}
+				;----To HEre
 			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
 			if !Tab1 {
 				PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
@@ -456,6 +486,8 @@ sleep 20
 				}
 			}
 		}
+		Else
+			Tab:="Samples"
 		return Tab
 	}
 
@@ -563,15 +595,17 @@ sleep 20
 		winactivate, ahk_exe eln.exe
 		sleep 200
 		if A_thismenuitem contains &Analytical
-		SpecTab.Edit_Analytical()
+			SpecTab.Edit_Analytical()
 		else if A_thismenuitem contains Copy &Specs
-		SpecTab.CopySpecs()
+			SpecTab.CopySpecs()
 		else if A_thismenuitem contains Paste &Specs
-		SpecTab.PasteSpecs()
+			SpecTab.PasteSpecs()
 		else if A_thismenuitem contains Copy &Template
-		SpecTab.CopySpecTemplate()
+			SpecTab.CopySpecTemplate()
+		else if A_thismenuitem contains Toggle Spec Limits
+			spectab.toggleUseLimitsFromTheTest()
 		else if A_thismenuitem contains New &Request
-		WorkTab.NewRequest()
+			WorkTab.NewRequest()
 		else if (A_ThisMenuItem = "100k TPC"){
 			if winactive("Results Definition") || winactive("Results")  ;Selection window
 			{
@@ -1630,6 +1664,7 @@ simpleclip:=
 			SpecTab.Edit_Sample_Template_A()
 		return
 	}
+
 	AutoInputSpecResults(){
 
 			click
@@ -2006,7 +2041,9 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 	}
 	toggleUseLimitsFromTheTest(){
 		global
-		ifwinactive, Results Definition
+		ifwinnotactive, Results Definition
+			winactivate, Results Definition
+		else
 		{
 			sendinput, {click 85, 69} ;click edit
 		sleep 400
@@ -3227,7 +3264,25 @@ Class WorkTab {
 				Send, {enter}
 			return
 		}
-
+	EnterResults(){
+		If WinActive("Nugenesis LMS"){
+			lms.DetectTab()
+			sleep 300
+			if (Tab ~= "Product")
+				LMSClick.Edit_Composition()
+			else if (Tab ~= "Samples")
+				clk(61, 863)
+			else if (Tab ~= "Requests")
+				clk(56, 632)
+			else if (tab ~= "Specs")
+				clk(59, 754)
+			else
+				clk(71, 196)
+		}
+		else if winactive("Reason For Change")
+			sendinput, {esc}
+		return
+	}
 		esc(){
 			if winexist("Change Configuration")
 			click 342, 296

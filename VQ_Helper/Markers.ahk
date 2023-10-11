@@ -7,16 +7,15 @@
 
 return
 
-
- +F10:: ;;{{MARKER
+SetPasteMarker:
+;  +F10:: ;;{{MARKER
 Marker_iteration:=Key.length()+1
 MouseGetPos, mX, mY,mWin
 inputbox,vPaste, What do you want to paste
 Key[Marker_iteration]:= New Marker(Marker_Iteration,mX,mY,vPaste)
 Return
 
-
-`:: ;;{{MARKER
+SetMouseMarker:
 Marker_iteration:=Key.length()+1
 MouseGetPos, mmX, mmY,mmWin
   ; inputbox,vPaste, What do you want to past`

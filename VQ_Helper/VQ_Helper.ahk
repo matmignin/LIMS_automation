@@ -57,11 +57,18 @@ prefix:=
 	Menu, Tray, add, Delete Prior Codes, DeletePriorCodes
 	Menu, Tray, add, Delete Whole Batches, DeleteWholeBatches
 	Menu, Tray, Add,
-	Menu, Tray, add, TestCode, testCode
+	Menu, TestSubMenu, Add, Test1, TestCode1
+	Menu, TestSubMenu, Add, Test2, TestCode2
+	Menu, TestSubMenu, Add, Test3, TestCode3
+	Menu, TestSubMenu, Add, PasteMarker, SetPasteMarker
+	Menu, TestSubMenu, Add, MouseMarker, SetMouseMarker
+	Menu, TestSubMenu, Add, windowSpy, windowSpy
+	Menu, TestSubMenu, Add, run Script, TestCode
+	Menu, TestSubMenu, Add, run Script, TestCode
+	Menu, Tray, add, TestCode, :TestSubMenu ;testCode
 	Menu, Tray, Add, Show Variables, ShowVariables
 	Menu, Tray, Add, ListLines, ListLines
 	Menu, Tray, Add, mmignin, mmigninFolder
-	Menu, Tray, Add, windowSpy, windowSpy
 	Menu, Tray, Add, Hotkeys, ShowHotkeys
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
@@ -415,4 +422,13 @@ ChangePercision(The_Percision:=1){
 
 		return
 	}
+
+
+TestCode3:
+Return
+TestCode2:
+Return
+TestCode1:
+LMS.OrientSearchbar()
+return
 

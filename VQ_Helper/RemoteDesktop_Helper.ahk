@@ -168,7 +168,6 @@ return
 
 #ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
 	F2::Sendinput, %SampleID%{enter}
-	+F7::Sendinput, %SampleID%{enter}
 F3::Sendinput, %SampleGUID%{enter}
 F8::
 CoordMode, Mouse, Screen
