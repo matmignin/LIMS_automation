@@ -437,6 +437,7 @@ OrientSearchbar(){
 		FoundTests:=
 		FoundSpecs:=
 		FoundReagents:=
+		FoundMyWork:=
 		Tab1:=
 		TAB2:=
 		TAB3:=
@@ -449,45 +450,47 @@ sleep 20
 		; CoordMode, pixel, window
 		if winactive("NuGenesis LMS") {
 			Pixelsearch, FoundMyWork, FoundY, 200, 97, 201, 98,0xFFD353,10,FAST RGB
-			; -----edit here
 			If FoundMyWork {
-				msgbox, myworkTab
-				return
-				}
-				;----To HEre
-			PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
-			if !Tab1 {
+			;PIXELSEARCH, Tab2, FoundY, XTAB2, YTabS, XTAB2+3, yTabs+5, 0xfff8c3, 10, Fast RGB ;icon on
+			;if !Tab1 {;}
 				PixelSearch, FoundSamples, FoundY, SamplesTab, yWorkTabs, SamplesTab+2, yWorkTabs+2, 0xfffd353, 10, Fast RGB
 				PixelSearch, FoundRequests, FoundY, RequestsTab, yWorkTabs, RequestsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
 				if FoundSamples {
 					Tab:="Samples"
 					return Tab
 				}
-				else
-				{
-					If FoundRequests {
+					else If FoundRequests {
 						Tab:="Requests"
 						return Tab
 					}
-
-					else if Errorlevel
+					else 
+					{
+						PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, testsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+						If FoundTests {
+											Tab:="Tests"
+											return Tab
+										}
+						Else 
+						{
+							Tab:="Results"
+							Return Tab
+						}
+						
+					}
+					}
+					else if !FoundMyWork
 					{
 
 						PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
-						; PIXELSEARCH, FoundSpecs, FoundY, 13, 355, 15, 358, 0xeaeff3, 10, Fast RGB ;icon on
 						If FoundSpecs
 							Tab:="Products"
 						else
 							tab:="Specs"
 						return Tab
-						; }
-					}
+						}
 
-				}
 			}
 		}
-		Else
-			Tab:="Samples"
 		return Tab
 	}
 
