@@ -92,6 +92,8 @@ Class LMS {
 		Menu, Menu, add, mmignin, mmigninFolder
 		Menu, Menu, add,
 		Menu, Menu, add, TestCode, :TestSubMenu
+			Menu, Menu, Add, Get Requirements,GetRequirements
+		; Menu, Menu, add, Marker, :MarkerSubMenu
 		Menu, Menu, add, Window Info `t%getTitle%, get_window_info
 		Menu, Menu, add, Mouse Info `t%getX%`, %GetY%, get_Mouse_info
 		if GetKeyState("Shift","P"){
@@ -118,6 +120,8 @@ Class LMS {
 			Menu, Menu, Add, Bloom Nutrition Heavy Metal,Autofill
 			Menu, Menu, Add, Custom Heavy Metal,Autofill
 			Menu, Menu, Add, Toggle Spec Limits,Autofill
+			Menu, Menu, Add, Get Requirements,GetRequirements
+
 
 			; return
 		}
@@ -261,6 +265,66 @@ Class LMS {
 		}
 		return
 	}
+ChangePercision(The_Percision:=1){
+	global
+	MouseGetPos, Saved_x, Saved_y
+		If winactive("NuGenesis LMS")
+		{
+			click, 53, 178 ;Click Edit Test on Test Tab
+			winwaitactive, Edit test,, 1
+		if ErrorLevel
+		{
+			click, 47, 843 ;click Edit Test on Samples Tab
+			sendinput, {esc}
+		}
+			sleep 200
+			Breaking.Point()
+		}
+		If winactive("Edit test")
+		{
+			sleep 200
+			winactivate, Edit test
+			click 467, 537  ;results window scroll bar
+			click 239, 539  ;results link
+			Breaking.Point()
+			winwaitactive, Results,, 2
+			sleep 100
+		}
+		if winactive("Results") ;Selection window
+		{
+		winactivate, Results
+			sleep 100
+			Sendinput,{click 80, 66} ;click edit
+			Breaking.Point()
+			winwaitactive, Result Editor,,4
+							winactivate, Result Editor
+							click, 250, 140 ; click id box to orient
+							Breaking.Point()
+								Sendinput,{tab 3}^{a}%The_Percision% ;{tab 5}
+							Sleep 200
+							Breaking.Point()
+								Mouseclick, left, 378, 667,1,0 ; click okay
+							winwaitactive, Results,, 5
+							wingetpos, Results_X, Results_y, Results_w, Results_h, Results
+							sleep 200
+							Okay_x:=Results_W - 170
+							Okay_y:=Results_H - 45
+							click, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
+							Breaking.Point()
+							WinWaitClose, Results,, 8
+								click 342, 614
+							wingetpos, Test_X, Test_y, Test_w, Test_h, A
+							Save_x:=test_W - 170
+							Save_y:=test_H - 45
+							Breaking.Point()
+		winwaitactive, NuGenesis LMS,,3
+							sleep 500
+							sleep 500
+							click, %Saved_x% %Saved_y%
+	}
+		return
+	}
+
 
 OrientSearchbar(){
 	winactivate, NuGenesis LMS
@@ -345,7 +409,8 @@ OrientSearchbar(){
 				; clk2(304, 130,1,2)  ; click for My Work
 				; xtabsLocation:=x%Tab%Search
 				; xtabsLocation2:=x%Tab%Search-9
-								clk2(420, 129,0,2)  ;--For Pending Test Requests
+								clk2(420, 129,0,1)  ;--For Pending Test Requests
+								clk2(799, 128,0,1)  ;--For Full Samples
 								clk2(445, 130,2,2)  ;--For Showing Requests
 							; click 420, 129  ;--For Pending Test Requests
 							; click 445, 130  ;--For Showing Requests
@@ -369,10 +434,12 @@ OrientSearchbar(){
 				sleep 500
 					 return
 			}
-			else If (Tab="Tests"|| Tab="Samples" || Tab="Results") {
+			else If (Tab="Samples") {
 				; clk2(304, 130,1,2)  ; click for My Work
 				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
-								clk2(415, 127)  ;--For Pending Test Samples
+								clk2(444, 129,0,1)  ;--For Normal Samples
+								clk2(799, 128,0,1)  ;--For Full Samples
+								clk2(415, 127,2,2)  ;--For Pending Test Samples
 							; Click 472, 129  ;--Hamburger
 				; clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
@@ -381,6 +448,24 @@ OrientSearchbar(){
 				Send, %Code%{ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					send, {right}{space}^{v}^{a}^{c}
+				if PostCmd!=""
+					{
+					sleep 300
+					send % PostCmd
+				}
+				sleep 500
+					return
+			}
+			else If (Tab="Tests" || Tab="Results") {
+				; clk2(304, 130,1,2)  ; click for My Work
+				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
+								clk2(800, 127,0,1)  ;--For Full bar
+								clk2(435, 129,2,2)  ;--For Pending Test Samples
+								; clk2(509, 127,0,1)  ;--For "O" sample search Tests
+
+							; Click 472, 129  ;--Hamburger
+				; clk(x%Tab%Search+20,yWorkTabSearch,,2)
+				Send, {ctrldown}{a}{ctrlup}
 				if PostCmd!=""
 					{
 					sleep 300
@@ -407,7 +492,7 @@ OrientSearchbar(){
 			send, ^{a}^{c}
 		}
 		sleep 200
-		Send, {enter}
+		Sendinput, {enter}
 		simpleclip:=
 		return
 	}
@@ -429,6 +514,19 @@ OrientSearchbar(){
 
 	DetectTab(){
 		global
+		MyWorkTopX:=30
+		MyWorkTopY:=148
+		SampleTabTopColor:="0x69CFF5"
+		RequestTabTopColor:="0xFFFFFF"
+		TestTabTopColor:="0x54C8F3"
+		MyWorkMidX:=27
+		MyWorkMidY:=583
+		TestTabMidX:=29
+		TestTabMidY:=615
+		SampleTabMidColor:="0xB4E7F9"
+		RequestTabMidColor:="0x54C8F3"
+		; TestTabMidColor:="0xEAEFF3"
+		TestTabMidColor:="0x54C7F2"
 		tab:=
 		FoundSamples:=
 		FoundRequests:=
@@ -463,24 +561,23 @@ sleep 20
 						Tab:="Requests"
 						return Tab
 					}
-					else 
+					else
 					{
-						PixelSearch, FoundTests, FoundY, TestsTab, yWorkTabs, testsTab+2, yWorkTabs+2, 0xffd353, 10, Fast RGB
+						PixelSearch, FoundTests, FoundY, TestTabMidX, TestTabMidY, TestTabMidX+1, TestTabMidY+1, %TestTabMidColor%, 10, Fast RGB
 						If FoundTests {
 											Tab:="Tests"
 											return Tab
 										}
-						Else 
+						Else
 						{
 							Tab:="Results"
 							Return Tab
 						}
-						
-					}
-					}
-					else if !FoundMyWork
-					{
 
+					}
+					}
+					else ; !FoundMyWork
+					{
 						PIXELSEARCH, FoundSpecs, FoundY, 14, 351, 16, 353, 0x0D77AF, 10, Fast RGB ;icon on
 						If FoundSpecs
 							Tab:="Products"
@@ -490,7 +587,6 @@ sleep 20
 						}
 
 			}
-		}
 		return Tab
 	}
 
@@ -1142,20 +1238,20 @@ class SpecTab {
 		global
 		CoordMode, mouse, screen
 		if WinExist("Select methods test"){
-			ScreenEdge_X:=A_ScreenWidth-450
+			ScreenEdge_X:=A_ScreenWidth-50
 			ScreenEdge_Y:=A_Screenheight-380
-			SpecTable_X:=LMS_X-450
-			SpecTable_Y:=LMS_Y+ShiftTable_Y
+			SpecTable_X:=LMS_X + 25
+			SpecTable_Y:=LMS_Y+ShiftTable_Y+300
 		}
 		else if Winactive("NuGenesis LMS"){
-			ScreenEdge_X:=A_ScreenWidth-15
+			ScreenEdge_X:=A_ScreenWidth-25
 			ScreenEdge_Y:=A_Screenheight-180
 		}
 		sleep 200
 		If (Name.Maxindex() <=1)
 			return
-		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w350, %Product% Spec Table
-		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w350, %Product% Spec Table
+		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w310, %Product% Spec Table
+		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w310, %Product% Spec Table
 			CoordMode, mouse, window
 		OnMessage(0x0201, "WM_Lbuttondown")
 		return
@@ -1181,17 +1277,19 @@ class SpecTab {
 		GUI, Spec_Table:Default
 		try Menu, SpecMenu, DeleteAll
 		i:=1
-		if Table_height > 8
+		if Table_height > 12
+			Table_height :=16
+		else if Table_height > 8
 			Table_height :=12
-		if !Table_height
+		else if !Table_height
 			Table_height := 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
 		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
 		; GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		; GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		GUI, Spec_Table:Add, ListView, x2 y0 w318 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		Gui, Spec_Table:Add, Button, X25 y+0 h18 w145 gAddSpecTableMethods, Add Methods
-		Gui, Spec_Table:Add, Button, X+3 h18 w145 gAutoAddSpecs, Auto Specs
+		Gui, Spec_Table:Add, Button, X+3 h18 w105 gAutoAddSpecs, Auto Specs
 		OnMessage(0x0201, "WM_Lbuttondown")
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
@@ -1340,14 +1438,14 @@ ClickEmptyRequirements(){
 	ModifyColumns(){
 		Global
 		GUI, Spec_Table:Default
-		LV_ModifyCol(1,130)
+		LV_ModifyCol(1,100)
 		LV_ModifyCol(2,120)
 		LV_ModifyCol(3,0)
 		LV_ModifyCol(4,0)
 		LV_ModifyCol(5,0)
 		LV_ModifyCol(6,0)
 		LV_ModifyCol(7,0)
-		LV_ModifyCol(8,90)
+		LV_ModifyCol(8,70)
 		LV_ModifyCol(9,0)
 		LV_ModifyCol(2,"Sort")
 		LV_ModifyCol(8,"Sort")
@@ -3262,7 +3360,7 @@ Class WorkTab {
 				Send, %product%{enter}
 			}
 			else if winexist("Change Configuration")
-			clk(131, 296,"Change Configuration")
+				clk(131, 296,"Change Configuration")
 			Else
 				Send, {enter}
 			return

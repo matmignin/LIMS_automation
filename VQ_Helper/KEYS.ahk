@@ -14,24 +14,20 @@ return
 
 	^+w::gosub, get_window_info
 	^+e::gosub, get_mouse_info
-F5::msgbox, % copyLabelCopyDoc(1)
-+F5::Msgbox % copyLabelCopyDocRegex(1)
 
-
-
-+F7:: ;Set Searchbar Marker
-winactivate, Nugenesis LMS
-tooltip, Click where the divider is
-Keywait, Lbutton, D
-MouseGetPos, SearchBarMarker, SearchBarMarkerY
-iniwrite, SearchBarMarker, Settings.ini, SavedVariables, SearchBarMarker
-tooltip,
-; iniwrite, SearchBarMarkerY, Settings.ini, SavedVariables, SearchBarMarkerY
+LabelCopyDoc:
+msgbox, % copyLabelCopyDoc(1)
 return
+copyLabelCopyDocRegex:
+Msgbox % copyLabelCopyDocRegex(1)
+Return
 
 
 
-; +F5::GetRequirements()
+
+GetRequirements:
+GetRequirements()
+return
 
 
 
@@ -626,6 +622,7 @@ F6::
 ^Mbutton::FileRead, Clipboard, U:\VQ_Helper\ClippedExcelData.txt
 	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
+	F10::
 	mbutton::
 	if winexist("Spec Table ahk_class AutoHotkeyGUI") {
 	If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
@@ -661,10 +658,6 @@ F6::LMS.SearchBar(Product,"{enter}",0)
 
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
-
-	!F1::ChangePercision(1)
-	!F2::ChangePercision(2)
-	!F3::ChangePercision(3)
 	F1::Sendinput, %Product%
 	F2::Sendinput, %Batch%
 	F3::Sendinput, %lot%
@@ -675,10 +668,13 @@ F6::LMS.SearchBar(Product,"{enter}",0)
 	+F2::sendinput % GetAllBatches(" ")
 	+^F2::sendinput % GetAllBatches("`;")
 
-	^+F10::ChangePercision(3)
-	printscreen::ChangePercision(2)
-	+F10::ChangePercision(2)
-	^F10::ChangePercision(1)
+
+
+
+
+	^+F10::lms.ChangePercision(3)
+	+F10::lms.ChangePercision(2)
+	^F10::lms.ChangePercision(1)
 
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
@@ -1341,7 +1337,7 @@ class Breaking {
 		Global
 		critical
 		SimpleClip:=
-		If GetKeyState("Lbutton", "P") || (break) || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") || (A_PriorKey="RShift") {
+		If GetKeyState("Lbutton", "P") || break || GetKeyState("Shift", "P") || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") || (A_PriorKey="Shift") {
 			blockinput, off
 			exit
 		}

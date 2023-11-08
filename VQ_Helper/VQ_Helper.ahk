@@ -26,6 +26,7 @@
 	SetWorkingDir, %A_ScriptDir%
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
+	IdleThreshold := 7 * 60 * 60 * 1000 ;7 hours
 	Fileread, AllBatches, AllBatches.txt
 	Fileread, AllProducts, AllProducts.txt
 	ReadIniFiles()
@@ -51,21 +52,24 @@ prefix:=
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
-	Menu, Tray, Add, Whole Batches, ShowWholeBatches
-	Menu, Tray, add, Show EditBox, ShowEditBox
-	Menu, Tray, add, Add Sample Log, Add15SampleLog
-	Menu, Tray, add, Delete Prior Codes, DeletePriorCodes
-	Menu, Tray, add, Delete Whole Batches, DeleteWholeBatches
+	; Menu, Tray, Add, Whole Batches, ShowWholeBatches
+	; Menu, Tray, add, Show EditBox, ShowEditBox
+	; Menu, Tray, add, Add Sample Log, Add15SampleLog
+	;Menu, Tray, add, Delete Prior Codes, DeletePriorCodes
+	; Menu, Tray, add, Delete Whole Batches, DeleteWholeBatches
 	Menu, Tray, Add,
+	Menu, Tray, Add, Get Requirements, GetRequirements
+	Menu, TestSubMenu, Add, run Script, TestCode
 	Menu, TestSubMenu, Add, Test1, TestCode1
 	Menu, TestSubMenu, Add, Test2, TestCode2
 	Menu, TestSubMenu, Add, Test3, TestCode3
-	Menu, TestSubMenu, Add, PasteMarker, SetPasteMarker
-	Menu, TestSubMenu, Add, MouseMarker, SetMouseMarker
-	Menu, TestSubMenu, Add, windowSpy, windowSpy
-	Menu, TestSubMenu, Add, run Script, TestCode
-	Menu, TestSubMenu, Add, run Script, TestCode
+	; Menu, MarkerSubMenu, Add, PasteMarker, SetPasteMarker
+	; Menu, MarkerSubMenu, Add, MouseMarker, SetMouseMarker
+	; Menu, MarkerSubMenu, Add, TriggerMarker, TriggerMarker
+	Menu, Tray, Add, windowSpy, windowSpy
+	; Menu, TestSubMenu, Add, run Script, TestCode
 	Menu, Tray, add, TestCode, :TestSubMenu ;testCode
+	; Menu, Tray, add, Marker, :MarkerSubMenu
 	Menu, Tray, Add, Show Variables, ShowVariables
 	Menu, Tray, Add, ListLines, ListLines
 	Menu, Tray, Add, mmignin, mmigninFolder
@@ -109,6 +113,9 @@ GUI, ClipBar:default
 ;; [[                    Active Check                    ]]
 activeCheck:
 ListLines, OFF
+if A_TimeIdle > IdleThreshold
+	ExitApp
+
 	If winexist("Delete Attribute ahk_exe eln.exe"){
 		winactivate,
 		sleep 200
@@ -293,6 +300,7 @@ else if Winactive("NuGenesis LMS"){
 	; LMS.DetectTab()
 	windowmoved:=
 }
+
 listlines, On
 	; #maxthreadsperhotkey, 2
 return
@@ -322,7 +330,7 @@ Return
 
 copyLabelCopyDoc(SaveText:="",showtooltip:=""){
 	Global Product
-clipboard:=
+
 	firstLetter:=SubStr(Product,1,1)
 FilePattern := "\\netapp\Label Copy Final\" firstLetter "000-" firstLetter "999\*" product "*.docx"
 Loop, %FilePattern%, 1, 0
@@ -331,11 +339,13 @@ Loop, %FilePattern%, 1, 0
 		sleep 400
 		oW.Range.FormattedText.Copy
 		clipwait,5,0
+		if errorlevel
+			msgbox, didnt  find labelcopy
 	LabelCopyText:=Clipboard
 
-	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
+	; Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
 
-		Clipboard:=LabelCopyText
+		; Clipboard:=LabelCopyText
 
 	If showTooltip
 		tt(LabelCopyText,1000)
@@ -353,82 +363,55 @@ Loop, %FilePattern%, 1, 0
 
 
 
+GetRequirements(){
+	Global
+	RegexRequirements:="iO)(?<Prefix>(NLT |NMT |<|>))?(?<LowerLimit>([,|\d]*.?(?<PercisionAmount>[\d]*)))( - (?<UpperLimit>[,|\d]*.?[\d]*))? (?<Unit>(mg RAE|mcg RAE|mcg DFE|mg|mcg|g|IU|CFU\\g|ppm|ppb))"
+	; Parse:="15.0 - 24.8 mg"
+	; Parse:="NLT 50.0 mcg"
+	; Parse:="NMT 50.04 mcg"
+	; Parse:="1,000.00 - 1,650.00 mcg RAE"
+	; Parse:="<2.0 mg"
+	Parse:=Clipboard
 
-ChangePercision(The_Percision:=1){
-	global
-	; click
-	MouseGetPos, Saved_x, Saved_y
-		If winactive("NuGenesis LMS")
-		{
-			click, 53, 178 ;Click Edit Test on Test Tab
-			winwaitactive, Edit test,, 1
-		if ErrorLevel
-		{
-			click, 47, 843 ;click Edit Test on Samples Tab
-			sendinput, {esc}
-		}
-			sleep 200
-			Breaking.Point()
-		}
-		If winactive("Edit test")
-		{
-			sleep 200
-			winactivate, Edit test
-			click 467, 537  ;results window scroll bar
-			click 239, 539  ;results link
-			Breaking.Point()
-			winwaitactive, Results,, 2
-			sleep 100
-
-		}
-		if winactive("Results") ;Selection window
-		{
-		winactivate, Results
-			sleep 100
-			Sendinput,{click 80, 66} ;click edit
-			Breaking.Point()
-			winwaitactive, Result Editor,,4
-							winactivate, Result Editor
-							click, 250, 140 ; click id box to orient
-							Breaking.Point()
-								Sendinput,{tab 3}^{a}%The_Percision% ;{tab 5}
-							Sleep 200
-							Breaking.Point()
-								Mouseclick, left, 378, 667,1,0 ; click okay
-							winwaitactive, Results,, 5
-							wingetpos, Results_X, Results_y, Results_w, Results_h, Results
-							sleep 200
-							Okay_x:=Results_W - 170
-							Okay_y:=Results_H - 45
-							; mousemove, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
-							click, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
-							Breaking.Point()
-						;		click
-							WinWaitClose, Results,, 8
-							; sleep 400
-								click 342, 614
-
-							wingetpos, Test_X, Test_y, Test_w, Test_h, A
-							Save_x:=test_W - 170
-							Save_y:=test_H - 45
-							Breaking.Point()
-		winwaitactive, NuGenesis LMS,,3
-							sleep 500
-							; Saved_y:=Saved_Y + 26
-							sleep 500
-							click, %Saved_x% %Saved_y%
-							; click
-	}
-
-		return
-	}
+If (RegexMatch(Parse, RegexRequirements, subpat)){
+	; if (RegexMatch(Parse, RegexRequirements, r)){
+					Prefix:=Subpat["Prefix"]
+					MinLimit:=Subpat["LowerLimit"]
+					MaxLimit:=Subpat["UpperLimit"]
+					Units:=Subpat["Unit"]
+					Percision:=StrLen(Trim(Subpat["PercisionAmount"]))
+					; Prefix:=rPrefix
+					; LowerLimit:=rLowerLimit
+					; UpperLimit:=rUpperLimit
+					if (Prefix = "NMT ")
+					{
+						Maxlimit:=MinLimit
+						MinLimit:=""
+					}
+					IF (MinLimit && Maxlimit)
+						divider:=" - "
+					else
+						Divider:= " "
+					Final_Requirements:=Prefix " " MinLimit Divider MaxLimit " " Units
+					; Unit:=rUnit
+					Clipped_Requirement:=Trim(StrReplace(StrReplace(StrReplace(Final_Requirements, "< ","<"),"  "," "),"""",""))
+					sleep 300
+		; msgbox, prefix: %Prefix% `nlowerlimit: %LowerLimit% `nupperlimit: %UpperLimit% `nunit: %Unit%
+		msgbox, prefix: %Prefix% `nMinlimit: %MinLimit% `nMaxlimit: %MaxLimit% `nunits: %Units% `n %rprefix% `t %rUpperLimit% `n %Clipped_Requirement% `t %SubPat% `n %Percision%
+}
+	; }
+	; else
+	; msgbox, %Parse%
+}
 
 
 TestCode3:
+copyLabelCopyDoc(1,1)
 Return
 TestCode2:
+GetRequirements()
 Return
 TestCode1:
-LMS.OrientSearchbar()
+copyLabelCopyDoc(0,1)
 return
 

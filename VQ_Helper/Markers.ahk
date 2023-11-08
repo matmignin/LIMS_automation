@@ -24,8 +24,8 @@ Key[Marker_iteration]:= New Marker(Marker_Iteration,mmX,mmY,"M")
   Return
 
 
-
-F10:: ;;{{{Marker
+TriggerMarker:
+; F10:: ;;{{{Marker
 	ContinueToRun:=1
 	If spectab.CountUncheckedRows() <1
 	{

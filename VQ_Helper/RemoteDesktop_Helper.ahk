@@ -48,6 +48,7 @@ return
 
 Ralt::return
 
+^+c::copytotextfile()
 
 clipChange(type){
 	global
@@ -113,6 +114,7 @@ clipChange(type){
 F8::click 648, 241
 F9::controlclick, Button47, TIBCO Jaspersoft
 F7::PriorSampleIDsMenu(1)
+^c::copytotextfile()
 
 #ifwinactive, Parameter: SAMPLEGUID
 F9::
@@ -150,21 +152,24 @@ return
 
 #IfWinactive, Dataset and Query Dialog
 ^x::
-^c::
-	Send, ^c
+^c::copytotextfile()
+
+copyTOTextfile(){
+	Send, {ctrldown}{c}{ctrlup}
+	sleep 100
 			Ifwinnotexist, Untitled - Notepad
 				Run, notepad.exe
 			else
 				Winactivate, Untitled - Notepad
 			WinWaitActive, Untitled - Notepad
-        SendInput, ^a^v
-        Sleep, 100
-        SendInput, ^a^c
+        Sendinput, ^{a}^{v}
+        Sleep, 200
+					Send, ^{a}^{c}
 				Winminimize, Untitled - Notepad
         Sleep, 100
 				return
     Return
-
+}
 
 #ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
 	F2::Sendinput, %SampleID%{enter}

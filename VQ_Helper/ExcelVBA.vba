@@ -98,7 +98,7 @@ End Sub
 
 
 Sub MergeSheets()
-    
+
     Dim oldWb As Workbook
     Dim newWb As Workbook
     Dim newWs As Worksheet
@@ -117,10 +117,10 @@ Sub MergeSheets()
     ' Loop through each sheet in the old workbook, but only for the first 10 sheets
     For i = 1 To 10
         Set sheet = oldWb.Sheets(i)
-        
+
         ' Find the last row with data in column C of the new worksheet
         lastRow = newWs.Cells(newWs.Rows.Count, "C").End(xlUp).Row
-        
+
         ' Copy the data (from column A to DA and down to the last filled row) from the old worksheet to the new worksheet
         sheet.Range("A1:DA" & sheet.Cells(sheet.Rows.Count, "A").End(xlUp).Row).Copy
         newWs.Cells(lastRow + 1, 1).Value = sheet.Name
@@ -133,4 +133,60 @@ Sub MergeSheets()
     ' Inform the user
     MsgBox "Data merged successfully!", vbInformation
 
+End Sub
+
+
+
+
+
+
+' ---[WORKSHEET CHANGE]
+
+Private Sub Worksheet_Change(ByVal Target As Range)
+    Dim KeyCells As Range
+  Dim ws As Worksheet
+  Dim x As Integer
+  Dim CurrentSheetName As Worksheet
+  Dim Sheetname As String
+  Dim MicroStatus As Range
+  Set CurrentSheetName = ActiveSheet
+  If Application.ActiveSheet.Name = "Template" Then Exit Sub
+  Set KeyCells = ActiveSheet.Range("B7")
+   Set MicroStatus = ActiveSheet.Range("Y1")
+        On Error GoTo Exitthesub
+    If ActiveSheet.Range("A55") <> "[M]" AND MicroStatus.Value = "Micro" OR MicroStatus.Value = "Micro Probiotic" Then
+        Application.DisplayAlerts = False
+        ActiveSheet.Range("A55").Value = "[M]"
+            Worksheets("Main").Range("E:E").Find(ActiveSheet.Name, LookIn:=xlValues).Offset(0, -1).Value = "M"
+        If ActiveSheet.Range("B7") = "CoA" Then ActiveSheet.Tab.ColorIndex = 23
+            ElseIf ActiveSheet.Range("B7") = "Specs" Then ActiveSheet.Tab.ColorIndex = 46
+            ElseIf ActiveSheet.Range("B7") = "Reviewed" Then ActiveSheet.Tab.ColorIndex = 44
+            ElseIf ActiveSheet.Range("B7") = "__________" Then ActiveSheet.Tab.ColorIndex = 50
+        end If
+            Application.DisplayAlerts = True
+    End If
+
+      If Not Application.Intersect(KeyCells, Range(Target.Address)) _
+        Is Nothing Then
+  Sheetname = ActiveSheet.Range("B1").Value
+  Application.ScreenUpdating = False
+'coa
+
+        ActiveSheet.Tab.ColorIndex = 37
+'Specs
+        ActiveSheet.Tab.ColorIndex = 45
+'Reviewed
+
+'samples
+        ActiveSheet.Tab.ColorIndex = 2
+
+ Call CreateTOC
+End If
+
+Exitthesub:
+Application.ScreenUpdating = True
+  Exit Sub
+ErrHandler:
+Application.ScreenUpdating = True
+'Application.ActiveSheet.Name = Target.Value & ".2"
 End Sub

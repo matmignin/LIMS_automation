@@ -1,23 +1,12 @@
 
 ;;[[                       CLIP CODES                          ]]
-;;------------------------------------------------------------
+
 
 clipChange(){
   global
   sleep 75
   if SimpleClip
     return
-	; if Instr(Clipboard, "++|",true,1,1){
-	; 	AddWholeBatch:=strReplace(Clipboard,"++","")
-	; 	if instr(WholeBatches, AddWholeBatch,false,1,1)
-	; 		clip.codesRegex(AddWholeBatch)
-	; 	else {
-	; 		FileAppend, `n%AddWholeBatch%, WholeBatches.txt,
-	; 		WholeBatches:=trim(WholeBatches "`r`n" AddWholeBatch,"`r`n ")
-	; 		sleep 200
-	; 		}
-	; 	return
-  ; }
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
 		clipBar.Flash()
@@ -45,7 +34,10 @@ clipChange(){
   }
 	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
 		; clip.codesRegex()
-		; Product:=TRIM(SubStr(Clipboard, 19,4))
+		Product:=TRIM(SubStr(Clipboard, 19,4))
+		Gui ClipBar:Default
+		GuiControl,ClipBar:Text, Product, %Product%
+		clipBar.Flash()
 		; ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
 		; SLEEP 100
 		Clipboard:=
@@ -1065,7 +1057,7 @@ Class ClipBar{
 		ClipBar_H_max=56
 		ClipBar_T:=230
 		ClipBar_W=505
-		ClipBar_x:=Nugenesis_X+(Nugenesis_W/3)
+		ClipBar_x:=Nugenesis_X+(Nugenesis_W/6)
 		; ClipBar_x:=1
 		ClipBar_Y:=Nugenesis_h + Nugenesis_y - 39
 		ClipBar_Y:=Nugenesis_y
