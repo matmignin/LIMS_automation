@@ -42,7 +42,7 @@ clipChange(){
 		; SLEEP 100
 		Clipboard:=
 		; sleep 100
-		copyLabelCopyDoc()
+		copyLabelCopyDoc(1)
 		; Clipwait,5,0
 		; tt(clipboard)
 		sleep 2500
@@ -143,7 +143,87 @@ Clip(input=50,Wait:="0.95"){
 
 Class Clip {
 
+VariableFileClip(input:=""){
+Global
+Gui ClipBar:Default
+		; FileRead, FileContents, %Input%
+		; FileContents := FileOpen(Input, "r")
+		;clipBar.Flash()
+  if Instr(Input, "[P]",true,1,1){
+		Haystack:= input
+		SheetInfo:=[]
+		Coated:=
+		Lot:=
+		SheetInfo:=StrSplit(HayStack,"|")
+		Product:=SheetInfo[2]
+		ProductName:=SheetInfo[3]
+		Customer:=SheetInfo[4]
+		CustomerPosition:=SheetInfo[5]
+		ShapeAndSize:=SheetInfo[6]
+		Color:=SheetInfo[7]
+		ServingSize:=SheetInfo[8]
+		BatchLot:=SheetInfo[9]
+		Batch:=RegexMatch(BatchLot, RegexBatch, r) ? rBatch : Batch
+		Lot:=RegexMatch(BatchLot, RegexLot, r) ? rLot : Lot
+		Coated:=RegExMatch(BatchLot, RegexCoated, r) ? rCoated : Coated
+    ; ProductTab.AddProductFromClipboard(Input)
+		Iteration:=SheetInfo[5]
+		ProductInfo:=ProductName " : " Customer
+		ServingInfo:=ServingSize " " Color
+			; GUI, ClipBar:submit,NoHide
+			stringUpper, Product, Product
+      GuiControl,ClipBar:Text, Product, %Product%
+      GuiControl,ClipBar:Text, Batch, %Batch%
+      GuiControl,ClipBar:Text, lot, %lot%
+      GuiControl,ClipBar:Text, Coated, %Coated%
+      GuiControl,ClipBar:Text, Iteration, %Iteration%
+		; Clip.SetClipBar()
+      GuiControl,ClipBar:Text, Generalbox, %ProductInfo%
+      GuiControl,ClipBar:Text, Generalbox2, %ServingInfo%
+  }
+	else if InStr(Input, "<<CopyLabelCopy>>",true, 1,1){
+		; clip.codesRegex()
+		Product:=TRIM(SubStr(Input, 19,4))
+		Gui ClipBar:Default
+		GuiControl,ClipBar:Text, Product, %Product%
+		Clipboard:=
+		copyLabelCopyDoc()
+		; tt(clipboard)
+		sleep 2500
+		GoSub ShowScanLabelCopy
+		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
+		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
+		FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
+		return
+  }
+;   else if InStr(input, ">>|", true,1,1) {
+;     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
+; 		{
+;       iteration:=1
+; 		}
+;     LMS.AddDataFromClipboard(">>|",Input)
+;     ; FileDelete, ClippedExcelData.txt
+;     ; sleep 400
+;     ; FileAppend, %ClippedData%, ClippedExcelData.txt
+;     return
+;   }
+; else
+; {
+; 			Product:=RegexMatch(Input, RegexProduct,r) ? rProduct : Product
+; 			Batch:=RegexMatch(Input, RegexBatch, r) ? rBatch : Batch
+; 			Lot:=RegexMatch(Input, RegexLot, r) ? rLot : Lot
+; 			Coated:=RegExMatch(Input, RegexCoated, r) ? rCoated : Coated
 
+; 			if RegexMatch(Input, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
+; 					; Clipbar.FlashIteration()
+; 					Iteration:=Floor(rCustomerPosition)
+; 					CustomerPosition:=rCustomerPosition
+; 			Clip.SetClipBar()
+; 			}
+; 	}
+	; Clip.CodesRegex(FileContents
+	return
+}
 
 	CodesRegex(input:=""){
 		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
@@ -162,6 +242,7 @@ Class Clip {
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 			SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+
 			; If rProduct {
 			; 	Gui, Font, cYellow s17
 			; 	GuiControl, Font, Edit1
@@ -587,6 +668,7 @@ SetClipBar(){
       GuiControl,ClipBar:Text, Batch, %Batch%
       GuiControl,ClipBar:Text, lot, %lot%
       GuiControl,ClipBar:Text, Coated, %Coated%
+      GuiControl,ClipBar:Text, Iteration, %Iteration%
 ; Clipbar.Flash()
 }
 

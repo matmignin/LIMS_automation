@@ -3,7 +3,7 @@
 	#NoEnv
 	Process, Priority,, High
 	; SetBatchLines, -1
-	Thread, NoTimers
+	; Thread, NoTimers
 	#HotkeyInterval 1000
 	#MaxHotkeysPerInterval 210
 	#InstallKeybdHook
@@ -26,7 +26,7 @@
 	SetWorkingDir, %A_ScriptDir%
 	SetscrolllockState, alwaysoff
 	AutoTrim, On
-	IdleThreshold := 7 * 60 * 60 * 1000 ;7 hours
+	IdleThreshold := 6 * 60 * 60 * 1000 ;7 hours
 	Fileread, AllBatches, AllBatches.txt
 	Fileread, AllProducts, AllProducts.txt
 	ReadIniFiles()
@@ -45,6 +45,10 @@ F5    :: copyLabelCopy
 +!F1  :: GetAllProducts( n )
 +^F2  :: GetAllBatches( ; )
 	)"
+
+VariableFilePath := "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\ClippedExcelData.txt"
+
+FileGetTime, InitialFileTime, %VariableFilePath%
 
 prefix:=
 	Menu,Tray,NoStandard
@@ -100,6 +104,7 @@ prefix:=
 	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Code.txt"
 	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
+	SetTimer,FileCheck, 1000
 	LMS.Orient()
 	ClipBar.Show()
 	sleep 200
@@ -109,10 +114,27 @@ GUI, ClipBar:default
 	return
 
 
-;;-----------------------------------------------------------
+
+
+;;----------------------File Check-------------------------
+FileCheck:
+    FileGetTime, CurrentFileTime, %VariableFilePath%
+    if (CurrentFileTime <> InitialFileTime) {
+        InitialFileTime := CurrentFileTime
+				FileContents := FileOpen(VariableFilePath, "r")
+				sleep 200
+				Clip.VariableFileClip(FileContents.ReadLine())
+    }
+
+	; UpdateVariableFile()
+Return
 ;; [[                    Active Check                    ]]
+
+
 activeCheck:
 ListLines, OFF
+
+
 if A_TimeIdle > IdleThreshold
 	ExitApp
 
@@ -343,9 +365,9 @@ Loop, %FilePattern%, 1, 0
 			msgbox, didnt  find labelcopy
 	LabelCopyText:=Clipboard
 
-	; Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
+	Ingredients:= RegexMatch(LabelCopyText, RegexIngredients,ri)
 
-		; Clipboard:=LabelCopyText
+		 ;Clipboard:=LabelCopyText
 
 	If showTooltip
 		tt(LabelCopyText,1000)
@@ -412,6 +434,6 @@ TestCode2:
 GetRequirements()
 Return
 TestCode1:
-copyLabelCopyDoc(0,1)
+copyLabelCopyDocRegex(1)
 return
 

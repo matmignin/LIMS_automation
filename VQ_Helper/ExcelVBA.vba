@@ -140,7 +140,7 @@ End Sub
 
 
 
-' ---[WORKSHEET CHANGE]
+' ---[new WORKSHEET CHANGE]
 
 Private Sub Worksheet_Change(ByVal Target As Range)
     Dim KeyCells As Range
@@ -189,4 +189,138 @@ Application.ScreenUpdating = True
 ErrHandler:
 Application.ScreenUpdating = True
 'Application.ActiveSheet.Name = Target.Value & ".2"
+End Sub
+
+' ----[[old worksheet change
+Private Sub Worksheet_Change(ByVal Target As Range)
+    Dim KeyCells As Range
+  Dim ws As Worksheet
+  Dim x As Integer
+  Dim CurrentSheetName As Worksheet
+  Dim Sheetname As String
+  Dim MicroStatus As Range
+  Set CurrentSheetName = ActiveSheet
+  If Application.ActiveSheet.Name = "Template" Then Exit Sub
+  Set KeyCells = ActiveSheet.Range("B7")
+  Set MicroStatus = ActiveSheet.Range("Y1")
+
+    If ActiveSheet.Range("A55").value = "" and MicroStatus.Value = "Micro" Then
+        Application.DisplayAlerts = False
+        ActiveSheet.Range("A55").Value = "[M]"
+           Worksheets("Main").Range("E:E").Find(ActiveSheet.Name, LookIn:=xlValues).Offset(0, -1).Value = "M"
+       Application.DisplayAlerts = True
+    End If
+
+On Error GoTo Exitthesub
+
+If Not Application.Intersect(KeyCells, Range(Target.Address)) Is Nothing Then
+    Sheetname = ActiveSheet.Range("B1").Value
+    Application.ScreenUpdating = False
+    Call StatusChange
+    Application.ScreenUpdating = True
+End If
+
+Exitthesub:
+    Application.ScreenUpdating = True
+    Exit Sub
+ErrHandler:
+    Application.ScreenUpdating = True
+    'Application.ActiveSheet.Name = Target.Value & ".2"
+End Sub
+
+' ---[[new micro click
+Sub Status_Change()
+Dim Status as string
+Dim Micro as string
+
+Status = ActiveSheet.Range("B7").value
+Micro = ActiveSheet.Range("Y1").value
+' Application.ScreenUpdating = False
+
+    If Status = "CoA" Then
+        If Micro <> "Micro" Then ActiveSheet.Tab.ColorIndex = 26
+        If Micro = "Micro" Then ActiveSheet.Tab.ColorIndex = 20
+    end If
+    If Status = "Specs" Then
+        If Micro <> "Micro" Then ActiveSheet.Tab.ColorIndex = 76
+        If Micro = "Micro" Then ActiveSheet.Tab.ColorIndex = 75
+        ActiveSheet.Move After:=ActiveWorkbook.Sheets("Specs")
+    End If
+    If Status = "Reviewed" Then
+        If Micro <> "Micro" Then ActiveSheet.Tab.ColorIndex = 6
+        If Micro = "Micro" Then ActiveSheet.Tab.ColorIndex = 36
+        ActiveSheet.Move Before:=ActiveWorkbook.Sheets("Specs")
+    End If
+    If Status = "Samples" then
+        If Micro <> "Micro" Then ActiveSheet.Tab.ColorIndex = 15
+        If Micro = "Micro" Then ActiveSheet.Tab.ColorIndex = 56
+    end if
+    If Status = "Completed" Then
+        Worksheets("Main").Range("D:D").Find(ActiveSheet.Range("B1").Value, LookIn:=xlValues).Offset(0, 10).Value = "x"
+        if ActiveSheet.Range("AG2").Value <> "" Then 'if rotation
+            ActiveSheet.Range("B7").value = "Rotation"
+            ActiveSheet.Move After:=ActiveWorkbook.Sheets("Rotation")
+            ActiveSheet.Tab.ColorIndex = 54
+            Call UnFormula
+        else
+            ActiveSheet.Tab.ColorIndex = 1
+            Application.ScreenUpdating = True
+            ActiveSheet.Delete
+        End if
+    END if
+    If Status = "Rotation" Then
+            ActiveSheet.Move After:=ActiveWorkbook.Sheets("Rotation")
+            ActiveSheet.Tab.ColorIndex = 54
+            Call UnFormula
+    END IF
+
+end sub
+
+
+
+Public Sub Status_Change(byval sht As Worksheet)
+Dim Status As String
+Dim Micro As String
+
+Status = ActiveSheet.Range("B7").Value
+Micro = ActiveSheet.Range("Y1").Value
+
+    If Status = "CoA" Then
+        If Micro <> "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 26
+        If Micro = "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 20
+    End If
+    If Status = "Specs" Then
+        If Micro <> "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 46
+        If Micro = "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 45
+        ActiveWorkbook.Sheets(sht).Move After:=ActiveWorkbook.Sheets("Specs")
+    End If
+    If Status = "Reviewed" Then
+        If Micro <> "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 6
+        If Micro = "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 36
+        ActiveWorkbook.Sheets(sht).Move Before:=ActiveWorkbook.Sheets("Specs")
+    End If
+    If Status = "Samples" Then
+        If Micro <> "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 15
+        If Micro = "Micro" Then ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 56
+    End If
+    If Status = "Completed" Then
+        Worksheets("Main").Range("D:D").Find(ActiveWorkbook.Sheets(sht).Range("B1").Value, LookIn:=xlValues).Offset(0, 10).Value = "x"
+        If ActiveWorkbook.Sheets(sht).Range("AG2").Value <> "" Then 'if rotation
+            ActiveWorkbook.Sheets(sht).Range("B7").Value = "Rotation"
+            ActiveWorkbook.Sheets(sht).Move After:=ActiveWorkbook.Sheets("Rotation")
+            ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 54
+            Call UnFormula
+        Else
+            ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 1
+            Application.ScreenUpdating = True
+            ActiveWorkbook.Sheets(sht).Delete
+        End If
+    End If
+    If Status = "Rotation" Then
+            ActiveWorkbook.Sheets(sht).Move After:=ActiveWorkbook.Sheets("Rotation")
+            ActiveWorkbook.Sheets(sht).Tab.ColorIndex = 54
+            Call UnFormula
+    End If
+    Call CreateTOC
+
 End Sub

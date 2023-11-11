@@ -18,7 +18,7 @@ copyLabelCopyDocRegex(SaveText:="",showToolTip:=""){
 	listofIngredients:=
 	RegexServingSize:= "im)^\s?Serving size:?\s+(?P<ServingSize>\d+)\s?(?P<ServingType>[\w ]+)?\s?(?P<ServingWeigth>\(.*\))?"
 	ServingSize:=
-	RegexPillSize:="i)(?P<PillSize>(?<=size: )#[0{2})[ \w]*)(?:(?:.*\d, \d{4}\.)"
+	RegexPillSize:="i)(?P<PillType>(Capsule|Tablet)(?: size( & weight)?:)) (?P<PillSize>[½/¼# \w""].*).*"
 	PillSize:=
 	regingredient:=[]
 
@@ -34,7 +34,14 @@ Loop, %FilePattern%, 1, 0
 	RegexMatch(LabelCopyText, RegexServingSize, ss)
 	RegexMatch(LabelCopyText, RegexPillSize, ps)
 	ServingSize:=Trim(ssServingSize " " ssServingType " " SsservingWeight)
-	PillSize:=Trim(psPillSize)
+	Parts := StrSplit(psPillSize, "~")
+	TrimmedString := Parts.1
+	Parts := StrSplit(TrimmedString, "@")
+	TrimmedString := Parts.1
+	WordsToRemove := [" vegetarian", " clear", " gelatin"]
+	for Each, Word in WordsToRemove
+    TrimmedString := StrReplace(TrimmedString, Word, "")
+	PillSize:=TRIM(TrimmedString)
 	Loop, Parse, riIngredients,`n
 	{
 		if RegexMatch(A_LoopField,"i)(Total Carbohydrate|Added Sugar|Total Sugar|Calories|Cholesterol|Sodium| Fat|Dietary Fiber|folic acid)",nogo)
@@ -45,21 +52,21 @@ Loop, %FilePattern%, 1, 0
 	 	 listofIngredients.=Trim(strReplace(listofIngredientsPreTrim2, "`r",""))
 		;  regingredient.insert(listofIngredientsPreTrim2)
 			}
-		FileDelete, U:\VQ_Helper\LabelCopyText.txt
-			sleep 400
-	FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
+		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
+			; sleep 400
+	; FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
 	sleep 500
 	Clipboard:=listofIngredients
 	If showTooltip
 		tt(listofIngredients,1000)
 	If SaveText
 		{
-		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
-		FileAppend,  %ServingSize%`n, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
-		FileAppend,  %PillSize%`n`n, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
-		FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
+		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
+		FileAppend,  %ServingSize%`n%PillSize%`n`n%listofIngredients%, U:\VQ_Helper\LabelCopies\%Product%.txt
+		; FileAppend,  , U:\VQ_Helper\LabelCopies\%Product%Reg.txt
+		; FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopies\%Product%Reg.txt
 		}
-	tt(listofIngredients,2000,10,10,3,190)
+	tt(Servingsize "`n" PillSize "`n`n" listofIngredients,5000,10,10,3,190)
 
 	Return listofIngredients
 }
