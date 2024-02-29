@@ -54,11 +54,11 @@ F8::
 
 	;;--------------------------------------------------
 	;;[[              ClipBar keybindings                    ]]
-#If MouseIsOver("Methods List ahk_exe VQ_Helper.exe")
+#If MouseIsOver("Methods List ahk_exe VQ Helper.exe")
 Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 
-#If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
+#If MouseIsOver("ClipBar ahk_exe VQ Helper.exe")
 	; F7::copyLabelCopyDoc()
 	wheelup::
 	If NAdd
@@ -168,7 +168,7 @@ Mbutton::
 
 #if
 
-#Ifwinactive, ClipBar ahk_exe VQ_Helper.exe
+#Ifwinactive, ClipBar ahk_exe VQ Helper.exe
 	enter::
 		GUI, ClipBar:default
 	Send, ^{a}^{c}
@@ -192,7 +192,7 @@ Mbutton::
 	; 		iniwrite, Coated, Settings.ini, SavedVariables, Coated
 	; 	}
 	; Mbutton::
-	; 		; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
+	; 		; ControlGetFocus,winControl,ClipBar ahk_exe VQ Helper
 	; 		; MouseGetPos, , , winid, wincontrol
 	; 		; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 	; 			ClipBar.Menu()
@@ -201,7 +201,7 @@ Mbutton::
 	; else if (winControl="Edit4"){
 	; Coated:=
 	; GUI, ClipBar:default
-	; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
+	; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ Helper
 	; Gui, ClipBar:submit, nohide
 	; iniwrite, Coated, Settings.ini, SavedVariables, Coated
 	; }
@@ -400,7 +400,18 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	F6::SpecTab.MethodsDropdown()
 ;;\\       	      Select tests for request:
 #ifwinactive, Select tests for request:
-	; F10::sendinput, {click, 31, 102}
+	 F10::
+	 click, 31, 102
+	 sleep 700
+	 click 511, 336
+	 sleep 300
+	 Click 668, 151
+	 sleep 800
+	 WorkTab.SelectTestSample()
+	 sleep 1000
+	 mousemove 837, 655
+	 return
+
 	F6::SpecTab.Methods()
 	F7::SpecTab.MethodsDropdown()
 	mbutton::WorkTab.SelectTestSample()
@@ -433,6 +444,10 @@ F9::mouseclick, Left, 638, 70
 ;;\\               Edit request
 #ifwinactive, Edit request
 	mbutton::WorkTab.EditRequest()
+	F10::
+	winactivate, Edit request
+	click 239, 617
+	return
 ;;\\ 	           Edit sample
 #ifwinactive, Edit sample (
 F9::worktab.CustomerMenu()
@@ -561,6 +576,7 @@ F6::
 		sleep 300
 		Send, %Product%{enter}
 	return
+	F10::
 +Mbutton::
 	if Lot
 		loopingCount:=4
@@ -568,10 +584,14 @@ F6::
 		LoopingCount:=3
 		loop, %LoopingCount%
 		{
+			MouseGetPos, rnmx, rnmy
 			Breaking.Point()
 			WorkTab.registerNewSamples()
 			sleep 300
 			Breaking.Point()
+			rnmy:=RnMy+26
+			MouseMove, %Rnmx%, %rnmy%, 0
+			sleep 100
 		}
 		Breaking.Point()
 	return
@@ -592,18 +612,18 @@ F6::
 ^F9::
 	send, ^c
 	sleep 500
-		If (SampleID){
-				FileRead, PreviousSampleIDs, % PreviousSampleIDsFile
-				  {
-				NewPreviousSampleIDs:=Trim(RemoveDuplicates(PreviousSampleIDs)"`n"SampleID)
-					FileDelete, %PreviousSampleIDsFile%
+		If (SampleguID){
+				; FileRead, PreviousSampleguIDs, % PreviousSampleguIDsFile
+				  ; {
+				; NewPreviousSampleguIDs:=Trim(RemoveDuplicates(PreviousSampleguIDs)"`n"SampleguID)
+					FileDelete, %PreviousSampleguIDsFile%
 					sleep 200
-					FileAppend, %NewPreviousSampleIDs%, %PreviousSampleIDsFile%
-						return
-			}
+					FileAppend, %NewPreviousSampleguIDs%, %PreviousSampleguIDsFile%
+						; return
+			; }
 		}
-		clipboard:=sampleid
-		TT(Sampleid)
+		clipboard:=sampleguid
+		TT(Sampleguid)
 	return
 	+!F10::LMS.AddsampleLog(5)
 	!F9::
@@ -622,13 +642,15 @@ F6::
 ^Mbutton::FileRead, Clipboard, U:\VQ_Helper\ClippedExcelData.txt
 	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
-	F10::
+	; F10::
 	mbutton::
 	if winexist("Spec Table ahk_class AutoHotkeyGUI") {
 	If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
 			SpecTab.AutoInputTestDefinitionEditor()
 	else if winactive("Result Editor") || winactive("Results Definition")
 		SpecTab.AutoInputResultEditor()
+	; else if winactive("Edit request")
+
 	; else winactive("NuGenesis LMS")
 			; SpecTab.AutoInputSpecResults()
 		return
@@ -641,9 +663,12 @@ return
 
 	F9::lms.Menu()
 	F7::LMS.SearchBar(Batch,"{enter}",0)
-F6::LMS.SearchBar(Product,"{enter}",0)
+	F6::LMS.SearchBar(Product,"{enter}",0)
+	+F6::sendinput % GetAllProducts(" ")
+	+F7::sendinput % GetAllBatches(" ")
+
 		F8::LMS.SearchBar("",,"False")
-	+F6::LMSClick.EnterResults()
+	; +F6::LMSClick.EnterResults()
 
 
 		; clk(54,734,"",1,"NuGenesis LMS",2)  ;:((Delete Test))
@@ -663,9 +688,9 @@ F6::LMS.SearchBar(Product,"{enter}",0)
 	F3::Sendinput, %lot%
 	F4::Sendinput, %Coated%
 	+F1::sendinput % GetAllProducts(" ")
+	+F2::sendinput % GetAllBatches(" ")
 	+^F1::sendinput % GetAllProducts("`;")
 	+!F1::sendinput % GetAllProducts("`n")
-	+F2::sendinput % GetAllBatches(" ")
 	+^F2::sendinput % GetAllBatches("`;")
 
 
@@ -674,14 +699,26 @@ F6::LMS.SearchBar(Product,"{enter}",0)
 
 	^+F10::lms.ChangePercision(3)
 	+F10::lms.ChangePercision(2)
-	^F10::lms.ChangePercision(1)
+	^F10::
+		loop 20
+		{
+		breaking.point()
+		lms.ChangePercision(2)
+		WinWaitActive, NuGenesis LMS,,10
+		if errorlevel
+			exit
+		sleep 1300
+		breaking.point()
+		}
+		return
 
+; Enter::LMS.SaveCode()
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
 	; F7::3Right()
 	; F6::Send, %Product%
-; +F5::Sendinput, %SampleID%
-; ^F5::Sendinput, %SampleGUID%
++F5::Sendinput, %SampleGUID%
+^F5::Clipboard:=SampleGUID
 	+mbutton::lms.Menu()
 	+F9::lms.Menu()
 	F9::lms.Menu()
@@ -869,12 +906,19 @@ Exitsub(){
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	exitApp
 }
+CopyGUID(){
+	global
+	Clipboard:=SampleGUID
+}
 mmigninFolder(){
 	global
 	if !winexist("VQ_Helper ahk_exe explorer.exe")
 		run, explorer "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper"
 	else
 		winactivate, VQ_Help   er ahk_exe explorer.exe
+}
+SettingsFile(){
+		Run , Edit "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Settings.ini"
 }
 EditMethodList(){
 		Run , Edit "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Methods.ini"
@@ -1031,12 +1075,12 @@ ReadIniFiles(){
 	iniRead, Lot, Settings.ini, SavedVariables, Lot
 	iniRead, Coated, Settings.ini, SavedVariables, Coated
 	; iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
-	iniRead, SampleID, Settings.ini, SavedVariables, SampleID
+	iniRead, SampleGUID, Settings.ini, SavedVariables, SampleGUID
 	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
 	iniRead, CompileTime, Settings.ini, Config, CompileTime
 	; iniRead, Version, Settings.ini, Config, Version
 	; iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
-	; iniRead, SampleIDMode, Settings.ini, SavedVariables, SampleIDMode
+	; iniRead, SampleGUIDMode, Settings.ini, SavedVariables, SampleGUIDMode
 	; iniread, PriorCodeString, Settings.ini, SavedVariables, PriorCodeString
 	iniread, CodeString, Settings.ini, SavedVariables, CodeString
 	iniRead, Ingredient_List_Adjustment, Settings.ini, Config, Ingredient_List_Adjustment

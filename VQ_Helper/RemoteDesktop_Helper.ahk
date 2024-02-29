@@ -21,7 +21,7 @@
 AutoTrim, On
 	SetKeyDelay, -1 , 0
 	RegexSampleGUID:="i)(?P<SampleGUID>\b[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}\b)"
-	RegexSampleID:="i)(?P<SampleID>\b23[0-1][0-9]{5}|S[0-9]{8}-[0-9]{3}\b)"
+	RegexSaomething:="i)(?P<SampleGUID>\b23[0-1][0-9]{5}|S[0-9]{8}-[0-9]{3}\b)"
 RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
 QuickPaste:="20230801000000000"
 
@@ -53,47 +53,26 @@ Ralt::return
 clipChange(type){
 	global
 	rSampleGUID:=
-	rSampleID:=
+	rSampleGUID:=
 	rbatch:=
-	if SampleID
-	PreviousSampleID:=SampleID
 	if SampleGUID
 	PreviousSampleGUID:=SampleGUID
-	SampleID:=
+	if SampleGUID
+	PreviousSampleGUID:=SampleGUID
+	SampleGUID:=
 	SampleGUID:=
 	sleep 75
 	If winactive("NuGenesis LMS"){
 	clipboardParse:=Clipboard
-		Sampleid:=Trim(RegExMatch(ClipboardParse, RegexSampleID, r))? rSampleID : SampleID
+		SampleGUID:=Trim(RegExMatch(ClipboardParse, RegexSampleGUID, r))? rSampleGUID : SampleGUID
 		SampleGUID:=TRIM(RegExMatch(ClipboardParse, RegexSampleGUID, r))? rSampleGUID : SampleGUID
 		Batch:=TRIM(RegExMatch(ClipboardParse, RegexBatch, r))? rBatch : Batch
-		tooltip, %rbatch% `t %rSampleID% `t %rSampleGUID%, 600,0
+		tooltip, %rbatch% `t %rSampleGUID% `t %rSampleGUID%, 600,0
 		sleep 900
 		tooltip,
-	}
-	if (SampleID!=PreviousSampleID) && (SampleID)
-  {
-    Loop, Read, U:\VQ_Helper\PriorSampleIDs.txt
-    {
-      if SampleID:=Trim(A_LoopReadLine)
-        exit
-    }
-    FileAppend, %SampleID%`n, U:\VQ_Helper\PriorSampleIDs.txt
-    }
 	if (SampleGUID=PreviousSampleGUID) && (SampleGUID)
-  {
-    Loop, Read, U:\VQ_Helper\PriorSampleGUIDs.txt
-    {
-      if SampleGUID:=Trim(A_LoopReadLine)
-        exit
-    }
     FileAppend, %SampleGUID%`n, U:\VQ_Helper\PriorSampleGUIDs.txt
-	}
-	if !SampleID
-		SampleID:=PreviousSampleID
-	if !SampleGUID
-		SampleGUID:=PreviousSampleGUID
-	else
+    }
 	return
 }
 
@@ -113,7 +92,7 @@ clipChange(type){
 	; +Enter::click 648, 241
 F8::click 648, 241
 F9::controlclick, Button47, TIBCO Jaspersoft
-F7::PriorSampleIDsMenu(1)
+F7::PriorSampleGUIDsMenu(1)
 ^c::copytotextfile()
 
 #ifwinactive, Parameter: SAMPLEGUID
@@ -147,7 +126,7 @@ return
 
 #Ifwinactive, ahk_exe eln.exe
 	F1::sendinput, %batch%
-	F2::Sendinput, %SampleID%
+	F2::Sendinput, %SampleGUID%
 	F3::Sendinput, %SampleGUID%
 
 #IfWinactive, Dataset and Query Dialog
@@ -172,7 +151,7 @@ copyTOTextfile(){
 }
 
 #ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
-	F2::Sendinput, %SampleID%{enter}
+	F2::Sendinput, %SampleGUID%{enter}
 F3::Sendinput, %SampleGUID%{enter}
 F8::
 CoordMode, Mouse, Screen
@@ -191,7 +170,7 @@ return
 #v::Send, ^{v}
 !v::Send, ^v
 F1::Sendinput, %Batch%
-F2::Sendinput, %SampleID%
+F2::Sendinput, %SampleGUID%
 F3::Sendinput, %SampleGUID%
 +F1::
 Send, ^c
@@ -204,7 +183,7 @@ return
 +F2::
 Send, ^c
 sleep 300
-SampleID:=Clipboard
+SampleGUID:=Clipboard
 tooltip,%Clipboard%
 sleep 500
 Tooltip
@@ -222,26 +201,26 @@ return
 
 
 
-PriorSampleIDsMenu(ShowMenu:=""){
+PriorSampleGUIDsMenu(ShowMenu:=""){
 	global
-	; PreviousSampleIDs:=[]
-	try Menu, sampleIDMenu, DeleteAll
-	FileRead, PriorSampleIDs, PriorSampleIDs.txt
-	PriorSampleIDs:=Trim(StrReplace(PriorSampleIDs, "`n`n", ""))
-	Loop, parse, PriorSampleIDs, "`n"
+	; PreviousSampleGUIDs:=[]
+	try Menu, SampleGUIDMenu, DeleteAll
+	FileRead, PriorSampleGUIDs, PriorSampleGUIDs.txt
+	PriorSampleGUIDs:=Trim(StrReplace(PriorSampleGUIDs, "`n`n", ""))
+	Loop, parse, PriorSampleGUIDs, "`n"
 		{
-		Menu, sampleIDMenu, Add, %a_LoopField%, PriorSampleIDsMenubutton,
-			; PreviousSampleIDs.Push(A_loopfield)
+		Menu, SampleGUIDMenu, Add, %a_LoopField%, PriorSampleGUIDsMenubutton,
+			; PreviousSampleGUIDs.Push(A_loopfield)
 	}
-		Menu, sampleIDMenu, Add,
-		Menu, sampleIDMenu, Add, Edit List, EditListButton
+		Menu, SampleGUIDMenu, Add,
+		Menu, SampleGUIDMenu, Add, Edit List, EditListButton
 
 		if ShowMenu
-			Try Menu,sampleIDMenu,show
+			Try Menu,SampleGUIDMenu,show
 	return
 
 
-	PriorSampleIDsMenubutton:
+	PriorSampleGUIDsMenubutton:
 	winactivate, ahk_exe Jaspersoft Studio.exe
 	Clipboard:=A_ThisMenuItem
 	sleep 200
@@ -279,11 +258,11 @@ PriorSampleIDsMenu(ShowMenu:=""){
 	return
 		; sendinput % A_ThisMenuItem
 	; Clipboard:= Trim(A_ThisMenuItem)
-	try Menu, sampleIDMenu, DeleteAll
+	try Menu, SampleGUIDMenu, DeleteAll
 	return
 
 	EditListButton:
-	Run, Edit "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\PriorSampleIDs.txt"
+	Run, Edit "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\PriorSampleGUIDs.txt"
 	return
 
 

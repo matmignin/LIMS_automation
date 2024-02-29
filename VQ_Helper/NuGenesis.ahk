@@ -82,7 +82,7 @@ Class LMS {
 		try Menu,Menu, deleteAll
 		MouseGetPos, getX, getY, getWin
 		WingetTitle getTitle, A
-		If WinExist("Spec Table ahk_exe VQ_Helper.exe") && !GetKeyState("Shift","P"){
+		If WinExist("Spec Table ahk_exe VQ Helper.exe") && !GetKeyState("Shift","P"){
 			SpecTab.ShowSpecMenu()
 			return
 		}
@@ -491,16 +491,16 @@ OrientSearchbar(){
 	SaveCode(){
 		global
 		clipboard:=
-		Simpleclip:=1
-		send, ^{a}^{c}
+		; Simpleclip:=1
+		sendinput, ^{a}^{c}
 		sleep 50
 		clipwait,2
 		if errorlevel {
 			send, ^{a}^{c}
 		}
 		sleep 200
-		Sendinput, {enter}
-		simpleclip:=
+		Send, {enter}
+		; simpleclip:=
 		return
 	}
 	SearchbarPaste(Delimiter){
@@ -2063,7 +2063,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		Breaking.Point()
 		If Method contains ICP-MS 231
 		{
-			; WinActivate, Spec Table ahk_exe VQ_Helper.exe
+			; WinActivate, Spec Table ahk_exe VQ Helper.exe
 			; sleep 200
 			MouseMove, %mX%, %mY%, 0
 			return

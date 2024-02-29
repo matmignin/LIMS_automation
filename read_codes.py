@@ -18,8 +18,8 @@ if a_code == "lot":
 	pattern = re.compile(r'(?P<lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)',re.IGNORECASE)
 if a_code == "coated":
 	pattern = re.compile(r'(?:ct\#)(?P<coated>\d{3}-\d{4})',re.IGNORECASE)
-if a_code == "sampleid":
-	pattern = re.compile(r'(?P<sampleid>(s|\$)202\d{5}-\d{3}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})',re.IGNORECASE)
+if a_code == "SampleGUID":
+	pattern = re.compile(r'(?P<SampleGUID>(s|\$)202\d{5}-\d{3}|[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})',re.IGNORECASE)
 
 try:
 	with open(os.path.expanduser('/Volumes/~mmignin/VQ_Helper/Code.txt'), 'r') as f:

@@ -33,11 +33,11 @@ clipChange(){
     Return
   }
 	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
-		; clip.codesRegex()
-		Product:=TRIM(SubStr(Clipboard, 19,4))
+		; Product:=TRIM(SubStr(Clipboard, 19,4))
+		clip.codesRegex()
 		Gui ClipBar:Default
 		GuiControl,ClipBar:Text, Product, %Product%
-		clipBar.Flash()
+		; clipBar.Flash()
 		; ControlsetText, Edit1,%Product%,ClipBar  ;clip.codesRegex()
 		; SLEEP 100
 		Clipboard:=
@@ -56,7 +56,7 @@ clipChange(){
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
 		Clipboard:=
     sleep 800
-    Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
+    Run, "U:\VQ_Helper\RawFiles\COMPILE2.exe"
     exitapp
     Return
   }
@@ -111,7 +111,7 @@ clipChange(){
 						; 			; Prefix:=
 						; 					sleep 300
 						; 		; msgbox, prefix: %Prefix% `nlowerlimit: %MinLimit% `nupperlimit: %Maxlimit% `nunit: %Units%
-						; 					ControlsetText, Edit6,%ClippedRequirements%,ClipBar ahk_exe VQ_Helper
+						; 					ControlsetText, Edit6,%ClippedRequirements%,ClipBar ahk_exe VQ Helper
 						; 		; return
 						; }
   else
@@ -123,7 +123,7 @@ clipChange(){
 
 
 Clip(input=50,Wait:="0.95"){
-  global tab, Batch, Product, lot, coated, sampleid, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct, regexBatch,regexlot,regexSampleID, regexCoated
+  global tab, Batch, Product, lot, coated, sampleGUID, analytical,micro,retain,physical,CTphysical,CTretain,department, regexProduct, regexBatch,regexlot,regexSampleGUID, regexCoated
   clipboard:=
     Send, ^{c}
   sleep %input%
@@ -226,14 +226,14 @@ Gui ClipBar:Default
 }
 
 	CodesRegex(input:=""){
-		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleID, Product, Lot, Batch, Coated, sampleID, PriorSampleID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
+		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleGUID, Product, Lot, Batch, Coated, sampleGUID, PriorSampleGUID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
 		Gui ClipBar:Default
-			PreviousSampleIDsFile:="U:\VQ_Helper\PriorSampleIDs.txt"
+			PreviousSampleGUIDsFile:="U:\VQ_Helper\PriorSampleGUIDs.txt"
 			PriorCodestring:=CodeString
-			PriorSampleID:=SampleID
+			PriorSampleGUID:=SampleGUID
 		codestring:=
 			sleep 200
-			SampleID:=
+			SampleGUID:=
 			Parse:= Input ? Input : Clipboard
 
 
@@ -241,7 +241,7 @@ Gui ClipBar:Default
 			Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
 			Lot:=RegexMatch(Parse, RegexLot, r) ? rLot : Lot
 			Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
-			SampleID:=RegExMatch(Parse, RegexSampleID, r) ? rSampleID : SampleID
+			SampleGUID:=RegExMatch(Parse, RegexSampleGUID, r) ? rSampleGUID : SampleGUID
 
 			; If rProduct {
 			; 	Gui, Font, cYellow s17
@@ -300,21 +300,21 @@ Gui ClipBar:Default
 				}
 				if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
 				FileAppend, %CodeString%`n, PriorCodes.txt
-				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
+				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ Helper
 		}
-		; If (SampleID){
-		; 		ControlsetText, Edit6,%SampleID%,ClipBar ahk_exe VQ_Helper
-		; 		FileRead, oPreviousSampleIDs, % PreviousSampleIDsFile
-		; 		  {
-		; 		NewPreviousSampleIDs:=RemoveDuplicates(PreviousSampleIDs)
-		; 			FileDelete, %PreviousSampleIDsFile%
-		; 			sleep 200
-		; 			FileAppend, %NewPreviousSampleIDs%`n%SampleID%, %PreviousSampleIDsFile%
-		; 				return
-		; 	}
-		; }
+		If (SampleGUID){
+				ControlsetText, Edit7,%SampleGUID%,ClipBar ahk_exe VQ Helper
+				; FileRead, oPreviousSampleGUIDs, % PreviousSampleIGUDsFile
+				  ; {
+				; NewPreviousSampleGUIDs:=RemoveDuplicates(PreviousSampleGUIDs)
+					FileDelete, %PreviousSampleGUIDsFile%
+					sleep 200
+					FileAppend, %NewPreviousSampleGUIDs%`n%SampleGUID%, %PreviousSampleGUIDsFile%
+						; return
+			; }
+		}
 
-				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleID),800,10,100,5,180,"M")
+				TT(trim(Product " " Batch " " Lot Ct Coated "`n" SampleGUID),800,10,100,5,180,"M")
 			Return
 	}
 
@@ -461,7 +461,7 @@ GetSampleInfo(){ ;on the lms main menu
 			TotalColumns:=ParsedSpecs.maxindex()//2
 			Product:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Formulation ID") + TotalColumns],"`r`n")
 			VersionType:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Specification version type") + TotalColumns],"`r`n")
-			SampleID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Sample Guid") + TotalColumns],"`r`n")
+			SampleguID:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Sample Guid") + TotalColumns],"`r`n")
 			Description:=Trim(ParsedSpecs[HasValue(ParsedSpecs, "Description") + TotalColumns],"`r`n")
       Clipped_SpecsTop:= Product  ": " VersionType
       ControlsetText, Edit1,%Product%,ClipBar
@@ -703,15 +703,15 @@ Regex(Category:=""){
           Coated:=rCoated
 					Ct:=" Ct#"
         }
-      RegExMatch(HayStack, RegexSampleID, r)
-        If rSampleID {
-          SampleID:=rSampleID
-          ; GuiControl,ClipBar:Text, SampleID, %rSampleID%
+      RegExMatch(HayStack, RegexSampleGUID, r)
+        If rSampleGUID {
+          SampleGUID:=rSampleGUID
+          ; GuiControl,ClipBar:Text, SampleGUID, %rSampleGUID%
         }
-      RegExMatch(HayStack, RegexSampleID, r)
-        If !rSampleID {
-          SampleID:=
-          ; GuiControl,ClipBar:Text, SampleID, %rSampleID%
+      RegExMatch(HayStack, RegexSampleGUID, r)
+        If !rSampleGUID {
+          SampleGUID:=
+          ; GuiControl,ClipBar:Text, SampleGUID, %rSampleGUID%
         }
       If !rLot {
         GuiControl,ClipBar:Text, lot, %rlot%
@@ -725,7 +725,7 @@ Regex(Category:=""){
 			; if (rProduct) & (rBatch) & (rLot)
 			; 	{
 			; 		NewString:=Trim(Product " " Batch " " Lot Ct Coated)
-			; 		ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ_Helper
+			; 		ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ Helper
 			; 	}
       ; GuiControl, ClipBar:MoveDraw, Coated
       gui ClipBar:submit, nohide
@@ -930,8 +930,8 @@ else If FileName contains Batch
 		batch := A_ThisMenuItem
 		ControlsetText, Edit2,%Batch%,ClipBar
 	}
-else If FileName contains SampleID
-	SampleID := A_ThisMenuItem
+else If FileName contains SampleGUID
+	SampleGUID := A_ThisMenuItem
 
 sleep 200
 if winactive("NuGenesis LMS")
@@ -1279,7 +1279,7 @@ Class ClipBar{
 
 	Focus(Control){
 		global
-		winactivate, ClipBar ahk_exe VQ_Helper
+		winactivate, ClipBar ahk_exe VQ Helper
 		GuiControl ClipBar:Focus, %Control%
 		Sendinput, +{left}
 		return
@@ -1381,13 +1381,13 @@ Class ClipBar{
 		}
 		else
 			iniwrite, %Null%, Settings.ini, SavedVariables, GeneralBox
-		; if SampleID
-			; iniwrite, %SampleID%, Settings.ini, SavedVariables, SampleID
+		if SampleGUID
+			iniwrite, %SampleGUID%, Settings.ini, SavedVariables, SampleGUID
 		; if Iteration
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 
 		; else
-			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleID
+			; iniwrite, %Null%, Settings.ini, SavedVariables, SampleGUID
 		; if CustomerPosition
 	}
 	loadSavedVariables(){ ;;___________________________LOADING VARIABLES_________________________
