@@ -4,13 +4,17 @@ return
 ~LWin::Send {Blind}{vkFF}
 ; +F4::ExitApp
 ^+esc::ExitApp
-^esc::Reload
+^esc::
+	Critical, on
+	Thread, Priority, 1
+Reload
+return
 ^+`::
 	sleep 800
 	Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
 	exitapp
 	Return
-; enter::sendinput, {enter}
+enter::sendinput, {enter}
 
 	^+w::gosub, get_window_info
 	^+e::gosub, get_mouse_info
@@ -54,99 +58,108 @@ F8::
 
 	;;--------------------------------------------------
 	;;[[              ClipBar keybindings                    ]]
-#If MouseIsOver("Methods List ahk_exe VQ Helper.exe")
+#If MouseIsOver("Methods List ahk_exe VQ_Helper.exe")
 Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
+#If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
+		ControlGetFocus,winControl,ClipBar
+		if (winControl="Edit7"){
+			ControlsetText, Edit7,,ClipBar
+			clipboard:=Sampleguid
+		}
+		else
+send, {ctrldown}{Lbutton}{ctrlup}
+return
 
-#If MouseIsOver("ClipBar ahk_exe VQ Helper.exe")
+
 	; F7::copyLabelCopyDoc()
-	wheelup::
-	If NAdd
-	  {
-		; sleep 500
-	  return
-	  }
-		NAdd:=1
-		blockinput, On
-	ControlGetFocus,winControl,ClipBar
-	settimer, Block_Input,-500
-if (wincontrol="Edit5"){
-	Clipbar.AddIteration(100)
-	return
-	}
+; 	; wheelup::
+; 	; If NAdd
+; 	;   {
+; 	; 	; sleep 500
+; 	;   return
+; 	;   }
+; 	; 	NAdd:=1
+; 	; 	blockinput, On
+; 	; ControlGetFocus,winControl,ClipBar
+; 	; settimer, Block_Input,-500
+; if (wincontrol="Edit5"){
+; 	Clipbar.AddIteration(100)
+; 	return
+; 	}
 
-	if (winControl="Edit1"){
-		sleep 400
-	  GetAllProducts(" ", 1)
-		clipboard:=AllProducts
-	TT(AllProducts,2000,ClipBar_x2,35,2,250)
-		return
-	  }
-if (winControl="Edit2"){
-	GetAllBatches(" ", 1)
-		sleep 400
-		clipboard:=AllBatches
-	TT(AllBatches,2000,ClipBar_x2,35,2,250)
-		return
-	}
-	if (winControl="Edit3")
-	  PriorCodesMenu(1)
-	if (winControl="Edit4")
-	  PriorCodesMenu(1)
-	if (winControl="Edit6"){
-	  WholeBatchMenu()
-	    ; ControlsetText, Edit6,%AllBatches%,ClipBar
-	    ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
-	  }
-else ;(winControl="Edit3")
-	wincontrol:=
-	  sleep 500
-	  ; NAdd:=
-	return
-
-
-
-
-	wheeldown::
-	If Nsub
-	  {
-		; sleep 500
-	  Return
-	  }
-	ControlGetFocus,winControl,ClipBar
-Nsub:=1
-		settimer, Block_Input,-500
-if (wincontrol="Edit5"){
-	Clipbar.SubIteration(100)
-	return
-}
-	if (winControl="Edit1"){
-		sleep 400
-	  GetAllProducts("`r`n")
-		clipboard:=AllProducts
-	; TT(AllProducts,2000,ClipBar_x2,35,2,250)
-		return
-	  }
-if (winControl="Edit2"){
-	GetAllBatches("`r`n")
-		sleep 400
-		clipboard:=AllBatches
-	; TT(AllBatches,2000,ClipBar_x2,35,2,250)
-	return
-}
-	if (winControl="Edit3")
-	  PriorCodesMenu(1)
+; 	if (winControl="Edit1"){
+; 		sleep 400
+; 	  GetAllProducts(" ", 1)
+; 		clipboard:=AllProducts
+; 	TT(AllProducts,2000,ClipBar_x2,35,2,250)
+; 		return
+; 	  }
+; if (winControl="Edit2"){
+; 	GetAllBatches(" ", 1)
+; 		sleep 400
+; 		clipboard:=AllBatches
+; 	TT(AllBatches,2000,ClipBar_x2,35,2,250)
+; 		return
+; 	}
+; 	if (winControl="Edit3")
+; 	  PriorCodesMenu(1)
 ; 	if (winControl="Edit4")
 ; 	  PriorCodesMenu(1)
-; 	 if (winControl="Edit6"){
-; 	  MsgBox, 4, Delete file, Do you want to delete WholeBatches.txt?
-; 	  IfMsgBox, OK
-; 	      FileDelete, WholeBatches.txt
+; 	if (winControl="Edit6"){
+; 	  WholeBatchMenu()
+; 	    ; ControlsetText, Edit6,%AllBatches%,ClipBar
+; 	    ; TT(AllBatches,2000,ClipBar_x2,35,2,250)
 ; 	  }
 ; else ;(winControl="Edit3")
 ; 	wincontrol:=
 ; 	  sleep 500
-return
+; 	  ; NAdd:=
+; 	return
+
+
+
+
+; 	wheeldown::
+; 	If Nsub
+; 	  {
+; 		; sleep 500
+; 	  Return
+; 	  }
+; 	ControlGetFocus,winControl,ClipBar
+; Nsub:=1
+; 		settimer, Block_Input,-500
+; if (wincontrol="Edit5"){
+; 	Clipbar.SubIteration(100)
+; 	return
+; }
+; 	if (winControl="Edit1"){
+; 		sleep 400
+; 	  GetAllProducts("`r`n")
+; 		clipboard:=AllProducts
+; 	; TT(AllProducts,2000,ClipBar_x2,35,2,250)
+; 		return
+; 	  }
+; if (winControl="Edit2"){
+; 	GetAllBatches("`r`n")
+; 		sleep 400
+; 		clipboard:=AllBatches
+; 	; TT(AllBatches,2000,ClipBar_x2,35,2,250)
+; 	return
+; }
+; 	if (winControl="Edit3")
+; 	  PriorCodesMenu(1)
+; ; 	if (winControl="Edit4")
+; ; 	  PriorCodesMenu(1)
+; ; 	 if (winControl="Edit6"){
+; ; 	  MsgBox, 4, Delete file, Do you want to delete WholeBatches.txt?
+; ; 	  IfMsgBox, OK
+; ; 	      FileDelete, WholeBatches.txt
+; ; 	  }
+; ; else ;(winControl="Edit3")
+; ; 	wincontrol:=
+; ; 	  sleep 500
+; return
 
 
 Mbutton::
@@ -161,6 +174,10 @@ Mbutton::
 			ControlsetText, Edit3,,ClipBar
 		else if (winControl="Edit4")
 			ControlsetText, Edit4,,ClipBar
+		else if (winControl="Edit7"){
+			ControlsetText, Edit7,,ClipBar
+			clipboard:=Sampleguid
+		}
 		else
 			MenuCodeSelect()
 	return
@@ -168,7 +185,7 @@ Mbutton::
 
 #if
 
-#Ifwinactive, ClipBar ahk_exe VQ Helper.exe
+#Ifwinactive, ClipBar ahk_exe VQ_Helper.exe
 	enter::
 		GUI, ClipBar:default
 	Send, ^{a}^{c}
@@ -192,7 +209,7 @@ Mbutton::
 	; 		iniwrite, Coated, Settings.ini, SavedVariables, Coated
 	; 	}
 	; Mbutton::
-	; 		; ControlGetFocus,winControl,ClipBar ahk_exe VQ Helper
+	; 		; ControlGetFocus,winControl,ClipBar ahk_exe VQ_Helper
 	; 		; MouseGetPos, , , winid, wincontrol
 	; 		; if (winControl="Edit1") || (winControl="Edit2") || (winControl="Edit3"){
 	; 			ClipBar.Menu()
@@ -201,7 +218,7 @@ Mbutton::
 	; else if (winControl="Edit4"){
 	; Coated:=
 	; GUI, ClipBar:default
-	; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ Helper
+	; ControlsetText, Edit4,%Coated%,ClipBar ahk_exe VQ_Helper
 	; Gui, ClipBar:submit, nohide
 	; iniwrite, Coated, Settings.ini, SavedVariables, Coated
 	; }
@@ -209,6 +226,9 @@ Mbutton::
 	;;------------------------------------------------
 	;;[[   		Windows KEYBINDINGS                 ]]
 	;;------------------------------------------------
+#ifwinactive, Edit test `(Field Configuration: I`, Analytical`)
+	mbutton::MsgBox, % "yo"
+	F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
 
 #ifWinExist, Select Product ahk_exe EXCEL.EXE
 	Mbutton::
@@ -401,15 +421,16 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 ;;\\       	      Select tests for request:
 #ifwinactive, Select tests for request:
 	 F10::
-	 click, 31, 102
-	 sleep 700
-	 click 511, 336
-	 sleep 300
-	 Click 668, 151
-	 sleep 800
-	 WorkTab.SelectTestSample()
-	 sleep 1000
-	 mousemove 837, 655
+	 msgbox, Select a test
+		click, 31, 102
+		sleep 700
+		click 511, 336
+		sleep 300
+		Click 668, 151
+		sleep 800
+		WorkTab.SelectTestSample()
+		sleep 1000
+		mousemove 837, 655
 	 return
 
 	F6::SpecTab.Methods()
@@ -662,6 +683,7 @@ F6::
 return
 
 	F9::lms.Menu()
+	+F9::lms.Menu("shift")
 	F7::LMS.SearchBar(Batch,"{enter}",0)
 	F6::LMS.SearchBar(Product,"{enter}",0)
 	+F6::sendinput % GetAllProducts(" ")
@@ -677,7 +699,7 @@ return
 
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
-	<^v::LMS.Searchbarpaste(A_space)
+	+!v::LMS.Searchbarpaste(A_space)
 	Enter::LMS.SaveCode()
 
 
@@ -687,18 +709,28 @@ return
 	F2::Sendinput, %Batch%
 	F3::Sendinput, %lot%
 	F4::Sendinput, %Coated%
+	!1::Sendinput, %Product%
+	!2::Sendinput, %Batch%
+	!3::Sendinput, %lot%
+	!4::Sendinput, %Coated%
 	+F1::sendinput % GetAllProducts(" ")
 	+F2::sendinput % GetAllBatches(" ")
-	+^F1::sendinput % GetAllProducts("`;")
-	+!F1::sendinput % GetAllProducts("`n")
-	+^F2::sendinput % GetAllBatches("`;")
+	+^1::sendinput % GetAllProducts("`;")
+	+!1::sendinput % GetAllProducts("`n")
+	+^2::sendinput % GetAllBatches("`;")
 
 
 
 
 
-	^+F10::lms.ChangePercision(3)
-	+F10::lms.ChangePercision(2)
+	^+F10::
+			tt("Chagne Percision: 3")
+			lms.ChangePercision(3)
+			return
+	+F10::
+			tt("Chagne Percision: 2")
+			lms.ChangePercision(2)
+			Return
 	^F10::
 		loop 20
 		{
@@ -720,7 +752,7 @@ return
 +F5::Sendinput, %SampleGUID%
 ^F5::Clipboard:=SampleGUID
 	+mbutton::lms.Menu()
-	+F9::lms.Menu()
+	+F9::lms.Menu("Shift")
 	F9::lms.Menu()
 
 	<!left::GetAllProducts()
@@ -895,6 +927,8 @@ AddToList(){
 ;;------------------------------------------------------
 ;;[[                  MENU HANDLES                    ]]
 Reloadsub(){
+	Critical, on
+	Thread, Priority, 1
 	reload
 }
 StopTimer(){
@@ -974,7 +1008,7 @@ ShowWholeBatches:
 	run, edit WholeBatches.txt
 return
 Add15SampleLog:
-	LMS.AddsampleLog(15)
+	LMS.AddsampleLog(5)
 Return
 ShowVariables:
 	listvars
@@ -1077,6 +1111,7 @@ ReadIniFiles(){
 	; iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox
 	iniRead, SampleGUID, Settings.ini, SavedVariables, SampleGUID
 	iniRead, Iteration, Settings.ini, SavedVariables, Iteration
+	iniRead, ClipbarLocation, Settings.ini, Config, ClipbarLocation
 	iniRead, CompileTime, Settings.ini, Config, CompileTime
 	; iniRead, Version, Settings.ini, Config, Version
 	; iniRead, GeneralBox, Settings.ini, SavedVariables, GeneralBox

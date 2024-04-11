@@ -37,18 +37,16 @@ F5    :: copyLabelCopy
 !F<n> :: ChangePercision( n )
 +!F10 :: AddsampleLog x5
 !F10  :: AddDataFromClipboard
-^F5   :: GUID
 +F5   :: copyLabelCopyIng
 ^+w   :: get_window_info
 ^+e   :: get_mouse_info
-+^F1  :: GetAllProducts( ; )
-+!F1  :: GetAllProducts( n )
-+^F2  :: GetAllBatches( ; )
+^+v   :: Paste(';)
+!+v   :: Paste(A_Space)
 +F1   ::  GetAllProducts( )
 +F2   ::  GetAllBatches( )
-+^F1  ::  GetAllProducts(`;)
-+!F1  ::  GetAllProducts(`n)
-+^F2  ::  GetAllBatches(`;)
++^1  ::  GetAllProducts(`;)
++!1  ::  GetAllProducts(`n)
++^2  ::  GetAllBatches(`;)
 	)"
 
 VariableFilePath := "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\ClippedExcelData.txt"
@@ -61,6 +59,7 @@ prefix:=
 	Menu, Tray, Add, All Batches, AllBatchesMsgbox
 	Menu, Tray, add, &Final Label Copy, ShowFinalLabelCopy
 	Menu, Tray, add, &Scan Label Copy, ShowScanLabelCopy
+	Menu, Tray, add, &Global Vision, ShowGlobalVision
 	; Menu, Tray, Add, Whole Batches, ShowWholeBatches
 	; Menu, Tray, add, Show EditBox, ShowEditBox
 	; Menu, Tray, add, Add Sample Log, Add15SampleLog
@@ -76,14 +75,14 @@ prefix:=
 	; Menu, MarkerSubMenu, Add, MouseMarker, SetMouseMarker
 	; Menu, MarkerSubMenu, Add, TriggerMarker, TriggerMarker
 	Menu, Tray, Add, windowSpy, windowSpy
-	; Menu, TestSubMenu, Add, run Script, TestCode
-	Menu, Tray, add, TestCode, :TestSubMenu ;testCode
+	Menu, TestSubMenu, Add, run Script, TestCode
+	; Menu, Tray, add, TestCode, :TestSubMenu ;testCode
 	; Menu, Tray, add, Marker, :MarkerSubMenu
 	;Menu, Tray, Add, Show Variables, ShowVariables
 	;Menu, Tray, Add, ListLines, ListLines
 	Menu, Tray, Add, Settings, SettingsFile
 	Menu, Tray, Add, mmignin, mmigninFolder
-	Menu, Tray, Add, Copy GUID, CopyGUID
+	; Menu, Tray, Add, Copy GUID, CopyGUID
 	Menu, Tray, Add, Hotkeys, ShowHotkeys
 	Menu, Tray, Add, &Reload, ReloadSub
 	Menu, Tray, Add, Exitsub, Exitsub
@@ -94,7 +93,9 @@ prefix:=
 	Key:= {}
 	RegexProduct:="i)(?<=[\w\d]{3})?(?P<Product>\b[abcdefghijkl]\d{3}\b)"
 	RegexBatch:= "i)(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)"
-	RegexLot:= "i)(?P<Lot>\b\d{4}[A-Z]\d[A-Z]?|\bBulk\b|\bG\d{7}[A-Z]?\b|\bVC\d{6}[ABCDEFGH]?|\bV[A-Z]\d{5}[A-Z]\d?\b|\d{5}\[A-Z]{3}\d\b)"
+	RegexLot:= "i)(?P<Lot>\b\d{4}[A-Z]\d[A-Z]?-?[A-Z]?|\bBulk\b|\bG\d{7}[A-Z]?\b|\bVC\d{6}[ABCDEFGH]?|\bV[A-Z]\d{5}[A-Z]\d?\b|\d{5}\[A-Z]{3}\d\b)"
+
+
 	RegexCoated:= "i)(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 	regexMaxLimit:="i)(<| - |NMT )(?P<maxLimit>[0-9,.]*)\s\w*"
 	regexMaxLimit:="i)(<|NLT )?(?P<minLimit>(?<!NMT )[0-9.,]*)"
@@ -190,13 +191,15 @@ else if MouseIsOver("ClipBar"){
 		tt(Tab)
 	else if (winControl="Edit5")
 		return
-	else if (winControl="Edit6") || (winControl="Edit7"){
+	else if (winControl="Edit6") {
 		BothGeneralBoxes:=GeneralBox "`n" GeneralBox2
 		tt(BothGeneralBoxes,7000,100,2,6,220,"M")
 	}
-	; else if (winControl="Edit7"){
-		; tt(GeneralBox2,7000,100,20,7,220,"M")
-	; }
+	else if (winControl="Edit7"){
+		tt(sampleguid,7000,100,20,7,220,"M")
+		ControlsetText, Edit7,%SAMPLEGUID%,ClipBar
+
+	}
 	return
 }
 else if winactive("Register new samples"){

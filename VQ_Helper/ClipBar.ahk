@@ -56,7 +56,7 @@ clipChange(){
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
 		Clipboard:=
     sleep 800
-    Run, "U:\VQ_Helper\RawFiles\COMPILE2.exe"
+    Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
     exitapp
     Return
   }
@@ -111,7 +111,7 @@ clipChange(){
 						; 			; Prefix:=
 						; 					sleep 300
 						; 		; msgbox, prefix: %Prefix% `nlowerlimit: %MinLimit% `nupperlimit: %Maxlimit% `nunit: %Units%
-						; 					ControlsetText, Edit6,%ClippedRequirements%,ClipBar ahk_exe VQ Helper
+						; 					ControlsetText, Edit6,%ClippedRequirements%,ClipBar ahk_exe VQ_Helper
 						; 		; return
 						; }
   else
@@ -235,7 +235,7 @@ Gui ClipBar:Default
 			sleep 200
 			SampleGUID:=
 			Parse:= Input ? Input : Clipboard
-
+			rCustomerPosition:=
 
 			Product:=RegexMatch(Parse, RegexProduct,r) ? rProduct : Product
 			Batch:=RegexMatch(Parse, RegexBatch, r) ? rBatch : Batch
@@ -286,6 +286,9 @@ Gui ClipBar:Default
 				this.SetClipBar()
 				if rCustomerPosition
 					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
+				else
+					GuiControl,ClipBar:Text, Iteration, %Iteration%
+
 
 				if (Winactive("NuGenesis LMS") && InStr(Parse, "Ship To",true, 1,1) InStr(Parse, "Ship To",true, 1,1) )
 					clip.GetSampleInfo()
@@ -300,10 +303,10 @@ Gui ClipBar:Default
 				}
 				if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
 				FileAppend, %CodeString%`n, PriorCodes.txt
-				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ Helper
+				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 		}
 		If (SampleGUID){
-				ControlsetText, Edit7,%SampleGUID%,ClipBar ahk_exe VQ Helper
+				ControlsetText, Edit7,%SampleGUID%,ClipBar ahk_exe VQ_Helper
 				; FileRead, oPreviousSampleGUIDs, % PreviousSampleIGUDsFile
 				  ; {
 				; NewPreviousSampleGUIDs:=RemoveDuplicates(PreviousSampleGUIDs)
@@ -725,7 +728,7 @@ Regex(Category:=""){
 			; if (rProduct) & (rBatch) & (rLot)
 			; 	{
 			; 		NewString:=Trim(Product " " Batch " " Lot Ct Coated)
-			; 		ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ Helper
+			; 		ControlsetText, Edit6,%NewString%,ClipBar ahk_exe VQ_Helper
 			; 	}
       ; GuiControl, ClipBar:MoveDraw, Coated
       gui ClipBar:submit, nohide
@@ -1141,8 +1144,10 @@ Class ClipBar{
 		ClipBar_W=505
 		ClipBar_x:=Nugenesis_X+(Nugenesis_W/6)
 		; ClipBar_x:=1
-		ClipBar_Y:=Nugenesis_h + Nugenesis_y - 39
-		ClipBar_Y:=Nugenesis_y
+		IF (ClipbarLocation= "Bottom")
+			ClipBar_Y:=Nugenesis_h + Nugenesis_y - 39
+		else
+			ClipBar_Y:=Nugenesis_y
 		Gui ClipBar: +AlwaysOnTop -Caption +Toolwindow +owner +HwndGUIID
 		Gui ClipBar:Default
 		; Gui, ClipBar:+Delimiter`n
@@ -1279,7 +1284,7 @@ Class ClipBar{
 
 	Focus(Control){
 		global
-		winactivate, ClipBar ahk_exe VQ Helper
+		winactivate, ClipBar ahk_exe VQ_Helper
 		GuiControl ClipBar:Focus, %Control%
 		Sendinput, +{left}
 		return

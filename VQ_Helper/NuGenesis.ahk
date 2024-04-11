@@ -77,16 +77,23 @@ Loop, %FilePattern%, 1, 0
 ;;[[                  General LMS                         ]]
 Class LMS {
 
-	Menu(){
+	Menu(Altmode:=""){
 		Global
 		try Menu,Menu, deleteAll
 		MouseGetPos, getX, getY, getWin
 		WingetTitle getTitle, A
-		If WinExist("Spec Table ahk_exe VQ Helper.exe") && !GetKeyState("Shift","P"){
+		If WinExist("Spec Table ahk_exe VQ_Helper.exe") && !GetKeyState("Shift","P"){
 			SpecTab.ShowSpecMenu()
 			return
 		}
-		Menu, Menu, add, &Products from clipboard, PasteAllProducts
+		If AltMode
+			Menu, Menu, add, &Products from clipboard  (';), PasteAllProductsAlt
+				else
+			Menu, Menu, add, &Products from clipboard, PasteAllProducts
+
+		If AltMode
+		Menu, Menu, add, &Batches from clipboard (';), PasteAllBatchesAlt
+		else
 		Menu, Menu, add, &Batches from clipboard, PasteAllBatches
 		Menu, Menu, add,
 		Menu, Menu, add, &Final Label Copy`t[%Product%], ShowFinalLabelCopy
@@ -98,11 +105,11 @@ Class LMS {
 		Menu, Menu, add,
 		Menu, Menu, add, mmignin, mmigninFolder
 		Menu, Menu, add,
-		Menu, Menu, add, TestCode, :TestSubMenu
-			Menu, Menu, Add, Get Requirements,GetRequirements
+		; Menu, Menu, add, TestCode, :TestSubMenu
+			; Menu, Menu, Add, Get Requirements,GetRequirements
 		; Menu, Menu, add, Marker, :MarkerSubMenu
-		Menu, Menu, add, Window Info `t%getTitle%, get_window_info
-		Menu, Menu, add, Mouse Info `t%getX%`, %GetY%, get_Mouse_info
+
+		Menu, Menu, add, Restart, Reloadsub
 		if GetKeyState("Shift","P"){
 			Try Menu,menu,show
 			return
@@ -318,7 +325,7 @@ ChangePercision(The_Percision:=1){
 							Okay_y:=Results_H - 45
 							click, %Okay_x%, %Okay_y% ;Move mouse to Save/Okay
 							Breaking.Point()
-							WinWaitClose, Results,, 8
+							WinWaitClose, Results,, 4
 								click 342, 614
 							wingetpos, Test_X, Test_y, Test_w, Test_h, A
 							Save_x:=test_W - 170
@@ -339,11 +346,9 @@ OrientSearchbar(){
 	mouseGetPos, OSBmx, OSBmy, OSBmw
 	sleep 100
 	MouseClickDrag, Left, OSBmx, OSBmy, 269, OSBmy, 1
-	; clk2(311, 88,1,2) ; click for Specficications/Products
-	; clk2(304, 130,1,2)  ; click for My Work
 	return
 }
-	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){ ; //testing
+	SearchBar(Code:="",PostCmd:="",Overwrite:="true"){   ; //testing
 		Global
 		If Nsub
 		{
@@ -355,9 +360,7 @@ OrientSearchbar(){
 		Tab:=LMS.DetectTab()
 		GuiControl,ClipBar:Text, GeneralBox, %Tab%
 		SetTimer, Block_Input, -2000
-
-			sleep 200
-
+			sleep 100
 		ifwinactive, Select methods tests
 		{
 			clk(246,77, 2)
@@ -372,9 +375,6 @@ OrientSearchbar(){
 			if (Tab="Products") {
 				clk2(445, 90,0,2) ; click for Last Modified Specs
 				clk2(483, 90,2,2) ; click for Full Bar
-				; clk(x%Tab%Search+45 ,yProductsSearch, "Left")
-				; clk(x%Tab%Search ,yProductsSearch, "Left", 2)
-				; Send, ^{a}
 				Send, {backspace}
 				If Overwrite=true
 					Send, ^{x}
@@ -392,10 +392,6 @@ OrientSearchbar(){
 			else if (Tab="Specs") {
 				clk2(452, 91,0,2) ; click for Approved Tests and normal bar
 				clk2(483, 89,2,2) ; click for filled bar
-				; click 534, 88 ;--Templates
-				; mouseclick,, 634,91
-				; mouseclick,, %xtabslocation5%, %yProductsSearch%
-				; mouseclick,, %xtabslocation2%, %yProductsSearch%
 				Send, {backspace}
 				; Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
@@ -413,20 +409,9 @@ OrientSearchbar(){
 					return
 			}
 			else If (Tab="Requests") {
-				; clk2(304, 130,1,2)  ; click for My Work
-				; xtabsLocation:=x%Tab%Search
-				; xtabsLocation2:=x%Tab%Search-9
 								clk2(420, 129,0,1)  ;--For Pending Test Requests
 								clk2(799, 128,0,1)  ;--For Full Samples
 								clk2(445, 130,2,2)  ;--For Showing Requests
-							; click 420, 129  ;--For Pending Test Requests
-							; click 445, 130  ;--For Showing Requests
-								; click 275, 128  ;--Hamburger
-				; Click 476, 128
-				; mouseclick,, %xtabslocation%, %yWorkTabSearch%
-				; mouseclick,, 593,130  ;--for pending tests
-				; mouseclick,, %xtabslocation3%, %yWorkTabSearch%
-				; Send, {backspace}
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
@@ -442,13 +427,9 @@ OrientSearchbar(){
 					 return
 			}
 			else If (Tab="Samples") {
-				; clk2(304, 130,1,2)  ; click for My Work
-				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
 								clk2(444, 129,0,1)  ;--For Normal Samples
 								clk2(799, 128,0,1)  ;--For Full Samples
 								clk2(415, 127,2,2)  ;--For Pending Test Samples
-							; Click 472, 129  ;--Hamburger
-				; clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				If Overwrite=Add
 					Send, ^{x}
@@ -464,14 +445,8 @@ OrientSearchbar(){
 					return
 			}
 			else If (Tab="Tests" || Tab="Results") {
-				; clk2(304, 130,1,2)  ; click for My Work
-				; clk(x%Tab%Search,yWorkTabSearch,,1,,0)
 								clk2(800, 127,0,1)  ;--For Full bar
 								clk2(435, 129,2,2)  ;--For Pending Test Samples
-								; clk2(509, 127,0,1)  ;--For "O" sample search Tests
-
-							; Click 472, 129  ;--Hamburger
-				; clk(x%Tab%Search+20,yWorkTabSearch,,2)
 				Send, {ctrldown}{a}{ctrlup}
 				if PostCmd!=""
 					{
@@ -490,16 +465,16 @@ OrientSearchbar(){
 
 	SaveCode(){
 		global
-		clipboard:=
+		; clipboard:=
 		; Simpleclip:=1
-		sendinput, ^{a}^{c}
-		sleep 50
-		clipwait,2
-		if errorlevel {
-			send, ^{a}^{c}
-		}
-		sleep 200
-		Send, {enter}
+		sendinput, ^{a}^{c}{enter}
+		; sleep 50
+		; clipwait,2
+		; if errorlevel {
+			; send, ^{a}^{c}
+		; }
+		; sleep 200
+		; Sendinput, {enter}
 		; simpleclip:=
 		return
 	}
@@ -675,26 +650,19 @@ sleep 20
 		else
 			Menu,Menu, deleteAll
 	return
-	PasteAllBatches:
-		; Clk(getx,getY)
-		if GetKeyState("shift","P")
+	PasteAllBatchesAlt:
+		Clk(getx,getY)
 			sendinput % Trim(GetAllBatches("`;"))
-		else if GetKeyState("ctrl","P")		{
-			Clipboard:=Trim(GetAllBatches("`r`n"))
-			tt(Clipboard)
-			}
-		else
+			return
+	PasteAllBatches:
+		Clk(getx,getY)
 		sendinput % Trim(GetAllBatches())
 	return
-	PasteAllProducts:
-		; Clk(getX,getY)
-		if GetKeyState("shift","P")
+	PasteAllProductsAlt:
+		Clk(getx,getY)
 			sendinput % Trim(GetAllProducts("`;"))
-		else if GetKeyState("ctrl","P")		{
-			Clipboard:=Trim(GetAllProducts("`r`n"))
-			tt(Clipboard)
-		}
-			Else
+		return
+	PasteAllProducts:
 		sendinput % Trim(GetAllProducts())
 	return
 	Autofill:
@@ -2063,7 +2031,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		Breaking.Point()
 		If Method contains ICP-MS 231
 		{
-			; WinActivate, Spec Table ahk_exe VQ Helper.exe
+			; WinActivate, Spec Table ahk_exe VQ_Helper.exe
 			; sleep 200
 			MouseMove, %mX%, %mY%, 0
 			return
