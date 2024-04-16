@@ -151,16 +151,31 @@ copyTOTextfile(){
 }
 
 #ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
-	F2::Sendinput, %SampleGUID%{enter}
-F3::Sendinput, %SampleGUID%{enter}
+;	F2::Sendinput, %SampleGUID%{enter}
+;F3::Sendinput, %SampleGUID%{enter}
+F7::
+WinGetPos, WinX, WinY, WinW, WinH
+  targetWidth := A_ScreenWidth / 3  ; Calculate one third of the screen width
+        targetX := A_ScreenWidth - targetWidth  ; Calculate the X position to start the window
+        WinRestore, ahk_class XLMAIN ahk_exe EXCEL.EXE  ; Restore the window to normal state if it is maximized
+        WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, targetX, WinY, targetWidth, WinH
+				return
+F6::
+WinGetPos, WinX, WinY, WinW, WinH
+  targetWidth := A_ScreenWidth / 2  ; Calculate one third of the screen width
+        ;targetX := A_ScreenWidth - targetWidth  ; Calculate the X position to start the window
+        WinRestore, ahk_class XLMAIN ahk_exe EXCEL.EXE  ; Restore the window to normal state if it is maximized
+        WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, 0, WinY, targetWidth, WinH
+				return
 F8::
 CoordMode, Mouse, Screen
+WinGetPos, WinX, WinY, WinW, WinH
 	MouseGetPos, rmx, rmY,
 	if rmx < 400
 		rmx:= 400
 	if rmy< 600
 		rmy:=600
-	WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, 0, 0, %rMx%, %rmy%
+	WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %Winx%, %winY%, %rMx%, %rmy%
 	sleep 400
 CoordMode, Mouse, Window
 return

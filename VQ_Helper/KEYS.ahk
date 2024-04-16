@@ -628,6 +628,7 @@ F6::
 
 ;;[[_____________ Nugenesis MAIN _______________]]
 #Ifwinactive, NuGenesis LMS
+
 +^F11::LMS.OrientSearchbar()
 !F4::Return
 ^F9::
@@ -665,19 +666,27 @@ F6::
 	;^F10::LMS.AddSampleLog(15)
 	; F10::
 	mbutton::
-	if winexist("Spec Table ahk_class AutoHotkeyGUI") {
-	If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
-			SpecTab.AutoInputTestDefinitionEditor()
-	else if winactive("Result Editor") || winactive("Results Definition")
-		SpecTab.AutoInputResultEditor()
-	; else if winactive("Edit request")
+	Tab:=LMS.DetectTab()
 
-	; else winactive("NuGenesis LMS")
-			; SpecTab.AutoInputSpecResults()
-		return
+	if (Tab = "Specs"){
+		if winexist("Spec Table ahk_class AutoHotkeyGUI") {
+		If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
+				SpecTab.AutoInputTestDefinitionEditor()
+
+		; else if winactive("Result Editor") || winactive("Results Definition")
+		; 	SpecTab.AutoInputResultEditor()
+			; ; else if winactive("Edit request")
+
+			; else winactive("NuGenesis LMS")
+					; SpecTab.AutoInputSpecResults()
+				return
+			}
+				else
+			Sendinput, {ctrl down}{click}{ctrl up}
 	}
 	else
-		SpecTab.CopySpecTemplate()
+		Sendinput, {ctrl down}{click}{ctrl up}
+		; SpecTab.CopySpecTemplate()
 	; Else
 		; Send, ^{mbutton}
 return
@@ -700,21 +709,23 @@ return
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
 	+!v::LMS.Searchbarpaste(A_space)
-	Enter::LMS.SaveCode()
+	; Enter::LMS.SaveCode()
 
 
 ;;[[_________________ELN.EXE___________________________]]
 #Ifwinactive, ahk_exe eln.exe
 	F1::Sendinput, %Product%
+	+F1::sendinput % GetAllProducts(" ")
+	+^F1::sendinput % GetAllProducts("`;")
 	F2::Sendinput, %Batch%
+	+F2::sendinput % GetAllBatches(" ")
+	+^F2::sendinput % GetAllBatches("`;")
 	F3::Sendinput, %lot%
 	F4::Sendinput, %Coated%
 	!1::Sendinput, %Product%
 	!2::Sendinput, %Batch%
 	!3::Sendinput, %lot%
 	!4::Sendinput, %Coated%
-	+F1::sendinput % GetAllProducts(" ")
-	+F2::sendinput % GetAllBatches(" ")
 	+^1::sendinput % GetAllProducts("`;")
 	+!1::sendinput % GetAllProducts("`n")
 	+^2::sendinput % GetAllBatches("`;")
