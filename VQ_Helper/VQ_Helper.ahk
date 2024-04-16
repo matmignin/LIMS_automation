@@ -66,6 +66,7 @@ prefix:=
 	;Menu, Tray, add, Delete Prior Codes, DeletePriorCodes
 	; Menu, Tray, add, Delete Whole Batches, DeleteWholeBatches
 	Menu, Tray, Add,
+	Menu, Tray, Add, Save List via Clipboard, SaveClipboardToList
 	Menu, Tray, Add, Get Requirements, GetRequirements
 	Menu, TestSubMenu, Add, run Script, TestCode
 	Menu, TestSubMenu, Add, Test1, TestCode1
@@ -121,8 +122,13 @@ GUI, ClipBar:default
 
 	return
 
+SaveClipboardToList:
 
-
+		if instr(Clipboard, "111Skin Limited",true,1,1)
+	 		WorkTab.SaveCustomerList()
+		else if instr(Clipboard, "5-HTP",true,1,1)
+			ProductTab.SaveIngredientList()
+return
 
 ;;----------------------File Check-------------------------
 FileCheck:
@@ -175,29 +181,38 @@ else if MouseIsOver("ClipBar"){
 	mousegetpos,MouseClipbarx, MouseClipbarY
 	; CoordMode, mouse, Window
 	if (winControl="Edit1"){
-		GetAllProducts(" ")
-		TT(AllProducts,4000,ClipBar_x1,35,2,250)
-		sleep 1000
+		try menu, AllProductsMenu, DeleteAll
+		loop, parse, AllProducts, " "
+			Menu, AllProductsMenu, Add, %a_LoopField%, allproductsmenubutton
+		try Menu,AllProductsMenu,show
 	}
 	else if (winControl="Edit2"){
-		GetAllBatches(" ")
-		TT(AllBatches,4000,ClipBar_x2,35,2,250)
-		sleep 1000
+		try menu, AllBatchesMenu, DeleteAll
+		loop, parse, AllBatches, " "
+			Menu, AllBatchesMenu, Add, %a_LoopField%, allbatchesmenubutton
+		try Menu,AllBatchesMenu,show
+		; GetAllBatches(" ")
+		; sleep 1000
 	}
 
 	else if (winControl="Edit3")
+		GetAllWholeBatches()
+	else if (winControl="Edit4"){
+		tt(sampleguid,7000,100,20,7,220,"M")
+		Clipboard:=SAMPLEGUID
 		return
-	else if (winControl="Edit4")
-		tt(Tab)
+	}
 	else if (winControl="Edit5")
 		return
 	else if (winControl="Edit6") {
-		BothGeneralBoxes:=GeneralBox "`n" GeneralBox2
-		tt(BothGeneralBoxes,7000,100,2,6,220,"M")
+		TT(AllProducts,4000,ClipBar_x1,35,2,250)
+		; BothGeneralBoxes:= "`n" GeneralBox2
+		; tt(BothGeneralBoxes,7000,100,2,6,220,"M")
 	}
 	else if (winControl="Edit7"){
-		tt(sampleguid,7000,100,20,7,220,"M")
-		ControlsetText, Edit7,%SAMPLEGUID%,ClipBar
+		TT(AllBatches,4000,ClipBar_x2,35,2,250)
+		; tt(sampleguid,7000,100,20,7,220,"M")
+		; ControlsetText, Edit7,%SAMPLEGUID%,ClipBar
 
 	}
 	return

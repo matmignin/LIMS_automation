@@ -9,8 +9,9 @@ clipChange(){
     return
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
+		clip.codesRegex()
 		clipBar.Flash()
-
+		return
   }
   else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
@@ -61,23 +62,23 @@ clipChange(){
     Return
   }
 
-  else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
-		NewIngredientsString:="[Ingredients]`r`n" Clipboard
-		filedelete, Ingredients.ini
-		fileappend, %NewIngredientsString%, Ingredients.ini
-    sleep 800
-    Return
-  }
-							else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
-								if instr(Clipboard, "111Skin Limited",true,1,1)
-									WorkTab.SaveCustomerList()
-								else if instr(Clipboard, "5-HTP",true,1,1)
-									ProductTab.SaveIngredientList()
-								else
-									clip.codesRegex()
-							  ; sleep 800
-							  Return
-							}
+  ; else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "5-HTP=0`r`n5-MTHF=1`r`n",true, 1,1)){
+	; 	NewIngredientsString:="[Ingredients]`r`n" Clipboard
+	; 	filedelete, Ingredients.ini
+	; 	fileappend, %NewIngredientsString%, Ingredients.ini
+  ;   sleep 400
+  ;   Return
+  ; }
+	; else if (Winactive("NuGenesis LMS") && InStr(Clipboard, "Value",true, 1,1)){
+	; 	if instr(Clipboard, "111Skin Limited",true,1,1)
+	; 		WorkTab.SaveCustomerList()
+	; 	else if instr(Clipboard, "5-HTP",true,1,1)
+	; 		ProductTab.SaveIngredientList()
+	; 	else
+	; 		clip.codesRegex()
+	; 	; sleep 800
+	; 	Return
+	; }
   ; else if Winactive("Test Definition Editior"){
   ;   DESCRIPTION:=Trim(Clipboard,"`r`n")
   ;   ; TT(Description,2000)
@@ -86,11 +87,9 @@ clipChange(){
     ; iniwrite, %Description%, Settings.ini, CopiedSpecs, Description
   else if Winactive("Results Definition") || Winactive("Results ahk_exe eln.exe") {
     clip.ParseSpecsTable(1)
-		return
 	}
   else if Winactive("Composition"){
     clip.ParseIngredientsTable()
-		return
 	}
 						; 	ELSE if (RegexMatch(Clipboard, RegexRequirements, subpat)){  ;THis clips requirments
 						; 		; if (RegexMatch(Parse, RegexRequirements, r)){
@@ -115,7 +114,10 @@ clipChange(){
 						; 		; return
 						; }
   else
+
     clip.codesRegex()
+		AllProducts:=GetAllProducts(" ")
+		AllBatches:=GetAllBatches(" ")
     sleep 50
 		return
 	}
@@ -210,7 +212,7 @@ Gui ClipBar:Default
 ; else
 ; {
 ; 			Product:=RegexMatch(Input, RegexProduct,r) ? rProduct : Product
-; 			Batch:=RegexMatch(Input, RegexBatch, r) ? rBatch : Batch
+; 			Batch:= RegexMatch(Input, RegexBatch, r) ? rBatch : Batch
 ; 			Lot:=RegexMatch(Input, RegexLot, r) ? rLot : Lot
 ; 			Coated:=RegExMatch(Input, RegexCoated, r) ? rCoated : Coated
 
@@ -226,12 +228,15 @@ Gui ClipBar:Default
 }
 
 	CodesRegex(input:=""){
-		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleGUID, Product, Lot, Batch, Coated, sampleGUID, PriorSampleGUID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch
+		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleGUID, Product, Lot, Batch, Coated, sampleGUID, PriorSampleGUID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch,AllBatches, AllProducts
 		Gui ClipBar:Default
 			PreviousSampleGUIDsFile:="U:\VQ_Helper\PriorSampleGUIDs.txt"
 			PriorCodestring:=CodeString
 			PriorSampleGUID:=SampleGUID
 		codestring:=
+			; AllProducts:=
+			coated:=
+			; AllBatches:=
 			sleep 200
 			SampleGUID:=
 			Parse:= Input ? Input : Clipboard
@@ -269,6 +274,7 @@ Gui ClipBar:Default
 			; Gui, Font, cBlack s8
 			; GuiControl, Font, Edit3
 
+				Ct:=Coated ? " ct#" : ""
 				; Coated:=RegExMatch(Parse, RegexCoated, r) ? rCoated : Coated
 				if (Batch!=PriorBatch) && (!rlot && !rCoated){
 					PriorBatch:=Batch
@@ -282,7 +288,6 @@ Gui ClipBar:Default
 
 			}
 
-				Ct:=Coated ? " ct#" : ""
 				this.SetClipBar()
 				if rCustomerPosition
 					GuiControl,ClipBar:Text, Iteration, %CustomerPosition%
@@ -292,27 +297,31 @@ Gui ClipBar:Default
 
 				if (Winactive("NuGenesis LMS") && InStr(Parse, "Ship To",true, 1,1) InStr(Parse, "Ship To",true, 1,1) )
 					clip.GetSampleInfo()
-				; GuiControl,ClipBar:Text, Iteration, %Iteration%
+				GuiControl,ClipBar:Text, Iteration, %Iteration%
 					GUI, ClipBar:submit,NoHide
-				codeString:=trim(Product " " Batch " " Lot Ct Coated)
-				if (PriorCodestring!=Codestring){
+				if Coated
+					codeString:=trim(Product " " Batch " " Lot " ct#" Coated)
+				else
+					codeString:=trim(Product " " Batch " " Lot)
+				; if (PriorCodestring!=Codestring)
+					FileAppend, %CodeString%`n, WholeBatches.txt
 
-					FileDelete, %CodeFile%
-					sleep 200
-					FileAppend, %CodeString%, %CodeFile%
-				}
-				if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
-				FileAppend, %CodeString%`n, PriorCodes.txt
-				ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
-		}
+				; 	FileDelete, %CodeFile%
+				; 	sleep 200
+				; 	FileAppend, %CodeString%, %CodeFile%
+				; }
+				; if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
+				; ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
+				; }
 		If (SampleGUID){
-				ControlsetText, Edit7,%SampleGUID%,ClipBar ahk_exe VQ_Helper
+			tt(SAMPLEGUID,4000,100,100,4)
+				; ControlsetText, Edit7,%SampleGUID%,ClipBar ahk_exe VQ_Helper
 				; FileRead, oPreviousSampleGUIDs, % PreviousSampleIGUDsFile
 				  ; {
 				; NewPreviousSampleGUIDs:=RemoveDuplicates(PreviousSampleGUIDs)
-					FileDelete, %PreviousSampleGUIDsFile%
-					sleep 200
-					FileAppend, %NewPreviousSampleGUIDs%`n%SampleGUID%, %PreviousSampleGUIDsFile%
+					; FileDelete, %PreviousSampleGUIDsFile%
+					; sleep 200
+					; FileAppend, %NewPreviousSampleGUIDs%`n%SampleGUID%, %PreviousSampleGUIDsFile%
 						; return
 			; }
 		}
@@ -422,7 +431,7 @@ GetSampleInfo(){ ;on the lms main menu
 			MinLimit:=SubStr(MinLimit_Units,1, InStr(MinLimit_Units," "))
 			MaxLimit:=SubStr(MaxLimit_Units,1, InStr(MaxLimit_Units," "))
       sleep 200
-      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " `n Percision: " Percision "`n Units: " Units "`n Allow Prefix/limits: " AllowPrefixes "/" UseLimits
+      Clipped_Specs:= Clipped_ResultID "`t" DESCRIPTION "`n MinLimit: " MinLimit "`n MaxLimit: " MaxLimit "`n Requirement: " Clipped_Requirement " `n Percision: " Percision "`n Units: " Units "`n Allow Prefix/limits: " AllowPrefixes "/" UseLimits "`n UseLimitsBox: " UseLimitsBox
 			; if !UseLimits
 			; 	UsedLimits:=
 			; If !AllowPrefixes
@@ -913,6 +922,18 @@ MenuCodeSelect(FileName:="AllProducts"){
 ; 	clip.codesRegex(A_ThisMenuItem)
 return
 
+
+AllproductsMenuButton:
+		product := A_ThisMenuItem
+		ControlsetText, Edit1,%product%,ClipBar
+		return
+
+AllBatchesMenuButton:
+		batch := A_ThisMenuItem
+		ControlsetText, Edit2,%Batch%,ClipBar
+		return
+
+
 CodeMenubutton:
 If A_ThisMenuItem contains All
 {
@@ -996,7 +1017,9 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 	regProducts:=[]
 	pos=0
 	Haystack:=Clipboard
-	sleep 100
+	If Getkeystate("ROption","P")
+		Delimiter:="`;"
+	sleep 50
 	while pos := RegexMatch(Haystack, RegexProduct, aProduct, pos+1) ; {
 		regProducts.insert(aProduct)
 	; }
@@ -1018,8 +1041,11 @@ GetAllProducts(Delimiter:=" ",msg:=""){
 	AllProducts:= Trim(StrReplace(AllProducts, Delimiter Delimiter, Delimiter),Delimiter)
 	FileDelete, AllProducts.txt
 	sleep 200
-	if (StrLen(AllProducts) < 5)
+	if (StrLen(AllProducts) < 5){
+		ControlsetText, Edit6,,ClipBar
+		Allproducts:=
 		return
+	}
 	FileAppend, %AllProducts%, AllProducts.txt
 	ControlsetText, Edit6,%AllProducts%,ClipBar
 	if (msg && AllProducts!="")
@@ -1033,11 +1059,11 @@ GetAllBatches(Delimiter:=" ",msg:=""){
 	regBatches:=[]
 	pos=0
 	Haystack:=Clipboard
-	If Getkeystate("Lshift","P")
+	If Getkeystate("LControl","P")
 		Delimiter:="`;"
-	else If Getkeystate("ROption","P")
+	If Getkeystate("ROption","P")
 		Delimiter:="`;"
-	sleep 100
+	sleep 50
 	while pos := RegexMatch(Haystack, RegexBatch, aBatch, pos+1) ; {
 		regBatches.insert(aBatch)
 	; }
@@ -1057,12 +1083,15 @@ GetAllBatches(Delimiter:=" ",msg:=""){
 	}
 	AllBatches:=Listarray(AllBatches,Delimiter)
 	AllBatches:= Trim(StrReplace(AllBatches, Delimiter Delimiter, Delimiter),Delimiter)
-	if (StrLen(AllBatches) < 10)
-		return
 	FileDelete, AllBatches.txt
-	sleep 400
+	sleep 200
+	if (StrLen(AllBatches) < 10){
+		ControlsetText, Edit7,,ClipBar
+		AllBatches:=
+		return
+	}
 		FileAppend, %AllBatches%, AllBatches.txt
-		ControlsetText, Edit6,%AllBatches%,ClipBar
+		ControlsetText, Edit7,%AllBatches%,ClipBar
 	if (msg && trim(AllBatches)!="")
 		clip.editbox(AllBatches)
 	Else
@@ -1082,14 +1111,15 @@ WholeBatchesSave(Input,Overwrite:=""){
 		return
 }
 
+
 GetAllWholeBatches(Delimiter:="`n",msg:=""){
 	global
 	aWholeBatches:=[]
 	; pos=0
-	; Haystack:=Clipboard
-	; FileRead, WholeBatches, WholeBatches.txt
+	Haystack:=Clipboard
+	FileRead, WholeBatches, WholeBatches.txt
 	sleep 100
-	; WholeBatchesArray:=[]
+	WholeBatchesArray:=[]
 	loop, parse, WholeBatches, "`r`n"
 		aWholeBatches.insert(a_LoopField)
 
@@ -1120,7 +1150,6 @@ GetAllWholeBatches(Delimiter:="`n",msg:=""){
 	Else
 			Return AllWholeBatches
 }
-
 
 
 
@@ -1257,6 +1286,7 @@ Class ClipBar{
 		Menu, ClipbarMenu, add, &mfg folder, Showmfg
 		Menu, ClipbarMenu, add, &GLOBAL VISION folder, ShowGlobalVision
 
+		Menu, ClipBarMenu, add, Update List via Clipboard, SaveClipboardToList
 		Menu, ClipBarMenu, add, Add Data From Clipboard, #+!F10
 		Menu, ClipBarMenu, Add, Stop Timer, StopTimer
 		Menu, ClipbarMenu, add, Add Sample Log, Add15SampleLog

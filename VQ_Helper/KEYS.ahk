@@ -62,14 +62,15 @@ F8::
 Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
-		ControlGetFocus,winControl,ClipBar
-		if (winControl="Edit7"){
-			ControlsetText, Edit7,,ClipBar
-			clipboard:=Sampleguid
-		}
-		else
-send, {ctrldown}{Lbutton}{ctrlup}
-return
+; ; Mbutton::
+; 		ControlGetFocus,winControl,ClipBar
+; 		if (winControl="Edit7"){
+; 			ControlsetText, Edit7,,ClipBar
+; 			clipboard:=Sampleguid
+; 		}
+; 		else
+; send, {ctrldown}{Lbutton}{ctrlup}
+; return
 
 
 	; F7::copyLabelCopyDoc()
@@ -531,6 +532,7 @@ return
 	F9::lms.menu()
 	Mbutton::SpecTab.AutoInputResultEditor()
 	+mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
+F6::spectab.toggleUseLimitsFromTheTest()
 ;;\\ 	              Result Editor
 #ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
@@ -545,7 +547,8 @@ wheelDown::
 return
 	`;::clk(405, 534,,2)
 	+`;::sendraw, :
-+F6::spectab.toggleUseLimitsFromTheTest()
+F6::spectab.toggleUseLimitsFromTheTest()
+return
 
 ;;\\              Test Definition Editor
 #Ifwinactive,Test Definition Editor
@@ -665,9 +668,8 @@ F6::
 	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
 	; F10::
-	mbutton::
+mbutton::
 	Tab:=LMS.DetectTab()
-
 	if (Tab = "Specs"){
 		if winexist("Spec Table ahk_class AutoHotkeyGUI") {
 		If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
@@ -693,10 +695,30 @@ return
 
 	F9::lms.Menu()
 	+F9::lms.Menu("shift")
-	F7::LMS.SearchBar(Batch,"{enter}",0)
-	F6::LMS.SearchBar(Product,"{enter}",0)
-	+F6::sendinput % GetAllProducts(" ")
-	+F7::sendinput % GetAllBatches(" ")
+	F7::
+	if (AllBatches)
+		Batch:=AllBatches
+		LMS.SearchBar(Batch,"{enter}",0)
+		return
+	F6::
+	if (AllProducts)
+		Product:=AllProducts
+		LMS.SearchBar(Product,"{enter}",0)
+		return
+
+	+F7::
+		Batch:=GetAllBatches(" ")
+		sleep 200
+		LMS.SearchBar(Batch,"{enter}",0)
+		return
+	+F6::
+		Product:=GetAllProducts(" ")
+		sleep 200
+		LMS.SearchBar(Product,"{enter}",0)
+		return
+
+	; +F6::sendinput % GetAllProducts(" ")
+	; +F7::sendinput % GetAllBatches(" ")
 
 		F8::LMS.SearchBar("",,"False")
 	; +F6::LMSClick.EnterResults()
@@ -758,7 +780,6 @@ return
 ; Enter::LMS.SaveCode()
 	enter::LMSclick.OK()
 	esc::LMSclick.esc()
-	; F7::3Right()
 	; F6::Send, %Product%
 +F5::Sendinput, %SampleGUID%
 ^F5::Clipboard:=SampleGUID
@@ -874,42 +895,7 @@ return
 
 
 
-3Right(){
-	global
-	; Critical
-	if keep_running = y
-	{
-		keep_running = n ;signal other thread to stop
-		return
-	}
-	keep_running = y
-	If winactive("NuGenesis LMS")
-		LMS.SearchBar(Batch,"{enter}")
-	; else If winactive("Composition")
-	; 	Send, {enter}
-	else If winactive("Test Definition Editor")
-		clk(330, 619) ;click save
-	else If winactive("Results Definition"){
-		Send, {enter}
-		sleep 200
-		winactivate, "Test Definition Editor"
-		clk(330, 619)
-	}
-	else if winactive("Register new samples")
-		clk(502, 354)
-	else if winactive("Select samples for test:") ; selecting the physical or micro
-		send % Clk(504, 324) "{click, 849, 661}" ; add test.
-	else if winactive("Edit request (Field Configuration:")
-		send, {click 332, 617} ;click save
-	else if winactive("Select tests for request: R"){
-		send, {click 504, 338}{click 846, 659} ; add test.
-		sleep 300
-	}
-	else
-		Sendinput, %Batch%
-	keep_running :=
-	return
-}
+
 
 
 AddToList(){

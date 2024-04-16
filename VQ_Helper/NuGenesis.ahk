@@ -358,7 +358,7 @@ OrientSearchbar(){
 		Nsub:=1
 		; #maxthreadsperhotkey, 1
 		Tab:=LMS.DetectTab()
-		GuiControl,ClipBar:Text, GeneralBox, %Tab%
+		; GuiControl,ClipBar:Text, GeneralBox, %Tab%
 		SetTimer, Block_Input, -2000
 			sleep 100
 		ifwinactive, Select methods tests
@@ -405,7 +405,6 @@ OrientSearchbar(){
 					sleep 300
 					send % PostCmd
 				}
-				sleep 500
 					return
 			}
 			else If (Tab="Requests") {
@@ -423,7 +422,6 @@ OrientSearchbar(){
 					sleep 300
 					send % PostCmd
 				}
-				sleep 500
 					 return
 			}
 			else If (Tab="Samples") {
@@ -441,7 +439,7 @@ OrientSearchbar(){
 					sleep 300
 					send % PostCmd
 				}
-				sleep 500
+
 					return
 			}
 			else If (Tab="Tests" || Tab="Results") {
@@ -453,7 +451,6 @@ OrientSearchbar(){
 					sleep 300
 					send % PostCmd
 				}
-				sleep 500
 					return
 			}
 			else
@@ -740,7 +737,7 @@ Class ProductTab {
 
 
 	/*
-	[2] Product
+[2] Product
 	[3] ProductName
 	[4] Customer
 	[5] CustomerPosition
@@ -754,7 +751,7 @@ Class ProductTab {
 		Haystack:= Input ? Input : Clipboard
 		; loop, parse, clipboard, "`n"
 		; {
-		SheetInfo:=[]
+SheetInfo:=[]
 		Coated:=
 		Lot:=
 		SheetInfo:=StrSplit(HayStack,"|")
@@ -798,9 +795,9 @@ Class ProductTab {
 		; }
 		if CustomerPosition {
 			Iteration:=StrReplace(strReplace(CustomerPosition,"[[",""),"]]","")
-			ControlsetText, Edit5,%Iteration%,ClipBar
+			ControlsetText, Edi5,%Iteration%,ClipBar
 			; Clipbar.FlashIteration()
-			IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
+			; IniWrite, %Iteration%, Settings.ini, SavedVariables, Iteration
 		}
 
 
@@ -1752,7 +1749,7 @@ simpleclip:=
 			send, {tab 1}^a^c
 			ClipWait, 1
 			SelectedTestName:=strreplace(Clipboard, " UPLC")
-			ControlsetText, Edit6,%SelectedTestName%,ClipBar
+			; ControlsetText, Edit6,%SelectedTestName%,ClipBar
 			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
 			SpecTab.GetRowText(MatchingRow)
 			if !MatchingRow
@@ -1995,34 +1992,34 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		sleep 200
 		if !winexist("Result Editor"){
 			Sendinput,{click 80, 66} ;click edit
+		Breaking.Point()
 			winwaitactive, Result Editor,,4
 			if Clipped_Requirement
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,Clipped_Requirement)
 			else
 				SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			return
+		Breaking.Point()
 		}
 		; IF ((Max_limit = "") && (Min_limit = "")){
 		; 	TT("No Limits stored")
 		; 	return
+		Breaking.Point()
 		; }
 ; else
 		Sendinput, ^a%Min_Limit%{tab}^a%Max_Limit%{tab 5}^a ;normal
 		if (Max_limit = "")&&(CreateRequirements=1){
 			Sendinput, NLT %Min_Limit% %The_Units%
-			return
+			; return
 		}
 		else if (Min_limit = "<")&&(CreateRequirements=1){
 			Sendinput, %min_limit%%Max_Limit% %The_Units%
-			return
 		}
 		else if (Min_limit = "")&&(CreateRequirements=1){
 			Sendinput, NMT %Max_Limit% %The_Units%
-			return
 		}
 		Else If (CreateRequirements!=1){
 			Sendinput, %CreateRequirements%
-			return
 		}
 		else
 			Sendinput, %Min_Limit% - %Max_Limit% %The_Units%
@@ -2046,7 +2043,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		; msgbox, %Results_w%  %Results_h%
 		if ContinueToRun
 			click
-		WinWaitClose, Results,, 8
+		WinWaitClose, Results,, 4
 		sleep 400
 		; winwaitactive, Test Definition Editor,, 7
 		if ContinueToRun
@@ -2059,7 +2056,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		mousemove, %Save_x%, %Save_y% ;Move mouse to Save/Okay
 		sleep 300
 		if ContinueToRun
-			winwaitactive, NuGenesis LMS,,10
+			winwaitactive, NuGenesis LMS,,15
 		sleep 300
 		return
 	}
@@ -2117,20 +2114,19 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 	}
 	toggleUseLimitsFromTheTest(){
 		global
-		ifwinnotactive, Results Definition
-			winactivate, Results Definition
-		else
+		ifwinnotactive, Results
+			winactivate, Results
 		{
 			sendinput, {click 85, 69} ;click edit
 		sleep 400
-			; winwaitactive, Result Editor,,3
-			; if errorlevel
-				; sendinput, {click 85, 69} ;click edit
+			winwaitactive, Result Editor,,3
+			if errorlevel
+				sendinput, {click 85, 69} ;click edit
 		}
 	winactivate, Result Editor
 		Send, {Click 511, 72}{Click 38, 409}{click 373, 657} ;Toggle Sse limits from test
 		sleep 400
-		lmsclick.OK() ;click okay
+		; lmsclick.OK() ;click okay
 	return
 	}
 
@@ -3002,7 +2998,7 @@ Class WorkTab {
 			; customerPosition-=1
 			Iteration:=CustomerPosition
 			GuiControl,ClipBar:Text, Iteration, %Iteration%
-			ControlsetText, Edit6,%inputVar%,ClipBar
+			; ControlsetText, Edit6,%inputVar%,ClipBar
 			; Clipbar.FlashIteration()
 			GUI, ClipBar:submit,NoHide
 			iniwrite, %Iteration%, Settings.ini, SavedVariables, Iteration
