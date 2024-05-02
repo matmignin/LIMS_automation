@@ -286,108 +286,10 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	+Enter::Sendinput, {enter}
 
 
-#ifwinactive, Composition ;;    Composition
-	^v::
-		Clk(56, 66) ;click add
-		winwait, Edit Ingredient
-		gosub, Paste_Clipped_Ingredient
-	return
-	mbutton::ProductTab.Table()
 
-#Ifwinactive,Edit Ingredient
-	Mbutton::
-	Paste_Clipped_Ingredient:
-		mouseclick, left, 244, 133,1,0
-		sendinput, {tab 4}^{a}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim% ;click potencty box
-		if (clipped_IngredientGroup)
-			Sendinput, {Tab}%clipped_IngredientGroup%	;ingredientgroup
-		mousemove, 280, 558, 0
-		Tooltip
-	return
-	F9::ProductTab.IngredientsMenu()
-	; mbutton::productTab.AddNewFormulation()
-#Ifwinactive, Edit Ingredient
-	:*:1s`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) scoop (%ShapeAndSize% g){left 2}
-	return
-	:*:2s`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of two (2) scoops (%ShapeAndSize% g){left 2}
-	return
-	:*:3s`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of three (3) scoops (%ShapeAndSize% g){left 2}
-	return
-	:*:1p`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) pouch (%ShapeAndSize% g){left 2}
-	return
-	:*:1j`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) jar (%ShapeAndSize% g){left 2}
-	return
-	:*:1sp`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) stick packet (%ShapeAndSize% g){left 2}
-	return
-	:*:1ps`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) packet or scoop (%ShapeAndSize% g){left 2}
-	return
-	:*:2sp`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of two (2) stick packet (%ShapeAndSize% g){left 2}
-	return
-	:*:3sp`;::
-		sendinput, ^{a}* Heavy Metals results are based on a daily dose of three (3) stick packet (%ShapeAndSize% g){left 2}
-	return
+
 #Ifwinactive, Edit Formulation
 
-	:*:00e`;::00 elongated capsule / 0.995`" x 0.336`"
-	:*:00`;::00 capsule / 0.917`" x 0.336`"
-	:*:3`;::3 capsule / 0.626`" x 0.229`"
-	:*:2`;::2 capsule / 0.709`" x 0.250`"
-	:*:1`;::1 capsule / 0.765`" x 0.272`"
-	:*:0`;::0 capsule / 0.854`" x 0.300`"
-	:*:USP`;::Meets USP Requirements
-	:*:7/16`;::`Round / 0.4375`"
-	:*:5.5o`;::`Oblong / 0.750`" x 0.313`"
-	:*:5.5ov`;::`Oval / 0.625`" x 0.344`"
-	:*:5o`;::Oblong / 0.750`" x 0.250`"
-	:*R:1c;::Each (1) capsule contains
-	:*R:2c`;::Each two (2) capsules contains
-	:*R:3c`;::Each three (3) capsules contains
-	:*R:4c`;::Each four (4) capsules contains
-	:*R:5c`;::Each five (5) capsules contains
-	:*R:6c`;::Each six (6) capsules contains
-	:*R:7c`;::Each seven (7) capsules contains
-	:*R:1t`;::Each (1) tablet contains
-	:*R:2t`;::Each two (2) tablets contains
-	:*R:3t`;::Each three (3) tablets contains
-	:*R:4t`;::Each four (4) tablets contains
-	:*R:5t`;::Each five (5) tablets contains
-	:*R:6t`;::Each six (6) tablets contains
-	:*R:7t`;::Each seven (7) tablets contains
-	:*:1s`;::
-		sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:2s`;::
-		sendinput, `Each two (2) scoops (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:3s`;::
-		sendinput, `Each three (3) scoops (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:1p`;::
-		sendinput, `Each (1) pouch (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:1j`;::
-		sendinput, `Each (1) jar (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:1sp`;::
-		sendinput, `Each (1) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:1ps`;::
-		sendinput, `Each (1) packet or scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:2sp`;::
-		sendinput, `Each two (2) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
-	:*:3sp`;::
-		sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
-	return
 
 #IFwinexist, Release: Rotational Testing Schedule ;
 	mbutton::
@@ -402,7 +304,7 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 #ifwinexist, Sign :
 	mbutton::LMSClick.password()
 
-;;\\ 	              Select methods tests
+;;\\ 	             Select methods tests
 #ifwinactive, Select methods tests
 	+enter::clk2(854, 658) ;select okay
 	#enter::clk2(854, 658) ;select okay
@@ -412,14 +314,14 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	F9::
 	F8::
 	mbutton::Spectab.MethodsDropdown()
-;;\\ 		      Select samples for test
+;;\\ 		     Select samples for test
 #Ifwinactive, Select samples for test:
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
 	F8::Clk(853, 657) ;click okay
 	F9::send % Clk(250, 70) "{up}" ; click okay.
 	F7::SpecTab.Methods()
 	F6::SpecTab.MethodsDropdown()
-;;\\       	      Select tests for request:
+;;\\       	     Select tests for request:
 #ifwinactive, Select tests for request:
 	 F10::
 	 msgbox, Select a test
@@ -438,9 +340,11 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	F7::SpecTab.MethodsDropdown()
 	mbutton::WorkTab.SelectTestSample()
 F9::mouseclick, Left, 638, 70
-;;\\ 	              Select Product
+;;\\ 	             Select Product
 #ifwinactive, Select Product ahk_exe eln.exe
 	mbutton::send % clk(107, 66) Product "{enter}{enter}"
+
+
 
 
 ;;\\ 	           Edit Product
@@ -448,7 +352,8 @@ F9::mouseclick, Left, 638, 70
 	mbutton::ProductTab.AddNewProduct()
 	Enter::clk2(285, 574, 1)
 	+Enter::sendinput, {enter}
-;;\\ 	           Edit Formulation
+
+;;\\ 	                Edit Formulation
 #Ifwinactive, Edit Formulation
 	mbutton::ProductTab.AddNewFormulation()
 	wheeldown::
@@ -463,14 +368,122 @@ F9::mouseclick, Left, 638, 70
 			winwaitclose,
 			MouseMoved:=
 			return
-;;\\               Edit request
+
+		:*R:00e`;::#00 elongated capsule / 0.995" x 0.336"
+		:*R:00e`;::#00 elongated capsule / 0.995" x 0.336"
+		:*R:00`;::#00 capsule / 0.917" x 0.336"
+		:*R:3`;::#3 capsule / 0.626`" x 0.229"
+		:*R:2`;::#2 capsule / 0.709" x 0.250"
+		:*R:1`;::#1 capsule / 0.765" x 0.272"
+		:*R:0`;::#0 capsule / 0.854" x 0.300"
+		:*:USP`;::Meets USP Requirements
+		:*:7/16`;::`Round / 0.4375`"
+		:*:5.5o`;::`Oblong / 0.750`" x 0.313`"
+		:*:5.5ov`;::`Oval / 0.625`" x 0.344`"
+		:*:5o`;::Oblong / 0.750`" x 0.250`"
+		:*R:1c;::Each (1) capsule contains
+		:*R:2c`;::Each two (2) capsules contains
+		:*R:3c`;::Each three (3) capsules contains
+		:*R:4c`;::Each four (4) capsules contains
+		:*R:5c`;::Each five (5) capsules contains
+		:*R:6c`;::Each six (6) capsules contains
+		:*R:7c`;::Each seven (7) capsules contains
+		:*R:1t`;::Each (1) tablet contains
+		:*R:2t`;::Each two (2) tablets contains
+		:*R:3t`;::Each three (3) tablets contains
+		:*R:4t`;::Each four (4) tablets contains
+		:*R:5t`;::Each five (5) tablets contains
+		:*R:6t`;::Each six (6) tablets contains
+		:*R:7t`;::Each seven (7) tablets contains
+		:*:1s`;::
+			sendinput, `Each (1) scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:2s`;::
+			sendinput, `Each two (2) scoops (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:3s`;::
+			sendinput, `Each three (3) scoops (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:1p`;::
+			sendinput, `Each (1) pouch (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:1j`;::
+			sendinput, `Each (1) jar (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:1sp`;::
+			sendinput, `Each (1) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:1ps`;::
+			sendinput, `Each (1) packet or scoop (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:2sp`;::
+			sendinput, `Each two (2) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+		:*:3sp`;::
+			sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
+			return
+
+;;\\                       Composition
+#ifwinactive, Composition
+	Mbutton::
+	^v::
+		Clk(56, 66) ;click add
+		winwait, Edit Ingredient
+		gosub, Paste_Clipped_Ingredient
+	return
+
+
+;;\\                           Edit Ingredient
+#Ifwinactive,Edit Ingredient
+	Mbutton::
+	Paste_Clipped_Ingredient:
+		mouseclick, left, 244, 133,1,0
+		sendinput, {tab 4}^{a}%clipped_Position%{tab}%clipped_LabelName%{tab 2}%clipped_LabelClaim% ;click potencty box
+		if (clipped_IngredientGroup)
+			Sendinput, {Tab}%clipped_IngredientGroup%	;ingredientgroup
+		mousemove, 280, 558, 0
+		Tooltip
+	return
+	F9::ProductTab.IngredientsMenu()
+		:*:1s`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) scoop (%ShapeAndSize% g){left 2}
+		return
+		:*:2s`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of two (2) scoops (%ShapeAndSize% g){left 2}
+		return
+		:*:3s`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of three (3) scoops (%ShapeAndSize% g){left 2}
+		return
+		:*:1p`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) pouch (%ShapeAndSize% g){left 2}
+		return
+		:*:1j`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) jar (%ShapeAndSize% g){left 2}
+		return
+		:*:1sp`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) stick packet (%ShapeAndSize% g){left 2}
+		return
+		:*:1ps`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of (1) packet or scoop (%ShapeAndSize% g){left 2}
+		return
+		:*:2sp`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of two (2) stick packet (%ShapeAndSize% g){left 2}
+		return
+		:*:3sp`;::
+			sendinput, ^{a}* Heavy Metals results are based on a daily dose of three (3) stick packet (%ShapeAndSize% g){left 2}
+		return
+
+
+
+
+;;\\                 Edit request
 #ifwinactive, Edit request
 	mbutton::WorkTab.EditRequest()
 	F10::
 	winactivate, Edit request
 	click 239, 617
 	return
-;;\\ 	           Edit sample
+;;\\ 	             Edit sample
 #ifwinactive, Edit sample (
 F9::worktab.CustomerMenu()
 Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
@@ -487,7 +500,7 @@ Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
 		; sleep 300
 		; 	send, {enter}
 return
-;;\\ 	           Edit test (Field Configuration
+;;\\ 	             Edit test (Field Configuration
 #ifwinactive, Edit test (Field Configuration
 ; lctrl::
 printscreen::
@@ -510,15 +523,16 @@ printscreen::
 return
 
 
-;;\\ 	              Result Entry
+;;\\ 	             Result Entry
 #Ifwinactive, Result Entry
 	F7::numbermenu(6,"toggle") ;WorkTab.CorrectTestResults("toggle", "Loop")
 	F6::numbermenu(6,0) ;WorkTab.CorrectTestResults("toggle", "Loop")
 	; F6::WorkTab.CorrectTestResults(0,5)
-	F10::WorkTab.CorrectTestResults()
+	F9::WorkTab.CorrectTestResults(0,"","Test")
+	F10::
 	Mbutton::WorkTab.CorrectTestResults("Toggle")
-	F9::numbermenu(6)
-;;\\ 	              Results Definition:
+	F8::numbermenu(6)
+;;\\ 	             Results Definition:
 #Ifwinactive, Results Definition
 	+mbutton::SpecTab.Autofill()
 	Mbutton::SpecTab.AutoInputResultEditor()
@@ -533,7 +547,7 @@ return
 	Mbutton::SpecTab.AutoInputResultEditor()
 	+mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 F6::spectab.toggleUseLimitsFromTheTest()
-;;\\ 	              Result Editor
+;;\\ 	             Result Editor
 #ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 wheelDown::
@@ -550,7 +564,7 @@ return
 F6::spectab.toggleUseLimitsFromTheTest()
 return
 
-;;\\              Test Definition Editor
+;;\\                 Test Definition Editor
 #Ifwinactive,Test Definition Editor
 	mbutton::
 		sleep 200
@@ -664,7 +678,7 @@ F6::
 		else
 			return
 	return
-^Mbutton::FileRead, Clipboard, U:\VQ_Helper\ClippedExcelData.txt
+^F7::FileRead, Clipboard, U:\VQ_Helper\ClippedExcelData.txt
 	; SpecTab.Table()
 	;^F10::LMS.AddSampleLog(15)
 	; F10::
@@ -672,23 +686,24 @@ mbutton::
 	Tab:=LMS.DetectTab()
 	if (Tab = "Specs"){
 		if winexist("Spec Table ahk_class AutoHotkeyGUI") {
+
 		If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
 				SpecTab.AutoInputTestDefinitionEditor()
 
-		; else if winactive("Result Editor") || winactive("Results Definition")
-		; 	SpecTab.AutoInputResultEditor()
+		else if winactive("Result Editor") || winactive("Results Definition")
+			SpecTab.AutoInputResultEditor()
 			; ; else if winactive("Edit request")
 
 			; else winactive("NuGenesis LMS")
 					; SpecTab.AutoInputSpecResults()
 				return
 			}
-				else
-			Sendinput, {ctrl down}{click}{ctrl up}
+			else
+				SpecTab.CopySpecTemplate()
+			; Sendinput, {ctrl down}{click}{ctrl up}
 	}
 	else
 		Sendinput, {ctrl down}{click}{ctrl up}
-		; SpecTab.CopySpecTemplate()
 	; Else
 		; Send, ^{mbutton}
 return
@@ -730,6 +745,7 @@ return
 
 	+#v::LMS.Searchbarpaste(";")
 	+^v::LMS.Searchbarpaste(";")
+	^v::LMS.Searchbarpaste(A_space)
 	+!v::LMS.Searchbarpaste(A_space)
 	; Enter::LMS.SaveCode()
 
@@ -783,7 +799,7 @@ return
 	; F6::Send, %Product%
 +F5::Sendinput, %SampleGUID%
 ^F5::Clipboard:=SampleGUID
-	+mbutton::lms.Menu()
+	; +mbutton::lms.Menu()
 	+F9::lms.Menu("Shift")
 	F9::lms.Menu()
 
@@ -1178,23 +1194,24 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	global simpleclip
 	ttMx:=100
 	ttmy:=1
+	if Position="M"
+	{
+	; 	; CoordMode, tooltip, screen
+		CoordMode, tooltip, mouse
+		CoordMode, Mouse, screen
+	}
 	winGetPos, ttwinx,ttwiny, ttwinw, ttwinh, A
-	ttx:=Floor(ttwinx+X)
-	tty:=Floor(ttwiny+y)
-	if Position="S" || Position="M"
-	{
-		; CoordMode, tooltip, screen
-		CoordMode, tooltip, Window
-		; CoordMode, Mouse, screen
-	}
-	if Position="W"
-	{
-		CoordMode, tooltip, window
-		; CoordMode, Mouse, window
-	}
 	MouseGetPos, mX, mY
+	; if Position="W"
+	; else
+	; {
+		CoordMode, tooltip, window
+		CoordMode, Mouse, window
+	; }
 	if Simpleclip
 		return
+	ttwinx:=Floor(ttwinx+X)
+	ttwiny:=Floor(ttwiny+y)
 	ttx:=Floor(mx+X)
 	tty:=Floor(my+y)
 	; CoordMode, ToolTip, Window
@@ -1202,6 +1219,8 @@ TT(msg:="yo", time=1500, X:="",Y:="",N:="", Transparent:=240,Position:="S") {
 	; CoordMode, mouse, window
 	if Position = "M"
 		tooltip, %msg%, %ttx%, %tty%,%N%
+	else if Position = "W"
+		tooltip, %msg%, %ttwinx%, %ttwiny%,%N%
 	else
 		tooltip, %msg%, %ttMX%, %ttmY%,%N%
 	; X+=100

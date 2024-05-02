@@ -760,10 +760,10 @@ SheetInfo:=[]
 		Customer:=SheetInfo[4]
 		sleep 200
 		; CustomerPosition:=SheetInfo[5]
-		if !GetIniValue("Customer.ini",Customer)
+		if !GetIniValue("Customers.ini",Customer)
 			CustomerPosition:=SheetInfo[5]
 		else
-			CustomerPosition:=GetIniValue("Customer.ini",Customer)
+			CustomerPosition:=GetIniValue("Customers.ini",Customer)
 
 		ShapeAndSize:=SheetInfo[6]
 		Color:=SheetInfo[7]
@@ -925,22 +925,26 @@ SheetInfo:=[]
 		click 120,80 ;click product box
 		Sendinput,%Product%`,{space}
 		sendraw, %ProductName%
+		if !(productname)
+			exit
 		sleep 20
+		if !(customer)
+			exit
 		sendinput, {tab 2}%Customer%{tab 2}{End}{tab}{right 3}{tab}%Product%{tab 2} ; new vitaquest selection
 		sleep 200
 		Sendraw,%ProductName%
 		sendinput, {tab 8}
 		Breaking.Point()
+		mousemove, 287, 578,  ;click save
 		winwaitactive, NuGenesis LMS,,8
 		if errorlevel
 			Exit
 		; tt(you broke it,2000)
 		winactivate, NuGenesis LMS
 		Breaking.Point()
-		click, 67, 283
+		click, 67, 283 ; click add formulation
 		Breaking.Point()
 		This.AddNewFormulation()
-		; clk(287, 578) ;click save
 		Iteration:=1
 		; Clipbar.FlashIteration()
 		return
@@ -969,19 +973,47 @@ SheetInfo:=[]
 		else if InStr(ServingSize,"6 t",False) || InStr(ServingSize,"6t",False)
 			Sendinput % "Each six (6) tablets contains{Tab}" ShapeAndSize "{tab}" color
 		else if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
-			Sendinput % "Each (1) capsule contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each (1) capsule contains{Tab}"
+			Sendraw, %ShapeAndSize%
+			Sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"2 c",False) || InStr(ServingSize,"2c",False)
-			Sendinput % "Each two (2) capsules contains{Tab}" ShapeAndSize "{tab}" color
+{
+			Sendinput % "Each two (2) capsules contains{Tab}"
+			sendraw, %ShapeAndSize%
+			sendinput % "{tab}" color
+}
 		else if InStr(ServingSize,"3 c",False) || InStr(ServingSize,"3c",False)
-			Sendinput % "Each three (3) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each three (3) capsules contains{Tab}"
+			Sendraw, %ShapeAndSize%
+			Sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"4 c",False)
-			Sendinput % "Each four (4) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each four (4) capsules contains{Tab}"
+			Sendraw, %ShapeAndSize%
+			Sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"5 c",False)
-			Sendinput % "Each five (5) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each five (5) capsules contains{Tab}"
+			Sendraw, %ShapeAndSize%
+			Sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"6 c",False)
-			Sendinput % "Each six (6) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each six (6) capsules contains{Tab}"
+			Sendraw, %ShapeAndSize%
+			Sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"7 c",False)
-			Sendinput % "Each seven (7) capsules contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each seven (7) capsules contains{Tab}"
+			Sendraw, %ShapeAndSize%
+			Sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"1 sp",False)
 			Sendinput % "Each (1) stick packet (" ShapeAndSize " g) contains{Tab}Blend" "{tab}" color
 		else if InStr(ServingSize,"2 sp",False)
@@ -1439,6 +1471,8 @@ ClickEmptyRequirements(){
 		LV_GetText(Method, 			row,8)
 		GUI, Spec_Table:submit,NoHide
 		winactivate, ahk_exe eln.exe
+		tooltipText:= Name " `t " MinLimit " - " MaxLimit " " Units "`t" Method
+			TT(tooltiptext,5000,0,0,1,200,"W")
 	}
 
 
@@ -1768,21 +1802,30 @@ simpleclip:=
 		}
 	AutoInputTestDefinitionEditor(){
 		Global
+			clipboard:=
+			SimpleClip:=1
 			if !winactive("Test Definition Editor"){
 			click
 			click, 57, 719 ;click Edit Test
 			SelectedTestName:=
 			winwaitactive, Test Definition Editor,, 2
 		}
-
-			clipboard:=
-			SimpleClip:=1
 			send, {tab 1}^a^c ;copies the Test ID from test definition Editor
 			ClipWait, 1
+				if ErrorLevel
+				{
+					msgbox,, nada
+					exit
+				}
+						Breaking.Point()
 			SelectedTestName:=strreplace(Clipboard, " UPLC")
-			ControlsetText, Edit4,%SelectedTestName%,ClipBar
+			; TT(SelectedTestName)
+			; ControlsetText, Edit4,%SelectedTestName%,ClipBar
 			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
+					Breaking.Point()
 			SpecTab.GetRowText(MatchingRow)
+			; tooltipText:= Name " `n " MinLimit " - " MaxLimit " " Units
+			; TT(tooltiptext,5000,0,0,1,100,"W")
 			if !MatchingRow
 			{
 				winactivate, Test Definition Editor
@@ -1790,8 +1833,11 @@ simpleclip:=
 				SpecTab.ShowSpecMenu()
 				winactivate, Test Definition Editor
 			}
+
+			sleep 200
 			spectab.Autofill()
 			preY+=26
+					Breaking.Point()
 			WinWaitActive, NuGenesis LMS,, 10
 			if !errorlevel
 				MouseMove, %preX%, %preY%, 1,
@@ -1802,6 +1848,7 @@ simpleclip:=
 		SimpleClip:=1
 		clipboard:=
 		SelectedTestName:=
+		MatchingRow:=
 		ParsedSpecs:=[]
 			If winactive("Results"){
 			click
@@ -1823,28 +1870,37 @@ simpleclip:=
 			}
 			else ;copies the Test ID from Result Editor
 			{
+			clipboard:=
 			winactivate, Result Editor
 			send, {tab 3}^a^c
 			ClipWait, 1
 			SelectedTestName:=Clipboard
 			}
-		ControlsetText, Edit4,%SelectedTestName%,ClipBar
+			ControlsetText, Edit3,%SelectedTestName%,ClipBar
 			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
-		SpecTab.GetRowText(MatchingRow)
+			SpecTab.GetRowText(MatchingRow)
+			ControlsetText, Edit4,%ToolTipText%,ClipBar
 			; sleep 300
-				winactivate, Result Editor
+			sleep 200
+			winactivate, Result Editor
 			; Send +{tab 3}
+			Breaking.Point()
 			if !MatchingRow
 			{
 				winactivate, Result Editor
 				MouseClick, left, 464, 532,2,0
 				; Spectab.PasteClipboardIntoSpec()
-			; SpecTab.ShowSpecMenu()
+				SpecTab.ShowSpecMenu()
 				winactivate, Result Editor
 		}
+		if !Minlimit || !MaxLimit
+			msgbox,, got no data
+			tooltipText:= Name " `t " MinLimit " - " MaxLimit " " Units "`t" Method
+			TT(tooltiptext,5000,0,0,1,200,"W")
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; spectab.Autofill()
 			; preY+=26
+			Breaking.Point()
 			WinWaitActive, Results,, 5
 			if !errorlevel
 				;MouseMove, %SpecTableMousePosX%, %SpecTableMousePosY%, 1,
@@ -1856,6 +1912,8 @@ simpleclip:=
 		global
 		; MouseGetPos, SaveX2, saveY2
 		SimpleClip:=1
+		tooltipText:= Name " `n " MinLimit " - " MaxLimit " " Units
+			TT(tooltiptext,5000,0,0,1,100,"W")
 		If (Clipped_specs){
 			clipped_Specs:=
 			sleep 100
@@ -1888,19 +1946,18 @@ simpleclip:=
 			If Method contains ICP-MS 231
 			{
 				MouseGetPos, SpecTableMouseX, SpecTableMouseY
-				Sendinput,{click 217, 141} ;click first line
-
+				Sendinput, {click 217, 141} ;click first line
 			}
 			Sendinput,{click 80, 66} ;click edit
 			Breaking.Point()
 			winwaitactive, Result Editor,,4
 			SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,1)
 			; tooltip
-			if SpecTableMouseX
-			{
-				mousemove, %SpecTableMouseX%, %SpecTableMouseY%
-				SpecTableMouseX:=
-			}
+			; if SpecTableMouseX
+			; {
+				; mousemove, %SpecTableMouseX%, %SpecTableMouseY%
+				; SpecTableMouseX:=
+			; }
 			return
 		}
 		If winactive("Result Editor") ;the editing window
@@ -1967,9 +2024,24 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 			clipped_Specs:=
 			sleep 100
 		}
+		if (!Max_Limit || !Min_limit)
+				SpecTab.ShowSpecMenu()
+
 		simpleclip:=1
 		winactivate, Result Editor
 		click, 250, 140 ; click id box to orient
+		if !SelectedTestName
+			{
+			MatchingRow:=SpecTab.FindRowNumber(SelectedTestName)
+			SpecTab.GetRowText(MatchingRow)
+			if !MatchingRow
+			{
+				SpecTab.ShowSpecMenu()
+				winactivate, Result Editor
+				click, 250, 140
+			}
+			; spectab.Autofill()
+			}
 		Breaking.Point()
 		; Sendinput,{tab 2}%The_units%{tab}^{a}%The_Percision% ;{tab 5}
 
@@ -2030,7 +2102,7 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		{
 			; WinActivate, Spec Table ahk_exe VQ_Helper.exe
 			; sleep 200
-			MouseMove, %mX%, %mY%, 0
+			MouseMove, 378, 667, 0
 			return
 		}
 		winwaitactive, Results,, 5
@@ -2937,6 +3009,8 @@ Class WorkTab {
 			Clipboard:=strReplace(StrReplace(Clipboard, "`r`n","`n"),"`t","") ; Normalize line endings
 			lines := StrSplit(Clipboard, "`n") ; Split the string into lines
 			; CustomerString:=
+			Try FileDelete, Customers.txt
+			FileAppend,% Trim(clipboard), Customers.txt
 			totalLines := lines.Length() -1
 			half := FLOOR(totalLines/2)
 			halfAmount:=-(Half)
@@ -3117,7 +3191,7 @@ Class WorkTab {
 
 
 
-		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:=""){
+		CorrectTestResults(Checkbox_Toggle:=0,LoopThrough:="",TestComment:=""){
 			global
 			Thread, Interrupt, 0
 			Breaking.Preable()
@@ -3136,12 +3210,11 @@ Class WorkTab {
 					Send,{tab}{Space}{tab}{Space}
 					else
 						Sendinput,{tab}{tab}
-					Breaking.Point()
-					;Breaking.Point()
-					Breaking.Point()
+
 					Send,{tab 10}^a
 					if ((Iteration != 0) && !(A_Priorkey="Rshift") && !(A_ThisHotkey="Space") && !(A_Priorkey="Space"))
 						Send, %Iteration%
+					Breaking.Point()
 					ypos:=ypos+26
 					mousemove, xpos, ypos,0
 					Breaking.Point()
@@ -3167,10 +3240,16 @@ Class WorkTab {
 			}
 			else
 				Sendinput,{tab}{tab}
+			if TestComment {
+				Sendinput, {tab}Test ;write test
+			}
+			else
+				sendinput {tab}
 			; if keep_running = n ;another signal to stop
 			; return
+
 			;Breaking.Point()
-			Sendinput,{tab 10}^a
+			Sendinput,{tab 9}^a
 			Breaking.Point()
 			if ((Iteration != 0) && !(Iteration > 8) && !(Iteration < 0) && !(A_Priorkey="Rshift") && !(A_ThisHotkey="Space") && !(A_Priorkey="Space") && !GetKeyState("Lbutton","P"))
 			Send, %iteration%

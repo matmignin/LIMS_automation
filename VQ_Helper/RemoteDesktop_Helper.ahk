@@ -40,11 +40,37 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 }
 
 
-
 OnClipboardChange("clipChange")
+	SetTimer,activeCheck, %ActiveTimerCheck%
 
 return
 
+activeCheck:
+ListLines, OFF
+
+ If winactive("Counter usage detected ahk_exe EXCEL.exe"){
+	winactivate,
+	sleep 100
+
+	sendinput, {enter}
+	; mousemove, 222, 138
+	; click
+	; sleep 1000
+	return
+}
+else If winactive("Smart Builder ahk_exe EXCEL.exe", "Are you sure you want to delete the selection?"){
+	winactivate,
+	sleep 100
+
+	sendinput, {enter}
+	; mousemove, 222, 138
+	; click
+	; sleep 1000
+	return
+}
+else
+return
+return
 
 Ralt::return
 

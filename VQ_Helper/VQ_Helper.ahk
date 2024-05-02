@@ -270,6 +270,15 @@ else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
 	WindowMoved:=
 	return
 }
+else If winactive("Test Definition Editor ahk_exe eln.exe") && !WindowMoved{
+	clk(469,530,,1)
+	; clk(259,487,0,0)
+	sleep 400
+	WindowMoved:=1
+	; WinWaitClose
+	; WindowMoved:=
+	return
+}
 else If winactive("Reason For Change") && !WindowMoved{
 	send, {tab 2}
 	sleep 400

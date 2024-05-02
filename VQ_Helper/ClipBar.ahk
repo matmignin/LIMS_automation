@@ -11,7 +11,16 @@ clipChange(){
     ProductTab.AddProductFromClipboard()
 		clip.codesRegex()
 		clipBar.Flash()
+		Ifwinactive, Edit Formulation
+			ProductTab.AddNewFormulation()
+		ifwinactive, Edit Product
+			ProductTab.AddNewProduct()
 		return
+  }
+  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    Clipboard:=
+    exitsub()
+    Return
   }
   else if InStr(Clipboard, ">>|", true,1,1) {
     if (Iteration >=25) || (Iteration < 0) || !(Iteration)
@@ -27,11 +36,6 @@ clipChange(){
     FileAppend, %ClippedData%, ClippedExcelData.txt
     LMS.AddDataFromClipboard()
     return
-  }
-  else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
-    Clipboard:=
-    exitsub()
-    Return
   }
 	else if InStr(Clipboard, "<<CopyLabelCopy>>",true, 1,1){
 		; Product:=TRIM(SubStr(Clipboard, 19,4))
@@ -517,7 +521,7 @@ GetSampleInfo(){ ;on the lms main menu
     Clipped_SampleTemplate:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Sample Template") + TotalColumns],"`r`n")
     DESCRIPTION:=Trim(ParsedMainSpecTable[HasValue(ParsedMainSpecTable, "Description") + TotalColumns],"`r`n")
     ; StringReplace, Description, Description, `r`n, , All
-      sleep 200
+      sleep 100
       Clipped_Specs:= Clipped_TestID "`t" DESCRIPTION "`n MinMax: " MinLimit " - " MaxLimit "`n Sample Template: " Clipped_SampleTemplate "`n Department: " Clipped_Department
       TT(%Clippsed_Specs%,4000)
 			ControlsetText, Edit6,%Clipped_Specs%,ClipBar
