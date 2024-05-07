@@ -68,6 +68,15 @@ else If winactive("Smart Builder ahk_exe EXCEL.exe", "Are you sure you want to d
 	; sleep 1000
 	return
 }
+else if winactive("Book ahk_class XLMAIN ahk_exe EXCEL.exe"){
+	WinGetPos, bWinX, bWinY, bWinW, bWinH
+	screenwidth:=A_ScreenWidth - 50
+	screenHeight:=A_ScreenHeight - 40
+	if (bwinw > Screenwidth)
+		WinRestore, ahk_class XLMAIN ahk_exe EXCEL.EXE
+		WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, 0, 40,,%screenHeight%
+	return
+}
 else
 return
 return
@@ -79,18 +88,13 @@ Ralt::return
 clipChange(type){
 	global
 	rSampleGUID:=
-	rSampleGUID:=
 	rbatch:=
 	if SampleGUID
 	PreviousSampleGUID:=SampleGUID
-	if SampleGUID
-	PreviousSampleGUID:=SampleGUID
-	SampleGUID:=
 	SampleGUID:=
 	sleep 75
 	If winactive("NuGenesis LMS"){
 	clipboardParse:=Clipboard
-		SampleGUID:=Trim(RegExMatch(ClipboardParse, RegexSampleGUID, r))? rSampleGUID : SampleGUID
 		SampleGUID:=TRIM(RegExMatch(ClipboardParse, RegexSampleGUID, r))? rSampleGUID : SampleGUID
 		Batch:=TRIM(RegExMatch(ClipboardParse, RegexBatch, r))? rBatch : Batch
 		tooltip, %rbatch% `t %rSampleGUID% `t %rSampleGUID%, 600,0
@@ -99,6 +103,11 @@ clipChange(type){
 	if (SampleGUID=PreviousSampleGUID) && (SampleGUID)
     FileAppend, %SampleGUID%`n, U:\VQ_Helper\PriorSampleGUIDs.txt
     }
+	else if InStr(Clipboard, "<<QuIT>>",true, 1,1){
+    Clipboard:=
+		exitApp
+    Return
+  }
 	return
 }
 
@@ -106,6 +115,7 @@ clipChange(type){
 
 ~RWin::Send {Blind}{vkFF}
 ~LWin::Send {Blind}{vkFF}
+
 
 
 #ifwinactive, TIBCO Jaspersoft
@@ -153,7 +163,9 @@ return
 #Ifwinactive, ahk_exe eln.exe
 	F1::sendinput, %batch%
 	F2::Sendinput, %SampleGUID%
-	F3::Sendinput, %SampleGUID%
+	; F3::Sendinput, %SampleGUID%
+
++F10::sendinput, +{V}{Tab 4}Form Contro{Tab 2}Y
 
 #IfWinactive, Dataset and Query Dialog
 ^x::
@@ -179,6 +191,12 @@ copyTOTextfile(){
 #ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
 ;	F2::Sendinput, %SampleGUID%{enter}
 ;F3::Sendinput, %SampleGUID%{enter}
+F10::
+		winactivate, Microsoft Visual Basic for Applications
+		sendinput, {F5}
+		winactivate, ahk_class XLMAIN
+		return
+
 F7::
 WinGetPos, WinX, WinY, WinW, WinH
   targetWidth := A_ScreenWidth / 3  ; Calculate one third of the screen width
@@ -188,7 +206,7 @@ WinGetPos, WinX, WinY, WinW, WinH
 				return
 F6::
 WinGetPos, WinX, WinY, WinW, WinH
-  targetWidth := A_ScreenWidth / 2  ; Calculate one third of the screen width
+  targetWidth := A_ScreenWidth / 2  ; Calculate one half of the screen width
         ;targetX := A_ScreenWidth - targetWidth  ; Calculate the X position to start the window
         WinRestore, ahk_class XLMAIN ahk_exe EXCEL.EXE  ; Restore the window to normal state if it is maximized
         WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, 0, WinY, targetWidth, WinH

@@ -14,7 +14,7 @@ return
 	Run, "U:\VQ_Helper\RawFiles\COMPILE.exe"
 	exitapp
 	Return
-enter::sendinput, {enter}
+~enter::Enter
 
 	^+w::gosub, get_window_info
 	^+e::gosub, get_mouse_info
@@ -747,7 +747,7 @@ return
 	+^v::LMS.Searchbarpaste(";")
 	^v::LMS.Searchbarpaste(A_space)
 	+!v::LMS.Searchbarpaste(A_space)
-	; Enter::LMS.SaveCode()
+	; ~Enter::LMS.SaveCode()
 
 
 ;;[[_________________ELN.EXE___________________________]]
