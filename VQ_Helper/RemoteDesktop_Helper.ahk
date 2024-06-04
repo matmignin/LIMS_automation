@@ -41,7 +41,7 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 
 
 OnClipboardChange("clipChange")
-	SetTimer,activeCheck, %ActiveTimerCheck%
+	SetTimer,activeCheck, 300
 
 return
 
@@ -188,15 +188,20 @@ copyTOTextfile(){
     Return
 }
 
-#ifwinactive, ahk_class XLMAIN ahk_exe EXCEL.EXE
+; #ifwinactive, Microsoft Visual Basic for Applications
+; F10::F5
+; 		return
+
+#ifwinactive, ahk_exe EXCEL.EXE
 ;	F2::Sendinput, %SampleGUID%{enter}
 ;F3::Sendinput, %SampleGUID%{enter}
+;F3::Sendinput, %SampleGUID%{enter}
 F10::
+if !winactive("Microsoft Visual Basic for Applications")
 		winactivate, Microsoft Visual Basic for Applications
 		sendinput, {F5}
 		winactivate, ahk_class XLMAIN
 		return
-
 F7::
 WinGetPos, WinX, WinY, WinW, WinH
   targetWidth := A_ScreenWidth / 3  ; Calculate one third of the screen width
@@ -326,3 +331,4 @@ PriorSampleGUIDsMenu(ShowMenu:=""){
 
 
 }
+

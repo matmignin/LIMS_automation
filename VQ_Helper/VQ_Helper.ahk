@@ -110,7 +110,7 @@ prefix:=
 
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
-	; CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Code.txt"
+	CodeFile:= "\\10.1.2.118\users\vitaquest\mmignin\VQ_Helper\Code.txt"
 	OnExit("ClipBar.SaveVariables")
 	SetTimer,activeCheck, %ActiveTimerCheck%
 	SetTimer,FileCheck, 1000
@@ -195,8 +195,10 @@ else if MouseIsOver("ClipBar"){
 		; sleep 1000
 	}
 
-	else if (winControl="Edit3")
-		GetAllWholeBatches()
+	else if (winControl="Edit3"){
+		TT("Whole Batches")
+		; GetAllWholeBatches()
+	}
 	else if (winControl="Edit4"){
 		tt(sampleguid,7000,100,20,7,220,"M")
 		Clipboard:=SAMPLEGUID
@@ -238,6 +240,15 @@ else If winexist("Release: ahk_exe eln.exe"){
 	click 128,146
 	return
 }
+else if winactive("Book ahk_class XLMAIN ahk_exe EXCEL.exe"){
+	WinGetPos, bWinX, bWinY, bWinW, bWinH
+	screenwidth:=A_ScreenWidth - 50
+	screenHeight:=A_ScreenHeight - 40
+	if (bwinw > Screenwidth)
+		WinRestore, ahk_class XLMAIN ahk_exe EXCEL.EXE
+		WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, 0, 40,,%screenHeight%
+	return
+}
 else if (winexist("ahk_class XLMAIN ahk_exe EXCEL.EXE") && !ExcelConnected){
 	try XL := ComObjActive("Excel.Application") ;handle to running application
 Catch {
@@ -273,7 +284,7 @@ else If winactive("Edit Formulation ahk_exe eln.exe") && !WindowMoved{
 else If winactive("Test Definition Editor ahk_exe eln.exe") && !WindowMoved{
 	clk(469,530,,1)
 	; clk(259,487,0,0)
-	sleep 400
+	sleep 50
 	WindowMoved:=1
 	; WinWaitClose
 	; WindowMoved:=
@@ -356,8 +367,7 @@ else if Winactive("NuGenesis LMS"){
 	; LMS.DetectTab()
 	windowmoved:=
 }
-
-listlines, On
+; listlines, On
 	; #maxthreadsperhotkey, 2
 return
 

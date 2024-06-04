@@ -230,6 +230,7 @@ Class LMS {
 			else if (winactive("NuGenesis LMS") || winactive("Results Definition") || winactive("Results") || winactive("Select methods tests")) && (Table_height > 1) {
 				Try GUI, Spec_Table:destroy
 				SpecTab.Table()
+
 				return
 			}
 			else if winactive("Result Editor") || winactive("Results Definition") || winactive("Results") || winactive("Test Definition Editor") || (winactive("NuGenesis LMS") && (Table_height = 1)) {
@@ -961,17 +962,41 @@ SheetInfo:=[]
 
 
 		 If InStr(ServingSize,"1 t",False) || InStr(ServingSize,"1t",False) || InStr(ServingSize,"1 Chewable",False)
-			Sendinput % "Each (1) tablet contains{Tab}" ShapeAndSize "{tab}" color
+		 {
+			Sendinput % "Each (1) tablet contains{Tab}"
+			SendRaw, %ShapeAndSize%
+			sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"2 t",False) || InStr(ServingSize,"2t",False)  InStr(ServingSize,"2 Chewable",False)
-			Sendinput % "Each two (2) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each two (2) tablets contains{Tab}"
+			SendRaw, %ShapeAndSize%
+			sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"3 t",False) || InStr(ServingSize,"3t",False)
-			Sendinput % "Each three (3) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each three (3) tablets contains{Tab}"
+			SendRaw, %ShapeAndSize%
+			sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"4 t",False)  || InStr(ServingSize,"4t",False)
-			Sendinput % "Each four (4) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each four (4) tablets contains{Tab}"
+			SendRaw, %ShapeAndSize%
+			sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"5 t",False) || InStr(ServingSize,"5t",False)
-			Sendinput % "Each five (5) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each five (5) tablets contains{Tab}"
+			SendRaw, %ShapeAndSize%
+			sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"6 t",False) || InStr(ServingSize,"6t",False)
-			Sendinput % "Each six (6) tablets contains{Tab}" ShapeAndSize "{tab}" color
+		{
+			Sendinput % "Each six (6) tablets contains{Tab}"
+			SendRaw, %ShapeAndSize%
+			sendinput % "{tab}" color
+			}
 		else if InStr(ServingSize,"1 c",False) || InStr(ServingSize,"1c ",False)
 		{
 			Sendinput % "Each (1) capsule contains{Tab}"
@@ -1221,7 +1246,7 @@ class SpecTab {
 		ifwinnotactive, ahk_exe eln.exe
 			winactivate, ahk_exe eln.exe
 		sleep 200
-		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, A
+		winGetPos, LMS_X, LMS_Y, LMS_w, LMS_h, NuGenesis LMS
 		SpecTable_X:=LMS_X+10
 		; SpecTable_X:=LMS_w+LMS_X+ShiftTable_X
 		; SpecTable_Y:=LMS_Y+ShiftTable_Y
@@ -1235,6 +1260,8 @@ class SpecTab {
 		else
 			MsgBox, %A_ThisMenuItemPos%, %SpecMsg%
 		CoordMode, mouse, window
+		if winexist("Select methods tests")
+					SpecTab.AddALLSpecTableMethods()
 		return
 	}
 
@@ -1244,15 +1271,18 @@ class SpecTab {
 		if WinExist("Select methods test"){
 			ScreenEdge_X:=A_ScreenWidth-50
 			ScreenEdge_Y:=A_Screenheight-380
-			SpecTable_X:=LMS_X + 25
-			SpecTable_Y:=LMS_Y+ShiftTable_Y+300
+			SpecTable_X:=LMS_X + 10
+			; SpecTable_Y:=LMS_Y+ShiftTable_Y+300
+			SpecTable_Y:=A_Screenheight-500
+			; SpecTable_X:=A_ScreenWidth-50
+			; SpecTable_Y:=A_Screenheight-380
 		}
 		else if Winactive("NuGenesis LMS"){
 			ScreenEdge_X:=A_ScreenWidth-25
 			ScreenEdge_Y:=A_Screenheight-180
 		}
 		sleep 200
-		If (Name.Maxindex() <=1)
+		If ((Name.Maxindex() <=1) && !winexist("Select methods tests"))
 			return
 		try GUI, Spec_Table:Show, x%SpecTable_X% y%SpecTable_Y% w310, %Product% Spec Table
 		catch GUI, Spec_Table:Show, x%ScreenEdge_X% y%ScreenEdge_Y% w310, %Product% Spec Table
@@ -1288,12 +1318,12 @@ class SpecTab {
 		else if !Table_height
 			Table_height := 8
 		Gui Spec_Table:+LastFound +Toolwindow +Owner +AlwaysOnTop -SysMenu +MinimizeBox
-		GUI, Spec_Table:Font, s11 cBlack, Arial Narrow
+		GUI, Spec_Table:Font, s10 cBlack, Arial Narrow
 		; GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		; GUI, Spec_Table:Add, ListView, x2 y0 w358 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
-		GUI, Spec_Table:Add, ListView, x2 y0 w318 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
+		GUI, Spec_Table:Add, ListView, x2 y0 w300 r%table_height% Grid checked altSubmit -hdr gSpec_Table, `t%Product%|`t%Name%|MinLimit|MaxLimit|Units|Percision|Description|Method
 		Gui, Spec_Table:Add, Button, X25 y+0 h18 w145 gAddSpecTableMethods, Add Methods
-		Gui, Spec_Table:Add, Button, X+3 h18 w105 gAutoAddSpecs, Auto Specs
+		;Gui, Spec_Table:Add, Button, X+3 h18 w105 gAutoAddSpecs, Auto Specs
 		OnMessage(0x0201, "WM_Lbuttondown")
 		loop % Name.Maxindex(){
 			if !(Requirement[A_index])
@@ -1365,6 +1395,7 @@ class SpecTab {
 		return
 		; CoordMode, mouse, screen
 	}
+
 	FindRowNumber(InputTestName:=""){
 		global
 		GUI, Spec_Table:Default
@@ -1399,6 +1430,42 @@ class SpecTab {
 		}
 		return 0
 	}
+	AddAllSpecTableMethods(){
+		Global
+	winactivate, Select methods tests
+		click, 235, 72
+		Send, ^a
+		sleep 200
+		Breaking.Point()
+		Loop, Parse, MethodList, `n ; loop through each selected method
+		{
+			MethodListItem:=A_loopfield
+			if inStr(MethodListItem,"/")
+			{
+				loop, parse, MethodListItem, /
+					menu, ChooseMethodMenu, Add, %A_loopField%, ChooseMethodHdr
+				menu, ChooseMethodMenu, show
+				; This.SelectMethod(A_thismenuitem
+				Breaking.Point()
+				SpecTab.ChangeSpecTableMethod(MethodListItem, A_thismenuitem)
+				MethodListItem:=A_thismenuitem
+			}
+			Breaking.Point()
+			{
+				winactivate, Select methods tests
+				sleep 200
+				click, 235, 72
+				Send, ^a
+				click, 235, 72 ;click search bar
+				sleep 100
+				Sendinput, %MethodListItem%{enter} ; enter method to search
+				sleep 300
+				click 506, 341 ;move over
+			}
+			Breaking.Point()
+		}
+		return
+}
 ClickEmptyRequirements(){
 	winactivate, NuGenesis LMS
 		ImageFile := "U:\VQ_Helper\images\dash.PNG"
@@ -1881,7 +1948,7 @@ simpleclip:=
 			SpecTab.GetRowText(MatchingRow)
 			ControlsetText, Edit4,%ToolTipText%,ClipBar
 			; sleep 300
-			sleep 200
+			sleep 100
 			winactivate, Result Editor
 			; Send +{tab 3}
 			Breaking.Point()
@@ -1930,14 +1997,14 @@ simpleclip:=
 			; if (Description != "Description")
 			SpecTab.TestDefinitionEditor(Description) ; the pre window
 				; msgbox, %Name% `n %MinLimit% `n %MaxLimit% `n %Units% `n %PercisioN%
-			sleep 200
+			sleep 150
 			winactivate, Test Definition Editor
 			MouseClick, left, 464, 532,2,0 ;click scrollbar
 			click 239, 246  ;results link
-			sleep 200
+			sleep 100
 			Breaking.Point()
 			winwaitactive, Results,, 2
-			sleep 100
+			sleep 50
 
 		}
 		if winactive("Results Definition") || winactive("Results") ;Selection window
@@ -2116,10 +2183,11 @@ PasteClipboardIntoSpec(){ 	;;//	for pasting clipboards into specs}}
 		if ContinueToRun
 			click
 		WinWaitClose, Results,, 4
-		sleep 400
 		; winwaitactive, Test Definition Editor,, 7
 		if ContinueToRun
 			click 342, 614
+		else
+			sleep 400
 			; WinWaitActive, Test Definition Editor
 		wingetpos, Test_X, Test_y, Test_w, Test_h, A
 		Save_x:=test_W - 170
@@ -3362,7 +3430,7 @@ Class WorkTab {
 				}
 			else if winactive("Results Definition"){
 					wingetpos, Results_X, Results_y, Results_w, Results_h, Results
-					sleep 200
+					sleep 50
 					Okay_x:=Results_W - 170
 					Okay_y:=Results_H - 45
 					clk2(Okay_x, Okay_y)
@@ -3375,8 +3443,13 @@ Class WorkTab {
 			clk2(265, 561)
 			else if winactive("View specification")
 			clk2(154, 15)
-			else if winactive("Result Entry")
-			clk2(1028, 860)
+			else if winactive("Result Entry"){
+					wingetpos, Results_X, Results_y, Results_w, Results_h, Result Entry
+					sleep 50
+					Okay_x:=Results_W - 170
+					Okay_y:=Results_H - 45
+					clk2(Okay_x, Okay_y)
+			}
 			else if winexist("Delete Test") {
 				winactivate, Delete Test
 				clk2(229, 136)

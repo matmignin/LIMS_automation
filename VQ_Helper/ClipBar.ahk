@@ -198,8 +198,8 @@ Gui ClipBar:Default
 		sleep 2500
 		GoSub ShowScanLabelCopy
 		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
-		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
-		FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
+		; Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
+		; FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
 		return
   }
 ;   else if InStr(input, ">>|", true,1,1) {
@@ -232,7 +232,7 @@ Gui ClipBar:Default
 }
 
 	CodesRegex(input:=""){
-		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleGUID, Product, Lot, Batch, Coated, sampleGUID, PriorSampleGUID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration, WholeBatch,AllBatches, AllProducts
+		global RegexProduct, RegexBatch, RegexLot, RegexCoated, RegexSampleGUID, Product, Lot, Batch, Coated, sampleGUID, PriorSampleGUID, CodeString, CodeFile, PriorCodeString, CustomerPosition, Iteration,AllBatches, AllProducts
 		Gui ClipBar:Default
 			PreviousSampleGUIDsFile:="U:\VQ_Helper\PriorSampleGUIDs.txt"
 			PriorCodestring:=CodeString
@@ -285,7 +285,13 @@ Gui ClipBar:Default
 					Lot:=
 					Coated:=
 				}
-				if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d+)\]\]", r){
+				if RegexMatch(Parse, "\[\[(?P<CustomerPosition>-?\d{1,3})\]\]", r){
+					; Clipbar.FlashIteration()
+					Iteration:=Floor(rCustomerPosition)
+					CustomerPosition:=rCustomerPosition
+
+			}
+				if RegexMatch(Parse, "\|(?P<CustomerPosition>-?\d{1,3}+)\|", r){
 					; Clipbar.FlashIteration()
 					Iteration:=Floor(rCustomerPosition)
 					CustomerPosition:=rCustomerPosition
@@ -307,13 +313,13 @@ Gui ClipBar:Default
 					codeString:=trim(Product " " Batch " " Lot " ct#" Coated)
 				else
 					codeString:=trim(Product " " Batch " " Lot)
-				; if (PriorCodestring!=Codestring)
+				if (PriorCodestring!=Codestring)
+				{
 					FileAppend, %CodeString%`n, WholeBatches.txt
-
-				; 	FileDelete, %CodeFile%
-				; 	sleep 200
-				; 	FileAppend, %CodeString%, %CodeFile%
-				; }
+					FileDelete, %CodeFile%
+					sleep 200
+					FileAppend, %CodeString%, %CodeFile%
+				}
 				; if rproduct & rBatch & rlot & (PriorCodestring!=Codestring){
 				; ControlsetText, Edit6,%CodeString%,ClipBar ahk_exe VQ_Helper
 				; }
@@ -912,18 +918,18 @@ MenuCodeSelect(FileName:="AllProducts"){
 	stringUpper, OutputText, OutputText
 	loop, parse, OutputText, " "
 		Menu, CodeMenu, Add, %a_LoopField%, CodeMenubutton
-			; Menu, CodeMenu, Add, All, CodeMenubutton
-	; FileRead, WholeBatches, WholeBatches.txt
-	; 	Menu, CodeMenu, Add, , , +Break
-	; sleep 200
-	; Loop, parse, WholeBatches, "`n"
-	; 	Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
-	; 	; Menu, CodeMenu, Add, , WholeBatchMenubutton
-	; 	; Menu, CodeMenu, Add, %WholeBatches%[2], WholeBatchMenubutton
-	; Try Menu,CodeMenu,show
-; 	return
-; WholeBatchMenubutton:
-; 	clip.codesRegex(A_ThisMenuItem)
+			Menu, CodeMenu, Add, All, CodeMenubutton
+	FileRead, WholeBatches, WholeBatches.txt
+		Menu, CodeMenu, Add, , , +Break
+	sleep 200
+	Loop, parse, WholeBatches, "`n"
+		Menu, CodeMenu, Add, %a_LoopField%, WholeBatchMenubutton,
+		Menu, CodeMenu, Add, , WholeBatchMenubutton
+		Menu, CodeMenu, Add, %WholeBatches%[2], WholeBatchMenubutton
+	Try Menu,CodeMenu,show
+	return
+MenuCodeSelectMenubutton:
+	clip.codesRegex(A_ThisMenuItem)
 return
 
 

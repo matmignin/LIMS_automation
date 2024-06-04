@@ -19,6 +19,7 @@ return
 	^+w::gosub, get_window_info
 	^+e::gosub, get_mouse_info
 
+
 LabelCopyDoc:
 msgbox, % copyLabelCopyDoc(1)
 return
@@ -56,18 +57,21 @@ F8::
 
 
 
-	;;--------------------------------------------------
-	;;[[              ClipBar keybindings                    ]]
+;-------------------------------------------------------------------------------
+;;[[*** CLIPBAR KEYBINDINGS                                               ]]
+;-------------------------------------------------------------------------------
 #If MouseIsOver("Methods List ahk_exe VQ_Helper.exe")
 Lbutton::send, {ctrldown}{Lbutton}{ctrlup}
 
 #If MouseIsOver("ClipBar ahk_exe VQ_Helper.exe")
-; ; Mbutton::
-; 		ControlGetFocus,winControl,ClipBar
-; 		if (winControl="Edit7"){
-; 			ControlsetText, Edit7,,ClipBar
-; 			clipboard:=Sampleguid
-; 		}
++Mbutton::
+		ControlGetFocus,winControl,ClipBar
+		if (winControl="Edit2"){
+			GetAllWholeBatches()
+		}
+		if (winControl="Edit3"){
+			MenuCodeSelect()
+		}
 ; 		else
 ; send, {ctrldown}{Lbutton}{ctrlup}
 ; return
@@ -224,9 +228,9 @@ Mbutton::
 	; iniwrite, Coated, Settings.ini, SavedVariables, Coated
 	; }
 
-	;;------------------------------------------------
-	;;[[   		Windows KEYBINDINGS                 ]]
-	;;------------------------------------------------
+	;-----------------------------------------------------------------------------
+	;;[[*** WINDOWS KEYBINDINGS                                               ]]
+	;-----------------------------------------------------------------------------
 #ifwinactive, Edit test `(Field Configuration: I`, Analytical`)
 	mbutton::MsgBox, % "yo"
 	F10::Send,{Click, 402, 284}{end}{down 2}{shiftdown}{9}{shiftup}on sample log{shiftdown}{0}{shiftup}{click, 334, 618}
@@ -304,24 +308,28 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 #ifwinexist, Sign :
 	mbutton::LMSClick.password()
 
-;;\\ 	             Select methods tests
+;;\\      Select methods tests
 #ifwinactive, Select methods tests
 	+enter::clk2(854, 658) ;select okay
 	#enter::clk2(854, 658) ;select okay
 ^enter::clk2(854, 658) ;select okay
 	F7::clk2(511, 337) ;move over test
-	F6::clk2(511, 375) ;move test back over
-	F9::
-	F8::
+	; F6::clk2(511, 375) ;move test back over
+	F9::LMS.Menu()
+	F8::clk2(854, 658) ;select okay
+	F6::
 	mbutton::Spectab.MethodsDropdown()
-;;\\ 		     Select samples for test
+;;\\      Select samples for test
 #Ifwinactive, Select samples for test:
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
-	F8::Clk(853, 657) ;click okay
-	F9::send % Clk(250, 70) "{up}" ; click okay.
-	F7::SpecTab.Methods()
+	F8::Clk(503, 290) ;click okay
+	F9::send % Clk(250, 70) ;"{up}" ; click okay.
+	F7::Clk(853, 657) ;click arrow
+		; Clk(853, 657) ;click okay
+		; return
+	+F6::SpecTab.Methods()
 	F6::SpecTab.MethodsDropdown()
-;;\\       	     Select tests for request:
+;;\\      Select tests for request:
 #ifwinactive, Select tests for request:
 	 F10::
 	 msgbox, Select a test
@@ -336,24 +344,24 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 		mousemove 837, 655
 	 return
 
-	F6::SpecTab.Methods()
-	F7::SpecTab.MethodsDropdown()
+	+F6::SpecTab.Methods()
+	F6::SpecTab.MethodsDropdown()
 	mbutton::WorkTab.SelectTestSample()
 F9::mouseclick, Left, 638, 70
-;;\\ 	             Select Product
+;;\\      Select Product
 #ifwinactive, Select Product ahk_exe eln.exe
 	mbutton::send % clk(107, 66) Product "{enter}{enter}"
 
 
 
 
-;;\\ 	           Edit Product
+;;\\      Edit Product
 #ifwinactive, Edit Product
 	mbutton::ProductTab.AddNewProduct()
 	Enter::clk2(285, 574, 1)
 	+Enter::sendinput, {enter}
 
-;;\\ 	                Edit Formulation
+;;\\      Edit Formulation
 #Ifwinactive, Edit Formulation
 	mbutton::ProductTab.AddNewFormulation()
 	wheeldown::
@@ -372,15 +380,15 @@ F9::mouseclick, Left, 638, 70
 		:*R:00e`;::#00 elongated capsule / 0.995" x 0.336"
 		:*R:00e`;::#00 elongated capsule / 0.995" x 0.336"
 		:*R:00`;::#00 capsule / 0.917" x 0.336"
-		:*R:3`;::#3 capsule / 0.626`" x 0.229"
+		:*R:3`;::#3 capsule / 0.626" x 0.229"
 		:*R:2`;::#2 capsule / 0.709" x 0.250"
 		:*R:1`;::#1 capsule / 0.765" x 0.272"
 		:*R:0`;::#0 capsule / 0.854" x 0.300"
 		:*:USP`;::Meets USP Requirements
-		:*:7/16`;::`Round / 0.4375`"
-		:*:5.5o`;::`Oblong / 0.750`" x 0.313`"
-		:*:5.5ov`;::`Oval / 0.625`" x 0.344`"
-		:*:5o`;::Oblong / 0.750`" x 0.250`"
+		:*R:7/16`;::Round / 0.4375"
+		:*R:5.5o`;::Oblong / 0.750" x 0.313"
+		:*R:5.5ov`;::Oval / 0.625" x 0.344"
+		:*R:5o`;::Oblong / 0.750" x 0.250"
 		:*R:1c;::Each (1) capsule contains
 		:*R:2c`;::Each two (2) capsules contains
 		:*R:3c`;::Each three (3) capsules contains
@@ -423,7 +431,7 @@ F9::mouseclick, Left, 638, 70
 			sendinput, `Each three (3) stick packet (%ShapeAndSize% g) contains{tab}^{a}Blend{tab}^{a}%color%+{tab 2}^{left 3}{left}
 			return
 
-;;\\                       Composition
+;;\\      Composition
 #ifwinactive, Composition
 	Mbutton::
 	^v::
@@ -433,7 +441,7 @@ F9::mouseclick, Left, 638, 70
 	return
 
 
-;;\\                           Edit Ingredient
+;;\\      Edit Ingredient
 #Ifwinactive,Edit Ingredient
 	Mbutton::
 	Paste_Clipped_Ingredient:
@@ -476,14 +484,14 @@ F9::mouseclick, Left, 638, 70
 
 
 
-;;\\                 Edit request
+;;\\      Edit request
 #ifwinactive, Edit request
 	mbutton::WorkTab.EditRequest()
 	F10::
 	winactivate, Edit request
 	click 239, 617
 	return
-;;\\ 	             Edit sample
+;;\\      Edit sample
 #ifwinactive, Edit sample (
 F9::worktab.CustomerMenu()
 Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
@@ -500,7 +508,7 @@ Mbutton::Worktab.Dropdown_CustomerSelect(Iteration)
 		; sleep 300
 		; 	send, {enter}
 return
-;;\\ 	             Edit test (Field Configuration
+;;\\      Edit test (Field Configuration
 #ifwinactive, Edit test (Field Configuration
 ; lctrl::
 printscreen::
@@ -523,8 +531,9 @@ printscreen::
 return
 
 
-;;\\ 	             Result Entry
+;;\\      Result Entry
 #Ifwinactive, Result Entry
+	Enter::LMSClick.OK()
 	F7::numbermenu(6,"toggle") ;WorkTab.CorrectTestResults("toggle", "Loop")
 	F6::numbermenu(6,0) ;WorkTab.CorrectTestResults("toggle", "Loop")
 	; F6::WorkTab.CorrectTestResults(0,5)
@@ -532,7 +541,7 @@ return
 	F10::
 	Mbutton::WorkTab.CorrectTestResults("Toggle")
 	F8::numbermenu(6)
-;;\\ 	             Results Definition:
+;;\\      Results Definition:
 #Ifwinactive, Results Definition
 	+mbutton::SpecTab.Autofill()
 	Mbutton::SpecTab.AutoInputResultEditor()
@@ -547,7 +556,7 @@ return
 	Mbutton::SpecTab.AutoInputResultEditor()
 	+mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 F6::spectab.toggleUseLimitsFromTheTest()
-;;\\ 	             Result Editor
+;;\\      Result Editor
 #ifwinactive, Result Editor
 	mbutton::SpecTab.ResultEditor(MinLimit,MaxLimit,Units,Percision,1,FullRequirements)
 wheelDown::
@@ -564,7 +573,7 @@ return
 F6::spectab.toggleUseLimitsFromTheTest()
 return
 
-;;\\                 Test Definition Editor
+;;\\      Test Definition Editor
 #Ifwinactive,Test Definition Editor
 	mbutton::
 		sleep 200
@@ -606,7 +615,7 @@ F7::
 
 
 
-;;\\ 	             Register new samples
+;;\\      Register new samples
 #ifwinactive, Register new samples
 F7::sendinput,{Click 505, 356}{Click 860, 661}
 F6::
@@ -635,7 +644,7 @@ F6::
 	return
 	mbutton::WorkTab.registerNewSamples()
 
-;;\\  		     Reason for Change
+;;\\      Reason for Change                                .
 #ifwinactive, Reason For Change
 	F6::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
 
@@ -643,7 +652,7 @@ F6::
 
 
 
-;;[[_____________ Nugenesis MAIN _______________]]
+;;\\____ Nugenesis MAIN                                     .
 #Ifwinactive, NuGenesis LMS
 
 +^F11::LMS.OrientSearchbar()
@@ -686,7 +695,7 @@ mbutton::
 	Tab:=LMS.DetectTab()
 	if (Tab = "Specs"){
 		if winexist("Spec Table ahk_class AutoHotkeyGUI") {
-
+			ContinueToRun:=1
 		If winactive("Test Definition Editor") || winactive("NuGenesis LMS")
 				SpecTab.AutoInputTestDefinitionEditor()
 
@@ -695,6 +704,7 @@ mbutton::
 			; ; else if winactive("Edit request")
 
 			; else winactive("NuGenesis LMS")
+			ContinueToRun:=
 					; SpecTab.AutoInputSpecResults()
 				return
 			}
@@ -750,7 +760,7 @@ return
 	; ~Enter::LMS.SaveCode()
 
 
-;;[[_________________ELN.EXE___________________________]]
+;;\\____eln.EXE ____________                                                       .
 #Ifwinactive, ahk_exe eln.exe
 	F1::Sendinput, %Product%
 	+F1::sendinput % GetAllProducts(" ")
@@ -781,7 +791,7 @@ return
 			lms.ChangePercision(2)
 			Return
 	^F10::
-		loop 20
+		loop 40
 		{
 		breaking.point()
 		lms.ChangePercision(2)
@@ -850,7 +860,7 @@ return
 	; :*:Pa`;::`P. aeruginosa
 	:*:uc`;::`Update Total Coliforms Method
 
-;;\\________________explorer.exe______________
+;;\\____explorer.exe ______
 #ifwinactive, ahk_class CabinetWClass ahk_exe explorer.exe
 	+F9::send, ^e
 	^w::Sendinput, {esc}^{w}
@@ -937,8 +947,9 @@ AddToList(){
 
 
 
-;;------------------------------------------------------
-;;[[                  MENU HANDLES                    ]]
+;---------------------------------------------------------------------------------
+;;[[*** MENU HANDLES                                               ]]
+;---------------------------------------------------------------------------------
 Reloadsub(){
 	Critical, on
 	Thread, Priority, 1
@@ -1045,7 +1056,7 @@ return
 ShowScanLabelCopy:
 	runwait, find "\\10.1.2.118\share\QC LAB\Label Copy Scans"
 	; runwait, find "\\netapp\share\QC LAB\Label Copy Scans"
-	sleep 250
+	sleep 150
 	; winmaximize, Search Results
 	WinMove, *%Product%* ahk_exe explorer.exe,, 5, 10, 1250, 1200
 	winactivate, *%Product%* ahk_exe explorer.exe
@@ -1112,7 +1123,7 @@ return
 
 
 ;;-------------------------------------------------------------
-;;[[                         Utilities                        ]]
+					;;[[***UTILITIES                                               ]]
 
 
 ReadIniFiles(){
@@ -1434,11 +1445,13 @@ class Breaking {
 		SimpleClip:=
 		If GetKeyState("Lbutton", "P") || break || GetKeyState("Shift", "P") || GetKeyState("RShift", "P") || GetKeyState("LShift", "P") || (A_PriorKey="Shift") {
 			blockinput, off
+				TT("-`n   Broken   `n-",2000)
 			exit
 		}
 		if keep_running = n ;another signal to stop
 		{
 			blockinput, off
+				TT("-`n   Broken   `n-",2000)
 			Exit
 		}
 	}
