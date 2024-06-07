@@ -4,13 +4,13 @@
 
 clipChange(){
   global
-  sleep 75
+  sleep 50
   if SimpleClip
     return
   if Instr(Clipboard, "[P]",true,1,1){
     ProductTab.AddProductFromClipboard()
 		clip.codesRegex()
-		clipBar.Flash()
+		; clipBar.Flash()
 		Ifwinactive, Edit Formulation
 			ProductTab.AddNewFormulation()
 		ifwinactive, Edit Product
@@ -54,8 +54,8 @@ clipChange(){
 		; Clipboard:=
 		GoSub ShowScanLabelCopy
 		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
-		Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
-		FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
+		; Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt
+		; FileAppend,  %labelcopytext%, U:\VQ_Helper\LabelCopies\%Product%.txt
 		return
   }
   else if InStr(Clipboard, "<<CoMPILE>>",true, 1,1){
@@ -118,11 +118,10 @@ clipChange(){
 						; 		; return
 						; }
   else
-
     clip.codesRegex()
 		AllProducts:=GetAllProducts(" ")
 		AllBatches:=GetAllBatches(" ")
-    sleep 50
+    sleep 20
 		return
 	}
 
@@ -194,8 +193,9 @@ Gui ClipBar:Default
 		GuiControl,ClipBar:Text, Product, %Product%
 		Clipboard:=
 		copyLabelCopyDoc()
+		; copyLabelCopyDocRegex(1,1)
 		; tt(clipboard)
-		sleep 2500
+		sleep 2800
 		GoSub ShowScanLabelCopy
 		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
 		; Try FileDelete, U:\VQ_Helper\LabelCopies\%Product%.txt

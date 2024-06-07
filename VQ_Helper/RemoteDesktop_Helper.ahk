@@ -58,6 +58,14 @@ ListLines, OFF
 	; sleep 1000
 	return
 }
+else If winactive("Reason For Change ahk_exe eln.exe"){
+	sendinput, {tab 2}Testing{tab}{enter}
+return
+}
+else If winactive("Reason For Change ahk_exe EXCEL.EXE"){
+	sendinput, {tab 2}Testing{Click 173 334}
+return
+}
 else If winactive("Smart Builder ahk_exe EXCEL.exe", "Are you sure you want to delete the selection?"){
 	winactivate,
 	sleep 100

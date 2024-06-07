@@ -106,7 +106,7 @@ prefix:=
 	PreviousSampleguIDsFile:="U:\VQ_Helper\PriorSampleguIDs.txt"
 	; RegexCombined := "iO)(?<=[\w\d]{3})?(?P<Product>[abcdefghijkl]\d{3}\b)|(?<!Ct#)(?P<Batch>\d{3}-\d{4}\b)|(?P<Lot>\b\d{4}\w\d\w?|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d)|(\d{4}\w\d\w?.|\bBulk\b|G\d{7}\w?\b|VC\d{6}[ABCDEFGH]?|V[A-Z]\d{5}[A-Z]\d?|\d{5}\[A-Z]{3}\d\s|coated: |ct#|ct\s?|coated\s?|ct#/s)(?P<Coated>\d{3}-\d{4})"
 
-
+MsgBox, % "Yolo"
 
 	OnClipboardChange("clipChange")
 	PasteTime:=A_TickCount
@@ -395,16 +395,16 @@ Return
 
 
 copyLabelCopyDoc(SaveText:="",showtooltip:=""){
-	Global Product
+	Global Product,RegexIngredients
 
 	firstLetter:=SubStr(Product,1,1)
 FilePattern := "\\netapp\Label Copy Final\" firstLetter "000-" firstLetter "999\*" product "*.docx"
 Loop, %FilePattern%, 1, 0
 		oW:=ComObjGet(A_LoopFileLongPath)
 		; sleep 1000
-		sleep 400
+		sleep 200
 		oW.Range.FormattedText.Copy
-		clipwait,5,0
+		clipwait,4,0
 		if errorlevel
 			msgbox, didnt  find labelcopy
 	LabelCopyText:=Clipboard

@@ -55,7 +55,7 @@ Loop, %FilePattern%, 1, 0
 		; FileDelete, U:\VQ_Helper\LabelCopyText.txt
 			; sleep 400
 	; FileAppend,  %listofIngredients%, U:\VQ_Helper\LabelCopyText.txt
-	sleep 500
+	; sleep 500
 	Clipboard:=listofIngredients
 	If showTooltip
 		tt(listofIngredients,1000)
@@ -1630,7 +1630,8 @@ ClickEmptyRequirements(){
 
 	MethodsDropdown() {
 		global
-		winactivate, Select methods tests
+		if WinExist("Select methods tests")
+			winactivate, Select methods tests
 		click, 235, 72
 		Send, ^a
 		Loop, Read, Methods.ini
@@ -1657,8 +1658,8 @@ ClickEmptyRequirements(){
 		sleep 300
 		click 506, 341 ;move over
 		menu, Methodmenu, deleteAll
-		This.MethodsDropdown()
-
+		if WinActive(Select Methods tests)
+			This.MethodsDropdown()
 		return
 	}
 	;; ____Copy spec template
@@ -3342,37 +3343,42 @@ Class WorkTab {
 
 		SelectTestSample(){
 			global
-			Click
+			Department:=
+			; Click
 			MouseGetPos, mx, my
 			; blockinput on
-			ifwinactive, Select tests for request: R
-				send, {click 647, 75} ;click assign Samples
-			winwaitactive, Select samples for test,,2
+			ifwinactive, Select tests for request
+				clk( 647, 75) ;click assign Samples
+			winwaitactive, Select samples for test,,3
 			if Errorlevel
 			breaking.point(1)
-			sleep 400
+			sleep 700
 			send {click 467, 71} ;Click Filter button
 			Breaking.Point()
 			sendinput, {click 248, 68}{up} ;click dropdown then
 			send, {click 212, 188} ; select Batches
 			Send, {click 136, 119}
 			send, ^{a} ;flick filter box
-			if winactive("Select samples for test: Organoleptic Sensory Test") || winactive("Select samples for test: Average Capsule Weight") || winactive("Select samples for test: Average Tablet Weight")
+			sleep 200
+			Breaking.Point()
+			if winactive("Select samples for test: Organoleptic Sensory Test") || winactive("Select samples for test: Average Capsule Weight") || winactive("Select samples for test: Average Tablet Weight") || winactive("Select samples for test: Disintegration")
 			Department:="Physical"
-			else if winactive("Select samples for test: Microbiological") || if winactive("Select samples for test: Pathogens")
-			Department:="Micro"
+			else if winactive("Select samples for test: Microbiological") || if winactive("Select samples for test: Pathogens") || if winactive("Select samples for test: Allergens") || if winactive("Select samples for test: Gluten")
+				Department:="Micro"
 			else
-				Department:=""
+				Department:="Analytical"
+			sleep 200
+			tt(Department,3000)
 			sendinput, %Department%{enter} ; send department
 			Breaking.Point()
-			sendinput, {click 504, 324} ;move over
 			sleep 300
+			sendinput, {click 504, 324} ;move over
+
 			Breaking.Point()
-			sendinput, {click, 849, 661} ;click okay
+			send {click 467, 71} ;Click Filter button
+			;sendinput, {click, 849, 661} ;click okay
 			; sendinput, {click, 849, 661, 0} ;move okay
-			Breaking.Point()
-			; tt(Department,3000)
-			winwaitactive, Select tests for request,,3
+			winwaitactive, Select tests for request,,8
 			sleep 200
 			mousemove, mx, my+26,0
 			; blockinput off

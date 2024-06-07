@@ -313,16 +313,21 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	+enter::clk2(854, 658) ;select okay
 	#enter::clk2(854, 658) ;select okay
 ^enter::clk2(854, 658) ;select okay
-	F7::clk2(511, 337) ;move over test
+	F6::clk2(511, 337) ;move over test
 	; F6::clk2(511, 375) ;move test back over
 	F9::LMS.Menu()
-	F8::clk2(854, 658) ;select okay
-	F6::
-	mbutton::Spectab.MethodsDropdown()
+	; F8::clk2(854, 658) ;select okay
+	F8::Spectab.MethodsDropdown()
+	mbutton::
+			sendinput, {click}
+			sleep 20
+			click 511, 336 ; click move over
+			return
 ;;\\      Select samples for test
 #Ifwinactive, Select samples for test:
 	Mbutton::sendinput, {click 248, 68}{up} ;click dropdown then
-	F8::Clk(503, 290) ;click okay
+	F8::WorkTab.SelectTestSample()
+	+enter::Clk(503, 290) ;click okay
 	F9::send % Clk(250, 70) ;"{up}" ; click okay.
 	F7::Clk(853, 657) ;click arrow
 		; Clk(853, 657) ;click okay
@@ -330,24 +335,36 @@ F7::WinMove, ahk_class XLMAIN ahk_exe EXCEL.EXE,, %NuX%, %NuY%, 1250, 1200
 	+F6::SpecTab.Methods()
 	F6::SpecTab.MethodsDropdown()
 ;;\\      Select tests for request:
-#ifwinactive, Select tests for request:
-	 F10::
-	 msgbox, Select a test
-		click, 31, 102
-		sleep 700
-		click 511, 336
-		sleep 300
-		Click 668, 151
-		sleep 800
-		WorkTab.SelectTestSample()
-		sleep 1000
-		mousemove 837, 655
-	 return
-
-	+F6::SpecTab.Methods()
-	F6::SpecTab.MethodsDropdown()
-	mbutton::WorkTab.SelectTestSample()
-F9::mouseclick, Left, 638, 70
+#ifwinactive, Select tests for request
+	 +F10:: ;Select all tests and move over
+			click, 31, 102 ; click Select All Box
+			sleep 700
+			click 511, 336 ; click move over
+			sleep 300
+			Click 668, 151
+			sleep 800
+			WorkTab.SelectTestSample()
+			sleep 1000
+			mousemove 837, 655
+			return
+		F10::Clk2(511,336,1, 1) ; move over
+		F8::
+			clk(311,68) ;Click arrow
+			sleep 200
+			clk(249,129) ;Select Methods
+			sleep 300
+			clk(123,68,"Left",2)
+			Spectab.MethodsDropdown()
+			return
+		; Mbutton::SpecTab.MethodsDropdown()
+		+mbutton::SpecTab.Methods()
+		F7::WorkTab.SelectTestSample()
+		mbutton::
+			sendinput, {click}
+			sleep 20
+			click 511, 336 ; click move over
+			return
+		F6::mouseclick, Left, 638, 70 ;click assign Samples
 ;;\\      Select Product
 #ifwinactive, Select Product ahk_exe eln.exe
 	mbutton::send % clk(107, 66) Product "{enter}{enter}"
@@ -646,7 +663,7 @@ F6::
 
 ;;\\      Reason for Change                                .
 #ifwinactive, Reason For Change
-	F6::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
+	F9::Sendinput, {Click 160 130}^{a}Fixing Rotation{Click 240 237 0}
 
 
 
@@ -1420,6 +1437,9 @@ Clk2(x,y,returnMouse:=1, n:=1){
 		mouseGetPos, clkmx, clkmy, clkmw
 		CoordMode, Mouse, window
 	}
+	If (ReturnMouse=2){
+		mouseGetPos, clkmx, clkmy, clkmw
+	}
 	click, %x% %y% %n%
 	sleep 2
 	if (ReturnMouse=1){
@@ -1430,9 +1450,7 @@ Clk2(x,y,returnMouse:=1, n:=1){
 		}
 	if (ReturnMouse=2){
 	winactivate, %clkmw%
-	CoordMode, Mouse, Screen
 	mousemove,%clkmx%,%clkmy%,0
-	CoordMode, Mouse, window
 		}
 	else
 		return
